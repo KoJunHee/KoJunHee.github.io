@@ -1,0 +1,633 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="junhee.ko">
+    <title>[자바 ORM 표준 JPA 프로그래밍] 7장_고급 매핑 - junhee.ko</title>
+    <meta name="author" content="junhee.ko">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg"},"articleBody":"이번 포스팅에서 다룰 고급 매핑은 다음과 같습니다.\n\n상속 관계 매핑\n@MappedSupperclass\n복합 키와 식별 관계 매핑\n조인 테이블\n엔티티 하나에 여러 테이블 매핑하기\n\n7.1 상속 관계 매핑관계형 데이터베이스에는 상속이라는 개념이 없습니다. 대신에, Super-Type Sub-Type Relationship 이라는 모델링 기법이 객체의 상속 개념과 가장 유사합니다. ORM 의 상속 관계 매핑은 객체의 상속 구조와 데이터베이스의 Super-Type Sub-Type Relationship 을 매핑하는 것입니다.\nSuper-Type Sub-Type Relationship 논리 모델을 실제 물리 모델인 테이블로 구현할 때는 3가지 방법이 있습니다.\n\n각각의 테이블로 변환\n조인 전략\n\n\n통합 테이블로 변환\n단일 테이블 전략\n\n\n서브타입 테이블로 변환\n구현 클래스마다 테이블 전략\n\n\n\n7.1.1 조인 전략엔티티 각각을 모두 테이블로 만들고 자식 테이블이 부모 테이블의 기본 키를 받아서 기본 키 + 외래 키로 사용하는 전략입니다.주의할 점은, 객체는 타입으로 구분할 수 있지만 테이블은 타입의 개념이 없기 때문에 타입을 구분하는 칼럼을 추가해야합니다.\n1234567891011121314151617181920212223242526@Entity@Inheritance (strategy = InheritanceType.JOINED) // 상속 매핑은 부모 클래스에 @Inheritance 를 사용@DiscriminatorColumn (name = \"DTYPE\")\t// 부모 클래스에 구분 칼럼을 지정public abstract class Item &#123;    @Id @GeneratedValue @Column (name = \"ITEM_ID\")  private Long id;    private String name;   private int price;&#125;@Entity@DiscriminatorColumn (\"A\")  public class Album extends Item&#123;    private String artist;&#125;@Entity@DiscriminatorColumn (\"M\") // 영화 엔티티를 저장하면 구분 칼럼인 DTYPE 에 값 M이 저장public class Movie extends Item&#123;    private String director;  private String actor;&#125;\n\n\n장점\n테이블이 정규화 됩니다.\n외래 키 참조 무결성 제약 조건을 활용할 수 있습니다.\n저장공간을 효율적으로 사용할 수 있습니다.\n\n\n단점\n조회할 때 조인이 많이 사용되므로 성능이 저하될 수 있습니다.\n조회 쿼리가 복잡합니다.\n데이터를 등록할 INSERT SQL 을 두 번 실행합니다.\n\n\n특징\nJPA 표준 명세는 구분 칼럼을 사용하도록 하지만, 하이버네이트는 구분 칼럼 없이도 동작합니다.\n\n\n\n7.1.2 단일 테이블 전략테이블을 하나만 사용하고 구분 칼럼으로 어떤 자식 데이터가 저장되었는지 구분합니다.\n1234567891011121314151617181920212223@Entity@Inheritance (strategy = InheritanceType.SINGLE_TABLE)@DiscriminatorColumn (name = \"DTYPE\")\tpublic abstract class Item &#123;    @Id @GeneratedValue @Column (name = \"ITEM_ID\")  private Long id;    private String name;   private int price;&#125;@Entity@DiscriminatorColumn (\"A\")  public class Album extends Item&#123;  ...&#125;@Entity@DiscriminatorColumn (\"M\") public class Movie extends Item&#123;  ...&#125;\n\n\n장점\n조인이 필요 없으므로 일반적으로 조회 성능이 빠릅니다.\n조회 쿼리가 단순합니다.\n\n\n단점\n자식 엔티티가 매핑한 칼럼은 모두 null을 허용해야합니다.\n단일 테이블에 모든 것을 저장하므로 테이블이 커질 수 있습니다. 상황에 따라서는 조회 성능이 느려질 수 있습니다.\n\n\n특징\n구분 칼럼을 꼭 사용해야합니다.\n\n\n\n7.1.3 구현 클래스마다 테이블 전략자식 엔티티마다 테이블을 만듦니다. 그리고, 자식 테이블에 각각에 필요한 칼럼이 모두 있습니다. 이 전략은 추천하지 않는 전략입니다.\n1234567891011121314151617181920@Entity@Inheritance (strategy = InheritanceType.TABLE_PER_CLASS)public abstract class Item &#123;    @Id @GeneratedValue @Column (name = \"ITEM_ID\")  private Long id;    private String name;   private int price;&#125;@Entitypublic class Album extends Item&#123;  ...&#125;@Entitypublic class Movie extends Item&#123;  ...&#125;\n\n\n장점\n서브 타입을 구분해서 처리할 때 효과적입니다.\nnot null 제약조건을 사용할 수 있습니다.\n\n\n단점\n여러 자식 테이블을 함께 조회할 때 성능이 느립니다. (SQL 의 UNION 을 사용해야합니다.)\n자식 테이블을 통합해서 쿼리하기 어렵습니다.\n\n\n특징\n구분 칼럼을 사용하지 않습니다.\n\n\n\n7.2 MappedSuperClass부모 클래스는 테이블과 매핑하지 않고, 부모 클래스를 상속받는 자식 클래스에게 매핑 정보만 제공하고 싶으면 @MappedSuperClass 를 사용합니다.\n12345678910111213141516171819202122232425//테이블과 매핑할 필요가 없고 자식 엔티티에 공통으로 사용되는 매핑 정보만 제공@MappedSuperClasspublic abstract class BaseEntity&#123;     @Id @GeneratedValue  private Long id;    private String name;&#125;@Entitypublic class Member extends BaseEntity&#123;    //id, name 상속    private String email;&#125;@Entitypublic class Seller extends BaseEntity&#123;    //id, name 상속    private String shopName;&#125;\n\n부모로부터 물련 받은 매핑 정보를 재정의 하려면,\n123456@Entity//부모에게 상속 받은 id 속성의 칼럼명을 MEMBER_ID 로 재정의@AttributeOverride(name = \"id\", column = @Column(name = \"MEMBER_ID\"))public class Member extends BaseEntity&#123;  ...&#125;\n\n둘 이상을 재정을 하려면,\n12345678@Entity@AttributeOverrides(&#123;  @AttributeOverride(name = \"id\", column = @Column(name = \"MEMBER_ID\")),  @AttributeOverride(name = \"name\", column = @Column(name = \"MEMBER_NAME\"))&#125;)public class Member extends BaseEntity&#123;  ...&#125;\n\n\n@MappedSuperClass 의 특징\n@MappedSuperClass 로 지정한 클래스는 엔티티가 아닙니다. 따라서, em.find() 나 JPQL 을 사용할 수 없습니다.\n이 클래스를 직접 생성해서 사용할 일은 거의 없으므로, 추상 클래스로 만드는 것을 권장합니다.\n\n\n\n7.3 복합 키와 식별 관계 매핑7.3.1 식별 관계 VS 비식별 관계\n식별 관계\n부모 테이블의 기본 키를 내려받아서, 자식 테이블의 기본 키 + 외래 키로 사용하는 관계입니다.\n\n\n비식별 관계\n부모 테이블의 기본 키를 내려받아서, 자식 테이블의 외래키로만 사용하는 관계입니다.\n필수적 비식별 관계\n외래 키에 NULL을 허용 하지 않습니다. 연관관계를 필수적으로 맺어야 합니다.\n\n\n선택적 비식별 관계\n외래 키에 NULL을 허용합니다. 연관관계를 맺을지 선택할 수 있습니다.\n\n\n\n\n\n\n\n7.3.2 복합키: 비식별 관계 매핑둘 이상의 칼럼으로 구성된 복합 기본키를 다음과 같이 해보면, 매핑 오류가 발생합니다.\n123456789@Entitypubli class Hello &#123;    @Id  private String id;    @Id  private String id2;&#125;\n\nJPA 에서 식별자를 둘 이상 사용하려면 별도의 식별자 클래스를 만들어야합니다.복합키를 지원하기 위해, 관계형 데이터베이스에 가까운 방법인 @IdClass 와, 객체지향에 가까운 @EmbededId 두 가지 방법을 제공합니다. \nIdClass12345678910111213141516171819202122232425262728293031323334@Entity@IdClass (ParentId.class)public class Parent &#123;    @Id @Column (name = \"PARENT_ID1\")  private String id1; //ParerntId.id1 과 연결  \t@Id @Column (name = \"PARENT_ID2\")  private String id2; //ParerntId.id2 과 연결    private String name;&#125;public class ParentId implements Serializable &#123; // Serializable 를 구현해야합니다.    // 식별자 클래스의 속성명과 엔티티에서 사용하는 식별자의 속성명이 같아야합니다.  private String id1; //Parernt.id1 과 연결  private String id2; //Parernt.id2 과 연결    public ParentId()&#123;   &#125;   public ParentId(String id1, String id2)&#123;    this.id1 = id1;                this.id2 = id2;  &#125;    // equals 와 hashCode를 구현해야합니다.  @Override  public boolean equals(Object o)&#123;...&#125;   @Override  public int hashCode()&#123;...&#125;  &#125;\n\n복합키를 사용하는 엔티티를 저장하면,\n12345Parent parent = new Parent;parent.setId1(\"myId1\");parent.setId2(\"myId2\");parent.setName(\"ParentName\");em.persist(parent)\n\n영속성 컨텍스트에 엔티티를 등록하기 직전에, 내부에서 Parent.id1, Parent.id2 값을 사용해서 식별자 클래스인 ParentId 를 생성하고 영속성 컨텍스트의 키로 사용합니다.\nParentId 를 사용해서 엔티티를 조회합니다.\n12ParentId parentId = new ParentId(\"myId1\", \"myId2\");Parent parent = em.find(Parent.class, parentId);\n\n자식 클래스는,\n12345678910111213141516@Entitypublic class Child &#123;    @Id  private String id;    // 부모 테이블의 기본 키 칼럼이 복합 키이므로, 자식 테이블의 외래 키도 복합키  // 외래 키 매핑 시 여러 칼럼을 매핑해야하므로 @JoinColums를 사용  @ManyToOne  @JoinColums(&#123;    @JoinColum(name = \"PARENT_ID1\", referencedColumnName = \"PARENT_ID1\"),    @JoinColum(name = \"PARENT_ID2\", referencedColumnName = \"PARENT_ID2\"),  &#125;)    private Parent parent;&#125;\n\nEmbeddedID1234567891011121314151617181920212223@Entitypublic class Parent &#123;    @EmbeddedId  private ParentId id;    private String name;    ...&#125;@Embeddablepublic class ParentId implements Serializable &#123; //Serializable 를 구현    @Column(name = \"PARENT_ID1\")  private String id1;    @Column(name = \"PARENT_ID2\")  private String id2;    //equals and hashCode 구현  ...&#125;\n\n엔티티를 저장하면,\n123456Parent parent = new Parent;ParentId parentId = new ParentId(\"myId1\", \"myId2\");parent.setId(parentId);parent.setName(\"ParentName\");em.persist(parent)\n\n엔티티를 조회하면,\n12ParentId parentId = new ParentId(\"myId1\", \"myId2\");Parent parent = em.find(Parent.class, parentId);\n\n7.3.3 복합키: 식별 관계 매핑부모, 자식, 손자까지 계속 기본 키를 전달하는 식별관계를 생각해보려고 합니다.\nIdClass12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061@Entitypublic class Parent &#123;    @Id @Column (name = \"PARENT_ID\")  private String id;  private String name;  ...&#125;@Entity@IdClass(ChildId.class)public class Child &#123;    // 식별 관계는 기본 키와 외래키를 같이 매핑해야합니다.  // 따라서, 식별자 매핑인 @Id 와 연관관계 매팽인 @ManyToOne 을 같이 사용합니다.  @Id @ManyToOne @JoinColumn (name = \"PARENT_ID\")  private Parent parent;    @Id @Column (name = \"CHILD_ID\")  private Parent childId;    private String name;  ...&#125;public class ChildId implements Serializable &#123;     private String parent; //Child.parent 매핑  private String childId; //Child.childId 매핑    //equals, hashCode  ...&#125;@Entity@IdClass(GrandChildId.class)public class GrandChild &#123;    @Id   @ManyToOne  @JoinColumns(&#123;    @JoinColumn(name = \"PARENT_ID\"),    @JoinColumn(name = \"CHILD_ID\")  &#125;)  private Child child;    @Id @Column (name = \"GRANDCHILD_ID\")  private String id;    private String name;  ...&#125;public class GrandChildId implements Serializable &#123;     private ChildId child; //GrandChild.child 매핑  private String id; //GrandChild.id 매핑    //equals, hashCode  ...&#125;\n\nEmbeddeId123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566@Entitypublic class Parent &#123;    @Id @Column (name = \"PARENT_ID\")  private String id;    private String name;  ...&#125;@Entitypublic class Child &#123;    @EmbeddedId  private ChildId id;    @MapsId(\"parentId\") //ChildId.parentId 매핑. 외래 키와 매핑한 연관관계를 기본 키에도 매핑.  @ManyToOne  @JoinColumn (name = \"PARENT_ID\")  private Parent parent;    private String name;  ...&#125;@Embeddablepublic class ChildId implements Serializable &#123;     private String parentId; // @MapsId(\"parentId\") 로 매핑    @Column(name = \"CHILD_ID\")  private String id;    //equals, hashCode  ...&#125;@Entitypublic class GrandChild &#123;    @EmbededId  private GrandChildId id;    @MapsId (\"childId\") // GrandChildId.childId 매핑  @ManyToOne  @JoinColumns(&#123;    @JoinColumn(name = \"PARENT_ID\"),    @JoinColumn(name = \"CHILD_ID\")  &#125;)  private Child child;      private String name;  ...&#125;@Embeddablepublic class GrandChildId implements Serializable &#123;     private ChildId child; // @MapsId(\"childId\") 로 매핑    @Column ( name = \"GRANDCHILD_ID\")  private String id;    //equals, hashCode  ...&#125;\n\n7.3.4 비식별 관계로 구현방금 예를, 비식별 관계로 변경하려고 합니다.\n12345678910111213141516171819202122232425262728293031323334353637@Entitypublic class Parent &#123;    @Id @GeneratedValue @Column (name = \"PARENT_ID\")  private String id;    private String name;  ...&#125;@Entitypublic class Child &#123;    @Id @GeneratedValue @Column (name = \"CHILD_ID\")  private Long id;    private String name;    @ManyToOne @JoinColumn (name = \"PARENT_ID\")  private Parent parent;    ...&#125;@Entitypublic class GrandChild &#123;    @Id @GeneratedValue @Column (name = \"GRANDCHILD_ID\")  private Long id;    private String name;    @ManyToOne @JoinColumn(name = \"CHILD_ID\")  private Child child;      ...&#125;\n\n7.3.5 일대일 식별 관계자식 테이블의 기본 키 값으로 부모 테이블의 기본 키 값만 사용합니다.\n123456789101112131415161718192021222324252627@Entitypublic class Board &#123;    @Id @GeneratedValue @Column (name = \"BOARD_ID\")  private String id;    private String title;    @OneToOne(mappedBy = \"board\")  private BoardDetail boardDetail;  ...&#125;@Entitypublic class BoardDetail &#123;    @Id  private Long boardId;    @MapsId //BoardDetail.boardId 매핑  @OneToOne  @JoinColumn (name = \"BOARD_ID\")  private Board board;    private String content;  ...&#125;\n\n7.4 조인 테이블데이터베이스 테이블의 연관관계를 설계하는 방법은 두 가지 입니다.\n\n조인 칼럼 사용 ( 외래키)\n회원이 사물함을 사용하기 전까지는 아직 둘 사이의 관계가 없으므로, MEMBER Table 의 LOKCER_ID 외래키에 null\n외래 키애 null 허용하는 관계를 선택적 비식별 관계라고 합니다.\nnull 허용하므로, 회원과 사물함 조인할 때는 OUTER JOIN 사용해야합니다.\n회원과 사물함이 아주 가끔 관계를 맺으면, 외래 키 대부분 값에 null 이 저장이 됩니다.\n\n\n조잍 테이블 사용 (테이블)\n조인 테이블에서 두 테이블의 외래 키를 가지고 연관 관계를 관리합니다.\n\n\n\n7.4.1 일대일 조인 테이블123456789101112131415161718192021222324252627@Entitypublic class Parent &#123;    @Id @GeneratedValue @Column (name = \"PARENT_ID\")  private Long id;    private String name;    @OneToOne  @JoinTable(name = \"PARENT_CHILD\", // 매핑할 조인 테이블 이름            joinColums = @JoinColumn(name = \"PARENT_ID\"), // 현재 엔티티를 참조하는 외래 키            inverseJoinColums = @JoinColum(name = \"CHILD_ID\") // 반대방향 엔티티를 참조하는 외래 키  )    private Child child;  ...&#125;@Entitypublic class Child &#123;    @Id @GeneratedValue @Column (name = \"CHILD_ID\")  private Long id;    private String name;  ...&#125;\n\n7.4.2 일대다 조인 테이블123456789101112131415161718192021222324252627@Entitypublic class Parent &#123;    @Id @GeneratedValue @Column (name = \"PARENT_ID\")  private Long id;    private String name;    @OneToMany  @JoinTable(name = \"PARENT_CHILD\", // 매핑할 조인 테이블 이름            joinColums = @JoinColumn(name = \"PARENT_ID\"), // 현재 엔티티를 참조하는 외래 키            inverseJoinColums = @JoinColum(name = \"CHILD_ID\") // 반대방향 엔티티를 참조하는 외래 키  )    private List&lt;Child&gt; child = new ArrayList&lt;Child&gt;();  ...&#125;@Entitypublic class Child &#123;    @Id @GeneratedValue @Column (name = \"CHILD_ID\")  private Long id;    private String name;  ...&#125;\n\n7.4.3 다대일 조인 테이블123456789101112131415161718192021222324252627282930@Entitypublic class Parent &#123;    @Id @GeneratedValue @Column (name = \"PARENT_ID\")  private Long id;    private String name;    @OneToMany (mappedBy = \"PARENT_ID\")  private List&lt;Child&gt; child = new ArrayList&lt;Child&gt;();  ...&#125;@Entitypublic class Child &#123;    @Id @GeneratedValue @Column (name = \"CHILD_ID\")  private Long id;    private String name;  @ManyToOne(optional = false)  @JoinTable(name = \"PARENT_CHILD\", // 매핑할 조인 테이블 이름            joinColums = @JoinColumn(name = \"CHILD_ID\"), // 현재 엔티티를 참조하는 외래 키            inverseJoinColums = @JoinColum(name = \"PARENT_ID\") // 반대방향 엔티티를 참조하는 외래 키  )    private Parent parent;  ...&#125;\n\n7.4.4 다대다 조인 테이블1234567891011121314151617181920212223242526@Entitypublic class Parent &#123;    @Id @GeneratedValue @Column (name = \"PARENT_ID\")  private Long id;    private String name;    @ManyToMany  @JoinTable(name = \"PARENT_CHILD\", // 매핑할 조인 테이블 이름            joinColums = @JoinColumn(name = \"PARNET_ID\"), // 현재 엔티티를 참조하는 외래 키            inverseJoinColums = @JoinColum(name = \"CHILD_ID\") // 반대방향 엔티티를 참조하는 외래 키  )  private List&lt;Child&gt; child = new ArrayList&lt;Child&gt;();  ...&#125;@Entitypublic class Child &#123;    @Id @GeneratedValue @Column (name = \"CHILD_ID\")  private Long id;    private String name;  ...&#125;\n\n7.4 엔티티 하나에 여러 테이블 매핑12345678910111213141516171819@Entity@Table ( name = \"BOARD\") // BOARD 테이블과 매핑// BOARD_DETAIL 테이블을 추가로 매핑@SecondaryTable ( name = \"BOARD_DETAIL\", //매핑할 다른 테이블 이름                 //매핑할 다른 테이블의 기본 키 칼럼 속성                pkJoinColums = @PrimaryJoinColumn(name = \"BOARD_DETAIL_ID\"))public class Board &#123;    @Id @GeneratedValue @Column (name = \"BOARD_ID\")  private Long id;    private String title;    // content 필드는 BOARD_DETAIL 테이블의 칼럼에 매핑  @Column(table = \"BOARD_DETAIL\")  private String content;  ...&#125;\n\n@SecondaryTable 를 사용해서 두 테이블을 하나의 엔티티에 매핑하는 방법 보다는, 테이블당 엔티티를 각각 만들어서 일대일 매핑하는 것을 권장합니다.\n","dateCreated":"2019-04-06T00:00:00+09:00","dateModified":"2019-04-06T16:40:16+09:00","datePublished":"2019-04-06T00:00:00+09:00","description":"","headline":"[자바 ORM 표준 JPA 프로그래밍] 7장_고급 매핑","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://kojunhee.github.io/2019/04/06/advanced-mappings/"},"publisher":{"@type":"Organization","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg","logo":{"@type":"ImageObject","url":"profile.jpg"}},"url":"https://kojunhee.github.io/2019/04/06/advanced-mappings/"}</script>
+    <meta name="description" content="이번 포스팅에서 다룰 고급 매핑은 다음과 같습니다.  상속 관계 매핑 @MappedSupperclass 복합 키와 식별 관계 매핑 조인 테이블 엔티티 하나에 여러 테이블 매핑하기  7.1 상속 관계 매핑관계형 데이터베이스에는 상속이라는 개념이 없습니다. 대신에, Super-Type Sub-Type Relationship 이라는 모델링 기법이 객체의 상속 개">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="[자바 ORM 표준 JPA 프로그래밍] 7장_고급 매핑">
+<meta property="og:url" content="https://kojunhee.github.io/2019/04/06/advanced-mappings/index.html">
+<meta property="og:site_name" content="junhee.ko">
+<meta property="og:description" content="이번 포스팅에서 다룰 고급 매핑은 다음과 같습니다.  상속 관계 매핑 @MappedSupperclass 복합 키와 식별 관계 매핑 조인 테이블 엔티티 하나에 여러 테이블 매핑하기  7.1 상속 관계 매핑관계형 데이터베이스에는 상속이라는 개념이 없습니다. 대신에, Super-Type Sub-Type Relationship 이라는 모델링 기법이 객체의 상속 개">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-04-06T07:40:16.783Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[자바 ORM 표준 JPA 프로그래밍] 7장_고급 매핑">
+<meta name="twitter:description" content="이번 포스팅에서 다룰 고급 매핑은 다음과 같습니다.  상속 관계 매핑 @MappedSupperclass 복합 키와 식별 관계 매핑 조인 테이블 엔티티 하나에 여러 테이블 매핑하기  7.1 상속 관계 매핑관계형 데이터베이스에는 상속이라는 개념이 없습니다. 대신에, Super-Type Sub-Type Relationship 이라는 모델링 기법이 객체의 상속 개">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://kojunhee.github.io/assets/images/profile.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/all.css">
+    <link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
+    <link rel="stylesheet" href="/assets/css/thumbs.css">
+    <link rel="stylesheet" href="/assets/css/tranquilpeak.css">
+    <!--STYLES END-->
+    
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="2">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">junhee.ko</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="2">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">junhee.ko</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>Always Learning</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/kojunhee" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://facebook.com/kojunheee" target="_blank" rel="noopener" title="Facebook">
+                    
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/junheeko" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="mailto:junheee.ko@gmail.com" target="_blank" rel="noopener" title="Mail">
+                    
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Mail</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="2"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            [자바 ORM 표준 JPA 프로그래밍] 7장_고급 매핑
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2019-04-06T00:00:00+09:00">
+	
+		    Apr 06, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/jpa/">JPA</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>이번 포스팅에서 다룰 고급 매핑은 다음과 같습니다.</p>
+<ul>
+<li>상속 관계 매핑</li>
+<li>@MappedSupperclass</li>
+<li>복합 키와 식별 관계 매핑</li>
+<li>조인 테이블</li>
+<li>엔티티 하나에 여러 테이블 매핑하기</li>
+</ul>
+<h4 id="7-1-상속-관계-매핑"><a href="#7-1-상속-관계-매핑" class="headerlink" title="7.1 상속 관계 매핑"></a>7.1 상속 관계 매핑</h4><p>관계형 데이터베이스에는 상속이라는 개념이 없습니다. 대신에, Super-Type Sub-Type Relationship 이라는 모델링 기법이 객체의 상속 개념과 가장 유사합니다. ORM 의 상속 관계 매핑은 객체의 상속 구조와 데이터베이스의 Super-Type Sub-Type Relationship 을 매핑하는 것입니다.</p>
+<p>Super-Type Sub-Type Relationship 논리 모델을 실제 물리 모델인 테이블로 구현할 때는 3가지 방법이 있습니다.</p>
+<ul>
+<li>각각의 테이블로 변환<ul>
+<li>조인 전략</li>
+</ul>
+</li>
+<li>통합 테이블로 변환<ul>
+<li>단일 테이블 전략</li>
+</ul>
+</li>
+<li>서브타입 테이블로 변환<ul>
+<li>구현 클래스마다 테이블 전략</li>
+</ul>
+</li>
+</ul>
+<h5 id="7-1-1-조인-전략"><a href="#7-1-1-조인-전략" class="headerlink" title="7.1.1 조인 전략"></a>7.1.1 조인 전략</h5><p>엔티티 각각을 모두 테이블로 만들고 자식 테이블이 부모 테이블의 기본 키를 받아서 기본 키 + 외래 키로 사용하는 전략입니다.<br>주의할 점은, 객체는 타입으로 구분할 수 있지만 테이블은 타입의 개념이 없기 때문에 타입을 구분하는 칼럼을 추가해야합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@Inheritance</span> (strategy = InheritanceType.JOINED) <span class="comment">// 상속 매핑은 부모 클래스에 @Inheritance 를 사용</span></span><br><span class="line"><span class="meta">@DiscriminatorColumn</span> (name = <span class="string">"DTYPE"</span>)	<span class="comment">// 부모 클래스에 구분 칼럼을 지정</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Item</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span> <span class="meta">@Column</span> (name = <span class="string">"ITEM_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String name; </span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> price;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@DiscriminatorColumn</span> (<span class="string">"A"</span>)  </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Album</span> <span class="keyword">extends</span> <span class="title">Item</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String artist;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@DiscriminatorColumn</span> (<span class="string">"M"</span>) <span class="comment">// 영화 엔티티를 저장하면 구분 칼럼인 DTYPE 에 값 M이 저장</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Movie</span> <span class="keyword">extends</span> <span class="title">Item</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String director;</span><br><span class="line">  <span class="keyword">private</span> String actor;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>장점<ul>
+<li>테이블이 정규화 됩니다.</li>
+<li>외래 키 참조 무결성 제약 조건을 활용할 수 있습니다.</li>
+<li>저장공간을 효율적으로 사용할 수 있습니다.</li>
+</ul>
+</li>
+<li>단점<ul>
+<li>조회할 때 조인이 많이 사용되므로 성능이 저하될 수 있습니다.</li>
+<li>조회 쿼리가 복잡합니다.</li>
+<li>데이터를 등록할 INSERT SQL 을 두 번 실행합니다.</li>
+</ul>
+</li>
+<li>특징<ul>
+<li>JPA 표준 명세는 구분 칼럼을 사용하도록 하지만, 하이버네이트는 구분 칼럼 없이도 동작합니다.</li>
+</ul>
+</li>
+</ul>
+<h5 id="7-1-2-단일-테이블-전략"><a href="#7-1-2-단일-테이블-전략" class="headerlink" title="7.1.2 단일 테이블 전략"></a>7.1.2 단일 테이블 전략</h5><p>테이블을 하나만 사용하고 구분 칼럼으로 어떤 자식 데이터가 저장되었는지 구분합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@Inheritance</span> (strategy = InheritanceType.SINGLE_TABLE)</span><br><span class="line"><span class="meta">@DiscriminatorColumn</span> (name = <span class="string">"DTYPE"</span>)	</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Item</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span> <span class="meta">@Column</span> (name = <span class="string">"ITEM_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String name; </span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> price;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@DiscriminatorColumn</span> (<span class="string">"A"</span>)  </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Album</span> <span class="keyword">extends</span> <span class="title">Item</span></span>&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@DiscriminatorColumn</span> (<span class="string">"M"</span>) </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Movie</span> <span class="keyword">extends</span> <span class="title">Item</span></span>&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>장점<ul>
+<li>조인이 필요 없으므로 일반적으로 조회 성능이 빠릅니다.</li>
+<li>조회 쿼리가 단순합니다.</li>
+</ul>
+</li>
+<li>단점<ul>
+<li>자식 엔티티가 매핑한 칼럼은 모두 null을 허용해야합니다.</li>
+<li>단일 테이블에 모든 것을 저장하므로 테이블이 커질 수 있습니다. 상황에 따라서는 조회 성능이 느려질 수 있습니다.</li>
+</ul>
+</li>
+<li>특징<ul>
+<li>구분 칼럼을 꼭 사용해야합니다.</li>
+</ul>
+</li>
+</ul>
+<h5 id="7-1-3-구현-클래스마다-테이블-전략"><a href="#7-1-3-구현-클래스마다-테이블-전략" class="headerlink" title="7.1.3 구현 클래스마다 테이블 전략"></a>7.1.3 구현 클래스마다 테이블 전략</h5><p>자식 엔티티마다 테이블을 만듦니다. 그리고, 자식 테이블에 각각에 필요한 칼럼이 모두 있습니다. 이 전략은 추천하지 않는 전략입니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@Inheritance</span> (strategy = InheritanceType.TABLE_PER_CLASS)</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Item</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span> <span class="meta">@Column</span> (name = <span class="string">"ITEM_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String name; </span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> price;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Album</span> <span class="keyword">extends</span> <span class="title">Item</span></span>&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Movie</span> <span class="keyword">extends</span> <span class="title">Item</span></span>&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>장점<ul>
+<li>서브 타입을 구분해서 처리할 때 효과적입니다.</li>
+<li>not null 제약조건을 사용할 수 있습니다.</li>
+</ul>
+</li>
+<li>단점<ul>
+<li>여러 자식 테이블을 함께 조회할 때 성능이 느립니다. (SQL 의 UNION 을 사용해야합니다.)</li>
+<li>자식 테이블을 통합해서 쿼리하기 어렵습니다.</li>
+</ul>
+</li>
+<li>특징<ul>
+<li>구분 칼럼을 사용하지 않습니다.</li>
+</ul>
+</li>
+</ul>
+<h4 id="7-2-MappedSuperClass"><a href="#7-2-MappedSuperClass" class="headerlink" title="7.2 MappedSuperClass"></a>7.2 MappedSuperClass</h4><p>부모 클래스는 테이블과 매핑하지 않고, 부모 클래스를 상속받는 자식 클래스에게 매핑 정보만 제공하고 싶으면 @MappedSuperClass 를 사용합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//테이블과 매핑할 필요가 없고 자식 엔티티에 공통으로 사용되는 매핑 정보만 제공</span></span><br><span class="line"><span class="meta">@MappedSuperClass</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseEntity</span></span>&#123; </span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span></span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Member</span> <span class="keyword">extends</span> <span class="title">BaseEntity</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//id, name 상속</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String email;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Seller</span> <span class="keyword">extends</span> <span class="title">BaseEntity</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//id, name 상속</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String shopName;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>부모로부터 물련 받은 매핑 정보를 재정의 하려면,</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="comment">//부모에게 상속 받은 id 속성의 칼럼명을 MEMBER_ID 로 재정의</span></span><br><span class="line"><span class="meta">@AttributeOverride</span>(name = <span class="string">"id"</span>, column = <span class="meta">@Column</span>(name = <span class="string">"MEMBER_ID"</span>))</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Member</span> <span class="keyword">extends</span> <span class="title">BaseEntity</span></span>&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>둘 이상을 재정을 하려면,</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@AttributeOverrides</span>(&#123;</span><br><span class="line">  <span class="meta">@AttributeOverride</span>(name = <span class="string">"id"</span>, column = <span class="meta">@Column</span>(name = <span class="string">"MEMBER_ID"</span>)),</span><br><span class="line">  <span class="meta">@AttributeOverride</span>(name = <span class="string">"name"</span>, column = <span class="meta">@Column</span>(name = <span class="string">"MEMBER_NAME"</span>))</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Member</span> <span class="keyword">extends</span> <span class="title">BaseEntity</span></span>&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>@MappedSuperClass 의 특징<ul>
+<li>@MappedSuperClass 로 지정한 클래스는 엔티티가 아닙니다. 따라서, em.find() 나 JPQL 을 사용할 수 없습니다.</li>
+<li>이 클래스를 직접 생성해서 사용할 일은 거의 없으므로, 추상 클래스로 만드는 것을 권장합니다.</li>
+</ul>
+</li>
+</ul>
+<h4 id="7-3-복합-키와-식별-관계-매핑"><a href="#7-3-복합-키와-식별-관계-매핑" class="headerlink" title="7.3 복합 키와 식별 관계 매핑"></a>7.3 복합 키와 식별 관계 매핑</h4><h5 id="7-3-1-식별-관계-VS-비식별-관계"><a href="#7-3-1-식별-관계-VS-비식별-관계" class="headerlink" title="7.3.1 식별 관계 VS 비식별 관계"></a>7.3.1 식별 관계 VS 비식별 관계</h5><ul>
+<li>식별 관계<ul>
+<li>부모 테이블의 기본 키를 내려받아서, 자식 테이블의 기본 키 + 외래 키로 사용하는 관계입니다.</li>
+</ul>
+</li>
+<li>비식별 관계<ul>
+<li>부모 테이블의 기본 키를 내려받아서, 자식 테이블의 외래키로만 사용하는 관계입니다.<ul>
+<li>필수적 비식별 관계<ul>
+<li>외래 키에 NULL을 허용 하지 않습니다. 연관관계를 필수적으로 맺어야 합니다.</li>
+</ul>
+</li>
+<li>선택적 비식별 관계<ul>
+<li>외래 키에 NULL을 허용합니다. 연관관계를 맺을지 선택할 수 있습니다.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="7-3-2-복합키-비식별-관계-매핑"><a href="#7-3-2-복합키-비식별-관계-매핑" class="headerlink" title="7.3.2 복합키: 비식별 관계 매핑"></a>7.3.2 복합키: 비식별 관계 매핑</h5><p>둘 이상의 칼럼으로 구성된 복합 기본키를 다음과 같이 해보면, 매핑 오류가 발생합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line">publi <span class="class"><span class="keyword">class</span> <span class="title">Hello</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span></span><br><span class="line">  <span class="keyword">private</span> String id;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span></span><br><span class="line">  <span class="keyword">private</span> String id2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>JPA 에서 식별자를 둘 이상 사용하려면 별도의 식별자 클래스를 만들어야합니다.<br>복합키를 지원하기 위해, 관계형 데이터베이스에 가까운 방법인 @IdClass 와, 객체지향에 가까운 @EmbededId 두 가지 방법을 제공합니다. </p>
+<h6 id="IdClass"><a href="#IdClass" class="headerlink" title="IdClass"></a>IdClass</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@IdClass</span> (ParentId.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Parent</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@Column</span> (name = <span class="string">"PARENT_ID1"</span>)</span><br><span class="line">  <span class="keyword">private</span> String id1; <span class="comment">//ParerntId.id1 과 연결</span></span><br><span class="line">  </span><br><span class="line">	<span class="meta">@Id</span> <span class="meta">@Column</span> (name = <span class="string">"PARENT_ID2"</span>)</span><br><span class="line">  <span class="keyword">private</span> String id2; <span class="comment">//ParerntId.id2 과 연결</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ParentId</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123; <span class="comment">// Serializable 를 구현해야합니다.</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 식별자 클래스의 속성명과 엔티티에서 사용하는 식별자의 속성명이 같아야합니다.</span></span><br><span class="line">  <span class="keyword">private</span> String id1; <span class="comment">//Parernt.id1 과 연결</span></span><br><span class="line">  <span class="keyword">private</span> String id2; <span class="comment">//Parernt.id2 과 연결</span></span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">ParentId</span><span class="params">()</span></span>&#123; </span><br><span class="line">  &#125;</span><br><span class="line"> </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">ParentId</span><span class="params">(String id1, String id2)</span></span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.id1 = id1;            </span><br><span class="line">    <span class="keyword">this</span>.id2 = id2;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// equals 와 hashCode를 구현해야합니다.</span></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object o)</span></span>&#123;...&#125; </span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span></span>&#123;...&#125;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>복합키를 사용하는 엔티티를 저장하면,</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Parent parent = <span class="keyword">new</span> Parent;</span><br><span class="line">parent.setId1(<span class="string">"myId1"</span>);</span><br><span class="line">parent.setId2(<span class="string">"myId2"</span>);</span><br><span class="line">parent.setName(<span class="string">"ParentName"</span>);</span><br><span class="line">em.persist(parent)</span><br></pre></td></tr></table></figure>
+
+<p>영속성 컨텍스트에 엔티티를 등록하기 직전에, 내부에서 Parent.id1, Parent.id2 값을 사용해서 식별자 클래스인 ParentId 를 생성하고 영속성 컨텍스트의 키로 사용합니다.</p>
+<p>ParentId 를 사용해서 엔티티를 조회합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ParentId parentId = <span class="keyword">new</span> ParentId(<span class="string">"myId1"</span>, <span class="string">"myId2"</span>);</span><br><span class="line">Parent parent = em.find(Parent.class, parentId);</span><br></pre></td></tr></table></figure>
+
+<p>자식 클래스는,</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Child</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span></span><br><span class="line">  <span class="keyword">private</span> String id;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 부모 테이블의 기본 키 칼럼이 복합 키이므로, 자식 테이블의 외래 키도 복합키</span></span><br><span class="line">  <span class="comment">// 외래 키 매핑 시 여러 칼럼을 매핑해야하므로 @JoinColums를 사용</span></span><br><span class="line">  <span class="meta">@ManyToOne</span></span><br><span class="line">  <span class="meta">@JoinColums</span>(&#123;</span><br><span class="line">    <span class="meta">@JoinColum</span>(name = <span class="string">"PARENT_ID1"</span>, referencedColumnName = <span class="string">"PARENT_ID1"</span>),</span><br><span class="line">    <span class="meta">@JoinColum</span>(name = <span class="string">"PARENT_ID2"</span>, referencedColumnName = <span class="string">"PARENT_ID2"</span>),</span><br><span class="line">  &#125;)</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> Parent parent;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="EmbeddedID"><a href="#EmbeddedID" class="headerlink" title="EmbeddedID"></a>EmbeddedID</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Parent</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@EmbeddedId</span></span><br><span class="line">  <span class="keyword">private</span> ParentId id;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  </span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Embeddable</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ParentId</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123; <span class="comment">//Serializable 를 구현</span></span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Column</span>(name = <span class="string">"PARENT_ID1"</span>)</span><br><span class="line">  <span class="keyword">private</span> String id1;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Column</span>(name = <span class="string">"PARENT_ID2"</span>)</span><br><span class="line">  <span class="keyword">private</span> String id2;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//equals and hashCode 구현</span></span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>엔티티를 저장하면,</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Parent parent = <span class="keyword">new</span> Parent;</span><br><span class="line">ParentId parentId = <span class="keyword">new</span> ParentId(<span class="string">"myId1"</span>, <span class="string">"myId2"</span>);</span><br><span class="line"></span><br><span class="line">parent.setId(parentId);</span><br><span class="line">parent.setName(<span class="string">"ParentName"</span>);</span><br><span class="line">em.persist(parent)</span><br></pre></td></tr></table></figure>
+
+<p>엔티티를 조회하면,</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ParentId parentId = <span class="keyword">new</span> ParentId(<span class="string">"myId1"</span>, <span class="string">"myId2"</span>);</span><br><span class="line">Parent parent = em.find(Parent.class, parentId);</span><br></pre></td></tr></table></figure>
+
+<h5 id="7-3-3-복합키-식별-관계-매핑"><a href="#7-3-3-복합키-식별-관계-매핑" class="headerlink" title="7.3.3 복합키: 식별 관계 매핑"></a>7.3.3 복합키: 식별 관계 매핑</h5><p>부모, 자식, 손자까지 계속 기본 키를 전달하는 식별관계를 생각해보려고 합니다.</p>
+<h6 id="IdClass-1"><a href="#IdClass-1" class="headerlink" title="IdClass"></a>IdClass</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Parent</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@Column</span> (name = <span class="string">"PARENT_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> String id;</span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@IdClass</span>(ChildId.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Child</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 식별 관계는 기본 키와 외래키를 같이 매핑해야합니다.</span></span><br><span class="line">  <span class="comment">// 따라서, 식별자 매핑인 @Id 와 연관관계 매팽인 @ManyToOne 을 같이 사용합니다.</span></span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@ManyToOne</span> <span class="meta">@JoinColumn</span> (name = <span class="string">"PARENT_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Parent parent;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@Column</span> (name = <span class="string">"CHILD_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Parent childId;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ChildId</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">   </span><br><span class="line">  <span class="keyword">private</span> String parent; <span class="comment">//Child.parent 매핑</span></span><br><span class="line">  <span class="keyword">private</span> String childId; <span class="comment">//Child.childId 매핑</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">//equals, hashCode</span></span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@IdClass</span>(GrandChildId.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GrandChild</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> </span><br><span class="line">  <span class="meta">@ManyToOne</span></span><br><span class="line">  <span class="meta">@JoinColumns</span>(&#123;</span><br><span class="line">    <span class="meta">@JoinColumn</span>(name = <span class="string">"PARENT_ID"</span>),</span><br><span class="line">    <span class="meta">@JoinColumn</span>(name = <span class="string">"CHILD_ID"</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="keyword">private</span> Child child;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@Column</span> (name = <span class="string">"GRANDCHILD_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> String id;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GrandChildId</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">   </span><br><span class="line">  <span class="keyword">private</span> ChildId child; <span class="comment">//GrandChild.child 매핑</span></span><br><span class="line">  <span class="keyword">private</span> String id; <span class="comment">//GrandChild.id 매핑</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">//equals, hashCode</span></span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="EmbeddeId"><a href="#EmbeddeId" class="headerlink" title="EmbeddeId"></a>EmbeddeId</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Parent</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@Column</span> (name = <span class="string">"PARENT_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> String id;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Child</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@EmbeddedId</span></span><br><span class="line">  <span class="keyword">private</span> ChildId id;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@MapsId</span>(<span class="string">"parentId"</span>) <span class="comment">//ChildId.parentId 매핑. 외래 키와 매핑한 연관관계를 기본 키에도 매핑.</span></span><br><span class="line">  <span class="meta">@ManyToOne</span></span><br><span class="line">  <span class="meta">@JoinColumn</span> (name = <span class="string">"PARENT_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Parent parent;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Embeddable</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ChildId</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">   </span><br><span class="line">  <span class="keyword">private</span> String parentId; <span class="comment">// @MapsId("parentId") 로 매핑</span></span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Column</span>(name = <span class="string">"CHILD_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> String id;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//equals, hashCode</span></span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GrandChild</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@EmbededId</span></span><br><span class="line">  <span class="keyword">private</span> GrandChildId id;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@MapsId</span> (<span class="string">"childId"</span>) <span class="comment">// GrandChildId.childId 매핑</span></span><br><span class="line">  <span class="meta">@ManyToOne</span></span><br><span class="line">  <span class="meta">@JoinColumns</span>(&#123;</span><br><span class="line">    <span class="meta">@JoinColumn</span>(name = <span class="string">"PARENT_ID"</span>),</span><br><span class="line">    <span class="meta">@JoinColumn</span>(name = <span class="string">"CHILD_ID"</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="keyword">private</span> Child child;</span><br><span class="line">    </span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Embeddable</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GrandChildId</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">   </span><br><span class="line">  <span class="keyword">private</span> ChildId child; <span class="comment">// @MapsId("childId") 로 매핑</span></span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Column</span> ( name = <span class="string">"GRANDCHILD_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> String id;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//equals, hashCode</span></span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="7-3-4-비식별-관계로-구현"><a href="#7-3-4-비식별-관계로-구현" class="headerlink" title="7.3.4 비식별 관계로 구현"></a>7.3.4 비식별 관계로 구현</h5><p>방금 예를, 비식별 관계로 변경하려고 합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Parent</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span> <span class="meta">@Column</span> (name = <span class="string">"PARENT_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> String id;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Child</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span> <span class="meta">@Column</span> (name = <span class="string">"CHILD_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@ManyToOne</span> <span class="meta">@JoinColumn</span> (name = <span class="string">"PARENT_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Parent parent;</span><br><span class="line">  </span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GrandChild</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span> <span class="meta">@Column</span> (name = <span class="string">"GRANDCHILD_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@ManyToOne</span> <span class="meta">@JoinColumn</span>(name = <span class="string">"CHILD_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Child child;</span><br><span class="line">    </span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="7-3-5-일대일-식별-관계"><a href="#7-3-5-일대일-식별-관계" class="headerlink" title="7.3.5 일대일 식별 관계"></a>7.3.5 일대일 식별 관계</h5><p>자식 테이블의 기본 키 값으로 부모 테이블의 기본 키 값만 사용합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Board</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span> <span class="meta">@Column</span> (name = <span class="string">"BOARD_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> String id;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String title;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@OneToOne</span>(mappedBy = <span class="string">"board"</span>)</span><br><span class="line">  <span class="keyword">private</span> BoardDetail boardDetail;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BoardDetail</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span></span><br><span class="line">  <span class="keyword">private</span> Long boardId;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@MapsId</span> <span class="comment">//BoardDetail.boardId 매핑</span></span><br><span class="line">  <span class="meta">@OneToOne</span></span><br><span class="line">  <span class="meta">@JoinColumn</span> (name = <span class="string">"BOARD_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Board board;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String content;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="7-4-조인-테이블"><a href="#7-4-조인-테이블" class="headerlink" title="7.4 조인 테이블"></a>7.4 조인 테이블</h4><p>데이터베이스 테이블의 연관관계를 설계하는 방법은 두 가지 입니다.</p>
+<ul>
+<li>조인 칼럼 사용 ( 외래키)<ul>
+<li>회원이 사물함을 사용하기 전까지는 아직 둘 사이의 관계가 없으므로, MEMBER Table 의 LOKCER_ID 외래키에 null</li>
+<li>외래 키애 null 허용하는 관계를 선택적 비식별 관계라고 합니다.</li>
+<li>null 허용하므로, 회원과 사물함 조인할 때는 OUTER JOIN 사용해야합니다.</li>
+<li>회원과 사물함이 아주 가끔 관계를 맺으면, 외래 키 대부분 값에 null 이 저장이 됩니다.</li>
+</ul>
+</li>
+<li>조잍 테이블 사용 (테이블)<ul>
+<li>조인 테이블에서 두 테이블의 외래 키를 가지고 연관 관계를 관리합니다.</li>
+</ul>
+</li>
+</ul>
+<h5 id="7-4-1-일대일-조인-테이블"><a href="#7-4-1-일대일-조인-테이블" class="headerlink" title="7.4.1 일대일 조인 테이블"></a>7.4.1 일대일 조인 테이블</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Parent</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span> <span class="meta">@Column</span> (name = <span class="string">"PARENT_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@OneToOne</span></span><br><span class="line">  <span class="meta">@JoinTable</span>(name = <span class="string">"PARENT_CHILD"</span>, <span class="comment">// 매핑할 조인 테이블 이름</span></span><br><span class="line">            joinColums = <span class="meta">@JoinColumn</span>(name = <span class="string">"PARENT_ID"</span>), <span class="comment">// 현재 엔티티를 참조하는 외래 키</span></span><br><span class="line">            inverseJoinColums = <span class="meta">@JoinColum</span>(name = <span class="string">"CHILD_ID"</span>) <span class="comment">// 반대방향 엔티티를 참조하는 외래 키</span></span><br><span class="line">  )</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> Child child;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Child</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span> <span class="meta">@Column</span> (name = <span class="string">"CHILD_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="7-4-2-일대다-조인-테이블"><a href="#7-4-2-일대다-조인-테이블" class="headerlink" title="7.4.2 일대다 조인 테이블"></a>7.4.2 일대다 조인 테이블</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Parent</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span> <span class="meta">@Column</span> (name = <span class="string">"PARENT_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@OneToMany</span></span><br><span class="line">  <span class="meta">@JoinTable</span>(name = <span class="string">"PARENT_CHILD"</span>, <span class="comment">// 매핑할 조인 테이블 이름</span></span><br><span class="line">            joinColums = <span class="meta">@JoinColumn</span>(name = <span class="string">"PARENT_ID"</span>), <span class="comment">// 현재 엔티티를 참조하는 외래 키</span></span><br><span class="line">            inverseJoinColums = <span class="meta">@JoinColum</span>(name = <span class="string">"CHILD_ID"</span>) <span class="comment">// 반대방향 엔티티를 참조하는 외래 키</span></span><br><span class="line">  )</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> List&lt;Child&gt; child = <span class="keyword">new</span> ArrayList&lt;Child&gt;();</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Child</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span> <span class="meta">@Column</span> (name = <span class="string">"CHILD_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="7-4-3-다대일-조인-테이블"><a href="#7-4-3-다대일-조인-테이블" class="headerlink" title="7.4.3 다대일 조인 테이블"></a>7.4.3 다대일 조인 테이블</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Parent</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span> <span class="meta">@Column</span> (name = <span class="string">"PARENT_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@OneToMany</span> (mappedBy = <span class="string">"PARENT_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> List&lt;Child&gt; child = <span class="keyword">new</span> ArrayList&lt;Child&gt;();</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Child</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span> <span class="meta">@Column</span> (name = <span class="string">"CHILD_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@ManyToOne</span>(optional = <span class="keyword">false</span>)</span><br><span class="line">  <span class="meta">@JoinTable</span>(name = <span class="string">"PARENT_CHILD"</span>, <span class="comment">// 매핑할 조인 테이블 이름</span></span><br><span class="line">            joinColums = <span class="meta">@JoinColumn</span>(name = <span class="string">"CHILD_ID"</span>), <span class="comment">// 현재 엔티티를 참조하는 외래 키</span></span><br><span class="line">            inverseJoinColums = <span class="meta">@JoinColum</span>(name = <span class="string">"PARENT_ID"</span>) <span class="comment">// 반대방향 엔티티를 참조하는 외래 키</span></span><br><span class="line">  )</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> Parent parent;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="7-4-4-다대다-조인-테이블"><a href="#7-4-4-다대다-조인-테이블" class="headerlink" title="7.4.4 다대다 조인 테이블"></a>7.4.4 다대다 조인 테이블</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Parent</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span> <span class="meta">@Column</span> (name = <span class="string">"PARENT_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@ManyToMany</span></span><br><span class="line">  <span class="meta">@JoinTable</span>(name = <span class="string">"PARENT_CHILD"</span>, <span class="comment">// 매핑할 조인 테이블 이름</span></span><br><span class="line">            joinColums = <span class="meta">@JoinColumn</span>(name = <span class="string">"PARNET_ID"</span>), <span class="comment">// 현재 엔티티를 참조하는 외래 키</span></span><br><span class="line">            inverseJoinColums = <span class="meta">@JoinColum</span>(name = <span class="string">"CHILD_ID"</span>) <span class="comment">// 반대방향 엔티티를 참조하는 외래 키</span></span><br><span class="line">  )</span><br><span class="line">  <span class="keyword">private</span> List&lt;Child&gt; child = <span class="keyword">new</span> ArrayList&lt;Child&gt;();</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Child</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span> <span class="meta">@Column</span> (name = <span class="string">"CHILD_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="7-4-엔티티-하나에-여러-테이블-매핑"><a href="#7-4-엔티티-하나에-여러-테이블-매핑" class="headerlink" title="7.4 엔티티 하나에 여러 테이블 매핑"></a>7.4 엔티티 하나에 여러 테이블 매핑</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@Table</span> ( name = <span class="string">"BOARD"</span>) <span class="comment">// BOARD 테이블과 매핑</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// BOARD_DETAIL 테이블을 추가로 매핑</span></span><br><span class="line"><span class="meta">@SecondaryTable</span> ( name = <span class="string">"BOARD_DETAIL"</span>, <span class="comment">//매핑할 다른 테이블 이름</span></span><br><span class="line">                 <span class="comment">//매핑할 다른 테이블의 기본 키 칼럼 속성</span></span><br><span class="line">                pkJoinColums = <span class="meta">@PrimaryJoinColumn</span>(name = <span class="string">"BOARD_DETAIL_ID"</span>))</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Board</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span> <span class="meta">@Column</span> (name = <span class="string">"BOARD_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String title;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// content 필드는 BOARD_DETAIL 테이블의 칼럼에 매핑</span></span><br><span class="line">  <span class="meta">@Column</span>(table = <span class="string">"BOARD_DETAIL"</span>)</span><br><span class="line">  <span class="keyword">private</span> String content;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>@SecondaryTable 를 사용해서 두 테이블을 하나의 엔티티에 매핑하는 방법 보다는, 테이블당 엔티티를 각각 만들어서 일대일 매핑하는 것을 권장합니다.</p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/04/09/proxy-relation-mapping/" data-tooltip="[자바 ORM 표준 JPA 프로그래밍] 8장_프록시와 연관관계 정리" aria-label="PREVIOUS: [자바 ORM 표준 JPA 프로그래밍] 8장_프록시와 연관관계 정리">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/03/27/relation-mappings/" data-tooltip="[자바 ORM 표준 JPA 프로그래밍] 6장_다양한 연관관계 매핑" aria-label="NEXT: [자바 ORM 표준 JPA 프로그래밍] 6장_다양한 연관관계 매핑">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2019/04/06/advanced-mappings/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 junhee.ko. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="2">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/04/09/proxy-relation-mapping/" data-tooltip="[자바 ORM 표준 JPA 프로그래밍] 8장_프록시와 연관관계 정리" aria-label="PREVIOUS: [자바 ORM 표준 JPA 프로그래밍] 8장_프록시와 연관관계 정리">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/03/27/relation-mappings/" data-tooltip="[자바 ORM 표준 JPA 프로그래밍] 6장_다양한 연관관계 매핑" aria-label="NEXT: [자바 ORM 표준 JPA 프로그래밍] 6장_다양한 연관관계 매핑">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2019/04/06/advanced-mappings/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="2">
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2019/04/06/advanced-mappings/">
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">junhee.ko</h4>
+        
+            <div id="about-card-bio"><p>Always Learning</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Engineer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Incheon
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/jquery.js"></script>
+<script src="/assets/js/jquery.fancybox.js"></script>
+<script src="/assets/js/thumbs.js"></script>
+<script src="/assets/js/tranquilpeak.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://kojunhee.github.io/2019/04/06/advanced-mappings/';
+                 
+                    this.page.identifier = '2019/04/06/advanced-mappings/';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'junheeko';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>

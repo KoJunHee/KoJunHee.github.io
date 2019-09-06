@@ -1,0 +1,492 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="junhee.ko">
+    <title>React.js - junhee.ko</title>
+    <meta name="author" content="junhee.ko">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg"},"articleBody":"React.js가 무엇인가요?컴포넌트라는 개념에 집중이 되어있는 라이브러리입니다.\n어떤 특징이 있나요?\nUI 컴포넌트만 지원합니다. \n\nVirtual DOM을 가지고 있습니다.\n다시 그릴 때는 구조체의 전후 상태를 비교하여 변경이 필요한 최소한의 요소만 실제 DOM에 반영합니다. \n따라서 무작위로 다시 그려도 변경에 필요한 최소한의 DOM만 갱신되기 때문에 빠르게 처리할 수 있습니다.\n\n단방향 데이터 흐름을 지향합니다.\n데이터를 관리하는 모델 컴포넌트가 있고, 데이터를 UI 컴포넌트에 전달하는 단순한 데이터 흐름입니다.\n\nJSX 문법을 가지고 있습니다.\nUI를 구성할 때 사용하는 구문입니다. Javascript 의 extension입니다.\n\n\n컴포넌트가 뭔가요?props를 input으로 하고 UI가 어떻게 보여야 하는지 정의하는 React Element를 output으로 하는 함수입니다\nDOM이 무엇인가요?DOM Document Object Model로,  웹 페이지의 객체 지향 표현입니다. 웹 브라우저를 통해 해석되어 화면에 나타납니다.\nVirtual DOM(Document Object Model) 이 무엇인가요?가상의 DOM 입니다. 변화가 일어나면, 실제로 브라우저의 DOM 에 새로운걸 넣는것이 아니라, 자바스크립트로 이뤄진 가상 DOM 에 한번 렌더링을 하고, 기존의 DOM 과 비교를 한 다음에 정말 변화가 필요한 곳에만 업데이트를 합니다. 이로써, 브라우저 내에서 발생하는 연산의 양을 줄이면서 성능이 개선됩니다.\n컴포넌트는 어떻게 만드나요?클래스를 통해서 만드는 방법과, 함수로 만드는 방법이 있습니다. 클래스형태로 만들어진 컴포넌트에는 꼭, render 함수가 있어야 합니다. render함수 내부에서는 JSX 를 return 해주어야 합니다. \nprops와 state가 뭔가요?리액트 컴포넌트에서 다루는 데이터는 props 와 state 입니다. props 는 부모 컴포넌트가 자식 컴포넌트에게 주는 값입니다. 자식 컴포넌트에서는 props 를 받아오기만하고, 받아온 props 를 직접 수정 할 수 는 없습니다. state 는 컴포넌트 내부에서 선언하며 내부에서 값을 변경 할 수 있습니다.\n브라우저는 어떻게 동작하나요?\n\nDOM tree를 생성합니다.\n브라우저가 HTML 을 전달받으면, 브라우저의 렌더 엔진이 이를 파싱하고 DOM 노드(Node) 로 이뤄진 트리를 만듦니다. 각 노드는 각 HTML 엘리먼트들과 연관되어있습니다.\n\nRender Tree를 생성합니다.\n그리고, 외부 CSS 파일과 각 엘리먼트의 inline 스타일을 파싱합니다. 스타일 정보를 사용하여 DOM 트리에 따라 새로운 트리, 렌더트리를 만듦니다.\n\nLayout\n렌더 트리가 다 만들어지고 나면, 레이아웃 과정을 거칩니다. 각 노드들은 스크린의 좌표가 주어지고, 정확히 어디에 나타나야 할 지 위치가 주어집니다.\n\npainting\n렌더링 된 요소들에 색을 입히는 과정입니다. 트리의 각 노드들을 거쳐가면서 paint() 메소드를 호출합니다. 그러고나면, 스크린에 원하는 정보가 나타납니다.\n\n\nreferencehttps://velopert.com/3612\n","dateCreated":"2018-12-09T00:00:00+09:00","dateModified":"2019-03-15T13:07:10+09:00","datePublished":"2018-12-09T00:00:00+09:00","description":"","headline":"React.js","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://kojunhee.github.io/2018/12/09/React.js/"},"publisher":{"@type":"Organization","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg","logo":{"@type":"ImageObject","url":"profile.jpg"}},"url":"https://kojunhee.github.io/2018/12/09/React.js/"}</script>
+    <meta name="description" content="React.js가 무엇인가요?컴포넌트라는 개념에 집중이 되어있는 라이브러리입니다. 어떤 특징이 있나요? UI 컴포넌트만 지원합니다.   Virtual DOM을 가지고 있습니다. 다시 그릴 때는 구조체의 전후 상태를 비교하여 변경이 필요한 최소한의 요소만 실제 DOM에 반영합니다.  따라서 무작위로 다시 그려도 변경에 필요한 최소한의 DOM만 갱신되기 때문에">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="React.js">
+<meta property="og:url" content="https://kojunhee.github.io/2018/12/09/React.js/index.html">
+<meta property="og:site_name" content="junhee.ko">
+<meta property="og:description" content="React.js가 무엇인가요?컴포넌트라는 개념에 집중이 되어있는 라이브러리입니다. 어떤 특징이 있나요? UI 컴포넌트만 지원합니다.   Virtual DOM을 가지고 있습니다. 다시 그릴 때는 구조체의 전후 상태를 비교하여 변경이 필요한 최소한의 요소만 실제 DOM에 반영합니다.  따라서 무작위로 다시 그려도 변경에 필요한 최소한의 DOM만 갱신되기 때문에">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://kojunhee.github.io/image/browserr.png">
+<meta property="og:updated_time" content="2019-03-15T04:07:10.336Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="React.js">
+<meta name="twitter:description" content="React.js가 무엇인가요?컴포넌트라는 개념에 집중이 되어있는 라이브러리입니다. 어떤 특징이 있나요? UI 컴포넌트만 지원합니다.   Virtual DOM을 가지고 있습니다. 다시 그릴 때는 구조체의 전후 상태를 비교하여 변경이 필요한 최소한의 요소만 실제 DOM에 반영합니다.  따라서 무작위로 다시 그려도 변경에 필요한 최소한의 DOM만 갱신되기 때문에">
+<meta name="twitter:image" content="https://kojunhee.github.io/image/browserr.png">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://kojunhee.github.io/assets/images/profile.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/all.css">
+    <link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
+    <link rel="stylesheet" href="/assets/css/thumbs.css">
+    <link rel="stylesheet" href="/assets/css/tranquilpeak.css">
+    <!--STYLES END-->
+    
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="2">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">junhee.ko</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="2">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">junhee.ko</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>Always Learning</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/kojunhee" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://facebook.com/kojunheee" target="_blank" rel="noopener" title="Facebook">
+                    
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/junheeko" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="mailto:junheee.ko@gmail.com" target="_blank" rel="noopener" title="Mail">
+                    
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Mail</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="2"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            React.js
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2018-12-09T00:00:00+09:00">
+	
+		    Dec 09, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/etc/">etc</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h5 id="React-js가-무엇인가요"><a href="#React-js가-무엇인가요" class="headerlink" title="React.js가 무엇인가요?"></a>React.js가 무엇인가요?</h5><p>컴포넌트라는 개념에 집중이 되어있는 라이브러리입니다.</p>
+<h5 id="어떤-특징이-있나요"><a href="#어떤-특징이-있나요" class="headerlink" title="어떤 특징이 있나요?"></a>어떤 특징이 있나요?</h5><ol>
+<li><p>UI 컴포넌트만 지원합니다. </p>
+</li>
+<li><p>Virtual DOM을 가지고 있습니다.</p>
+<p>다시 그릴 때는 구조체의 전후 상태를 비교하여 변경이 필요한 최소한의 요소만 실제 DOM에 반영합니다. </p>
+<p>따라서 무작위로 다시 그려도 변경에 필요한 최소한의 DOM만 갱신되기 때문에 빠르게 처리할 수 있습니다.</p>
+</li>
+<li><p>단방향 데이터 흐름을 지향합니다.</p>
+<p>데이터를 관리하는 모델 컴포넌트가 있고, 데이터를 UI 컴포넌트에 전달하는 단순한 데이터 흐름입니다.</p>
+</li>
+<li><p>JSX 문법을 가지고 있습니다.</p>
+<p>UI를 구성할 때 사용하는 구문입니다. Javascript 의 extension입니다.</p>
+</li>
+</ol>
+<h5 id="컴포넌트가-뭔가요"><a href="#컴포넌트가-뭔가요" class="headerlink" title="컴포넌트가 뭔가요?"></a>컴포넌트가 뭔가요?</h5><p>props를 input으로 하고 UI가 어떻게 보여야 하는지 정의하는 React Element를 output으로 하는 함수입니다</p>
+<h5 id="DOM이-무엇인가요"><a href="#DOM이-무엇인가요" class="headerlink" title="DOM이 무엇인가요?"></a>DOM이 무엇인가요?</h5><p>DOM Document Object Model로,  웹 페이지의 객체 지향 표현입니다. 웹 브라우저를 통해 해석되어 화면에 나타납니다.</p>
+<h5 id="Virtual-DOM-Document-Object-Model-이-무엇인가요"><a href="#Virtual-DOM-Document-Object-Model-이-무엇인가요" class="headerlink" title="Virtual DOM(Document Object Model) 이 무엇인가요?"></a>Virtual DOM(Document Object Model) 이 무엇인가요?</h5><p>가상의 DOM 입니다. 변화가 일어나면, 실제로 브라우저의 DOM 에 새로운걸 넣는것이 아니라, 자바스크립트로 이뤄진 가상 DOM 에 한번 렌더링을 하고, 기존의 DOM 과 비교를 한 다음에 정말 변화가 필요한 곳에만 업데이트를 합니다. 이로써, 브라우저 내에서 발생하는 연산의 양을 줄이면서 성능이 개선됩니다.</p>
+<h5 id="컴포넌트는-어떻게-만드나요"><a href="#컴포넌트는-어떻게-만드나요" class="headerlink" title="컴포넌트는 어떻게 만드나요?"></a>컴포넌트는 어떻게 만드나요?</h5><p>클래스를 통해서 만드는 방법과, 함수로 만드는 방법이 있습니다. 클래스형태로 만들어진 컴포넌트에는 꼭, render 함수가 있어야 합니다. render함수 내부에서는 JSX 를 return 해주어야 합니다. </p>
+<h5 id="props와-state가-뭔가요"><a href="#props와-state가-뭔가요" class="headerlink" title="props와 state가 뭔가요?"></a>props와 state가 뭔가요?</h5><p>리액트 컴포넌트에서 다루는 데이터는 props 와 state 입니다. props 는 부모 컴포넌트가 자식 컴포넌트에게 주는 값입니다. 자식 컴포넌트에서는 props 를 받아오기만하고, 받아온 props 를 직접 수정 할 수 는 없습니다. state 는 컴포넌트 내부에서 선언하며 내부에서 값을 변경 할 수 있습니다.</p>
+<h5 id="브라우저는-어떻게-동작하나요"><a href="#브라우저는-어떻게-동작하나요" class="headerlink" title="브라우저는 어떻게 동작하나요?"></a>브라우저는 어떻게 동작하나요?</h5><p><img src="/image/browserr.png" alt></p>
+<ol>
+<li><p>DOM tree를 생성합니다.</p>
+<p>브라우저가 HTML 을 전달받으면, 브라우저의 렌더 엔진이 이를 파싱하고 DOM 노드(Node) 로 이뤄진 트리를 만듦니다. 각 노드는 각 HTML 엘리먼트들과 연관되어있습니다.</p>
+</li>
+<li><p>Render Tree를 생성합니다.</p>
+<p>그리고, 외부 CSS 파일과 각 엘리먼트의 inline 스타일을 파싱합니다. 스타일 정보를 사용하여 DOM 트리에 따라 새로운 트리, 렌더트리를 만듦니다.</p>
+</li>
+<li><p>Layout</p>
+<p>렌더 트리가 다 만들어지고 나면, 레이아웃 과정을 거칩니다. 각 노드들은 스크린의 좌표가 주어지고, 정확히 어디에 나타나야 할 지 위치가 주어집니다.</p>
+</li>
+<li><p>painting</p>
+<p>렌더링 된 요소들에 색을 입히는 과정입니다. 트리의 각 노드들을 거쳐가면서 paint() 메소드를 호출합니다. 그러고나면, 스크린에 원하는 정보가 나타납니다.</p>
+</li>
+</ol>
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://velopert.com/3612" target="_blank" rel="noopener">https://velopert.com/3612</a></p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/01/21/git note/" data-tooltip="Git 정리" aria-label="PREVIOUS: Git 정리">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/12/09/RabbitMQ/" data-tooltip="RabbitMQ" aria-label="NEXT: RabbitMQ">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2018/12/09/React.js/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 junhee.ko. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="2">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/01/21/git note/" data-tooltip="Git 정리" aria-label="PREVIOUS: Git 정리">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/12/09/RabbitMQ/" data-tooltip="RabbitMQ" aria-label="NEXT: RabbitMQ">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2018/12/09/React.js/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="2">
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2018/12/09/React.js/">
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">junhee.ko</h4>
+        
+            <div id="about-card-bio"><p>Always Learning</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Engineer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Incheon
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/jquery.js"></script>
+<script src="/assets/js/jquery.fancybox.js"></script>
+<script src="/assets/js/thumbs.js"></script>
+<script src="/assets/js/tranquilpeak.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://kojunhee.github.io/2018/12/09/React.js/';
+                 
+                    this.page.identifier = '2018/12/09/React.js/';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'junheeko';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>

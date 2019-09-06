@@ -1,0 +1,478 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="junhee.ko">
+    <title>TDD - junhee.ko</title>
+    <meta name="author" content="junhee.ko">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg"},"articleBody":"TDD 란 ?Test Driven Development\n테스트가 개발을 이끌어 나갑니다. 테스트를 먼저 만들고 테스트를 통과하기 위한 것을 짜는 것입니다. 즉, 만드는 과정에서 우선 테스트를 작성하고 그걸 통과하는 코드를 만들고를 반복하면서 제대로 동작하는지에 대한 피드백을 적극적으로 받는 것입니다.\nTDD를 왜 해야 하나요 ?피드백과 협력을 증진시키기 때문에, 불확실성이 높을 때 도움이 됩니다.\nTDD의 장점은 ?\n보다 튼튼한 객체지적인 코드 생상이 가능합니다.\nTDD는 모든 코드가 재사용성 기반으로 작성되어야 하기 때문에 보다 튼튼한 코드 생산이 이루어집니다.\n\n재설계 시간이 단축됩니다.\n\n디버깅 시간이 단축됩니다.\n우리는 각각의 모듈 별로 테스트를 자동화할 수 있는 코드가 없다면, 특정 버그를 찾기 위해서 모든 레벨(레이어)의 코드들을 살펴봐야 합니다. 예를 들어 사용자의 데이터가 잘못 나온다면 DB의 문제인지, 비즈니스 레이어의 문제인지 UI 단의 문제인지 실제 모든 레이어들을 전부다 디버깅할 필요 없이 자동화 된 유닛테스팅 결과로 우리는 손 쉽게 찾아 낼 수 있습니다.\n\nBehavior-Driven Development를 적용하는데 있어서 큰 시너지 효과가 있습니다.\nBDD는 행위(동작) 중심적인 방법으로 개발을 진행하는 방법론인데 개발자 디자이너 그리고 기획자 모두 사용자 입장으로 같은 목표로 가지기 위함입니다. TDD를 진행하면 항상 그 테스트 요소들이 사용자 관점으로 정의되고 진행되기 때문에 보다 튼튼한 개발 프로세스를 만들게 됩니다.\n\n테스트 문서를 대체 할 수 있습니다.\nTDD를 하게 될 경우에 테스팅을 자동화 시킴과 동시에 보다 정확한 테스트 근거를 산출할 수 있다.\n\n추가 구현이 용이합니다.\n유닛 테스트로 자동화 될 경우에 수동으로 모든 테스트를 다시 진행해야 되는 시간적인 낭비를 줄일 수 있습니다.\n\n\nTDD의 단점은 ?코드 퀄리티 보다는 빠른 결과물을 원하는 환경이라면 쉽게 도입이 어려울 수 있습니다. TDD 를 공부해야 하고 추가적으로 테스트 코드를 작성해야 하기 때문입니다.\nreferencehttps://lalwr.blogspot.com/2016/02/tddtest-driven-development.html\n","dateCreated":"2018-12-07T00:00:00+09:00","dateModified":"2019-03-15T13:07:10+09:00","datePublished":"2018-12-07T00:00:00+09:00","description":"","headline":"TDD","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://kojunhee.github.io/2018/12/07/TDD/"},"publisher":{"@type":"Organization","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg","logo":{"@type":"ImageObject","url":"profile.jpg"}},"url":"https://kojunhee.github.io/2018/12/07/TDD/"}</script>
+    <meta name="description" content="TDD 란 ?Test Driven Development 테스트가 개발을 이끌어 나갑니다. 테스트를 먼저 만들고 테스트를 통과하기 위한 것을 짜는 것입니다. 즉, 만드는 과정에서 우선 테스트를 작성하고 그걸 통과하는 코드를 만들고를 반복하면서 제대로 동작하는지에 대한 피드백을 적극적으로 받는 것입니다. TDD를 왜 해야 하나요 ?피드백과 협력을 증진시키기 때">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="TDD">
+<meta property="og:url" content="https://kojunhee.github.io/2018/12/07/TDD/index.html">
+<meta property="og:site_name" content="junhee.ko">
+<meta property="og:description" content="TDD 란 ?Test Driven Development 테스트가 개발을 이끌어 나갑니다. 테스트를 먼저 만들고 테스트를 통과하기 위한 것을 짜는 것입니다. 즉, 만드는 과정에서 우선 테스트를 작성하고 그걸 통과하는 코드를 만들고를 반복하면서 제대로 동작하는지에 대한 피드백을 적극적으로 받는 것입니다. TDD를 왜 해야 하나요 ?피드백과 협력을 증진시키기 때">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-03-15T04:07:10.335Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TDD">
+<meta name="twitter:description" content="TDD 란 ?Test Driven Development 테스트가 개발을 이끌어 나갑니다. 테스트를 먼저 만들고 테스트를 통과하기 위한 것을 짜는 것입니다. 즉, 만드는 과정에서 우선 테스트를 작성하고 그걸 통과하는 코드를 만들고를 반복하면서 제대로 동작하는지에 대한 피드백을 적극적으로 받는 것입니다. TDD를 왜 해야 하나요 ?피드백과 협력을 증진시키기 때">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://kojunhee.github.io/assets/images/profile.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/all.css">
+    <link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
+    <link rel="stylesheet" href="/assets/css/thumbs.css">
+    <link rel="stylesheet" href="/assets/css/tranquilpeak.css">
+    <!--STYLES END-->
+    
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="2">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">junhee.ko</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="2">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">junhee.ko</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>Always Learning</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/kojunhee" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://facebook.com/kojunheee" target="_blank" rel="noopener" title="Facebook">
+                    
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/junheeko" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="mailto:junheee.ko@gmail.com" target="_blank" rel="noopener" title="Mail">
+                    
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Mail</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="2"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            TDD
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2018-12-07T00:00:00+09:00">
+	
+		    Dec 07, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/software-engineering/">Software Engineering</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h5 id="TDD-란"><a href="#TDD-란" class="headerlink" title="TDD 란 ?"></a>TDD 란 ?</h5><p>Test Driven Development</p>
+<p>테스트가 개발을 이끌어 나갑니다. 테스트를 먼저 만들고 테스트를 통과하기 위한 것을 짜는 것입니다. 즉, 만드는 과정에서 우선 테스트를 작성하고 그걸 통과하는 코드를 만들고를 반복하면서 제대로 동작하는지에 대한 피드백을 적극적으로 받는 것입니다.</p>
+<h5 id="TDD를-왜-해야-하나요"><a href="#TDD를-왜-해야-하나요" class="headerlink" title="TDD를 왜 해야 하나요 ?"></a>TDD를 왜 해야 하나요 ?</h5><p>피드백과 협력을 증진시키기 때문에, 불확실성이 높을 때 도움이 됩니다.</p>
+<h5 id="TDD의-장점은"><a href="#TDD의-장점은" class="headerlink" title="TDD의 장점은 ?"></a>TDD의 장점은 ?</h5><ol>
+<li><p>보다 튼튼한 객체지적인 코드 생상이 가능합니다.</p>
+<p>TDD는 모든 코드가 재사용성 기반으로 작성되어야 하기 때문에 보다 튼튼한 코드 생산이 이루어집니다.</p>
+</li>
+<li><p>재설계 시간이 단축됩니다.</p>
+</li>
+<li><p>디버깅 시간이 단축됩니다.</p>
+<p>우리는 각각의 모듈 별로 테스트를 자동화할 수 있는 코드가 없다면, 특정 버그를 찾기 위해서 모든 레벨(레이어)의 코드들을 살펴봐야 합니다. 예를 들어 사용자의 데이터가 잘못 나온다면 DB의 문제인지, 비즈니스 레이어의 문제인지 UI 단의 문제인지 실제 모든 레이어들을 전부다 디버깅할 필요 없이 자동화 된 유닛테스팅 결과로 우리는 손 쉽게 찾아 낼 수 있습니다.</p>
+</li>
+<li><p>Behavior-Driven Development를 적용하는데 있어서 큰 시너지 효과가 있습니다.</p>
+<p>BDD는 행위(동작) 중심적인 방법으로 개발을 진행하는 방법론인데 개발자 디자이너 그리고 기획자 모두 사용자 입장으로 같은 목표로 가지기 위함입니다. TDD를 진행하면 항상 그 테스트 요소들이 사용자 관점으로 정의되고 진행되기 때문에 보다 튼튼한 개발 프로세스를 만들게 됩니다.</p>
+</li>
+<li><p>테스트 문서를 대체 할 수 있습니다.</p>
+<p>TDD를 하게 될 경우에 테스팅을 자동화 시킴과 동시에 보다 정확한 테스트 근거를 산출할 수 있다.</p>
+</li>
+<li><p>추가 구현이 용이합니다.</p>
+<p>유닛 테스트로 자동화 될 경우에 수동으로 모든 테스트를 다시 진행해야 되는 시간적인 낭비를 줄일 수 있습니다.</p>
+</li>
+</ol>
+<h5 id="TDD의-단점은"><a href="#TDD의-단점은" class="headerlink" title="TDD의 단점은 ?"></a>TDD의 단점은 ?</h5><p>코드 퀄리티 보다는 빠른 결과물을 원하는 환경이라면 쉽게 도입이 어려울 수 있습니다. TDD 를 공부해야 하고 추가적으로 테스트 코드를 작성해야 하기 때문입니다.</p>
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://lalwr.blogspot.com/2016/02/tddtest-driven-development.html" target="_blank" rel="noopener">https://lalwr.blogspot.com/2016/02/tddtest-driven-development.html</a></p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/12/07/MVC/" data-tooltip="MVC" aria-label="PREVIOUS: MVC">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/12/07/Generator/" data-tooltip="Generator" aria-label="NEXT: Generator">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2018/12/07/TDD/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 junhee.ko. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="2">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/12/07/MVC/" data-tooltip="MVC" aria-label="PREVIOUS: MVC">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/12/07/Generator/" data-tooltip="Generator" aria-label="NEXT: Generator">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2018/12/07/TDD/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="2">
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2018/12/07/TDD/">
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">junhee.ko</h4>
+        
+            <div id="about-card-bio"><p>Always Learning</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Engineer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Incheon
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/jquery.js"></script>
+<script src="/assets/js/jquery.fancybox.js"></script>
+<script src="/assets/js/thumbs.js"></script>
+<script src="/assets/js/tranquilpeak.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://kojunhee.github.io/2018/12/07/TDD/';
+                 
+                    this.page.identifier = '2018/12/07/TDD/';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'junheeko';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>

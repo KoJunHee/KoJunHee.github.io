@@ -1,0 +1,546 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="junhee.ko">
+    <title>[자바 ORM 표준 JPA 프로그래밍] 8장_프록시와 연관관계 정리 - junhee.ko</title>
+    <meta name="author" content="junhee.ko">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg"},"articleBody":"이번 포스팅에서 다룰 내용입니다.\n\n프록시와 즉시로딩, 지연 로딩\n영속성 전이와 고아 객체\n\n8.1 프록시엔티티가 실제 사용될 때 까지 데이터베이스 조회를 지연하는 방법을 지연 로딩이라고 합니다.지연 로딩 기능을 사용하려면 실제 엔티티 대신에 데이터베이스 조회를 지연할 수 있는 가짜 객체가 필요한데, 이것을 프록시 객체라고 합니다.\n8.1.1 프록시 기초JPA 에서 식별자로 엔티티 하나를 조회할 때는 EntityManager.find() 를 사용합니다. 이 메소드는 영속성 컨텍스트에 엔티티가 없으면 데이터베이스를 조회합니다.\n엔티티를 실제 사용하는 시점까지 데이터베이스 조회를 미루고 싶으면 EntityManager.getReference()를 사용하면 됩니다. 이 메소드를 호출하면,  실제 엔티티 객체를 생성하지 않고 데이터베이스 접근을 위임한 프록시 객체를 반환합니다.\n\n프록시의 특징\n\n프록시 객체는 실제 객체에 대한 참조(target) 을 보관합니다.\n프록시 객체의 메소드를 호출하면, 프록시 객체는 실제 객체의 메소드를 호출합니다.\n영속성 컨텍스트에 이미 찾는 엔티티가 있으면, 데이터베이스를 조회할 필요가 없으므로 em.getReference()를 호출해도 실제 엔티티를 반환합니다.\n\n\n프록시 객체의 초기화\n\n프록시 객체의 초기화란, member.getName() 처럼 실제 사용될 때 데이터베이스를 조회해서 실제 엔티티를 생성하는 것을 말합니다.\n과정\nmember.getName() 호출해서 실제 데이터 조회합니다.\n영속성 컨텍스트는 데이터베이스를 조회해서 실제 엔티티 객체를 생성합니다.\n프록시 객체는 생성된 실제 엔티티 객체의 참조를 MemerProxy 의 멤버 변수로 보관합ㄴ디ㅏ.\n프록시 객체는 실제 엔티티 객체의 getName() 을 호출해서 결과를 반환합니다.\n\n\n\n\n준영속 상태의 초기화\n\n초기화는 영속성 컨텍스트의 도움을 받아야 가능합니다.\n준영속 상태의 프록시를 초기화하면 문제가 발생합니다.\nHibernate : LazyInitializationException 발생\n\n\n\n8.1.2 프록시와 식별자엔티티를 프록시로 조회할 때 식별자 값을 Parameter로 전달하는데 프록시 객체는 이 식별자 값을 보관합니다.구분 칼럼을 꼭 사용해야합니다.\n으음..\n8.1.3 프록시 확인JPA가 제공하는 PersistenceUnitUtil.isLoaded(Object entity) 메소드를 사용하면 프록시 인스턴스의 초기화 여부를 확인할 수 있습니다. 조회한 엔티티가 진짜 엔티티인지 프록시로 조회한 것인지 확인하려면, 클래스명을 직접 출력해보면 됩니다.\n8.2 즉시 로딩과 지연 로딩프록시 객체는 주로 연관된 엔티티를 지연 로딩할 때 사용합니다.\n연관된 엔티티의 조회 시점을 선택할 수 있는 두 가지 방법이 있습니다.\n\n즉시로딩\n지연 로딩\n\n8.2.1 즉시 로딩1em.find(Member.class, \"member1\")\n\n로 회원을 조회하는 순간 팀도 함께 조회합니다. 즉시 로딩을 최적화하기 위해 가능하면 조인쿼리를 사용합니다.\n8.2.2 지연 로딩위의 코드를 실행하면, 회원만 조회되고 팀은 조회되지 않습니다. 대신에 조회한 회원의 team 맴버 변수에  프록시 객체를 넣어둡니다. \n1Team team = member.getTeam() // 프록시 객체\n\n반환된 팀 객체는 프록시 객체로, 실제 사용될때 까지 데이터 로딩을 미룹니다. 실제 데이터가 필요한 순간이 되어서야 데이터베이스를 조회해서 프록시 객체를 초기화합니다. \n1team.getName()\n\n을 호출하면, 프록시 객체가 초기화 됩니다.\n8.3 지연 로딩 활용8.3.1 프록시와 컬렉션 래퍼Hibernate 는 엔티티를 영속 상태로 만들 때, 엔티티에 컬렉션이 있으면 컬렉션을 추적하고 관리할 목적으로, 원본 컬렉션을 Hibernate가 제공하는 내장 컬렉션으로 변경합니다. 이를 컬렉션 래퍼라고 합니다.\n엔티티를 지연 로딩하면 프록시 객체를 사용해서 지연로딩을 수행하지만, 주문 내역과 같은 컬렉션은 컬렉션 래퍼가 지연 로딩을 처리해줍니다. 즉, 컬렉션 레퍼도 프록시 역할을 합니다.\nmember.getOrder()를 호출해도 컬렉션은 초기화되지 않습니다. member.getOrders().get(0) 처럼 컬렉션에서 실제 데이터를 조회할 때 데이터베이스를 조회해서 초기화합니다.\n8.3.2 JPA 기본 Fetch 전략\n@ManyToOne, @OneToOne\nFetchType.EAGER\n\n\n@OneToMany, @ManyToMany\nFetchType.LAZY\n\n\n\n추천하는 방버은 모든 연관관계에 지연 로딩을 사용하는 것입니다. 그리고, 실제 사용하는 상황을 보고 꼭 필요한 곳에 즉시 로딩을 사용하도록 최적화 하면 됩니다.\n8.3.3 컬렉션에 FetchType.EAGER 사용시 주의점\n컬렉션을 하나 이상 즉시 로딩하는 것은 권장하지 않습니다.\n컬렉션 즉시 로딩은 항상 OUTER JOIN 을 사용합니다.\n\n8.4 영속성 전이 : CASCADE특정 엔티티를 영속 상태로 만들 때 연관된 엔티티도 함께 영속 상태로 만들고 싶으면 영송석 전이 기능을 사용하면 됩니다. JPA는 CASCADE 옵션으로 영속성 전이 기능을 제공합니다.\n8.4.1 저장부모만 영속화하면 CascadeType.PERSIST 로 설정한 자식 엔티티까지 함께 영속화해서 저장합니다.\n8.4.2 삭제CascadeType.REMOVE 설정하고 부모 엔티티만 삭제하면 연관된 자식 엔티티까지 함께 삭제됩니다.\n8.5 고아 객체JPA는 부모 엔티티와 연관 관계가 끊어진 자식 엔티티를 자동으로 삭제하는 기능을 제공하는데, 이를 고아 객체 제거라고 합니다. 이 기능은 참조하는 곳이 하나 일때만 사용해야합니다. 즉, 특정 엔티티가 개인 소유하는 엔티티에만 이 기능을 적용해야합니다.\n다음 코드는, 부모 엔티티의 컬렉션에서 자식 엔티티의 참조만 제거하면 자식 엔티티가 자동으로 삭제됩니다.\n1234567@Entitypublic class Paren &#123;  ...  @OneToMany(mappedBy=\"parent\", orphanRemoval = true)  private List&lt;Child&gt; children = new ArrayList&lt;Child&gt;();  ...&#125;\n\n다음 코드처럼,\n12Parent parent = em.find(Parent.class, id);parent.getChildren.remove(0); // 자식 엔티티를 컬렉션에서 제거\n\n컬렉션에서 첫 번째 자식을 제거하면, 데이터베잇의 데이터도 삭제됩니다. 주의할 점은, 고아 객체 제거 기능은 영속성 컨텍스트를 flush 할 때 적용되므로, flush 시점에 DELETE SQL 이 실행됩니다.\n8.6 영속성 전이 + 고아객체, 생명주기CascadeType.All + orphanRemove = true 를 동시에 사용하면?\n일반적으로 엔티티를 em.persist()로 영속화되고, em.remove()로 제거됩니다. 이것은 엔티티 스스로 생명주기를 관리한다는 뜻입니다. 그런데 두 옵션을 활성화하면 부모 엔티티르 통해서 자식의 엔티티를 관리할 수 있습니다.\n자식을 저장하려면,\n12Parent parent = em.find(Parent.class, id);parent.addChild(child);\n\n자식을 삭제하려면,\n12Parent parent = em.find(Parent.class, id);parent.getChildren().remove(child);\n\n","dateCreated":"2019-04-09T00:00:00+09:00","dateModified":"2019-04-18T17:18:25+09:00","datePublished":"2019-04-09T00:00:00+09:00","description":"","headline":"[자바 ORM 표준 JPA 프로그래밍] 8장_프록시와 연관관계 정리","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://kojunhee.github.io/2019/04/09/proxy-relation-mapping/"},"publisher":{"@type":"Organization","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg","logo":{"@type":"ImageObject","url":"profile.jpg"}},"url":"https://kojunhee.github.io/2019/04/09/proxy-relation-mapping/"}</script>
+    <meta name="description" content="이번 포스팅에서 다룰 내용입니다.  프록시와 즉시로딩, 지연 로딩 영속성 전이와 고아 객체  8.1 프록시엔티티가 실제 사용될 때 까지 데이터베이스 조회를 지연하는 방법을 지연 로딩이라고 합니다.지연 로딩 기능을 사용하려면 실제 엔티티 대신에 데이터베이스 조회를 지연할 수 있는 가짜 객체가 필요한데, 이것을 프록시 객체라고 합니다. 8.1.1 프록시 기초J">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="[자바 ORM 표준 JPA 프로그래밍] 8장_프록시와 연관관계 정리">
+<meta property="og:url" content="https://kojunhee.github.io/2019/04/09/proxy-relation-mapping/index.html">
+<meta property="og:site_name" content="junhee.ko">
+<meta property="og:description" content="이번 포스팅에서 다룰 내용입니다.  프록시와 즉시로딩, 지연 로딩 영속성 전이와 고아 객체  8.1 프록시엔티티가 실제 사용될 때 까지 데이터베이스 조회를 지연하는 방법을 지연 로딩이라고 합니다.지연 로딩 기능을 사용하려면 실제 엔티티 대신에 데이터베이스 조회를 지연할 수 있는 가짜 객체가 필요한데, 이것을 프록시 객체라고 합니다. 8.1.1 프록시 기초J">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-04-18T08:18:25.722Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[자바 ORM 표준 JPA 프로그래밍] 8장_프록시와 연관관계 정리">
+<meta name="twitter:description" content="이번 포스팅에서 다룰 내용입니다.  프록시와 즉시로딩, 지연 로딩 영속성 전이와 고아 객체  8.1 프록시엔티티가 실제 사용될 때 까지 데이터베이스 조회를 지연하는 방법을 지연 로딩이라고 합니다.지연 로딩 기능을 사용하려면 실제 엔티티 대신에 데이터베이스 조회를 지연할 수 있는 가짜 객체가 필요한데, 이것을 프록시 객체라고 합니다. 8.1.1 프록시 기초J">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://kojunhee.github.io/assets/images/profile.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/all.css">
+    <link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
+    <link rel="stylesheet" href="/assets/css/thumbs.css">
+    <link rel="stylesheet" href="/assets/css/tranquilpeak.css">
+    <!--STYLES END-->
+    
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="2">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">junhee.ko</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="2">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">junhee.ko</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>Always Learning</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/kojunhee" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://facebook.com/kojunheee" target="_blank" rel="noopener" title="Facebook">
+                    
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/junheeko" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="mailto:junheee.ko@gmail.com" target="_blank" rel="noopener" title="Mail">
+                    
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Mail</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="2"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            [자바 ORM 표준 JPA 프로그래밍] 8장_프록시와 연관관계 정리
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2019-04-09T00:00:00+09:00">
+	
+		    Apr 09, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/jpa/">JPA</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>이번 포스팅에서 다룰 내용입니다.</p>
+<ul>
+<li>프록시와 즉시로딩, 지연 로딩</li>
+<li>영속성 전이와 고아 객체</li>
+</ul>
+<h4 id="8-1-프록시"><a href="#8-1-프록시" class="headerlink" title="8.1 프록시"></a>8.1 프록시</h4><p>엔티티가 실제 사용될 때 까지 데이터베이스 조회를 지연하는 방법을 지연 로딩이라고 합니다.<br>지연 로딩 기능을 사용하려면 실제 엔티티 대신에 데이터베이스 조회를 지연할 수 있는 가짜 객체가 필요한데, 이것을 프록시 객체라고 합니다.</p>
+<h5 id="8-1-1-프록시-기초"><a href="#8-1-1-프록시-기초" class="headerlink" title="8.1.1 프록시 기초"></a>8.1.1 프록시 기초</h5><p>JPA 에서 식별자로 엔티티 하나를 조회할 때는 EntityManager.find() 를 사용합니다. 이 메소드는 영속성 컨텍스트에 엔티티가 없으면 데이터베이스를 조회합니다.</p>
+<p>엔티티를 실제 사용하는 시점까지 데이터베이스 조회를 미루고 싶으면 <strong>EntityManager.getReference()</strong>를 사용하면 됩니다. 이 메소드를 호출하면,  실제 엔티티 객체를 생성하지 않고 데이터베이스 접근을 위임한 프록시 객체를 반환합니다.</p>
+<ul>
+<li><p>프록시의 특징</p>
+<ul>
+<li>프록시 객체는 실제 객체에 대한 참조(target) 을 보관합니다.</li>
+<li>프록시 객체의 메소드를 호출하면, 프록시 객체는 실제 객체의 메소드를 호출합니다.</li>
+<li>영속성 컨텍스트에 이미 찾는 엔티티가 있으면, 데이터베이스를 조회할 필요가 없으므로 em.getReference()를 호출해도 실제 엔티티를 반환합니다.</li>
+</ul>
+</li>
+<li><p>프록시 객체의 초기화</p>
+<ul>
+<li>프록시 객체의 초기화란, member.getName() 처럼 실제 사용될 때 데이터베이스를 조회해서 실제 엔티티를 생성하는 것을 말합니다.</li>
+<li>과정<ul>
+<li>member.getName() 호출해서 실제 데이터 조회합니다.</li>
+<li>영속성 컨텍스트는 데이터베이스를 조회해서 실제 엔티티 객체를 생성합니다.</li>
+<li>프록시 객체는 생성된 실제 엔티티 객체의 참조를 MemerProxy 의 멤버 변수로 보관합ㄴ디ㅏ.</li>
+<li>프록시 객체는 실제 엔티티 객체의 getName() 을 호출해서 결과를 반환합니다.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>준영속 상태의 초기화</p>
+<ul>
+<li>초기화는 영속성 컨텍스트의 도움을 받아야 가능합니다.</li>
+<li>준영속 상태의 프록시를 초기화하면 문제가 발생합니다.</li>
+<li>Hibernate : LazyInitializationException 발생</li>
+</ul>
+</li>
+</ul>
+<h5 id="8-1-2-프록시와-식별자"><a href="#8-1-2-프록시와-식별자" class="headerlink" title="8.1.2 프록시와 식별자"></a>8.1.2 프록시와 식별자</h5><p>엔티티를 프록시로 조회할 때 식별자 값을 Parameter로 전달하는데 프록시 객체는 이 식별자 값을 보관합니다.구분 칼럼을 꼭 사용해야합니다.</p>
+<p>으음..</p>
+<h5 id="8-1-3-프록시-확인"><a href="#8-1-3-프록시-확인" class="headerlink" title="8.1.3 프록시 확인"></a>8.1.3 프록시 확인</h5><p>JPA가 제공하는 PersistenceUnitUtil.isLoaded(Object entity) 메소드를 사용하면 프록시 인스턴스의 초기화 여부를 확인할 수 있습니다. 조회한 엔티티가 진짜 엔티티인지 프록시로 조회한 것인지 확인하려면, 클래스명을 직접 출력해보면 됩니다.</p>
+<h4 id="8-2-즉시-로딩과-지연-로딩"><a href="#8-2-즉시-로딩과-지연-로딩" class="headerlink" title="8.2 즉시 로딩과 지연 로딩"></a>8.2 즉시 로딩과 지연 로딩</h4><p>프록시 객체는 주로 연관된 엔티티를 지연 로딩할 때 사용합니다.</p>
+<p>연관된 엔티티의 조회 시점을 선택할 수 있는 두 가지 방법이 있습니다.</p>
+<ul>
+<li>즉시로딩</li>
+<li>지연 로딩</li>
+</ul>
+<h5 id="8-2-1-즉시-로딩"><a href="#8-2-1-즉시-로딩" class="headerlink" title="8.2.1 즉시 로딩"></a>8.2.1 즉시 로딩</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">em.find(Member.class, <span class="string">"member1"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>로 회원을 조회하는 순간 팀도 함께 조회합니다. 즉시 로딩을 최적화하기 위해 가능하면 조인쿼리를 사용합니다.</p>
+<h5 id="8-2-2-지연-로딩"><a href="#8-2-2-지연-로딩" class="headerlink" title="8.2.2 지연 로딩"></a>8.2.2 지연 로딩</h5><p>위의 코드를 실행하면, 회원만 조회되고 팀은 조회되지 않습니다. 대신에 조회한 회원의 team 맴버 변수에  프록시 객체를 넣어둡니다. </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Team team = member.getTeam() <span class="comment">// 프록시 객체</span></span><br></pre></td></tr></table></figure>
+
+<p>반환된 팀 객체는 프록시 객체로, 실제 사용될때 까지 데이터 로딩을 미룹니다. 실제 데이터가 필요한 순간이 되어서야 데이터베이스를 조회해서 프록시 객체를 초기화합니다. </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">team.getName()</span><br></pre></td></tr></table></figure>
+
+<p>을 호출하면, 프록시 객체가 초기화 됩니다.</p>
+<h4 id="8-3-지연-로딩-활용"><a href="#8-3-지연-로딩-활용" class="headerlink" title="8.3 지연 로딩 활용"></a>8.3 지연 로딩 활용</h4><h5 id="8-3-1-프록시와-컬렉션-래퍼"><a href="#8-3-1-프록시와-컬렉션-래퍼" class="headerlink" title="8.3.1 프록시와 컬렉션 래퍼"></a>8.3.1 프록시와 컬렉션 래퍼</h5><p>Hibernate 는 엔티티를 영속 상태로 만들 때, 엔티티에 컬렉션이 있으면 컬렉션을 추적하고 관리할 목적으로, <strong>원본 컬렉션을 Hibernate가 제공하는 내장 컬렉션으로 변경</strong>합니다. 이를 컬렉션 래퍼라고 합니다.</p>
+<p>엔티티를 지연 로딩하면 프록시 객체를 사용해서 지연로딩을 수행하지만, 주문 내역과 같은 컬렉션은 컬렉션 래퍼가 지연 로딩을 처리해줍니다. 즉, 컬렉션 레퍼도 프록시 역할을 합니다.</p>
+<p>member.getOrder()를 호출해도 컬렉션은 초기화되지 않습니다. member.getOrders().get(0) 처럼 컬렉션에서 실제 데이터를 조회할 때 데이터베이스를 조회해서 초기화합니다.</p>
+<h5 id="8-3-2-JPA-기본-Fetch-전략"><a href="#8-3-2-JPA-기본-Fetch-전략" class="headerlink" title="8.3.2 JPA 기본 Fetch 전략"></a>8.3.2 JPA 기본 Fetch 전략</h5><ul>
+<li>@ManyToOne, @OneToOne<ul>
+<li>FetchType.EAGER</li>
+</ul>
+</li>
+<li>@OneToMany, @ManyToMany<ul>
+<li>FetchType.LAZY</li>
+</ul>
+</li>
+</ul>
+<p>추천하는 방버은 모든 연관관계에 지연 로딩을 사용하는 것입니다. 그리고, 실제 사용하는 상황을 보고 꼭 필요한 곳에 즉시 로딩을 사용하도록 최적화 하면 됩니다.</p>
+<h5 id="8-3-3-컬렉션에-FetchType-EAGER-사용시-주의점"><a href="#8-3-3-컬렉션에-FetchType-EAGER-사용시-주의점" class="headerlink" title="8.3.3 컬렉션에 FetchType.EAGER 사용시 주의점"></a>8.3.3 컬렉션에 FetchType.EAGER 사용시 주의점</h5><ul>
+<li>컬렉션을 하나 이상 즉시 로딩하는 것은 권장하지 않습니다.</li>
+<li>컬렉션 즉시 로딩은 항상 OUTER JOIN 을 사용합니다.</li>
+</ul>
+<h4 id="8-4-영속성-전이-CASCADE"><a href="#8-4-영속성-전이-CASCADE" class="headerlink" title="8.4 영속성 전이 : CASCADE"></a>8.4 영속성 전이 : CASCADE</h4><p>특정 엔티티를 영속 상태로 만들 때 연관된 엔티티도 함께 영속 상태로 만들고 싶으면 영송석 전이 기능을 사용하면 됩니다. JPA는 CASCADE 옵션으로 영속성 전이 기능을 제공합니다.</p>
+<h5 id="8-4-1-저장"><a href="#8-4-1-저장" class="headerlink" title="8.4.1 저장"></a>8.4.1 저장</h5><p>부모만 영속화하면 CascadeType.PERSIST 로 설정한 자식 엔티티까지 함께 영속화해서 저장합니다.</p>
+<h5 id="8-4-2-삭제"><a href="#8-4-2-삭제" class="headerlink" title="8.4.2 삭제"></a>8.4.2 삭제</h5><p>CascadeType.REMOVE 설정하고 부모 엔티티만 삭제하면 연관된 자식 엔티티까지 함께 삭제됩니다.</p>
+<h4 id="8-5-고아-객체"><a href="#8-5-고아-객체" class="headerlink" title="8.5 고아 객체"></a>8.5 고아 객체</h4><p>JPA는 부모 엔티티와 연관 관계가 끊어진 자식 엔티티를 자동으로 삭제하는 기능을 제공하는데, 이를 고아 객체 제거라고 합니다. 이 기능은 참조하는 곳이 하나 일때만 사용해야합니다. 즉, 특정 엔티티가 개인 소유하는 엔티티에만 이 기능을 적용해야합니다.</p>
+<p>다음 코드는, 부모 엔티티의 컬렉션에서 자식 엔티티의 참조만 제거하면 자식 엔티티가 자동으로 삭제됩니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Paren</span> </span>&#123;</span><br><span class="line">  ...</span><br><span class="line">  <span class="meta">@OneToMany</span>(mappedBy=<span class="string">"parent"</span>, orphanRemoval = <span class="keyword">true</span>)</span><br><span class="line">  <span class="keyword">private</span> List&lt;Child&gt; children = <span class="keyword">new</span> ArrayList&lt;Child&gt;();</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>다음 코드처럼,</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Parent parent = em.find(Parent.class, id);</span><br><span class="line">parent.getChildren.remove(<span class="number">0</span>); <span class="comment">// 자식 엔티티를 컬렉션에서 제거</span></span><br></pre></td></tr></table></figure>
+
+<p>컬렉션에서 첫 번째 자식을 제거하면, 데이터베잇의 데이터도 삭제됩니다. 주의할 점은, 고아 객체 제거 기능은 영속성 컨텍스트를 flush 할 때 적용되므로, flush 시점에 DELETE SQL 이 실행됩니다.</p>
+<h5 id="8-6-영속성-전이-고아객체-생명주기"><a href="#8-6-영속성-전이-고아객체-생명주기" class="headerlink" title="8.6 영속성 전이 + 고아객체, 생명주기"></a>8.6 영속성 전이 + 고아객체, 생명주기</h5><p><strong>CascadeType.All + orphanRemove = true</strong> 를 동시에 사용하면?</p>
+<p>일반적으로 엔티티를 em.persist()로 영속화되고, em.remove()로 제거됩니다. 이것은 엔티티 스스로 생명주기를 관리한다는 뜻입니다. 그런데 두 옵션을 활성화하면 부모 엔티티르 통해서 자식의 엔티티를 관리할 수 있습니다.</p>
+<p>자식을 저장하려면,</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Parent parent = em.find(Parent.class, id);</span><br><span class="line">parent.addChild(child);</span><br></pre></td></tr></table></figure>
+
+<p>자식을 삭제하려면,</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Parent parent = em.find(Parent.class, id);</span><br><span class="line">parent.getChildren().remove(child);</span><br></pre></td></tr></table></figure>
+
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/04/11/value-type/" data-tooltip="[자바 ORM 표준 JPA 프로그래밍] 9장_값 타입" aria-label="PREVIOUS: [자바 ORM 표준 JPA 프로그래밍] 9장_값 타입">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/04/06/advanced-mappings/" data-tooltip="[자바 ORM 표준 JPA 프로그래밍] 7장_고급 매핑" aria-label="NEXT: [자바 ORM 표준 JPA 프로그래밍] 7장_고급 매핑">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2019/04/09/proxy-relation-mapping/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 junhee.ko. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="2">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/04/11/value-type/" data-tooltip="[자바 ORM 표준 JPA 프로그래밍] 9장_값 타입" aria-label="PREVIOUS: [자바 ORM 표준 JPA 프로그래밍] 9장_값 타입">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/04/06/advanced-mappings/" data-tooltip="[자바 ORM 표준 JPA 프로그래밍] 7장_고급 매핑" aria-label="NEXT: [자바 ORM 표준 JPA 프로그래밍] 7장_고급 매핑">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2019/04/09/proxy-relation-mapping/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="2">
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2019/04/09/proxy-relation-mapping/">
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">junhee.ko</h4>
+        
+            <div id="about-card-bio"><p>Always Learning</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Engineer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Incheon
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/jquery.js"></script>
+<script src="/assets/js/jquery.fancybox.js"></script>
+<script src="/assets/js/thumbs.js"></script>
+<script src="/assets/js/tranquilpeak.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://kojunhee.github.io/2019/04/09/proxy-relation-mapping/';
+                 
+                    this.page.identifier = '2019/04/09/proxy-relation-mapping/';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'junheeko';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>

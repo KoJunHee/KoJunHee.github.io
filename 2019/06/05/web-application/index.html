@@ -1,0 +1,569 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="junhee.ko">
+    <title>[자바 ORM 표준 JPA 프로그래밍] 11장_웹 어플리케이션 제작 - junhee.ko</title>
+    <meta name="author" content="junhee.ko">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg"},"articleBody":"11장은 Spring Framework 와 JPA 를 사용해서 Web Application 을 만들어보는 장입니다. 진행 순서는 다음과 같습니다.\n\n프로젝트 환경설정\n도메인 모델과 테이블 설계\n기능 구현\n\n코드 위주의 챕터이기 때문에, 핵심 키워드 위주로 정리하려고 합니다.\n11.1 프로젝트 환경설정11.2 도메인 모델과 테이블 설계11.2.1 요구사항 분석\n회원 기능\n\n등록\n조회\n\n\n상품 기능\n\n등록\n수정\n조회\n\n\n주문\n\n주문\n조회\n취소\n\n\n기타\n\n상품 종류 : 도서 / 음반 / 영화\n상품은 카테고리로 구분 가능\n상품 주문 시 배송 정보 입력 가능\n\n\n\n11.2.2 도메인 모델 설계\n회원 / 주문 / 상품\n주문과 상품은 다대다 관계\n다대다 관계는 관계형 데이터베이스는 물론이고, 엔티티에서도 거의 사용하지 않음\n주문 상품이라는 엔티티를 추가해서 다다대 관계를 일대다, 다대일 관계로 풀어냄\n\n\n상품 분류\n상품은 도서, 음반, 영화로 구분되는데, 상품이라는 공통 속성을 사용하므로 상속 구조로 표현\n\n\n\n\n\n11.2.3 테이블 설계11.2.4 연관 관계 정리\n회원과 주문\n일대다 양방향 관계\n연관 관계의 주인을 정해야함. 외래키가 있는 주문이 연관 관계의 주인.\n\n\n주문 상품과 주문\n다대일 양방향 관계\n주문 상품이 연관관계의 주인\n\n\n주문 상품과 상품\n일대일 단방향 관계\n\n\n주문과 배송\n일대일 양방향 관계\n\n\n카테고리와 상품\n@ManyToMany\n\n\n\n11.2.5 엔티티 클래스11.3 애플리케이션 구현11.3.1 개발 방법\nController\nMVC 의 컨트롤러가 모여있는 곳\n서비스 계층을 호출하고 결과를 뷰에 전달\n\n\nService\n비즈니스 로직이 있고 트렌젝션을 시작\n데이터 접근 계층인 Repository를 호출\n\n\nRepository\nJPA 를 직접 사용하는 곳\nEntity Manager 를 사용해서 Entity 를 저장하고 조회\n\n\nDomain\n엔티티가 모여 있는 계층\n모든 계층에서 사용\n\n\n\n11.3.2 회원 기능순수 자바 환경에셔는 엔티티 메니저 팩토리에서 엔티티 메니저를 직접 생성해서 사용했지만, 스프링이나 J2EE 컨테이너를 사용하면 컨테이너가 엔티티 메니저를 관리하고 제공합니다. 그래서, 엔티티 메니저 팩토리에서 엔티티 메니저를 직접 생성해서 사용하지 않고, 컨테이너가 제공하는 엔티티 메니저를 사용합니다.\n@PersistenceContext 는 컨테이너가 관리하는 엔티티 메니저를 주입하는 Annotation 입니다.\n12@PersistenceContextEntityManager em;\n\n11.3.3 상품 기능11.3.4 주문 기능주문 서비스의 주문과 주문 취소 메소드를 보면 비즈니스 로직 대부분이 엔티티에 있습니다. 서비스 계층은 단순히 엔티티에 필요한 요청을 위임하는 역할을 합니다. 이처럼, 엔티티가 비즈니로스 로직을 가지고 객체지향의 특성을 활용하는 것을 도메인 모델 패턴이라고 합니다.\n반대로, 엔티티에는 비즈니스 로직이 거의 없고 서비스 계층에서 대부분의 비즈니스 로직을 처리하는 것을 트랜잭션 스크립트 패턴이라고 합니다. \n11.3.5 웹 계층 구현준영속 엔티티를 수정하는 방법은 2가지입니다.\n\n변경 감지 기능 사용\n병합 사용\n\n변경 감지 기능을 사용하는 방법은, 영속성 컨텍스트에서 엔티티를 다시 조회한 후에 데이터를 수정하는 방법입니다.\n12345678@Transactional//itemParam : Parameter 로 넘어온 준영속 상태의 엔티티void update(Item itemParam)&#123;  //같은 엔티티를 조회  Item findItem = em.find(Item.class, itemParam.getId());    findItem.setPrice(itemParam.getPrice()); //데이터 수정&#125;\n\n위 코드처럼, 트렌젝션 안에서 준영속 엔티티의 식별자로 엔티티를 다시 조회하면, 영속 상태의 엔티티를 얻을 수 있습니다. 이렇게 영속 상태인 엔티티의 값을 파라미터로 넘어온 준영속 사앹의 엔티티 값으로 변경하면 됩니다. 이렇게 하면, 이후 트렌젝션이 커밋될때 변경감지 기능이 동작해서 데이터베이스에 수정사항이 반영됩니다.\n병합은 파라미터로 넘긴 준영속 엔티티의 식별자 값으로 영속 엔티티를 조회하고, 영속 엔티티의 값을 준영속 엔티티의 값으로 채워넣습니다.\n12345@Transactional//itemParam : Parameter 로 넘어온 준영속 상태의 엔티티void update(Item itemParam)&#123;  Item mergeItem = em.merge(itemParam);&#125;\n\n변경 감지 기능을 사용하면, 원하는 속성만 선택해서 변경할 수 있지만, 병합을 사용하면 모든 속성이 변경됩니다.\n","dateCreated":"2019-06-05T00:00:00+09:00","dateModified":"2019-06-05T21:25:25+09:00","datePublished":"2019-06-05T00:00:00+09:00","description":"","headline":"[자바 ORM 표준 JPA 프로그래밍] 11장_웹 어플리케이션 제작","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://kojunhee.github.io/2019/06/05/web-application/"},"publisher":{"@type":"Organization","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg","logo":{"@type":"ImageObject","url":"profile.jpg"}},"url":"https://kojunhee.github.io/2019/06/05/web-application/"}</script>
+    <meta name="description" content="11장은 Spring Framework 와 JPA 를 사용해서 Web Application 을 만들어보는 장입니다. 진행 순서는 다음과 같습니다.  프로젝트 환경설정 도메인 모델과 테이블 설계 기능 구현  코드 위주의 챕터이기 때문에, 핵심 키워드 위주로 정리하려고 합니다. 11.1 프로젝트 환경설정11.2 도메인 모델과 테이블 설계11.2.1 요구사항 분">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="[자바 ORM 표준 JPA 프로그래밍] 11장_웹 어플리케이션 제작">
+<meta property="og:url" content="https://kojunhee.github.io/2019/06/05/web-application/index.html">
+<meta property="og:site_name" content="junhee.ko">
+<meta property="og:description" content="11장은 Spring Framework 와 JPA 를 사용해서 Web Application 을 만들어보는 장입니다. 진행 순서는 다음과 같습니다.  프로젝트 환경설정 도메인 모델과 테이블 설계 기능 구현  코드 위주의 챕터이기 때문에, 핵심 키워드 위주로 정리하려고 합니다. 11.1 프로젝트 환경설정11.2 도메인 모델과 테이블 설계11.2.1 요구사항 분">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-06-05T12:25:25.133Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[자바 ORM 표준 JPA 프로그래밍] 11장_웹 어플리케이션 제작">
+<meta name="twitter:description" content="11장은 Spring Framework 와 JPA 를 사용해서 Web Application 을 만들어보는 장입니다. 진행 순서는 다음과 같습니다.  프로젝트 환경설정 도메인 모델과 테이블 설계 기능 구현  코드 위주의 챕터이기 때문에, 핵심 키워드 위주로 정리하려고 합니다. 11.1 프로젝트 환경설정11.2 도메인 모델과 테이블 설계11.2.1 요구사항 분">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://kojunhee.github.io/assets/images/profile.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/all.css">
+    <link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
+    <link rel="stylesheet" href="/assets/css/thumbs.css">
+    <link rel="stylesheet" href="/assets/css/tranquilpeak.css">
+    <!--STYLES END-->
+    
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="2">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">junhee.ko</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="2">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">junhee.ko</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>Always Learning</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/kojunhee" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://facebook.com/kojunheee" target="_blank" rel="noopener" title="Facebook">
+                    
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/junheeko" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="mailto:junheee.ko@gmail.com" target="_blank" rel="noopener" title="Mail">
+                    
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Mail</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="2"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            [자바 ORM 표준 JPA 프로그래밍] 11장_웹 어플리케이션 제작
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2019-06-05T00:00:00+09:00">
+	
+		    Jun 05, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/jpa/">JPA</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>11장은 Spring Framework 와 JPA 를 사용해서 Web Application 을 만들어보는 장입니다. 진행 순서는 다음과 같습니다.</p>
+<ol>
+<li>프로젝트 환경설정</li>
+<li>도메인 모델과 테이블 설계</li>
+<li>기능 구현</li>
+</ol>
+<p>코드 위주의 챕터이기 때문에, 핵심 키워드 위주로 정리하려고 합니다.</p>
+<h4 id="11-1-프로젝트-환경설정"><a href="#11-1-프로젝트-환경설정" class="headerlink" title="11.1 프로젝트 환경설정"></a>11.1 프로젝트 환경설정</h4><h4 id="11-2-도메인-모델과-테이블-설계"><a href="#11-2-도메인-모델과-테이블-설계" class="headerlink" title="11.2 도메인 모델과 테이블 설계"></a>11.2 도메인 모델과 테이블 설계</h4><h5 id="11-2-1-요구사항-분석"><a href="#11-2-1-요구사항-분석" class="headerlink" title="11.2.1 요구사항 분석"></a>11.2.1 요구사항 분석</h5><ul>
+<li><p>회원 기능</p>
+<ul>
+<li>등록</li>
+<li>조회</li>
+</ul>
+</li>
+<li><p>상품 기능</p>
+<ul>
+<li>등록</li>
+<li>수정</li>
+<li>조회</li>
+</ul>
+</li>
+<li><p>주문</p>
+<ul>
+<li>주문</li>
+<li>조회</li>
+<li>취소</li>
+</ul>
+</li>
+<li><p>기타</p>
+<ul>
+<li>상품 종류 : 도서 / 음반 / 영화</li>
+<li>상품은 카테고리로 구분 가능</li>
+<li>상품 주문 시 배송 정보 입력 가능</li>
+</ul>
+</li>
+</ul>
+<h5 id="11-2-2-도메인-모델-설계"><a href="#11-2-2-도메인-모델-설계" class="headerlink" title="11.2.2 도메인 모델 설계"></a>11.2.2 도메인 모델 설계</h5><ul>
+<li>회원 / 주문 / 상품<ul>
+<li>주문과 상품은 다대다 관계<ul>
+<li>다대다 관계는 관계형 데이터베이스는 물론이고, 엔티티에서도 거의 사용하지 않음</li>
+<li>주문 상품이라는 엔티티를 추가해서 다다대 관계를 일대다, 다대일 관계로 풀어냄</li>
+</ul>
+</li>
+<li>상품 분류<ul>
+<li>상품은 도서, 음반, 영화로 구분되는데, 상품이라는 공통 속성을 사용하므로 상속 구조로 표현</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="11-2-3-테이블-설계"><a href="#11-2-3-테이블-설계" class="headerlink" title="11.2.3 테이블 설계"></a>11.2.3 테이블 설계</h5><h5 id="11-2-4-연관-관계-정리"><a href="#11-2-4-연관-관계-정리" class="headerlink" title="11.2.4 연관 관계 정리"></a>11.2.4 연관 관계 정리</h5><ul>
+<li>회원과 주문<ul>
+<li>일대다 양방향 관계</li>
+<li>연관 관계의 주인을 정해야함. 외래키가 있는 주문이 연관 관계의 주인.</li>
+</ul>
+</li>
+<li>주문 상품과 주문<ul>
+<li>다대일 양방향 관계</li>
+<li>주문 상품이 연관관계의 주인</li>
+</ul>
+</li>
+<li>주문 상품과 상품<ul>
+<li>일대일 단방향 관계</li>
+</ul>
+</li>
+<li>주문과 배송<ul>
+<li>일대일 양방향 관계</li>
+</ul>
+</li>
+<li>카테고리와 상품<ul>
+<li>@ManyToMany</li>
+</ul>
+</li>
+</ul>
+<h5 id="11-2-5-엔티티-클래스"><a href="#11-2-5-엔티티-클래스" class="headerlink" title="11.2.5 엔티티 클래스"></a>11.2.5 엔티티 클래스</h5><h4 id="11-3-애플리케이션-구현"><a href="#11-3-애플리케이션-구현" class="headerlink" title="11.3 애플리케이션 구현"></a>11.3 애플리케이션 구현</h4><h5 id="11-3-1-개발-방법"><a href="#11-3-1-개발-방법" class="headerlink" title="11.3.1 개발 방법"></a>11.3.1 개발 방법</h5><ul>
+<li>Controller<ul>
+<li>MVC 의 컨트롤러가 모여있는 곳</li>
+<li>서비스 계층을 호출하고 결과를 뷰에 전달</li>
+</ul>
+</li>
+<li>Service<ul>
+<li>비즈니스 로직이 있고 트렌젝션을 시작</li>
+<li>데이터 접근 계층인 Repository를 호출</li>
+</ul>
+</li>
+<li>Repository<ul>
+<li>JPA 를 직접 사용하는 곳</li>
+<li>Entity Manager 를 사용해서 Entity 를 저장하고 조회</li>
+</ul>
+</li>
+<li>Domain<ul>
+<li>엔티티가 모여 있는 계층</li>
+<li>모든 계층에서 사용</li>
+</ul>
+</li>
+</ul>
+<h5 id="11-3-2-회원-기능"><a href="#11-3-2-회원-기능" class="headerlink" title="11.3.2 회원 기능"></a>11.3.2 회원 기능</h5><p>순수 자바 환경에셔는 엔티티 메니저 팩토리에서 엔티티 메니저를 직접 생성해서 사용했지만, 스프링이나 J2EE 컨테이너를 사용하면 컨테이너가 엔티티 메니저를 관리하고 제공합니다. 그래서, 엔티티 메니저 팩토리에서 엔티티 메니저를 직접 생성해서 사용하지 않고, 컨테이너가 제공하는 엔티티 메니저를 사용합니다.</p>
+<p>@PersistenceContext 는 컨테이너가 관리하는 엔티티 메니저를 주입하는 Annotation 입니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@PersistenceContext</span></span><br><span class="line">EntityManager em;</span><br></pre></td></tr></table></figure>
+
+<h5 id="11-3-3-상품-기능"><a href="#11-3-3-상품-기능" class="headerlink" title="11.3.3 상품 기능"></a>11.3.3 상품 기능</h5><h5 id="11-3-4-주문-기능"><a href="#11-3-4-주문-기능" class="headerlink" title="11.3.4 주문 기능"></a>11.3.4 주문 기능</h5><p>주문 서비스의 주문과 주문 취소 메소드를 보면 비즈니스 로직 대부분이 엔티티에 있습니다. 서비스 계층은 단순히 엔티티에 필요한 요청을 위임하는 역할을 합니다. 이처럼, 엔티티가 비즈니로스 로직을 가지고 객체지향의 특성을 활용하는 것을 도메인 모델 패턴이라고 합니다.</p>
+<p>반대로, 엔티티에는 비즈니스 로직이 거의 없고 서비스 계층에서 대부분의 비즈니스 로직을 처리하는 것을 트랜잭션 스크립트 패턴이라고 합니다. </p>
+<h5 id="11-3-5-웹-계층-구현"><a href="#11-3-5-웹-계층-구현" class="headerlink" title="11.3.5 웹 계층 구현"></a>11.3.5 웹 계층 구현</h5><p>준영속 엔티티를 수정하는 방법은 2가지입니다.</p>
+<ul>
+<li>변경 감지 기능 사용</li>
+<li>병합 사용</li>
+</ul>
+<p>변경 감지 기능을 사용하는 방법은, 영속성 컨텍스트에서 엔티티를 다시 조회한 후에 데이터를 수정하는 방법입니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="comment">//itemParam : Parameter 로 넘어온 준영속 상태의 엔티티</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">update</span><span class="params">(Item itemParam)</span></span>&#123;</span><br><span class="line">  <span class="comment">//같은 엔티티를 조회</span></span><br><span class="line">  Item findItem = em.find(Item.class, itemParam.getId());</span><br><span class="line">  </span><br><span class="line">  findItem.setPrice(itemParam.getPrice()); <span class="comment">//데이터 수정</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>위 코드처럼, 트렌젝션 안에서 준영속 엔티티의 식별자로 엔티티를 다시 조회하면, 영속 상태의 엔티티를 얻을 수 있습니다. 이렇게 영속 상태인 엔티티의 값을 파라미터로 넘어온 준영속 사앹의 엔티티 값으로 변경하면 됩니다. 이렇게 하면, 이후 트렌젝션이 커밋될때 변경감지 기능이 동작해서 데이터베이스에 수정사항이 반영됩니다.</p>
+<p>병합은 파라미터로 넘긴 준영속 엔티티의 식별자 값으로 영속 엔티티를 조회하고, 영속 엔티티의 값을 준영속 엔티티의 값으로 채워넣습니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="comment">//itemParam : Parameter 로 넘어온 준영속 상태의 엔티티</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">update</span><span class="params">(Item itemParam)</span></span>&#123;</span><br><span class="line">  Item mergeItem = em.merge(itemParam);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>변경 감지 기능을 사용하면, 원하는 속성만 선택해서 변경할 수 있지만, 병합을 사용하면 모든 속성이 변경됩니다.</p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/06/12/web-application-persistencen-context/" data-tooltip="[자바 ORM 표준 JPA 프로그래밍] 13장_웹 어플리케이션과 영속성 관리" aria-label="PREVIOUS: [자바 ORM 표준 JPA 프로그래밍] 13장_웹 어플리케이션과 영속성 관리">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/04/21/spring-data-jpa/" data-tooltip="[자바 ORM 표준 JPA 프로그래밍] 12장_스프링 데이터 JPA" aria-label="NEXT: [자바 ORM 표준 JPA 프로그래밍] 12장_스프링 데이터 JPA">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2019/06/05/web-application/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 junhee.ko. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="2">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/06/12/web-application-persistencen-context/" data-tooltip="[자바 ORM 표준 JPA 프로그래밍] 13장_웹 어플리케이션과 영속성 관리" aria-label="PREVIOUS: [자바 ORM 표준 JPA 프로그래밍] 13장_웹 어플리케이션과 영속성 관리">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/04/21/spring-data-jpa/" data-tooltip="[자바 ORM 표준 JPA 프로그래밍] 12장_스프링 데이터 JPA" aria-label="NEXT: [자바 ORM 표준 JPA 프로그래밍] 12장_스프링 데이터 JPA">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2019/06/05/web-application/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="2">
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2019/06/05/web-application/">
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">junhee.ko</h4>
+        
+            <div id="about-card-bio"><p>Always Learning</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Engineer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Incheon
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/jquery.js"></script>
+<script src="/assets/js/jquery.fancybox.js"></script>
+<script src="/assets/js/thumbs.js"></script>
+<script src="/assets/js/tranquilpeak.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://kojunhee.github.io/2019/06/05/web-application/';
+                 
+                    this.page.identifier = '2019/06/05/web-application/';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'junheeko';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>

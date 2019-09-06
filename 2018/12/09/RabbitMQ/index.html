@@ -1,0 +1,470 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="junhee.ko">
+    <title>RabbitMQ - junhee.ko</title>
+    <meta name="author" content="junhee.ko">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg"},"articleBody":"RabbitMQ가 뭔가요?producers 로부터 메시지를 받아 consumers 에게 전달해주는 서비스입니다.\nproducing이 뭔가요?메시지를 전송한다는 의미입니다. 메시지들을 전송하는 프로그램을 producer 라 부릅니다.\nconsuming이 뭔가요?Consuming은 메시지를 수신한다는 의미입니다. 메시지 수신을 기다리는 프로그램을 consumer라고 합니다. \n메세지 큐가 왜 필요한가요?\nQueue에 넣기 때문에 나중에 처리 할 수 있습니다. (비동기)\n애플리케이션과 분리 할 수 있습니다. \n다수의 프로세스들이 큐에 메시지를 보낼 수 있습니다.\n\n다른 메세징 시스템은 뭐가 있나요?activeMQ, kafka 등이 있습니다.\nrabbitMQ와 kafka의 차이는 뭔가요?kafaka는 scale out과 high availability 를 위해, 브로커들이 클러스터로 구성되어 동작하도록 설계되었습니다.\nrabbitMQ는 AMQP 프로토콜을 사용하고, kafaka는 단순한 메시지 헤더를 지닌 TCP기반의 프로토콜을 사용합니다.\nrabbitMQ는 Producer가 broker에게 다수의 메시지를 전송할 때 각 메시지를 개별적으로 전송하고, kafka는 다수의 메시지를 batch형태로 broker에게 한 번에 전달할 수 있어 TCP/IP 라운드트립 횟수를 줄일 수 있다.\nrabbitMQ는 메시지를 기본적으로 메모리에 저장하고, kafka는 메시지를 파일 시스템에 저장합니다.\nrabbitMQ는 Consumer에 의해 처리된 메시지(acknowledged message)를 곧바로 삭제하고, kafka는 처리된 메시지를 삭제하지 않고 파일 시스템에 그대로 두었다가 설정된 수명이 지나면 삭제합니다. \nrabbitMQ는 broker가 consumer에게 메시지를 push해 주는 방식인데 반해, Kafka는 consumer가 broker로부터 직접 메시지를 가지고 가는 pull 방식으로 동작합니다.\nreferencehttp://epicdevs.com/17\n","dateCreated":"2018-12-09T00:00:00+09:00","dateModified":"2019-03-15T13:07:10+09:00","datePublished":"2018-12-09T00:00:00+09:00","description":"","headline":"RabbitMQ","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://kojunhee.github.io/2018/12/09/RabbitMQ/"},"publisher":{"@type":"Organization","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg","logo":{"@type":"ImageObject","url":"profile.jpg"}},"url":"https://kojunhee.github.io/2018/12/09/RabbitMQ/"}</script>
+    <meta name="description" content="RabbitMQ가 뭔가요?producers 로부터 메시지를 받아 consumers 에게 전달해주는 서비스입니다. producing이 뭔가요?메시지를 전송한다는 의미입니다. 메시지들을 전송하는 프로그램을 producer 라 부릅니다. consuming이 뭔가요?Consuming은 메시지를 수신한다는 의미입니다. 메시지 수신을 기다리는 프로그램을 consume">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="RabbitMQ">
+<meta property="og:url" content="https://kojunhee.github.io/2018/12/09/RabbitMQ/index.html">
+<meta property="og:site_name" content="junhee.ko">
+<meta property="og:description" content="RabbitMQ가 뭔가요?producers 로부터 메시지를 받아 consumers 에게 전달해주는 서비스입니다. producing이 뭔가요?메시지를 전송한다는 의미입니다. 메시지들을 전송하는 프로그램을 producer 라 부릅니다. consuming이 뭔가요?Consuming은 메시지를 수신한다는 의미입니다. 메시지 수신을 기다리는 프로그램을 consume">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-03-15T04:07:10.336Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RabbitMQ">
+<meta name="twitter:description" content="RabbitMQ가 뭔가요?producers 로부터 메시지를 받아 consumers 에게 전달해주는 서비스입니다. producing이 뭔가요?메시지를 전송한다는 의미입니다. 메시지들을 전송하는 프로그램을 producer 라 부릅니다. consuming이 뭔가요?Consuming은 메시지를 수신한다는 의미입니다. 메시지 수신을 기다리는 프로그램을 consume">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://kojunhee.github.io/assets/images/profile.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/all.css">
+    <link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
+    <link rel="stylesheet" href="/assets/css/thumbs.css">
+    <link rel="stylesheet" href="/assets/css/tranquilpeak.css">
+    <!--STYLES END-->
+    
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="2">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">junhee.ko</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="2">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">junhee.ko</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>Always Learning</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/kojunhee" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://facebook.com/kojunheee" target="_blank" rel="noopener" title="Facebook">
+                    
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/junheeko" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="mailto:junheee.ko@gmail.com" target="_blank" rel="noopener" title="Mail">
+                    
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Mail</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="2"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            RabbitMQ
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2018-12-09T00:00:00+09:00">
+	
+		    Dec 09, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/etc/">etc</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h5 id="RabbitMQ가-뭔가요"><a href="#RabbitMQ가-뭔가요" class="headerlink" title="RabbitMQ가 뭔가요?"></a>RabbitMQ가 뭔가요?</h5><p>producers 로부터 메시지를 받아 consumers 에게 전달해주는 서비스입니다.</p>
+<h5 id="producing이-뭔가요"><a href="#producing이-뭔가요" class="headerlink" title="producing이 뭔가요?"></a>producing이 뭔가요?</h5><p>메시지를 전송한다는 의미입니다. 메시지들을 전송하는 프로그램을 producer 라 부릅니다.</p>
+<h5 id="consuming이-뭔가요"><a href="#consuming이-뭔가요" class="headerlink" title="consuming이 뭔가요?"></a>consuming이 뭔가요?</h5><p>Consuming은 메시지를 수신한다는 의미입니다. 메시지 수신을 기다리는 프로그램을 consumer라고 합니다. </p>
+<h5 id="메세지-큐가-왜-필요한가요"><a href="#메세지-큐가-왜-필요한가요" class="headerlink" title="메세지 큐가 왜 필요한가요?"></a>메세지 큐가 왜 필요한가요?</h5><ol>
+<li>Queue에 넣기 때문에 나중에 처리 할 수 있습니다. (비동기)</li>
+<li>애플리케이션과 분리 할 수 있습니다. </li>
+<li>다수의 프로세스들이 큐에 메시지를 보낼 수 있습니다.</li>
+</ol>
+<h5 id="다른-메세징-시스템은-뭐가-있나요"><a href="#다른-메세징-시스템은-뭐가-있나요" class="headerlink" title="다른 메세징 시스템은 뭐가 있나요?"></a>다른 메세징 시스템은 뭐가 있나요?</h5><p>activeMQ, kafka 등이 있습니다.</p>
+<h5 id="rabbitMQ와-kafka의-차이는-뭔가요"><a href="#rabbitMQ와-kafka의-차이는-뭔가요" class="headerlink" title="rabbitMQ와 kafka의 차이는 뭔가요?"></a>rabbitMQ와 kafka의 차이는 뭔가요?</h5><p>kafaka는 scale out과 high availability 를 위해, 브로커들이 클러스터로 구성되어 동작하도록 설계되었습니다.</p>
+<p>rabbitMQ는 AMQP 프로토콜을 사용하고, kafaka는 단순한 메시지 헤더를 지닌 TCP기반의 프로토콜을 사용합니다.</p>
+<p>rabbitMQ는 Producer가 broker에게 다수의 메시지를 전송할 때 각 메시지를 개별적으로 전송하고, kafka는 다수의 메시지를 batch형태로 broker에게 한 번에 전달할 수 있어 TCP/IP 라운드트립 횟수를 줄일 수 있다.</p>
+<p>rabbitMQ는 메시지를 기본적으로 메모리에 저장하고, kafka는 메시지를 파일 시스템에 저장합니다.</p>
+<p>rabbitMQ는 Consumer에 의해 처리된 메시지(acknowledged message)를 곧바로 삭제하고, kafka는 처리된 메시지를 삭제하지 않고 파일 시스템에 그대로 두었다가 설정된 수명이 지나면 삭제합니다. </p>
+<p>rabbitMQ는 broker가 consumer에게 메시지를 push해 주는 방식인데 반해, Kafka는 consumer가 broker로부터 직접 메시지를 가지고 가는 pull 방식으로 동작합니다.</p>
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="http://epicdevs.com/17" target="_blank" rel="noopener">http://epicdevs.com/17</a></p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/12/09/React.js/" data-tooltip="React.js" aria-label="PREVIOUS: React.js">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/12/09/REPL/" data-tooltip="REPL" aria-label="NEXT: REPL">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2018/12/09/RabbitMQ/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 junhee.ko. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="2">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/12/09/React.js/" data-tooltip="React.js" aria-label="PREVIOUS: React.js">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/12/09/REPL/" data-tooltip="REPL" aria-label="NEXT: REPL">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2018/12/09/RabbitMQ/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="2">
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2018/12/09/RabbitMQ/">
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">junhee.ko</h4>
+        
+            <div id="about-card-bio"><p>Always Learning</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Engineer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Incheon
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/jquery.js"></script>
+<script src="/assets/js/jquery.fancybox.js"></script>
+<script src="/assets/js/thumbs.js"></script>
+<script src="/assets/js/tranquilpeak.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://kojunhee.github.io/2018/12/09/RabbitMQ/';
+                 
+                    this.page.identifier = '2018/12/09/RabbitMQ/';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'junheeko';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>

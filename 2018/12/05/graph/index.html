@@ -1,0 +1,475 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="junhee.ko">
+    <title>그래프 - junhee.ko</title>
+    <meta name="author" content="junhee.ko">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg"},"articleBody":"그래프란 ?노드 (N, node) 와 그 노드를 연결하는 간선 (E, edge) 을 하나로 모아 놓은 자료 구조입니다.\n트리와 그래프의 차이는?트리는 그래프의 한 종류입니다. 트리는 방향성이 있는 비순환 그래프입니다.\n그래프는 어떻게 구현하나요 ?인접행렬과 인접리스트로 구현할 수 있습니다.\n\n인접행렬\n그래프의 연결 관계를 이차원 배열로 나타내는 방식입니다.장점은, 노드 i와 노드 j가 연결되어 있는지 확인하고 싶을 때, adj(i)(j)가 1인지 0인지만 확인하면 되기 때문에 시간복잡도 O(1) 이라는 점입니다. 단점은, 노드 i에 연결된 모든 노드들에 방문해보고 싶은 경우, adj(i)(1)부터 adj(i)(v)를 모두 확인해보아야 하기 때문에 총 O(v)의 시간이 걸린다는 점입니다.\n\n인접리스트\n그래프의 연결 관계를 연결 리스트로 나타내는 방식입니다.장점은, 실제로 연결된 노드들에 대한 정보만 저장합니다. 단점은, 노드 i와 노드 j가 연결되어 있는지 알고 싶다면, adj[i]가 j를 성분으로 갖는지 확인해봐야합니다. 시간복잡도 O(v)가 됩니다.\n\n\n그래프를 어떻게 탐색하나요?깊이 우선 탐색 (DFS) 와 너비 우선 탐색 (BFS)가 있습니다.\n\nDFS\n루트 노드(혹은 다른 임의의 노드)에서 시작해서 다음 분기(branch)로 넘어가기 전에 해당 분기를 완벽하게 탐색하는 방법입니다.\n\nBFS\n루트 노드(혹은 다른 임의의 노드)에서 시작해서 인접한 노드를 먼저 탐색하는 방법입니다.\n\n\nreferencehttps://gmlwjd9405.github.io/2018/08/13/data-structure-graph.html\n","dateCreated":"2018-12-05T00:00:00+09:00","dateModified":"2019-04-06T14:03:34+09:00","datePublished":"2018-12-05T00:00:00+09:00","description":"","headline":"그래프","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://kojunhee.github.io/2018/12/05/graph/"},"publisher":{"@type":"Organization","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg","logo":{"@type":"ImageObject","url":"profile.jpg"}},"url":"https://kojunhee.github.io/2018/12/05/graph/"}</script>
+    <meta name="description" content="그래프란 ?노드 (N, node) 와 그 노드를 연결하는 간선 (E, edge) 을 하나로 모아 놓은 자료 구조입니다. 트리와 그래프의 차이는?트리는 그래프의 한 종류입니다. 트리는 방향성이 있는 비순환 그래프입니다. 그래프는 어떻게 구현하나요 ?인접행렬과 인접리스트로 구현할 수 있습니다.  인접행렬 그래프의 연결 관계를 이차원 배열로 나타내는 방식입니다.">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="그래프">
+<meta property="og:url" content="https://kojunhee.github.io/2018/12/05/graph/index.html">
+<meta property="og:site_name" content="junhee.ko">
+<meta property="og:description" content="그래프란 ?노드 (N, node) 와 그 노드를 연결하는 간선 (E, edge) 을 하나로 모아 놓은 자료 구조입니다. 트리와 그래프의 차이는?트리는 그래프의 한 종류입니다. 트리는 방향성이 있는 비순환 그래프입니다. 그래프는 어떻게 구현하나요 ?인접행렬과 인접리스트로 구현할 수 있습니다.  인접행렬 그래프의 연결 관계를 이차원 배열로 나타내는 방식입니다.">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-04-06T05:03:34.111Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="그래프">
+<meta name="twitter:description" content="그래프란 ?노드 (N, node) 와 그 노드를 연결하는 간선 (E, edge) 을 하나로 모아 놓은 자료 구조입니다. 트리와 그래프의 차이는?트리는 그래프의 한 종류입니다. 트리는 방향성이 있는 비순환 그래프입니다. 그래프는 어떻게 구현하나요 ?인접행렬과 인접리스트로 구현할 수 있습니다.  인접행렬 그래프의 연결 관계를 이차원 배열로 나타내는 방식입니다.">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://kojunhee.github.io/assets/images/profile.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/all.css">
+    <link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
+    <link rel="stylesheet" href="/assets/css/thumbs.css">
+    <link rel="stylesheet" href="/assets/css/tranquilpeak.css">
+    <!--STYLES END-->
+    
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="2">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">junhee.ko</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="2">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">junhee.ko</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>Always Learning</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/kojunhee" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://facebook.com/kojunheee" target="_blank" rel="noopener" title="Facebook">
+                    
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/junheeko" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="mailto:junheee.ko@gmail.com" target="_blank" rel="noopener" title="Mail">
+                    
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Mail</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="2"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            그래프
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2018-12-05T00:00:00+09:00">
+	
+		    Dec 05, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/data-structure/">Data Structure</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h5 id="그래프란"><a href="#그래프란" class="headerlink" title="그래프란 ?"></a>그래프란 ?</h5><p>노드 (N, node) 와 그 노드를 연결하는 간선 (E, edge) 을 하나로 모아 놓은 자료 구조입니다.</p>
+<h5 id="트리와-그래프의-차이는"><a href="#트리와-그래프의-차이는" class="headerlink" title="트리와 그래프의 차이는?"></a>트리와 그래프의 차이는?</h5><p>트리는 그래프의 한 종류입니다. 트리는 방향성이 있는 비순환 그래프입니다.</p>
+<h5 id="그래프는-어떻게-구현하나요"><a href="#그래프는-어떻게-구현하나요" class="headerlink" title="그래프는 어떻게 구현하나요 ?"></a>그래프는 어떻게 구현하나요 ?</h5><p>인접행렬과 인접리스트로 구현할 수 있습니다.</p>
+<ol>
+<li><p>인접행렬</p>
+<p>그래프의 연결 관계를 이차원 배열로 나타내는 방식입니다.<br>장점은, 노드 i와 노드 j가 연결되어 있는지 확인하고 싶을 때, adj(i)(j)가 1인지 0인지만 확인하면 되기 때문에 시간복잡도 O(1) 이라는 점입니다. 단점은, 노드 i에 연결된 모든 노드들에 방문해보고 싶은 경우, adj(i)(1)부터 adj(i)(v)를 모두 확인해보아야 하기 때문에 총 O(v)의 시간이 걸린다는 점입니다.</p>
+</li>
+<li><p>인접리스트</p>
+<p>그래프의 연결 관계를 연결 리스트로 나타내는 방식입니다.<br>장점은, 실제로 연결된 노드들에 대한 정보만 저장합니다. 단점은, 노드 i와 노드 j가 연결되어 있는지 알고 싶다면, adj[i]가 j를 성분으로 갖는지 확인해봐야합니다. 시간복잡도 O(v)가 됩니다.</p>
+</li>
+</ol>
+<h5 id="그래프를-어떻게-탐색하나요"><a href="#그래프를-어떻게-탐색하나요" class="headerlink" title="그래프를 어떻게 탐색하나요?"></a>그래프를 어떻게 탐색하나요?</h5><p>깊이 우선 탐색 (DFS) 와 너비 우선 탐색 (BFS)가 있습니다.</p>
+<ol>
+<li><p>DFS</p>
+<p>루트 노드(혹은 다른 임의의 노드)에서 시작해서 다음 분기(branch)로 넘어가기 전에 해당 분기를 완벽하게 탐색하는 방법입니다.</p>
+</li>
+<li><p>BFS</p>
+<p>루트 노드(혹은 다른 임의의 노드)에서 시작해서 인접한 노드를 먼저 탐색하는 방법입니다.</p>
+</li>
+</ol>
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://gmlwjd9405.github.io/2018/08/13/data-structure-graph.html" target="_blank" rel="noopener">https://gmlwjd9405.github.io/2018/08/13/data-structure-graph.html</a></p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/12/05/http method/" data-tooltip="http method" aria-label="PREVIOUS: http method">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/12/05/coupling/" data-tooltip="coupling" aria-label="NEXT: coupling">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2018/12/05/graph/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 junhee.ko. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="2">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/12/05/http method/" data-tooltip="http method" aria-label="PREVIOUS: http method">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/12/05/coupling/" data-tooltip="coupling" aria-label="NEXT: coupling">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2018/12/05/graph/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="2">
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2018/12/05/graph/">
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">junhee.ko</h4>
+        
+            <div id="about-card-bio"><p>Always Learning</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Engineer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Incheon
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/jquery.js"></script>
+<script src="/assets/js/jquery.fancybox.js"></script>
+<script src="/assets/js/thumbs.js"></script>
+<script src="/assets/js/tranquilpeak.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://kojunhee.github.io/2018/12/05/graph/';
+                 
+                    this.page.identifier = '2018/12/05/graph/';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'junheeko';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>

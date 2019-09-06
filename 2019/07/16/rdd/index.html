@@ -1,0 +1,604 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="junhee.ko">
+    <title>[스파크2 프로그래밍] 2장_RDD - junhee.ko</title>
+    <meta name="author" content="junhee.ko">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg"},"articleBody":"2.1 RDD이번 장의 목표 : 데이터 모델로서의 추상적인 RDD 가 아닌, 프로그램 작성을 위한 API 관점에서 RDD 를 이해\n2.1.1 들어가기에 앞서RDD 다루기 전에 알아야 할 것\n\n스파크 클러스터\n클러스터 환경에서 동작하는 프로그램 작성할 때는 데이터가 여러 서버에 나눠져 병렬로 처리됩니다.\n\n분산데이터로서의 RDD\nRDD 는 회복력을 가진 분산 데이터 집합입니다.\n\n불변성\n한번 만들어진 RDD 는 어떤 경우에도 변경되지 않습니다.\n\n파티션\nRDD 데이터는 클러스터를 구성하는 여러 서버에 나누어서 저장됩니다. 스파크는 분할된 데이터를 파티션이라는 단위로 관리합니다.\n\nHDFS\n\nJob 과 Executor\n스파크 프로그램을 실행하는 것을 스파크 잡을 실행한다고 합니다. 하나의 잡은 클러스터에서 병렬로 처리되고, 각 서버마다 익스큐터라는 프로세스가 생성됩니다. 각자 할당된 파티션을 처리합니다.\n\n드라이버 프로그램\n드라이버란, 스파크 컨텍스트를 생성하고 그 인스턴스를 포함하는 있는 프로그램입니다.\n\n트랜스포메이션과 액선\n트랜스포메이션은 RDD 의 형태를 변형하는 연산입니다. 액선은 어떤 동작을 수행해 그 결과로서 RDD 가 아닌 다른 타입의 결과를 변환하는 연산입니다.\n\n지연 동작과 최적화\n트랜스포메이션 연산은 RDD 를 사용하는 다른 액션 연산이 호출될때까지는 실제 트랜스포메이션을 수행하지 않습니다. 따라서, 실행 계획의 최적화가 가능합니다. 사용자가 입력한 변환 연산들을 즉시 수행하지 않고 모아뒀다가 한 번에 실행함으로써 불필요한 네티워크 통신 비용을 줄일 수 있습니다.\n\n함수의 전달\n\n\n2.1.2 스파크 컨텍스트 생성스파크컨텍스트는 스파크 애플리케이션과 클러스터의 연결을 관리하는 객체로서 스파크 애플리케이션은 반드시 스파크 컨텍스트를 생성해야합니다. 클러스터 마스터 정보와 애플리케이션 이름은 반드시 지정해야하는 필수정보입니다.\n12SparkConf conf = new SparkConf().setMaster(\"local[*]\").setAppName(\"RDDCreateSample\");JavaSparkContext sc = new JavaSparkContext(conf);\n\n2.1.3 RDD 생성RDD 생성 방법 두가지가 있습니다.\n\n드라이버 프로그램의 컬렉션 객체 이용\n컬렉션 객체는 자바나 파이썬의 경우에는 리스트 타입을 사용합니다.\n1JavaRDD&lt;String&gt; rdd = sc.parallelize(Arrays.asList(\"a\",\"b\",\"c\",\"d\",\"e\"));\n\n파일과 같은 외부 데이터 이용\n스파크는 내부적으로 하둡의 입력 및 출력 기능을 사용하므로 하둡이 다룰 수 있는 모든 입출력 유형을 다룰 수 있습니다.\n파일의 각 줄은 한 개의 RDD 구성요소가 됩니다. 파일을 읽어들이는 과정은 하둡의 TextInputFormat 을 이용합니다. \n1JavaRDD&lt;String&gt; rdd = sc.textFile(\"&lt;spark_home_dir&gt;/README.md\");\n\n\n\n2.1.4 RDD 기본 액션2.1.4.1 collectRDD 의 모든 원소를 모아서 배열로 돌려줍니다. 반환 타입이 RDD 가 아닌 배열이므로 이 연산은 액션에 속하는 연산입니다. RDD 에 있는 모든 요소들이 collect 연산을 호출한 서버의 메모리에 수집됩니다. 따라서 충분한 메모리 공간이 확보되어야합니다.\n123JavaRDD&lt;Integer&gt; rdd = sc.parallelize(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));List&lt;Integer&gt; result = rdd.collect();for (Integer i : result) System.out.println(i);\n\n2.1.4.2 countRDD 구성하는 전체 요소 개수 반환합니다.\n123JavaRDD&lt;Integer&gt; rdd = sc.parallelize(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));long result = rdd.count();System.out.println(result);\n\n2.1.5 RDD 트랜스포메이션기존 RDD 를 이용해 새로운 RDD 를 생성하는 연산입니다.\n\nMap 연산\n요소간의 mapping 을 정의한 함수를 RDD 에 속하는 모든 요소에 적용해 새로운 RDD 를 생성\n\n\n그룹화 연산\n특정 조건에 따라 요소를 그룹화 하거나 특정 함수를 적용\n\n\n집합 연산\nRDD 에 포함된 요소를 하나의 집합으로 간주할 때 서로 다른 RDD 간에 합집합, 교집합 등을 계산\n\n\n파티션 연산\nRDD 의 파티션 개수를 조정\n\n\n필터, 정렬 연산\n특정 조건을 만족하는 요소만 선택하거나 각 요소를 정해진 기준에 따라 정렬\n\n\n\n2.1.6 RDD 액션RDD 메서드 중에서 결과값이 정수나 리스트, 맵 등 RDD가 아닌 다른 타입인 것들입니다. \n트렌스포메이션에 속하는 메서드는 느긋한 평가 방식을 사용합니다. 즉, 호출한다고 즉시 실행되는 것이 아니라 액션으로 분류되는 메서드가 호출되어야하만 비로소 실행됩니다. 액션 메서드를 호출하는 시점이 돼서야 비로소 그동안 쌓여있던 ~개의 트렌스포메이션 연산이 순차적으로 시작됩니다.\n주의할점은, 액션 메서드를 여러번 호출하면 트렌스포메이션 메서드도 여러번 실행됩니다. 예를 들어, rdd1 이라는 RDD 에 map() 연산을 적용해 rdd2 라는 RDD 를 만들었다고 할때, rdd2 의 액션 메서드를 두번 호출하면 map() 연산도 두번 실행됩니다. 따라서, 반복 수행 성능을 개선하기 위해 캐쉬를 적절히 사용하고, 코드 작성시 반복 수행 가능성을 염두해야합니다.\n2.1.7 RDD 데이터 불러오기와 저장하기스파크는 하둡 API 를 기반으로 다양한 데이터 포맷과 파일 시스템을 지원합니다.\n\n파일 포맷\n텍스트 파일 / JSON / 하둡의 시퀀스 파일 / csv …\n\n\n파일 시스템\n로컬 파일 시스템 / HDFS / AWS 의 S3 / 오픈스택의 Swift …\n\n\n\n2.1.7.1 텍스트 파일스파크는 다양한종류의 파일 시스템을 다룰수 있기 때문에 파일의 경로를 지정하는 방법도 파일 시스템의 종류에 따라 다릅니다.\n\n로컬파일 시스템\nfile:///path\n\n\nHDFS\nhdfs://master:prot/path/..\n\n\nS3\nS3n://bucket/path\n\n\n\n주의할점은, 스파크가 클러스터를 이루는 다수의 서버 상에서 동작하기 때문에,  위에서 지정한 경로는 클러스터를 구성하는모든 서버에서 동일하게 접근 가능해야합니다. 따라서, 로컬 파일 시스템의경로를 데이터 위치로 지정하면 클러스터를 구성하는 모든 서버에서 “file:///data/sample.txt” 라는 경로를 통해 지정한 파일로 접근할 수 있어야합니다.\n123456789JavaRdd&lt;Integer&gt; rdd = sc.parallelize(fillToN(1000),  3); // 0~1000 까지의 숫자로 구성, 3개 파티션Class codec =. org.apache.hadoop.io.compress.GzipCodec.class;// saverdd.saveAsTextFile(\"&lt;path_to_save&gt;/sub1\");rdd.saveAsTextFile(\"&lt;path_to_save&gt;/sub2\",  codec);// loadJavaRDD&lt;String&gt; rdd2 = sc.textFile(\"&lt;path_to_save&gt;/sub1\");\n\n2.1.7.2 Object File텍스트 파일을 사용하는 것과. 크게 다르지 않습니다. 다만, RDD 에 포함된 데이터를 오프젝트 파일로 다루기 위해서는 각 요소(오브젝트) 가 자바의 Serializable 인터페이스를 구현하고 있어야합니다. 그리고, 저장된 RDD 의 타입이 RDD[Int]  였다면, 이 파일으 읽어서 생성한 RDD 도 동일한 RDD[Int] 타입입니다.\n12345678JavaRdd&lt;Integer&gt; rdd = sc.parallelize(fillToN(1000),  3); // 0~1000 까지의 숫자로 구성, 3 개 파티션// saverdd.saveAsObjectFile(\"&lt;path_to_save&gt;/sub_path\");// loadJavaRDD&lt;Integer&gt; rdd2 = sc.objectFile(\"&lt;path_to_save&gt;/sub_path\");System.out.println(rdd2.take(10));\n\n2.1.7.3 시퀀스 파일키와 값으로 구성된 데이터를 저장하는 이진 파일 포맷입니다. 하둡에서 자주 사용되는 대표적인 파일 포맷입니다. 시퀀스 파일로다루고자 하는 RDD의 데이터는 하둡의 Wriable 인터페이스를 구현하고 있어야합니다.\n2.1.8 클러스터 환경에서의 공유 변수하둡이나 스파크와 같이 클러스터 환경에서 동작하는 애플리케이션은 하나의 잡을 수행하기 위해 클러스터에 속한 다수의 서버에서 여러 개의 프로세스를 실행하므로 모든 프로세스가 공유할 수 있는 자원을 관리하기 쉽지 않습니다. 이러한 프레임워크는 다수의 프로세스가 공유할 수 있는 읽기 자원과 쓰기 자원을 설정할 수 있도록 지원합니다.\n\n하둡\n분산캐시 / 카운터\n\n\n스파크\n브로드캐스트 변수 / 어큐뮬레이텨\n\n\n\n\n브로드캐스트 변수\n스파크 잡이 실행되는 동안 클러스터 내의 모든 서버에서 공유할 수 있는 읽기 전용 자원을 설정할 수 있는 변수입니다.\n\n먼저 공유하고자 하는 데이터를 포함하는 오브젝트를 생성\n\n\n\n\n이 오브젝트를 스파크컨텍스트의 broadcast() 메서드의 인자로 지정해 해당 메서드를 실행\n\n이렇게 생성된 브로드캐스트 변수를 사용할때는 생성한 브로드캐스트 변수의 value() 메서드를 통해 접근\n클러스터 간에 공유할 변수가 있다고 해서 무조건 브로드캐스트 변수를 사용해야하는 것은 아닙니다. 액션 연산을 수행할때 동일한 스테이지 내에서 실행되는 태스크 간에는 필요한 변수를 자동으로 브로드캐스트 변수를 이용해서 전달하기 때문에 명시적으로 브로드 캐스트 변수를 지정하지않아도 됩니다. \n\n\n\n\n\n어큐뮬레이터\n쓰기 동작을 위한것입니다. 클러스터 내의 모든 서버가 공유하는 쓰기 공간을 제공함으로써 각 서버에서 발생하는 특정 이벤트의 수를 세거나 관찰하고 싶은 정보를 모아두는 용도로 활용할 수 있습니다. \n어큐뮬레이터를 생성하려면 org.apache.spark.util.AccumulatorV2 클래스를 상속받은 클래스를 정의하고, 이 클래스의 인스턴스를 생성합니다. 그리고 생성한 어큐뮬레이터 인스턴스를 스파크컨텍스트가 제공하는 register() method 를 이용해 등록합니다. \n어큐뮬레이터를 사용할 때는 두 가지를 기억해야합니다.\n첫 째, 어큐뮬레이터를 증가시키는 동작은 클러스터의 모든 데이터 처리 프로세스에서 가능하지만 데이터를 읽는 동작은 드라이버 프로그램 내에서만 가능합니다. 즉, RDD 의 트랜스포메이션이나 액션 연산 내부에는 어큐뮬레이터의 값을 증가시킬뿐 그 값을 참조해서 사용하는 것은 불가능합니다. \n둘 째, 일부러 의도한 특별한 목적이없는 한 어큐뮬레이터는 액션 연산을 수행하는 메서드에서만 사용해야합니다. 왜냐하면 트렌스포매이션 연산은 액션 연산과 달리 하나의 잡 내에서 필요에 따라 수차례 반복 실행될 수 있기 때문입니다. 따라서 map(), flatmap() 과 같은 트랜스포메이션 연산 내용에 어큐뮬레이터의 값을 증가시키는 코드가 포함될 경우 정확하지 않은 데이터가 집계 될 수 있습니다.\n\n\n","dateCreated":"2019-07-16T00:00:00+09:00","dateModified":"2019-07-17T22:24:44+09:00","datePublished":"2019-07-16T00:00:00+09:00","description":"","headline":"[스파크2 프로그래밍] 2장_RDD","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://kojunhee.github.io/2019/07/16/rdd/"},"publisher":{"@type":"Organization","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg","logo":{"@type":"ImageObject","url":"profile.jpg"}},"url":"https://kojunhee.github.io/2019/07/16/rdd/"}</script>
+    <meta name="description" content="2.1 RDD이번 장의 목표 : 데이터 모델로서의 추상적인 RDD 가 아닌, 프로그램 작성을 위한 API 관점에서 RDD 를 이해 2.1.1 들어가기에 앞서RDD 다루기 전에 알아야 할 것  스파크 클러스터 클러스터 환경에서 동작하는 프로그램 작성할 때는 데이터가 여러 서버에 나눠져 병렬로 처리됩니다.  분산데이터로서의 RDD RDD 는 회복력을 가진 분산">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="[스파크2 프로그래밍] 2장_RDD">
+<meta property="og:url" content="https://kojunhee.github.io/2019/07/16/rdd/index.html">
+<meta property="og:site_name" content="junhee.ko">
+<meta property="og:description" content="2.1 RDD이번 장의 목표 : 데이터 모델로서의 추상적인 RDD 가 아닌, 프로그램 작성을 위한 API 관점에서 RDD 를 이해 2.1.1 들어가기에 앞서RDD 다루기 전에 알아야 할 것  스파크 클러스터 클러스터 환경에서 동작하는 프로그램 작성할 때는 데이터가 여러 서버에 나눠져 병렬로 처리됩니다.  분산데이터로서의 RDD RDD 는 회복력을 가진 분산">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-07-17T13:24:44.538Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[스파크2 프로그래밍] 2장_RDD">
+<meta name="twitter:description" content="2.1 RDD이번 장의 목표 : 데이터 모델로서의 추상적인 RDD 가 아닌, 프로그램 작성을 위한 API 관점에서 RDD 를 이해 2.1.1 들어가기에 앞서RDD 다루기 전에 알아야 할 것  스파크 클러스터 클러스터 환경에서 동작하는 프로그램 작성할 때는 데이터가 여러 서버에 나눠져 병렬로 처리됩니다.  분산데이터로서의 RDD RDD 는 회복력을 가진 분산">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://kojunhee.github.io/assets/images/profile.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/all.css">
+    <link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
+    <link rel="stylesheet" href="/assets/css/thumbs.css">
+    <link rel="stylesheet" href="/assets/css/tranquilpeak.css">
+    <!--STYLES END-->
+    
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="2">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">junhee.ko</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="2">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">junhee.ko</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>Always Learning</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/kojunhee" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://facebook.com/kojunheee" target="_blank" rel="noopener" title="Facebook">
+                    
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/junheeko" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="mailto:junheee.ko@gmail.com" target="_blank" rel="noopener" title="Mail">
+                    
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Mail</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="2"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            [스파크2 프로그래밍] 2장_RDD
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2019-07-16T00:00:00+09:00">
+	
+		    Jul 16, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/spark/">Spark</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h3 id="2-1-RDD"><a href="#2-1-RDD" class="headerlink" title="2.1 RDD"></a>2.1 RDD</h3><p>이번 장의 목표 : 데이터 모델로서의 추상적인 RDD 가 아닌, 프로그램 작성을 위한 API 관점에서 RDD 를 이해</p>
+<h4 id="2-1-1-들어가기에-앞서"><a href="#2-1-1-들어가기에-앞서" class="headerlink" title="2.1.1 들어가기에 앞서"></a>2.1.1 들어가기에 앞서</h4><p>RDD 다루기 전에 알아야 할 것</p>
+<ol>
+<li><p>스파크 클러스터</p>
+<p>클러스터 환경에서 동작하는 프로그램 작성할 때는 데이터가 여러 서버에 나눠져 병렬로 처리됩니다.</p>
+</li>
+<li><p>분산데이터로서의 RDD</p>
+<p>RDD 는 회복력을 가진 분산 데이터 집합입니다.</p>
+</li>
+<li><p>불변성</p>
+<p>한번 만들어진 RDD 는 어떤 경우에도 변경되지 않습니다.</p>
+</li>
+<li><p>파티션</p>
+<p>RDD 데이터는 클러스터를 구성하는 여러 서버에 나누어서 저장됩니다. 스파크는 분할된 데이터를 파티션이라는 단위로 관리합니다.</p>
+</li>
+<li><p>HDFS</p>
+</li>
+<li><p>Job 과 Executor</p>
+<p>스파크 프로그램을 실행하는 것을 스파크 잡을 실행한다고 합니다. 하나의 잡은 클러스터에서 병렬로 처리되고, 각 서버마다 익스큐터라는 프로세스가 생성됩니다. 각자 할당된 파티션을 처리합니다.</p>
+</li>
+<li><p>드라이버 프로그램</p>
+<p>드라이버란, 스파크 컨텍스트를 생성하고 그 인스턴스를 포함하는 있는 프로그램입니다.</p>
+</li>
+<li><p>트랜스포메이션과 액선</p>
+<p>트랜스포메이션은 RDD 의 형태를 변형하는 연산입니다. 액선은 어떤 동작을 수행해 그 결과로서 RDD 가 아닌 다른 타입의 결과를 변환하는 연산입니다.</p>
+</li>
+<li><p>지연 동작과 최적화</p>
+<p>트랜스포메이션 연산은 RDD 를 사용하는 다른 액션 연산이 호출될때까지는 실제 트랜스포메이션을 수행하지 않습니다. 따라서, 실행 계획의 최적화가 가능합니다. <strong>사용자가 입력한 변환 연산들을 즉시 수행하지 않고 모아뒀다가 한 번에 실행함으로써 불필요한 네티워크 통신 비용을 줄일 수 있습니다.</strong></p>
+</li>
+<li><p>함수의 전달</p>
+</li>
+</ol>
+<h4 id="2-1-2-스파크-컨텍스트-생성"><a href="#2-1-2-스파크-컨텍스트-생성" class="headerlink" title="2.1.2 스파크 컨텍스트 생성"></a>2.1.2 스파크 컨텍스트 생성</h4><p>스파크컨텍스트는 <strong>스파크 애플리케이션과 클러스터의 연결을 관리하는 객체</strong>로서 스파크 애플리케이션은 반드시 스파크 컨텍스트를 생성해야합니다. 클러스터 마스터 정보와 애플리케이션 이름은 반드시 지정해야하는 필수정보입니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SparkConf conf = <span class="keyword">new</span> SparkConf().setMaster(<span class="string">"local[*]"</span>).setAppName(<span class="string">"RDDCreateSample"</span>);</span><br><span class="line">JavaSparkContext sc = <span class="keyword">new</span> JavaSparkContext(conf);</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-1-3-RDD-생성"><a href="#2-1-3-RDD-생성" class="headerlink" title="2.1.3 RDD 생성"></a>2.1.3 RDD 생성</h4><p>RDD 생성 방법 두가지가 있습니다.</p>
+<ol>
+<li><p>드라이버 프로그램의 컬렉션 객체 이용</p>
+<p>컬렉션 객체는 자바나 파이썬의 경우에는 리스트 타입을 사용합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JavaRDD&lt;String&gt; rdd = sc.parallelize(Arrays.asList(<span class="string">"a"</span>,<span class="string">"b"</span>,<span class="string">"c"</span>,<span class="string">"d"</span>,<span class="string">"e"</span>));</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>파일과 같은 외부 데이터 이용</p>
+<p>스파크는 내부적으로 하둡의 입력 및 출력 기능을 사용하므로 하둡이 다룰 수 있는 모든 입출력 유형을 다룰 수 있습니다.</p>
+<p>파일의 각 줄은 한 개의 RDD 구성요소가 됩니다. 파일을 읽어들이는 과정은 하둡의 TextInputFormat 을 이용합니다. </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JavaRDD&lt;String&gt; rdd = sc.textFile(<span class="string">"&lt;spark_home_dir&gt;/README.md"</span>);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h4 id="2-1-4-RDD-기본-액션"><a href="#2-1-4-RDD-기본-액션" class="headerlink" title="2.1.4 RDD 기본 액션"></a>2.1.4 RDD 기본 액션</h4><h5 id="2-1-4-1-collect"><a href="#2-1-4-1-collect" class="headerlink" title="2.1.4.1 collect"></a>2.1.4.1 collect</h5><p>RDD 의 모든 원소를 모아서 배열로 돌려줍니다. 반환 타입이 RDD 가 아닌 배열이므로 이 연산은 액션에 속하는 연산입니다. RDD 에 있는 모든 요소들이 collect 연산을 호출한 서버의 메모리에 수집됩니다. 따라서 충분한 메모리 공간이 확보되어야합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">JavaRDD&lt;Integer&gt; rdd = sc.parallelize(Arrays.asList(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>));</span><br><span class="line">List&lt;Integer&gt; result = rdd.collect();</span><br><span class="line"><span class="keyword">for</span> (Integer i : result) System.out.println(i);</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-1-4-2-count"><a href="#2-1-4-2-count" class="headerlink" title="2.1.4.2 count"></a>2.1.4.2 count</h5><p>RDD 구성하는 전체 요소 개수 반환합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">JavaRDD&lt;Integer&gt; rdd = sc.parallelize(Arrays.asList(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>));</span><br><span class="line"><span class="keyword">long</span> result = rdd.count();</span><br><span class="line">System.out.println(result);</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-1-5-RDD-트랜스포메이션"><a href="#2-1-5-RDD-트랜스포메이션" class="headerlink" title="2.1.5 RDD 트랜스포메이션"></a>2.1.5 RDD 트랜스포메이션</h4><p><strong>기존 RDD 를 이용해 새로운 RDD 를 생성</strong>하는 연산입니다.</p>
+<ul>
+<li>Map 연산<ul>
+<li>요소간의 mapping 을 정의한 함수를 RDD 에 속하는 모든 요소에 적용해 새로운 RDD 를 생성</li>
+</ul>
+</li>
+<li>그룹화 연산<ul>
+<li>특정 조건에 따라 요소를 그룹화 하거나 특정 함수를 적용</li>
+</ul>
+</li>
+<li>집합 연산<ul>
+<li>RDD 에 포함된 요소를 하나의 집합으로 간주할 때 서로 다른 RDD 간에 합집합, 교집합 등을 계산</li>
+</ul>
+</li>
+<li>파티션 연산<ul>
+<li>RDD 의 파티션 개수를 조정</li>
+</ul>
+</li>
+<li>필터, 정렬 연산<ul>
+<li>특정 조건을 만족하는 요소만 선택하거나 각 요소를 정해진 기준에 따라 정렬</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-1-6-RDD-액션"><a href="#2-1-6-RDD-액션" class="headerlink" title="2.1.6 RDD 액션"></a>2.1.6 RDD 액션</h4><p>RDD 메서드 중에서 <strong>결과값이 정수나 리스트, 맵 등 RDD가 아닌 다른 타입</strong>인 것들입니다. </p>
+<p>트렌스포메이션에 속하는 메서드는 느긋한 평가 방식을 사용합니다. 즉, 호출한다고 즉시 실행되는 것이 아니라 액션으로 분류되는 메서드가 호출되어야하만 비로소 실행됩니다. 액션 메서드를 호출하는 시점이 돼서야 비로소 그동안 쌓여있던 ~개의 트렌스포메이션 연산이 순차적으로 시작됩니다.</p>
+<p><strong>주의할점은, 액션 메서드를 여러번 호출하면 트렌스포메이션 메서드도 여러번 실행됩니다.</strong> 예를 들어, rdd1 이라는 RDD 에 map() 연산을 적용해 rdd2 라는 RDD 를 만들었다고 할때, rdd2 의 액션 메서드를 두번 호출하면 map() 연산도 두번 실행됩니다. 따라서, 반복 수행 성능을 개선하기 위해 캐쉬를 적절히 사용하고, 코드 작성시 반복 수행 가능성을 염두해야합니다.</p>
+<h4 id="2-1-7-RDD-데이터-불러오기와-저장하기"><a href="#2-1-7-RDD-데이터-불러오기와-저장하기" class="headerlink" title="2.1.7 RDD 데이터 불러오기와 저장하기"></a>2.1.7 RDD 데이터 불러오기와 저장하기</h4><p>스파크는 하둡 API 를 기반으로 다양한 데이터 포맷과 파일 시스템을 지원합니다.</p>
+<ul>
+<li>파일 포맷<ul>
+<li>텍스트 파일 / JSON / 하둡의 시퀀스 파일 / csv …</li>
+</ul>
+</li>
+<li>파일 시스템<ul>
+<li>로컬 파일 시스템 / HDFS / AWS 의 S3 / 오픈스택의 Swift …</li>
+</ul>
+</li>
+</ul>
+<h5 id="2-1-7-1-텍스트-파일"><a href="#2-1-7-1-텍스트-파일" class="headerlink" title="2.1.7.1 텍스트 파일"></a>2.1.7.1 텍스트 파일</h5><p>스파크는 다양한종류의 파일 시스템을 다룰수 있기 때문에 파일의 경로를 지정하는 방법도 파일 시스템의 종류에 따라 다릅니다.</p>
+<ul>
+<li>로컬파일 시스템<ul>
+<li>file:///path</li>
+</ul>
+</li>
+<li>HDFS<ul>
+<li>hdfs://master:prot/path/..</li>
+</ul>
+</li>
+<li>S3<ul>
+<li>S3n://bucket/path</li>
+</ul>
+</li>
+</ul>
+<p><strong>주의할점은, 스파크가 클러스터를 이루는 다수의 서버 상에서 동작하기 때문에,  위에서 지정한 경로는 클러스터를 구성하는모든 서버에서 동일하게 접근 가능해야합니다.</strong> 따라서, 로컬 파일 시스템의경로를 데이터 위치로 지정하면 클러스터를 구성하는 모든 서버에서 “file:///data/sample.txt” 라는 경로를 통해 지정한 파일로 접근할 수 있어야합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">JavaRdd&lt;Integer&gt; rdd = sc.parallelize(fillToN(<span class="number">1000</span>),  <span class="number">3</span>); <span class="comment">// 0~1000 까지의 숫자로 구성, 3개 파티션</span></span><br><span class="line">Class codec =. org.apache.hadoop.io.compress.GzipCodec.class;</span><br><span class="line"></span><br><span class="line"><span class="comment">// save</span></span><br><span class="line">rdd.saveAsTextFile(<span class="string">"&lt;path_to_save&gt;/sub1"</span>);</span><br><span class="line">rdd.saveAsTextFile(<span class="string">"&lt;path_to_save&gt;/sub2"</span>,  codec);</span><br><span class="line"></span><br><span class="line"><span class="comment">// load</span></span><br><span class="line">JavaRDD&lt;String&gt; rdd2 = sc.textFile(<span class="string">"&lt;path_to_save&gt;/sub1"</span>);</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-1-7-2-Object-File"><a href="#2-1-7-2-Object-File" class="headerlink" title="2.1.7.2 Object File"></a>2.1.7.2 Object File</h5><p>텍스트 파일을 사용하는 것과. 크게 다르지 않습니다. 다만, RDD 에 포함된 데이터를 오프젝트 파일로 다루기 위해서는 각 요소(오브젝트) 가 자바의 Serializable 인터페이스를 구현하고 있어야합니다. 그리고, 저장된 RDD 의 타입이 RDD[Int]  였다면, 이 파일으 읽어서 생성한 RDD 도 동일한 RDD[Int] 타입입니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">JavaRdd&lt;Integer&gt; rdd = sc.parallelize(fillToN(<span class="number">1000</span>),  <span class="number">3</span>); <span class="comment">// 0~1000 까지의 숫자로 구성, 3 개 파티션</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// save</span></span><br><span class="line">rdd.saveAsObjectFile(<span class="string">"&lt;path_to_save&gt;/sub_path"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// load</span></span><br><span class="line">JavaRDD&lt;Integer&gt; rdd2 = sc.objectFile(<span class="string">"&lt;path_to_save&gt;/sub_path"</span>);</span><br><span class="line">System.out.println(rdd2.take(<span class="number">10</span>));</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-1-7-3-시퀀스-파일"><a href="#2-1-7-3-시퀀스-파일" class="headerlink" title="2.1.7.3 시퀀스 파일"></a>2.1.7.3 시퀀스 파일</h5><p>키와 값으로 구성된 데이터를 저장하는 이진 파일 포맷입니다. 하둡에서 자주 사용되는 대표적인 파일 포맷입니다. 시퀀스 파일로다루고자 하는 RDD의 데이터는 하둡의 Wriable 인터페이스를 구현하고 있어야합니다.</p>
+<h4 id="2-1-8-클러스터-환경에서의-공유-변수"><a href="#2-1-8-클러스터-환경에서의-공유-변수" class="headerlink" title="2.1.8 클러스터 환경에서의 공유 변수"></a>2.1.8 클러스터 환경에서의 공유 변수</h4><p>하둡이나 스파크와 같이 클러스터 환경에서 동작하는 애플리케이션은 하나의 잡을 수행하기 위해 클러스터에 속한 다수의 서버에서 여러 개의 프로세스를 실행하므로 모든 프로세스가 공유할 수 있는 자원을 관리하기 쉽지 않습니다. <strong>이러한 프레임워크는 다수의 프로세스가 공유할 수 있는 읽기 자원과 쓰기 자원을 설정할 수 있도록 지원합니다.</strong></p>
+<ul>
+<li>하둡<ul>
+<li>분산캐시 / 카운터</li>
+</ul>
+</li>
+<li>스파크<ul>
+<li>브로드캐스트 변수 / 어큐뮬레이텨</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li><p>브로드캐스트 변수</p>
+<p>스파크 잡이 실행되는 동안 클러스터 내의 모든 서버에서 공유할 수 있는 읽기 전용 자원을 설정할 수 있는 변수입니다.</p>
+<ul>
+<li>먼저 공유하고자 하는 데이터를 포함하는 오브젝트를 생성</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li><p>이 오브젝트를 스파크컨텍스트의 broadcast() 메서드의 인자로 지정해 해당 메서드를 실행</p>
+<ul>
+<li><p>이렇게 생성된 브로드캐스트 변수를 사용할때는 생성한 브로드캐스트 변수의 value() 메서드를 통해 접근</p>
+<p>클러스터 간에 공유할 변수가 있다고 해서 무조건 브로드캐스트 변수를 사용해야하는 것은 아닙니다. <strong>액션 연산을 수행할때 동일한 스테이지 내에서 실행되는 태스크 간에는 필요한 변수를 자동으로 브로드캐스트 변수를 이용해서 전달</strong>하기 때문에 명시적으로 브로드 캐스트 변수를 지정하지않아도 됩니다. </p>
+</li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li><p>어큐뮬레이터</p>
+<p>쓰기 동작을 위한것입니다. 클러스터 내의 모든 서버가 공유하는 쓰기 공간을 제공함으로써 <strong>각 서버에서 발생하는 특정 이벤트의 수를 세거나 관찰하고 싶은 정보를 모아두는 용도로 활용할 수 있습니다.</strong> </p>
+<p>어큐뮬레이터를 생성하려면 org.apache.spark.util.AccumulatorV2 클래스를 상속받은 클래스를 정의하고, 이 클래스의 인스턴스를 생성합니다. 그리고 생성한 어큐뮬레이터 인스턴스를 스파크컨텍스트가 제공하는 register() method 를 이용해 등록합니다. </p>
+<p>어큐뮬레이터를 사용할 때는 두 가지를 기억해야합니다.</p>
+<p>첫 째, 어큐뮬레이터를 증가시키는 동작은 클러스터의 모든 데이터 처리 프로세스에서 가능하지만 데이터를 읽는 동작은 드라이버 프로그램 내에서만 가능합니다. 즉, RDD 의 트랜스포메이션이나 액션 연산 내부에는 어큐뮬레이터의 값을 증가시킬뿐 그 값을 참조해서 사용하는 것은 불가능합니다. </p>
+<p>둘 째, 일부러 의도한 특별한 목적이없는 한 어큐뮬레이터는 액션 연산을 수행하는 메서드에서만 사용해야합니다. 왜냐하면 트렌스포매이션 연산은 액션 연산과 달리 하나의 잡 내에서 필요에 따라 수차례 반복 실행될 수 있기 때문입니다. 따라서 map(), flatmap() 과 같은 트랜스포메이션 연산 내용에 어큐뮬레이터의 값을 증가시키는 코드가 포함될 경우 정확하지 않은 데이터가 집계 될 수 있습니다.</p>
+</li>
+</ol>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/08/07/spark-sql/" data-tooltip="[스파크2 프로그래밍] 5장_스파크SQL 과 데이터프레임,데이터셋" aria-label="PREVIOUS: [스파크2 프로그래밍] 5장_스파크SQL 과 데이터프레임,데이터셋">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/07/01/spark-cluster/" data-tooltip="[스파크2 프로그래밍] 3장_클러스터 환경" aria-label="NEXT: [스파크2 프로그래밍] 3장_클러스터 환경">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2019/07/16/rdd/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 junhee.ko. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="2">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/08/07/spark-sql/" data-tooltip="[스파크2 프로그래밍] 5장_스파크SQL 과 데이터프레임,데이터셋" aria-label="PREVIOUS: [스파크2 프로그래밍] 5장_스파크SQL 과 데이터프레임,데이터셋">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/07/01/spark-cluster/" data-tooltip="[스파크2 프로그래밍] 3장_클러스터 환경" aria-label="NEXT: [스파크2 프로그래밍] 3장_클러스터 환경">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2019/07/16/rdd/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="2">
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2019/07/16/rdd/">
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">junhee.ko</h4>
+        
+            <div id="about-card-bio"><p>Always Learning</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Engineer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Incheon
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/jquery.js"></script>
+<script src="/assets/js/jquery.fancybox.js"></script>
+<script src="/assets/js/thumbs.js"></script>
+<script src="/assets/js/tranquilpeak.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://kojunhee.github.io/2019/07/16/rdd/';
+                 
+                    this.page.identifier = '2019/07/16/rdd/';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'junheeko';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>

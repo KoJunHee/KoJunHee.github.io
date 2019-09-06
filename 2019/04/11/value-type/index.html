@@ -1,0 +1,510 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="junhee.ko">
+    <title>[자바 ORM 표준 JPA 프로그래밍] 9장_값 타입 - junhee.ko</title>
+    <meta name="author" content="junhee.ko">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg"},"articleBody":"JPA의 데이터 타입은 엔티티 타입과 값 타입으로 나눌 수 있습니다. 값 타입은 다음 세 가지로 나눌 수 있습니다.\n\n기본값 타입\n자바 기본 타입 : int, double …\n래퍼 클래스 : Integer …\nString\n\n\n임베디드 타입\n컬렉션 값 타입\n\n9.1 기본값 타입1234567@Entitypublic class Member&#123;  @Id @GeneratedValue  private Long id; // 기본값 타입  private String name; // 기본값 타입  private int age; // 기본값 타입&#125;\n\n9.2 임베디드 타입 (복합 값 타입)새로운 값 타입을 직접 지정해서 사용할 수 있습니다. 이것을 JPA 에서는 임베디드 타입이라고 합니다.\n12345678910111213141516171819202122232425262728@Entitypublic abstract class Member&#123;     @Id @GeneratedValue  private Long id;  private String name;    @Embedded  // 값 타입을 사용하는 곳에 표시  Period workPeriod;    @Embedded   Address homeAddress;&#125;@Embeddable // 값 타입을 정의하는 곳에 표시public class Period&#123;  @Temporal (TemporalType.DATE) java.util.Date startDate;  @Temporal (TemporalType.DATE) java.util.Date endDate;    public boolean isWork(Date date)&#123;    ...  &#125;&#125;@Embeddable // 값 타입을 정의하는 곳에 표시public class Address&#123;&#125;\n\n9.2.1 임베디드 타입과 테이블 매핑임베디드 타입은 엔티티의 값일 뿐입니다. 따라서, 값이 속한 엔티티의 테이블에 매핑합니다.\n9.2.2 임베디드 타입과 연관관계엔티티는 공유 될수 있으므로 참조한다고 표현하고, 값 타입은 특정 주인에게 소속되고 개념상 공유되지 않으므로 포함한다고 합니다.\n9.2.3 @AttributeOverride : 속성 재정의12345678910111213@Entitypublic abstract class Member&#123;     @Id @GeneratedValue  private Long id;  private String name;    @Embedded   Address homeAddress;    @Embedded   Address companyAddress;&#125;\n\n위 코드는 칼럼명이 중복된다는 문제가 있습니다. 이를 다음과 같이 해결합니다.\n123456789101112131415161718@Entitypublic abstract class Member&#123;     @Id @GeneratedValue  private Long id;  private String name;    @Embedded   Address homeAddress;    @Embedded  @AttributeOverrides(&#123;    @AttributeOverride(name = \"city\", column = @Column(name = \"COMPANY_CITY\")),    @AttributeOverride(name = \"street\", column = @Column(name = \"COMPANY_STREET\")),    @AttributeOverride(name = \"zipcode\", column = @Column(name = \"COMPANY_ZIPCODE\")),  &#125;)  Address companyAddress;&#125;\n\n보다시피 코드의 중복도가 높아집니다. 한 엔티티에 같은 임베디드 타입을 중복해서 사용하는 일은 많지 않습니다.\n9.2.4 임베디드 타입과 NULL임베디드 타입이 null 이면 매핑한 칼럼 값은 모두 null 이 됩니다.\n9.3 값 타입과 불변 객체9.3.1 값 타입 공유 참조12345member1.setHomeAddress(new Address(\"city1\"));Address address = member1.getHomeAddress();address.setCity(\"city2\"); //공유해서 사용member2.setHomeAddress(address);\n\n위 코드는 회원2의 주소만 바뀌길 기대하지만, 회원1의 주소도 바뀌게 됩니다. 이렇듯, 뭔가를 수정했는데 전혀 예상하지 못한 곳에서 문제가 발생하는 것을 Side Effect 라고 합니다. 이를 막기 위해, 값을 복사 해서 사용해야합니다.\n9.3.2 값 타입 복사12345678member1.setHomeAddress(new Address(\"city1\"));Address address = member1.getHomeAddress();//복사Address newAddress = address.clone();newAddress.setCity(\"city2\"); //공유해서 사용member2.setHomeAddress(newAddress);\n\n위의 코드 처럼 복사해서 사용하면 Side Effect 문제는 해결하지만, 임베디드 타입 처럼 직접 정의한 값 타입은 자바의 기본 타입이 아니라 객체 타입이란 것입니다.\n123int a = 10;int b = a; //기본 타입은 항상 값을 복사b = 4;\n\n123Address a = new Address(\"old\");Address b = a; //a와 b는 같은 인스턴스를 공유 참조b.setCity(\"New\");\n\n복사하지 않고 원본의 참조 값을 직접 넘기는 것을 막을 방법은 없습니다. 자바는 기본 타입이면 값을 복사해서 넘기고, 객체는 참졸르 넘길 뿐이기 때문입니다. 따라서, 객체의 공유 참조는 피할 수 없습니다. 이를 위해, 객체의 값을 수정하지 못하게 막아야합니다.\n9.3.3 불변 객체한 번 만들면 절대 수정할수 없는 객체를 불변 객체라고 합니다.\n1234567891011121314151617@Embeddablepublic abstract class Address&#123;   \tprivate String city;\t\tprotected Address() &#123;&#125;\t\tpublic Address(String city)&#123;    this.city = city;\t&#125;\t\tpublic String getCity()&#123;    return city;\t&#125;\t\t//수정자 없음&#125;\n\n9.4 값 타입의 비교\n동일성 비교\n인스턴스의 참조 값을 비교\n== 사용\n\n\n동등성 비교\n인스턴스의 값을 비교\nequlas() method 사용\n\n\n\n값 타입은 그 안에 값이 같으면 같은 것으로 봐야합니다. 따라서 동등성 비교를 해아합니다. \n9.5 값 타입 컬렉션123456789101112@Entitypublic class Member&#123;    ...    @ElementCollection  @CollectionTable(name = \"ADDRESS\", joinColums = @JoinColumn(name = \"MEMBER_ID\"))  @Column(name = \"FOOD_NAME\")  private List&lt;Address&gt; addressHistory = new ArrayList&lt;Address&gt;();    ...&#125;\n\n값 타입은 식별자가 없는 단순한 값들의 모임이기 때문에, 값을 변경하면 데이터베이스에 저장된 원본 데이터를 찾기 어렵습니다. 값 타입 컬렉션에 보관된 값 타입들은 별도의 테이블에 보관됩니다. 따라서 여기에 보관된 값 타입의 값이 변경되면 데이터베이스에 있는 원본 데이터를 찾기 어렵습니다. \n이런 문제로, JPA구현체들은 값 타입 컬레션에 변경 사항이 발생하면, 값 타입 컬렙션이 매핑된 테이블의 연관된 모든 데이터를 삭제하고 현재 값 타입 컬렉션 객체에 있는 모든 값을 데이터베이스에 다시 저장합니다. \n","dateCreated":"2019-04-11T00:00:00+09:00","dateModified":"2019-04-18T17:18:25+09:00","datePublished":"2019-04-11T00:00:00+09:00","description":"","headline":"[자바 ORM 표준 JPA 프로그래밍] 9장_값 타입","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://kojunhee.github.io/2019/04/11/value-type/"},"publisher":{"@type":"Organization","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg","logo":{"@type":"ImageObject","url":"profile.jpg"}},"url":"https://kojunhee.github.io/2019/04/11/value-type/"}</script>
+    <meta name="description" content="JPA의 데이터 타입은 엔티티 타입과 값 타입으로 나눌 수 있습니다. 값 타입은 다음 세 가지로 나눌 수 있습니다.  기본값 타입 자바 기본 타입 : int, double … 래퍼 클래스 : Integer … String   임베디드 타입 컬렉션 값 타입  9.1 기본값 타입1234567@Entitypublic class Member&amp;#123;  @Id @">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="[자바 ORM 표준 JPA 프로그래밍] 9장_값 타입">
+<meta property="og:url" content="https://kojunhee.github.io/2019/04/11/value-type/index.html">
+<meta property="og:site_name" content="junhee.ko">
+<meta property="og:description" content="JPA의 데이터 타입은 엔티티 타입과 값 타입으로 나눌 수 있습니다. 값 타입은 다음 세 가지로 나눌 수 있습니다.  기본값 타입 자바 기본 타입 : int, double … 래퍼 클래스 : Integer … String   임베디드 타입 컬렉션 값 타입  9.1 기본값 타입1234567@Entitypublic class Member&amp;#123;  @Id @">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-04-18T08:18:25.724Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[자바 ORM 표준 JPA 프로그래밍] 9장_값 타입">
+<meta name="twitter:description" content="JPA의 데이터 타입은 엔티티 타입과 값 타입으로 나눌 수 있습니다. 값 타입은 다음 세 가지로 나눌 수 있습니다.  기본값 타입 자바 기본 타입 : int, double … 래퍼 클래스 : Integer … String   임베디드 타입 컬렉션 값 타입  9.1 기본값 타입1234567@Entitypublic class Member&amp;#123;  @Id @">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://kojunhee.github.io/assets/images/profile.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/all.css">
+    <link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
+    <link rel="stylesheet" href="/assets/css/thumbs.css">
+    <link rel="stylesheet" href="/assets/css/tranquilpeak.css">
+    <!--STYLES END-->
+    
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="2">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">junhee.ko</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="2">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">junhee.ko</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>Always Learning</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/kojunhee" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://facebook.com/kojunheee" target="_blank" rel="noopener" title="Facebook">
+                    
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/junheeko" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="mailto:junheee.ko@gmail.com" target="_blank" rel="noopener" title="Mail">
+                    
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Mail</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="2"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            [자바 ORM 표준 JPA 프로그래밍] 9장_값 타입
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2019-04-11T00:00:00+09:00">
+	
+		    Apr 11, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/jpa/">JPA</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>JPA의 데이터 타입은 엔티티 타입과 값 타입으로 나눌 수 있습니다. 값 타입은 다음 세 가지로 나눌 수 있습니다.</p>
+<ul>
+<li>기본값 타입<ul>
+<li>자바 기본 타입 : int, double …</li>
+<li>래퍼 클래스 : Integer …</li>
+<li>String</li>
+</ul>
+</li>
+<li>임베디드 타입</li>
+<li>컬렉션 값 타입</li>
+</ul>
+<h4 id="9-1-기본값-타입"><a href="#9-1-기본값-타입" class="headerlink" title="9.1 기본값 타입"></a>9.1 기본값 타입</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Member</span></span>&#123;</span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span></span><br><span class="line">  <span class="keyword">private</span> Long id; <span class="comment">// 기본값 타입</span></span><br><span class="line">  <span class="keyword">private</span> String name; <span class="comment">// 기본값 타입</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> age; <span class="comment">// 기본값 타입</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="9-2-임베디드-타입-복합-값-타입"><a href="#9-2-임베디드-타입-복합-값-타입" class="headerlink" title="9.2 임베디드 타입 (복합 값 타입)"></a>9.2 임베디드 타입 (복합 값 타입)</h4><p>새로운 값 타입을 직접 지정해서 사용할 수 있습니다. 이것을 JPA 에서는 임베디드 타입이라고 합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Member</span></span>&#123; </span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span></span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Embedded</span>  <span class="comment">// 값 타입을 사용하는 곳에 표시</span></span><br><span class="line">  Period workPeriod;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Embedded</span> </span><br><span class="line">  Address homeAddress;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Embeddable</span> <span class="comment">// 값 타입을 정의하는 곳에 표시</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Period</span></span>&#123;</span><br><span class="line">  <span class="meta">@Temporal</span> (TemporalType.DATE) java.util.Date startDate;</span><br><span class="line">  <span class="meta">@Temporal</span> (TemporalType.DATE) java.util.Date endDate;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isWork</span><span class="params">(Date date)</span></span>&#123;</span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Embeddable</span> <span class="comment">// 값 타입을 정의하는 곳에 표시</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Address</span></span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="9-2-1-임베디드-타입과-테이블-매핑"><a href="#9-2-1-임베디드-타입과-테이블-매핑" class="headerlink" title="9.2.1 임베디드 타입과 테이블 매핑"></a>9.2.1 임베디드 타입과 테이블 매핑</h5><p>임베디드 타입은 엔티티의 값일 뿐입니다. 따라서, 값이 속한 엔티티의 테이블에 매핑합니다.</p>
+<h5 id="9-2-2-임베디드-타입과-연관관계"><a href="#9-2-2-임베디드-타입과-연관관계" class="headerlink" title="9.2.2 임베디드 타입과 연관관계"></a>9.2.2 임베디드 타입과 연관관계</h5><p>엔티티는 공유 될수 있으므로 참조한다고 표현하고, 값 타입은 특정 주인에게 소속되고 개념상 공유되지 않으므로 포함한다고 합니다.</p>
+<h5 id="9-2-3-AttributeOverride-속성-재정의"><a href="#9-2-3-AttributeOverride-속성-재정의" class="headerlink" title="9.2.3 @AttributeOverride : 속성 재정의"></a>9.2.3 @AttributeOverride : 속성 재정의</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Member</span></span>&#123; </span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span></span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Embedded</span> </span><br><span class="line">  Address homeAddress;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Embedded</span> </span><br><span class="line">  Address companyAddress;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>위 코드는 칼럼명이 중복된다는 문제가 있습니다. 이를 다음과 같이 해결합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Member</span></span>&#123; </span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span></span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Embedded</span> </span><br><span class="line">  Address homeAddress;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Embedded</span></span><br><span class="line">  <span class="meta">@AttributeOverrides</span>(&#123;</span><br><span class="line">    <span class="meta">@AttributeOverride</span>(name = <span class="string">"city"</span>, column = <span class="meta">@Column</span>(name = <span class="string">"COMPANY_CITY"</span>)),</span><br><span class="line">    <span class="meta">@AttributeOverride</span>(name = <span class="string">"street"</span>, column = <span class="meta">@Column</span>(name = <span class="string">"COMPANY_STREET"</span>)),</span><br><span class="line">    <span class="meta">@AttributeOverride</span>(name = <span class="string">"zipcode"</span>, column = <span class="meta">@Column</span>(name = <span class="string">"COMPANY_ZIPCODE"</span>)),</span><br><span class="line">  &#125;)</span><br><span class="line">  Address companyAddress;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>보다시피 코드의 중복도가 높아집니다. 한 엔티티에 같은 임베디드 타입을 중복해서 사용하는 일은 많지 않습니다.</p>
+<h5 id="9-2-4-임베디드-타입과-NULL"><a href="#9-2-4-임베디드-타입과-NULL" class="headerlink" title="9.2.4 임베디드 타입과 NULL"></a>9.2.4 임베디드 타입과 NULL</h5><p>임베디드 타입이 null 이면 매핑한 칼럼 값은 모두 null 이 됩니다.</p>
+<h4 id="9-3-값-타입과-불변-객체"><a href="#9-3-값-타입과-불변-객체" class="headerlink" title="9.3 값 타입과 불변 객체"></a>9.3 값 타입과 불변 객체</h4><h5 id="9-3-1-값-타입-공유-참조"><a href="#9-3-1-값-타입-공유-참조" class="headerlink" title="9.3.1 값 타입 공유 참조"></a>9.3.1 값 타입 공유 참조</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">member1.setHomeAddress(<span class="keyword">new</span> Address(<span class="string">"city1"</span>));</span><br><span class="line">Address address = member1.getHomeAddress();</span><br><span class="line"></span><br><span class="line">address.setCity(<span class="string">"city2"</span>); <span class="comment">//공유해서 사용</span></span><br><span class="line">member2.setHomeAddress(address);</span><br></pre></td></tr></table></figure>
+
+<p>위 코드는 회원2의 주소만 바뀌길 기대하지만, 회원1의 주소도 바뀌게 됩니다. 이렇듯, 뭔가를 수정했는데 전혀 예상하지 못한 곳에서 문제가 발생하는 것을 Side Effect 라고 합니다. 이를 막기 위해, 값을 복사 해서 사용해야합니다.</p>
+<h5 id="9-3-2-값-타입-복사"><a href="#9-3-2-값-타입-복사" class="headerlink" title="9.3.2 값 타입 복사"></a>9.3.2 값 타입 복사</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">member1.setHomeAddress(<span class="keyword">new</span> Address(<span class="string">"city1"</span>));</span><br><span class="line">Address address = member1.getHomeAddress();</span><br><span class="line"></span><br><span class="line"><span class="comment">//복사</span></span><br><span class="line">Address newAddress = address.clone();</span><br><span class="line"></span><br><span class="line">newAddress.setCity(<span class="string">"city2"</span>); <span class="comment">//공유해서 사용</span></span><br><span class="line">member2.setHomeAddress(newAddress);</span><br></pre></td></tr></table></figure>
+
+<p>위의 코드 처럼 복사해서 사용하면 Side Effect 문제는 해결하지만, 임베디드 타입 처럼 직접 정의한 값 타입은 자바의 기본 타입이 아니라 객체 타입이란 것입니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">int</span> b = a; <span class="comment">//기본 타입은 항상 값을 복사</span></span><br><span class="line">b = <span class="number">4</span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Address a = <span class="keyword">new</span> Address(<span class="string">"old"</span>);</span><br><span class="line">Address b = a; <span class="comment">//a와 b는 같은 인스턴스를 공유 참조</span></span><br><span class="line">b.setCity(<span class="string">"New"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>복사하지 않고 원본의 참조 값을 직접 넘기는 것을 막을 방법은 없습니다. 자바는 기본 타입이면 값을 복사해서 넘기고, 객체는 참졸르 넘길 뿐이기 때문입니다. 따라서, 객체의 공유 참조는 피할 수 없습니다. 이를 위해, 객체의 값을 수정하지 못하게 막아야합니다.</p>
+<h5 id="9-3-3-불변-객체"><a href="#9-3-3-불변-객체" class="headerlink" title="9.3.3 불변 객체"></a>9.3.3 불변 객체</h5><p>한 번 만들면 절대 수정할수 없는 객체를 불변 객체라고 합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Embeddable</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Address</span></span>&#123; </span><br><span class="line">  </span><br><span class="line">	<span class="keyword">private</span> String city;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="title">Address</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Address</span><span class="params">(String city)</span></span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.city = city;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">getCity</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> city;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//수정자 없음</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="9-4-값-타입의-비교"><a href="#9-4-값-타입의-비교" class="headerlink" title="9.4 값 타입의 비교"></a>9.4 값 타입의 비교</h4><ul>
+<li>동일성 비교<ul>
+<li>인스턴스의 참조 값을 비교</li>
+<li>== 사용</li>
+</ul>
+</li>
+<li>동등성 비교<ul>
+<li>인스턴스의 값을 비교</li>
+<li>equlas() method 사용</li>
+</ul>
+</li>
+</ul>
+<p>값 타입은 그 안에 값이 같으면 같은 것으로 봐야합니다. 따라서 동등성 비교를 해아합니다. </p>
+<h4 id="9-5-값-타입-컬렉션"><a href="#9-5-값-타입-컬렉션" class="headerlink" title="9.5 값 타입 컬렉션"></a>9.5 값 타입 컬렉션</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Member</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  ...</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@ElementCollection</span></span><br><span class="line">  <span class="meta">@CollectionTable</span>(name = <span class="string">"ADDRESS"</span>, joinColums = <span class="meta">@JoinColumn</span>(name = <span class="string">"MEMBER_ID"</span>))</span><br><span class="line">  <span class="meta">@Column</span>(name = <span class="string">"FOOD_NAME"</span>)</span><br><span class="line">  <span class="keyword">private</span> List&lt;Address&gt; addressHistory = <span class="keyword">new</span> ArrayList&lt;Address&gt;();</span><br><span class="line">  </span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>값 타입은 식별자가 없는 단순한 값들의 모임이기 때문에, 값을 변경하면 데이터베이스에 저장된 원본 데이터를 찾기 어렵습니다. 값 타입 컬렉션에 보관된 값 타입들은 별도의 테이블에 보관됩니다. 따라서 여기에 보관된 값 타입의 값이 변경되면 데이터베이스에 있는 원본 데이터를 찾기 어렵습니다. </p>
+<p>이런 문제로, JPA구현체들은 값 타입 컬레션에 변경 사항이 발생하면, 값 타입 컬렙션이 매핑된 테이블의 연관된 모든 데이터를 삭제하고 현재 값 타입 컬렉션 객체에 있는 모든 값을 데이터베이스에 다시 저장합니다. </p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/04/17/jpql/" data-tooltip="[자바 ORM 표준 JPA 프로그래밍] 10장_객체지향 쿼리 언어" aria-label="PREVIOUS: [자바 ORM 표준 JPA 프로그래밍] 10장_객체지향 쿼리 언어">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/04/09/proxy-relation-mapping/" data-tooltip="[자바 ORM 표준 JPA 프로그래밍] 8장_프록시와 연관관계 정리" aria-label="NEXT: [자바 ORM 표준 JPA 프로그래밍] 8장_프록시와 연관관계 정리">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2019/04/11/value-type/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 junhee.ko. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="2">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/04/17/jpql/" data-tooltip="[자바 ORM 표준 JPA 프로그래밍] 10장_객체지향 쿼리 언어" aria-label="PREVIOUS: [자바 ORM 표준 JPA 프로그래밍] 10장_객체지향 쿼리 언어">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/04/09/proxy-relation-mapping/" data-tooltip="[자바 ORM 표준 JPA 프로그래밍] 8장_프록시와 연관관계 정리" aria-label="NEXT: [자바 ORM 표준 JPA 프로그래밍] 8장_프록시와 연관관계 정리">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2019/04/11/value-type/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="2">
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2019/04/11/value-type/">
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">junhee.ko</h4>
+        
+            <div id="about-card-bio"><p>Always Learning</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Engineer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Incheon
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/jquery.js"></script>
+<script src="/assets/js/jquery.fancybox.js"></script>
+<script src="/assets/js/thumbs.js"></script>
+<script src="/assets/js/tranquilpeak.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://kojunhee.github.io/2019/04/11/value-type/';
+                 
+                    this.page.identifier = '2019/04/11/value-type/';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'junheeko';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>
