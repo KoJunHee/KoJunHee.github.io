@@ -821,6 +821,105 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2018/05/21/Histogram Equalization/">
+                            Histogram Equalization
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-05-21T00:00:00+09:00">
+	
+		    May 21, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/dip/">DIP</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h2 id="Histogram-Equalization"><a href="#Histogram-Equalization" class="headerlink" title="Histogram Equalization"></a>Histogram Equalization</h2><ul>
+<li><p>Histogram equalization is used to enhance contrast.</p>
+</li>
+<li><p>Lets start histogram equalization by taking this image below as a simple image.</p>
+</li>
+<li><p>The histogram of this image has been shown below.</p>
+<p><img src="/image/hisE01.png" alt></p>
+<p><img src="/image/hisE02.png" alt></p>
+</li>
+<li><p>Now we will perform histogram equalization to it.</p>
+</li>
+<li><p>First we have to calculate the PMF (probability mass function) of all the pixels in this image.</p>
+</li>
+<li><p>Our next step involves calculation of CDF (cumulative distributive function).  </p>
+</li>
+</ul>
+<h2 id="Calculate-CDF-according-to-gray-levels"><a href="#Calculate-CDF-according-to-gray-levels" class="headerlink" title="Calculate CDF according to gray levels"></a>Calculate CDF according to gray levels</h2><p><img src="/image/hisE03.png" alt></p>
+<ul>
+<li><p>Then in this step you will multiply the CDF value with (Gray levels (minus) 1) .</p>
+</li>
+<li><p>Considering we have an 3 bpp image. </p>
+</li>
+<li><p>Then number of levels we have are 8.</p>
+</li>
+<li><p>And 1 subtracts 8 is 7. So we multiply CDF by 7. Here what we got after multiplying.</p>
+<p><img src="/image/hisE04.png" alt></p>
+</li>
+<li><p>we have to map the new gray level values into number of pixels.</p>
+</li>
+<li><p>Lets assume our old gray levels values has these number of pixels.</p>
+</li>
+</ul>
+<p><img src="/image/hisE05.png" alt></p>
+<ul>
+<li><p>Now if we map our new values to , then this is what we got.</p>
+<p><img src="/image/hisE06.png" alt></p>
+</li>
+<li><p>Now map these new values you are onto histogram, and you are done.</p>
+</li>
+<li><p>Lets apply this technique to our original image. </p>
+</li>
+<li><p>After applying we got the following image and its following histogram.</p>
+</li>
+</ul>
+<h2 id="Cumulative-Distributive-function-of-this-image"><a href="#Cumulative-Distributive-function-of-this-image" class="headerlink" title="Cumulative Distributive function of this image"></a>Cumulative Distributive function of this image</h2><p><img src="/image/hisE07.png" alt></p>
+<h2 id="Histogram-Equalization-histogram"><a href="#Histogram-Equalization-histogram" class="headerlink" title="Histogram Equalization histogram"></a>Histogram Equalization histogram</h2><p><img src="/image/hisE08.png" alt></p>
+<h2 id="Comparing-both-the-histograms-and-images"><a href="#Comparing-both-the-histograms-and-images" class="headerlink" title="Comparing both the histograms and images"></a>Comparing both the histograms and images</h2><p><img src="/image/hisE09.png" alt></p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
+<li>during histogram equalization the overall shape of the histogram changes, </li>
+<li>where as in histogram stretching the overall shape of histogram remains same.</li>
+</ul>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/05/21/Histogram Equalization/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2018/05/21/Convolution/">
                             Convolution
                         </a>
@@ -937,8 +1036,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/05/21/Histogram Equalization/">
-                            Histogram Equalization
+                        <a class="link-unstyled" href="/2018/05/21/Brightness and Contrast/">
+                            Brightness and Contrast
                         </a>
                     
                 </h1>
@@ -960,56 +1059,36 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="Histogram-Equalization"><a href="#Histogram-Equalization" class="headerlink" title="Histogram Equalization"></a>Histogram Equalization</h2><ul>
-<li><p>Histogram equalization is used to enhance contrast.</p>
+                    <h2 id="Brightness"><a href="#Brightness" class="headerlink" title="Brightness"></a>Brightness</h2><ul>
+<li><p>Brightness is a relative term. </p>
 </li>
-<li><p>Lets start histogram equalization by taking this image below as a simple image.</p>
+<li><p>It depends on your visual perception. </p>
 </li>
-<li><p>The histogram of this image has been shown below.</p>
-<p><img src="/image/hisE01.png" alt></p>
-<p><img src="/image/hisE02.png" alt></p>
+<li><p>Since brightness is a relative term, so brightness can be defined as the amount of energy output by a source of light relative to the source we are comparing it to. </p>
 </li>
-<li><p>Now we will perform histogram equalization to it.</p>
+<li><p>In some cases we can easily say that the image is bright, and in some cases, its not easy to perceive.</p>
 </li>
-<li><p>First we have to calculate the PMF (probability mass function) of all the pixels in this image.</p>
-</li>
-<li><p>Our next step involves calculation of CDF (cumulative distributive function).  </p>
+<li><p>Consider this black image of 5 rows and 5 columns</p>
+<p><img src="/image/bri01.png" alt></p>
+<p><img src="/image/bri02.png" alt></p>
+<p><img src="/image/bri03.png" alt></p>
+<p><img src="/image/bri04.png" alt></p>
 </li>
 </ul>
-<h2 id="Calculate-CDF-according-to-gray-levels"><a href="#Calculate-CDF-according-to-gray-levels" class="headerlink" title="Calculate CDF according to gray levels"></a>Calculate CDF according to gray levels</h2><p><img src="/image/hisE03.png" alt></p>
+<h2 id="Contrast"><a href="#Contrast" class="headerlink" title="Contrast"></a>Contrast</h2><ul>
+<li><p>Contrast can be simply explained as the difference between maximum and minimum pixel intensity in an image.</p>
+<p><img src="/image/bri05.png" alt></p>
 <ul>
-<li><p>Then in this step you will multiply the CDF value with (Gray levels (minus) 1) .</p>
+<li><p>The maximum value in this matrix is 100.</p>
 </li>
-<li><p>Considering we have an 3 bpp image. </p>
+<li><p>The minimum value in this matrix is 100.</p>
 </li>
-<li><p>Then number of levels we have are 8.</p>
-</li>
-<li><p>And 1 subtracts 8 is 7. So we multiply CDF by 7. Here what we got after multiplying.</p>
-<p><img src="/image/hisE04.png" alt></p>
-</li>
-<li><p>we have to map the new gray level values into number of pixels.</p>
-</li>
-<li><p>Lets assume our old gray levels values has these number of pixels.</p>
+<li><p>Contrast = maximum pixel intensity(subtracted by) minimum pixel intensity</p>
+<p>= 100 (subtracted by) 100</p>
+<p>= 0</p>
 </li>
 </ul>
-<p><img src="/image/hisE05.png" alt></p>
-<ul>
-<li><p>Now if we map our new values to , then this is what we got.</p>
-<p><img src="/image/hisE06.png" alt></p>
 </li>
-<li><p>Now map these new values you are onto histogram, and you are done.</p>
-</li>
-<li><p>Lets apply this technique to our original image. </p>
-</li>
-<li><p>After applying we got the following image and its following histogram.</p>
-</li>
-</ul>
-<h2 id="Cumulative-Distributive-function-of-this-image"><a href="#Cumulative-Distributive-function-of-this-image" class="headerlink" title="Cumulative Distributive function of this image"></a>Cumulative Distributive function of this image</h2><p><img src="/image/hisE07.png" alt></p>
-<h2 id="Histogram-Equalization-histogram"><a href="#Histogram-Equalization-histogram" class="headerlink" title="Histogram Equalization histogram"></a>Histogram Equalization histogram</h2><p><img src="/image/hisE08.png" alt></p>
-<h2 id="Comparing-both-the-histograms-and-images"><a href="#Comparing-both-the-histograms-and-images" class="headerlink" title="Comparing both the histograms and images"></a>Comparing both the histograms and images</h2><p><img src="/image/hisE09.png" alt></p>
-<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li>during histogram equalization the overall shape of the histogram changes, </li>
-<li>where as in histogram stretching the overall shape of histogram remains same.</li>
 </ul>
 
                     
@@ -1018,91 +1097,7 @@
                     
                     
                         <p>
-                            <a href="/2018/05/21/Histogram Equalization/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/05/21/Bits Per Pixel/">
-                            Bits Per Pixel
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-05-21T00:00:00+09:00">
-	
-		    May 21, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/dip/">DIP</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p>Bpp or bits per pixel denotes the number of bits per pixel.</p>
-<h4 id="Number-of-different-colors"><a href="#Number-of-different-colors" class="headerlink" title="Number of different colors"></a>Number of different colors</h4><ul>
-<li><p>the number of different colors depend on the number of bits per pixel.</p>
-<p><img src="https://github.com/KoJunHee/kojunhee.github.io/raw/master/img/bppTable.png" alt="img"></p>
-</li>
-</ul>
-<h4 id="Shades"><a href="#Shades" class="headerlink" title="Shades"></a>Shades</h4><ul>
-<li>Shades = number of colors = (2)<sup>bpp<sup></sup></sup></li>
-<li>black color<ul>
-<li>0 pixel value always denotes black color. </li>
-</ul>
-</li>
-<li>white color<ul>
-<li>(2)<sup>bpp<sup> -1</sup></sup></li>
-<li>In case of 1 bpp, 0 denotes black, and 1 denotes white.</li>
-<li>In case 8 bpp, 0 denotes black, and 255 denotes white.</li>
-</ul>
-</li>
-<li>gray color<ul>
-<li>Gray color is actually the mid point of black and white.</li>
-<li>In case of 8bpp, the pixel value that denotes gray color is 127 or 128bpp (if you count from 1, not from 0).</li>
-</ul>
-</li>
-</ul>
-<h4 id="Image-Size"><a href="#Image-Size" class="headerlink" title="Image Size"></a>Image Size</h4><ul>
-<li>Size of an image = rows * cols * bpp</li>
-<li>Assuming it has 1024 rows and it has 1024 columns. </li>
-<li>And since it is a gray scale image, it has 256 different shades of gray or it has bits per pixel</li>
-<li>rows * cols * bpp = 1024 * 1024 * 8 = 8388608 bits.</li>
-<li>Converting it into bytes = 8388608 / 8 = 1048576 bytes.</li>
-<li>Converting into kilo bytes = 1048576 / 1024 = 1024kb.</li>
-<li>Converting into Mega bytes = 1024 / 1024 = 1 Mb.</li>
-</ul>
-<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><ul>
-<li><a href="https://www.tutorialspoint.com/dip/concept_of_bits_per_pixel.htm" target="_blank" rel="noopener">https://www.tutorialspoint.com/dip/concept_of_bits_per_pixel.htm</a></li>
-</ul>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/05/21/Bits Per Pixel/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/05/21/Brightness and Contrast/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
