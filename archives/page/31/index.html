@@ -194,6 +194,150 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2018/01/04/exports/">
+                            exports
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-01-04T00:00:00+09:00">
+	
+		    Jan 04, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/node-js/">Node.js</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p>reference by <a href="https://opentutorials.org" target="_blank" rel="noopener">https://opentutorials.org</a></p>
+<h2 id="exports"><a href="#exports" class="headerlink" title="exports"></a>exports</h2><ul>
+<li>속성이나 메소드를 여러 개 정의 가능</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// cicle.js</span><br><span class="line">var PI = Math.PI;</span><br><span class="line"> </span><br><span class="line">exports.area = function (r) &#123;</span><br><span class="line">    return PI * r * r;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line">exports.circumference = function (r) &#123;</span><br><span class="line">    return 2 * PI * r;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// foo.js</span><br><span class="line">var circle = require(&apos;./circle.js&apos;);</span><br><span class="line">console.log( &apos;The area of a circle of radius 4 is &apos;</span><br><span class="line">    + circle.area(4));</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ node foo.js</span><br><span class="line">The area of a circle of radius 4 is 50.26548245743669</span><br></pre></td></tr></table></figure>
+
+<h2 id="module-exports"><a href="#module-exports" class="headerlink" title="module.exports"></a>module.exports</h2><ul>
+<li>파일 자체를 속성이나 메소드로 사용</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// square.js</span><br><span class="line">module.exports = function(width) &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">        area: function() &#123;</span><br><span class="line">            return width * width;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// bar.js</span><br><span class="line">var square = require(&apos;./square.js&apos;);</span><br><span class="line">var mySquare = square(2);</span><br><span class="line">console.log(&apos;The area of my square is &apos; + mySquare.area());</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ node bar.js</span><br><span class="line">The area of my square is 4</span><br></pre></td></tr></table></figure>
+
+<h2 id="index-js"><a href="#index-js" class="headerlink" title="index.js"></a>index.js</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var module = require(&apos;./mymodule&apos;);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>먼저 mymodule.js 파일을 찾음. <ul>
+<li>있다면 =&gt; 그 파일 추출</li>
+<li>없다면 =&gt; mymodule 이라는 폴더를 찾음. 그리고 그 폴더의 index.js 파일을 찾아 추출</li>
+</ul>
+</li>
+</ul>
+<p>​     </p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/01/04/exports/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2018/01/04/ 수들의합/">
+                            수들의 합
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-01-04T00:00:00+09:00">
+	
+		    Jan 04, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p><a href="https://www.acmicpc.net/problem/1789" target="_blank" rel="noopener">https://www.acmicpc.net/problem/1789</a></p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
+<li><p>런타임 에러가 계속 났음</p>
+</li>
+<li><p>원인 </p>
+<ul>
+<li>자료형. </li>
+<li>문제의 입력으로 자연수 S(1≤S≤4,294,967,295)가 주어진다.</li>
+<li>int의 범위를 넘기 때문에 런타임 에러가 계속 났음</li>
+</ul>
+</li>
+<li><p>해결 </p>
+<ul>
+<li>long형으로 입력 받음</li>
+</ul>
+</li>
+<li><p>쉬운 문제라도, 문제의 조건을 잘 확인해야함</p>
+</li>
+</ul>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/01/04/ 수들의합/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2018/01/03/좋은단어/">
                             좋은단어
                         </a>
@@ -662,156 +806,6 @@
                     
                         <p>
                             <a href="/2017/12/25/선물전달/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2017/12/23/유전자/">
-                            유전자
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2017-12-23T00:00:00+09:00">
-	
-		    Dec 23, 2017
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p><a href="https://www.acmicpc.net/problem/2306" target="_blank" rel="noopener">https://www.acmicpc.net/problem/2306</a></p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
-<li><p>풀어본 DP 문제 중 제일 어려움</p>
-</li>
-<li><p>d[i, j] </p>
-<pre><code>a[i..j] 의 부분 KOI 유전자 들 중 가장 긴 것의 길이</code></pre><p>  ​    </p>
-</li>
-</ul>
-<ol>
-<li><p>d[i, j] = 2</p>
-<ul>
-<li><p>a[i..j] == “at”</p>
-</li>
-<li><p>a[i..j] == “gc”</p>
-</li>
-</ul>
-</li>
-<li><p>d[i, j] = d[i+1, j-1] + 2</p>
-<ul>
-<li><p>a[i]==”a” , a[j]=”t”</p>
-</li>
-<li><p>a[i]==”g” , a[j]=”c”</p>
-</li>
-</ul>
-</li>
-<li><p>d[i, j] = d[i, k] + d[k+1, j]</p>
-</li>
-</ol>
-<pre><code>- a[i...k] 의 부분 KOI 유전자 들 중 가장 긴 것의 길이 =&gt; d[i, k]
-
-- a[k+1...j] 의 부분 KOI 유전자 들 중 가장 긴 것의 길이 =&gt; d[i, k]</code></pre>
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2017/12/23/유전자/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2017/12/22/수열정렬/">
-                            수열정렬
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2017-12-22T00:00:00+09:00">
-	
-		    Dec 22, 2017
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p><a href="https://www.acmicpc.net/problem/1015" target="_blank" rel="noopener">https://www.acmicpc.net/problem/1015</a></p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
-<li><p>어려웠음</p>
-</li>
-<li><p>i 번째 값과 </p>
-</li>
-<li><p>j 번쨰 (0번째 ~ i-1번째) 값을 비교하여</p>
-</li>
-<li><p>큰 값의 index (i or j) 에 해당하는 위치의 배열 값을 ++</p>
-</li>
-<li><p>쉽게 생각해서,</p>
-</li>
-<li><p>a배열의 값들이 동일선상에 위치하는데,</p>
-</li>
-<li><p>비내림차순으로 정렬하기 위해 몇 번씩 뒤로 이동시켜야 하는지 카운트 </p>
-</li>
-<li><p>ex)</p>
-<pre><code>B[p[0]] = A[0] = 7 &lt;-</code></pre><p>  ​    B[p[1]] = A[1] = 4 &lt;-<br>  ​    B[p[2]] = A[2] = 2 &lt;-<br>  ​    B[p[3]] = A[3] = 3 &lt;- 기준<br>  ​    B[p[4]] = A[4] = 9<br>  ​    B[p[5]] = A[5] = 10<br>  ​<br>  ​    </p>
-<pre><code>3을 기준으로 7, 4, 2 와 비교
-
-3과 7 =&gt; 7이 더 크다 =&gt; 7은 한 번뒤로 가야함 =&gt; B의 index 값 증가
-3과 4 =&gt; 4가 더 큼 =&gt; 4는 한 번뒤로 가야함 =&gt; B의 index 값 증가
-3과 2 =&gt; 3이 더 큼 =&gt; 3은 한 번뒤로 가야함 =&gt; B의 index 값 증가</code></pre></li>
-</ul>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2017/12/22/수열정렬/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
