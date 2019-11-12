@@ -193,6 +193,86 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2018/06/08/Flyweight Pattern01/">
+                            Flyweight Pattern01
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-06-08T00:00:00+09:00">
+	
+		    Jun 08, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/design-pattern/">Design Pattern</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>Some programs require a large number of objects that have some shared state among them. </p>
+<p>Consider for example a game of war, were there is a large number of soldier objects; </p>
+<p>a soldier object maintain the graphical representation of a soldier, soldier behavior such as motion, and firing weapons, in addition soldier’s health and location on the war terrain. </p>
+<p>Creating a large number of soldier objects is a necessity however it would incur a huge memory cost. </p>
+<p>Note that although the representation and behavior of a soldier is the same their health and location can vary greatly.</p>
+<h2 id="Intent"><a href="#Intent" class="headerlink" title="Intent"></a>Intent</h2><p>To use sharing to support a large number of objects that have part of their internal state in common where the other part of state can vary.</p>
+<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/FlyweightPattern01.png" alt></p>
+<ul>
+<li><p><strong>Flyweight</strong></p>
+<ul>
+<li>Declares an interface through which flyweights can receive and act on extrinsic state.</li>
+</ul>
+</li>
+<li><p><strong>ConcreteFlyweight</strong></p>
+<ul>
+<li>Implements the Flyweight interface and stores intrinsic state. A ConcreteFlyweight object must be sharable. The Concrete flyweight object must maintain state that it is intrinsic to it, and must be able to manipulate state that is extrinsic. In the war game example graphical representation is an intrinsic state, where location and health states are extrinsic. Soldier moves, the motion behavior manipulates the external state (location) to create a new location.</li>
+</ul>
+</li>
+<li><p><strong>FlyweightFactory</strong>  </p>
+<ul>
+<li>The factory creates and manages flyweight objects. In addition the factory ensures sharing of the flyweight objects. The factory maintains a pool of different flyweight objects and returns an object from the pool if it is already created, adds one to the pool and returns it in case it is new.<br>In the war example a Soldier Flyweight factory can create two types of flyweights : a Soldier flyweight, as well as a Colonel Flyweight. When the Client asks the Factory for a soldier, the factory checks to see if there is a soldier in the pool, if there is, it is returned to the client, if there is no soldier in pool, a soldier is created, added to pool, and returned to the client, the next time a client asks for a soldier, the soldier created previously is returned, no new soldier is created.</li>
+</ul>
+</li>
+<li><p><strong>Client</strong></p>
+<ul>
+<li>A client maintains references to flyweights in addition to computing and maintaining extrinsic state</li>
+</ul>
+</li>
+<li><p>A client needs a flyweight object; it calls the factory to get the flyweight object. The factory checks a pool of flyweights to determine if a flyweight object of the requested type is in the pool, if there is, the reference to that object is returned. If there is no object of the required type, the factory creates a flyweight of the requested type, adds it to the pool, and returns a reference to the flyweight. The flyweight maintains intrinsic state (state that is shared among the large number of objects that we have created the flyweight for) and provides methods to manipulate external state (State that vary from object to object and is not common among the objects we have created the flyweight for).</p>
+</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.oodesign.com/flyweight-pattern.html" target="_blank" rel="noopener">https://www.oodesign.com/flyweight-pattern.html</a></p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/06/08/Flyweight Pattern01/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2018/06/08/Flyweight Pattern02/">
                             Flyweight Pattern02
                         </a>
@@ -465,67 +545,6 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/06/06/Decorator Pattern01/">
-                            Decorator Pattern01
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-06-06T00:00:00+09:00">
-	
-		    Jun 06, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/design-pattern/">Design Pattern</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>The Decorator Pattern attaches additional responsibilities to an object dynamically. </p>
-<p>Decorators provide a flexible alternative to subclassing for extending functionality. </p>
-<h2 id="Class-diagram"><a href="#Class-diagram" class="headerlink" title="Class diagram"></a>Class diagram</h2><p><img src="/image/deco01.png" alt></p>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/deco09.png" alt></p>
-<p><img src="/image/deco02.png" alt></p>
-<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><img src="/image/deco03.png" alt></p>
-<p><img src="/image/deco04.png" alt></p>
-<p><img src="/image/deco05.png" alt></p>
-<p><img src="/image/deco06.png" alt></p>
-<p><img src="/image/deco07.png" alt></p>
-<p><img src="/image/deco08.png" alt></p>
-<h2 id="Real-World-Decorators-Java-I-O"><a href="#Real-World-Decorators-Java-I-O" class="headerlink" title="Real World Decorators: Java I/O"></a>Real World Decorators: Java I/O</h2><p><img src="/image/deco10.png" alt></p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Head First Design Pattern</p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/06/06/Decorator Pattern01/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
                         <a class="link-unstyled" href="/2018/06/06/Decorator Pattern02/">
                             Decorator Pattern02
                         </a>
@@ -598,6 +617,91 @@
                     
                         <p>
                             <a href="/2018/06/06/Decorator Pattern02/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2018/06/06/Command Pattern03/">
+                            Command Pattern03
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-06-06T00:00:00+09:00">
+	
+		    Jun 06, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/design-pattern/">Design Pattern</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/com01.png" alt> </p>
+<ul>
+<li>Command<ul>
+<li>싱핼됭 기능에 대한 인터페이스. 실행될 기능을 execute method로 선언</li>
+</ul>
+</li>
+<li>ConcreteCommand<ul>
+<li>실제로 실행되는 기능을 구현.</li>
+<li>즉, Command라는 인터페이스를 구현</li>
+</ul>
+</li>
+<li>Invoker <ul>
+<li>기능의 실행을 요청하는 호출자 클래스</li>
+</ul>
+</li>
+<li>Receiver<ul>
+<li>ConcreteCommand 에서 execute method를 구현할 때 필요한 클래스</li>
+<li>즉, Concrete Command 의 기능을 실행하기 위해 사용하는 수신자 클래스</li>
+</ul>
+</li>
+</ul>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/com02.png" alt> </p>
+<ul>
+<li>Button<ul>
+<li>Invoker</li>
+</ul>
+</li>
+<li>LampOnCommand, LampOffCommand<ul>
+<li>ConcreteCommand</li>
+</ul>
+</li>
+<li>Lamp<ul>
+<li>Receiver</li>
+</ul>
+</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Java 객체지향 디자인 패턴 &lt;정인상, 채흥석 지음&gt;</p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/06/06/Command Pattern03/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -814,91 +918,6 @@
                     
                         <p>
                             <a href="/2018/06/06/Strategy Pattern01/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/06/06/Command Pattern03/">
-                            Command Pattern03
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-06-06T00:00:00+09:00">
-	
-		    Jun 06, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/design-pattern/">Design Pattern</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/com01.png" alt> </p>
-<ul>
-<li>Command<ul>
-<li>싱핼됭 기능에 대한 인터페이스. 실행될 기능을 execute method로 선언</li>
-</ul>
-</li>
-<li>ConcreteCommand<ul>
-<li>실제로 실행되는 기능을 구현.</li>
-<li>즉, Command라는 인터페이스를 구현</li>
-</ul>
-</li>
-<li>Invoker <ul>
-<li>기능의 실행을 요청하는 호출자 클래스</li>
-</ul>
-</li>
-<li>Receiver<ul>
-<li>ConcreteCommand 에서 execute method를 구현할 때 필요한 클래스</li>
-<li>즉, Concrete Command 의 기능을 실행하기 위해 사용하는 수신자 클래스</li>
-</ul>
-</li>
-</ul>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/com02.png" alt> </p>
-<ul>
-<li>Button<ul>
-<li>Invoker</li>
-</ul>
-</li>
-<li>LampOnCommand, LampOffCommand<ul>
-<li>ConcreteCommand</li>
-</ul>
-</li>
-<li>Lamp<ul>
-<li>Receiver</li>
-</ul>
-</li>
-</ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Java 객체지향 디자인 패턴 &lt;정인상, 채흥석 지음&gt;</p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/06/06/Command Pattern03/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>

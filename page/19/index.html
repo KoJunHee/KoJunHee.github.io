@@ -193,6 +193,122 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2018/05/21/Convolution/">
+                            Convolution
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-05-21T00:00:00+09:00">
+	
+		    May 21, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/dip/">DIP</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h2 id="What-is-image-processing"><a href="#What-is-image-processing" class="headerlink" title="What is image processing"></a>What is image processing</h2><ul>
+<li>In image processing , we are developing a system </li>
+<li>whose input is an image and output would be an image</li>
+</ul>
+<p><img src="/image/convolution01.png" alt></p>
+<p><img src="/image/convolution02.png" alt></p>
+<p><img src="/image/convolution03.png" alt></p>
+<p><img src="/image/convolution04.png" alt></p>
+<ul>
+<li>It can be mathematically represented as two ways : h(x,y) is the mask or filter.<ul>
+<li><strong>g(x,y) = h(x,y) * f(x,y)</strong><ul>
+<li>“mask convolved with an image”.</li>
+</ul>
+</li>
+<li><strong>g(x,y) = f(x,y) * h(x,y)</strong><ul>
+<li>“image convolved with mask”</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="What-is-mask"><a href="#What-is-mask" class="headerlink" title="What is mask?"></a>What is mask?</h2><ul>
+<li>Mask is also a signal. </li>
+<li>It can be represented by a two dimensional matrix. </li>
+<li>The mask is usually of the order of 1x1, 3x3, 5x5, 7x7 . </li>
+<li>A mask should always be in odd number, </li>
+<li>because other wise you cannot find the mid of the mask. </li>
+</ul>
+<h2 id="How-to-perform-convolution"><a href="#How-to-perform-convolution" class="headerlink" title="How to perform convolution?"></a>How to perform convolution?</h2><ul>
+<li>Flip the mask (horizontally and vertically) only once</li>
+<li>Slide the mask onto the image.</li>
+<li>Multiply the corresponding elements and then add them</li>
+<li>Repeat this procedure until all values of the image has been calculated.</li>
+</ul>
+<h2 id="Example-of-convolution"><a href="#Example-of-convolution" class="headerlink" title="Example of convolution"></a>Example of convolution</h2><ul>
+<li><p>Mask</p>
+<p><img src="/image/convolution05.png" alt></p>
+</li>
+<li><p>Flipping the mask horizontally</p>
+<p><img src="/image/convolution06.png" alt></p>
+</li>
+<li><p>Flipping the mask vertically</p>
+<p><img src="/image/convolution07.png" alt></p>
+</li>
+<li><p>Image</p>
+<p><img src="/image/convolution08.png" alt></p>
+</li>
+<li><p>Convolution</p>
+<p><img src="/image/convolution09.png" alt></p>
+</li>
+<li><p>The box in red color is the mask, </p>
+</li>
+<li><p>and the values in the orange are the values of the mask. </p>
+</li>
+<li><p>The black color box and values belong to the image.</p>
+</li>
+<li><p>Now for the first pixel of the image, the value will be calculated as</p>
+<p>First pixel = (5<em>2) + (4</em>4) + (2<em>8) + (1</em>10)</p>
+<p>= 10 + 16 + 16 + 10</p>
+<p>= 52</p>
+</li>
+<li><p>Place 52 in the original image at the first index and repeat this procedure for each pixel of the image.</p>
+</li>
+</ul>
+<h2 id="Why-Convolution"><a href="#Why-Convolution" class="headerlink" title="Why Convolution"></a>Why Convolution</h2><ul>
+<li>Convolution can achieve something, that the previous two methods of manipulating images can’t achieve. </li>
+<li>Those include the blurring, sharpening, edge detection, noise reduction e.t.c.</li>
+</ul>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/05/21/Convolution/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2018/05/21/Brightness and Contrast/">
                             Brightness and Contrast
                         </a>
@@ -505,6 +621,92 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2018/05/15/Sampling, Quantization/">
+                            Sampling, Quantization
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-05-15T00:00:00+09:00">
+	
+		    May 15, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/dip/">DIP</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <ul>
+<li><p>Conversion of analog signal to digital signal</p>
+<p><img src="/image/sampling.png" alt></p>
+<ul>
+<li>The output of most of the image sensors is an analog signal, </li>
+<li>and we can not apply digital processing on it </li>
+<li>because we can not store it. </li>
+<li>We can not store it because it requires infinite memory </li>
+<li>to store a signal that can have infinite values.</li>
+<li>So we have to convert an analog signal into a digital signal.</li>
+<li>To create an image which is digital, </li>
+<li>we need to covert continuous data into digital form. </li>
+<li>There are two steps in which it is done.<ul>
+<li>Sampling</li>
+<li>Quantization</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Sampling</p>
+<ul>
+<li><p>It is done on X axis.</p>
+</li>
+<li><p>It is the conversion of x axis (infinite values) to digital values.</p>
+</li>
+</ul>
+</li>
+<li><p>Quantization</p>
+<p><img src="/image/quantization.png" alt></p>
+<ul>
+<li>It is done on Y axis.</li>
+<li>digitizing the amplitudes is known as Quantization</li>
+<li>In the figure shown above, </li>
+<li>these vertically ranging values have been quantized into 5 different levels or partitions. </li>
+<li>Ranging from 0 black to 4 white. </li>
+</ul>
+</li>
+</ul>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/05/15/Sampling, Quantization/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2018/05/15/Pixel/">
                             Pixel
                         </a>
@@ -581,92 +783,6 @@
                     
                         <p>
                             <a href="/2018/05/15/Pixel/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/05/15/Sampling, Quantization/">
-                            Sampling, Quantization
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-05-15T00:00:00+09:00">
-	
-		    May 15, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/dip/">DIP</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <ul>
-<li><p>Conversion of analog signal to digital signal</p>
-<p><img src="/image/sampling.png" alt></p>
-<ul>
-<li>The output of most of the image sensors is an analog signal, </li>
-<li>and we can not apply digital processing on it </li>
-<li>because we can not store it. </li>
-<li>We can not store it because it requires infinite memory </li>
-<li>to store a signal that can have infinite values.</li>
-<li>So we have to convert an analog signal into a digital signal.</li>
-<li>To create an image which is digital, </li>
-<li>we need to covert continuous data into digital form. </li>
-<li>There are two steps in which it is done.<ul>
-<li>Sampling</li>
-<li>Quantization</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Sampling</p>
-<ul>
-<li><p>It is done on X axis.</p>
-</li>
-<li><p>It is the conversion of x axis (infinite values) to digital values.</p>
-</li>
-</ul>
-</li>
-<li><p>Quantization</p>
-<p><img src="/image/quantization.png" alt></p>
-<ul>
-<li>It is done on Y axis.</li>
-<li>digitizing the amplitudes is known as Quantization</li>
-<li>In the figure shown above, </li>
-<li>these vertically ranging values have been quantized into 5 different levels or partitions. </li>
-<li>Ranging from 0 black to 4 white. </li>
-</ul>
-</li>
-</ul>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/05/15/Sampling, Quantization/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -797,95 +913,6 @@
                     
                         <p>
                             <a href="/2018/05/13/Simple Factory/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/05/13/Factory Method Pattern02/">
-                            Factory Method Pattern02
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-05-13T00:00:00+09:00">
-	
-		    May 13, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/design-pattern/">Design Pattern</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>객체를 생성하는 코드를 별도의 클래스/메소드로 분리함으로써 객체 생성 방식의 변화에 대비하는데 유용하다.</p>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/factorymethodpa01.png" alt></p>
-<ul>
-<li>Product <ul>
-<li>펙토리 메서드로 생설될 객체의 공통 인터페이스</li>
-</ul>
-</li>
-<li>ConcreteProduct<ul>
-<li>구체적으로 객체가 생성되는 클래스</li>
-</ul>
-</li>
-<li>Creator<ul>
-<li>팩토리 메서드를 갖는 클래스</li>
-</ul>
-</li>
-<li>ConcreteCreator<ul>
-<li>팩토리 매서드를 구현하는 클래스</li>
-<li>ConcreteProduct 객체를 생성 </li>
-</ul>
-</li>
-</ul>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/factorymethodpa02.png" alt></p>
-<ul>
-<li>ElevatorScheduler interface<ul>
-<li>Prudct</li>
-</ul>
-</li>
-<li>ResponseTimeScheduler, ThroughputScheduler<ul>
-<li>ConcretePrudct</li>
-</ul>
-</li>
-<li>ElevatorManger<ul>
-<li>Creator</li>
-</ul>
-</li>
-<li>ElevatorMangerWithThroughputScheduling, ElevatorMangerWithDynamicScheduling, ElevatorManagerWithResponseTimeScheduling<ul>
-<li>ConcreteCreator</li>
-</ul>
-</li>
-</ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Java 객체 지향 디자인 패턴 &lt;정인상, 채흥석 지음&gt;</p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/05/13/Factory Method Pattern02/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>

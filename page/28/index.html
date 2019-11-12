@@ -193,6 +193,97 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2018/01/30/흐름제어/">
+                            흐름제어
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-01-30T00:00:00+09:00">
+	
+		    Jan 30, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/ios/">iOS</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p><a href="https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/BasicOperators.html#//apple_ref/doc/uid/TP40014097-CH6-ID60" target="_blank" rel="noopener">https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/BasicOperators.html#//apple_ref/doc/uid/TP40014097-CH6-ID60</a></p>
+<h2 id="For-In-Loops"><a href="#For-In-Loops" class="headerlink" title="For-In Loops"></a>For-In Loops</h2><ul>
+<li>to iterate over the items in an array:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">let names = [&quot;Anna&quot;, &quot;Alex&quot;, &quot;Brian&quot;, &quot;Jack&quot;]</span><br><span class="line">for name in names &#123;</span><br><span class="line">    print(&quot;Hello, \(name)!&quot;)</span><br><span class="line">&#125;</span><br><span class="line">// Hello, Anna!</span><br><span class="line">// Hello, Alex!</span><br><span class="line">// Hello, Brian!</span><br><span class="line">// Hello, Jack!</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>The contents of a Dictionary are inherently unordered, and iterating over them does not guarantee the order in which they will be retrieved</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">let numberOfLegs = [&quot;spider&quot;: 8, &quot;ant&quot;: 6, &quot;cat&quot;: 4]</span><br><span class="line">for (animalName, legCount) in numberOfLegs &#123;</span><br><span class="line">    print(&quot;\(animalName)s have \(legCount) legs&quot;)</span><br><span class="line">&#125;</span><br><span class="line">// ants have 6 legs</span><br><span class="line">// spiders have 8 legs</span><br><span class="line">// cats have 4 legs</span><br><span class="line"></span><br><span class="line">//</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>for-in loops with numeric ranges.</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">for index in 1...5 &#123;</span><br><span class="line">    print(&quot;\(index) times 5 is \(index * 5)&quot;)</span><br><span class="line">&#125;</span><br><span class="line">// 1 times 5 is 5</span><br><span class="line">// 2 times 5 is 10</span><br><span class="line">// 3 times 5 is 15</span><br><span class="line">// 4 times 5 is 20</span><br><span class="line">// 5 times 5 is 25</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>If you don’t need each value from a sequence</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">let base = 3</span><br><span class="line">let power = 10</span><br><span class="line">var answer = 1</span><br><span class="line">for _ in 1...power &#123;</span><br><span class="line">    answer *= base</span><br><span class="line">&#125;</span><br><span class="line">print(&quot;\(base) to the power of \(power) is \(answer)&quot;)</span><br><span class="line">// Prints &quot;3 to the power of 10 is 59049&quot;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>to include the lower bound but not the upper bound</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let minutes = 60</span><br><span class="line">for tickMark in 0..&lt;minutes &#123;</span><br><span class="line">    // render the tick mark each minute (60 times)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>stride(from:to:by:)</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let minuteInterval = 5</span><br><span class="line">for tickMark in stride(from: 0, to: minutes, by: minuteInterval) &#123;</span><br><span class="line">    // render the tick mark every 5 minutes (0, 5, 10, 15 ... 45, 50, 55)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>stride(from:through:by:)</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">let hours = 12</span><br><span class="line">let hourInterval = 3</span><br><span class="line">for tickMark in stride(from: 3, through: hours, by: hourInterval) &#123;</span><br><span class="line">    // render the tick mark every 3 hours (3, 6, 9, 12)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Repeat-While"><a href="#Repeat-While" class="headerlink" title="Repeat-While"></a>Repeat-While</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">repeat &#123;</span><br><span class="line">    statements</span><br><span class="line">&#125; while condition</span><br></pre></td></tr></table></figure>
+
+<h2 id="Switch"><a href="#Switch" class="headerlink" title="Switch"></a>Switch</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">switch some value to consider &#123;</span><br><span class="line">case value 1:</span><br><span class="line">    respond to value 1</span><br><span class="line">case value 2,</span><br><span class="line">     value 3:</span><br><span class="line">    respond to value 2 or 3</span><br><span class="line">default:</span><br><span class="line">    otherwise, do something else</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​    </p>
+<p>​    </p>
+<p>​<br>​<br>​<br>​<br>​<br>​<br>​    </p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/01/30/흐름제어/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2018/01/30/함수/">
                             함수
                         </a>
@@ -669,6 +760,129 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2018/01/29/데이터 타입 기본/">
+                            데이터 타입 기본
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-01-29T00:00:00+09:00">
+	
+		    Jan 29, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/ios/">iOS</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p><a href="https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/TheBasics.html#//apple_ref/doc/uid/TP40014097-CH5-ID309" target="_blank" rel="noopener">https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/TheBasics.html#//apple_ref/doc/uid/TP40014097-CH5-ID309</a></p>
+<h2 id="Integers"><a href="#Integers" class="headerlink" title="Integers"></a>Integers</h2><ul>
+<li><p>signed (positive, zero, or negative)</p>
+</li>
+<li><p>unsigned (positive or zero)</p>
+<ul>
+<li>8-bit unsigned integer : UInt8</li>
+<li>32-bit signed integer : Int32</li>
+</ul>
+</li>
+<li><p>Int</p>
+<ul>
+<li><p>On a 32-bit platform, Int is the same size as Int32.</p>
+</li>
+<li><p>On a 64-bit platform, Int is the same size as Int64.</p>
+</li>
+<li><p>always use Int for integer values in your code</p>
+</li>
+</ul>
+</li>
+<li><p>UInt</p>
+<ul>
+<li><p>On a 32-bit platform, UInt is the same size as UInt32.</p>
+</li>
+<li><p>On a 64-bit platform, UInt is the same size as UInt64.</p>
+</li>
+<li><p>Int is preferred, even when the values to be stored are known to be nonnegative</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="Booleans"><a href="#Booleans" class="headerlink" title="Booleans"></a>Booleans</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">let orangesAreOrange = true</span><br><span class="line">let turnipsAreDelicious = false</span><br><span class="line"></span><br><span class="line">if turnipsAreDelicious &#123;</span><br><span class="line">    print(&quot;Mmm, tasty turnips!&quot;)</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    print(&quot;Eww, turnips are horrible.&quot;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Prints &quot;Eww, turnips are horrible.&quot;</span><br></pre></td></tr></table></figure></code></pre><ul>
+<li><p>Swift’s type safety prevents non-Boolean values from being substituted for Bool</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let i = 1</span><br><span class="line">if i &#123;</span><br><span class="line">    // this example will not compile, and will report an error</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>The result of the i == 1 comparison is of type Bool,</p>
+</li>
+<li><p>and so this second example passes the type-check. </p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let i = 1</span><br><span class="line">if i == 1 &#123;</span><br><span class="line">    // this example will compile successfully</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="Floating-Point-Numbers"><a href="#Floating-Point-Numbers" class="headerlink" title="Floating-Point Numbers"></a>Floating-Point Numbers</h2><ul>
+<li><p>Double represents a 64-bit floating-point number.</p>
+</li>
+<li><p>Float represents a 32-bit floating-point number.</p>
+<ul>
+<li>In situations where either type would be appropriate, Double is preferred.</li>
+</ul>
+</li>
+</ul>
+<h2 id="Strings-and-Characters"><a href="#Strings-and-Characters" class="headerlink" title="Strings and Characters"></a>Strings and Characters</h2><ul>
+<li><p>String Literals</p>
+<ul>
+<li><p>A literal value is a value that appears directly in your source code</p>
+</li>
+<li><p>Swift infers a type of String for the someString constant </p>
+</li>
+<li><p>because it’s initialized with a string literal value.</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let someString = &quot;Some string literal value&quot;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>Initializing an Empty String</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var emptyString = &quot;&quot;               // empty string literal</span><br><span class="line">var anotherEmptyString = String()  // initializer syntax</span><br><span class="line">// these two strings are both empty, and are equivalent to each other</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<ul>
+<li><p>String Mutability</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var variableString = &quot;Horse&quot;</span><br><span class="line">variableString += &quot; and carriage&quot;</span><br><span class="line">// variableString is now &quot;Horse and carriage&quot;</span><br><span class="line"> </span><br><span class="line">let constantString = &quot;Highlander&quot;</span><br><span class="line">constantString += &quot; and another Highlander&quot;</span><br><span class="line">// this reports a compile-time error - a constant string cannot be modified</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/01/29/데이터 타입 기본/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2018/01/29/데이터 타입 고급/">
                             데이터 타입 고급
                         </a>
@@ -892,129 +1106,6 @@ case west</code></pre><p>}</p>
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/01/29/데이터 타입 기본/">
-                            데이터 타입 기본
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-01-29T00:00:00+09:00">
-	
-		    Jan 29, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/ios/">iOS</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p><a href="https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/TheBasics.html#//apple_ref/doc/uid/TP40014097-CH5-ID309" target="_blank" rel="noopener">https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/TheBasics.html#//apple_ref/doc/uid/TP40014097-CH5-ID309</a></p>
-<h2 id="Integers"><a href="#Integers" class="headerlink" title="Integers"></a>Integers</h2><ul>
-<li><p>signed (positive, zero, or negative)</p>
-</li>
-<li><p>unsigned (positive or zero)</p>
-<ul>
-<li>8-bit unsigned integer : UInt8</li>
-<li>32-bit signed integer : Int32</li>
-</ul>
-</li>
-<li><p>Int</p>
-<ul>
-<li><p>On a 32-bit platform, Int is the same size as Int32.</p>
-</li>
-<li><p>On a 64-bit platform, Int is the same size as Int64.</p>
-</li>
-<li><p>always use Int for integer values in your code</p>
-</li>
-</ul>
-</li>
-<li><p>UInt</p>
-<ul>
-<li><p>On a 32-bit platform, UInt is the same size as UInt32.</p>
-</li>
-<li><p>On a 64-bit platform, UInt is the same size as UInt64.</p>
-</li>
-<li><p>Int is preferred, even when the values to be stored are known to be nonnegative</p>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="Booleans"><a href="#Booleans" class="headerlink" title="Booleans"></a>Booleans</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">let orangesAreOrange = true</span><br><span class="line">let turnipsAreDelicious = false</span><br><span class="line"></span><br><span class="line">if turnipsAreDelicious &#123;</span><br><span class="line">    print(&quot;Mmm, tasty turnips!&quot;)</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    print(&quot;Eww, turnips are horrible.&quot;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Prints &quot;Eww, turnips are horrible.&quot;</span><br></pre></td></tr></table></figure></code></pre><ul>
-<li><p>Swift’s type safety prevents non-Boolean values from being substituted for Bool</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let i = 1</span><br><span class="line">if i &#123;</span><br><span class="line">    // this example will not compile, and will report an error</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>The result of the i == 1 comparison is of type Bool,</p>
-</li>
-<li><p>and so this second example passes the type-check. </p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let i = 1</span><br><span class="line">if i == 1 &#123;</span><br><span class="line">    // this example will compile successfully</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<h2 id="Floating-Point-Numbers"><a href="#Floating-Point-Numbers" class="headerlink" title="Floating-Point Numbers"></a>Floating-Point Numbers</h2><ul>
-<li><p>Double represents a 64-bit floating-point number.</p>
-</li>
-<li><p>Float represents a 32-bit floating-point number.</p>
-<ul>
-<li>In situations where either type would be appropriate, Double is preferred.</li>
-</ul>
-</li>
-</ul>
-<h2 id="Strings-and-Characters"><a href="#Strings-and-Characters" class="headerlink" title="Strings and Characters"></a>Strings and Characters</h2><ul>
-<li><p>String Literals</p>
-<ul>
-<li><p>A literal value is a value that appears directly in your source code</p>
-</li>
-<li><p>Swift infers a type of String for the someString constant </p>
-</li>
-<li><p>because it’s initialized with a string literal value.</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let someString = &quot;Some string literal value&quot;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><p>Initializing an Empty String</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var emptyString = &quot;&quot;               // empty string literal</span><br><span class="line">var anotherEmptyString = String()  // initializer syntax</span><br><span class="line">// these two strings are both empty, and are equivalent to each other</span><br></pre></td></tr></table></figure>
-
-
-</li>
-</ul>
-<ul>
-<li><p>String Mutability</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var variableString = &quot;Horse&quot;</span><br><span class="line">variableString += &quot; and carriage&quot;</span><br><span class="line">// variableString is now &quot;Horse and carriage&quot;</span><br><span class="line"> </span><br><span class="line">let constantString = &quot;Highlander&quot;</span><br><span class="line">constantString += &quot; and another Highlander&quot;</span><br><span class="line">// this reports a compile-time error - a constant string cannot be modified</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/01/29/데이터 타입 기본/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
                         <a class="link-unstyled" href="/2018/01/26/수이어쓰기/">
                             수이어쓰기1
                         </a>
@@ -1151,72 +1242,6 @@ case west</code></pre><p>}</p>
                     
                         <p>
                             <a href="/2018/01/24/타일/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/01/20/슈퍼마리오/">
-                            슈퍼마리오
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-01-20T00:00:00+09:00">
-	
-		    Jan 20, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p><a href="https://www.acmicpc.net/problem/2851" target="_blank" rel="noopener">https://www.acmicpc.net/problem/2851</a></p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
-<li>처음에 틀렸다고 나옴<ul>
-<li>이유 : 반복문의 if-else 구문에서 else문에 걸렸을 때, 바로 출력하고 return</li>
-<li>해결 : break 걸고, 반복문 밖에서 정답 출력</li>
-</ul>
-</li>
-<li>100과의 차이는 계속해서 감소하거나 같음</li>
-<li>ex)<ul>
-<li>100과의 차이가 </li>
-<li>90 70 30 1 1 …</li>
-<li>인 경우가 있을 수 있으니</li>
-<li>현재 index에서의 차이가 </li>
-<li>전 index에서의 차이보다 커지면</li>
-<li>stop</li>
-</ul>
-</li>
-</ul>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/01/20/슈퍼마리오/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>

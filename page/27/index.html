@@ -193,6 +193,95 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2018/02/26/coins/">
+                            coins
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-02-26T00:00:00+09:00">
+	
+		    Feb 26, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p><a href="https://www.acmicpc.net/problem/3067" target="_blank" rel="noopener">https://www.acmicpc.net/problem/3067</a></p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
+<li><p>9084 번 문제와 동일한 문제</p>
+</li>
+<li><p>ex)</p>
+<p><img src="/image/coinsTable.png" alt></p>
+</li>
+<li><p>d[i] : i원을 만드는 경우의 수</p>
+<ul>
+<li>2원으로 i 만드는 경우의 수 + 3원으로 i 만드는 경우의 수 + 5원으로 i 만드는 경우의 수 </li>
+</ul>
+</li>
+<li><p>목표금액 7원을 만드는 경우</p>
+<ul>
+<li><p>2원으로 만드는 경우 : 위 표와 같다</p>
+</li>
+<li><p>3원으로 만드는 경우 : 이전 결과에 경우의 수를 더한다.</p>
+<ul>
+<li><p>money가 6원 일 때</p>
+<ul>
+<li>2원 * 3개 (이전 결과)</li>
+<li>3원 * 2개</li>
+</ul>
+</li>
+<li><p>money가 7원 일 때</p>
+<ul>
+<li>2원 * 2개 + 3원 * 1개</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>X 의 의미</p>
+<ul>
+<li>2원으로 1원을 만들 수 없다</li>
+<li>3원으로 1원, 2원을 만들 수 없다</li>
+<li>5원으로 1원, 2원, 3원, 4원을 만들 수 없다</li>
+</ul>
+</li>
+</ul>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/02/26/coins/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2018/02/20/라그랑주의 네 제곱수 정리/">
                             라그랑주의 네 제곱수 정리
                         </a>
@@ -469,6 +558,81 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2018/02/06/접근제어/">
+                            접근제어
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-02-06T00:00:00+09:00">
+	
+		    Feb 06, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/ios/">iOS</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p><a href="https://developer.apple.com/swift/" target="_blank" rel="noopener">https://developer.apple.com/swift/</a></p>
+<ul>
+<li><p>Access control restricts access to parts of your code from code in other source files and modules.</p>
+</li>
+<li><p>This feature enables you to hide the implementation details of your code, and to specify a preferred interface through which that code can be accessed and used.</p>
+</li>
+<li><p>You can assign specific access levels to individual types (classes, structures, and enumerations), </p>
+</li>
+<li><p>as well as to properties, methods, initializers, and subscripts belonging to those types. </p>
+</li>
+<li><p>Protocols can be restricted to a certain context, as can global constants, variables, and functions.</p>
+</li>
+<li><p>In addition to offering various levels of access control, Swift reduces the need to specify explicit access control levels by providing default access levels for typical scenarios. </p>
+</li>
+<li><p>Indeed, if you are writing a single-target app, you may not need to specify explicit access control levels at all.</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public class SomePublicClass &#123;&#125;</span><br><span class="line">internal class SomeInternalClass &#123;&#125;</span><br><span class="line">fileprivate class SomeFilePrivateClass &#123;&#125;</span><br><span class="line">private class SomePrivateClass &#123;&#125;</span><br><span class="line"> </span><br><span class="line">public var somePublicVariable = 0</span><br><span class="line">internal let someInternalConstant = 0</span><br><span class="line">fileprivate func someFilePrivateFunction() &#123;&#125;</span><br><span class="line">private func somePrivateFunction() &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Unless otherwise specified, the default access level is internal, </li>
+<li>This means that </li>
+<li>SomeInternalClass and someInternalConstant can be written without an explicit access-level modifier,</li>
+<li>and will still have an access level of internal:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">class SomeInternalClass &#123;&#125;              // implicitly internal</span><br><span class="line">let someInternalConstant = 0            // implicitly internal</span><br></pre></td></tr></table></figure>
+
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/02/06/접근제어/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2018/02/06/구조체,클래스/">
                             구조체,클래스
                         </a>
@@ -611,81 +775,6 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/02/06/접근제어/">
-                            접근제어
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-02-06T00:00:00+09:00">
-	
-		    Feb 06, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/ios/">iOS</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p><a href="https://developer.apple.com/swift/" target="_blank" rel="noopener">https://developer.apple.com/swift/</a></p>
-<ul>
-<li><p>Access control restricts access to parts of your code from code in other source files and modules.</p>
-</li>
-<li><p>This feature enables you to hide the implementation details of your code, and to specify a preferred interface through which that code can be accessed and used.</p>
-</li>
-<li><p>You can assign specific access levels to individual types (classes, structures, and enumerations), </p>
-</li>
-<li><p>as well as to properties, methods, initializers, and subscripts belonging to those types. </p>
-</li>
-<li><p>Protocols can be restricted to a certain context, as can global constants, variables, and functions.</p>
-</li>
-<li><p>In addition to offering various levels of access control, Swift reduces the need to specify explicit access control levels by providing default access levels for typical scenarios. </p>
-</li>
-<li><p>Indeed, if you are writing a single-target app, you may not need to specify explicit access control levels at all.</p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public class SomePublicClass &#123;&#125;</span><br><span class="line">internal class SomeInternalClass &#123;&#125;</span><br><span class="line">fileprivate class SomeFilePrivateClass &#123;&#125;</span><br><span class="line">private class SomePrivateClass &#123;&#125;</span><br><span class="line"> </span><br><span class="line">public var somePublicVariable = 0</span><br><span class="line">internal let someInternalConstant = 0</span><br><span class="line">fileprivate func someFilePrivateFunction() &#123;&#125;</span><br><span class="line">private func somePrivateFunction() &#123;&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>Unless otherwise specified, the default access level is internal, </li>
-<li>This means that </li>
-<li>SomeInternalClass and someInternalConstant can be written without an explicit access-level modifier,</li>
-<li>and will still have an access level of internal:</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">class SomeInternalClass &#123;&#125;              // implicitly internal</span><br><span class="line">let someInternalConstant = 0            // implicitly internal</span><br></pre></td></tr></table></figure>
-
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/02/06/접근제어/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
                         <a class="link-unstyled" href="/2018/02/03/단어수학/">
                             단어수학
                         </a>
@@ -787,97 +876,6 @@
                     
                         <p>
                             <a href="/2018/02/02/책페이지/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/01/30/흐름제어/">
-                            흐름제어
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-01-30T00:00:00+09:00">
-	
-		    Jan 30, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/ios/">iOS</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p><a href="https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/BasicOperators.html#//apple_ref/doc/uid/TP40014097-CH6-ID60" target="_blank" rel="noopener">https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/BasicOperators.html#//apple_ref/doc/uid/TP40014097-CH6-ID60</a></p>
-<h2 id="For-In-Loops"><a href="#For-In-Loops" class="headerlink" title="For-In Loops"></a>For-In Loops</h2><ul>
-<li>to iterate over the items in an array:</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">let names = [&quot;Anna&quot;, &quot;Alex&quot;, &quot;Brian&quot;, &quot;Jack&quot;]</span><br><span class="line">for name in names &#123;</span><br><span class="line">    print(&quot;Hello, \(name)!&quot;)</span><br><span class="line">&#125;</span><br><span class="line">// Hello, Anna!</span><br><span class="line">// Hello, Alex!</span><br><span class="line">// Hello, Brian!</span><br><span class="line">// Hello, Jack!</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>The contents of a Dictionary are inherently unordered, and iterating over them does not guarantee the order in which they will be retrieved</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">let numberOfLegs = [&quot;spider&quot;: 8, &quot;ant&quot;: 6, &quot;cat&quot;: 4]</span><br><span class="line">for (animalName, legCount) in numberOfLegs &#123;</span><br><span class="line">    print(&quot;\(animalName)s have \(legCount) legs&quot;)</span><br><span class="line">&#125;</span><br><span class="line">// ants have 6 legs</span><br><span class="line">// spiders have 8 legs</span><br><span class="line">// cats have 4 legs</span><br><span class="line"></span><br><span class="line">//</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>for-in loops with numeric ranges.</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">for index in 1...5 &#123;</span><br><span class="line">    print(&quot;\(index) times 5 is \(index * 5)&quot;)</span><br><span class="line">&#125;</span><br><span class="line">// 1 times 5 is 5</span><br><span class="line">// 2 times 5 is 10</span><br><span class="line">// 3 times 5 is 15</span><br><span class="line">// 4 times 5 is 20</span><br><span class="line">// 5 times 5 is 25</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>If you don’t need each value from a sequence</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">let base = 3</span><br><span class="line">let power = 10</span><br><span class="line">var answer = 1</span><br><span class="line">for _ in 1...power &#123;</span><br><span class="line">    answer *= base</span><br><span class="line">&#125;</span><br><span class="line">print(&quot;\(base) to the power of \(power) is \(answer)&quot;)</span><br><span class="line">// Prints &quot;3 to the power of 10 is 59049&quot;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>to include the lower bound but not the upper bound</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let minutes = 60</span><br><span class="line">for tickMark in 0..&lt;minutes &#123;</span><br><span class="line">    // render the tick mark each minute (60 times)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>stride(from:to:by:)</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let minuteInterval = 5</span><br><span class="line">for tickMark in stride(from: 0, to: minutes, by: minuteInterval) &#123;</span><br><span class="line">    // render the tick mark every 5 minutes (0, 5, 10, 15 ... 45, 50, 55)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>stride(from:through:by:)</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">let hours = 12</span><br><span class="line">let hourInterval = 3</span><br><span class="line">for tickMark in stride(from: 3, through: hours, by: hourInterval) &#123;</span><br><span class="line">    // render the tick mark every 3 hours (3, 6, 9, 12)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="Repeat-While"><a href="#Repeat-While" class="headerlink" title="Repeat-While"></a>Repeat-While</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">repeat &#123;</span><br><span class="line">    statements</span><br><span class="line">&#125; while condition</span><br></pre></td></tr></table></figure>
-
-<h2 id="Switch"><a href="#Switch" class="headerlink" title="Switch"></a>Switch</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">switch some value to consider &#123;</span><br><span class="line">case value 1:</span><br><span class="line">    respond to value 1</span><br><span class="line">case value 2,</span><br><span class="line">     value 3:</span><br><span class="line">    respond to value 2 or 3</span><br><span class="line">default:</span><br><span class="line">    otherwise, do something else</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>​    </p>
-<p>​    </p>
-<p>​<br>​<br>​<br>​<br>​<br>​<br>​    </p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/01/30/흐름제어/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>

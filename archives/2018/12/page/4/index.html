@@ -194,8 +194,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/12/05/Redis/">
-                            Redis
+                        <a class="link-unstyled" href="/2018/12/05/abstract class, interface/">
+                            abstract class, interface
                         </a>
                     
                 </h1>
@@ -208,7 +208,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/database/">Database</a>
+    <a class="category-link" href="/categories/java/">Java</a>
 
 
     
@@ -217,15 +217,13 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h5 id="Redis가-뭐죠"><a href="#Redis가-뭐죠" class="headerlink" title="Redis가 뭐죠 ?"></a>Redis가 뭐죠 ?</h5><p>REmote DIctionary System.</p>
-<p>메모리 기반의 Key/Value Store 입니다. Cassandra나 HBase와 같이 NoSQL DBMS로 분류되기도 하고, memcached와 같은 In memory 솔루션으로 분리되기도 합니다. </p>
-<h5 id="Redis는-어떤-용도로-사용되나요"><a href="#Redis는-어떤-용도로-사용되나요" class="headerlink" title="Redis는 어떤 용도로 사용되나요 ?"></a>Redis는 어떤 용도로 사용되나요 ?</h5><p>Message Queue, Shared memory, Remote Dictionary 용도로도 사용될 수 있습니다.</p>
-<h5 id="memcached와-Redis의-차이는-뭘까요"><a href="#memcached와-Redis의-차이는-뭘까요" class="headerlink" title="memcached와 Redis의 차이는 뭘까요 ?"></a>memcached와 Redis의 차이는 뭘까요 ?</h5><ol>
-<li>redis는 Key/Value Store이기는 하지만, 저장되는 Value가 단순한 Object가 아니라 다양한 데이터 구조체를 지원합니다.</li>
-<li>저장된 데이타에 대한 연산이나 추가 작업이 가능합니다. (합집합, 교집합 ,RANGE QUERY 등)</li>
-</ol>
-<h5 id="Redis-데이터-구조체의-특징은-무엇인가요"><a href="#Redis-데이터-구조체의-특징은-무엇인가요" class="headerlink" title="Redis 데이터 구조체의 특징은 무엇인가요 ?"></a>Redis 데이터 구조체의 특징은 무엇인가요 ?</h5><p>일반적인 string 뿐만 아니라, set, list, hash와 같은 집합형 데이타 구조를 지원합니다. set 는 일종의 집합, sorted set 은 오름차순으로 정렬된 집합, hash 는 키 기반의 테이블, list 는 일종의 링크드 리스트 와 같은 특성을 지니고 있습니다.</p>
-<h5 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h5><p><a href="http://bcho.tistory.com/1098?category=513811" target="_blank" rel="noopener">http://bcho.tistory.com/1098?category=513811</a></p>
+                    <h5 id="추상-클래스와-인터페이스가-뭔가요"><a href="#추상-클래스와-인터페이스가-뭔가요" class="headerlink" title="추상 클래스와 인터페이스가 뭔가요 ?"></a>추상 클래스와 인터페이스가 뭔가요 ?</h5><p>추상클래스는 추상 메소드를 하나라도 가지는 클래스입니다.<br>인터페이스는 바디가 없는 메소드의 그룹입니다.</p>
+<h5 id="추상-클래스와-인터페이스를-사용하는-이유가-뭔가요"><a href="#추상-클래스와-인터페이스를-사용하는-이유가-뭔가요" class="headerlink" title="추상 클래스와 인터페이스를 사용하는 이유가 뭔가요 ?"></a>추상 클래스와 인터페이스를 사용하는 이유가 뭔가요 ?</h5><p>추상클래스는 추상클래스를 상속받아 그 기능을 이용하고 확장키는 목적으로 사용됩니다.<br>인터페이스는 메소드의 구현을 강제하기 위한 목적으로 사용됩니다.</p>
+<h5 id="다중-상속이-되나요"><a href="#다중-상속이-되나요" class="headerlink" title="다중 상속이 되나요?"></a>다중 상속이 되나요?</h5><p>추상클래스 다중 상속은 불가능하고, 인터페이스 다중 상속은 가능합니다.</p>
+<h5 id="추상클래스-예시는"><a href="#추상클래스-예시는" class="headerlink" title="추상클래스 예시는 ?"></a>추상클래스 예시는 ?</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Shape</span> </span>&#123; <span class="comment">//추상클래스 (슈퍼클래스)</span></span><br><span class="line">    <span class="keyword">int</span> x, y;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">move</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.x = x;</span><br><span class="line">        <span class="keyword">this</span>.y = y;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">draw</span><span class="params">()</span></span>; <span class="comment">//추상메서드</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Rectangle</span> <span class="keyword">extends</span> <span class="title">Shape</span></span>&#123; <span class="comment">//서브클래스</span></span><br><span class="line">    <span class="keyword">int</span> w, h;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">draw</span><span class="params">()</span></span>&#123; <span class="comment">//메서드 재정의</span></span><br><span class="line">       System.out.println(<span class="string">"Rectangle draw"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="인터페이스-예시는"><a href="#인터페이스-예시는" class="headerlink" title="인터페이스 예시는?"></a>인터페이스 예시는?</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">IWorker</span> </span>&#123; <span class="comment">//인터페이스</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">work</span><span class="params">()</span></span>;</span><br><span class="line">   	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line">   </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Worker</span> <span class="keyword">implements</span> <span class="title">IWorker</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">work</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// ...working</span></span><br><span class="line">   	&#125;</span><br><span class="line">   	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   		<span class="comment">// ...eating in launch break</span></span><br><span class="line">   	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 
                     
                         
@@ -233,7 +231,7 @@
                     
                     
                         <p>
-                            <a href="/2018/12/05/Redis/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/12/05/abstract class, interface/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
