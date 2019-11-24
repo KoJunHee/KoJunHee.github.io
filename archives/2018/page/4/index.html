@@ -194,119 +194,6 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/12/05/abstract class, interface/">
-                            abstract class, interface
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-12-05T00:00:00+09:00">
-	
-		    Dec 05, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/java/">Java</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h5 id="추상-클래스와-인터페이스가-뭔가요"><a href="#추상-클래스와-인터페이스가-뭔가요" class="headerlink" title="추상 클래스와 인터페이스가 뭔가요 ?"></a>추상 클래스와 인터페이스가 뭔가요 ?</h5><p>추상클래스는 추상 메소드를 하나라도 가지는 클래스입니다.<br>인터페이스는 바디가 없는 메소드의 그룹입니다.</p>
-<h5 id="추상-클래스와-인터페이스를-사용하는-이유가-뭔가요"><a href="#추상-클래스와-인터페이스를-사용하는-이유가-뭔가요" class="headerlink" title="추상 클래스와 인터페이스를 사용하는 이유가 뭔가요 ?"></a>추상 클래스와 인터페이스를 사용하는 이유가 뭔가요 ?</h5><p>추상클래스는 추상클래스를 상속받아 그 기능을 이용하고 확장키는 목적으로 사용됩니다.<br>인터페이스는 메소드의 구현을 강제하기 위한 목적으로 사용됩니다.</p>
-<h5 id="다중-상속이-되나요"><a href="#다중-상속이-되나요" class="headerlink" title="다중 상속이 되나요?"></a>다중 상속이 되나요?</h5><p>추상클래스 다중 상속은 불가능하고, 인터페이스 다중 상속은 가능합니다.</p>
-<h5 id="추상클래스-예시는"><a href="#추상클래스-예시는" class="headerlink" title="추상클래스 예시는 ?"></a>추상클래스 예시는 ?</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Shape</span> </span>&#123; <span class="comment">//추상클래스 (슈퍼클래스)</span></span><br><span class="line">    <span class="keyword">int</span> x, y;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">move</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.x = x;</span><br><span class="line">        <span class="keyword">this</span>.y = y;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">draw</span><span class="params">()</span></span>; <span class="comment">//추상메서드</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Rectangle</span> <span class="keyword">extends</span> <span class="title">Shape</span></span>&#123; <span class="comment">//서브클래스</span></span><br><span class="line">    <span class="keyword">int</span> w, h;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">draw</span><span class="params">()</span></span>&#123; <span class="comment">//메서드 재정의</span></span><br><span class="line">       System.out.println(<span class="string">"Rectangle draw"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h5 id="인터페이스-예시는"><a href="#인터페이스-예시는" class="headerlink" title="인터페이스 예시는?"></a>인터페이스 예시는?</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">IWorker</span> </span>&#123; <span class="comment">//인터페이스</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">work</span><span class="params">()</span></span>;</span><br><span class="line">   	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line">   </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Worker</span> <span class="keyword">implements</span> <span class="title">IWorker</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">work</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// ...working</span></span><br><span class="line">   	&#125;</span><br><span class="line">   	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   		<span class="comment">// ...eating in launch break</span></span><br><span class="line">   	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/12/05/abstract class, interface/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/12/05/OOP/">
-                            OOP
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-12-05T00:00:00+09:00">
-	
-		    Dec 05, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/java/">Java</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h5 id="객체지향프로그래밍-OOP-가-뭔가요"><a href="#객체지향프로그래밍-OOP-가-뭔가요" class="headerlink" title="객체지향프로그래밍(OOP) 가 뭔가요?"></a>객체지향프로그래밍(OOP) 가 뭔가요?</h5><p>프로그래밍에서 필요한 데이터를 추상화 시켜서 상태와 행위를 가진 객체를 만들고, 그 객체들 간의 유기적인 상호작용을 통해 로직을 구성하는 프로그래밍 방법입니다.</p>
-<h5 id="장점이-무엇인가요"><a href="#장점이-무엇인가요" class="headerlink" title="장점이 무엇인가요?"></a>장점이 무엇인가요?</h5><ol>
-<li>코드 재사용이 쉽습니다.<br>상속을 통해 확장해서 사용할 수 있고, 남이 만든 클래스를 가져와서 사용할 수 있습니다.</li>
-<li>유지보수가 쉽습니다.<br>절차 지향 프로그래밍에서는 코드를 수정 할 때 일일이 찾아야합니다. 반면, 객체지향 프로그래밍에서는 수정해야 할 부분이 클래스 내부에 멤버 변수 혹은 메소드로 있기 때문에 해당 부분만 수정하면 됩니다.</li>
-</ol>
-<h5 id="단점은-무엇인가요"><a href="#단점은-무엇인가요" class="headerlink" title="단점은 무엇인가요?"></a>단점은 무엇인가요?</h5><ol>
-<li>처리 속도가 상대적으로 느립니다.</li>
-<li>객체가 많으면 용량이 커질 수 있습니다.</li>
-<li>설계시 많은 시간이 소요됩니다.</li>
-</ol>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/12/05/OOP/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
                         <a class="link-unstyled" href="/2018/12/05/Java Feature/">
                             Java 특징
                         </a>
@@ -422,6 +309,57 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2018/12/05/Byte Order/">
+                            Byte Order
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-12-05T00:00:00+09:00">
+	
+		    Dec 05, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/network/">Network</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h5 id="Endian이-무엇이죠"><a href="#Endian이-무엇이죠" class="headerlink" title="Endian이 무엇이죠 ?"></a>Endian이 무엇이죠 ?</h5><p>메모리와 같은 1차원 공간에 여러 개의 연속된 대상을 배열하는 Byte order 입니다. 빅 엔디안과 리틀 엔디안이 있습니다.</p>
+<h5 id="빅-엔디안과-리틀-엔디안의-차이는-무엇이죠"><a href="#빅-엔디안과-리틀-엔디안의-차이는-무엇이죠" class="headerlink" title="빅 엔디안과 리틀 엔디안의 차이는 무엇이죠 ?"></a>빅 엔디안과 리틀 엔디안의 차이는 무엇이죠 ?</h5><p>빅 엔디안은 최상위 바위트(most significant byte) 부터 차례대로 저장하는 방식이고, 리틀 엔디안은 최하위 바이트(least significant byte) 부터 차례대로 저장하는 방식입니다.</p>
+<h5 id="Network-Byte-Order은-뭔가요"><a href="#Network-Byte-Order은-뭔가요" class="headerlink" title="Network Byte Order은 뭔가요 ?"></a>Network Byte Order은 뭔가요 ?</h5><p>네트워크 통신시 표준 Byte Order은 빅 엔디안입니다. 리틀 엔디안을 사용하는 머신에서는 빅 엔디안으로 변화하여 전송해야 합니다.</p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/12/05/Byte Order/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2018/12/05/High Availability/">
                             High Availability
                         </a>
@@ -510,6 +448,76 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2018/12/05/DNS/">
+                            DNS
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-12-05T00:00:00+09:00">
+	
+		    Dec 05, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/network/">Network</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h5 id="DNS가-무엇인가요"><a href="#DNS가-무엇인가요" class="headerlink" title="DNS가 무엇인가요?"></a>DNS가 무엇인가요?</h5><p>Domain Name System은 사람이 읽을 수 있는 도메인 이름을 머신이 읽을 수 있는 IP주소로 변환합니다.</p>
+<h5 id="어떤-순서로-동작하나요"><a href="#어떤-순서로-동작하나요" class="headerlink" title="어떤 순서로 동작하나요?"></a>어떤 순서로 동작하나요?</h5><ol>
+<li>local DNS 서버</li>
+<li>root DNS 서버</li>
+<li>.com DNS 서버</li>
+<li>naver.com DNS 서버</li>
+</ol>
+<h5 id="어떻게-동작하나요"><a href="#어떻게-동작하나요" class="headerlink" title="어떻게 동작하나요?"></a>어떻게 동작하나요?</h5><p>naver.com의 IP 주소를 얻는 과정은 다음과 같습니다.</p>
+<ol>
+<li>PC 브라우저에서 <a href="http://www.naver.com을" target="_blank" rel="noopener">www.naver.com을</a> 입력합니다. 그러면 PC는 미리 설정되어 있는 DNS (단말에 설정되어 있는 이 DNS를 Local DNS라 부름)에게 “<a href="http://www.naver.com이라는" target="_blank" rel="noopener">www.naver.com이라는</a> hostname”에 대한 IP 주소를 물어봅니다.</li>
+<li>Local DNS에는 “<a href="http://www.naver.com에" target="_blank" rel="noopener">www.naver.com에</a> 대한 IP 주소”가 있을 수도 없을 수도 있습니다. 만약 있다면 Local DNS가 바로 PC에 IP 주소를 주고 끝나겠지요. 본 설명에서는 Local DNS에 “<a href="http://www.naver.com에" target="_blank" rel="noopener">www.naver.com에</a> 대한 IP 주소”가 없다고 가정합니다.</li>
+<li>Local DNS는 이제 “<a href="http://www.naver.com에" target="_blank" rel="noopener">www.naver.com에</a> 대한 IP 주소”를 찾아내기 위해 다른 DNS 서버들과 통신(DNS 메시지)을 시작합니다. 먼저 Root DNS 서버에게 “너 혹시 <a href="http://www.naver.com에" target="_blank" rel="noopener">www.naver.com에</a> 대한 IP 주소 아니?”라고 물어봅니다. 이를 위해 각 Local DNS 서버에는 Root DNS 서버의 정보 (IP 주소)가 미리 설정되어 있어야 합니다.</li>
+<li>이 Root DNS 서버는 전세계에 13대가 구축되어 있습니다. 미국에 10대, 일본/네덜란드/노르웨이에 각 1대씩… 그리고 우리나라의 경우 Root DNS 서버가 존재하지는 않지만 Root DNS 서버에 대한 미러 서버를 3대 운용하고 있다고 합니다.</li>
+<li>Root DNS 서버는 “<a href="http://www.naver.com의" target="_blank" rel="noopener">www.naver.com의</a> IP 주소”를 모릅니다. 그래서 Local DNS 서버에게 “난 <a href="http://www.naver.com에" target="_blank" rel="noopener">www.naver.com에</a> 대한 IP 주소 몰라. 나 말고 내가 알려주는 다른 DNS 서버에게 물어봐~”라고 응답을 합니다.</li>
+<li>이 다른 DNS 서버는 “com 도메인”을 관리하는 DNS 서버입니다.</li>
+<li>이제 Local DNS 서버는 “com 도메인을 관리하는 DNS 서버”에게 다시 “너 혹시 <a href="http://www.naver.com에" target="_blank" rel="noopener">www.naver.com에</a> 대한 IP 주소 아니?”라고 물어봅니다.</li>
+<li>역시 “com 도메인을 관리하는 DNS 서버”에도 해당 정보가 없습니다. 그래서 이 DNS 서버는 Local DNS 서버에게 “난 <a href="http://www.naver.com에" target="_blank" rel="noopener">www.naver.com에</a> 대한 IP 주소 몰라. 나 말고 내가 알려주는 다른 DNS 서버에게 물어봐~”라고 응답을 합니다. 이 다른 DNS 서버는 “naver.com 도메인”을 관리하는 DNS 서버입니다.</li>
+<li>이제 Local DNS 서버는 “naver.com 도메인을 관리하는 DNS 서버”에게 다시 “너 혹시 <a href="http://www.naver.com에" target="_blank" rel="noopener">www.naver.com에</a> 대한 IP 주소 있니?”라고 물어봅니다.</li>
+<li>“naver.com 도메인을 관리하는 DNS 서버”에는 “<a href="http://www.naver.com" target="_blank" rel="noopener">www.naver.com</a> 호스트네임에 대한 IP 주소”가 있습니다. 그래서 Local DNS 서버에게 “응! <a href="http://www.naver.com에" target="_blank" rel="noopener">www.naver.com에</a> 대한 IP 주소는 222.122.195.6이야~”라고 응답을 해 줍니다.</li>
+<li>이를 수신한 Local DNS는 <a href="http://www.naver.com에" target="_blank" rel="noopener">www.naver.com에</a> 대한 IP 주소를 캐싱을 하고(이후 다른 넘이 물어보면 바로 응답을 줄 수 있도록) 그 IP 주소 정보를 단말(PC)에 전달해 줍니다.</li>
+</ol>
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://www.netmanias.com/ko/post/blog/5353/dns/dns-basic-operation" target="_blank" rel="noopener">https://www.netmanias.com/ko/post/blog/5353/dns/dns-basic-operation</a></p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/12/05/DNS/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2018/12/05/Connection Pool/">
                             Connection Pool
                         </a>
@@ -565,8 +573,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/12/05/DNS/">
-                            DNS
+                        <a class="link-unstyled" href="/2018/12/05/ADT/">
+                            ADT
                         </a>
                     
                 </h1>
@@ -579,7 +587,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/network/">Network</a>
+    <a class="category-link" href="/categories/data-structure/">Data Structure</a>
 
 
     
@@ -588,28 +596,8 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h5 id="DNS가-무엇인가요"><a href="#DNS가-무엇인가요" class="headerlink" title="DNS가 무엇인가요?"></a>DNS가 무엇인가요?</h5><p>Domain Name System은 사람이 읽을 수 있는 도메인 이름을 머신이 읽을 수 있는 IP주소로 변환합니다.</p>
-<h5 id="어떤-순서로-동작하나요"><a href="#어떤-순서로-동작하나요" class="headerlink" title="어떤 순서로 동작하나요?"></a>어떤 순서로 동작하나요?</h5><ol>
-<li>local DNS 서버</li>
-<li>root DNS 서버</li>
-<li>.com DNS 서버</li>
-<li>naver.com DNS 서버</li>
-</ol>
-<h5 id="어떻게-동작하나요"><a href="#어떻게-동작하나요" class="headerlink" title="어떻게 동작하나요?"></a>어떻게 동작하나요?</h5><p>naver.com의 IP 주소를 얻는 과정은 다음과 같습니다.</p>
-<ol>
-<li>PC 브라우저에서 <a href="http://www.naver.com을" target="_blank" rel="noopener">www.naver.com을</a> 입력합니다. 그러면 PC는 미리 설정되어 있는 DNS (단말에 설정되어 있는 이 DNS를 Local DNS라 부름)에게 “<a href="http://www.naver.com이라는" target="_blank" rel="noopener">www.naver.com이라는</a> hostname”에 대한 IP 주소를 물어봅니다.</li>
-<li>Local DNS에는 “<a href="http://www.naver.com에" target="_blank" rel="noopener">www.naver.com에</a> 대한 IP 주소”가 있을 수도 없을 수도 있습니다. 만약 있다면 Local DNS가 바로 PC에 IP 주소를 주고 끝나겠지요. 본 설명에서는 Local DNS에 “<a href="http://www.naver.com에" target="_blank" rel="noopener">www.naver.com에</a> 대한 IP 주소”가 없다고 가정합니다.</li>
-<li>Local DNS는 이제 “<a href="http://www.naver.com에" target="_blank" rel="noopener">www.naver.com에</a> 대한 IP 주소”를 찾아내기 위해 다른 DNS 서버들과 통신(DNS 메시지)을 시작합니다. 먼저 Root DNS 서버에게 “너 혹시 <a href="http://www.naver.com에" target="_blank" rel="noopener">www.naver.com에</a> 대한 IP 주소 아니?”라고 물어봅니다. 이를 위해 각 Local DNS 서버에는 Root DNS 서버의 정보 (IP 주소)가 미리 설정되어 있어야 합니다.</li>
-<li>이 Root DNS 서버는 전세계에 13대가 구축되어 있습니다. 미국에 10대, 일본/네덜란드/노르웨이에 각 1대씩… 그리고 우리나라의 경우 Root DNS 서버가 존재하지는 않지만 Root DNS 서버에 대한 미러 서버를 3대 운용하고 있다고 합니다.</li>
-<li>Root DNS 서버는 “<a href="http://www.naver.com의" target="_blank" rel="noopener">www.naver.com의</a> IP 주소”를 모릅니다. 그래서 Local DNS 서버에게 “난 <a href="http://www.naver.com에" target="_blank" rel="noopener">www.naver.com에</a> 대한 IP 주소 몰라. 나 말고 내가 알려주는 다른 DNS 서버에게 물어봐~”라고 응답을 합니다.</li>
-<li>이 다른 DNS 서버는 “com 도메인”을 관리하는 DNS 서버입니다.</li>
-<li>이제 Local DNS 서버는 “com 도메인을 관리하는 DNS 서버”에게 다시 “너 혹시 <a href="http://www.naver.com에" target="_blank" rel="noopener">www.naver.com에</a> 대한 IP 주소 아니?”라고 물어봅니다.</li>
-<li>역시 “com 도메인을 관리하는 DNS 서버”에도 해당 정보가 없습니다. 그래서 이 DNS 서버는 Local DNS 서버에게 “난 <a href="http://www.naver.com에" target="_blank" rel="noopener">www.naver.com에</a> 대한 IP 주소 몰라. 나 말고 내가 알려주는 다른 DNS 서버에게 물어봐~”라고 응답을 합니다. 이 다른 DNS 서버는 “naver.com 도메인”을 관리하는 DNS 서버입니다.</li>
-<li>이제 Local DNS 서버는 “naver.com 도메인을 관리하는 DNS 서버”에게 다시 “너 혹시 <a href="http://www.naver.com에" target="_blank" rel="noopener">www.naver.com에</a> 대한 IP 주소 있니?”라고 물어봅니다.</li>
-<li>“naver.com 도메인을 관리하는 DNS 서버”에는 “<a href="http://www.naver.com" target="_blank" rel="noopener">www.naver.com</a> 호스트네임에 대한 IP 주소”가 있습니다. 그래서 Local DNS 서버에게 “응! <a href="http://www.naver.com에" target="_blank" rel="noopener">www.naver.com에</a> 대한 IP 주소는 222.122.195.6이야~”라고 응답을 해 줍니다.</li>
-<li>이를 수신한 Local DNS는 <a href="http://www.naver.com에" target="_blank" rel="noopener">www.naver.com에</a> 대한 IP 주소를 캐싱을 하고(이후 다른 넘이 물어보면 바로 응답을 줄 수 있도록) 그 IP 주소 정보를 단말(PC)에 전달해 줍니다.</li>
-</ol>
-<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://www.netmanias.com/ko/post/blog/5353/dns/dns-basic-operation" target="_blank" rel="noopener">https://www.netmanias.com/ko/post/blog/5353/dns/dns-basic-operation</a></p>
+                    <p>추상자료형이란 기능의 구현 부분을 나타내지 않고 순수한 기능이 무엇인지 나열한 것입니다.</p>
+<p>예를 들면, 스택은 FILO(First In Last Out)/LIFO(Last In First Out)의 자료구조로, 마지막에 입력된 데이터가 먼저 출력되는 자료구조입니다. push는 스택에 데이터를 입력합니다. pop은 스택에 있는 데이터중에 가장 나중에 입력된 데이터를 출력하고, 스택에서 삭제합니다.</p>
 
                     
                         
@@ -617,7 +605,7 @@
                     
                     
                         <p>
-                            <a href="/2018/12/05/DNS/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/12/05/ADT/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -698,8 +686,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/11/21/flow, congestion control/">
-                            flow, congestion control
+                        <a class="link-unstyled" href="/2018/11/21/길찾기/">
+                            길찾기
                         </a>
                     
                 </h1>
@@ -712,7 +700,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/network/">Network</a>
+    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
 
 
     
@@ -721,14 +709,21 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>flow control은 host와 host 간에 데이터 처리를 효율적으로 하기 위한 방법입니다. congestion control은 host와 network 간의 데이터 처리를 효율적으로 하기 위한 방법입니다.</p>
-<h2 id="flow-control-이란"><a href="#flow-control-이란" class="headerlink" title="flow control 이란?"></a>flow control 이란?</h2><p>송신측과 수신측의 데이터 처리 속도 차이를 해결하기 위한 방법입니다. </p>
-<p>수신측의 데이터 처리 속도가 송신측의 데이터 처리 속도보다 빠르면 문제가 되지 않습니다. 하지만, 송신측의 데이터 처리 속도가 더 빠르면 문제가 됩니다. 수신측에서 제한된 저장용량을 초과한 이후에 도착하는 데이터는, 손실 될 수 있으며 만약 손실 된다면 불필요하게 응답과 데이터 전송이 송/수신 측 간에 빈번이 발생합니다. 이러한 위험을 줄이기 위해 송신 측의 데이터 전송량을 수신측에 따라 조절하는 flow control 이 필요합니다. </p>
-<p>stop and wait, sliding window 방식이 있습니다.</p>
-<h2 id="congestion-control-이란"><a href="#congestion-control-이란" class="headerlink" title="congestion control 이란?"></a>congestion control 이란?</h2><p>송신측과 네트워크의 데이터 처리 속도 차이를 해결하기 위한 방법입니다.</p>
-<p>송신측의 데이터는 지역망이나 인터넷으로 연결된 대형 네트워크를 통해 전달됩니다. 만약 한 라우터에 데이터가 몰릴 경우, 자신에게 온 데이터를 모두 처리 할 수 없게 됩니다. 이런 경우 호스트들은 또 다시 재전송을 하게되고 결국 혼잡만 가중시켜 오버플로우나 데이터 손실을 발생시키게 됩니다. 이러한 네트워크의 혼잡을 피하기 위해 송신측에서 보내는 데이터의 전송 속도를  강제로 줄이는 congestion control 이 필요합니다.</p>
-<p>AIMD, Slow Start, Fast Transmit, Fast Recovery 방식이 있습니다.</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://jwprogramming.tistory.com/36" target="_blank" rel="noopener">http://jwprogramming.tistory.com/36</a></p>
+                    <p><a href="https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV14geLqABQCFAYD&amp;categoryId=AV14geLqABQCFAYD&amp;categoryType=CODE" target="_blank" rel="noopener">https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV14geLqABQCFAYD&amp;categoryId=AV14geLqABQCFAYD&amp;categoryType=CODE</a></p>
+<p>오랜만에 푸는 관계로, 쉬운 문제를 선택하였습니다. 탐색 기본 문제입니다.</p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p><a href="https://github.com/KoJunHee/algorithm/blob/master/src/swa_1219/Solution.java" target="_blank" rel="noopener">https://github.com/KoJunHee/algorithm/blob/master/src/swa_1219/Solution.java</a></p>
+<ol>
+<li><p>그래프 그리기</p>
+<p>주어진 그래프를 두 개의 배열로 표현합니다. 한 지점에서 최대 두 개의 길이 있기 때문입니다.</p>
+<p>예를 들어, 1번 지점에서  3번과 4번의 길로 갈 수 있다면 다음과 같이 배열에 저장합니다.</p>
+<p>arr01[1] =3 , arr02[1] =4</p>
+<p>마찬가지로 3번 지점에서 7번 길로만 갈 수 있다면 다음과 같이 배열에 저장합니다.</p>
+<p>arr01[3] = 7, arr02[3] = 0</p>
+</li>
+<li><p>경로 유무 찾기</p>
+<p>DFS를 사용합니다. 최대한 깊게 들어가다가 99번 위치에 도착하면 탐색을 종료합니다.</p>
+</li>
+</ol>
 
                     
                         
@@ -736,7 +731,7 @@
                     
                     
                         <p>
-                            <a href="/2018/11/21/flow, congestion control/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/11/21/길찾기/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>

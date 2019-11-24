@@ -194,6 +194,244 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2018/09/05/연산자 끼워넣기/">
+                            연산자 끼워넣기
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-09-05T00:00:00+09:00">
+	
+		    Sep 05, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p><a href="https://www.acmicpc.net/problem/14888" target="_blank" rel="noopener">https://www.acmicpc.net/problem/14888</a></p>
+<p>삼성 코딩 테스트 기출 문제이다.</p>
+<p>시간 초과가 났다.</p>
+<h2 id="오답-풀이"><a href="#오답-풀이" class="headerlink" title="오답 풀이"></a>오답 풀이</h2><p>다음의 예를 보자.</p>
+<p>숫자 : 1 2 3 4 5 6</p>
+<p>연산자 : 2 1 1 1</p>
+<br>
+
+<p>따라서 연산자는 다음과 같다.</p>
+<p> +, +, -, *, /</p>
+<br>
+
+<p>경우의 수는 같은 것을 포함하는 순열이다. </p>
+<p>5! / 2!</p>
+<br>
+
+<p>각각의 경우에 숫자를 이용해 계산을 하고, 계산 값들 중에 최소값, 최대값을 찾는다.</p>
+<h2 id="정답-풀이"><a href="#정답-풀이" class="headerlink" title="정답 풀이"></a>정답 풀이</h2><p>시뮬렌이션 문제라고 생각했다.</p>
+<p>해설을 보고 완전 탐색 문제란 것을 알았다. 따라서 BFS or DFS 로 풀 수 있다. 익숙한 BFS로 해결하였다.</p>
+<br>
+
+<p>다음의 예시에서 나올 수 있는 모든 경우의 수를 그림으로 그려보자.</p>
+<p>숫자 : 1, 2, 3, 4 </p>
+<p>연산자 : +, +, * </p>
+<p><img src="/image/newOp10.png" alt></p>
+<br>
+
+<p>문제에서 주어진대로, 숫자는 순서를 그대로 유지한다. </p>
+<p>1 다음에 오는 숫자는 2다. 1과 2를 계산할 수 있는 연산자는 + 와 * 이다. 이 두 경우를 큐에 넣는다.</p>
+<p><img src="/image/newOper05.png" alt></p>
+<p>1+2 와 3 을 계산 할 수 있는 연산자는 +와 * 이다. 이 두 경우를 큐에 넣는다.</p>
+<p><img src="/image/newOper06.png" alt></p>
+<p>이와 같은 방식으로 모든 경우의 수를 큐에 넣는다. </p>
+<p>모든 연산자를 사용 했을 때(트리의 마지막 depth)가 최종 결과값 이므로, 이들 중에 최대값 및 최소값을 구한다.</p>
+<p><img src="/image/newOp11.png" alt></p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/09/05/연산자 끼워넣기/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2018/09/04/톱니바퀴/">
+                            톱니바퀴
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-09-04T00:00:00+09:00">
+	
+		    Sep 04, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p><a href="https://www.acmicpc.net/problem/14891" target="_blank" rel="noopener">https://www.acmicpc.net/problem/14891</a></p>
+<p>삼성 코딩 테스트 기출 문제이다.</p>
+<p>시뮬레이션 문제이다.</p>
+<p>시간이 많이 걸렸지만, 쉬운문제였다.</p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p>다음 톱니바퀴 상태를 예로 들자.</p>
+<p><img src="/image/gear01.png" alt></p>
+<p>이를 테이블로 나타내면 다음과 같다.</p>
+<p><img src="/image/gear02.png" alt></p>
+<p>위의 테이블에서 같읕 색깔의 네모로 체크 된 것이 맞닿는 부분이다.</p>
+<p>3번 톱니바퀴를 돌린다고 하면,</p>
+<ul>
+<li><p>3번 톱니바퀴 기준, 왼쪽 톱니바퀴들을 모두 확인한다.</p>
+<ul>
+<li>2번 톱니바퀴와 닿는 부분이 같은 극이기 때문에 회전하지 못한다. 더 이상 왼쪽 톱니바퀴들을 확인하지 않는다.</li>
+</ul>
+</li>
+<li><p>3번 톱니바퀴 기준, 오른쪽 톱니바퀴들을 모두 확인한다.</p>
+<ul>
+<li>4번 톱니바퀴와 닿는 부분이 다른 극이기 때문에 회전할 수 있다. </li>
+</ul>
+</li>
+<li><p>각 톱니바퀴들을 모두 회전시킨다.(shift)</p>
+</li>
+</ul>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/09/04/톱니바퀴/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2018/09/01/경사로/">
+                            경사로
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-09-01T00:00:00+09:00">
+	
+		    Sep 01, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p><a href="https://www.acmicpc.net/problem/14890" target="_blank" rel="noopener">https://www.acmicpc.net/problem/14890</a></p>
+<p>삼성 코딩 테스트 기출 문제이다.</p>
+<p>시뮬레이션 문제이다.</p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ol>
+<li><p>행을 모두 체크한다.</p>
+<ul>
+<li><p>i행의 j열은 세 가지 경우로 나뉜다.</p>
+<ul>
+<li>j+1열과 같은 높이<ul>
+<li>j+1열을 체크한다.</li>
+</ul>
+</li>
+<li>j+1열 높이보다 1작음<ul>
+<li>왼쪽 방향으로 경사로를 세울 수 있는지 체크한다. </li>
+<li>다음 그림과 같이 1번 지점은 j+1열 높이보다 1 작기 때문에 2번 방향으로 체크한다.</li>
+</ul>
+</li>
+</ul>
+<p><img src="/image/runwayy011.png" alt></p>
+<ul>
+<li>j+1열 높이보다 1높음<ul>
+<li>오른쪽 방향으로 경사로를 세울 수 있는지 체크한다. </li>
+<li>다음 그림과 같이 1번 지점은 j+1열 높이보다 1 높기 때문에 2번 방향으로 체크한다. </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/image/runwayy002.png" alt></p>
+</li>
+<li><p>열을 모두 체크한다.</p>
+<p>행을 체크하는 경우와 동일하다.</p>
+</li>
+</ol>
+<p>코드로 옮기는 것이 쉽지 않아 해설을 보고 해결했다.</p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/09/01/경사로/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2018/08/31/스타트와링크/">
                             스타트와링크
                         </a>
@@ -642,230 +880,6 @@
                     
                         <p>
                             <a href="/2018/06/17/Iterator Pattern/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/06/08/Builder Pattern01/">
-                            Builder Pattern01
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-06-08T00:00:00+09:00">
-	
-		    Jun 08, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/design-pattern/">Design Pattern</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><ul>
-<li>Builder pattern builds a complex object using simple objects and using a step by step approach. </li>
-<li>This type of design pattern comes under creational pattern as this pattern provides one of the best ways to create an object.</li>
-<li>A Builder class builds the final object step by step. This builder is independent of other objects.</li>
-</ul>
-<h2 id="Intent"><a href="#Intent" class="headerlink" title="Intent"></a>Intent</h2><ul>
-<li>Defines an instance for creating an object but letting subclasses decide which class to instantiate</li>
-<li>Refers to the newly created object through a common interface</li>
-</ul>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/builderPattern01.png" alt></p>
-<ul>
-<li><strong>Builder</strong> <ul>
-<li>specifies an abstract interface for creating parts of a Product object.</li>
-</ul>
-</li>
-<li><strong>ConcreteBuilder</strong> <ul>
-<li>constructs and puts together parts of the product by implementing the Builder interface. It defines and keeps track of the representation it creates and provides an interface for saving the product.</li>
-</ul>
-</li>
-<li><strong>Director</strong>  <ul>
-<li>constructs the complex object using the Builder interface.</li>
-</ul>
-</li>
-<li><strong>Product</strong> <ul>
-<li>represents the complex object that is being built.</li>
-</ul>
-</li>
-</ul>
-<p>The client, that may be either another object or the actual client that calls the main() method of the application, initiates the Builder and Director class. </p>
-<p>The Builder represents the complex object that needs to be built in terms of simpler objects and types. </p>
-<p>The constructor in the Director class receives a Builder object as a parameter from the Client and is responsible for calling the appropriate methods of the Builder class. </p>
-<p>In order to provide the Client with an interface for all concrete Builders, the Builder class should be an abstract one. </p>
-<p>This way you can add new types of complex objects by only defining the structure and reusing the logic for the actual construction process. </p>
-<p>The Client is the only one that needs to know about the new types, the Director needing to know which methods of the Builder to call.</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.oodesign.com/builder-pattern.html" target="_blank" rel="noopener">https://www.oodesign.com/builder-pattern.html</a></p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/06/08/Builder Pattern01/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/06/08/Builder Pattern02/">
-                            Builder Pattern02
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-06-08T00:00:00+09:00">
-	
-		    Jun 08, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/design-pattern/">Design Pattern</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h2 id="Implementation"><a href="#Implementation" class="headerlink" title="Implementation"></a>Implementation</h2><p>We have considered a business case of fast-food restaurant where a typical meal could be a burger and a cold drink. </p>
-<p>Burger could be either a Veg Burger or Chicken Burger and will be packed by a wrapper. </p>
-<p>Cold drink could be either a coke or pepsi and will be packed in a bottle.</p>
-<p>We are going to create an <em>Item</em> interface representing food items such as burgers and cold drinks and concrete classes implementing the <em>Item</em> interface and a <em>Packing</em> interface representing packaging of food items and concrete classes implementing the <em>Packing</em> interface as burger would be packed in wrapper and cold drink would be packed as bottle.</p>
-<p>We then create a <em>Meal</em> class having <em>ArrayList</em> of <em>Item</em> and a <em>MealBuilder</em> to build different types of <em>Meal</em> objects by combining <em>Item</em>. <em>BuilderPatternDemo</em>, our demo class will use <em>MealBuilder</em> to build a <em>Meal</em>.</p>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/builderPattern02.png" alt></p>
-<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><img src="/image/bp01.png" alt></p>
-<p><img src="/image/bp02.png" alt></p>
-<p><img src="/image/bp03.png" alt></p>
-<p><img src="/image/bp04.png" alt></p>
-<p><img src="/image/bp05.png" alt></p>
-<p><img src="/image/bp06.png" alt></p>
-<p><img src="/image/bp07.png" alt></p>
-<p><img src="/image/bp08.png" alt></p>
-<p><img src="/image/bp09.png" alt></p>
-<p><img src="/image/bp10.png" alt></p>
-<p><img src="/image/bp11.png" alt></p>
-<p><img src="/image/bp12.png" alt></p>
-<p><img src="/image/bp13.png" alt></p>
-<p><img src="/image/bp14.png" alt></p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.tutorialspoint.com/design_pattern/builder_pattern.htm" target="_blank" rel="noopener">https://www.tutorialspoint.com/design_pattern/builder_pattern.htm</a></p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/06/08/Builder Pattern02/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/06/08/Builder Pattern03/">
-                            Builder Pattern03
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-06-08T00:00:00+09:00">
-	
-		    Jun 08, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/design-pattern/">Design Pattern</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>Use the Builder Pattern to encapsulate the construction of a product and allow it to be constructed in steps. </p>
-<p>##Scenario</p>
-<p>You’ve just been asked to build a vacation planner for a new theme  park. </p>
-<p>Park guests can choose a hotel and various types of admission tickets, make restaurant reservations, and even book special events. </p>
-<p>To create a vacation planner, you need to be able to create structures like this: </p>
-<p><img src="/image/newBuilder01.png" alt></p>
-<h2 id="You-need-a-flexible-design"><a href="#You-need-a-flexible-design" class="headerlink" title="You need a flexible design"></a>You need a flexible design</h2><p>Each guest’s planner can vary in the number of days and types of activities it includes. </p>
-<p>For instance, a local resident might not need a hotel, but wants to make dinner and special event reservations. Another guest needs a hotel, dinner reservations, and admission tickets. </p>
-<p>So, you need a flexible data structure that can represent guest planners and all their variations; </p>
-<p>you also need to follow a sequence of potentially complex steps to create the planner. </p>
-<p>How can you provide a way to create the complex structure without mixing it with the steps for creating it? </p>
-<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><p>Remember Iterator? </p>
-<p>We encapsulated the iteration into a separate object and hid the internal representation of the collection from the client. </p>
-<p>It’s the same idea here: </p>
-<p>we encapsulate the creation of the trip planner in an object (let’s call it a builder), </p>
-<p>and have our client ask the builder to construct the trip planner structure for it. </p>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/newBuilder02.png" alt></p>
-<h2 id="Benefits"><a href="#Benefits" class="headerlink" title="Benefits"></a>Benefits</h2><ul>
-<li>Encapsulates the way a complex object is constructed. </li>
-<li>Allows objects to be constructed in a multistep and varying process (as opposed to one step factories). </li>
-<li>Hides the internal representation of the product from the client. </li>
-<li>Product implementations can be swapped in and out because the client only sees an abstract interface. </li>
-</ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Head First Design Pattern</p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/06/08/Builder Pattern03/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>

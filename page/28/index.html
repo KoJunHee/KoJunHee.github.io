@@ -193,6 +193,208 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2018/02/06/프로퍼티와 메서드/">
+                            프로퍼티와 메서드
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-02-06T00:00:00+09:00">
+	
+		    Feb 06, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/ios/">iOS</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p><a href="https://developer.apple.com/swift/" target="_blank" rel="noopener">https://developer.apple.com/swift/</a></p>
+<h2 id="Properties"><a href="#Properties" class="headerlink" title="Properties"></a>Properties</h2><ul>
+<li>Properties associate values with a particular class, structure, or enumeration. <ul>
+<li>Stored properties store constant and variable values as part of an instance. Stored properties are provided only by classes and structures.</li>
+<li>computed properties calculate (rather than store) a value. Computed properties are provided by classes, structures, and enumerations. </li>
+</ul>
+</li>
+</ul>
+<h2 id="Methods"><a href="#Methods" class="headerlink" title="Methods"></a>Methods</h2><ul>
+<li><p>Methods are functions that are associated with a particular type. </p>
+</li>
+<li><p>Classes, structures, and enumerations can all define instance methods, </p>
+<ul>
+<li>which encapsulate specific tasks and functionality for working with an instance of a given type. - Classes, structures, and enumerations can also define type methods, </li>
+<li>which are associated with the type itself. Type methods are similar to class methods in Objective-C.</li>
+</ul>
+</li>
+<li><p>Instance methods are functions </p>
+</li>
+<li><p>that belong to instances of a particular class, structure, or enumeration. </p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class Counter &#123;</span><br><span class="line">    var count = 0</span><br><span class="line">    func increment() &#123;</span><br><span class="line">        count += 1</span><br><span class="line">    &#125;</span><br><span class="line">    func increment(by amount: Int) &#123;</span><br><span class="line">        count += amount</span><br><span class="line">    &#125;</span><br><span class="line">    func reset() &#123;</span><br><span class="line">        count = 0</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>The Counter class defines three instance methods:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">increment() increments the counter by 1.</span><br><span class="line">increment(by: Int) increments the counter by a specified integer amount.</span><br><span class="line">reset() resets the counter to zero.</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>can also define methods that are called on the type itself. These kinds of methods are called type methods</li>
+<li>You indicate type methods by writing the static keyword before the method’s func keyword. </li>
+<li>Classes may also use the class keyword to allow subclasses to override the superclass’s implementation of that method</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">struct LevelTracker &#123;</span><br><span class="line">    static var highestUnlockedLevel = 1</span><br><span class="line">    var currentLevel = 1</span><br><span class="line">    </span><br><span class="line">    static func unlock(_ level: Int) &#123;</span><br><span class="line">        if level &gt; highestUnlockedLevel &#123; highestUnlockedLevel = level &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    static func isUnlocked(_ level: Int) -&gt; Bool &#123;</span><br><span class="line">        return level &lt;= highestUnlockedLevel</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    @discardableResult</span><br><span class="line">    mutating func advance(to level: Int) -&gt; Bool &#123;</span><br><span class="line">        if LevelTracker.isUnlocked(level) &#123;</span><br><span class="line">            currentLevel = level</span><br><span class="line">            return true</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            return false</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/02/06/프로퍼티와 메서드/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2018/02/03/단어수학/">
+                            단어수학
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-02-03T00:00:00+09:00">
+	
+		    Feb 03, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p><a href="https://www.acmicpc.net/problem/1339" target="_blank" rel="noopener">https://www.acmicpc.net/problem/1339</a></p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
+<li>백트렉킹 문제</li>
+<li>어렵다, 다시 풀어야함</li>
+</ul>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/02/03/단어수학/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2018/02/02/책페이지/">
+                            책페이지
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-02-02T00:00:00+09:00">
+	
+		    Feb 02, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p><a href="https://www.acmicpc.net/problem/1019" target="_blank" rel="noopener">https://www.acmicpc.net/problem/1019</a></p>
+<h2 id="틀린-풀이"><a href="#틀린-풀이" class="headerlink" title="틀린 풀이"></a>틀린 풀이</h2><ul>
+<li><p>각 페이지마다 접근해서 각 숫자가 몇개씩 있나 체크</p>
+</li>
+<li><p>ex)</p>
+<ul>
+<li>1~12 페이지가 있으면 </li>
+<li>1, 2, 3, 4,,,,12 차례로 접근</li>
+<li>cnt[0] ~ cnt[9] 짜리 배열 ++</li>
+<li>10페이지 : cnt[1]++, cnt[0]++</li>
+</ul>
+</li>
+<li><p>이렇게 접근하면 시간 초과 </p>
+</li>
+<li><p>규칙 필요</p>
+</li>
+</ul>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/02/02/책페이지/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2018/01/30/흐름제어/">
                             흐름제어
                         </a>
@@ -447,99 +649,6 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/01/29/swift/">
-                            swift
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-01-29T00:00:00+09:00">
-	
-		    Jan 29, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/ios/">iOS</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h2 id="features"><a href="#features" class="headerlink" title="features"></a>features</h2><p><a href="https://developer.apple.com/swift/" target="_blank" rel="noopener">https://developer.apple.com/swift/</a></p>
-<ul>
-<li><p>Playgrounds and REPL in Xcode</p>
-<ul>
-<li>Type a line of code and the result appears immediately.</li>
-<li>The result view can display graphics, lists of results, or graphs of a value over time</li>
-</ul>
-</li>
-<li><p>Read-Eval-Print-Loop (REPL)</p>
-<ul>
-<li><p>Read – 유저의 값을 입력 받아 메모리에 저장</p>
-</li>
-<li><p>Eval – 데이터를 처리(Evaluate)</p>
-</li>
-<li><p>Print – 결과값을 출력</p>
-</li>
-<li><p>Loop – Read, Eval, Print 를 유저가 Ctrl+C를 두번 눌러 종료할때까지 반복</p>
-</li>
-<li><p>Available from within the Xcode console or in Terminal.</p>
-</li>
-</ul>
-</li>
-<li><p>Package Manager</p>
-<ul>
-<li>A cross-platform tool for building Swift libraries and executables, making it easy to create and manage dependencies.</li>
-</ul>
-</li>
-<li><p>Fast and Powerful</p>
-<ul>
-<li>low-level primitives such as types, flow control, and operators</li>
-<li>object-oriented features</li>
-</ul>
-</li>
-<li><p>Designed for Safety</p>
-<ul>
-<li>Variables are always initialized before use, </li>
-<li>arrays and integers are checked for overflow, </li>
-<li>and memory is managed automatically.</li>
-<li>Swift objects can never be nil</li>
-<li>optionals : there are cases where nil is valid and appropriate</li>
-</ul>
-</li>
-<li><p>Objective-C Interoperability</p>
-</li>
-</ul>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/01/29/swift/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
                         <a class="link-unstyled" href="/2018/01/29/swift 처음 시작하기/">
                             swift 처음 시작하기
                         </a>
@@ -642,126 +751,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/01/29/Centralized Workflow /">
-                            Centralized Workflow
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-01-29T00:00:00+09:00">
-	
-		    Jan 29, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/git/">Git</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h2 id="concept"><a href="#concept" class="headerlink" title="concept"></a>concept</h2><ul>
-<li><p>Clone the central repository</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone ssh://user@host/path/to/repo.git</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Make changes and commit</p>
-</li>
-</ul>
-<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git status # View the state of the repo</span><br><span class="line">git add &lt;some-file&gt; # Stage a file</span><br><span class="line">git commit # Commit a file&lt;/some-file&gt;</span><br></pre></td></tr></table></figure></code></pre><ul>
-<li><p>Push new commits to central repository</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
-
-
-</li>
-</ul>
-<ul>
-<li>Managing conflicts</li>
-</ul>
-<h2 id="example"><a href="#example" class="headerlink" title="example"></a>example</h2><ul>
-<li><p>John works on his feature</p>
-<ul>
-<li>edit, stage, and commit.</li>
-</ul>
-</li>
-<li><p>Mary works on her feature</p>
-<ul>
-<li>edit, stage, and commit.</li>
-</ul>
-</li>
-<li><p>John publishes his feature</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
-
-
-</li>
-</ul>
-<ul>
-<li><p>Mary tries to publish her feature</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
-
-
-</li>
-</ul>
-<pre><code>- error
-- Mary needs to pull John’s updates into her repository</code></pre><ul>
-<li>Mary rebases on top of John’s commit(s)</li>
-</ul>
-<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull --rebase origin master</span><br></pre></td></tr></table></figure></code></pre><ul>
-<li><p>Mary resolves a merge conflict</p>
-<ul>
-<li><p>충돌이 발생하면 다음과 같은 에러</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CONFLICT (content): Merge conflict in &lt;some-file&gt;</span><br></pre></td></tr></table></figure>
-
-
-</li>
-</ul>
-</li>
-</ul>
-<pre><code>- Unmerged paths section에서 conflict file이 무엇인지 확인 가능
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git status</span><br></pre></td></tr></table></figure>
-
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># Unmerged paths:</span><br><span class="line"># (use &quot;git reset HEAD &lt;some-file&gt;...&quot; to unstage)</span><br><span class="line"># (use &quot;git add/rm &lt;some-file&gt;...&quot; as appropriate to mark resolution)</span><br><span class="line">#</span><br><span class="line"># both modified: &lt;some-file&gt;</span><br></pre></td></tr></table></figure>
-
-
-- 파일 수정 후
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git add &lt;some-file&gt;</span><br><span class="line">git rebase --continue</span><br><span class="line">git rebase --abort</span><br><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
-
-
-
-​    </code></pre>
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/01/29/Centralized Workflow /#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/01/29/데이터 타입 기본/">
-                            데이터 타입 기본
+                        <a class="link-unstyled" href="/2018/01/29/swift/">
+                            swift
                         </a>
                     
                 </h1>
@@ -783,79 +774,49 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p><a href="https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/TheBasics.html#//apple_ref/doc/uid/TP40014097-CH5-ID309" target="_blank" rel="noopener">https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/TheBasics.html#//apple_ref/doc/uid/TP40014097-CH5-ID309</a></p>
-<h2 id="Integers"><a href="#Integers" class="headerlink" title="Integers"></a>Integers</h2><ul>
-<li><p>signed (positive, zero, or negative)</p>
-</li>
-<li><p>unsigned (positive or zero)</p>
+                    <h2 id="features"><a href="#features" class="headerlink" title="features"></a>features</h2><p><a href="https://developer.apple.com/swift/" target="_blank" rel="noopener">https://developer.apple.com/swift/</a></p>
 <ul>
-<li>8-bit unsigned integer : UInt8</li>
-<li>32-bit signed integer : Int32</li>
-</ul>
-</li>
-<li><p>Int</p>
+<li><p>Playgrounds and REPL in Xcode</p>
 <ul>
-<li><p>On a 32-bit platform, Int is the same size as Int32.</p>
-</li>
-<li><p>On a 64-bit platform, Int is the same size as Int64.</p>
-</li>
-<li><p>always use Int for integer values in your code</p>
-</li>
+<li>Type a line of code and the result appears immediately.</li>
+<li>The result view can display graphics, lists of results, or graphs of a value over time</li>
 </ul>
 </li>
-<li><p>UInt</p>
+<li><p>Read-Eval-Print-Loop (REPL)</p>
 <ul>
-<li><p>On a 32-bit platform, UInt is the same size as UInt32.</p>
+<li><p>Read – 유저의 값을 입력 받아 메모리에 저장</p>
 </li>
-<li><p>On a 64-bit platform, UInt is the same size as UInt64.</p>
+<li><p>Eval – 데이터를 처리(Evaluate)</p>
 </li>
-<li><p>Int is preferred, even when the values to be stored are known to be nonnegative</p>
+<li><p>Print – 결과값을 출력</p>
 </li>
-</ul>
+<li><p>Loop – Read, Eval, Print 를 유저가 Ctrl+C를 두번 눌러 종료할때까지 반복</p>
 </li>
-</ul>
-<h2 id="Booleans"><a href="#Booleans" class="headerlink" title="Booleans"></a>Booleans</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">let orangesAreOrange = true</span><br><span class="line">let turnipsAreDelicious = false</span><br><span class="line"></span><br><span class="line">if turnipsAreDelicious &#123;</span><br><span class="line">    print(&quot;Mmm, tasty turnips!&quot;)</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    print(&quot;Eww, turnips are horrible.&quot;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Prints &quot;Eww, turnips are horrible.&quot;</span><br></pre></td></tr></table></figure></code></pre><ul>
-<li><p>Swift’s type safety prevents non-Boolean values from being substituted for Bool</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let i = 1</span><br><span class="line">if i &#123;</span><br><span class="line">    // this example will not compile, and will report an error</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>The result of the i == 1 comparison is of type Bool,</p>
-</li>
-<li><p>and so this second example passes the type-check. </p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let i = 1</span><br><span class="line">if i == 1 &#123;</span><br><span class="line">    // this example will compile successfully</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<li><p>Available from within the Xcode console or in Terminal.</p>
 </li>
 </ul>
-<h2 id="Floating-Point-Numbers"><a href="#Floating-Point-Numbers" class="headerlink" title="Floating-Point Numbers"></a>Floating-Point Numbers</h2><ul>
-<li><p>Double represents a 64-bit floating-point number.</p>
 </li>
-<li><p>Float represents a 32-bit floating-point number.</p>
+<li><p>Package Manager</p>
 <ul>
-<li>In situations where either type would be appropriate, Double is preferred.</li>
+<li>A cross-platform tool for building Swift libraries and executables, making it easy to create and manage dependencies.</li>
 </ul>
 </li>
-</ul>
-<h2 id="Strings-and-Characters"><a href="#Strings-and-Characters" class="headerlink" title="Strings and Characters"></a>Strings and Characters</h2><ul>
-<li><p>String Literals</p>
+<li><p>Fast and Powerful</p>
 <ul>
-<li><p>A literal value is a value that appears directly in your source code</p>
-</li>
-<li><p>Swift infers a type of String for the someString constant </p>
-</li>
-<li><p>because it’s initialized with a string literal value.</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let someString = &quot;Some string literal value&quot;</span><br></pre></td></tr></table></figure>
-</li>
+<li>low-level primitives such as types, flow control, and operators</li>
+<li>object-oriented features</li>
 </ul>
 </li>
-<li><p>Initializing an Empty String</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var emptyString = &quot;&quot;               // empty string literal</span><br><span class="line">var anotherEmptyString = String()  // initializer syntax</span><br><span class="line">// these two strings are both empty, and are equivalent to each other</span><br></pre></td></tr></table></figure>
-
-
-</li>
-</ul>
+<li><p>Designed for Safety</p>
 <ul>
-<li><p>String Mutability</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var variableString = &quot;Horse&quot;</span><br><span class="line">variableString += &quot; and carriage&quot;</span><br><span class="line">// variableString is now &quot;Horse and carriage&quot;</span><br><span class="line"> </span><br><span class="line">let constantString = &quot;Highlander&quot;</span><br><span class="line">constantString += &quot; and another Highlander&quot;</span><br><span class="line">// this reports a compile-time error - a constant string cannot be modified</span><br></pre></td></tr></table></figure>
-
+<li>Variables are always initialized before use, </li>
+<li>arrays and integers are checked for overflow, </li>
+<li>and memory is managed automatically.</li>
+<li>Swift objects can never be nil</li>
+<li>optionals : there are cases where nil is valid and appropriate</li>
+</ul>
+</li>
+<li><p>Objective-C Interoperability</p>
 </li>
 </ul>
 
@@ -865,7 +826,7 @@
                     
                     
                         <p>
-                            <a href="/2018/01/29/데이터 타입 기본/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/01/29/swift/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -1106,21 +1067,21 @@ case west</code></pre><p>}</p>
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/01/26/수이어쓰기/">
-                            수이어쓰기1
+                        <a class="link-unstyled" href="/2018/01/29/데이터 타입 기본/">
+                            데이터 타입 기본
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2018-01-26T00:00:00+09:00">
+    <time datetime="2018-01-29T00:00:00+09:00">
 	
-		    Jan 26, 2018
+		    Jan 29, 2018
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
+    <a class="category-link" href="/categories/ios/">iOS</a>
 
 
     
@@ -1129,9 +1090,80 @@ case west</code></pre><p>}</p>
             </div>
             
                 <div class="postShorten-content">
-                    <p><a href="https://www.acmicpc.net/problem/1748" target="_blank" rel="noopener">https://www.acmicpc.net/problem/1748</a></p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
-<li>각 자리마다 쓰이는 개수를 구해서 합한다</li>
+                    <p><a href="https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/TheBasics.html#//apple_ref/doc/uid/TP40014097-CH5-ID309" target="_blank" rel="noopener">https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/TheBasics.html#//apple_ref/doc/uid/TP40014097-CH5-ID309</a></p>
+<h2 id="Integers"><a href="#Integers" class="headerlink" title="Integers"></a>Integers</h2><ul>
+<li><p>signed (positive, zero, or negative)</p>
+</li>
+<li><p>unsigned (positive or zero)</p>
+<ul>
+<li>8-bit unsigned integer : UInt8</li>
+<li>32-bit signed integer : Int32</li>
+</ul>
+</li>
+<li><p>Int</p>
+<ul>
+<li><p>On a 32-bit platform, Int is the same size as Int32.</p>
+</li>
+<li><p>On a 64-bit platform, Int is the same size as Int64.</p>
+</li>
+<li><p>always use Int for integer values in your code</p>
+</li>
+</ul>
+</li>
+<li><p>UInt</p>
+<ul>
+<li><p>On a 32-bit platform, UInt is the same size as UInt32.</p>
+</li>
+<li><p>On a 64-bit platform, UInt is the same size as UInt64.</p>
+</li>
+<li><p>Int is preferred, even when the values to be stored are known to be nonnegative</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="Booleans"><a href="#Booleans" class="headerlink" title="Booleans"></a>Booleans</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">let orangesAreOrange = true</span><br><span class="line">let turnipsAreDelicious = false</span><br><span class="line"></span><br><span class="line">if turnipsAreDelicious &#123;</span><br><span class="line">    print(&quot;Mmm, tasty turnips!&quot;)</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    print(&quot;Eww, turnips are horrible.&quot;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Prints &quot;Eww, turnips are horrible.&quot;</span><br></pre></td></tr></table></figure></code></pre><ul>
+<li><p>Swift’s type safety prevents non-Boolean values from being substituted for Bool</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let i = 1</span><br><span class="line">if i &#123;</span><br><span class="line">    // this example will not compile, and will report an error</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>The result of the i == 1 comparison is of type Bool,</p>
+</li>
+<li><p>and so this second example passes the type-check. </p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let i = 1</span><br><span class="line">if i == 1 &#123;</span><br><span class="line">    // this example will compile successfully</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="Floating-Point-Numbers"><a href="#Floating-Point-Numbers" class="headerlink" title="Floating-Point Numbers"></a>Floating-Point Numbers</h2><ul>
+<li><p>Double represents a 64-bit floating-point number.</p>
+</li>
+<li><p>Float represents a 32-bit floating-point number.</p>
+<ul>
+<li>In situations where either type would be appropriate, Double is preferred.</li>
+</ul>
+</li>
+</ul>
+<h2 id="Strings-and-Characters"><a href="#Strings-and-Characters" class="headerlink" title="Strings and Characters"></a>Strings and Characters</h2><ul>
+<li><p>String Literals</p>
+<ul>
+<li><p>A literal value is a value that appears directly in your source code</p>
+</li>
+<li><p>Swift infers a type of String for the someString constant </p>
+</li>
+<li><p>because it’s initialized with a string literal value.</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let someString = &quot;Some string literal value&quot;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>Initializing an Empty String</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var emptyString = &quot;&quot;               // empty string literal</span><br><span class="line">var anotherEmptyString = String()  // initializer syntax</span><br><span class="line">// these two strings are both empty, and are equivalent to each other</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<ul>
+<li><p>String Mutability</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var variableString = &quot;Horse&quot;</span><br><span class="line">variableString += &quot; and carriage&quot;</span><br><span class="line">// variableString is now &quot;Horse and carriage&quot;</span><br><span class="line"> </span><br><span class="line">let constantString = &quot;Highlander&quot;</span><br><span class="line">constantString += &quot; and another Highlander&quot;</span><br><span class="line">// this reports a compile-time error - a constant string cannot be modified</span><br></pre></td></tr></table></figure>
+
+</li>
 </ul>
 
                     
@@ -1140,108 +1172,7 @@ case west</code></pre><p>}</p>
                     
                     
                         <p>
-                            <a href="/2018/01/26/수이어쓰기/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/01/24/타일/">
-                            타일
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-01-24T00:00:00+09:00">
-	
-		    Jan 24, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p><a href="https://www.acmicpc.net/problem/1720" target="_blank" rel="noopener">https://www.acmicpc.net/problem/1720</a></p>
-<h1 id="중복을-고려하지-않고"><a href="#중복을-고려하지-않고" class="headerlink" title="중복을 고려하지 않고"></a>중복을 고려하지 않고</h1><ul>
-<li>d[i]<ul>
-<li>d[i-2] * 2 + d[i-1]</li>
-</ul>
-</li>
-</ul>
-<p><img src="/image/picture.png" alt></p>
-<h1 id="중복을-고려하여"><a href="#중복을-고려하여" class="headerlink" title="중복을 고려하여"></a>중복을 고려하여</h1><ul>
-<li><p>전체 타일 수 = A + 2B </p>
-<ul>
-<li>A : 중복되지 않는 수</li>
-<li>B : 중복되는 수</li>
-</ul>
-</li>
-<li><p>중복을 제거한 타일 수 = A + B = (A + 2B + A) / 2</p>
-</li>
-<li><p>A 개수 구하기</p>
-<ul>
-<li><p>i가 홀수인 경우 </p>
-<ul>
-<li>가운데 2*1을 두고, 남은 좌우 채움</li>
-<li>s[i] = d[i/2]</li>
-</ul>
-</li>
-<li><p>i가 짝수인 경우</p>
-<ul>
-<li>s[i] = d[i/2-1] * 2 + d[i/2]</li>
-<li>가운데, 1*2를 주고, 남은 좌우 채움<ul>
-<li>d[i/2-1]</li>
-</ul>
-</li>
-<li>가운데, 2*2를 주고, 남은 좌우 채움<ul>
-<li>d[i/2-1]</li>
-</ul>
-</li>
-<li>반반 나눠서 채움<ul>
-<li>d[i/2]</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="결과"><a href="#결과" class="headerlink" title="결과"></a>결과</h2><ul>
-<li>런타임 에러가 뜸</li>
-</ul>
-<p><img src="/image/error.png" alt></p>
-<ul>
-<li>해결 : 배열 31로 고정</li>
-</ul>
-<p><img src="/image/solve.png" alt></p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/01/24/타일/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/01/29/데이터 타입 기본/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>

@@ -194,6 +194,328 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2018/10/04/Process Managemnet/">
+                            Process Management
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-10-04T00:00:00+09:00">
+	
+		    Oct 04, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/os/">OS</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p>출처 : 이화여자대학교 반효경 (<a href="http://www.kocw.net/home/search/kemView.do?kemId=1046323" target="_blank" rel="noopener">http://www.kocw.net/home/search/kemView.do?kemId=1046323</a>)</p>
+<h2 id="프로세스-생성"><a href="#프로세스-생성" class="headerlink" title="프로세스 생성"></a>프로세스 생성</h2><ul>
+<li>부모 프로세스가 자식 프로세스 생성</li>
+<li>프로세스의 트리(계층 구조) 생성</li>
+<li>프로세스는 자원을 필요로 함<ul>
+<li>운영체제로부터 받는다</li>
+<li>부모와 공유한다</li>
+</ul>
+</li>
+<li>주소 공간<ul>
+<li>자식은 부모의 공간을 복사</li>
+<li>자식은 그 공간에 새로운 프로그램을 올림</li>
+</ul>
+</li>
+<li>유닉스의 예 : 복제 생성하고 덮어씌움<ul>
+<li>fork() 시스템 콜이 새로운 프로세스를 복제 생성<ul>
+<li>부모를 그대로 복사</li>
+<li>주소 공간 할당</li>
+</ul>
+</li>
+<li>exec()<ul>
+<li>fork 다음에 이어지는  exec() 시스템 콜을 통해 새로운 프로그램을 메모리에 올림 (덮어 씌움)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="프로세스-종료"><a href="#프로세스-종료" class="headerlink" title="프로세스 종료"></a>프로세스 종료</h2><ul>
+<li>exit<ul>
+<li>exit 시스템 콜을 통해 프로세스가 마지막 명령을 수행한후 운영체제에게 이를 알려줌</li>
+<li>자식이 부모에게 output data를 보냄(via wait system call)</li>
+<li>프로세의 각종 자원들이 운영체제에게 반납됨</li>
+</ul>
+</li>
+<li>abort<ul>
+<li>부모 프로세스가 자식의 수행을 종료시킴</li>
+<li>자식이 할당 자원의 한계치를 넘어섬</li>
+<li>자식에게 할당된 테스크가 더 이사 필요하지 않음</li>
+<li>부모가 종료하는 경우<ul>
+<li>운영체제는 부모 프로세스가 종료하는 경우 자식이 더 이상 수행되도록 두지 않음</li>
+<li>단계적인 종료</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="fork-system-call"><a href="#fork-system-call" class="headerlink" title="fork() system call"></a>fork() system call</h2><p>왼쪽은 부모, 오른쪽은 자식. 자식은 fork() 이후의 라인부터 실행</p>
+<p><img src="/image/os100401.png" alt></p>
+<p><img src="/image/os100402.png" alt></p>
+<h2 id="exec-system-call"><a href="#exec-system-call" class="headerlink" title="exec() system call"></a>exec() system call</h2><p>새로운 프로그램을 덮어씌움. </p>
+<p>부모가 자식을 만든다음에, 자식은 오른쪽의 date라는 프로그램으로 완전히 덮어씌었음</p>
+<p><img src="/image/os100403.png" alt></p>
+<h2 id="wait-system-call"><a href="#wait-system-call" class="headerlink" title="wait() system call"></a>wait() system call</h2><p>프로세스 A가 wait() system call을 하면, </p>
+<p>커널은 child가 종료될 때까지 프로세스 A를 slepp 시킴(block 상태)</p>
+<p>child process가 종료되면 커널은 프로세스 A를 깨움(ready 상태)</p>
+<p><img src="/image/os100404.png" alt></p>
+<h2 id="exit-system-call"><a href="#exit-system-call" class="headerlink" title="exit() system call"></a>exit() system call</h2><p>프로세스의 종료</p>
+<ul>
+<li>자발적 종료<ul>
+<li>마지막 statement 수행 후에 exit() 시스템 콜 통해</li>
+<li>프로그램에 명싱적으로 적어주지 않아도 main 함수가 리턴되는 위치에 컴파일러가 넣어줌</li>
+</ul>
+</li>
+<li>비자발적 종료<ul>
+<li>부모가 자식을 죽임<ul>
+<li>자식이 한계치 넘어서는 자원 자원 요청</li>
+<li>자식에게 할당된 테스크가 더이상 필요하지 않음</li>
+</ul>
+</li>
+<li>키모드로 kill, break 친 경우</li>
+<li>부모가 종료하는 경우<ul>
+<li>부모가 종료하기 전에 자식들이 먼저 종료됨</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="프로세스-간-협력"><a href="#프로세스-간-협력" class="headerlink" title="프로세스 간 협력"></a>프로세스 간 협력</h2><ul>
+<li>독릭접 프로세스<ul>
+<li>프로세는 각자의 주소 공간을 가지고 수행되므로 원친적으로 하나의 프로세스가 다른 프로세스의 수행에 영향을 미치지 못함</li>
+</ul>
+</li>
+<li>협력 프로세스<ul>
+<li>하나의 프로세스가 다른 프로세싀의 수행에 여향을 미칠 수 있음</li>
+</ul>
+</li>
+<li>프로세스 간 협력 메커니즘(IPC : Interprocess Communication)<ul>
+<li>메세지를 전달하는 방법 (message passing)<ul>
+<li>커널을 통해 메세지 전달</li>
+</ul>
+</li>
+<li>주소 공간을 공유하는 방법 (shraed memory)<ul>
+<li>서로 다른 프로세 간에도 일부 주소 공간을 공유하게하는 메커니즘</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="IPC"><a href="#IPC" class="headerlink" title="IPC"></a>IPC</h2><p><img src="/image/os100405.png" alt></p>
+<h2 id="Message-Passing"><a href="#Message-Passing" class="headerlink" title="Message Passing"></a>Message Passing</h2><p><img src="/image/os100406.png" alt></p>
+<ul>
+<li><p>Direcit Communicaiton</p>
+<ul>
+<li>통신하려는 프로세스의 이름을 명시적으료 표시</li>
+</ul>
+</li>
+<li><p>Indirecit Communicaiton</p>
+<ul>
+<li>mailbot or port 를 통해 메시지를 간접 전달</li>
+</ul>
+</li>
+</ul>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/10/04/Process Managemnet/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2018/10/04/보물상자 비밀번호/">
+                            보물상자 비밀번호
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-10-04T00:00:00+09:00">
+	
+		    Oct 04, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p><a href="https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AWXRUN9KfZ8DFAUo&amp;categoryId=AWXRUN9KfZ8DFAUo&amp;categoryType=CODE" target="_blank" rel="noopener">https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AWXRUN9KfZ8DFAUo&amp;categoryId=AWXRUN9KfZ8DFAUo&amp;categoryType=CODE</a></p>
+<p>쉬운 문제이다. 이 문제에서는 정렬과 진법 변환을 배울 수 있다.</p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ol>
+<li>회전 시키고</li>
+<li>각 변 확인하며 리스트에 저장</li>
+</ol>
+<h2 id="개념"><a href="#개념" class="headerlink" title="개념"></a>개념</h2><ol>
+<li><p>정렬</p>
+<p>오름차순 정렬 : Collections.sort(list)</p>
+<p>내림차순 정렬 : Collections.sort(list) –&gt;  Collections.reverse(list)</p>
+</li>
+<li><p>진법 변환</p>
+<p>string 을 radix 진법으로 변환 : Integer.parseInt(String s, int radix) </p>
+</li>
+</ol>
+<h2 id="코드"><a href="#코드" class="headerlink" title="코드"></a>코드</h2><p><img src="/image/treasurepwd01.png" alt></p>
+<p><img src="/image/treasurepwd02.png" alt></p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/10/04/보물상자 비밀번호/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2018/10/03/Process/">
+                            Process
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-10-03T00:00:00+09:00">
+	
+		    Oct 03, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/os/">OS</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h5 id="Process란"><a href="#Process란" class="headerlink" title="Process란 ?"></a>Process란 ?</h5><p>실행중인 프로그램입니다. 메모리에 적재되어 CPU 할당을 받을 수 있습니다.</p>
+<p><img src="/image/100201.png" alt></p>
+<h5 id="Context란"><a href="#Context란" class="headerlink" title="Context란 ?"></a>Context란 ?</h5><p>CPU 수행상태를 나타내는 하드웨어 문맥입니다.</p>
+<h5 id="프로세스의-상태-Process-State-란"><a href="#프로세스의-상태-Process-State-란" class="headerlink" title="프로세스의 상태 (Process State) 란 ?"></a>프로세스의 상태 (Process State) 란 ?</h5><p>프로세스는 상태가 변경되며 수행됩니다.</p>
+<ol>
+<li>Running<br>CPU를 잡고 instruction을 수행중인 상태입니다.</li>
+<li>Ready<br>메모리 등 다른 조건을 모두 만족하고 CPU를 기다리는 상태 입니다.</li>
+<li>Blocked (wait, sleep)<br>CPU를 주어도 당장 instruction을 수행할 수 없는 상태입니다. 프로세스 자신이 요청한 event(io같은거) 가 만족되지않아 이를 기다리는 상태입니다. 자신이 요청한 event 만족되면 ready 상태가 됩니다.</li>
+<li>New<br>프로세스가 생성중인 상태입니다.</li>
+<li>Terminated<br>execution이 끝난 상태입니다.</li>
+<li>Suspended (stopped)<br>프로세스가 통째로 메모리에서 쫓겨난 상태입니다. 디스크에 swap out 됩니다.  외부에서 resume해 주어야 active가 됩니다.</li>
+</ol>
+<p><img src="/image/100202.png" alt></p>
+<p><img src="/image/100203.png" alt></p>
+<h5 id="PCB란"><a href="#PCB란" class="headerlink" title="PCB란 ?"></a>PCB란 ?</h5><p>운영체제가 각 프로세스를 관리하기 위해 프로세스당 유지하는 정보입니다. 프로세스는 CPU 를 할당받아 작업을 처리하다가도 프로세스 전환이 발생하면 진행하던 작업을 저장하고 CPU 를 반환해야 하는데, 이때 작업의 진행 상황을 모두 PCB 에 저장하게 됩니다. </p>
+<ol>
+<li>OS가 관리상 사용하는 부분</li>
+<li>CPU 수행 관련 하드웨어 값</li>
+<li>메모리 관련</li>
+<li>파일 관련</li>
+</ol>
+<p><img src="/image/100204.png" alt></p>
+<h5 id="문맥-교환이-뭔가요"><a href="#문맥-교환이-뭔가요" class="headerlink" title="문맥 교환이 뭔가요?"></a>문맥 교환이 뭔가요?</h5><p>CPU를 한 프로세스에서 다른 프로세스로 넘겨누는 과정입니다. </p>
+<p><img src="/image/100205.png" alt></p>
+<h5 id="system-call이나-interrupt-발생시-항상-문맥교환이-일어납니까"><a href="#system-call이나-interrupt-발생시-항상-문맥교환이-일어납니까" class="headerlink" title="system call이나 interrupt 발생시 항상 문맥교환이 일어납니까?"></a>system call이나 interrupt 발생시 항상 문맥교환이 일어납니까?</h5><p>system call이나 interrupt 발생시 context switch가 반드시 일어나는 것은 아닙니다. 프로세스 A가 CPU를 잡고 있다가, interrupt 가 걸리거나, system call을 하게되어 user mode에서 kernel mode에 갔다가, 다시 사용자 프로세스 A가 CPU를 잡게 되면 문맥교환이 일어나지 않습니다.</p>
+<h5 id="프로세스-스케쥴링-큐의-모습은"><a href="#프로세스-스케쥴링-큐의-모습은" class="headerlink" title="프로세스 스케쥴링 큐의 모습은 ?"></a>프로세스 스케쥴링 큐의 모습은 ?</h5><p><img src="/image/100206.png" alt></p>
+<h5 id="스케쥴러란"><a href="#스케쥴러란" class="headerlink" title="스케쥴러란 ?"></a>스케쥴러란 ?</h5><ol>
+<li><p>Long-term scheduler (job scheduler)<br>메모리를 어떤 프로세스에게 줄지 결정합니다. 시작 프로세스 중 어떤 것들을 ready queue로 보낼지 결정합니다.</p>
+</li>
+<li><p>Short-term scheduler (cpu scheduler)<br>어떤 프로세스에게 cpu를 줄지 결정합니다. 어떤 프로세스를 다음번에 running시킬지 결정합니다.</p>
+</li>
+<li><p>Medum-term scheduler (swapper)<br>메모리에 많은 프로그램이 올라가있으면 일부를 골라서 쫓아냅니다. 프로세스에게서 메모리를 뺏는 문제입니다.</p>
+</li>
+</ol>
+<h5 id="Thread-란"><a href="#Thread-란" class="headerlink" title="Thread 란 ?"></a>Thread 란 ?</h5><p>프로세스의 내부의 CPU 수행단위입니다. 스레드는 스레드 ID, PC, register set, 그리고 stack으로 구성됩니다. 같은 프로세스에 속한 다른 스레드와 code seciton, data section, 그리고 OS resource를 공유합니다.</p>
+<p><img src="/image/100207.png" alt></p>
+<p><img src="/image/100208.png" alt></p>
+<h5 id="왜-스레드마다-스택을-독립적으로-가지고-있나요"><a href="#왜-스레드마다-스택을-독립적으로-가지고-있나요" class="headerlink" title="왜 스레드마다 스택을 독립적으로 가지고 있나요?"></a>왜 스레드마다 스택을 독립적으로 가지고 있나요?</h5><p>스레드는 독립적인 실행 흐름이기 때문입니다. </p>
+<p>함수 호출 시 전달되는 인자, 되돌아갈 주소값 및 함수 내에서 선언하는 변수 등을 저장하기 위해 사용되는 메모리 공간인 스택을 독립적으로 가지고 있어야 합니다. </p>
+<h5 id="왜-스레드마다-PC-레지스터를-독립적으로-가지고-있나요"><a href="#왜-스레드마다-PC-레지스터를-독립적으로-가지고-있나요" class="headerlink" title="왜 스레드마다 PC 레지스터를 독립적으로 가지고 있나요?"></a>왜 스레드마다 PC 레지스터를 독립적으로 가지고 있나요?</h5><p>스레드가 CPU를 할당받았다가 스케쥴러에 의해 CPU를 빼앗기면, 어느 부분까지 수행되었는지 기억할 필요가 있기 때문에 PC 레지스터를 독립적으로 가지고 있어야 합니다.</p>
+<h5 id="멀티스레딩이-무엇인가요"><a href="#멀티스레딩이-무엇인가요" class="headerlink" title="멀티스레딩이 무엇인가요?"></a>멀티스레딩이 무엇인가요?</h5><p>하나의 프로세스를 다수의 실행 단위로 구분하여, 자원을 공유하고 자원의 생성과 관리의 중복성을 최소화하여, 수행 능력을 향상 시키는 것입니다.</p>
+<h5 id="멀티스레딩의-장점은-무엇인가요"><a href="#멀티스레딩의-장점은-무엇인가요" class="headerlink" title="멀티스레딩의 장점은 무엇인가요?"></a>멀티스레딩의 장점은 무엇인가요?</h5><p>Responsiveness와 Resource Sharing 이 뛰어나며, 스레드 간 통신 방법이 간단합니다.</p>
+<ol>
+<li>Responsiveness가 좋습니다.<br>한 스레드가 blocked 되어도, 다른 스레드는 continue 가능합니다</li>
+<li>Resource Sharing 이 가능합니다.<br>n개의 스레드는 프로세스의 코드 영역, 데이터 영역 그리고 자원을 공유합니다.</li>
+<li>프로세스 간 통신 방법에 비해 스레드 간 통신 방법이 간단합니다.<br>별도의 자원을 이용하지 않고 전역 변수의 공간, 또는 동적으로 할당된 공간인 Heap 영역을 이용해 데이터를 주고 받을 수 있습니다.</li>
+</ol>
+<h5 id="멀티스레딩의-단점은-무엇인가요"><a href="#멀티스레딩의-단점은-무엇인가요" class="headerlink" title="멀티스레딩의 단점은 무엇인가요?"></a>멀티스레딩의 단점은 무엇인가요?</h5><p>동기화 작업이 필요합니다. 서로 다른 스레드가 data 영역과 heap 영역을 공유하기 때문입니다.</p>
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p>이화여자대학교 반효경 (<a href="http://www.kocw.net/home/search/kemView.do?kemId=1046323" target="_blank" rel="noopener">http://www.kocw.net/home/search/kemView.do?kemId=1046323</a>)</p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/10/03/Process/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2018/10/01/System Structure, Program Execution/">
                             System Structure, Program Execution
                         </a>
@@ -816,64 +1138,6 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/09/24/2048/">
-                            2048
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-09-24T00:00:00+09:00">
-	
-		    Sep 24, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p><a href="https://www.acmicpc.net/problem/12100" target="_blank" rel="noopener">https://www.acmicpc.net/problem/12100</a></p>
-<p>삼성 기출문제이다. DFS 문제이다. 블록을 이동하는 것이 어려운 문제였다.</p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p>블록을 5번 이동 시키는 것은 다음 그림과 같이 DFS로 구현한다.</p>
-<p><img src="/image/204801.png" alt></p>
-<p><img src="/image/204802.png" alt></p>
-<p><img src="/image/204803.png" alt></p>
-<p><img src="/image/204804.png" alt></p>
-<p><img src="/image/204805.png" alt></p>
-<p>문제의 핵심은 블록을 이동하는 것이다. 블록 이동을 구현하기 위해 Queue를 사용한다.</p>
-<p>moveBlocks 메소드가 이를 구현한 코드이다.</p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/09/24/2048/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
                         <a class="link-unstyled" href="/2018/09/24/뱀/">
                             뱀
                         </a>
@@ -920,129 +1184,6 @@
                     
                         <p>
                             <a href="/2018/09/24/뱀/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/09/19/주사위 굴리기/">
-                            주사위 굴리기
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-09-19T00:00:00+09:00">
-	
-		    Sep 19, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p><a href="https://www.acmicpc.net/problem/14499" target="_blank" rel="noopener">https://www.acmicpc.net/problem/14499</a></p>
-<p>삼성 기출문제이다. 쉬운 문제이다. 문제 이해만 잘 하면 된다. </p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p>문제의 핵심은 주사위를 ‘옮기는 것’ 아니라, ‘굴리는 것’이다.</p>
-<p>다음 그림과 같이 처음 상태에서 동, 서, 북, 남으로 굴림에 따라서 방향에 대한 값이 바뀐다.</p>
-<p><img src="/image/dice011.png" alt></p>
-<p>회전하고 문제에서 주어진 대로 풀면 된다.</p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/09/19/주사위 굴리기/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/09/19/사다리 조작/">
-                            사다리 조작
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-09-19T00:00:00+09:00">
-	
-		    Sep 19, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p><a href="https://www.acmicpc.net/problem/14499" target="_blank" rel="noopener">https://www.acmicpc.net/problem/14499</a></p>
-<p>삼성 기출문제이다. DFS 문제이다.</p>
-<p>어려웠다. 해설을 보고 이해를 했지만, 직집 해결해보기 위해 며칠 동안 붙잡고 있던 문제이다.</p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ol>
-<li>사다리를 어떻게 코드로 표현해야 하는지 파악한다.</li>
-<li>사디리는 어디에 둘 수 있는지 파악한다.</li>
-<li>탐색을 어떻게 진행할지 생각한다.</li>
-</ol>
-<p>사다리를 코드로 표현하는 방법은 다음 그림과 같이 이차원 배열을 이용한다. 사다리를 1과 2로 표현한다.</p>
-<p><img src="/image/laddeerr01.png" alt></p>
-<p><img src="/image/laddeerr02.png" alt></p>
-<p>사다리를 둘 수 있는 곳의 조건은 다음과 같다.</p>
-<ol>
-<li>i행의 j번째의 값과 j+1번째의 값이 0 : 연속되지 않고, 사다리를 둘 수 있는 빈 칸 이라는 의미</li>
-<li>j+1&lt;=n : 동일한 행에 사다리를 둘 수 있다는 의미</li>
-</ol>
-<p>탐색은 DFS로 진행한다. 사다리는 최대 3개 까지 둘 수 있다.</p>
-<p>사다리를 최대 0개 둘 수 있는 경우, 최대 1개 둘수 있는 경우, 최대 2개 둘수 있는 경우, 최대 3개 둘수 있는 경우로 나눈다.</p>
-<p>각 경우에서 DFS를 시작한다. 설명을 위해 빈 칸을 A, B, C.. 로 표현하였다.</p>
-<p><img src="/image/speLadder01.png" alt></p>
-<p><img src="/image/speLadder02.png" alt></p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/09/19/사다리 조작/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>

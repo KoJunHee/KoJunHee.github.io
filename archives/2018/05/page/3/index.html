@@ -194,8 +194,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/05/22/Blurring/">
-                            Blurring
+                        <a class="link-unstyled" href="/2018/05/22/Edge Detection/">
+                            Edge Detection
                         </a>
                     
                 </h1>
@@ -217,75 +217,37 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="Blurring"><a href="#Blurring" class="headerlink" title="Blurring"></a>Blurring</h2><ul>
-<li>In blurring, we simple blur an image. </li>
-<li>An image looks more sharp or more detailed if we are able to perceive all the objects and their shapes correctly in it. </li>
-<li>For example. An image with a face, looks clear when we are able to identify eyes, ears, nose, lips, forehead e.t.c very clear. </li>
-<li>This shape of an object is due to its edges. </li>
-<li>So in blurring, we simple reduce the edge content and makes the transition form one color to the other very smooth.</li>
-</ul>
-<h2 id="Blurring-vs-zooming"><a href="#Blurring-vs-zooming" class="headerlink" title="Blurring vs zooming"></a>Blurring vs zooming</h2><ul>
-<li>You might have seen a blurred image when you zoom an image. <ul>
-<li>When you zoom an image using pixel replication, and zooming factor is increased, you saw a blurred image. This image also has less details, but it is not true blurring.</li>
-</ul>
-</li>
-<li>In zooming, you add new pixels to an image, that increase the overall number of pixels in an image, </li>
-<li>In blurring, the number of pixels of a normal image and a blurred image remains the same.</li>
-</ul>
-<h2 id="Common-example-of-a-blurred-image"><a href="#Common-example-of-a-blurred-image" class="headerlink" title="Common example of a blurred image"></a>Common example of a blurred image</h2><p><img src="/image/blur01.png" alt></p>
-<h2 id="Types-of-filters"><a href="#Types-of-filters" class="headerlink" title="Types of filters"></a>Types of filters</h2><ul>
-<li>Blurring can be achieved by many ways. </li>
-<li>The common type of filters that are used to perform blurring are.<ul>
-<li>Mean filter</li>
-<li>Weighted average filter</li>
-<li>Gaussian filter</li>
-</ul>
-</li>
-</ul>
-<h2 id="Mean-filter"><a href="#Mean-filter" class="headerlink" title="Mean filter"></a>Mean filter</h2><ul>
-<li>Mean filter is also known as Box filter and average filter. </li>
-<li>A mean filter has the following properties.<ul>
-<li>It must be odd ordered</li>
-<li>The sum of all the elements should be 1</li>
-<li>All the elements should be same</li>
-</ul>
-</li>
-<li>If we follow this rule, then for a mask of 3x3. We get the following result.</li>
-</ul>
-<p><img src="/image/blur02.png" alt></p>
+                    <h2 id="What-are-edges"><a href="#What-are-edges" class="headerlink" title="What are edges"></a>What are edges</h2><p>We can also say that sudden changes of discontinuities in an image are called as edges. </p>
+<p>Significant transitions in an image are called as edges.</p>
+<h2 id="Types-of-edges"><a href="#Types-of-edges" class="headerlink" title="Types of edges"></a>Types of edges</h2><p>Generally edges are of three types:</p>
 <ul>
-<li>The blurring can be increased by increasing the size of the mask. </li>
-<li>The more is the size of the mask, the more is the blurring. </li>
-<li>Because with greater mask, greater number of pixels are catered and one smooth transition is defined.</li>
+<li>Horizontal edges</li>
+<li>Vertical Edges</li>
+<li>Diagonal Edges</li>
 </ul>
-<p><img src="/image/blur03.png" alt></p>
-<h2 id="Weighted-average-filter"><a href="#Weighted-average-filter" class="headerlink" title="Weighted average filter"></a>Weighted average filter</h2><ul>
-<li><p>In weighted average filter, </p>
-</li>
-<li><p>we gave more weight to the center value. </p>
-</li>
-<li><p>Due to which the contribution of center becomes more then the rest of the values. Due to weighted average filtering, we can actually control the blurring.</p>
-</li>
-<li><p>Properties of the weighted average filter are.</p>
+<h2 id="Why-detect-edges"><a href="#Why-detect-edges" class="headerlink" title="Why detect edges"></a>Why detect edges</h2><p>Most of the shape information of an image is enclosed in edges. </p>
+<p>So first we detect these edges in an image and by using these filters and then by enhancing those areas of image which contains edges, sharpness of the image will increase and image will become clearer.</p>
+<p>Here are some of the masks for edge detection</p>
 <ul>
-<li>It must be odd ordered</li>
-<li>The sum of all the elements should be 1</li>
-<li>The weight of center element should be more then all of the other elements</li>
+<li>Prewitt Operator</li>
+<li>Sobel Operator</li>
+<li>Robinson Compass Masks</li>
+<li>Krisch Compass Masks</li>
+<li>Laplacian Operator.</li>
 </ul>
-</li>
-<li><p>Filter01</p>
-<p><img src="/image/blur04.png" alt></p>
-<ul>
-<li>The two properties are satisfied which are (1 and 3). But the property 2 is not satisfied. So in order to satisfy that we will simple divide the whole filter by 10, or multiply it with 1/10.</li>
-</ul>
-</li>
-<li><p>Filter02</p>
-<p><img src="/image/blur05.png" alt></p>
-<ul>
-<li>Dividing factor = 18.</li>
-</ul>
-</li>
-</ul>
+<p>Above mentioned all the filters are Linear filters or smoothing filters.</p>
+<h2 id="Prewitt-Operator"><a href="#Prewitt-Operator" class="headerlink" title="Prewitt Operator"></a>Prewitt Operator</h2><p>Prewitt operator is used for detecting edges horizontally and vertically.</p>
+<h2 id="Sobel-Operator"><a href="#Sobel-Operator" class="headerlink" title="Sobel Operator"></a>Sobel Operator</h2><p>The sobel operator is very similar to Prewitt operator. It is also a derivate mask and is used for edge detection. It also calculates edges in both horizontal and vertical direction.</p>
+<h2 id="Robinson-Compass-Masks"><a href="#Robinson-Compass-Masks" class="headerlink" title="Robinson Compass Masks"></a>Robinson Compass Masks</h2><p> This operator is also known as direction mask. In this operator we take one mask and rotate it in all the 8 compass major directions to calculate edges of each direction.</p>
+<h2 id="Kirsch-Compass-Masks"><a href="#Kirsch-Compass-Masks" class="headerlink" title="Kirsch Compass Masks"></a>Kirsch Compass Masks</h2><p>Kirsch Compass Mask is also a derivative mask which is used for finding edges. Kirsch mask is also used for calculating edges in all the directions.</p>
+<h2 id="Laplacian-Operator"><a href="#Laplacian-Operator" class="headerlink" title="Laplacian Operator"></a>Laplacian Operator</h2><p>Laplacian Operator is also a derivative operator which is used to find edges in an image. </p>
+<p>Laplacian is a second order derivative mask. It can be further divided into positive laplacian and negative laplacian.</p>
+<p>All these masks find edges. Some find horizontally and vertically, some find in one direction only and some find in all the directions. </p>
+<h2 id="Sharpening"><a href="#Sharpening" class="headerlink" title="Sharpening"></a>Sharpening</h2><p>Sharpening is opposite to the blurring. In blurring, we reduce the edge content and in Sharpening, we increase the edge content. So in order to increase the edge content in an image, we have to find edges first.</p>
+<p>Edges can be find by one of the any method described above by using any operator. After finding edges, we will add those edges on an image and thus the image would have more edges, and it would look sharpen.</p>
+<p>This is one way of sharpening an image.</p>
+<p>The sharpen image is shown below.</p>
+<p><img src="/image/ed01.png" alt></p>
 
                     
                         
@@ -293,77 +255,7 @@
                     
                     
                         <p>
-                            <a href="/2018/05/22/Blurring/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/05/21/Types of Images/">
-                            Types of Images
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-05-21T00:00:00+09:00">
-	
-		    May 21, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/dip/">DIP</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h4 id="8-bit-color-format"><a href="#8-bit-color-format" class="headerlink" title="8 bit color format"></a>8 bit color format</h4><ul>
-<li>8 bit color format is one of the most famous image format. </li>
-<li>It has 256 different shades of colors in it. </li>
-<li>It is commonly known as Grayscale image.</li>
-<li>The range of the colors in 8 bit vary from 0-255.</li>
-</ul>
-<h4 id="16-bit-color-format"><a href="#16-bit-color-format" class="headerlink" title="16 bit color format"></a>16 bit color format</h4><ul>
-<li><p>A 16 bit format is actually divided into three further formats which are Red , Green and Blue. The famous (RGB) format.</p>
-<p><img src="/image/16bit.png" alt></p>
-</li>
-<li><p>5 bits for R, 6 bits for G, 5 bits for B.</p>
-</li>
-<li><p>The additional bit that was left behind is added into the green bit. </p>
-</li>
-<li><p>Because green is the color which is most soothing to eyes in all of these three colors.</p>
-</li>
-</ul>
-<h4 id="24-bit-color-format"><a href="#24-bit-color-format" class="headerlink" title="24 bit color format"></a>24 bit color format</h4><p><img src="/image/24bit.png" alt></p>
-<ul>
-<li>8 bits for R, 8 bits for G, 8 bits for B.</li>
-<li>a 24 bit image has three different matrices of R, G, B.</li>
-</ul>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/05/21/Types of Images/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/05/22/Edge Detection/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -479,6 +371,76 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2018/05/21/Types of Images/">
+                            Types of Images
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-05-21T00:00:00+09:00">
+	
+		    May 21, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/dip/">DIP</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h4 id="8-bit-color-format"><a href="#8-bit-color-format" class="headerlink" title="8 bit color format"></a>8 bit color format</h4><ul>
+<li>8 bit color format is one of the most famous image format. </li>
+<li>It has 256 different shades of colors in it. </li>
+<li>It is commonly known as Grayscale image.</li>
+<li>The range of the colors in 8 bit vary from 0-255.</li>
+</ul>
+<h4 id="16-bit-color-format"><a href="#16-bit-color-format" class="headerlink" title="16 bit color format"></a>16 bit color format</h4><ul>
+<li><p>A 16 bit format is actually divided into three further formats which are Red , Green and Blue. The famous (RGB) format.</p>
+<p><img src="/image/16bit.png" alt></p>
+</li>
+<li><p>5 bits for R, 6 bits for G, 5 bits for B.</p>
+</li>
+<li><p>The additional bit that was left behind is added into the green bit. </p>
+</li>
+<li><p>Because green is the color which is most soothing to eyes in all of these three colors.</p>
+</li>
+</ul>
+<h4 id="24-bit-color-format"><a href="#24-bit-color-format" class="headerlink" title="24 bit color format"></a>24 bit color format</h4><p><img src="/image/24bit.png" alt></p>
+<ul>
+<li>8 bits for R, 8 bits for G, 8 bits for B.</li>
+<li>a 24 bit image has three different matrices of R, G, B.</li>
+</ul>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/05/21/Types of Images/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2018/05/21/Histograms Introduction/">
                             Histograms Introduction
                         </a>
@@ -536,6 +498,81 @@
                     
                         <p>
                             <a href="/2018/05/21/Histograms Introduction/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2018/05/21/Histogram Sliding/">
+                            Histogram Sliding
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-05-21T00:00:00+09:00">
+	
+		    May 21, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/dip/">DIP</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h2 id="Histogram-sliding"><a href="#Histogram-sliding" class="headerlink" title="Histogram sliding"></a>Histogram sliding</h2><ul>
+<li>In histogram sliding, we just simply shift a complete histogram rightwards or leftwards. </li>
+<li>Due to shifting or sliding of histogram towards right or left, </li>
+<li>a clear change can be seen in the image.</li>
+</ul>
+<h2 id="Increasing-brightness-using-histogram-sliding"><a href="#Increasing-brightness-using-histogram-sliding" class="headerlink" title="Increasing brightness using histogram sliding"></a>Increasing brightness using histogram sliding</h2><p><img src="/image/hisSl01.png" alt></p>
+<p><img src="/image/hisSl02.png" alt></p>
+<ul>
+<li>On the y axis of this histogram are the frequency or count. </li>
+<li>And on the x axis, we have gray level values. </li>
+<li>As you can see from the above histogram, that those gray level intensities whose count is more then 700, lies in the first half portion, means towards blacker portion. </li>
+<li>Thats why we got an image that is a bit darker.</li>
+<li>In order to bright it, we will slide its histogram towards right, or towards whiter portion. </li>
+<li>In order to do we need to add atleast a value of 50 to this image. </li>
+<li>Because we can see from the histogram above, that this image also has 0 pixel intensities, that are pure black. </li>
+<li>So if we add 0 to 50, we will shift all the values lies at 0 intensity to 50 intensity and all the rest of the values will be shifted accordingly.</li>
+</ul>
+<p><img src="/image/hisSl03.png" alt></p>
+<p><img src="/image/hisSl04.png" alt></p>
+<p><img src="/image/hisSl05.png" alt></p>
+<h2 id="Decreasing-brightness-using-histogram-sliding"><a href="#Decreasing-brightness-using-histogram-sliding" class="headerlink" title="Decreasing brightness using histogram sliding"></a>Decreasing brightness using histogram sliding</h2><ul>
+<li>Now if we were to decrease brightness of this new image to such an extent that the old image look brighter, </li>
+<li>we got to subtract some value from all the matrix of the new image. </li>
+<li>The value which we are going to subtract is 80. </li>
+<li>Because we already add 50 to the original image and we got a new brighter image, </li>
+<li>now if we want to make it darker, we have to subtract at least more than 50 from it.</li>
+</ul>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/05/21/Histogram Sliding/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -638,81 +675,6 @@
                     
                         <p>
                             <a href="/2018/05/21/Histogram Stretching/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/05/21/Histogram Sliding/">
-                            Histogram Sliding
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-05-21T00:00:00+09:00">
-	
-		    May 21, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/dip/">DIP</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h2 id="Histogram-sliding"><a href="#Histogram-sliding" class="headerlink" title="Histogram sliding"></a>Histogram sliding</h2><ul>
-<li>In histogram sliding, we just simply shift a complete histogram rightwards or leftwards. </li>
-<li>Due to shifting or sliding of histogram towards right or left, </li>
-<li>a clear change can be seen in the image.</li>
-</ul>
-<h2 id="Increasing-brightness-using-histogram-sliding"><a href="#Increasing-brightness-using-histogram-sliding" class="headerlink" title="Increasing brightness using histogram sliding"></a>Increasing brightness using histogram sliding</h2><p><img src="/image/hisSl01.png" alt></p>
-<p><img src="/image/hisSl02.png" alt></p>
-<ul>
-<li>On the y axis of this histogram are the frequency or count. </li>
-<li>And on the x axis, we have gray level values. </li>
-<li>As you can see from the above histogram, that those gray level intensities whose count is more then 700, lies in the first half portion, means towards blacker portion. </li>
-<li>Thats why we got an image that is a bit darker.</li>
-<li>In order to bright it, we will slide its histogram towards right, or towards whiter portion. </li>
-<li>In order to do we need to add atleast a value of 50 to this image. </li>
-<li>Because we can see from the histogram above, that this image also has 0 pixel intensities, that are pure black. </li>
-<li>So if we add 0 to 50, we will shift all the values lies at 0 intensity to 50 intensity and all the rest of the values will be shifted accordingly.</li>
-</ul>
-<p><img src="/image/hisSl03.png" alt></p>
-<p><img src="/image/hisSl04.png" alt></p>
-<p><img src="/image/hisSl05.png" alt></p>
-<h2 id="Decreasing-brightness-using-histogram-sliding"><a href="#Decreasing-brightness-using-histogram-sliding" class="headerlink" title="Decreasing brightness using histogram sliding"></a>Decreasing brightness using histogram sliding</h2><ul>
-<li>Now if we were to decrease brightness of this new image to such an extent that the old image look brighter, </li>
-<li>we got to subtract some value from all the matrix of the new image. </li>
-<li>The value which we are going to subtract is 80. </li>
-<li>Because we already add 50 to the original image and we got a new brighter image, </li>
-<li>now if we want to make it darker, we have to subtract at least more than 50 from it.</li>
-</ul>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/05/21/Histogram Sliding/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>

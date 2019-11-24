@@ -194,8 +194,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/04/13/양치기 꿍/">
-                            양치기 꿍
+                        <a class="link-unstyled" href="/2018/04/13/Singleton Pattern/">
+                            Singleton Pattern
                         </a>
                     
                 </h1>
@@ -208,7 +208,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
+    <a class="category-link" href="/categories/design-pattern/">Design Pattern</a>
 
 
     
@@ -217,22 +217,30 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p><a href="https://www.acmicpc.net/problem/3187" target="_blank" rel="noopener">https://www.acmicpc.net/problem/3187</a></p>
-<ol>
-<li><p>이차원 배열의 각 index에 순차적으로 접근</p>
-</li>
-<li><p>양, 늑대 count</p>
-</li>
-<li><p>현재 위치를 기준으로 상하좌우 조사</p>
+                    <ul>
+<li><p>Intent</p>
 <ul>
-<li>울타리가 X &amp;&amp; 방문 X</li>
-<li>이동</li>
+<li>Ensure that only one instance of a class is created.</li>
+<li>Provide a global point of access to the object.</li>
 </ul>
 </li>
-</ol>
-<ol start="3">
-<li>2번 다시 수행</li>
-</ol>
+<li><p>Implementation</p>
+<p><img src="/image/si.png" alt></p>
+</li>
+</ul>
+<ul>
+<li>EX</li>
+</ul>
+<h4 id="01-Early-instantiation-using-implementation-with-static-field"><a href="#01-Early-instantiation-using-implementation-with-static-field" class="headerlink" title="01 : Early instantiation using implementation with static field"></a>01 : Early instantiation using implementation with static field</h4><p><img src="/image/SingleObject.png" alt></p>
+<h4 id="02-Lazy-instantiation-using-double-locking-mechanism"><a href="#02-Lazy-instantiation-using-double-locking-mechanism" class="headerlink" title="02 : Lazy instantiation using double locking mechanism"></a>02 : Lazy instantiation using double locking mechanism</h4><p><img src="/image/sgg.png" alt></p>
+<h4 id="Client"><a href="#Client" class="headerlink" title="Client"></a>Client</h4><p><img src="/image/SingletonPatternDemo.png" alt></p>
+<ul>
+<li>Reference<ul>
+<li><a href="http://www.oodesign.com/singleton-pattern.html" target="_blank" rel="noopener">http://www.oodesign.com/singleton-pattern.html</a></li>
+<li><a href="https://www.tutorialspoint.com/design_pattern/singleton_pattern.html" target="_blank" rel="noopener">https://www.tutorialspoint.com/design_pattern/singleton_pattern.html</a></li>
+</ul>
+</li>
+</ul>
 
                     
                         
@@ -240,7 +248,7 @@
                     
                     
                         <p>
-                            <a href="/2018/04/13/양치기 꿍/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/04/13/Singleton Pattern/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -331,8 +339,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/04/09/SRP/">
-                            SRP
+                        <a class="link-unstyled" href="/2018/04/09/적록색약/">
+                            적록색약
                         </a>
                     
                 </h1>
@@ -345,7 +353,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/design-pattern/">Design Pattern</a>
+    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
 
 
     
@@ -354,43 +362,19 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="SRP란"><a href="#SRP란" class="headerlink" title="SRP란"></a>SRP란</h2><p>Single Responsibility Principle (단일 책임 원칙)</p>
+                    <h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p><a href="https://www.acmicpc.net/problem/10026" target="_blank" rel="noopener">https://www.acmicpc.net/problem/10026</a></p>
+<ol>
+<li><p>이차원 배열의 각 index에 순차적으로 접근</p>
+</li>
+<li><p>현재 위치를 기준으로 상하좌우 조사</p>
 <ul>
-<li><p>Intent</p>
-<ul>
-<li>A class should have only one reason to change.</li>
-<li>객체는 단 하나의 책임(변경 이유)만 가져야 한다.</li>
+<li>현재 위치와 같은 색깔 &amp;&amp; 아직 방문 하지 않았으면</li>
+<li>이동</li>
 </ul>
 </li>
-<li><p>산탄총 수술</p>
-<ul>
-<li>수의사가 산탄총을 맞은 동물을 치료하는 상황처럼,</li>
-<li>어떤 변경이 있을 때 하나가 아닌 여러 클래스를 변경해야한다</li>
-</ul>
+<li><p>2번 다시 수행</p>
 </li>
-</ul>
-<ul>
-<li><p>Bad Example</p>
-<ul>
-<li>each change for a responsibility might affect the other one:<ul>
-<li>Adding a new protocol will create the need to add code for parsing and serializing the content for each type of field.</li>
-<li>Adding a new content type (like html) make us to add code for each protocol implemented.</li>
-</ul>
-</li>
-</ul>
-<p><img src="/image/srpp01.png" alt></p>
-<p><img src="/image/srpp02.png" alt></p>
-</li>
-<li><p>Good Example</p>
-<p><img src="/image/srpp03.png" alt></p>
-<p><img src="/image/srpp04.png" alt></p>
-<p><img src="/image/srpp05.png" alt></p>
-</li>
-</ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
-<li><a href="http://www.oodesign.com/single-responsibility-principle.html" target="_blank" rel="noopener">http://www.oodesign.com/single-responsibility-principle.html</a></li>
-<li>JAVA 객체지향 디자인 패턴 (정인상, 채흥석 지음)</li>
-</ul>
+</ol>
 
                     
                         
@@ -398,7 +382,7 @@
                     
                     
                         <p>
-                            <a href="/2018/04/09/SRP/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/04/09/적록색약/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -875,67 +859,6 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/04/09/적록색약/">
-                            적록색약
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-04-09T00:00:00+09:00">
-	
-		    Apr 09, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p><a href="https://www.acmicpc.net/problem/10026" target="_blank" rel="noopener">https://www.acmicpc.net/problem/10026</a></p>
-<ol>
-<li><p>이차원 배열의 각 index에 순차적으로 접근</p>
-</li>
-<li><p>현재 위치를 기준으로 상하좌우 조사</p>
-<ul>
-<li>현재 위치와 같은 색깔 &amp;&amp; 아직 방문 하지 않았으면</li>
-<li>이동</li>
-</ul>
-</li>
-<li><p>2번 다시 수행</p>
-</li>
-</ol>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/04/09/적록색약/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
                         <a class="link-unstyled" href="/2018/04/09/OCP/">
                             OCP
                         </a>
@@ -1011,6 +934,91 @@
                     
                         <p>
                             <a href="/2018/04/09/OCP/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2018/04/09/SRP/">
+                            SRP
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-04-09T00:00:00+09:00">
+	
+		    Apr 09, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/design-pattern/">Design Pattern</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h2 id="SRP란"><a href="#SRP란" class="headerlink" title="SRP란"></a>SRP란</h2><p>Single Responsibility Principle (단일 책임 원칙)</p>
+<ul>
+<li><p>Intent</p>
+<ul>
+<li>A class should have only one reason to change.</li>
+<li>객체는 단 하나의 책임(변경 이유)만 가져야 한다.</li>
+</ul>
+</li>
+<li><p>산탄총 수술</p>
+<ul>
+<li>수의사가 산탄총을 맞은 동물을 치료하는 상황처럼,</li>
+<li>어떤 변경이 있을 때 하나가 아닌 여러 클래스를 변경해야한다</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>Bad Example</p>
+<ul>
+<li>each change for a responsibility might affect the other one:<ul>
+<li>Adding a new protocol will create the need to add code for parsing and serializing the content for each type of field.</li>
+<li>Adding a new content type (like html) make us to add code for each protocol implemented.</li>
+</ul>
+</li>
+</ul>
+<p><img src="/image/srpp01.png" alt></p>
+<p><img src="/image/srpp02.png" alt></p>
+</li>
+<li><p>Good Example</p>
+<p><img src="/image/srpp03.png" alt></p>
+<p><img src="/image/srpp04.png" alt></p>
+<p><img src="/image/srpp05.png" alt></p>
+</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="http://www.oodesign.com/single-responsibility-principle.html" target="_blank" rel="noopener">http://www.oodesign.com/single-responsibility-principle.html</a></li>
+<li>JAVA 객체지향 디자인 패턴 (정인상, 채흥석 지음)</li>
+</ul>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/04/09/SRP/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
