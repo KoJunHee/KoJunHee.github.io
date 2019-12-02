@@ -194,8 +194,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/05/31/Template Method Pattern02/">
-                            Template Method Pattern02
+                        <a class="link-unstyled" href="/2018/05/31/Template Method Pattern01/">
+                            Template Method Pattern01
                         </a>
                     
                 </h1>
@@ -217,14 +217,23 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/tmplate02.png" alt></p>
-<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><img src="/image/tmplate03.png" alt></p>
-<p><img src="/image/tmplate04.png" alt></p>
-<p><img src="/image/tmplate05.png" alt></p>
-<p><img src="/image/tmplate06.png" alt></p>
-<p><img src="/image/tmplate07.png" alt></p>
-<p>##Reference</p>
-<p><a href="https://www.tutorialspoint.com/design_pattern/template_pattern.htm" target="_blank" rel="noopener">https://www.tutorialspoint.com/design_pattern/template_pattern.htm</a></p>
+                    <h2 id="Intent"><a href="#Intent" class="headerlink" title="Intent"></a>Intent</h2><ul>
+<li>Define the skeleton of an algorithm in an operation, deferring some steps to subclasses. </li>
+<li>Template Method lets subclasses redefine certain steps of an algorithm without letting them to change the algorithm’s structure.</li>
+</ul>
+<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/tmplate01.png" alt></p>
+<ul>
+<li>AbstractClass <ul>
+<li>defines abstract primitive operations that concrete subclasses define to implement steps of an algorithm. </li>
+<li>implements a template method which defines the skeleton of an algorithm. The template method calls primitive operations as well as operations defined in AbstractClass or those of other objects.</li>
+</ul>
+</li>
+<li>ConcreteClass <ul>
+<li>implements the primitive operations to carry out subclass-specific steps of the algorithm. When a concrete class is called the template method code will be executed from the base class while for each method used inside the template method will be called the implementation from the derived class.</li>
+</ul>
+</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.oodesign.com/template-method-pattern.html" target="_blank" rel="noopener">https://www.oodesign.com/template-method-pattern.html</a></p>
 
                     
                         
@@ -232,7 +241,7 @@
                     
                     
                         <p>
-                            <a href="/2018/05/31/Template Method Pattern02/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/05/31/Template Method Pattern01/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -405,8 +414,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/05/28/Memento Pattern02/">
-                            Memento Pattern02
+                        <a class="link-unstyled" href="/2018/05/28/Prototype Pattern01/">
+                            Prototype Pattern01
                         </a>
                     
                 </h1>
@@ -428,29 +437,38 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>Use the Memento Pattern when you need to be able to return an object to one of its previous states; </p>
-<p>for instance, if your user requests an “undo.” </p>
-<h2 id="Scenario"><a href="#Scenario" class="headerlink" title="Scenario"></a>Scenario</h2><p>Your interactive role playing game is hugely successful, and has created a legion of addicts, all trying to get<br> to the fabled “level 13.” </p>
-<p>As users progress to more challenging game levels, the odds of encountering a game-ending situation increase. </p>
-<p>Fans who have spent days progressing to an advanced level are understandably miffed when their character gets snuffed, and they have to start all over. </p>
-<p>The cry goes out for a “save progress” command, so that players can store their game progress and at least recover most of their efforts when their character is unfairly extinguished. </p>
-<p>The “save progress” function needs to be designed to return a resurrected player to the last level she completed successfully. </p>
-<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><p>The Memento has two goals:</p>
+                    <h2 id="Intent"><a href="#Intent" class="headerlink" title="Intent"></a>Intent</h2><ul>
+<li>specifying the kind of objects to create using a prototypical instance</li>
+<li>creating new objects by copying this prototype</li>
+</ul>
+<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/proto11.png" alt></p>
 <ul>
-<li>Saving the important state of a system’s key object. </li>
-<li>Maintaining the key object’s encapsulation. </li>
+<li>Client<ul>
+<li>creates a new object by asking a prototype to clone itself.</li>
 </ul>
-<p>Keeping the single responsibility principle in mind, </p>
-<p>it’s also a good idea to keep the state that you’re saving separate from the key object. </p>
-<p>This separate object that holds the state is known as the Memento object. </p>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/mementoo01.png" alt></p>
-<p><img src="/image/mementoo02.png" alt></p>
-<h2 id="Benefits"><a href="#Benefits" class="headerlink" title="Benefits"></a>Benefits</h2><ul>
-<li>Keeping the saved state external from the key object helps to maintain cohesion. </li>
-<li>Keeps the key object’s data encapsulated.</li>
-<li>Provides easy-to-implement recovery capability. </li>
+</li>
+<li>Prototype <ul>
+<li>declares an interface for cloning itself.</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Head First Design Pattern</p>
+</li>
+<li>ConcretePrototype<ul>
+<li>implements the operation for cloning itself.</li>
+</ul>
+</li>
+</ul>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/proto011.png" alt></p>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p>Create an abstract class implementing <em>Clonable</em> interface.</p>
+<p><img src="/image/proto02.png" alt></p>
+<p>Create concrete classes extending the above class. </p>
+<p><img src="/image/proto03.png" alt></p>
+<p><img src="/image/proto04.png" alt></p>
+<p><img src="/image/proto05.png" alt></p>
+<p>Create a class to get concrete classes from database and store them in a <em>Hashtable</em>.</p>
+<p><img src="/image/proto06.png" alt></p>
+<p>PrototypePatternDemo uses ShapeCache class to get clones of shapes stored in a <em>Hashtable</em>.</p>
+<p><img src="/image/proto07.png" alt></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.tutorialspoint.com/design_pattern/prototype_pattern.htm" target="_blank" rel="noopener">https://www.tutorialspoint.com/design_pattern/prototype_pattern.htm</a></p>
+<p><a href="https://www.oodesign.com/prototype-pattern.html" target="_blank" rel="noopener">https://www.oodesign.com/prototype-pattern.html</a></p>
 
                     
                         
@@ -458,7 +476,7 @@
                     
                     
                         <p>
-                            <a href="/2018/05/28/Memento Pattern02/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/05/28/Prototype Pattern01/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -541,8 +559,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/05/28/Prototype Pattern01/">
-                            Prototype Pattern01
+                        <a class="link-unstyled" href="/2018/05/28/Memento Pattern02/">
+                            Memento Pattern02
                         </a>
                     
                 </h1>
@@ -564,38 +582,29 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="Intent"><a href="#Intent" class="headerlink" title="Intent"></a>Intent</h2><ul>
-<li>specifying the kind of objects to create using a prototypical instance</li>
-<li>creating new objects by copying this prototype</li>
-</ul>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/proto11.png" alt></p>
+                    <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>Use the Memento Pattern when you need to be able to return an object to one of its previous states; </p>
+<p>for instance, if your user requests an “undo.” </p>
+<h2 id="Scenario"><a href="#Scenario" class="headerlink" title="Scenario"></a>Scenario</h2><p>Your interactive role playing game is hugely successful, and has created a legion of addicts, all trying to get<br> to the fabled “level 13.” </p>
+<p>As users progress to more challenging game levels, the odds of encountering a game-ending situation increase. </p>
+<p>Fans who have spent days progressing to an advanced level are understandably miffed when their character gets snuffed, and they have to start all over. </p>
+<p>The cry goes out for a “save progress” command, so that players can store their game progress and at least recover most of their efforts when their character is unfairly extinguished. </p>
+<p>The “save progress” function needs to be designed to return a resurrected player to the last level she completed successfully. </p>
+<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><p>The Memento has two goals:</p>
 <ul>
-<li>Client<ul>
-<li>creates a new object by asking a prototype to clone itself.</li>
+<li>Saving the important state of a system’s key object. </li>
+<li>Maintaining the key object’s encapsulation. </li>
 </ul>
-</li>
-<li>Prototype <ul>
-<li>declares an interface for cloning itself.</li>
+<p>Keeping the single responsibility principle in mind, </p>
+<p>it’s also a good idea to keep the state that you’re saving separate from the key object. </p>
+<p>This separate object that holds the state is known as the Memento object. </p>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/mementoo01.png" alt></p>
+<p><img src="/image/mementoo02.png" alt></p>
+<h2 id="Benefits"><a href="#Benefits" class="headerlink" title="Benefits"></a>Benefits</h2><ul>
+<li>Keeping the saved state external from the key object helps to maintain cohesion. </li>
+<li>Keeps the key object’s data encapsulated.</li>
+<li>Provides easy-to-implement recovery capability. </li>
 </ul>
-</li>
-<li>ConcretePrototype<ul>
-<li>implements the operation for cloning itself.</li>
-</ul>
-</li>
-</ul>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/proto011.png" alt></p>
-<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p>Create an abstract class implementing <em>Clonable</em> interface.</p>
-<p><img src="/image/proto02.png" alt></p>
-<p>Create concrete classes extending the above class. </p>
-<p><img src="/image/proto03.png" alt></p>
-<p><img src="/image/proto04.png" alt></p>
-<p><img src="/image/proto05.png" alt></p>
-<p>Create a class to get concrete classes from database and store them in a <em>Hashtable</em>.</p>
-<p><img src="/image/proto06.png" alt></p>
-<p>PrototypePatternDemo uses ShapeCache class to get clones of shapes stored in a <em>Hashtable</em>.</p>
-<p><img src="/image/proto07.png" alt></p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.tutorialspoint.com/design_pattern/prototype_pattern.htm" target="_blank" rel="noopener">https://www.tutorialspoint.com/design_pattern/prototype_pattern.htm</a></p>
-<p><a href="https://www.oodesign.com/prototype-pattern.html" target="_blank" rel="noopener">https://www.oodesign.com/prototype-pattern.html</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Head First Design Pattern</p>
 
                     
                         
@@ -603,7 +612,7 @@
                     
                     
                         <p>
-                            <a href="/2018/05/28/Prototype Pattern01/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/05/28/Memento Pattern02/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -791,66 +800,6 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/05/13/Simple Factory/">
-                            Simple Factory
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-05-13T00:00:00+09:00">
-	
-		    May 13, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/design-pattern/">Design Pattern</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p>The Simple Factory isn’t actually a Design Pattern; it’s more of a programming idiom. </p>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/simpleFactoryUML.png" alt></p>
-<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><img src="/image/pizza01.png" alt></p>
-<p><img src="/image/pizza02.png" alt></p>
-<p><img src="/image/pizza03.png" alt></p>
-<p><img src="/image/pizza08.png" alt></p>
-<p><img src="/image/pizza04.png" alt></p>
-<p><img src="/image/pizza05.png" alt></p>
-<p><img src="/image/pizza06.png" alt></p>
-<p><img src="/image/pizza07.png" alt></p>
-<h2 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h2><p><img src="/image/pizza09.png" alt></p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Head First Design Pattern</p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/05/13/Simple Factory/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
                         <a class="link-unstyled" href="/2018/05/13/Abstract Factory Pattern02/">
                             Abstract Factory Pattern02
                         </a>
@@ -932,6 +881,61 @@
                     
                         <p>
                             <a href="/2018/05/13/Abstract Factory Pattern02/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2018/05/13/Factory Method Pattern01/">
+                            Factory Method Pattern01
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-05-13T00:00:00+09:00">
+	
+		    May 13, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/design-pattern/">Design Pattern</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>The Factory Method Pattern defines an interface for creating an object, </p>
+<p>but lets subclasses decide which class to instantiate. </p>
+<p>Factory Method lets a class defer instantiation to subclasses. </p>
+<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/factoryMethod01.png" alt> </p>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/factoryMethod02.png" alt> </p>
+<h2 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h2><p><img src="/image/fm15.png" alt> </p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Head First Design Pattern</p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/05/13/Factory Method Pattern01/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>

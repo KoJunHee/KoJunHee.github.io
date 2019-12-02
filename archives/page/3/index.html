@@ -194,6 +194,189 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2019/03/27/relation-mappings/">
+                            [자바 ORM 표준 JPA 프로그래밍] 6장_다양한 연관관계 매핑
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-03-27T00:00:00+09:00">
+	
+		    Mar 27, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/jpa/">JPA</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p>이번 포스팅에서는 다양한 연관관계를 다룹니다. 엔티티의 연관 관계를 매핑 할 때는 다음 세 가지를 고려해야합니다.</p>
+<ul>
+<li>다중성<ul>
+<li>다대일</li>
+<li>일대다</li>
+<li>일대일</li>
+<li>다대다</li>
+</ul>
+</li>
+<li>단방향, 양방향<ul>
+<li>테이블에는 방향이라는 개념이 없습니다.</li>
+<li>객체는 참조용 필드를 가지고 있는 객체만 연관된 객체를 조회할 수 있습니다.</li>
+</ul>
+</li>
+<li>연관관계의 주인<ul>
+<li>데이터베이스는 외래 키 하나로 두 데이블이 연관관계 맺습니다.</li>
+<li>엔티티를 양방향으로 매핑하면 A-&gt;B, B-&gt;A 2곳에서 서로를 참조하기 때문에, 객체의 연관관계를 관리하는 포인트는 2곳입니다. 따라서, 두 객체 연관관계 중 하나를 정해서 데이터베이스 외래 키를 관리해야합니다.</li>
+</ul>
+</li>
+</ul>
+<h4 id="1-다대일"><a href="#1-다대일" class="headerlink" title="1. 다대일"></a>1. 다대일</h4><p>데이터베이스 테이블의 일, 다 관계에서 외래 키는 항상 다쪽에 있습니다. 따라서, 객체 양방향 관계에서 연관관계의 주인은 항상 다쪽입니다.</p>
+<h5 id="1-1-다대일-단방향"><a href="#1-1-다대일-단방향" class="headerlink" title="1.1 다대일 단방향"></a>1.1 다대일 단방향</h5><p> 회원은 팀 엔티티를 참조 가능합니다. 팀은 회원 참조하는 필드가 없습니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Member</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span></span><br><span class="line">  <span class="meta">@Column</span> (name = <span class="string">"MEMBER_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String username;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@ManyToOne</span></span><br><span class="line">  <span class="meta">@JoinColum</span> (name = <span class="string">"TEAM_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Team team;	</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//Getter, Setter ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Team</span></span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span></span><br><span class="line">  <span class="meta">@Column</span> (name = <span class="string">"TEAM_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//Getter, Setter ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="1-1-다대일-양방향"><a href="#1-1-다대일-양방향" class="headerlink" title="1.1 다대일 양방향"></a>1.1 다대일 양방향</h5><p>양방향 연관관계는 항상 서로 참조해야합니다. 서로 참조하게 하려면 연관관계 편의 메소드를 작성하는게 좋습니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Member</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span></span><br><span class="line">  <span class="meta">@Column</span> (name = <span class="string">"MEMBER_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String username;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@ManyToOne</span></span><br><span class="line">  <span class="meta">@JoinColum</span> (name = <span class="string">"TEAM_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Team team;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTeam</span><span class="params">(Team team)</span></span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.team = team;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//무한 루프에 빠지지 않도록 체크</span></span><br><span class="line">    <span class="keyword">if</span>(!team.getMembers().contains(<span class="keyword">this</span>))&#123;</span><br><span class="line">      team.getMembers().add(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Team</span></span>&#123;</span><br><span class="line"> </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span></span><br><span class="line">  <span class="meta">@Column</span> (name = <span class="string">"TEAM_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@OneToMany</span> (mappedBy = <span class="string">"team"</span>)</span><br><span class="line">  <span class="keyword">private</span> List&lt;Member&gt; members = <span class="keyword">new</span> ArrayList&lt;Member&gt;();</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addMember</span><span class="params">(Member member)</span></span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.members.add(member);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//무한 루프에 빠지지 않도록 체크</span></span><br><span class="line">    <span class="keyword">if</span>(member.getTeam() != <span class="keyword">this</span>)&#123;</span><br><span class="line">      member.setTeam(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//Getter, Setter ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-일대다"><a href="#2-일대다" class="headerlink" title="2. 일대다"></a>2. 일대다</h4><h5 id="일대다-단방향"><a href="#일대다-단방향" class="headerlink" title="일대다 단방향"></a>일대다 단방향</h5><p>일대다 단방향은 약간 특이합니다. 일대다 관계에서, 외래 키는 항상 다쪽 테이블에 있습니다. 하지만 다 쪽인 Memebr 엔티티에는 외래 키를 매핑할 수 있는 참조 필드가 없습니다. 대신에, Team 엔티티에는 참조 필드인 members 가 있습니다. 따라서 반대편 테이블의 외래키를 관리하는 특이한 모습이 나타납니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Team</span></span>&#123;</span><br><span class="line"> </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span></span><br><span class="line">  <span class="meta">@Column</span> (name = <span class="string">"TEAM_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@OneToMany</span></span><br><span class="line">  <span class="meta">@JoinColum</span> (name = <span class="string">"TEAM_ID"</span>) <span class="comment">//MEMBER 테이블의 TEAM_ID (FK)</span></span><br><span class="line">  <span class="keyword">private</span> List&lt;Member&gt; members = <span class="keyword">new</span> ArrayList&lt;Member&gt;();</span><br><span class="line">   </span><br><span class="line">  <span class="comment">//Getter, Setter ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Member</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span></span><br><span class="line">  <span class="meta">@Column</span> (name = <span class="string">"MEMBER_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String username;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//Getter, Setter</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>일대다 단방향 매핑의 단점<ul>
+<li>매핑한 객체가 관리하는 외래 키가 다른 테이블에 있다는 점입니다.</li>
+<li>연관관계 처리를 위한 UPDATE SQL 을 추가로 실행해야합니다.</li>
+<li>다음 코드에서, Member 엔티티는 Team 엔티티를 모릅니다. 따라서 Member 엔티티를 저장할 때는 Member 테이블의 TEAM_ID 외래키에 아무 값도 저장되지 않습니다. 대신, Team 엔티티를 저장할 때 Team.members 의 참조 값을 확인해서 회원 테이블에 있는 TEAM_ID 외래 키를 업데이트 합니다.</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testSave</span><span class="params">()</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  Member member1 = <span class="keyword">new</span> Member(<span class="string">"member1"</span>);</span><br><span class="line">  Member member2 = <span class="keyword">new</span> Member(<span class="string">"member2"</span>);</span><br><span class="line">  </span><br><span class="line">  Team team1 = <span class="keyword">new</span> Team(<span class="string">"team1"</span>);</span><br><span class="line">  team1.getMembers().add(member1);</span><br><span class="line">  team1.getMembers().add(member2);</span><br><span class="line">  </span><br><span class="line">  em.persist(member1); <span class="comment">//INSERT-member1</span></span><br><span class="line">  em.persist(member2); <span class="comment">//INSERT-member2</span></span><br><span class="line">  em.persist(team1);   <span class="comment">//INSERT-team1, UPDATE-member.fk, UPDATE-member2.fk</span></span><br><span class="line">  </span><br><span class="line">  transaction.commit();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>따라서, 일대다 단방향 매핑보다는 다대일 양방향 매핑을 권장합니다.</p>
+<h5 id="일대다-양방향"><a href="#일대다-양방향" class="headerlink" title="일대다 양방향"></a>일대다 양방향</h5><p>둘 다 같은 키를 관리하므로 문제가 발생할 수 있습니다. 따라서, 반대편인 다대일 쪽은 insertable =false, update = false 를 설정해서 읽기만 가능하게 합니다. 되록, 다대일 양방향 매핑을 사용해야합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Team</span></span>&#123;</span><br><span class="line"> </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span></span><br><span class="line">  <span class="meta">@Column</span> (name = <span class="string">"TEAM_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@OneToMany</span></span><br><span class="line">  <span class="meta">@JoinColum</span> (name = <span class="string">"TEAM_ID"</span>) </span><br><span class="line">  <span class="keyword">private</span> List&lt;Member&gt; members = <span class="keyword">new</span> ArrayList&lt;Member&gt;();</span><br><span class="line">   </span><br><span class="line">  <span class="comment">//Getter, Setter ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Member</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span></span><br><span class="line">  <span class="meta">@Column</span> (name = <span class="string">"MEMBER_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String username;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@ManyToOne</span></span><br><span class="line">  <span class="meta">@JoinColumn</span>( name = <span class="string">"TEAM_ID"</span>, insertable =<span class="keyword">false</span>, update = <span class="keyword">false</span>)</span><br><span class="line">  <span class="keyword">private</span> Team team;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//Getter, Setter ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-일대일"><a href="#3-일대일" class="headerlink" title="3. 일대일"></a>3. 일대일</h4><p>일대일 관계는 주 테이블이나 대상 테이블 중에 누가 외래키를 가질지 선택해야합니다.</p>
+<h5 id="3-1-주-테이블에-외래-키"><a href="#3-1-주-테이블에-외래-키" class="headerlink" title="3.1 주 테이블에 외래 키"></a>3.1 주 테이블에 외래 키</h5><p>객체지향 개발자들은 주 테이블에 외래 키가 있는 것을 선호합니다. </p>
+<ul>
+<li>단방향</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Member</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span></span><br><span class="line">  <span class="meta">@Column</span> (name = <span class="string">"MEMBER_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String username;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@OneToOne</span></span><br><span class="line">  <span class="meta">@JoinColumn</span>( name = <span class="string">"LOCKER_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Locker locker;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Locker</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span></span><br><span class="line">  <span class="meta">@Column</span> (name = <span class="string">"LOCKER_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>양방향</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Member</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span></span><br><span class="line">  <span class="meta">@Column</span> (name = <span class="string">"MEMBER_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String username;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@OneToOne</span></span><br><span class="line">  <span class="meta">@JoinColumn</span>( name = <span class="string">"LOCKER_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Locker locker;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Locker</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span></span><br><span class="line">  <span class="meta">@Column</span> (name = <span class="string">"LOCKER_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@OneToOne</span> (mappedBy =<span class="string">"locker"</span>)</span><br><span class="line">  <span class="keyword">private</span> Member member;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-2-대상-테이블에-외래-키"><a href="#3-2-대상-테이블에-외래-키" class="headerlink" title="3.2 대상 테이블에 외래 키"></a>3.2 대상 테이블에 외래 키</h5><ul>
+<li>단방향<ul>
+<li>일대일 관계 중 대상 테이블에 외래 키가 있는 단방향 관계는 JPA 에서 지원하지 않습니다.</li>
+</ul>
+</li>
+<li>양방향</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Member</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span></span><br><span class="line">  <span class="meta">@Column</span> (name = <span class="string">"MEMBER_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String username;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@OneToOne</span> (mappedBy =<span class="string">"member"</span>)</span><br><span class="line">  <span class="keyword">private</span> Locker locker;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Locker</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span></span><br><span class="line">  <span class="meta">@Column</span> (name = <span class="string">"LOCKER_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@OneToOne</span> </span><br><span class="line">  <span class="meta">@JoinColumn</span>(name =<span class="string">"MEMBER_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Member member;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-다대다"><a href="#4-다대다" class="headerlink" title="4. 다대다"></a>4. 다대다</h4><p>관계형 데이터베이스는 정규화된 테이블 2개를 다대다 관계로 표현할 수 없습니다. 그래서 일대다, 다대일 관계로 풀어내는 연결 테이블을 사용합니다. 그런데 객체는 테이블과 다르게 객체 2개로 다대다 관계를 만들 수 있습니다.</p>
+<h5 id="4-1-다대다-단방향"><a href="#4-1-다대다-단방향" class="headerlink" title="4.1 다대다 단방향"></a>4.1 다대다 단방향</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Member</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@Column</span> (name = <span class="string">"MEMBER_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String username;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@ManyToMany</span></span><br><span class="line">  <span class="meta">@JoinTable</span>(name = <span class="string">"MEMBER_PRODUCT"</span>, joinColums = <span class="meta">@JoinColumn</span> (name = <span class="string">"MEMBER_ID"</span>),</span><br><span class="line">            inverseJoinColums = <span class="meta">@JoinColumn</span>(name = <span class="string">"PRODUCT_ID"</span>))</span><br><span class="line">  <span class="keyword">private</span> List&lt;Product&gt; products = <span class="keyword">new</span> Arraylist&lt;List&gt;();</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Product</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@Column</span> (name = <span class="string">"PRODUCT_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>다음은 다대다 관계를 저장하는 예제입니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">save</span><span class="params">()</span></span>&#123;</span><br><span class="line"> </span><br><span class="line">  Product productA = <span class="keyword">new</span> Product();</span><br><span class="line">  productA.setId(<span class="string">"productA"</span>);</span><br><span class="line">  productA.setName(<span class="string">"상품A"</span>);</span><br><span class="line">  em.persist(productA);</span><br><span class="line">  </span><br><span class="line">  Member member1 = <span class="keyword">new</span> Member();</span><br><span class="line">  member1.setId(<span class="string">"member1"</span>);</span><br><span class="line">  member1.setUsername(<span class="string">"회원1"</span>);</span><br><span class="line">  member.getProducts.add(productA);	<span class="comment">//연관관계 설정</span></span><br><span class="line">  em.persist(member1);</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이 코드를 실행하면 다음 SQL이 실행됩니다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> PRODUCT...</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> MEMBER...</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> MEMBER_PRODUCT...</span><br></pre></td></tr></table></figure>
+
+<p>다음은 다대다 관계를 탐색하는 예제입니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">find</span><span class="params">()</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  Member member = em.find(Member.class, <span class="string">"member1"</span>);</span><br><span class="line"> 	List&lt;Product&gt; products = member.getProducts(); <span class="comment">//객체 그래프 탐색</span></span><br><span class="line">  <span class="keyword">for</span> (Product product : products)&#123;</span><br><span class="line">    System.out.println(<span class="string">"product.name = "</span> + product.getName());</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>member.getProducts() 를 호출해서 상품 이름을 출력하면 다음 SQL이 실행됩니다.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> MEMBER_PRODUCT MP</span><br><span class="line"><span class="keyword">INNER</span> <span class="keyword">JOIN</span> PRODUCT P <span class="keyword">ON</span> MP&gt;PRODUCT_ID = P.PRODUCT_ID</span><br><span class="line">WHER MP.MEMBER_ID = ?</span><br></pre></td></tr></table></figure>
+
+<h5 id="4-2-다대다-양방향"><a href="#4-2-다대다-양방향" class="headerlink" title="4.2 다대다 양방향"></a>4.2 다대다 양방향</h5><p>양쪽 중 원하는 곳에 mappedBy 로 연관관계의 주인을 지정합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Product</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> </span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@ManyTomany</span> (mappedBy = <span class="string">"products"</span>) <span class="comment">//역방향 추가</span></span><br><span class="line">  <span class="keyword">private</span> List&lt;Member&gt; members;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>다대다의 양방향 연관관계는 다음처럼 설정합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">member.getProducts().add(product);</span><br><span class="line">product.getMembers().add(member);</span><br></pre></td></tr></table></figure>
+
+<p>회원 엔티티에 다음 편의 메소드를 추가합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addProduct</span><span class="params">(Product product)</span></span>&#123;</span><br><span class="line">  ...</span><br><span class="line">  products.add(product);</span><br><span class="line">  product.getMembers.add(<span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>역방향 탐색은 다음과 같습니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">findInverse</span><span class="params">()</span></span>&#123;</span><br><span class="line">  Product product = em.find(Product.class, <span class="string">"productA"</span>);</span><br><span class="line">  List &lt;Member&gt; members = product.getMembers();</span><br><span class="line">  <span class="keyword">for</span> (Member member : members)&#123;</span><br><span class="line">    System.out.println(<span class="string">"member : "</span> + member.getUsername);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="4-3-다대다-매핑의-한계와-극복-연결-엔티티-사용"><a href="#4-3-다대다-매핑의-한계와-극복-연결-엔티티-사용" class="headerlink" title="4.3 다대다: 매핑의 한계와 극복, 연결 엔티티 사용"></a>4.3 다대다: 매핑의 한계와 극복, 연결 엔티티 사용</h5><p>연결테이블에 컬럼을 추가하면, 더이상 @ManyToMany를 사용할 수 없습니다. 주문 엔티티나 상품 엔티티에는 추가한 칼럼들을 매핑할 수 없기 때문입니다. 따라서, 연결 엔티티를 만들고 이곳에 추가한 칼럼들을 매핑해야합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Member</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@Column</span> (name = <span class="string">"MEMBER_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">    </span><br><span class="line">  <span class="comment">//역방향</span></span><br><span class="line">  <span class="meta">@OneToMany</span> (mappedBy = <span class="string">"member"</span>)</span><br><span class="line">  <span class="keyword">private</span> List&lt;MemberProduct&gt; memberProducts;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Product</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@Column</span>(name = <span class="string">"PRODUCT_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> String id;</span><br><span class="line"> </span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@IdClass</span> (MemberProductId.class) <span class="comment">//복합 기본키를 매핑</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MemberProduct</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 기본키 + 외래키</span></span><br><span class="line">  <span class="meta">@Id</span></span><br><span class="line">  <span class="meta">@ManyToOne</span></span><br><span class="line">  <span class="meta">@JoinColumn</span> (name = <span class="string">"MEMBER_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Member member; <span class="comment">//MemberProductId.product 와 연결</span></span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span></span><br><span class="line">  <span class="meta">@ManyToOne</span></span><br><span class="line">  <span class="meta">@JoinColumn</span> (name = <span class="string">"PRODUCT_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Product product; <span class="comment">//MemberProductId.product 와 연결</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> orderAmout;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 복합 키를 위한 식별자 클래스</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MemberProductId</span> <span class="keyword">implements</span> <span class="title">Serializable</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> String member; <span class="comment">//MemberProduct.member 와 연결</span></span><br><span class="line">  <span class="keyword">private</span> String product; <span class="comment">//MemberProduct.product 와 연결</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">//hashCode cand equals ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="4-4-다대다-새로운-키본-키-사용"><a href="#4-4-다대다-새로운-키본-키-사용" class="headerlink" title="4.4 다대다: 새로운 키본 키 사용"></a>4.4 다대다: 새로운 키본 키 사용</h5><p>추천하는 기본 키 생성 전략은 데이터베이스에서 자동으로 생성해주는 대리 키를 Long 값으로 사용하는 것입니다. </p>
+<p>다음은, 연결 테이블에 새로운 기본키를 사용합니다. MemberProduct 보다 Order 이라는 이름으로 합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Order</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span></span><br><span class="line">  <span class="meta">@Column</span> (name = <span class="string">"ORDER_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Long id; </span><br><span class="line">  </span><br><span class="line">  <span class="meta">@ManyToOne</span></span><br><span class="line">  <span class="meta">@JoinColumn</span> (name = <span class="string">"MEMBER_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Member member;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@ManyToOne</span></span><br><span class="line">  <span class="meta">@JoinColumn</span> (name = <span class="string">"PRODUCT_ID"</span>)</span><br><span class="line">  <span class="keyword">private</span> Product product;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> orderAmout;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="4-5-다대다-연관관계-정리"><a href="#4-5-다대다-연관관계-정리" class="headerlink" title="4.5 다대다 연관관계 정리"></a>4.5 다대다 연관관계 정리</h5><p>다대다 관계를 일대다, 다대일 관계로 풀어내기 위해 연결 테이블을 만들 때, 식별자 구성 방법은 다음 두 가지가 있습니다.</p>
+<ul>
+<li>식별관계<ul>
+<li>받아온 식별자를 기본키 + 외래키로 사용</li>
+<li>데이터베이스에서는 이를 식별 관계라고 합니다.</li>
+</ul>
+</li>
+<li>비식별 관계<ul>
+<li>받아온 식별자는 외래키로만 사용하고 새로운 식별자를 추가</li>
+<li>데이터베이스에서는 이를 비식별 관계라고 합니다.</li>
+<li>이걸 추천합니다.</li>
+</ul>
+</li>
+</ul>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2019/03/27/relation-mappings/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2019/03/26/basic-relation-mapping/">
                             [자바 ORM 표준 JPA 프로그래밍] 5장_연관관계 매핑 기초
                         </a>
@@ -594,6 +777,100 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2019/03/13/ORM/">
+                            ORM
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-03-13T00:00:00+09:00">
+	
+		    Mar 13, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/jpa/">JPA</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h4 id="JPA-Java-Persistence-API"><a href="#JPA-Java-Persistence-API" class="headerlink" title="JPA (Java Persistence API)"></a>JPA (Java Persistence API)</h4><p>자바 진영의 ORM 기술 표준입니다. Application 과 JDBC 사이에서 동작합니다.<br>JPA는 쉽게 이야기해서, 인터페이스를 모아둔 것입니다. 따라서 JPA를 사용하기 위해서는, JPA를 구현한 ORM Framework를 선택해야합니다.</p>
+<h4 id="ORM-Framework"><a href="#ORM-Framework" class="headerlink" title="ORM Framework"></a>ORM Framework</h4><ul>
+<li>Hibernate</li>
+<li>EclipseLink</li>
+<li>DataNucleus</li>
+</ul>
+<h4 id="ORM-Object-Relational-Mapping"><a href="#ORM-Object-Relational-Mapping" class="headerlink" title="ORM (Object-Relational Mapping)"></a>ORM (Object-Relational Mapping)</h4><p>ORM은 애플리케이션의 클래스와 SQL 데이터베이스의 테이블 사이의 맵핑 정보를 기술한 메타데이터를 사용하여 자바 애플리케이션의 객체를 SQL데이터베이스의 테이블에 자동으로 영속화 해주는 기술입니다.</p>
+<h4 id="궁극적으로-코딩하려는-방법"><a href="#궁극적으로-코딩하려는-방법" class="headerlink" title="궁극적으로 코딩하려는 방법"></a>궁극적으로 코딩하려는 방법</h4><p>Hibernate나 JPA 같은 ORM을 사용해서 궁극적으로 코딩을 하려는 방법은 Domain Model을 사용하는 방식 (Object) 으로 프로그래밍을 하려고 합니다.<br>Hibernate가 자동생성하는 SQL뿐만 아니라 임의로 JDBC를 사용하는 Query를 직접 사용할 수도 있습니다.</p>
+<h4 id="JDBC-를-직접-사용-하는-방식"><a href="#JDBC-를-직접-사용-하는-방식" class="headerlink" title="JDBC 를 직접 사용 하는 방식"></a>JDBC 를 직접 사용 하는 방식</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>(Connection connection = DriverManager.getConnection(url, username, password))&#123;</span><br><span class="line">    System.out.println(<span class="string">"Connection created: "</span>+ connection);</span><br><span class="line">    String sql = <span class="string">"CREATE TABLE ACCOUNT (id int, username varchar(255), password varchar(255));"</span>;</span><br><span class="line">    sql = <span class="string">"INSERT INTO ACCOUNT VALUES(1, 'freelife', 'pass');"</span>;</span><br><span class="line">    <span class="keyword">try</span>(PreparedStatement statement = connection.prepareStatement(sql))&#123;</span><br><span class="line">        statement.execute();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Domain-Model-을-사용하는-방식"><a href="#Domain-Model-을-사용하는-방식" class="headerlink" title="Domain Model 을 사용하는 방식"></a>Domain Model 을 사용하는 방식</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Account account = <span class="keyword">new</span> Account(“freelife”, “pass”);</span><br><span class="line">accountRepository.save(account);</span><br></pre></td></tr></table></figure>
+
+<h4 id="왜-Domain-Model-을-사용할까"><a href="#왜-Domain-Model-을-사용할까" class="headerlink" title="왜 Domain Model 을 사용할까"></a>왜 Domain Model 을 사용할까</h4><ul>
+<li>객체 지향 프로그래밍의 장점을 활용</li>
+<li>각종 디자인 패턴을 적용</li>
+<li>코드 재사용성이 증가</li>
+<li>비즈니스 로직 구현 및 테스트 용이</li>
+</ul>
+<h4 id="ORM의-장점"><a href="#ORM의-장점" class="headerlink" title="ORM의 장점"></a>ORM의 장점</h4><ul>
+<li>생산성<ul>
+<li>SQL을 작성하고 JDBC API를 사용하는 반복적인 작업을 개발자가 직접 하지 않아도 됩니다.</li>
+</ul>
+</li>
+<li>유지보수성<ul>
+<li>코드가 굉장히 간결해지고 코드양이 줄어 유지보수성 증가합니다.</li>
+</ul>
+</li>
+<li>성능<ul>
+<li>논쟁의 여지가 있음 SQL단건만 보면 ORM이 더 느릴수있습니다.</li>
+<li>Hibernate는 객체와 테이블에 데이터 사이에 캐시가 존재하므로 불필요한 쿼리를 사용하지 않습니다.</li>
+<li>하나의 트랜잭션 내에서 여러 요청이 일어나도 정말로 데이터베이스에 반영해야되는 시점에만 반영을 합니다.</li>
+<li>데이터가 같거나 반영할 필요가 없다면 반영하지 않아서 성능에 장점이 있습니다.</li>
+<li>성능 최적화를 위한 여러가지 기능들을 제공함</li>
+</ul>
+</li>
+<li>벤더 독립성<ul>
+<li>데이터베이스를 변경하면 JPA 에게 다른 데이터베이스를 사용한다고 알려주기만 하면 됩니다.</li>
+<li>데이터베이스가 바뀌어도 코드가 변경되지 않습니다.</li>
+<li>Hibernate가 데이터베이스 sync를 할때 객체를 영속화 할때 발생하는 SQL만 자동으로 바뀝니다.</li>
+</ul>
+</li>
+</ul>
+<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><ul>
+<li><a href="https://www.inflearn.com/course/스프링-데이터-jpa" target="_blank" rel="noopener">https://www.inflearn.com/course/스프링-데이터-jpa</a></li>
+<li>자바 ORM 표준 프로그래밍 &lt;김영한&gt;</li>
+</ul>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2019/03/13/ORM/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2019/03/13/JPA Paradigm/">
                             패러다임의 불일치
                         </a>
@@ -692,100 +969,6 @@
                     
                         <p>
                             <a href="/2019/03/13/JPA Paradigm/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2019/03/13/ORM/">
-                            ORM
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-03-13T00:00:00+09:00">
-	
-		    Mar 13, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/jpa/">JPA</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h4 id="JPA-Java-Persistence-API"><a href="#JPA-Java-Persistence-API" class="headerlink" title="JPA (Java Persistence API)"></a>JPA (Java Persistence API)</h4><p>자바 진영의 ORM 기술 표준입니다. Application 과 JDBC 사이에서 동작합니다.<br>JPA는 쉽게 이야기해서, 인터페이스를 모아둔 것입니다. 따라서 JPA를 사용하기 위해서는, JPA를 구현한 ORM Framework를 선택해야합니다.</p>
-<h4 id="ORM-Framework"><a href="#ORM-Framework" class="headerlink" title="ORM Framework"></a>ORM Framework</h4><ul>
-<li>Hibernate</li>
-<li>EclipseLink</li>
-<li>DataNucleus</li>
-</ul>
-<h4 id="ORM-Object-Relational-Mapping"><a href="#ORM-Object-Relational-Mapping" class="headerlink" title="ORM (Object-Relational Mapping)"></a>ORM (Object-Relational Mapping)</h4><p>ORM은 애플리케이션의 클래스와 SQL 데이터베이스의 테이블 사이의 맵핑 정보를 기술한 메타데이터를 사용하여 자바 애플리케이션의 객체를 SQL데이터베이스의 테이블에 자동으로 영속화 해주는 기술입니다.</p>
-<h4 id="궁극적으로-코딩하려는-방법"><a href="#궁극적으로-코딩하려는-방법" class="headerlink" title="궁극적으로 코딩하려는 방법"></a>궁극적으로 코딩하려는 방법</h4><p>Hibernate나 JPA 같은 ORM을 사용해서 궁극적으로 코딩을 하려는 방법은 Domain Model을 사용하는 방식 (Object) 으로 프로그래밍을 하려고 합니다.<br>Hibernate가 자동생성하는 SQL뿐만 아니라 임의로 JDBC를 사용하는 Query를 직접 사용할 수도 있습니다.</p>
-<h4 id="JDBC-를-직접-사용-하는-방식"><a href="#JDBC-를-직접-사용-하는-방식" class="headerlink" title="JDBC 를 직접 사용 하는 방식"></a>JDBC 를 직접 사용 하는 방식</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>(Connection connection = DriverManager.getConnection(url, username, password))&#123;</span><br><span class="line">    System.out.println(<span class="string">"Connection created: "</span>+ connection);</span><br><span class="line">    String sql = <span class="string">"CREATE TABLE ACCOUNT (id int, username varchar(255), password varchar(255));"</span>;</span><br><span class="line">    sql = <span class="string">"INSERT INTO ACCOUNT VALUES(1, 'freelife', 'pass');"</span>;</span><br><span class="line">    <span class="keyword">try</span>(PreparedStatement statement = connection.prepareStatement(sql))&#123;</span><br><span class="line">        statement.execute();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="Domain-Model-을-사용하는-방식"><a href="#Domain-Model-을-사용하는-방식" class="headerlink" title="Domain Model 을 사용하는 방식"></a>Domain Model 을 사용하는 방식</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Account account = <span class="keyword">new</span> Account(“freelife”, “pass”);</span><br><span class="line">accountRepository.save(account);</span><br></pre></td></tr></table></figure>
-
-<h4 id="왜-Domain-Model-을-사용할까"><a href="#왜-Domain-Model-을-사용할까" class="headerlink" title="왜 Domain Model 을 사용할까"></a>왜 Domain Model 을 사용할까</h4><ul>
-<li>객체 지향 프로그래밍의 장점을 활용</li>
-<li>각종 디자인 패턴을 적용</li>
-<li>코드 재사용성이 증가</li>
-<li>비즈니스 로직 구현 및 테스트 용이</li>
-</ul>
-<h4 id="ORM의-장점"><a href="#ORM의-장점" class="headerlink" title="ORM의 장점"></a>ORM의 장점</h4><ul>
-<li>생산성<ul>
-<li>SQL을 작성하고 JDBC API를 사용하는 반복적인 작업을 개발자가 직접 하지 않아도 됩니다.</li>
-</ul>
-</li>
-<li>유지보수성<ul>
-<li>코드가 굉장히 간결해지고 코드양이 줄어 유지보수성 증가합니다.</li>
-</ul>
-</li>
-<li>성능<ul>
-<li>논쟁의 여지가 있음 SQL단건만 보면 ORM이 더 느릴수있습니다.</li>
-<li>Hibernate는 객체와 테이블에 데이터 사이에 캐시가 존재하므로 불필요한 쿼리를 사용하지 않습니다.</li>
-<li>하나의 트랜잭션 내에서 여러 요청이 일어나도 정말로 데이터베이스에 반영해야되는 시점에만 반영을 합니다.</li>
-<li>데이터가 같거나 반영할 필요가 없다면 반영하지 않아서 성능에 장점이 있습니다.</li>
-<li>성능 최적화를 위한 여러가지 기능들을 제공함</li>
-</ul>
-</li>
-<li>벤더 독립성<ul>
-<li>데이터베이스를 변경하면 JPA 에게 다른 데이터베이스를 사용한다고 알려주기만 하면 됩니다.</li>
-<li>데이터베이스가 바뀌어도 코드가 변경되지 않습니다.</li>
-<li>Hibernate가 데이터베이스 sync를 할때 객체를 영속화 할때 발생하는 SQL만 자동으로 바뀝니다.</li>
-</ul>
-</li>
-</ul>
-<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><ul>
-<li><a href="https://www.inflearn.com/course/스프링-데이터-jpa" target="_blank" rel="noopener">https://www.inflearn.com/course/스프링-데이터-jpa</a></li>
-<li>자바 ORM 표준 프로그래밍 &lt;김영한&gt;</li>
-</ul>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2019/03/13/ORM/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -936,6 +1119,65 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2018/12/09/Docker/">
+                            Docker
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-12-09T00:00:00+09:00">
+	
+		    Dec 09, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/etc/">etc</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h5 id="도커가-뭔가요"><a href="#도커가-뭔가요" class="headerlink" title="도커가 뭔가요?"></a>도커가 뭔가요?</h5><p>컨테이너 기반의 가상화 플랫폼입니다.</p>
+<h5 id="컨테이너가-뭔가요"><a href="#컨테이너가-뭔가요" class="headerlink" title="컨테이너가 뭔가요?"></a>컨테이너가 뭔가요?</h5><p>격리된 공간에서 프로세스가 동작하는 기술입니다. 추가되거나 변하는 값은 변하는 값은 컨테이너에 저장됩니다.</p>
+<h5 id="이미지가-뭔가요"><a href="#이미지가-뭔가요" class="headerlink" title="이미지가 뭔가요?"></a>이미지가 뭔가요?</h5><p>컨테이너 실행에 필요한 파일과 설정값등을 포함하고 있는 것 입니다. 상태값을 가지지 않고 변하지 않습니다(Immutable).</p>
+<h5 id="이미지와-컨테이너의-관계는"><a href="#이미지와-컨테이너의-관계는" class="headerlink" title="이미지와 컨테이너의 관계는?"></a>이미지와 컨테이너의 관계는?</h5><p>컨테이너는 이미지가 실행된 상태입니다. 같은 이미지에서 여러개의 컨테이너를 생성할 수 있고 컨테이너의 상태가 바뀌거나 컨테이너가 삭제되더라도 이미지는 변하지 않고 그대로 남아있습니다.</p>
+<h5 id="예를-들면"><a href="#예를-들면" class="headerlink" title="예를 들면?"></a>예를 들면?</h5><p>ubuntu이미지는 ubuntu를 실행하기 위한 모든 파일을 가지고 있습니다. MySQL이미지는 debian을 기반으로 MySQL을 실행하는데 필요한 파일과 실행 명령어, 포트 정보등을 가지고 있습니다.</p>
+<h5 id="이미지는-어떻게-관리하나요"><a href="#이미지는-어떻게-관리하나요" class="headerlink" title="이미지는 어떻게 관리하나요?"></a>이미지는 어떻게 관리하나요?</h5><p>도커 이미지는 Docker hub 에 등록하거나 Docker Registry 저장소를 직접 만들어 관리할 수 있습니다</p>
+<h5 id="기존의-가상화-기술이랑-차이점은"><a href="#기존의-가상화-기술이랑-차이점은" class="headerlink" title="기존의 가상화 기술이랑 차이점은?"></a>기존의 가상화 기술이랑 차이점은?</h5><p>VMware나 VirtualBox같은 가상머신은 호스트 OS위에 게스트 OS 전체를 가상화하여 사용하는 방식입니다. 이 방식은 여러가지 OS를 가상화(리눅스에서 윈도우를 돌린다던가) 할 수 있고 비교적 사용법이 간단하지만 무겁고 느려서 운영환경에선 사용할 수 없었습니다.</p>
+<p>이러한 상황을 개선하기 위해, CPU의 가상화 기술을 이용한 반 가상화 기술이 등장했습니다. 게스트 OS가 필요하긴 하지만 전체OS를 가상화하는 방식이 아니였기 때문에 호스트형 가상화 방식에 비해 성능이 향상되었습니다.</p>
+<p>전가상화든 반가상화든 추가적인 OS를 설치하여 가상화하는 방법은 어쨋든 성능문제가 있었고 이를 개선하기 위해 <strong>프로세스를 격리</strong> 하는 방식이 등장합니다.</p>
+<h5 id="도커의-장점은"><a href="#도커의-장점은" class="headerlink" title="도커의 장점은?"></a>도커의 장점은?</h5><p>더 이상 의존성 파일을 컴파일하고 이것저것 설치할 필요가 없습니다. 말그대로 이미지는 컨테이너를 실행하기 위한 모든 정보를 가지고 있기 때문입니다. 이제 새로운 서버가 추가되면 미리 만들어 놓은 이미지를 다운받고 컨테이너를 생성만 하면 됩니다. 한 서버에 여러개의 컨테이너를 실행할 수 있고, 수십, 수백, 수천대의 서버도 문제없습니다.</p>
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://subicura.com/2017/01/19/docker-guide-for-beginners-1.html" target="_blank" rel="noopener">https://subicura.com/2017/01/19/docker-guide-for-beginners-1.html</a></p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/12/09/Docker/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2018/12/09/joi/">
                             Joi
                         </a>
@@ -972,145 +1214,6 @@
                     
                         <p>
                             <a href="/2018/12/09/joi/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/12/09/React.js/">
-                            React.js
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-12-09T00:00:00+09:00">
-	
-		    Dec 09, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/etc/">etc</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h5 id="React-js가-무엇인가요"><a href="#React-js가-무엇인가요" class="headerlink" title="React.js가 무엇인가요?"></a>React.js가 무엇인가요?</h5><p>컴포넌트라는 개념에 집중이 되어있는 라이브러리입니다.</p>
-<h5 id="어떤-특징이-있나요"><a href="#어떤-특징이-있나요" class="headerlink" title="어떤 특징이 있나요?"></a>어떤 특징이 있나요?</h5><ol>
-<li><p>UI 컴포넌트만 지원합니다. </p>
-</li>
-<li><p>Virtual DOM을 가지고 있습니다.</p>
-<p>다시 그릴 때는 구조체의 전후 상태를 비교하여 변경이 필요한 최소한의 요소만 실제 DOM에 반영합니다. </p>
-<p>따라서 무작위로 다시 그려도 변경에 필요한 최소한의 DOM만 갱신되기 때문에 빠르게 처리할 수 있습니다.</p>
-</li>
-<li><p>단방향 데이터 흐름을 지향합니다.</p>
-<p>데이터를 관리하는 모델 컴포넌트가 있고, 데이터를 UI 컴포넌트에 전달하는 단순한 데이터 흐름입니다.</p>
-</li>
-<li><p>JSX 문법을 가지고 있습니다.</p>
-<p>UI를 구성할 때 사용하는 구문입니다. Javascript 의 extension입니다.</p>
-</li>
-</ol>
-<h5 id="컴포넌트가-뭔가요"><a href="#컴포넌트가-뭔가요" class="headerlink" title="컴포넌트가 뭔가요?"></a>컴포넌트가 뭔가요?</h5><p>props를 input으로 하고 UI가 어떻게 보여야 하는지 정의하는 React Element를 output으로 하는 함수입니다</p>
-<h5 id="DOM이-무엇인가요"><a href="#DOM이-무엇인가요" class="headerlink" title="DOM이 무엇인가요?"></a>DOM이 무엇인가요?</h5><p>DOM Document Object Model로,  웹 페이지의 객체 지향 표현입니다. 웹 브라우저를 통해 해석되어 화면에 나타납니다.</p>
-<h5 id="Virtual-DOM-Document-Object-Model-이-무엇인가요"><a href="#Virtual-DOM-Document-Object-Model-이-무엇인가요" class="headerlink" title="Virtual DOM(Document Object Model) 이 무엇인가요?"></a>Virtual DOM(Document Object Model) 이 무엇인가요?</h5><p>가상의 DOM 입니다. 변화가 일어나면, 실제로 브라우저의 DOM 에 새로운걸 넣는것이 아니라, 자바스크립트로 이뤄진 가상 DOM 에 한번 렌더링을 하고, 기존의 DOM 과 비교를 한 다음에 정말 변화가 필요한 곳에만 업데이트를 합니다. 이로써, 브라우저 내에서 발생하는 연산의 양을 줄이면서 성능이 개선됩니다.</p>
-<h5 id="컴포넌트는-어떻게-만드나요"><a href="#컴포넌트는-어떻게-만드나요" class="headerlink" title="컴포넌트는 어떻게 만드나요?"></a>컴포넌트는 어떻게 만드나요?</h5><p>클래스를 통해서 만드는 방법과, 함수로 만드는 방법이 있습니다. 클래스형태로 만들어진 컴포넌트에는 꼭, render 함수가 있어야 합니다. render함수 내부에서는 JSX 를 return 해주어야 합니다. </p>
-<h5 id="props와-state가-뭔가요"><a href="#props와-state가-뭔가요" class="headerlink" title="props와 state가 뭔가요?"></a>props와 state가 뭔가요?</h5><p>리액트 컴포넌트에서 다루는 데이터는 props 와 state 입니다. props 는 부모 컴포넌트가 자식 컴포넌트에게 주는 값입니다. 자식 컴포넌트에서는 props 를 받아오기만하고, 받아온 props 를 직접 수정 할 수 는 없습니다. state 는 컴포넌트 내부에서 선언하며 내부에서 값을 변경 할 수 있습니다.</p>
-<h5 id="브라우저는-어떻게-동작하나요"><a href="#브라우저는-어떻게-동작하나요" class="headerlink" title="브라우저는 어떻게 동작하나요?"></a>브라우저는 어떻게 동작하나요?</h5><p><img src="/image/browserr.png" alt></p>
-<ol>
-<li><p>DOM tree를 생성합니다.</p>
-<p>브라우저가 HTML 을 전달받으면, 브라우저의 렌더 엔진이 이를 파싱하고 DOM 노드(Node) 로 이뤄진 트리를 만듦니다. 각 노드는 각 HTML 엘리먼트들과 연관되어있습니다.</p>
-</li>
-<li><p>Render Tree를 생성합니다.</p>
-<p>그리고, 외부 CSS 파일과 각 엘리먼트의 inline 스타일을 파싱합니다. 스타일 정보를 사용하여 DOM 트리에 따라 새로운 트리, 렌더트리를 만듦니다.</p>
-</li>
-<li><p>Layout</p>
-<p>렌더 트리가 다 만들어지고 나면, 레이아웃 과정을 거칩니다. 각 노드들은 스크린의 좌표가 주어지고, 정확히 어디에 나타나야 할 지 위치가 주어집니다.</p>
-</li>
-<li><p>painting</p>
-<p>렌더링 된 요소들에 색을 입히는 과정입니다. 트리의 각 노드들을 거쳐가면서 paint() 메소드를 호출합니다. 그러고나면, 스크린에 원하는 정보가 나타납니다.</p>
-</li>
-</ol>
-<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://velopert.com/3612" target="_blank" rel="noopener">https://velopert.com/3612</a></p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/12/09/React.js/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/12/09/exports/">
-                            exports
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-12-09T00:00:00+09:00">
-	
-		    Dec 09, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/node-js/">Node.js</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h5 id="전역-객체인-exports가-뭔가요"><a href="#전역-객체인-exports가-뭔가요" class="headerlink" title="전역 객체인 exports가 뭔가요?"></a>전역 객체인 exports가 뭔가요?</h5><p>만들고자 하는 모듈을 파일로 만들고, exports 객체의 속성이나 메소드를 정의해주면 모듈을 만들어 낼 수 있습니다. 그리고 만들어진 모듈을 전역 함수 require()를 이용하여 추출합니다.</p>
-<h5 id="여러-속성과-메소드를-모듈로-만들고-이를-사용한-exports-예시는"><a href="#여러-속성과-메소드를-모듈로-만들고-이를-사용한-exports-예시는" class="headerlink" title="여러 속성과 메소드를 모듈로 만들고 이를 사용한 exports 예시는?"></a>여러 속성과 메소드를 모듈로 만들고 이를 사용한 exports 예시는?</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// cicle.js</span></span><br><span class="line"><span class="keyword">var</span> PI = <span class="built_in">Math</span>.PI;</span><br><span class="line"> </span><br><span class="line">exports.area = <span class="function"><span class="keyword">function</span> (<span class="params">r</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> PI * r * r;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line">exports.circumference = <span class="function"><span class="keyword">function</span> (<span class="params">r</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">2</span> * PI * r;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// foo.js</span></span><br><span class="line"><span class="keyword">var</span> circle = <span class="built_in">require</span>(<span class="string">'./circle.js'</span>);</span><br><span class="line"><span class="built_in">console</span>.log( <span class="string">'The area of a circle of radius 4 is '</span></span><br><span class="line">    + circle.area(<span class="number">4</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// result</span></span><br><span class="line">$ node foo.js</span><br><span class="line">The area <span class="keyword">of</span> a circle <span class="keyword">of</span> radius <span class="number">4</span> is <span class="number">50.26548245743669</span></span><br></pre></td></tr></table></figure>
-
-<h5 id="exports와-module-exports-차이는"><a href="#exports와-module-exports-차이는" class="headerlink" title="exports와 module.exports 차이는?"></a>exports와 module.exports 차이는?</h5><p>exports는 속성이나 메소드를 여러 개 정의할 수 있지만, module.exports는 하나만 정의할 수 있습니다. 파일 자체를 속성이나 메소드로 사용하는 방식입니다.</p>
-<h5 id="module-exports의-예시는"><a href="#module-exports의-예시는" class="headerlink" title="module.exports의 예시는?"></a>module.exports의 예시는?</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// square.js</span></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">width</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        area: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> width * width;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// bar.js</span></span><br><span class="line"><span class="keyword">var</span> square = <span class="built_in">require</span>(<span class="string">'./square.js'</span>);</span><br><span class="line"><span class="keyword">var</span> mySquare = square(<span class="number">2</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'The area of my square is '</span> + mySquare.area());</span><br><span class="line"></span><br><span class="line"><span class="comment">// result</span></span><br><span class="line">$ node bar.js</span><br><span class="line">The area <span class="keyword">of</span> my square is <span class="number">4</span></span><br></pre></td></tr></table></figure>
-
-<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://opentutorials.org/module/938/7190" target="_blank" rel="noopener">https://opentutorials.org/module/938/7190</a></p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/12/09/exports/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>

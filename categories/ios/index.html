@@ -261,6 +261,64 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2018/02/06/구조체,클래스/">
+                            구조체,클래스
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-02-06T00:00:00+09:00">
+	
+		    Feb 06, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/ios/">iOS</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p><a href="https://developer.apple.com/swift/" target="_blank" rel="noopener">https://developer.apple.com/swift/</a></p>
+<ul>
+<li>Unlike other programming languages, </li>
+<li>Swift does not require you to create separate interface and implementation files for custom classes and structures. </li>
+<li>In Swift, you define a class or a structure in a single file, </li>
+<li>and the external interface to that class or structure is automatically made available for other code to use.</li>
+<li>example of a structure definition and a class definition:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">struct Resolution &#123;</span><br><span class="line">    var width = 0</span><br><span class="line">    var height = 0</span><br><span class="line">&#125;</span><br><span class="line">class VideoMode &#123;</span><br><span class="line">    var resolution = Resolution()</span><br><span class="line">    var interlaced = false</span><br><span class="line">    var frameRate = 0.0</span><br><span class="line">    var name: String?</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/02/06/구조체,클래스/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2018/02/06/접근제어/">
                             접근제어
                         </a>
@@ -336,8 +394,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/02/06/구조체,클래스/">
-                            구조체,클래스
+                        <a class="link-unstyled" href="/2018/02/06/옵셔널/">
+                            옵셔널
                         </a>
                     
                 </h1>
@@ -361,14 +419,27 @@
                 <div class="postShorten-content">
                     <p><a href="https://developer.apple.com/swift/" target="_blank" rel="noopener">https://developer.apple.com/swift/</a></p>
 <ul>
-<li>Unlike other programming languages, </li>
-<li>Swift does not require you to create separate interface and implementation files for custom classes and structures. </li>
-<li>In Swift, you define a class or a structure in a single file, </li>
-<li>and the external interface to that class or structure is automatically made available for other code to use.</li>
-<li>example of a structure definition and a class definition:</li>
+<li><p>You use optionals in situations where a value may be absen</p>
+</li>
+<li><p>An optional represents two possibilities: </p>
+<ul>
+<li>Either there is a value, and you can unwrap the optional to access that value, </li>
+<li>or there isn’t a value at all.</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">struct Resolution &#123;</span><br><span class="line">    var width = 0</span><br><span class="line">    var height = 0</span><br><span class="line">&#125;</span><br><span class="line">class VideoMode &#123;</span><br><span class="line">    var resolution = Resolution()</span><br><span class="line">    var interlaced = false</span><br><span class="line">    var frameRate = 0.0</span><br><span class="line">    var name: String?</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>The example below uses the initializer to try to convert a String into an Int:</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">let possibleNumber = &quot;123&quot;</span><br><span class="line">let convertedNumber = Int(possibleNumber)</span><br><span class="line">// convertedNumber is inferred to be of type &quot;Int?&quot;, or &quot;optional Int&quot;</span><br></pre></td></tr></table></figure>
 
+<ul>
+<li>Because the initializer might fail, it returns an optional Int, rather than an Int. </li>
+<li>An optional Int is written as Int?, not Int. </li>
+<li>The question mark indicates that the value it contains is optional, </li>
+<li>meaning that it might contain some Int value, </li>
+<li>or it might contain no value at all. </li>
+<li>(It can’t contain anything else, such as a Bool value or a String value. It’s either an Int, or it’s nothing at all.)</li>
+</ul>
 
                     
                         
@@ -376,7 +447,7 @@
                     
                     
                         <p>
-                            <a href="/2018/02/06/구조체,클래스/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/02/06/옵셔널/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -478,77 +549,6 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/02/06/옵셔널/">
-                            옵셔널
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-02-06T00:00:00+09:00">
-	
-		    Feb 06, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/ios/">iOS</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p><a href="https://developer.apple.com/swift/" target="_blank" rel="noopener">https://developer.apple.com/swift/</a></p>
-<ul>
-<li><p>You use optionals in situations where a value may be absen</p>
-</li>
-<li><p>An optional represents two possibilities: </p>
-<ul>
-<li>Either there is a value, and you can unwrap the optional to access that value, </li>
-<li>or there isn’t a value at all.</li>
-</ul>
-</li>
-<li><p>The example below uses the initializer to try to convert a String into an Int:</p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">let possibleNumber = &quot;123&quot;</span><br><span class="line">let convertedNumber = Int(possibleNumber)</span><br><span class="line">// convertedNumber is inferred to be of type &quot;Int?&quot;, or &quot;optional Int&quot;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>Because the initializer might fail, it returns an optional Int, rather than an Int. </li>
-<li>An optional Int is written as Int?, not Int. </li>
-<li>The question mark indicates that the value it contains is optional, </li>
-<li>meaning that it might contain some Int value, </li>
-<li>or it might contain no value at all. </li>
-<li>(It can’t contain anything else, such as a Bool value or a String value. It’s either an Int, or it’s nothing at all.)</li>
-</ul>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/02/06/옵셔널/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
                         <a class="link-unstyled" href="/2018/01/30/연산자/">
                             연산자
                         </a>
@@ -608,93 +608,6 @@
                     
                         <p>
                             <a href="/2018/01/30/연산자/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/01/30/함수/">
-                            함수
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-01-30T00:00:00+09:00">
-	
-		    Jan 30, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/ios/">iOS</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p><a href="https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/Functions.html#//apple_ref/doc/uid/TP40014097-CH10-ID158" target="_blank" rel="noopener">https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/Functions.html#//apple_ref/doc/uid/TP40014097-CH10-ID158</a></p>
-<ul>
-<li>Defining and Calling Functions</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">func greet(person: String) -&gt; String &#123;</span><br><span class="line">    let greeting = &quot;Hello, &quot; + person + &quot;!&quot;</span><br><span class="line">    return greeting</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">print(greet(person: &quot;Anna&quot;))</span><br><span class="line">// Prints &quot;Hello, Anna!&quot;</span><br><span class="line">print(greet(person: &quot;Brian&quot;))</span><br><span class="line">// Prints &quot;Hello, Brian!&quot;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>Functions with Multiple Return Values</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">func minMax(array: [Int]) -&gt; (min: Int, max: Int) &#123;</span><br><span class="line">    var currentMin = array[0]</span><br><span class="line">    var currentMax = array[0]</span><br><span class="line">    for value in array[1..&lt;array.count] &#123;</span><br><span class="line">        if value &lt; currentMin &#123;</span><br><span class="line">            currentMin = value</span><br><span class="line">        &#125; else if value &gt; currentMax &#123;</span><br><span class="line">            currentMax = value</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return (currentMin, currentMax)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>Function Argument Labels and Parameter Names</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">func greet(person: String, from hometown: String) -&gt; String &#123;</span><br><span class="line">    return &quot;Hello \(person)!  Glad you could visit from \(hometown).&quot;</span><br><span class="line">&#125;</span><br><span class="line">print(greet(person: &quot;Bill&quot;, from: &quot;Cupertino&quot;))</span><br><span class="line">// Prints &quot;Hello Bill!  Glad you could visit from Cupertino.&quot;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>Variadic Parameters</p>
-<ul>
-<li>A variadic parameter accepts zero or more values of a specified type</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">func arithmeticMean(_ numbers: Double...) -&gt; Double &#123;</span><br><span class="line">    var total: Double = 0</span><br><span class="line">    for number in numbers &#123;</span><br><span class="line">        total += number</span><br><span class="line">    &#125;</span><br><span class="line">    return total / Double(numbers.count)</span><br><span class="line">&#125;</span><br><span class="line">arithmeticMean(1, 2, 3, 4, 5)</span><br><span class="line">// returns 3.0, which is the arithmetic mean of these five numbers</span><br><span class="line">arithmeticMean(3, 8.25, 18.75)</span><br><span class="line">// returns 10.0, which is the arithmetic mean of these three numbers</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>In-Out Parameters</p>
-<ul>
-<li>If you want a function to modify a parameter’s value, and you want those changes to persist after the function call has ended, define that parameter as an in-out parameter instead.</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">func swapTwoInts(_ a: inout Int, _ b: inout Int) &#123;</span><br><span class="line">    let temporaryA = a</span><br><span class="line">    a = b</span><br><span class="line">    b = temporaryA</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var someInt = 3</span><br><span class="line">var anotherInt = 107</span><br><span class="line">swapTwoInts(&amp;someInt, &amp;anotherInt)</span><br><span class="line">print(&quot;someInt is now \(someInt), and anotherInt is now \(anotherInt)&quot;)</span><br><span class="line">// Prints &quot;someInt is now 107, and anotherInt is now 3&quot;</span><br></pre></td></tr></table></figure>
-
-<p>​    </p>
-<p>​    </p>
-<p>​<br>​<br>​<br>​<br>​<br>​<br>​    </p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/01/30/함수/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -786,6 +699,93 @@
                     
                         <p>
                             <a href="/2018/01/30/흐름제어/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2018/01/30/함수/">
+                            함수
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-01-30T00:00:00+09:00">
+	
+		    Jan 30, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/ios/">iOS</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p><a href="https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/Functions.html#//apple_ref/doc/uid/TP40014097-CH10-ID158" target="_blank" rel="noopener">https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/Functions.html#//apple_ref/doc/uid/TP40014097-CH10-ID158</a></p>
+<ul>
+<li>Defining and Calling Functions</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">func greet(person: String) -&gt; String &#123;</span><br><span class="line">    let greeting = &quot;Hello, &quot; + person + &quot;!&quot;</span><br><span class="line">    return greeting</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">print(greet(person: &quot;Anna&quot;))</span><br><span class="line">// Prints &quot;Hello, Anna!&quot;</span><br><span class="line">print(greet(person: &quot;Brian&quot;))</span><br><span class="line">// Prints &quot;Hello, Brian!&quot;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Functions with Multiple Return Values</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">func minMax(array: [Int]) -&gt; (min: Int, max: Int) &#123;</span><br><span class="line">    var currentMin = array[0]</span><br><span class="line">    var currentMax = array[0]</span><br><span class="line">    for value in array[1..&lt;array.count] &#123;</span><br><span class="line">        if value &lt; currentMin &#123;</span><br><span class="line">            currentMin = value</span><br><span class="line">        &#125; else if value &gt; currentMax &#123;</span><br><span class="line">            currentMax = value</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return (currentMin, currentMax)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Function Argument Labels and Parameter Names</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">func greet(person: String, from hometown: String) -&gt; String &#123;</span><br><span class="line">    return &quot;Hello \(person)!  Glad you could visit from \(hometown).&quot;</span><br><span class="line">&#125;</span><br><span class="line">print(greet(person: &quot;Bill&quot;, from: &quot;Cupertino&quot;))</span><br><span class="line">// Prints &quot;Hello Bill!  Glad you could visit from Cupertino.&quot;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>Variadic Parameters</p>
+<ul>
+<li>A variadic parameter accepts zero or more values of a specified type</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">func arithmeticMean(_ numbers: Double...) -&gt; Double &#123;</span><br><span class="line">    var total: Double = 0</span><br><span class="line">    for number in numbers &#123;</span><br><span class="line">        total += number</span><br><span class="line">    &#125;</span><br><span class="line">    return total / Double(numbers.count)</span><br><span class="line">&#125;</span><br><span class="line">arithmeticMean(1, 2, 3, 4, 5)</span><br><span class="line">// returns 3.0, which is the arithmetic mean of these five numbers</span><br><span class="line">arithmeticMean(3, 8.25, 18.75)</span><br><span class="line">// returns 10.0, which is the arithmetic mean of these three numbers</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>In-Out Parameters</p>
+<ul>
+<li>If you want a function to modify a parameter’s value, and you want those changes to persist after the function call has ended, define that parameter as an in-out parameter instead.</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">func swapTwoInts(_ a: inout Int, _ b: inout Int) &#123;</span><br><span class="line">    let temporaryA = a</span><br><span class="line">    a = b</span><br><span class="line">    b = temporaryA</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var someInt = 3</span><br><span class="line">var anotherInt = 107</span><br><span class="line">swapTwoInts(&amp;someInt, &amp;anotherInt)</span><br><span class="line">print(&quot;someInt is now \(someInt), and anotherInt is now \(anotherInt)&quot;)</span><br><span class="line">// Prints &quot;someInt is now 107, and anotherInt is now 3&quot;</span><br></pre></td></tr></table></figure>
+
+<p>​    </p>
+<p>​    </p>
+<p>​<br>​<br>​<br>​<br>​<br>​<br>​    </p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/01/30/함수/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
