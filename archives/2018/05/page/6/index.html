@@ -194,8 +194,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/05/08/Database/">
-                            Database
+                        <a class="link-unstyled" href="/2018/05/08/Spring MVC 구성요소/">
+                            Spring MVC 구성요소
                         </a>
                     
                 </h1>
@@ -218,62 +218,124 @@
             
                 <div class="postShorten-content">
                     <ul>
-<li><p>데이터베이스와 데이터베이스 관리 시스템</p>
+<li><p>Spring MVC 기본 동작 흐</p>
+<p><img src="/image/smvc.png" alt></p>
 <ul>
-<li>어린이가 가지고 있는 책(정보)들을 데이터베이스라고 한다면, </li>
-<li>그 책을 관리해주는 엄마는 데이터베이스 관리 시스템이라고 말할 수 있습니다.</li>
+<li>클라이언트가 요청을 보내면 이 모든 요청을 Dispatcher Servlet이 받아</li>
+<li>Dispatcher Servlet은 이 요청을 처리하는 컨트롤러와 메소드가 무엇인지 Handler Mapping 에게 물어봐</li>
+<li>Handler Adapter에게 실행을 요청. </li>
+<li>결정된 컨트롤러와 메소드가 실행이 됨</li>
+<li>그 결과를 모델에 받아서, Dispatcher Servlet에게 전달<ul>
+<li>컨트롤러가 return한 view name으로 적절한 View Resolver로 출력</li>
 </ul>
 </li>
-<li><p>데이터베이스</p>
+</ul>
+</li>
+<li><p>DispatcherServlet</p>
 <ul>
-<li><p>데이터의 집합 (a Set of Data)</p>
+<li>프론트 컨트롤러 (Front Controller)</li>
+<li>클라이언트의 모든 요청을 받은 후 </li>
+<li>이를 처리할 핸들러에게 넘기고 </li>
+<li>핸들러가 처리한 결과를 받아 </li>
+<li>사용자에게 응답 결과를 보여준다.</li>
+<li>DispathcerServlet은 여러 컴포넌트를 이용해 작업을 처리한다.</li>
+</ul>
 </li>
-<li><p>여러 응용 시스템(프로그램)들의 통합된 정보들을 저장하여 운영할 수 있는 공용(share) 데이터의 집합</p>
+<li><p>DispatcherServlet 내부 동작흐름</p>
+<p><img src="/image/dispatch01.png" alt></p>
 </li>
-<li><p>효율적으로 저장, 검색, 갱신할 수 있도록 데이터 집합들끼리 연관시키고 조직화되어야 한다.</p>
+<li><p>DispatcherServlet 내부 동작흐름 상세 - 요청 선처리 작</p>
+<p><img src="/image/dispatch02.png" alt></p>
 </li>
-<li><p>특성</p>
+<li><p>요청 선처리 작업시 사용된 컴포넌트</p>
 <ul>
-<li><p>실시간 접근성(Real-time Accessability)</p>
+<li>org.springframework.web.servlet.LocaleResolver<ul>
+<li>지역 정보를 결정해주는 전략 오브젝트이다.</li>
+<li>디폴트인 AcceptHeaderLocalResolver는 HTTP 헤더의 정보를 보고 지역정보를 설정해준다.</li>
+</ul>
+</li>
+<li>org.springframework.web.servlet.FlashMapManager<ul>
+<li>FlashMap객체를 조회(retrieve) &amp; 저장을 위한 인터페이스</li>
+<li>RedirectAttributes의 addFlashAttribute메소드를 이용해서 저장한다.</li>
+<li>리다이렉트 후 조회를 하면 바로 정보는 삭제된다.</li>
+</ul>
+</li>
+<li>org.springframework.web.context.request.RequestContextHolder<ul>
+<li>일반 빈에서 HttpServletRequest, HttpServletResponse, HttpSession 등을 사용할 수 있도록 한다.</li>
+<li>해당 객체를 일반 빈에서 사용하게 되면, Web에 종속적이 될 수 있다.</li>
+</ul>
+</li>
+<li>forg.springframework.web.multipart.MultipartResolver<ul>
+<li>멀티파트 파일 업로드를 처리하는 전략</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>DispatcherServlet 내부 동작흐름 상세 - 요청 전달</p>
+<p><img src="/image/dispatch03.png" alt></p>
+</li>
+<li><p>요청 전달시 사용된 컴포넌트</p>
 <ul>
-<li>사용자의 요구를 즉시 처리할 수 있다.</li>
+<li>org.springframework.web.servlet.HandlerMapping<ul>
+<li>HandlerMapping구현체는 어떤 핸들러가 요청을 처리할지에 대한 정보를 알고 있다.</li>
+<li>디폴트로 설정되는 있는 핸들러매핑은 BeanNameHandlerMapping과 DefaultAnnotationHandlerMapping 2가지가 설정되어 있다.</li>
 </ul>
 </li>
-<li><p>계속적인 변화(Continuous Evolution)</p>
+<li>org.springframework.web.servlet.HandlerExecutionChain<ul>
+<li>HandlerExecutionChain구현체는 실제로 호출된 핸들러에 대한 참조를 가지고 있다.</li>
+<li>즉, 무엇이 실행되어야 될지 알고 있는 객체라고 말할 수 있으며, 핸들러 실행전과 실행후에 수행될 HandlerInterceptor도 참조하고 있다.</li>
+</ul>
+</li>
+<li>org.springframework.web.servlet.HandlerAdapter<ul>
+<li>실제 핸들러를 실행하는 역할을 담당한다.</li>
+<li>핸들러 어댑터는 선택된 핸들러를 실행하는 방법과 응답을 ModelAndView로 변화하는 방법에 대해 알고 있다.</li>
+<li>디폴트로 설정되어 있는 핸들러어댑터는 HttpRequestHandlerAdapter, SimpleControllerHandlerAdapter, AnnotationMethodHanlderAdapter 3가지이다.</li>
+<li>@RequestMapping과 @Controller 애노테이션을 통해 정의되는 컨트롤러의 경우 DefaultAnnotationHandlerMapping에 의해 핸들러가 결정되고, 그에 대응되는 AnnotationMethodHandlerAdapter에 의해 호출이 일어난다.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>DispatcherServlet 내부 동작흐름 상세 - 요청 처리</p>
+<p><img src="/image/dispatch04.png" alt></p>
+</li>
+<li><p>요청 처리시 사용된 컴포넌트</p>
 <ul>
-<li>정확한 값을 유지하려고 삽입·삭제·수정 작업 등을 이용해 데이터를 지속적으로 갱신할 수 있다.</li>
+<li>org.springframework.web.servlet.ModelAndView<ul>
+<li>ModelAndView는 Controller의 처리 결과를 보여줄 view와 view에서 사용할 값을 전달하는 클래스이다.</li>
 </ul>
 </li>
-<li><p>동시 공유성(Concurrent Sharing)</p>
+</ul>
+</li>
+<li><p>DispatcherServlet 내부 동작흐름 상세 - 예외처리</p>
+<p><img src="/image/dispatch05.png" alt></p>
+</li>
+<li><p>예외 처리시 사용된 컴포넌트</p>
 <ul>
-<li>사용자마다 서로 다른 목적으로 사용하므로 동시에 여러 사람이 동일한 데이터에 접근하고 이용할 수 있다.</li>
+<li>org.springframework.web.servlet.handlerexceptionresolver<ul>
+<li>기본적으로 DispatcherServlet이 DefaultHandlerExceptionResolver를 등록한다.</li>
+<li>HandlerExceptionResolver는 예외가 던져졌을 때 어떤 핸들러를 실행할 것인지에 대한 정보를 제공한다.</li>
 </ul>
 </li>
-<li><p>내용 참조(Content Reference)</p>
+</ul>
+</li>
+<li><p>DispatcherServlet 내부 동작흐름 상세 - 뷰 렌더링 과정</p>
+<p><img src="/image/dispatch06.png" alt></p>
+</li>
+<li><p>뷰 렌더링 과정시 사용된 컴포넌트</p>
 <ul>
-<li>저장한 데이터 레코드의 위치나 주소가 아닌 사용자가 요구하는 데이터의 내용, 즉 데이터 값에 따라 참조할 수 있어야 한다.</li>
+<li>org.springframework.web.servlet.ViewResolver<ul>
+<li>컨트롤러가 리턴한 뷰 이름을 참고해서 적절한 뷰 오브젝트를 찾아주는 로직을 가진 전략 오프젝트이다.</li>
+<li>뷰의 종류에 따라 적절한 뷰 리졸버를 추가로 설정해줄 수 있다.</li>
 </ul>
 </li>
 </ul>
 </li>
-</ul>
-</li>
-<li><p>데이터베이스 관리 시스템 (Database Management System = DBMS)</p>
-<ul>
-<li>데이터베이스를 관리하는 소프트웨어</li>
-<li>여러 응용 소프트웨어(프로그램) 또는 시스템이 동시에 데이터베이스에 접근하여 사용할 수 있게 한다</li>
-<li>필수 3기능<ul>
-<li>정의기능 :  데이터 베이스의 논리적, 물리적 구조를 정의</li>
-<li>조작기능 : 데이터를 검색, 삭제, 갱신, 삽입, 삭제하는 기능</li>
-<li>제어기능 :  데이터베이스의 내용 정확성과 안전성을 유지하도록 제어하는 기능</li>
-</ul>
-</li>
-<li>Oracle, SQL Server, MySQL, DB2 등의 상용 또는 공개 DBMS가 있다.</li>
-</ul>
+<li><p>DispatcherServlet 내부 동작흐름 상세 - 요청 처리 종료</p>
+<p><img src="/image/dispatch07.png" alt></p>
 </li>
 <li><p>Reference</p>
 <ul>
-<li>NAVER edwith boostcourse Full-Stack Web Developer </li>
+<li>NAVER edwith boostcourse Full-Stack Web Developer</li>
 </ul>
 </li>
 </ul>
@@ -284,7 +346,7 @@
                     
                     
                         <p>
-                            <a href="/2018/05/08/Database/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/05/08/Spring MVC 구성요소/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -467,6 +529,82 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2018/05/06/물통/">
+                            물통
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-05-06T00:00:00+09:00">
+	
+		    May 06, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p><a href="https://www.acmicpc.net/problem/2251" target="_blank" rel="noopener">https://www.acmicpc.net/problem/2251</a></p>
+<ul>
+<li><p>경우의 수</p>
+<ul>
+<li>A -&gt; B</li>
+<li>A -&gt; C</li>
+<li>B -&gt; A</li>
+<li>B -&gt; C</li>
+<li>C -&gt; A</li>
+<li>C -&gt; B</li>
+</ul>
+</li>
+<li><p>가능한 모든 경우를 Queue에 넣어가면서 체크</p>
+</li>
+<li><p>EX</p>
+<ul>
+<li><p>(0 0 10)</p>
+</li>
+<li><p>(8 0 2), (0 9 1)</p>
+<ul>
+<li>(0 8 2), (0, 0, 10) : 이미 체크했으므로 큐에 넣지 않음, (8, 2, 0)</li>
+<li>(8 1 1), (0 0 10) : 이미 체크했으므로 큐에 넣지 않음, (1 9 0)</li>
+</ul>
+<p>….</p>
+</li>
+</ul>
+</li>
+</ul>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/05/06/물통/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2018/05/06/Spring IoC:DI 컨테이너/">
                             Spring IoC/DI 컨테이너
                         </a>
@@ -559,21 +697,21 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/05/06/물통/">
-                            물통
+                        <a class="link-unstyled" href="/2018/05/05/ browser에서의 웹 개발/">
+                             browser에서의 웹 개발
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2018-05-06T00:00:00+09:00">
+    <time datetime="2018-05-05T00:00:00+09:00">
 	
-		    May 06, 2018
+		    May 05, 2018
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
+    <a class="category-link" href="/categories/boost-course/">Boost Course</a>
 
 
     
@@ -582,31 +720,50 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p><a href="https://www.acmicpc.net/problem/2251" target="_blank" rel="noopener">https://www.acmicpc.net/problem/2251</a></p>
+                    <ul>
+<li><p>HTML 문서구조</p>
 <ul>
-<li><p>경우의 수</p>
-<ul>
-<li>A -&gt; B</li>
-<li>A -&gt; C</li>
-<li>B -&gt; A</li>
-<li>B -&gt; C</li>
-<li>C -&gt; A</li>
-<li>C -&gt; B</li>
+<li>크롬 개발자 도구 열기 (Option + Command + i)</li>
+<li>Network tab 에서 새로고침을 하면</li>
 </ul>
 </li>
-<li><p>가능한 모든 경우를 Queue에 넣어가면서 체크</p>
-</li>
-<li><p>EX</p>
+<li><p>알게된 몇 가지 특징</p>
 <ul>
-<li><p>(0 0 10)</p>
+<li><p>html 문서는 html이라는 태그로 시작해서 html 태그로 끝남</p>
 </li>
-<li><p>(8 0 2), (0 9 1)</p>
+<li><p>head</p>
 <ul>
-<li>(0 8 2), (0, 0, 10) : 이미 체크했으므로 큐에 넣지 않음, (8, 2, 0)</li>
-<li>(8 1 1), (0 0 10) : 이미 체크했으므로 큐에 넣지 않음, (1 9 0)</li>
+<li>자세한 문서에 대한 정보를 포함</li>
 </ul>
-<p>….</p>
 </li>
+<li><p>body</p>
+<ul>
+<li>화면에 포함될 div 같은것들</li>
+</ul>
+</li>
+<li><p>html은 계청적</p>
+</li>
+<li><p>html은 tag를 사용해서 표현</p>
+</li>
+<li><p>JavaScript와 CSS가 html 안에 여기 저기 존재</p>
+</li>
+</ul>
+</li>
+<li><p>CSS / JavaScript 코드 위치</p>
+<ul>
+<li>JavaScript 코드<ul>
+<li>body 태그 닫히기 전에 위치하는 것이 렌더링을 방해하지 않아도 좋고, </li>
+</ul>
+</li>
+<li>CSS<ul>
+<li>head 안에 위치해서 렌더링 처리 시에 브라우저가 더 빨리 참고할 수 있게 하는 것이 좋습니다.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Reference</p>
+<ul>
+<li>NAVER edwith boostcourse Full-Stack Web Developer </li>
 </ul>
 </li>
 </ul>
@@ -617,7 +774,112 @@
                     
                     
                         <p>
-                            <a href="/2018/05/06/물통/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/05/05/ browser에서의 웹 개발/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2018/05/05/browser 동작/">
+                            browser 동작
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-05-05T00:00:00+09:00">
+	
+		    May 05, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/boost-course/">Boost Course</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <ul>
+<li><p>Rroweser comonents</p>
+<p><img src="/image/Browsercomponents.png" alt></p>
+<ul>
+<li>UI</li>
+<li>Browser engine : 소스코드 실행해서 화면에 보여주는. 브롸우저 소프트웨어를 동작시켜주는 핵심 엔진</li>
+<li>Rendering engine : 화면에 위치를 잡고 색칠을 해줌</li>
+<li>Data Persistence : 브라우저도 일부 데이터를 케쉬하고 저장을 해</li>
+<li>Networking : 서버와 HTTP로 정보를 주고 받을 수 있는 네트워크 모듈</li>
+<li>JavaScript Intetpreter : 자바스크림트 코드 처리</li>
+<li>UI Backend : UI 영역 처리</li>
+</ul>
+</li>
+<li><p>Rendering Engines</p>
+<ul>
+<li><p>브라우져별로 다르게 가지고 있어</p>
+</li>
+<li><p>main flow</p>
+<p><img src="/image/rendering.png" alt></p>
+<ul>
+<li>Parsing HTML to construct the DOM tree<ul>
+<li>HTML을 먼저 파싱. 문자 단위로 해석을해서 의미 파악.   </li>
+<li>DOM : Document Objedt Model<ul>
+<li>HTML을 해석해서 일종의 트리구조로 데이터들을 가지고 있어</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Render tree construction</li>
+<li>Layout of the render tree : 스타일 정보와 구조를 합쳐서 화면에 어떠게 배치할지</li>
+<li>Paining the render tree : 화면에 직접 그림 </li>
+<li>diplay</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>사파리 브라우저에서 처리되는 webkit렌더링엔진의 처리과정</p>
+<p><img src="/image/webkit.png" alt></p>
+<ul>
+<li>HTML을 해석해서 DOM Tree를 만들고 </li>
+<li>CSS를 해석해서 CSS Tree(CSS Object Model)을 만든다</li>
+<li>이 두 과정에서 Parsing 과정이 필요<ul>
+<li>토큰 단위로 해석되는 방식은 일반적인 소스코드의 컴파일 과정이라고 보면 된다</li>
+</ul>
+</li>
+<li>DOM Tree와 CSS Tree, 이 두 개는 연관되어 있으므로 Render Tree로 다시 조합</li>
+<li>이렇게 조합된 결과는 화면에 어떻게 배치할지 크기와 위치 정보를 담고 있습니다.</li>
+<li>이후에 이렇게 구성된 Render Tree정보를 통해서 화면에 어떤 부분에 어떻게 색칠을 할지 Painting과정을 거치게 된다</li>
+</ul>
+</li>
+<li><p>Reference</p>
+<ul>
+<li><a href="https://www.html5rocks.com/en/tutorials/internals/howbrowserswork/#Introduction" target="_blank" rel="noopener">https://www.html5rocks.com/en/tutorials/internals/howbrowserswork/#Introduction</a></li>
+<li>NAVER edwith boostcourse Full-Stack Web Developer </li>
+</ul>
+</li>
+</ul>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/05/05/browser 동작/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -800,111 +1062,6 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/05/05/browser 동작/">
-                            browser 동작
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-05-05T00:00:00+09:00">
-	
-		    May 05, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/boost-course/">Boost Course</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <ul>
-<li><p>Rroweser comonents</p>
-<p><img src="/image/Browsercomponents.png" alt></p>
-<ul>
-<li>UI</li>
-<li>Browser engine : 소스코드 실행해서 화면에 보여주는. 브롸우저 소프트웨어를 동작시켜주는 핵심 엔진</li>
-<li>Rendering engine : 화면에 위치를 잡고 색칠을 해줌</li>
-<li>Data Persistence : 브라우저도 일부 데이터를 케쉬하고 저장을 해</li>
-<li>Networking : 서버와 HTTP로 정보를 주고 받을 수 있는 네트워크 모듈</li>
-<li>JavaScript Intetpreter : 자바스크림트 코드 처리</li>
-<li>UI Backend : UI 영역 처리</li>
-</ul>
-</li>
-<li><p>Rendering Engines</p>
-<ul>
-<li><p>브라우져별로 다르게 가지고 있어</p>
-</li>
-<li><p>main flow</p>
-<p><img src="/image/rendering.png" alt></p>
-<ul>
-<li>Parsing HTML to construct the DOM tree<ul>
-<li>HTML을 먼저 파싱. 문자 단위로 해석을해서 의미 파악.   </li>
-<li>DOM : Document Objedt Model<ul>
-<li>HTML을 해석해서 일종의 트리구조로 데이터들을 가지고 있어</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Render tree construction</li>
-<li>Layout of the render tree : 스타일 정보와 구조를 합쳐서 화면에 어떠게 배치할지</li>
-<li>Paining the render tree : 화면에 직접 그림 </li>
-<li>diplay</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>사파리 브라우저에서 처리되는 webkit렌더링엔진의 처리과정</p>
-<p><img src="/image/webkit.png" alt></p>
-<ul>
-<li>HTML을 해석해서 DOM Tree를 만들고 </li>
-<li>CSS를 해석해서 CSS Tree(CSS Object Model)을 만든다</li>
-<li>이 두 과정에서 Parsing 과정이 필요<ul>
-<li>토큰 단위로 해석되는 방식은 일반적인 소스코드의 컴파일 과정이라고 보면 된다</li>
-</ul>
-</li>
-<li>DOM Tree와 CSS Tree, 이 두 개는 연관되어 있으므로 Render Tree로 다시 조합</li>
-<li>이렇게 조합된 결과는 화면에 어떻게 배치할지 크기와 위치 정보를 담고 있습니다.</li>
-<li>이후에 이렇게 구성된 Render Tree정보를 통해서 화면에 어떤 부분에 어떻게 색칠을 할지 Painting과정을 거치게 된다</li>
-</ul>
-</li>
-<li><p>Reference</p>
-<ul>
-<li><a href="https://www.html5rocks.com/en/tutorials/internals/howbrowserswork/#Introduction" target="_blank" rel="noopener">https://www.html5rocks.com/en/tutorials/internals/howbrowserswork/#Introduction</a></li>
-<li>NAVER edwith boostcourse Full-Stack Web Developer </li>
-</ul>
-</li>
-</ul>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/05/05/browser 동작/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
                         <a class="link-unstyled" href="/2018/05/05/HTML/">
                             HTML Layout
                         </a>
@@ -969,101 +1126,6 @@
                     
                         <p>
                             <a href="/2018/05/05/HTML/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/05/05/ browser에서의 웹 개발/">
-                             browser에서의 웹 개발
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-05-05T00:00:00+09:00">
-	
-		    May 05, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/boost-course/">Boost Course</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <ul>
-<li><p>HTML 문서구조</p>
-<ul>
-<li>크롬 개발자 도구 열기 (Option + Command + i)</li>
-<li>Network tab 에서 새로고침을 하면</li>
-</ul>
-</li>
-<li><p>알게된 몇 가지 특징</p>
-<ul>
-<li><p>html 문서는 html이라는 태그로 시작해서 html 태그로 끝남</p>
-</li>
-<li><p>head</p>
-<ul>
-<li>자세한 문서에 대한 정보를 포함</li>
-</ul>
-</li>
-<li><p>body</p>
-<ul>
-<li>화면에 포함될 div 같은것들</li>
-</ul>
-</li>
-<li><p>html은 계청적</p>
-</li>
-<li><p>html은 tag를 사용해서 표현</p>
-</li>
-<li><p>JavaScript와 CSS가 html 안에 여기 저기 존재</p>
-</li>
-</ul>
-</li>
-<li><p>CSS / JavaScript 코드 위치</p>
-<ul>
-<li>JavaScript 코드<ul>
-<li>body 태그 닫히기 전에 위치하는 것이 렌더링을 방해하지 않아도 좋고, </li>
-</ul>
-</li>
-<li>CSS<ul>
-<li>head 안에 위치해서 렌더링 처리 시에 브라우저가 더 빨리 참고할 수 있게 하는 것이 좋습니다.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Reference</p>
-<ul>
-<li>NAVER edwith boostcourse Full-Stack Web Developer </li>
-</ul>
-</li>
-</ul>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/05/05/ browser에서의 웹 개발/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
