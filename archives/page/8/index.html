@@ -194,8 +194,64 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/11/13/Hash Table/">
-                            Hash Table
+                        <a class="link-unstyled" href="/2018/11/21/flow, congestion control/">
+                            flow, congestion control
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-11-21T00:00:00+09:00">
+	
+		    Nov 21, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/network/">Network</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p>flow control은 host와 host 간에 데이터 처리를 효율적으로 하기 위한 방법입니다. congestion control은 host와 network 간의 데이터 처리를 효율적으로 하기 위한 방법입니다.</p>
+<h2 id="flow-control-이란"><a href="#flow-control-이란" class="headerlink" title="flow control 이란?"></a>flow control 이란?</h2><p>송신측과 수신측의 데이터 처리 속도 차이를 해결하기 위한 방법입니다. </p>
+<p>수신측의 데이터 처리 속도가 송신측의 데이터 처리 속도보다 빠르면 문제가 되지 않습니다. 하지만, 송신측의 데이터 처리 속도가 더 빠르면 문제가 됩니다. 수신측에서 제한된 저장용량을 초과한 이후에 도착하는 데이터는, 손실 될 수 있으며 만약 손실 된다면 불필요하게 응답과 데이터 전송이 송/수신 측 간에 빈번이 발생합니다. 이러한 위험을 줄이기 위해 송신 측의 데이터 전송량을 수신측에 따라 조절하는 flow control 이 필요합니다. </p>
+<p>stop and wait, sliding window 방식이 있습니다.</p>
+<h2 id="congestion-control-이란"><a href="#congestion-control-이란" class="headerlink" title="congestion control 이란?"></a>congestion control 이란?</h2><p>송신측과 네트워크의 데이터 처리 속도 차이를 해결하기 위한 방법입니다.</p>
+<p>송신측의 데이터는 지역망이나 인터넷으로 연결된 대형 네트워크를 통해 전달됩니다. 만약 한 라우터에 데이터가 몰릴 경우, 자신에게 온 데이터를 모두 처리 할 수 없게 됩니다. 이런 경우 호스트들은 또 다시 재전송을 하게되고 결국 혼잡만 가중시켜 오버플로우나 데이터 손실을 발생시키게 됩니다. 이러한 네트워크의 혼잡을 피하기 위해 송신측에서 보내는 데이터의 전송 속도를  강제로 줄이는 congestion control 이 필요합니다.</p>
+<p>AIMD, Slow Start, Fast Transmit, Fast Recovery 방식이 있습니다.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://jwprogramming.tistory.com/36" target="_blank" rel="noopener">http://jwprogramming.tistory.com/36</a></p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/11/21/flow, congestion control/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2018/11/13/View Life Cycle/">
+                            View Controller Life Cycle
                         </a>
                     
                 </h1>
@@ -208,7 +264,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/data-structure/">Data Structure</a>
+    <a class="category-link" href="/categories/ios/">iOS</a>
 
 
     
@@ -217,14 +273,25 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h5 id="Hash-Table"><a href="#Hash-Table" class="headerlink" title="Hash Table"></a>Hash Table</h5><p>Key에 Value를 저장하는 데이타 구조</p>
-<h5 id="Hash-Function"><a href="#Hash-Function" class="headerlink" title="Hash Function"></a>Hash Function</h5><p><img src="/image/hashtable01.png" alt></p>
-<p>key에 대한 데이터를 찾을때, hash_function을 한번만 수행하면 array내에 저장된 index 위치를 찾아낼 수 있기 때문에, 데이타의 저장과 삭제가 빠르다. 하지만 어설픈 hash function 을 통해서 key 값들을 결정한다면 동일한 값이 도출될 수가 있다. 이렇게 되면 동일한 key 값에 복수 개의 데이터가 하나의 테이블에 존재할 수 있게 되는 것인데  이를 Collision 이라고 한다. Collision을 해결하는 방법으로, Separate chaining과 Open addressing 이 있다.</p>
-<h5 id="Separate-Chaining"><a href="#Separate-Chaining" class="headerlink" title="Separate Chaining"></a>Separate Chaining</h5><p><img src="/image/hashtable02.png" alt></p>
-<p>Linked List를 이용하는 방식이다. 각 index에 데이터를 저장하는 Linked list 에 대한 포인터를 가지는 방식이다. 동일 index로 인해서 충돌이 발생하면 그 index가 가리키고 있는 Linked list에 노드를 추가하여 값을 추가한다.</p>
-<h5 id="Open-Addressing"><a href="#Open-Addressing" class="headerlink" title="Open Addressing"></a>Open Addressing</h5><p>Open addressing  방식은 index에 대한 충돌 처리에 대해서 Linked List와 같은 추가적인 메모리 공간을 사용하지 않고, hash table array의 빈공간을 사용하는 방법이다. 여러 가지 구현 방식이 있다. Linear Probing 방식은 index에 대해서 충돌 이 발생했을 때, index 뒤에 있는 버킷중에 빈 버킷을 찾아서 데이터를 넣는 방식이다. </p>
-<h5 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h5><p><a href="https://github.com/JaeYeopHan/Interview_Question_for_Beginner/tree/master/DataStructure#array-vs-linkedlist" target="_blank" rel="noopener">https://github.com/JaeYeopHan/Interview_Question_for_Beginner/tree/master/DataStructure#array-vs-linkedlist</a></p>
-<p><a href="http://bcho.tistory.com/1072" target="_blank" rel="noopener">http://bcho.tistory.com/1072</a></p>
+                    <p><img src="/image/iosViewLifeCycle.png" alt></p>
+<ol>
+<li><p>ViewDidLoad</p>
+<p>뷰 컨트롤러 클래스가 생성될 때, 가장 먼저 실행됩니다. 특별한 경우가 아니라면 <strong>딱 한 번</strong> 실행되기 때문에 초기화 할 때 사용 할 수 있습니다.</p>
+</li>
+<li><p>ViewWillAppear</p>
+<p>뷰가 생성되기 직전에 <strong>항상</strong> 실행이 되기 때문에 뷰가 나타나기 전에 실행해야 하는 작업들을 여기서 할 수 있습니다.</p>
+</li>
+<li><p>ViewDidAppear</p>
+<p>뷰가 생성되고 난 뒤에 실행 됩니다. 데이터를 받아서 화면에 뿌려주거나 애니메이션 등의 작업을 하는 로직을 위치시킬 수 있습니다. ViewWillAppear 에서 로직을 넣었다가 뷰에 반영이 안되는 경우가 있기 때문입니다.</p>
+</li>
+<li><p>ViewWillDisappear</p>
+<p>뷰가 사라지기 직전에 실행 됩니다.</p>
+</li>
+<li><p>ViewDidDisappear</p>
+<p>뷰가 사라지고 난 뒤에 실행 됩니다.</p>
+</li>
+</ol>
+<h5 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h5><p><a href="https://developer.apple.com/documentation/uikit/uiviewcontroller" target="_blank" rel="noopener">https://developer.apple.com/documentation/uikit/uiviewcontroller</a></p>
 
                     
                         
@@ -232,7 +299,7 @@
                     
                     
                         <p>
-                            <a href="/2018/11/13/Hash Table/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/11/13/View Life Cycle/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -328,8 +395,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/11/13/View Life Cycle/">
-                            View Controller Life Cycle
+                        <a class="link-unstyled" href="/2018/11/13/Hash Table/">
+                            Hash Table
                         </a>
                     
                 </h1>
@@ -342,7 +409,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/ios/">iOS</a>
+    <a class="category-link" href="/categories/data-structure/">Data Structure</a>
 
 
     
@@ -351,25 +418,14 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p><img src="/image/iosViewLifeCycle.png" alt></p>
-<ol>
-<li><p>ViewDidLoad</p>
-<p>뷰 컨트롤러 클래스가 생성될 때, 가장 먼저 실행됩니다. 특별한 경우가 아니라면 <strong>딱 한 번</strong> 실행되기 때문에 초기화 할 때 사용 할 수 있습니다.</p>
-</li>
-<li><p>ViewWillAppear</p>
-<p>뷰가 생성되기 직전에 <strong>항상</strong> 실행이 되기 때문에 뷰가 나타나기 전에 실행해야 하는 작업들을 여기서 할 수 있습니다.</p>
-</li>
-<li><p>ViewDidAppear</p>
-<p>뷰가 생성되고 난 뒤에 실행 됩니다. 데이터를 받아서 화면에 뿌려주거나 애니메이션 등의 작업을 하는 로직을 위치시킬 수 있습니다. ViewWillAppear 에서 로직을 넣었다가 뷰에 반영이 안되는 경우가 있기 때문입니다.</p>
-</li>
-<li><p>ViewWillDisappear</p>
-<p>뷰가 사라지기 직전에 실행 됩니다.</p>
-</li>
-<li><p>ViewDidDisappear</p>
-<p>뷰가 사라지고 난 뒤에 실행 됩니다.</p>
-</li>
-</ol>
-<h5 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h5><p><a href="https://developer.apple.com/documentation/uikit/uiviewcontroller" target="_blank" rel="noopener">https://developer.apple.com/documentation/uikit/uiviewcontroller</a></p>
+                    <h5 id="Hash-Table"><a href="#Hash-Table" class="headerlink" title="Hash Table"></a>Hash Table</h5><p>Key에 Value를 저장하는 데이타 구조</p>
+<h5 id="Hash-Function"><a href="#Hash-Function" class="headerlink" title="Hash Function"></a>Hash Function</h5><p><img src="/image/hashtable01.png" alt></p>
+<p>key에 대한 데이터를 찾을때, hash_function을 한번만 수행하면 array내에 저장된 index 위치를 찾아낼 수 있기 때문에, 데이타의 저장과 삭제가 빠르다. 하지만 어설픈 hash function 을 통해서 key 값들을 결정한다면 동일한 값이 도출될 수가 있다. 이렇게 되면 동일한 key 값에 복수 개의 데이터가 하나의 테이블에 존재할 수 있게 되는 것인데  이를 Collision 이라고 한다. Collision을 해결하는 방법으로, Separate chaining과 Open addressing 이 있다.</p>
+<h5 id="Separate-Chaining"><a href="#Separate-Chaining" class="headerlink" title="Separate Chaining"></a>Separate Chaining</h5><p><img src="/image/hashtable02.png" alt></p>
+<p>Linked List를 이용하는 방식이다. 각 index에 데이터를 저장하는 Linked list 에 대한 포인터를 가지는 방식이다. 동일 index로 인해서 충돌이 발생하면 그 index가 가리키고 있는 Linked list에 노드를 추가하여 값을 추가한다.</p>
+<h5 id="Open-Addressing"><a href="#Open-Addressing" class="headerlink" title="Open Addressing"></a>Open Addressing</h5><p>Open addressing  방식은 index에 대한 충돌 처리에 대해서 Linked List와 같은 추가적인 메모리 공간을 사용하지 않고, hash table array의 빈공간을 사용하는 방법이다. 여러 가지 구현 방식이 있다. Linear Probing 방식은 index에 대해서 충돌 이 발생했을 때, index 뒤에 있는 버킷중에 빈 버킷을 찾아서 데이터를 넣는 방식이다. </p>
+<h5 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h5><p><a href="https://github.com/JaeYeopHan/Interview_Question_for_Beginner/tree/master/DataStructure#array-vs-linkedlist" target="_blank" rel="noopener">https://github.com/JaeYeopHan/Interview_Question_for_Beginner/tree/master/DataStructure#array-vs-linkedlist</a></p>
+<p><a href="http://bcho.tistory.com/1072" target="_blank" rel="noopener">http://bcho.tistory.com/1072</a></p>
 
                     
                         
@@ -377,7 +433,7 @@
                     
                     
                         <p>
-                            <a href="/2018/11/13/View Life Cycle/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/11/13/Hash Table/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -478,6 +534,71 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2018/11/12/REST/">
+                            REST
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-11-12T00:00:00+09:00">
+	
+		    Nov 12, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/android/">Android</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h5 id="REST가-뭔가요"><a href="#REST가-뭔가요" class="headerlink" title="REST가 뭔가요 ?"></a>REST가 뭔가요 ?</h5><p>소프트웨어 아키텍처의 한 형식입니다. </p>
+<h5 id="REST-구성-요소는"><a href="#REST-구성-요소는" class="headerlink" title="REST 구성 요소는 ?"></a>REST 구성 요소는 ?</h5><ol>
+<li><p>URI</p>
+<p>자원의 주소입니다.</p>
+</li>
+<li><p>HTTP Method</p>
+<p>어떤 자원에 행할 수 있는 행위입니다. CRDU로 나타냅니다.</p>
+<p>POST : 해당 URI를 요청하면 리소스를 생성합니다.</p>
+<p>GET : 해당 리소스를 조회하고 해당 도큐먼트에 대한 자세한 정보를 가져옵니다.</p>
+<p>PUT : 해당 리소스를 수정합니다.</p>
+<p>DELETE : 해당 리소스를 삭제합니다.</p>
+</li>
+<li><p>Representation</p>
+<p>자원의 URI에 특정 행위를 요청하면 그 결과로 Representation 을 응답 받습니다. </p>
+<p>html, xml, text, json, rss 등 다양한 형태로 표현될 수 있습니다.</p>
+</li>
+</ol>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/11/12/REST/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2018/11/12/Transaction/">
                             Transaction
                         </a>
@@ -547,71 +668,6 @@
                     
                         <p>
                             <a href="/2018/11/12/Transaction/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/11/12/REST/">
-                            REST
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-11-12T00:00:00+09:00">
-	
-		    Nov 12, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/android/">Android</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h5 id="REST가-뭔가요"><a href="#REST가-뭔가요" class="headerlink" title="REST가 뭔가요 ?"></a>REST가 뭔가요 ?</h5><p>소프트웨어 아키텍처의 한 형식입니다. </p>
-<h5 id="REST-구성-요소는"><a href="#REST-구성-요소는" class="headerlink" title="REST 구성 요소는 ?"></a>REST 구성 요소는 ?</h5><ol>
-<li><p>URI</p>
-<p>자원의 주소입니다.</p>
-</li>
-<li><p>HTTP Method</p>
-<p>어떤 자원에 행할 수 있는 행위입니다. CRDU로 나타냅니다.</p>
-<p>POST : 해당 URI를 요청하면 리소스를 생성합니다.</p>
-<p>GET : 해당 리소스를 조회하고 해당 도큐먼트에 대한 자세한 정보를 가져옵니다.</p>
-<p>PUT : 해당 리소스를 수정합니다.</p>
-<p>DELETE : 해당 리소스를 삭제합니다.</p>
-</li>
-<li><p>Representation</p>
-<p>자원의 URI에 특정 행위를 요청하면 그 결과로 Representation 을 응답 받습니다. </p>
-<p>html, xml, text, json, rss 등 다양한 형태로 표현될 수 있습니다.</p>
-</li>
-</ol>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/11/12/REST/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -744,8 +800,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/11/11/점근 표기법/">
-                            점근 표기법
+                        <a class="link-unstyled" href="/2018/11/11/버블정렬/">
+                            버블정렬
                         </a>
                     
                 </h1>
@@ -767,33 +823,14 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="시간-복잡도와-공간-복잡도"><a href="#시간-복잡도와-공간-복잡도" class="headerlink" title="시간 복잡도와 공간 복잡도"></a>시간 복잡도와 공간 복잡도</h2><ol>
-<li>시간 복잡도 : 알고리즘의 수행시간 분석결과</li>
-<li>공간 복잡도 : 알고리즘의 메모리 사용량에 대한 분석결과</li>
-</ol>
-<p>알고리즘 성능평가는 시간 복잡도와 공간 복잡도를 계산하고 점근적 표기법으로 나타내면 된다.</p>
-<h2 id="점근적-분석이란"><a href="#점근적-분석이란" class="headerlink" title="점근적 분석이란"></a>점근적 분석이란</h2><p>알고리즘의 수행 시간을 분석하기 위해, 항상 입력의 크기가 충분히 클 때에 대해서 분석하는 방법 </p>
-<h2 id="점근적-표기법이란"><a href="#점근적-표기법이란" class="headerlink" title="점근적 표기법이란"></a>점근적 표기법이란</h2><p>점근적 증가율은 입력의 크기에 따라 함수가 증가하는 비율이다. 그 표기법을 점근적 표기법이라 한다.<br>세 가지가 있다.</p>
-<ul>
-<li>빅오 표기법</li>
-<li>오메가 표기법</li>
-<li>세타 표기법</li>
+                    <h2 id="버블정렬이란"><a href="#버블정렬이란" class="headerlink" title="버블정렬이란"></a>버블정렬이란</h2><p>서로 인접한 두 원소를 검사하여 정렬하는 알고리즘이다.<br>첫 번째 자료와 두 번째 자료를, 두 번째 자료와 세 번째 자료를, 세 번째와 네 번째를, … 이런 식으로 (마지막-1)번째 자료와 마지막 자료를 비교하여 교환하면서 자료를 정렬한다.</p>
+<p><img src="/image/bubbleSort01.png" alt></p>
+<h2 id="시간-복잡도"><a href="#시간-복잡도" class="headerlink" title="시간 복잡도"></a>시간 복잡도</h2><ul>
+<li>비교 횟수<br>최상, 평균, 최악 모두 일정하다.  n-1, n-2, … , 2, 1 번 = n(n-1)/2</li>
+<li>교환 횟수<br>입력 자료가 역순으로 정렬되어 있는 최악의 경우, 한 번 교환하기 위하여 3번의 이동(SWAP 함수의 작업)이 필<br>요하므로 (비교 횟수 * 3) 번 = 3n(n-1)/2</li>
+<li>T(n) = O(n^2)</li>
 </ul>
-<h2 id="빅오-표기법"><a href="#빅오-표기법" class="headerlink" title="빅오 표기법"></a>빅오 표기법</h2><p><img src="/image/asymptonic01.png" alt></p>
-<p>f(n)을 O(g(n))이라고 표시한다. </p>
-<p>이 때 g(n)를 f(n)의 점근 상한이라고 한다.</p>
-<p>알고리즘 f(n)이 O(g(n))에 속한다면, f(n)의 계산복잡도는 최악의 경우라도 g(n)과 같거나 혹은 작다는 뜻이다.</p>
-<p><img src="/image/asymptonic011.png" alt></p>
-<h2 id="오메가-표기법"><a href="#오메가-표기법" class="headerlink" title="오메가 표기법"></a>오메가 표기법</h2><p><img src="/image/asymptonic02.png" alt></p>
-<p>f(n)를 Ω(g(n))이라고 표시한다. </p>
-<p>이 때 g(n)는 f(n)의 점근 하한이라고 한다. </p>
-<p>알고리즘 f(n)의 계산복잡도가 Ω(g(n))에 속한다면, f(n)의 계산복잡도는 최선의 경우를 상정하더라도 g(n)과 같거나 혹은 크다는 뜻이다.</p>
-<h2 id="세타-표기법"><a href="#세타-표기법" class="headerlink" title="세타 표기법"></a>세타 표기법</h2><p><img src="/image/asymptonic03.png" alt></p>
-<p>f(n)을 Θ(g(n))이라고 표시한다. </p>
-<p>g(n)은 f(n)의 점근적 상한과 하한의 교집합이라고 한다. </p>
-<p>알고리즘 f(n)이 아무리 나쁘거나 좋더라도 그 계산복잡도는 g(n)의 범위 내에 있다는 뜻이다.</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ratsgo.github.io/data%20structure&amp;algorithm/2017/09/13/asymptotic/" target="_blank" rel="noopener">https://ratsgo.github.io/data%20structure&amp;algorithm/2017/09/13/asymptotic/</a></p>
-<p><a href="http://ledgku.tistory.com/33" target="_blank" rel="noopener">http://ledgku.tistory.com/33</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://gmlwjd9405.github.io/2018/05/06/algorithm-bubble-sort.html" target="_blank" rel="noopener">https://gmlwjd9405.github.io/2018/05/06/algorithm-bubble-sort.html</a></p>
 
                     
                         
@@ -801,65 +838,7 @@
                     
                     
                         <p>
-                            <a href="/2018/11/11/점근 표기법/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/11/11/선택정렬/">
-                            선택정렬
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-11-11T00:00:00+09:00">
-	
-		    Nov 11, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/data-structure/">Data Structure</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h2 id="선택정렬이란"><a href="#선택정렬이란" class="headerlink" title="선택정렬이란"></a>선택정렬이란</h2><p>해당 순서에 원소를 넣을 위치는 이미 정해져 있고, 어떤 원소를 넣을지 선택하는 정렬이다.</p>
-<p>첫 번째 자료를 두 번째 자료부터 마지막 자료까지 차례대로 비교하여 가장 작은 값을 찾아 첫 번째에 놓고, 두 번째 자료를 세 번째 자료부터 마지막 자료까지와 차례대로 비교하여 그 중 가장 작은 값을 찾아 두 번째 위치에 놓는 과정을 반복하며 정렬을 수행한다.</p>
-<p><img src="/image/selectionSort01.png" alt></p>
-<h2 id="시간-복잡도"><a href="#시간-복잡도" class="headerlink" title="시간 복잡도"></a>시간 복잡도</h2><ol>
-<li>for 루프는 n-1번 반복 되고</li>
-<li>최소값을 찾기 위한 비교 횟수는 n-1, n-2, … , 2, 1</li>
-<li>교환은 상수 시간 작업이므로</li>
-</ol>
-<p>T(n) = (n-1) + (n-2) + … + 2 + 1 = n(n-1)/2 = O(n^2)</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://jongmin92.github.io/2017/11/06/Algorithm/Concept/basic-sort/" target="_blank" rel="noopener">https://jongmin92.github.io/2017/11/06/Algorithm/Concept/basic-sort/</a><br><a href="https://gmlwjd9405.github.io/2018/05/06/algorithm-selection-sort.html" target="_blank" rel="noopener">https://gmlwjd9405.github.io/2018/05/06/algorithm-selection-sort.html</a></p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/11/11/선택정렬/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/11/11/버블정렬/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>

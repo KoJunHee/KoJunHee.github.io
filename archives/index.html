@@ -194,6 +194,144 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2019/12/15/object-chapter9/">
+                            [오브젝트] 9장_유연한 설계
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-12-15T00:00:00+09:00">
+	
+		    Dec 15, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/object/">Object</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p>이번 장은, 8장에서 설명한 의존성 관리 기법들을 원칙이라는 관점에서 정리한다.</p>
+<h2 id="01-개팡-폐쇄-원칙"><a href="#01-개팡-폐쇄-원칙" class="headerlink" title="01 개팡-폐쇄 원칙"></a>01 개팡-폐쇄 원칙</h2><p>소프트웨어 개체(클래스, 모듈, 함수 …) 는 확장에 열려있고, 수정에 닫혀 있어야한다.</p>
+<ol>
+<li><p>확장에 열려 있다</p>
+<p>요구사항이 변경될 때, 변경에 맞게 새로운 동작을 추가해서 애플리케이션의 기능을 확장할 수 있다.</p>
+</li>
+<li><p>수정에 닫혀 있다</p>
+<p>기존의 코드를 수정하지 않고 애플리케이션의 동작을 추가하거나 변경할 수 있다.</p>
+</li>
+</ol>
+<h5 id="컴파일타임-의존성을-고정시키고-런타임-의존성을-변경하라"><a href="#컴파일타임-의존성을-고정시키고-런타임-의존성을-변경하라" class="headerlink" title="컴파일타임 의존성을 고정시키고 런타임 의존성을 변경하라"></a>컴파일타임 의존성을 고정시키고 런타임 의존성을 변경하라</h5><ol>
+<li><p>런타임 의존성</p>
+<p>실행 시에 협력에 참여하는 객체들 사이의 관계</p>
+</li>
+<li><p>컴파일 타임 의존성</p>
+<p>코드에서 드러나는 클래스들 사이의 관계</p>
+</li>
+</ol>
+<p>중복 할인 정책을 추가하기 위해 한 일은, DiscountPolicy 의 자식 클래스로 OverlappedDiscountPolicy 클래스를 추가한 것이다. 단순히 새로운 크래스를 추가하는 것만으로 Movie 를 새로운 컨텍스트에 사용되도록 확장할 수 있었다.</p>
+<p>이 설계 방식은,</p>
+<ol>
+<li>새로운 할인 정책을 추가해서 새로운 기능을 확장할 수 있도록 허용한다. 즉, 확장에 열려 있다.</li>
+<li>기존의 코드를 수정할 필요 없이 새로운 클래스 추가만으로 새로운 할인 정책을 확장한다. 즉, 수정에 닫혀 있다.</li>
+</ol>
+<p>의존성 관점에서 개방-폐쇄 원칙을 따르는 설계란, 컴파일 타임 의존성은 유지하면서 런타임 의존성의 가능성을 확장하고 수정할 수 있는 구조이다.</p>
+<h5 id="추상화가-핵심이다"><a href="#추상화가-핵심이다" class="headerlink" title="추상화가 핵심이다"></a>추상화가 핵심이다</h5><p>개방-폐쇄 원칙의 핵심은 추상화에 의존하는 것이다.</p>
+<p>추상화를 통해 생략된 부분은 확장의 여지를 남긴다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">publc <span class="keyword">abstract</span> classs DiscoutPolicy&#123;</span><br><span class="line">  ...</span><br><span class="line">   </span><br><span class="line">  <span class="function"><span class="keyword">public</span> Money <span class="title">calculateDiscountAmount</span><span class="params">(Screening screening)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(DiscountCondition each : conditions)&#123;</span><br><span class="line">      <span class="keyword">if</span>(each.isSatisfiedBy(screening))&#123; <span class="comment">// 할인 여부를 판단하는 로직</span></span><br><span class="line">        <span class="keyword">return</span> getDiscountFee(screenig);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> screeing.getMovieFee();</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>위 코드에서 변하지않는 부분은, 할인 여부를 판단하는 로직이다.</p>
+<p>변하는 부분은, 할인 요금을 계산하는 방법이다. 이 부분이 추상화를 통해 생략된 부분이다. 상속을 통해 생략된 부분을 구체화함으로써 할인 정책을 확장할 수 있다.</p>
+<p>변하는 부분을 고정하고 변하지 않는 부분을 생략하는 추상화 메커니즘이 개방-폐쇄 원칙의 기반이 된다.</p>
+<h2 id="02-생성-사용-분리"><a href="#02-생성-사용-분리" class="headerlink" title="02 생성 사용 분리"></a>02 생성 사용 분리</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Movie</span> </span>&#123;</span><br><span class="line">  ...</span><br><span class="line">    <span class="keyword">private</span> DiscountPolicy discountPolicy;</span><br><span class="line">  	</span><br><span class="line">  	<span class="function"><span class="keyword">public</span> <span class="title">Movie</span><span class="params">(String title, ...)</span></span>&#123;</span><br><span class="line">      ...</span><br><span class="line">      <span class="keyword">this</span>.discountPolicy = <span class="keyword">new</span> AmountDiscountPolicy(...); <span class="comment">// 객체 생성</span></span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">  	<span class="function"><span class="keyword">public</span> Money <span class="title">cacluateMovieFee</span><span class="params">(Screening screening)</span></span>&#123;</span><br><span class="line">      <span class="keyword">return</span> fee.minus(discountPolicy.calculateDiscountAmount(screenig)); <span class="comment">// 객체 사용</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>위 코드에서, Movie 의 할인 정책을 비율 할인 정책으로 변경할 수 있는 방법은, 직접 코드를 수정하는 것이다. 이것은 동작을 추가하거나 변경하기 위해 기존 코드를 수정하도록 만들어서, 개방-폐쇄 원칙을 위반한다.</p>
+<p>문제는, 부적절한 곳에서 객체를 생성한다는 것이다. 동일한 클래스 안에서 객체 생성과 사용이라는 두 가지 다른 목적을 가진 코드가 공존한다는 것이다.</p>
+<p>객체의 관련된 두 가지 책임을 서로 다른 객체로 분리해야한다. 즉, 객체애 대한 생성과 사용을 분리해야한다. 현재의 컨텍스트에 관한 결정권을 가지고 있는 클라이언트로 컨텍스트에 대한 지식을 옮겨 Movie 는 특적한 클라이언트에 결합되지 않고 독립될 수 있다.</p>
+<h5 id="FACTORY-추가하기"><a href="#FACTORY-추가하기" class="headerlink" title="FACTORY 추가하기"></a>FACTORY 추가하기</h5><p>Movie 를 사용하는 Client 역시도, 특정한 컨텍스트에 묶이지 않기를 바란다고 가정하자.</p>
+<p>객체 생성에 특화된 객체인, FACTORY 를 사용하면 된다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Factory</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> Movie <span class="title">cacluateAvatarMovie</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Movie(<span class="string">"아바타"</span>, ....);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Client</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> Factory factory;</span><br><span class="line">  </span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="순수한-가공물에게-책임-할당하기"><a href="#순수한-가공물에게-책임-할당하기" class="headerlink" title="순수한 가공물에게 책임 할당하기"></a>순수한 가공물에게 책임 할당하기</h5><p>위의 FACTORY 는 도메인 모델에 속하지 않는다. FACTORY는 순수하게 기술적인 결정이다. 즉, 객체 생성 책임을 할당할 만한 도메인 객체가 존재하지 않을 때 선택한 PURE FABRICATION  이다.</p>
+<p>시스템을 객체로 분해하는 방법으로 표현적 분해와 행위적 분해가 있다. </p>
+<ol>
+<li><p>표현적 분해</p>
+<p>도메인에 존재하는 사물 또는 개념을 표현하는 객체들을 이용해 시스템을 분해하는 것이다.</p>
+</li>
+<li><p>행위적 분해</p>
+<p>그런데, 실제로 동작하는 애플리케이션은 데이터베이스에 접근 위한 객체와 같이 도메인 개념을 초월하는 기계적인 개념도 필요하다. 이렇게 도메인과 무관한 인공적인 객체를 PURE FABRICATION (순수한 가공물) 이라고 한다. PURE FABRICATION은 특정한 행동을 표현하는 것이 일반적이다. </p>
+</li>
+</ol>
+<h2 id="03-의존성-주입"><a href="#03-의존성-주입" class="headerlink" title="03 의존성 주입"></a>03 의존성 주입</h2><p>의존성 주입이란, 사용하는 객체가 아닌 외부의 독립적인 객체가 인스턴스를 생성한 후 이를 전달해서 의존성을 해결 하는 방법이다.</p>
+<p>의존성 주입에서 의존성 해결 방법은 ,</p>
+<ol>
+<li>생성자 주입 : 객체 생성 시점에 생성자 통해 의존성 해결</li>
+<li>setter 주입 : 객체 생성 후 세터 메서드로 의존성 해결</li>
+<li>메서드 주입 : 메서드 실행 시 인자로 의존성 해결</li>
+</ol>
+<h5 id="숨겨진-의존성을-나쁘다"><a href="#숨겨진-의존성을-나쁘다" class="headerlink" title="숨겨진 의존성을 나쁘다"></a>숨겨진 의존성을 나쁘다</h5><p>의존성 주입 외에, 의존성 해결 방법으로 SERVICE LOCATOR 패턴이 있다.</p>
+<p>SERVICE LOCATOR 는, 의존성 해결할 객체들을 보관하는 일종의 저장소이다. 외부에서 객체에게 의존성을 전달하는 의존성 주입과 달리, 객체가 직접 SERVICE LOCATOR 에게 의존성을 해결해달라고 요청한다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Movie</span> </span>&#123;</span><br><span class="line">  ...</span><br><span class="line">    <span class="keyword">private</span> DiscountPolicy discountPolicy;</span><br><span class="line">  	</span><br><span class="line">  	<span class="function"><span class="keyword">public</span> <span class="title">Movie</span><span class="params">(String title, ...)</span></span>&#123;</span><br><span class="line">      ...</span><br><span class="line">      <span class="keyword">this</span>.discountPolicy = ServiceLocator.discountPolicy();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServiceLocator</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">static</span> ServiceLocator soleInstance = <span class="keyword">new</span> ServiceLocator();</span><br><span class="line">  <span class="keyword">private</span> DiscountPolicy discountPolicy;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> DiscountPolicy <span class="title">discountPolicy</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> soleInstance.discountPolicy;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">provide</span><span class="params">(DiscountPolicy discountPolicy)</span></span>&#123;</span><br><span class="line">    soleInstance.discountPolicy = discountPolicy;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">private</span> ServiceLocator &#123;</span><br><span class="line">    </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">serviceLocator.provide(<span class="keyword">new</span> AmountDiscountPolicy(...));</span><br><span class="line">Movie avater = <span class="keyword">new</span> Movie(<span class="string">"아바타"</span>, ... );</span><br></pre></td></tr></table></figure>
+
+<p>Movie 는 DiscountPolicy 에 의존하고 있지만, Movie 의 퍼블릭 인터페이스 어디에도 의존성에 대한 정보가 표시되어 있지 않다. 의존성이 암시적이며 코드 깊숙히 숨겨져 있다. </p>
+<p>숨겨진 의존성은,</p>
+<ol>
+<li>이해하기 어렵고 디버깅이 어렵다. 문제점을 발견할 수 있는 시점이 코드작성 시점이 아니라 실행시점으로 미뤄지기 때문이다. </li>
+<li>또한, 클래스 사용법을 익히기 위해서 구현 내부를 샅샅이 뒤져야한다.</li>
+</ol>
+<p>핵심은, 의존성 주입이 SERVICE LOCATOR 패턴보다 좋다는 것이 아니다. 명시적인 의존성이 숨겨진 의존성보다 좋다는 것이다.</p>
+<h2 id="04-의존성-역전-원칙"><a href="#04-의존성-역전-원칙" class="headerlink" title="04 의존성 역전 원칙"></a>04 의존성 역전 원칙</h2><h5 id="추상화와-의존성-역전"><a href="#추상화와-의존성-역전" class="headerlink" title="추상화와 의존성 역전"></a>추상화와 의존성 역전</h5> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Movie</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> AmountDiscountPolicy discountPolicy; <span class="comment">// 구체적인 방법, 하위 수준</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>위 설계가 변경에 취약한 이유는, 요금을 계산하는 상위 정책이 요금을 계산하는데 필요한 구체적인 방법에 의존하기 때문이다.</p>
+<p>객체 사이의 협력이 존재하면, 그 협력의 본질을 담고 있는 것은 상위 수준의 정책이다. 상위 수준의 클래스가 하위 수준의 클래스에 의존하면, </p>
+<ol>
+<li>하위 수준의 변경에 의해 상위 수준의 클래스가 영향을 받게 된다. </li>
+<li>재사용이 어렵다. 상위 수준의 클래스를 재사용할 때 하위 수준의 클래스도 필요하기 때문이다.</li>
+</ol>
+<p>가장 중요한 핵심은, 추상화에 의존해야한다는 것이다. 모든 의존성의 방향이 추상클래스나 인터페이스와 같은 추상화를 따라야한다. 즉,</p>
+<ol>
+<li>상위 수준의 모듈은 하위 수준의 모듈에 의존해서는 안된다. 둘 모두 추상화에 의존해야한다.</li>
+<li>추상화는 구체적인 사항에 의존해서는 안된다. 구체적인 사항은 추상화에 의존해야한다.</li>
+</ol>
+<h5 id="의존성-역전-원칙과-패키지"><a href="#의존성-역전-원칙과-패키지" class="headerlink" title="의존성 역전 원칙과 패키지"></a>의존성 역전 원칙과 패키지</h5><p><img src="/image/object_chapter9_01.png" alt></p>
+<p>위 그림은, 인터페이스의 소유권을 클아이언트 모듈이 아닌 서버 모듈에 위치시켰다. Movie 를 다양한 컨텍스트에서 재사용하기 위해서는 불필요한 클래스들이 Movie 와 함께 배포되어야한다. 즉, DiscountPolicy 클래스에 의존하기 위해서는, 같은 패키지안에 있는 AmountDiscountPolicy 와 PercentDiscountPolicy 클래스도 함께 존재해야한다.</p>
+<p><img src="/image/object_chapter9_02.png" alt></p>
+<p>위 그림은 인터페이스 소유권을 클라이언트에 위치시켰다. Movie 를 다른 컨텍스트에서 재사용하기 위해서는, 단지 Movie 와 DiscountPolicy 가 포함된 패키지만 재사용하면 된다.</p>
+<h2 id="05-유연성에-대한-조언"><a href="#05-유연성에-대한-조언" class="headerlink" title="05 유연성에 대한 조언"></a>05 유연성에 대한 조언</h2><h5 id="유연한-설계는-유연성이-필요할-때만-옳다"><a href="#유연한-설계는-유연성이-필요할-때만-옳다" class="headerlink" title="유연한 설계는 유연성이 필요할 때만 옳다"></a>유연한 설계는 유연성이 필요할 때만 옳다</h5><p>유연한 설계는 복잡하다. 유연하지 않은 설계는 단순하다. </p>
+<p>유연성을 코드를 읽는 사람들이 복잡함을 수용할 때만 가치가 있다.</p>
+<h5 id="협력과-책임이-중요하다"><a href="#협력과-책임이-중요하다" class="headerlink" title="협력과 책임이 중요하다"></a>협력과 책임이 중요하다</h5><p>역할, 책임, 협력에 집중하라.</p>
+<p>객체를 생성하는 방법은 모든 책임이 자리를 잡은 후 마지막 시점에 내리는 것이 적절하다.</p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2019/12/15/object-chapter9/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2019/12/10/object-chapter8/">
                             [오브젝트] 8장_의존성 관리하기
                         </a>
@@ -1545,204 +1683,6 @@
                     
                         <p>
                             <a href="/2019/08/07/spark-sql/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2019/07/16/rdd/">
-                            [스파크2 프로그래밍] 2장_RDD
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-07-16T00:00:00+09:00">
-	
-		    Jul 16, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/spark/">Spark</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h3 id="2-1-RDD"><a href="#2-1-RDD" class="headerlink" title="2.1 RDD"></a>2.1 RDD</h3><p>이번 장의 목표 : 데이터 모델로서의 추상적인 RDD 가 아닌, 프로그램 작성을 위한 API 관점에서 RDD 를 이해</p>
-<h4 id="2-1-1-들어가기에-앞서"><a href="#2-1-1-들어가기에-앞서" class="headerlink" title="2.1.1 들어가기에 앞서"></a>2.1.1 들어가기에 앞서</h4><p>RDD 다루기 전에 알아야 할 것</p>
-<ol>
-<li><p>스파크 클러스터</p>
-<p>클러스터 환경에서 동작하는 프로그램 작성할 때는 데이터가 여러 서버에 나눠져 병렬로 처리됩니다.</p>
-</li>
-<li><p>분산데이터로서의 RDD</p>
-<p>RDD 는 회복력을 가진 분산 데이터 집합입니다.</p>
-</li>
-<li><p>불변성</p>
-<p>한번 만들어진 RDD 는 어떤 경우에도 변경되지 않습니다.</p>
-</li>
-<li><p>파티션</p>
-<p>RDD 데이터는 클러스터를 구성하는 여러 서버에 나누어서 저장됩니다. 스파크는 분할된 데이터를 파티션이라는 단위로 관리합니다.</p>
-</li>
-<li><p>HDFS</p>
-</li>
-<li><p>Job 과 Executor</p>
-<p>스파크 프로그램을 실행하는 것을 스파크 잡을 실행한다고 합니다. 하나의 잡은 클러스터에서 병렬로 처리되고, 각 서버마다 익스큐터라는 프로세스가 생성됩니다. 각자 할당된 파티션을 처리합니다.</p>
-</li>
-<li><p>드라이버 프로그램</p>
-<p>드라이버란, 스파크 컨텍스트를 생성하고 그 인스턴스를 포함하는 있는 프로그램입니다.</p>
-</li>
-<li><p>트랜스포메이션과 액선</p>
-<p>트랜스포메이션은 RDD 의 형태를 변형하는 연산입니다. 액선은 어떤 동작을 수행해 그 결과로서 RDD 가 아닌 다른 타입의 결과를 변환하는 연산입니다.</p>
-</li>
-<li><p>지연 동작과 최적화</p>
-<p>트랜스포메이션 연산은 RDD 를 사용하는 다른 액션 연산이 호출될때까지는 실제 트랜스포메이션을 수행하지 않습니다. 따라서, 실행 계획의 최적화가 가능합니다. <strong>사용자가 입력한 변환 연산들을 즉시 수행하지 않고 모아뒀다가 한 번에 실행함으로써 불필요한 네티워크 통신 비용을 줄일 수 있습니다.</strong></p>
-</li>
-<li><p>함수의 전달</p>
-</li>
-</ol>
-<h4 id="2-1-2-스파크-컨텍스트-생성"><a href="#2-1-2-스파크-컨텍스트-생성" class="headerlink" title="2.1.2 스파크 컨텍스트 생성"></a>2.1.2 스파크 컨텍스트 생성</h4><p>스파크컨텍스트는 <strong>스파크 애플리케이션과 클러스터의 연결을 관리하는 객체</strong>로서 스파크 애플리케이션은 반드시 스파크 컨텍스트를 생성해야합니다. 클러스터 마스터 정보와 애플리케이션 이름은 반드시 지정해야하는 필수정보입니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SparkConf conf = <span class="keyword">new</span> SparkConf().setMaster(<span class="string">"local[*]"</span>).setAppName(<span class="string">"RDDCreateSample"</span>);</span><br><span class="line">JavaSparkContext sc = <span class="keyword">new</span> JavaSparkContext(conf);</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-1-3-RDD-생성"><a href="#2-1-3-RDD-생성" class="headerlink" title="2.1.3 RDD 생성"></a>2.1.3 RDD 생성</h4><p>RDD 생성 방법 두가지가 있습니다.</p>
-<ol>
-<li><p>드라이버 프로그램의 컬렉션 객체 이용</p>
-<p>컬렉션 객체는 자바나 파이썬의 경우에는 리스트 타입을 사용합니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JavaRDD&lt;String&gt; rdd = sc.parallelize(Arrays.asList(<span class="string">"a"</span>,<span class="string">"b"</span>,<span class="string">"c"</span>,<span class="string">"d"</span>,<span class="string">"e"</span>));</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>파일과 같은 외부 데이터 이용</p>
-<p>스파크는 내부적으로 하둡의 입력 및 출력 기능을 사용하므로 하둡이 다룰 수 있는 모든 입출력 유형을 다룰 수 있습니다.</p>
-<p>파일의 각 줄은 한 개의 RDD 구성요소가 됩니다. 파일을 읽어들이는 과정은 하둡의 TextInputFormat 을 이용합니다. </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JavaRDD&lt;String&gt; rdd = sc.textFile(<span class="string">"&lt;spark_home_dir&gt;/README.md"</span>);</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<h4 id="2-1-4-RDD-기본-액션"><a href="#2-1-4-RDD-기본-액션" class="headerlink" title="2.1.4 RDD 기본 액션"></a>2.1.4 RDD 기본 액션</h4><h5 id="2-1-4-1-collect"><a href="#2-1-4-1-collect" class="headerlink" title="2.1.4.1 collect"></a>2.1.4.1 collect</h5><p>RDD 의 모든 원소를 모아서 배열로 돌려줍니다. 반환 타입이 RDD 가 아닌 배열이므로 이 연산은 액션에 속하는 연산입니다. RDD 에 있는 모든 요소들이 collect 연산을 호출한 서버의 메모리에 수집됩니다. 따라서 충분한 메모리 공간이 확보되어야합니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">JavaRDD&lt;Integer&gt; rdd = sc.parallelize(Arrays.asList(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>));</span><br><span class="line">List&lt;Integer&gt; result = rdd.collect();</span><br><span class="line"><span class="keyword">for</span> (Integer i : result) System.out.println(i);</span><br></pre></td></tr></table></figure>
-
-<h5 id="2-1-4-2-count"><a href="#2-1-4-2-count" class="headerlink" title="2.1.4.2 count"></a>2.1.4.2 count</h5><p>RDD 구성하는 전체 요소 개수 반환합니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">JavaRDD&lt;Integer&gt; rdd = sc.parallelize(Arrays.asList(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>));</span><br><span class="line"><span class="keyword">long</span> result = rdd.count();</span><br><span class="line">System.out.println(result);</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-1-5-RDD-트랜스포메이션"><a href="#2-1-5-RDD-트랜스포메이션" class="headerlink" title="2.1.5 RDD 트랜스포메이션"></a>2.1.5 RDD 트랜스포메이션</h4><p><strong>기존 RDD 를 이용해 새로운 RDD 를 생성</strong>하는 연산입니다.</p>
-<ul>
-<li>Map 연산<ul>
-<li>요소간의 mapping 을 정의한 함수를 RDD 에 속하는 모든 요소에 적용해 새로운 RDD 를 생성</li>
-</ul>
-</li>
-<li>그룹화 연산<ul>
-<li>특정 조건에 따라 요소를 그룹화 하거나 특정 함수를 적용</li>
-</ul>
-</li>
-<li>집합 연산<ul>
-<li>RDD 에 포함된 요소를 하나의 집합으로 간주할 때 서로 다른 RDD 간에 합집합, 교집합 등을 계산</li>
-</ul>
-</li>
-<li>파티션 연산<ul>
-<li>RDD 의 파티션 개수를 조정</li>
-</ul>
-</li>
-<li>필터, 정렬 연산<ul>
-<li>특정 조건을 만족하는 요소만 선택하거나 각 요소를 정해진 기준에 따라 정렬</li>
-</ul>
-</li>
-</ul>
-<h4 id="2-1-6-RDD-액션"><a href="#2-1-6-RDD-액션" class="headerlink" title="2.1.6 RDD 액션"></a>2.1.6 RDD 액션</h4><p>RDD 메서드 중에서 <strong>결과값이 정수나 리스트, 맵 등 RDD가 아닌 다른 타입</strong>인 것들입니다. </p>
-<p>트렌스포메이션에 속하는 메서드는 느긋한 평가 방식을 사용합니다. 즉, 호출한다고 즉시 실행되는 것이 아니라 액션으로 분류되는 메서드가 호출되어야하만 비로소 실행됩니다. 액션 메서드를 호출하는 시점이 돼서야 비로소 그동안 쌓여있던 ~개의 트렌스포메이션 연산이 순차적으로 시작됩니다.</p>
-<p><strong>주의할점은, 액션 메서드를 여러번 호출하면 트렌스포메이션 메서드도 여러번 실행됩니다.</strong> 예를 들어, rdd1 이라는 RDD 에 map() 연산을 적용해 rdd2 라는 RDD 를 만들었다고 할때, rdd2 의 액션 메서드를 두번 호출하면 map() 연산도 두번 실행됩니다. 따라서, 반복 수행 성능을 개선하기 위해 캐쉬를 적절히 사용하고, 코드 작성시 반복 수행 가능성을 염두해야합니다.</p>
-<h4 id="2-1-7-RDD-데이터-불러오기와-저장하기"><a href="#2-1-7-RDD-데이터-불러오기와-저장하기" class="headerlink" title="2.1.7 RDD 데이터 불러오기와 저장하기"></a>2.1.7 RDD 데이터 불러오기와 저장하기</h4><p>스파크는 하둡 API 를 기반으로 다양한 데이터 포맷과 파일 시스템을 지원합니다.</p>
-<ul>
-<li>파일 포맷<ul>
-<li>텍스트 파일 / JSON / 하둡의 시퀀스 파일 / csv …</li>
-</ul>
-</li>
-<li>파일 시스템<ul>
-<li>로컬 파일 시스템 / HDFS / AWS 의 S3 / 오픈스택의 Swift …</li>
-</ul>
-</li>
-</ul>
-<h5 id="2-1-7-1-텍스트-파일"><a href="#2-1-7-1-텍스트-파일" class="headerlink" title="2.1.7.1 텍스트 파일"></a>2.1.7.1 텍스트 파일</h5><p>스파크는 다양한종류의 파일 시스템을 다룰수 있기 때문에 파일의 경로를 지정하는 방법도 파일 시스템의 종류에 따라 다릅니다.</p>
-<ul>
-<li>로컬파일 시스템<ul>
-<li>file:///path</li>
-</ul>
-</li>
-<li>HDFS<ul>
-<li>hdfs://master:prot/path/..</li>
-</ul>
-</li>
-<li>S3<ul>
-<li>S3n://bucket/path</li>
-</ul>
-</li>
-</ul>
-<p><strong>주의할점은, 스파크가 클러스터를 이루는 다수의 서버 상에서 동작하기 때문에,  위에서 지정한 경로는 클러스터를 구성하는모든 서버에서 동일하게 접근 가능해야합니다.</strong> 따라서, 로컬 파일 시스템의경로를 데이터 위치로 지정하면 클러스터를 구성하는 모든 서버에서 “file:///data/sample.txt” 라는 경로를 통해 지정한 파일로 접근할 수 있어야합니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">JavaRdd&lt;Integer&gt; rdd = sc.parallelize(fillToN(<span class="number">1000</span>),  <span class="number">3</span>); <span class="comment">// 0~1000 까지의 숫자로 구성, 3개 파티션</span></span><br><span class="line">Class codec =. org.apache.hadoop.io.compress.GzipCodec.class;</span><br><span class="line"></span><br><span class="line"><span class="comment">// save</span></span><br><span class="line">rdd.saveAsTextFile(<span class="string">"&lt;path_to_save&gt;/sub1"</span>);</span><br><span class="line">rdd.saveAsTextFile(<span class="string">"&lt;path_to_save&gt;/sub2"</span>,  codec);</span><br><span class="line"></span><br><span class="line"><span class="comment">// load</span></span><br><span class="line">JavaRDD&lt;String&gt; rdd2 = sc.textFile(<span class="string">"&lt;path_to_save&gt;/sub1"</span>);</span><br></pre></td></tr></table></figure>
-
-<h5 id="2-1-7-2-Object-File"><a href="#2-1-7-2-Object-File" class="headerlink" title="2.1.7.2 Object File"></a>2.1.7.2 Object File</h5><p>텍스트 파일을 사용하는 것과. 크게 다르지 않습니다. 다만, RDD 에 포함된 데이터를 오프젝트 파일로 다루기 위해서는 각 요소(오브젝트) 가 자바의 Serializable 인터페이스를 구현하고 있어야합니다. 그리고, 저장된 RDD 의 타입이 RDD[Int]  였다면, 이 파일으 읽어서 생성한 RDD 도 동일한 RDD[Int] 타입입니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">JavaRdd&lt;Integer&gt; rdd = sc.parallelize(fillToN(<span class="number">1000</span>),  <span class="number">3</span>); <span class="comment">// 0~1000 까지의 숫자로 구성, 3 개 파티션</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// save</span></span><br><span class="line">rdd.saveAsObjectFile(<span class="string">"&lt;path_to_save&gt;/sub_path"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// load</span></span><br><span class="line">JavaRDD&lt;Integer&gt; rdd2 = sc.objectFile(<span class="string">"&lt;path_to_save&gt;/sub_path"</span>);</span><br><span class="line">System.out.println(rdd2.take(<span class="number">10</span>));</span><br></pre></td></tr></table></figure>
-
-<h5 id="2-1-7-3-시퀀스-파일"><a href="#2-1-7-3-시퀀스-파일" class="headerlink" title="2.1.7.3 시퀀스 파일"></a>2.1.7.3 시퀀스 파일</h5><p>키와 값으로 구성된 데이터를 저장하는 이진 파일 포맷입니다. 하둡에서 자주 사용되는 대표적인 파일 포맷입니다. 시퀀스 파일로다루고자 하는 RDD의 데이터는 하둡의 Wriable 인터페이스를 구현하고 있어야합니다.</p>
-<h4 id="2-1-8-클러스터-환경에서의-공유-변수"><a href="#2-1-8-클러스터-환경에서의-공유-변수" class="headerlink" title="2.1.8 클러스터 환경에서의 공유 변수"></a>2.1.8 클러스터 환경에서의 공유 변수</h4><p>하둡이나 스파크와 같이 클러스터 환경에서 동작하는 애플리케이션은 하나의 잡을 수행하기 위해 클러스터에 속한 다수의 서버에서 여러 개의 프로세스를 실행하므로 모든 프로세스가 공유할 수 있는 자원을 관리하기 쉽지 않습니다. <strong>이러한 프레임워크는 다수의 프로세스가 공유할 수 있는 읽기 자원과 쓰기 자원을 설정할 수 있도록 지원합니다.</strong></p>
-<ul>
-<li>하둡<ul>
-<li>분산캐시 / 카운터</li>
-</ul>
-</li>
-<li>스파크<ul>
-<li>브로드캐스트 변수 / 어큐뮬레이텨</li>
-</ul>
-</li>
-</ul>
-<ol>
-<li><p>브로드캐스트 변수</p>
-<p>스파크 잡이 실행되는 동안 클러스터 내의 모든 서버에서 공유할 수 있는 읽기 전용 자원을 설정할 수 있는 변수입니다.</p>
-<ul>
-<li>먼저 공유하고자 하는 데이터를 포함하는 오브젝트를 생성</li>
-</ul>
-</li>
-</ol>
-<ul>
-<li><p>이 오브젝트를 스파크컨텍스트의 broadcast() 메서드의 인자로 지정해 해당 메서드를 실행</p>
-<ul>
-<li><p>이렇게 생성된 브로드캐스트 변수를 사용할때는 생성한 브로드캐스트 변수의 value() 메서드를 통해 접근</p>
-<p>클러스터 간에 공유할 변수가 있다고 해서 무조건 브로드캐스트 변수를 사용해야하는 것은 아닙니다. <strong>액션 연산을 수행할때 동일한 스테이지 내에서 실행되는 태스크 간에는 필요한 변수를 자동으로 브로드캐스트 변수를 이용해서 전달</strong>하기 때문에 명시적으로 브로드 캐스트 변수를 지정하지않아도 됩니다. </p>
-</li>
-</ul>
-</li>
-</ul>
-<ol start="2">
-<li><p>어큐뮬레이터</p>
-<p>쓰기 동작을 위한것입니다. 클러스터 내의 모든 서버가 공유하는 쓰기 공간을 제공함으로써 <strong>각 서버에서 발생하는 특정 이벤트의 수를 세거나 관찰하고 싶은 정보를 모아두는 용도로 활용할 수 있습니다.</strong> </p>
-<p>어큐뮬레이터를 생성하려면 org.apache.spark.util.AccumulatorV2 클래스를 상속받은 클래스를 정의하고, 이 클래스의 인스턴스를 생성합니다. 그리고 생성한 어큐뮬레이터 인스턴스를 스파크컨텍스트가 제공하는 register() method 를 이용해 등록합니다. </p>
-<p>어큐뮬레이터를 사용할 때는 두 가지를 기억해야합니다.</p>
-<p>첫 째, 어큐뮬레이터를 증가시키는 동작은 클러스터의 모든 데이터 처리 프로세스에서 가능하지만 데이터를 읽는 동작은 드라이버 프로그램 내에서만 가능합니다. 즉, RDD 의 트랜스포메이션이나 액션 연산 내부에는 어큐뮬레이터의 값을 증가시킬뿐 그 값을 참조해서 사용하는 것은 불가능합니다. </p>
-<p>둘 째, 일부러 의도한 특별한 목적이없는 한 어큐뮬레이터는 액션 연산을 수행하는 메서드에서만 사용해야합니다. 왜냐하면 트렌스포매이션 연산은 액션 연산과 달리 하나의 잡 내에서 필요에 따라 수차례 반복 실행될 수 있기 때문입니다. 따라서 map(), flatmap() 과 같은 트랜스포메이션 연산 내용에 어큐뮬레이터의 값을 증가시키는 코드가 포함될 경우 정확하지 않은 데이터가 집계 될 수 있습니다.</p>
-</li>
-</ol>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2019/07/16/rdd/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>

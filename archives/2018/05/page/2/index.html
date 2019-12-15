@@ -194,8 +194,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/05/28/촌수 계산/">
-                            촌수 계산
+                        <a class="link-unstyled" href="/2018/05/28/Memento Pattern01/">
+                            Memento Pattern01
                         </a>
                     
                 </h1>
@@ -208,7 +208,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
+    <a class="category-link" href="/categories/design-pattern/">Design Pattern</a>
 
 
     
@@ -217,16 +217,38 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
-<li><p>결국 최단 거리 문제. 따라서 BFS</p>
-</li>
-<li><p>테스트 케이스 대로 그래프를 그리면 다음과 같다</p>
+                    <h2 id="Intent"><a href="#Intent" class="headerlink" title="Intent"></a>Intent</h2><p>The intent of this pattern is to capture the internal state of an object without violating encapsulation and thus providing a mean for restoring the object into initial state when needed.</p>
+<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/memento01.png" alt></p>
 <ul>
-<li>7에서 3까지의 최단 거리를 구하면 된다. </li>
-<li>이는 곧 7에서 3까지의 depth를 구하는 것이다.</li>
+<li>Memento<ul>
+<li>Stores internal state of the Originator object. The state can include any number of state variables.</li>
+<li>The Memento must have two interfaces.<ul>
+<li>an interface to the caretaker. This interface must not allow any operations or any access to internal state stored by the memento and thus honors encapsulation. </li>
+<li>The other interface is to the originator and allows the originator to access any state variables necessary to for the originator to restore previous state.</li>
 </ul>
-<p><img src="/image/family04.png" alt></p>
 </li>
+</ul>
+</li>
+<li>Originator<ul>
+<li>Creates a memento object capturing the originators internal state.</li>
+<li>Use the memento object to restore its previous state.</li>
+</ul>
+</li>
+<li>Caretaker<ul>
+<li>Responsible for keeping the memento.</li>
+<li>The memento is opaque to the caretaker, and the caretaker must not operate on it.</li>
+</ul>
+</li>
+</ul>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/mementoPattern011.png" alt></p>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><img src="/image/memento02.png" alt></p>
+<p><img src="/image/memento03.png" alt></p>
+<p><img src="/image/memento04.png" alt></p>
+<p><img src="/image/memento05.png" alt></p>
+<p><img src="/image/memento06.png" alt></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="https://www.tutorialspoint.com/design_pattern/memento_pattern.htm" target="_blank" rel="noopener">https://www.tutorialspoint.com/design_pattern/memento_pattern.htm</a></li>
+<li><a href="https://www.oodesign.com/memento-pattern.html" target="_blank" rel="noopener">https://www.oodesign.com/memento-pattern.html</a></li>
 </ul>
 
                     
@@ -235,7 +257,7 @@
                     
                     
                         <p>
-                            <a href="/2018/05/28/촌수 계산/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/05/28/Memento Pattern01/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -552,6 +574,73 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2018/05/22/High Pass, Low Pass Filters/">
+                            High Pass, Low Pass Filters
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-05-22T00:00:00+09:00">
+	
+		    May 22, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/dip/">DIP</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h2 id="Blurring-masks"><a href="#Blurring-masks" class="headerlink" title="Blurring masks"></a>Blurring masks</h2><p>A blurring mask has the following properties.</p>
+<ul>
+<li>All the values in blurring masks are positive</li>
+<li>The sum of all the values is equal to 1</li>
+<li>The edge content is reduced by using a blurring mask</li>
+<li>As the size of the mask grow, more smoothing effect will take place</li>
+</ul>
+<h2 id="Derivative-masks"><a href="#Derivative-masks" class="headerlink" title="Derivative masks"></a>Derivative masks</h2><p>A derivative mask has the following properties.</p>
+<ul>
+<li>A derivative mask have positive and as well as negative values</li>
+<li>The sum of all the values in a derivative mask is equal to zero</li>
+<li>The edge content is increased by a derivative mask</li>
+<li>As the size of the mask grows , more edge content is increased</li>
+</ul>
+<h2 id="Relationship-between-blurring-mask-and-derivative-mask-with-high-pass-filters-and-low-pass-filters"><a href="#Relationship-between-blurring-mask-and-derivative-mask-with-high-pass-filters-and-low-pass-filters" class="headerlink" title="Relationship between blurring mask and derivative mask with high pass filters and low pass filters."></a>Relationship between blurring mask and derivative mask with high pass filters and low pass filters.</h2><ul>
+<li>Blurring masks are also called as low pass filter</li>
+<li>Derivative masks are also called as high pass filter</li>
+</ul>
+<h2 id="High-pass-frequency-components-and-Low-pass-frequency-components"><a href="#High-pass-frequency-components-and-Low-pass-frequency-components" class="headerlink" title="High pass frequency components and Low pass frequency components"></a>High pass frequency components and Low pass frequency components</h2><p>The high pass frequency components denotes edges whereas the low pass frequency components denotes smooth regions.</p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/05/22/High Pass, Low Pass Filters/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2018/05/22/Laplacian Operator/">
                             Laplacian Operator
                         </a>
@@ -625,6 +714,76 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2018/05/22/Frequency domain/">
+                            Frequency domain
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-05-22T00:00:00+09:00">
+	
+		    May 22, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/dip/">DIP</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h2 id="Frequency-domain-analysis"><a href="#Frequency-domain-analysis" class="headerlink" title="Frequency domain analysis"></a>Frequency domain analysis</h2><p>Till now, all the domains in which we have analyzed a signal , we analyze it with respect to time. </p>
+<p>But in frequency domain we don’t analyze signal with respect to time, but with respect of frequency.</p>
+<h2 id="Difference-between-spatial-domain-and-frequency-domain"><a href="#Difference-between-spatial-domain-and-frequency-domain" class="headerlink" title="Difference between spatial domain and frequency domain"></a>Difference between spatial domain and frequency domain</h2><p>In spatial domain, we deal with images as it is. The value of the pixels of the image change with respect to scene. </p>
+<p>Whereas in frequency domain, we deal with the rate at which the pixel values are changing in spatial domain.</p>
+<h2 id="Spatial-Domain"><a href="#Spatial-Domain" class="headerlink" title="Spatial Domain"></a>Spatial Domain</h2><p>In simple spatial domain, we directly deal with the image matrix</p>
+<p><img src="/image/frequencyD01.png" alt></p>
+<h2 id="Frequency-Domain"><a href="#Frequency-Domain" class="headerlink" title="Frequency Domain"></a>Frequency Domain</h2><p>We first transform the image to its frequency distribution. </p>
+<p>Then our black box system perform what ever processing it has to performed, </p>
+<p>and the output of the black box in this case is not an image, but a transformation. </p>
+<p>After performing inverse transformation, it is converted into an image which is then viewed in spatial domain.</p>
+<p><img src="/image/frequencyD02.png" alt></p>
+<h2 id="Transformation"><a href="#Transformation" class="headerlink" title="Transformation"></a>Transformation</h2><p>A signal can be converted from time domain into frequency domain using mathematical operators called transforms. There are many kind of transformation that does this. Some of them are given below.</p>
+<ul>
+<li>Fourier Series</li>
+<li>Fourier transformation</li>
+<li>Laplace transform</li>
+<li>Z transform</li>
+</ul>
+<h2 id="Frequency-components"><a href="#Frequency-components" class="headerlink" title="Frequency components"></a>Frequency components</h2><p>Any image in spatial domain can be represented in a frequency domain. </p>
+<p>We will divide frequency components into two major components.</p>
+<h2 id="Low-frequency-components"><a href="#Low-frequency-components" class="headerlink" title="Low frequency components"></a>Low frequency components</h2><p>Low frequency components in an image correspond to smooth regions.</p>
+<h2 id="High-frequency-components"><a href="#High-frequency-components" class="headerlink" title="High frequency components"></a>High frequency components</h2><p>High frequency components correspond to edges in an image.</p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/05/22/Frequency domain/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2018/05/22/Krisch Compass Mask/">
                             Krisch Compass Mask
                         </a>
@@ -681,143 +840,6 @@
                     
                         <p>
                             <a href="/2018/05/22/Krisch Compass Mask/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/05/22/High Pass, Low Pass Filters/">
-                            High Pass, Low Pass Filters
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-05-22T00:00:00+09:00">
-	
-		    May 22, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/dip/">DIP</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h2 id="Blurring-masks"><a href="#Blurring-masks" class="headerlink" title="Blurring masks"></a>Blurring masks</h2><p>A blurring mask has the following properties.</p>
-<ul>
-<li>All the values in blurring masks are positive</li>
-<li>The sum of all the values is equal to 1</li>
-<li>The edge content is reduced by using a blurring mask</li>
-<li>As the size of the mask grow, more smoothing effect will take place</li>
-</ul>
-<h2 id="Derivative-masks"><a href="#Derivative-masks" class="headerlink" title="Derivative masks"></a>Derivative masks</h2><p>A derivative mask has the following properties.</p>
-<ul>
-<li>A derivative mask have positive and as well as negative values</li>
-<li>The sum of all the values in a derivative mask is equal to zero</li>
-<li>The edge content is increased by a derivative mask</li>
-<li>As the size of the mask grows , more edge content is increased</li>
-</ul>
-<h2 id="Relationship-between-blurring-mask-and-derivative-mask-with-high-pass-filters-and-low-pass-filters"><a href="#Relationship-between-blurring-mask-and-derivative-mask-with-high-pass-filters-and-low-pass-filters" class="headerlink" title="Relationship between blurring mask and derivative mask with high pass filters and low pass filters."></a>Relationship between blurring mask and derivative mask with high pass filters and low pass filters.</h2><ul>
-<li>Blurring masks are also called as low pass filter</li>
-<li>Derivative masks are also called as high pass filter</li>
-</ul>
-<h2 id="High-pass-frequency-components-and-Low-pass-frequency-components"><a href="#High-pass-frequency-components-and-Low-pass-frequency-components" class="headerlink" title="High pass frequency components and Low pass frequency components"></a>High pass frequency components and Low pass frequency components</h2><p>The high pass frequency components denotes edges whereas the low pass frequency components denotes smooth regions.</p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/05/22/High Pass, Low Pass Filters/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/05/22/Frequency domain/">
-                            Frequency domain
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-05-22T00:00:00+09:00">
-	
-		    May 22, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/dip/">DIP</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h2 id="Frequency-domain-analysis"><a href="#Frequency-domain-analysis" class="headerlink" title="Frequency domain analysis"></a>Frequency domain analysis</h2><p>Till now, all the domains in which we have analyzed a signal , we analyze it with respect to time. </p>
-<p>But in frequency domain we don’t analyze signal with respect to time, but with respect of frequency.</p>
-<h2 id="Difference-between-spatial-domain-and-frequency-domain"><a href="#Difference-between-spatial-domain-and-frequency-domain" class="headerlink" title="Difference between spatial domain and frequency domain"></a>Difference between spatial domain and frequency domain</h2><p>In spatial domain, we deal with images as it is. The value of the pixels of the image change with respect to scene. </p>
-<p>Whereas in frequency domain, we deal with the rate at which the pixel values are changing in spatial domain.</p>
-<h2 id="Spatial-Domain"><a href="#Spatial-Domain" class="headerlink" title="Spatial Domain"></a>Spatial Domain</h2><p>In simple spatial domain, we directly deal with the image matrix</p>
-<p><img src="/image/frequencyD01.png" alt></p>
-<h2 id="Frequency-Domain"><a href="#Frequency-Domain" class="headerlink" title="Frequency Domain"></a>Frequency Domain</h2><p>We first transform the image to its frequency distribution. </p>
-<p>Then our black box system perform what ever processing it has to performed, </p>
-<p>and the output of the black box in this case is not an image, but a transformation. </p>
-<p>After performing inverse transformation, it is converted into an image which is then viewed in spatial domain.</p>
-<p><img src="/image/frequencyD02.png" alt></p>
-<h2 id="Transformation"><a href="#Transformation" class="headerlink" title="Transformation"></a>Transformation</h2><p>A signal can be converted from time domain into frequency domain using mathematical operators called transforms. There are many kind of transformation that does this. Some of them are given below.</p>
-<ul>
-<li>Fourier Series</li>
-<li>Fourier transformation</li>
-<li>Laplace transform</li>
-<li>Z transform</li>
-</ul>
-<h2 id="Frequency-components"><a href="#Frequency-components" class="headerlink" title="Frequency components"></a>Frequency components</h2><p>Any image in spatial domain can be represented in a frequency domain. </p>
-<p>We will divide frequency components into two major components.</p>
-<h2 id="Low-frequency-components"><a href="#Low-frequency-components" class="headerlink" title="Low frequency components"></a>Low frequency components</h2><p>Low frequency components in an image correspond to smooth regions.</p>
-<h2 id="High-frequency-components"><a href="#High-frequency-components" class="headerlink" title="High frequency components"></a>High frequency components</h2><p>High frequency components correspond to edges in an image.</p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/05/22/Frequency domain/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>

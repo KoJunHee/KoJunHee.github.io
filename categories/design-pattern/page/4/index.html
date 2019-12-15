@@ -194,8 +194,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/05/13/Factory Method Pattern01/">
-                            Factory Method Pattern01
+                        <a class="link-unstyled" href="/2018/05/13/Simple Factory/">
+                            Simple Factory
                         </a>
                     
                 </h1>
@@ -217,12 +217,17 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>The Factory Method Pattern defines an interface for creating an object, </p>
-<p>but lets subclasses decide which class to instantiate. </p>
-<p>Factory Method lets a class defer instantiation to subclasses. </p>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/factoryMethod01.png" alt> </p>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/factoryMethod02.png" alt> </p>
-<h2 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h2><p><img src="/image/fm15.png" alt> </p>
+                    <p>The Simple Factory isn’t actually a Design Pattern; it’s more of a programming idiom. </p>
+<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/simpleFactoryUML.png" alt></p>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><img src="/image/pizza01.png" alt></p>
+<p><img src="/image/pizza02.png" alt></p>
+<p><img src="/image/pizza03.png" alt></p>
+<p><img src="/image/pizza08.png" alt></p>
+<p><img src="/image/pizza04.png" alt></p>
+<p><img src="/image/pizza05.png" alt></p>
+<p><img src="/image/pizza06.png" alt></p>
+<p><img src="/image/pizza07.png" alt></p>
+<h2 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h2><p><img src="/image/pizza09.png" alt></p>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Head First Design Pattern</p>
 
                     
@@ -231,7 +236,7 @@
                     
                     
                         <p>
-                            <a href="/2018/05/13/Factory Method Pattern01/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/05/13/Simple Factory/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -249,8 +254,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/05/13/Factory Method Pattern02/">
-                            Factory Method Pattern02
+                        <a class="link-unstyled" href="/2018/05/13/Abstract Factory Pattern02/">
+                            Abstract Factory Pattern02
                         </a>
                     
                 </h1>
@@ -272,43 +277,52 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>객체를 생성하는 코드를 별도의 클래스/메소드로 분리함으로써 객체 생성 방식의 변화에 대비하는데 유용하다.</p>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/factorymethodpa01.png" alt></p>
+                    <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>관련성 있는 여러 종류의 객체를 일관성 있는 방식으로 생성할 때 유용하다.</p>
+<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/abstractF01.png" alt></p>
 <ul>
-<li>Product <ul>
-<li>펙토리 메서드로 생설될 객체의 공통 인터페이스</li>
+<li>Abstarct Factory<ul>
+<li>실제 팩토리 클래스의 공통 인터페이스</li>
+<li>각 제품의 부품을 생성하는 기능을 추사 메서드로 정의</li>
+</ul>
+</li>
+<li>ConcreteFactory<ul>
+<li>구체적인 팩토리 클래스</li>
+<li>AbstractFactory 클래스의 추상 메서드를 오버라이드함으로써 구체적인 제품을 생성</li>
+</ul>
+</li>
+<li>AbstractProduct<ul>
+<li>제품의 공통 인터페이스</li>
 </ul>
 </li>
 <li>ConcreteProduct<ul>
-<li>구체적으로 객체가 생성되는 클래스</li>
-</ul>
-</li>
-<li>Creator<ul>
-<li>팩토리 메서드를 갖는 클래스</li>
-</ul>
-</li>
-<li>ConcreteCreator<ul>
-<li>팩토리 매서드를 구현하는 클래스</li>
-<li>ConcreteProduct 객체를 생성 </li>
+<li>구체적인 팩토리 클래스에서 생성되는 구체적인 제품</li>
 </ul>
 </li>
 </ul>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/factorymethodpa02.png" alt></p>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/abstractF02.png" alt></p>
 <ul>
-<li>ElevatorScheduler interface<ul>
-<li>Prudct</li>
+<li>ElevatorFactory<ul>
+<li>AbstractFactory</li>
 </ul>
 </li>
-<li>ResponseTimeScheduler, ThroughputScheduler<ul>
-<li>ConcretePrudct</li>
+<li>LGElevatorFactory, HyundaiElevatorFactory<ul>
+<li>ConcreteFactory</li>
 </ul>
 </li>
-<li>ElevatorManger<ul>
-<li>Creator</li>
+<li>Motor<ul>
+<li>AbstractProductA</li>
 </ul>
 </li>
-<li>ElevatorMangerWithThroughputScheduling, ElevatorMangerWithDynamicScheduling, ElevatorManagerWithResponseTimeScheduling<ul>
-<li>ConcreteCreator</li>
+<li>LGMotor, HyundaiMotor<ul>
+<li>ConcreteProductA</li>
+</ul>
+</li>
+<li>Door<ul>
+<li>AbstractProductB</li>
+</ul>
+</li>
+<li>LGDoor, HyundaiDoor<ul>
+<li>ConcreteProductB</li>
 </ul>
 </li>
 </ul>
@@ -320,7 +334,64 @@
                     
                     
                         <p>
-                            <a href="/2018/05/13/Factory Method Pattern02/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/05/13/Abstract Factory Pattern02/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2018/05/09/Chain of Responsibility Pattern03/">
+                            Chain of Responsibility Pattern03
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-05-09T00:00:00+09:00">
+	
+		    May 09, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/design-pattern/">Design Pattern</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>Use the Chain of Responsibility Pattern when you want to give more than one object a chance to handle a request. </p>
+<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/chain0301.png" alt></p>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/chain0302.png" alt></p>
+<h2 id="Benefits"><a href="#Benefits" class="headerlink" title="Benefits"></a>Benefits</h2><ul>
+<li>Decouples the sender of the request and its receivers. </li>
+<li>Simplifies your object because it doesn’t have to know the chain’s structure and keep direct references to its members. </li>
+<li>Allows you to add or remove responsibilities dynamically by changing the members or order of the chain. </li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Head First Design Pattern</p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/05/09/Chain of Responsibility Pattern03/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -442,63 +513,6 @@
                     
                         <p>
                             <a href="/2018/05/09/Chain of Responsibility Pattern01/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/05/09/Chain of Responsibility Pattern03/">
-                            Chain of Responsibility Pattern03
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-05-09T00:00:00+09:00">
-	
-		    May 09, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/design-pattern/">Design Pattern</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>Use the Chain of Responsibility Pattern when you want to give more than one object a chance to handle a request. </p>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/chain0301.png" alt></p>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/chain0302.png" alt></p>
-<h2 id="Benefits"><a href="#Benefits" class="headerlink" title="Benefits"></a>Benefits</h2><ul>
-<li>Decouples the sender of the request and its receivers. </li>
-<li>Simplifies your object because it doesn’t have to know the chain’s structure and keep direct references to its members. </li>
-<li>Allows you to add or remove responsibilities dynamically by changing the members or order of the chain. </li>
-</ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Head First Design Pattern</p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/05/09/Chain of Responsibility Pattern03/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -740,75 +754,6 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/04/23/Adapter Pattern03/">
-                            Adapter Pattern03
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-04-23T00:00:00+09:00">
-	
-		    Apr 23, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/design-pattern/">Design Pattern</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <ul>
-<li>설명<ul>
-<li>Enumerator 인터페이스를 사용하는 구형 코드를 사용해야 하는 경우가 종종 있지만,</li>
-<li>새로 만드는 코드에서는 Iterator만 사용할 계획</li>
-</ul>
-</li>
-<li>Class Diagram</li>
-</ul>
-<p><img src="/image/adpp01.png" alt></p>
-<ul>
-<li><p>Code</p>
-<p><img src="/image/adpp02.png" alt></p>
-<p><img src="/image/adpp03.png" alt></p>
-<p><img src="/image/adpp04.png" alt></p>
-</li>
-<li><p>Reference</p>
-<ul>
-<li>Head First Deisgn Patterns</li>
-</ul>
-</li>
-</ul>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/04/23/Adapter Pattern03/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
                         <a class="link-unstyled" href="/2018/04/23/OCP02/">
                             OCP02
                         </a>
@@ -865,6 +810,75 @@
                     
                         <p>
                             <a href="/2018/04/23/OCP02/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2018/04/23/Adapter Pattern03/">
+                            Adapter Pattern03
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-04-23T00:00:00+09:00">
+	
+		    Apr 23, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/design-pattern/">Design Pattern</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <ul>
+<li>설명<ul>
+<li>Enumerator 인터페이스를 사용하는 구형 코드를 사용해야 하는 경우가 종종 있지만,</li>
+<li>새로 만드는 코드에서는 Iterator만 사용할 계획</li>
+</ul>
+</li>
+<li>Class Diagram</li>
+</ul>
+<p><img src="/image/adpp01.png" alt></p>
+<ul>
+<li><p>Code</p>
+<p><img src="/image/adpp02.png" alt></p>
+<p><img src="/image/adpp03.png" alt></p>
+<p><img src="/image/adpp04.png" alt></p>
+</li>
+<li><p>Reference</p>
+<ul>
+<li>Head First Deisgn Patterns</li>
+</ul>
+</li>
+</ul>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/04/23/Adapter Pattern03/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
