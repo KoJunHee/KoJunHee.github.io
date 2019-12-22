@@ -1,0 +1,542 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="junhee.ko">
+    <title>[오브젝트] 10장_상속과 코드 재사용 - junhee.ko</title>
+    <meta name="author" content="junhee.ko">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg"},"articleBody":"이번 장은, 클래스 재사용을 위해 새로운 클래스를 추가하는 가장 대표적 기법인 상속에 대해 정리한다.\n01 상속과 중복 코드DRY 원칙 (Don’t Repeat Yourself)“동일한 지식을 중복하지 마라”\n중복 여부를 판단하는 기준은 변경이다. 중복 코드는 변경을 방해한다. 이것이 중복 코드를 제거해야하는 핵심적 이유이다. \n중복 코드는 코드를 수정하는데 노력을 몇배로 증가시킨다. 왜냐하면,\n\n어떤 코드가 중복인지 찾아야하고,\n찾아낸 모든 코드를 일관되게 수정해야하고,\n개별적으로 테스트를 다 해야하기 때문이다. \n\n중복과 변경한 달에 한 번씩 가입자별로 전화 요금 계산하는 간단한 애플리케이션을 개발해보자.\n개별 통화 기간을 저장하는 클래스가 필요하다.\n1234567891011121314151617public class Call &#123;    private LocalDateTime from; //통화 시작 시간    private LocalDateTime to; // 통화 종료 시간    public Call(LocalDateTime from, LocalDateTime to) &#123;        this.from = from;        this.to = to;    &#125;        public Duration getDuration()&#123;        return Duration.between(from, to);    &#125;        public LocalDateTime getFrom()&#123;        return from;    &#125;&#125;\n\n전체 통화 목록에 대해 알고 있는 정보 전문가에게 요금 계산 책임 을 할당해야한다. \n123456789101112131415161718192021222324252627282930313233343536public class Phone &#123;    private Money amount;    private Duration seconds;    private List&lt;Call&gt; calls = new ArrayList&lt;&gt;();    public Phone(Money amount, Duration seconds) &#123;        this.amount = amount;        this.seconds = seconds;    &#125;        public void call(Call call)&#123;        calls.add(call);    &#125;    public List&lt;Call&gt; getCalls() &#123;        return calls;    &#125;    public Money getAmount() &#123;        return amount;    &#125;    public Duration getSeconds() &#123;        return seconds;    &#125;        public Money calculateFee()&#123;        Money result = Money.ZERO;                for (Call call : calls)&#123;            result = result.plus(amount.times(call.getDuration().getSeconds() / seconds.getSeconds()));        &#125;                return result;    &#125;&#125;\n\n그런데, 심야 할인 요금제 라는 새로운 요금 방식을 추가해야하는 요구사항이 접수됐다. \nPhone 코드를 복사해서 새로운 클래스를 만들어보자.\n1234567891011121314151617181920212223242526272829303132public class NightlyDiscountPhone &#123;    private static final int LATE_NITGHT_HOUR = 22;        private Money nightAmount;    private Money regularAmount;    private Duration seconds;    private List&lt;Call&gt; calls = new ArrayList&lt;&gt;();    public NightlyDiscountPhone(Money nightAmount, Money regularAmount, Duration seconds) &#123;        this.nightAmount = nightAmount;        this.regularAmount = regularAmount;        this.seconds = seconds;    &#125;    public Money calculateFee()&#123;        Money result = Money.ZERO;        for (Call call : calls)&#123;            if(call.getFrom().getHour() &gt;= LATE_NITGHT_HOUR)&#123;                result = result.plus(                    nightAmount.times(call.getDuration().getSeconds() / seconds.getSeconds())                );            &#125;else &#123;                result = result.plus(                    regularAmount.times(call.getDuration().getSeconds() / seconds.getSeconds())                );            &#125;        &#125;        return result;    &#125;&#125;\n\n통화 요금에 부과할 세금을 계산하는 요구사항을 추가해보자.\n12345678910111213141516public class Phone &#123;    ...    private double taxRate;    ...          public Money calculateFee()&#123;        Money result = Money.ZERO;        for (Call call : calls)&#123;            result = result.plus(amount.times(call.getDuration().getSeconds() / seconds.getSeconds()));        &#125;        return result.plus(result.times(taxRate);    &#125;&#125;\n\n1234567891011121314151617181920212223public class NightlyDiscountPhone &#123;\t  ...    private double taxRate;\t  ...    public Money calculateFee()&#123;        Money result = Money.ZERO;        for (Call call : calls)&#123;            if(call.getFrom().getHour() &gt;= LATE_NITGHT_HOUR)&#123;                result = result.plus(                    nightAmount.times(call.getDuration().getSeconds() / seconds.getSeconds())                );            &#125;else &#123;                result = result.plus(                    regularAmount.times(call.getDuration().getSeconds() / seconds.getSeconds())                );            &#125;        &#125;        return result.minus(result.times(taxRate));    &#125;&#125;\n\n이처럼, 많은 코드 속에서 어떤 코드가 중복인지리 파악하는 것은 쉬운 일이 아니다.\n두 클래스 사이의 중복 제거 방법으로, 클래스를 하나로 합치고 요금제를 구분하는 타입 코드를 추가하는 방법이 있다. 타입 코드 값에 따라 로직을 분기시키는 것이다. 하지만 이 방법은 낮은 응집도와 높은 결합도의 문제가 있다.\n상속을 이용해 중복 코드 제거하기123456public class NightlyDiscountPhone extends Phone&#123;    @Override    public Money calculateFee()&#123;      ...    &#125;\n\n10시 이전의 통화요금 계산하는 경우는 Phone 에 구현된 로직을 재사용하고 10시 이후의 통화 요금 계산은 NightlyDiscountPhone 에서 구현하기로 결정한다.\n이 예제처럼, 상속을 이용해 코드 재사용 하기 위해서는 부모 클래스의 개발자가 세웠던 가정이나 추론 가정을 정확하게 이해해야한다. 이것은 자식 클래스의 작성자가 부모 클래스의 구현 방법에 대한 정확한 지식을 가져야한다는 것을 의미한다.\n따라서 상속은 결합도를 높인다.\n강하게 결합된 Phone 과 NightlyDiscountPhone자식 클래스가 부모 클래스의 구현에 강하게 결합되면 부모 클래스의 변경에 의해 자식 클래스가 영향을 받는다. \n02 취약한 기반 클래스 문제부모 클래스의 변경에 의해 자식 클래스가 영향을 받는 현상을 취약한 기반 클래스 문제라고 한다.\n취약한 기반 클래스 문제는, 자식 클래스가 부모 클래스의 구현 세부 사항에 의존하도록 만들기 때문에\n\n결합도를 높인다. \n캡슐화를 약화 시킨다. \n\n불필요한 인터페이스 상속 문제\n다음 코드를 보자.\n\n123456789Stack&lt;String&gt; stack = new Stack&lt;&gt;();stack.push(\"1st\");stack.push(\"2nd\");stack.push(\"3rd\");stack.add(0, \"4th\");assertEquals(\"4th\", stack.pop()); // 에러\n\n반환값은 3rd 이다. 왜냐하면, Vector 의 add 메서드를 이용해서 스택의 맨 앞에 “4th” 를 추가했기 때문이다.\n문제 원인은, Stack 이 규칙을 무너뜨릴 여지가 있는 위험한 Vector 의 퍼블릭 인터페이스까지도 함께 상속 받았기 때문이다.\n\n다음 코드를 보자.\n\n1234567Properties properties = new Properties();properties.setProperty(\"aaa\", \"C++\");properties.setProperty(\"bbb\", \"Java\");properties.put(\"ccc\", 67);assertEquals(\"C\", properties.getProperty(\"ccc\")); // 에러\n\n“ccc” 를 키로 검색하면 null 이 반환된다. Properties 의 getProperty 메서드가 반환할 값이 String 이 아니면 null 을 반환하도록 구현되어 있기 때문이다. \nHashtable 의 인터페이스에 포함되어 있는 put 메서드를 이용해서 String 타입 이외의 키 값이라도 Properties 에 저장을 한 것이다.\n메서드 오버라이딩의 오작용 문제상속은 코드 재사용을 위해 캡슐화를 희생한다.\n부모 클래스와 자식 클래스의 동시 수정 문제03 Phone 다시 살펴보기추상화에 의존하자부모 클래스와 자식 클래스 모두 추상화에 의존하도록 수정하자\n차이를 메서드로 추출하자변하는 것으로부터 변하지 않는 걸을 분리하자. 변하는 부분을 찾고 이를 캡슐화하자.\n중복 코드를 부모 클래스로 올려라123456789101112131415public abstract class AbstractPhone &#123;    private List&lt;Call&gt; calls = new ArrayList&lt;&gt;();        public Money calculateFee()&#123;        Money result = Money.ZERO;                for(Call calls : calls)&#123;            result = result.plus(calculateCallFee(call));        &#125;                return result;    &#125;     \tabstract protected Money calculateCallFee(Call call);&#125;\n\n1234567891011121314public class Phone extends AbstractPhone &#123;    private Money amount;    private Duration seconds;    public Phone(Money amount, Duration seconds) &#123;        this.amount = amount;        this.seconds = seconds;    &#125;    @Override    protected Money calculateCallFee(Call call) &#123;        return amount.times(call.getDuration().getSeconds() / seconds.getSeconds());    &#125;&#125;\n\n12345678910111213141516171819202122public class NightlyDiscountPhone extends AbstractPhone&#123;    private static final int LATE_NITGHT_HOUR = 22;    private Money nightlyAmount;    private Money regularAmount;    private Duration seconds;    public NightlyDiscountPhone(Money nightlyAmount, Money regularAmount, Duration seconds) &#123;        this.nightlyAmount = nightlyAmount;        this.regularAmount = regularAmount;        this.seconds = seconds;    &#125;    @Override    public Money calculateCallFee(Call call) &#123;        if(call.getFrom().getHour() &gt;= LATE_NITGHT_HOUR)&#123;            return nightlyAmount.times(call.getDuration().getSeconds() / seconds.getSeconds());        &#125;                return regularAmount.times(call.getDuration().getSeconds() / seconds.getSeconds());    &#125;&#125;\n\n추상화가 핵심이다공통 코드를 이동시킨 후에, 각 클래스는 서로 다른 변경 이유를 가진다.\n\nAbstractPhone\n전체 통화 목록을 계산하는 방법이 바뀔 경우에만 변경\n\nPhone\n일반 요금제의 통화 한건을 계산하는 방법이 바뀔 경우에만 변경\n\nNightlyDisoucoutPhone\n심야 할인 요금제의 통화 한건을 계산하는 방법이 바뀔 경우에만 변경\n\n\n그리고, 추상화에 의존함으로써\n\n부모 클래스는 자신의 내부에 구현된 추상 메서드를 호출함으로써 추상화에 의존하고,\n요금 계산과 상위 수준의 정책을 구현하는 AbstractPhone 이 세부적인 요금 계산 로직을 구현하는 Phone 과 NightlyDisoucoutPhone 에 의존하지 않고 그 반대로 의존하기 때문에 의존성 역전 원칙을 지키고,\n새로운 요금제룰 추가하기도 쉽다. AbstractPhone 을 상속받는 클래스를 추가하고 calculateCallFee 메서드만 오버라이딩 하면 된다.\n개방 폐쇄 원칙을 준수한다. 확장에 열려있고 수정에 닫혀 있기 때문이다.\n\n의도를 드러내는 이름 선택하기123public abstract class Phone &#123; ... &#125;public class RegularPhone extends Phone &#123; ... &#125;public class NightlyDiscountPhone extends Phone &#123; ... &#125;\n\n세금 추가하기통화 요금에 세금 부과하는 요구사항 추가해보자.\n12345678910111213141516public abstract class Phone &#123;    private double taxRate;    private List&lt;Call&gt; calls = new ArrayList&lt;&gt;();    public Money calculateFee()&#123;        Money result = Money.ZERO;        for(Call calls : calls)&#123;            result = result.plus(calculateCallFee(call));        &#125;        return result.plus(result.times(taxRate));    &#125;    abstract protected Money calculateCallFee(Call call);&#125;\n\n04 차이에 의한 프로그래밍기존 코드와 다른부분을 추가해서 애플리케이션의 기능을 확장하는 방법을 차이에 의한 프로그래밍이라고 한다. \n차이에 의한 프로그래밍의 목표는 중복 코드를 제거하고 코드를 재사용 하는 것이다.\n객체지향 세계에서 중복 코드 제거하고 코드 재사용하는 가장 유명한 방법은 상속이다. 상속의 오용과 남용은 애플리케이션을 이해하고 확장하기 어렵게 만든다. \n“정말로 필요한 경우에만 상속을 사용해라”\n","dateCreated":"2019-12-22T00:00:00+09:00","dateModified":"2019-12-22T17:38:05+09:00","datePublished":"2019-12-22T00:00:00+09:00","description":"","headline":"[오브젝트] 10장_상속과 코드 재사용","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://kojunhee.github.io/2019/12/22/object-chapter10/"},"publisher":{"@type":"Organization","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg","logo":{"@type":"ImageObject","url":"profile.jpg"}},"url":"https://kojunhee.github.io/2019/12/22/object-chapter10/"}</script>
+    <meta name="description" content="이번 장은, 클래스 재사용을 위해 새로운 클래스를 추가하는 가장 대표적 기법인 상속에 대해 정리한다. 01 상속과 중복 코드DRY 원칙 (Don’t Repeat Yourself)“동일한 지식을 중복하지 마라” 중복 여부를 판단하는 기준은 변경이다. 중복 코드는 변경을 방해한다. 이것이 중복 코드를 제거해야하는 핵심적 이유이다.  중복 코드는 코드를 수정하는">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="[오브젝트] 10장_상속과 코드 재사용">
+<meta property="og:url" content="https://kojunhee.github.io/2019/12/22/object-chapter10/index.html">
+<meta property="og:site_name" content="junhee.ko">
+<meta property="og:description" content="이번 장은, 클래스 재사용을 위해 새로운 클래스를 추가하는 가장 대표적 기법인 상속에 대해 정리한다. 01 상속과 중복 코드DRY 원칙 (Don’t Repeat Yourself)“동일한 지식을 중복하지 마라” 중복 여부를 판단하는 기준은 변경이다. 중복 코드는 변경을 방해한다. 이것이 중복 코드를 제거해야하는 핵심적 이유이다.  중복 코드는 코드를 수정하는">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-12-22T08:38:05.383Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[오브젝트] 10장_상속과 코드 재사용">
+<meta name="twitter:description" content="이번 장은, 클래스 재사용을 위해 새로운 클래스를 추가하는 가장 대표적 기법인 상속에 대해 정리한다. 01 상속과 중복 코드DRY 원칙 (Don’t Repeat Yourself)“동일한 지식을 중복하지 마라” 중복 여부를 판단하는 기준은 변경이다. 중복 코드는 변경을 방해한다. 이것이 중복 코드를 제거해야하는 핵심적 이유이다.  중복 코드는 코드를 수정하는">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://kojunhee.github.io/assets/images/profile.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/all.css">
+    <link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
+    <link rel="stylesheet" href="/assets/css/thumbs.css">
+    <link rel="stylesheet" href="/assets/css/tranquilpeak.css">
+    <!--STYLES END-->
+    
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="2">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">junhee.ko</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="2">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">junhee.ko</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>Always Learning</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/kojunhee" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://facebook.com/kojunheee" target="_blank" rel="noopener" title="Facebook">
+                    
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/junheeko" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="mailto:junheee.ko@gmail.com" target="_blank" rel="noopener" title="Mail">
+                    
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Mail</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="2"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            [오브젝트] 10장_상속과 코드 재사용
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2019-12-22T00:00:00+09:00">
+	
+		    Dec 22, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/object/">Object</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>이번 장은, 클래스 재사용을 위해 새로운 클래스를 추가하는 가장 대표적 기법인 상속에 대해 정리한다.</p>
+<h2 id="01-상속과-중복-코드"><a href="#01-상속과-중복-코드" class="headerlink" title="01 상속과 중복 코드"></a>01 상속과 중복 코드</h2><h5 id="DRY-원칙-Don’t-Repeat-Yourself"><a href="#DRY-원칙-Don’t-Repeat-Yourself" class="headerlink" title="DRY 원칙 (Don’t Repeat Yourself)"></a>DRY 원칙 (Don’t Repeat Yourself)</h5><p>“동일한 지식을 중복하지 마라”</p>
+<p>중복 여부를 판단하는 기준은 변경이다. 중복 코드는 변경을 방해한다. 이것이 중복 코드를 제거해야하는 핵심적 이유이다. </p>
+<p>중복 코드는 코드를 수정하는데 노력을 몇배로 증가시킨다. 왜냐하면,</p>
+<ol>
+<li>어떤 코드가 중복인지 찾아야하고,</li>
+<li>찾아낸 모든 코드를 일관되게 수정해야하고,</li>
+<li>개별적으로 테스트를 다 해야하기 때문이다. </li>
+</ol>
+<h5 id="중복과-변경"><a href="#중복과-변경" class="headerlink" title="중복과 변경"></a>중복과 변경</h5><p>한 달에 한 번씩 가입자별로 전화 요금 계산하는 간단한 애플리케이션을 개발해보자.</p>
+<p>개별 통화 기간을 저장하는 클래스가 필요하다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Call</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> LocalDateTime from; <span class="comment">//통화 시작 시간</span></span><br><span class="line">    <span class="keyword">private</span> LocalDateTime to; <span class="comment">// 통화 종료 시간</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Call</span><span class="params">(LocalDateTime from, LocalDateTime to)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.from = from;</span><br><span class="line">        <span class="keyword">this</span>.to = to;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> Duration <span class="title">getDuration</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Duration.between(from, to);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> LocalDateTime <span class="title">getFrom</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> from;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>전체 통화 목록에 대해 알고 있는 정보 전문가에게 <code>요금 계산 책임</code> 을 할당해야한다. </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Phone</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Money amount;</span><br><span class="line">    <span class="keyword">private</span> Duration seconds;</span><br><span class="line">    <span class="keyword">private</span> List&lt;Call&gt; calls = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Phone</span><span class="params">(Money amount, Duration seconds)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.amount = amount;</span><br><span class="line">        <span class="keyword">this</span>.seconds = seconds;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">call</span><span class="params">(Call call)</span></span>&#123;</span><br><span class="line">        calls.add(call);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Call&gt; <span class="title">getCalls</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> calls;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">getAmount</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> amount;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Duration <span class="title">getSeconds</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> seconds;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">calculateFee</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Money result = Money.ZERO;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> (Call call : calls)&#123;</span><br><span class="line">            result = result.plus(amount.times(call.getDuration().getSeconds() / seconds.getSeconds()));</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>그런데, <code>심야 할인 요금제</code> 라는 새로운 요금 방식을 추가해야하는 요구사항이 접수됐다. </p>
+<p>Phone 코드를 복사해서 새로운 클래스를 만들어보자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NightlyDiscountPhone</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> LATE_NITGHT_HOUR = <span class="number">22</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> Money nightAmount;</span><br><span class="line">    <span class="keyword">private</span> Money regularAmount;</span><br><span class="line">    <span class="keyword">private</span> Duration seconds;</span><br><span class="line">    <span class="keyword">private</span> List&lt;Call&gt; calls = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">NightlyDiscountPhone</span><span class="params">(Money nightAmount, Money regularAmount, Duration seconds)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.nightAmount = nightAmount;</span><br><span class="line">        <span class="keyword">this</span>.regularAmount = regularAmount;</span><br><span class="line">        <span class="keyword">this</span>.seconds = seconds;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">calculateFee</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Money result = Money.ZERO;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (Call call : calls)&#123;</span><br><span class="line">            <span class="keyword">if</span>(call.getFrom().getHour() &gt;= LATE_NITGHT_HOUR)&#123;</span><br><span class="line">                result = result.plus(</span><br><span class="line">                    nightAmount.times(call.getDuration().getSeconds() / seconds.getSeconds())</span><br><span class="line">                );</span><br><span class="line">            &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                result = result.plus(</span><br><span class="line">                    regularAmount.times(call.getDuration().getSeconds() / seconds.getSeconds())</span><br><span class="line">                );</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>통화 요금에 부과할 세금</code>을 계산하는 요구사항을 추가해보자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Phone</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">double</span> taxRate;</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">      </span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">calculateFee</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Money result = Money.ZERO;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (Call call : calls)&#123;</span><br><span class="line">            result = result.plus(amount.times(call.getDuration().getSeconds() / seconds.getSeconds()));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result.plus(result.times(taxRate);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NightlyDiscountPhone</span> </span>&#123;</span><br><span class="line">	  ...</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">double</span> taxRate;</span><br><span class="line">	  ...</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">calculateFee</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Money result = Money.ZERO;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (Call call : calls)&#123;</span><br><span class="line">            <span class="keyword">if</span>(call.getFrom().getHour() &gt;= LATE_NITGHT_HOUR)&#123;</span><br><span class="line">                result = result.plus(</span><br><span class="line">                    nightAmount.times(call.getDuration().getSeconds() / seconds.getSeconds())</span><br><span class="line">                );</span><br><span class="line">            &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                result = result.plus(</span><br><span class="line">                    regularAmount.times(call.getDuration().getSeconds() / seconds.getSeconds())</span><br><span class="line">                );</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result.minus(result.times(taxRate));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이처럼, 많은 코드 속에서 어떤 코드가 중복인지리 파악하는 것은 쉬운 일이 아니다.</p>
+<p>두 클래스 사이의 중복 제거 방법으로, 클래스를 하나로 합치고 요금제를 구분하는 <code>타입 코드</code>를 추가하는 방법이 있다. 타입 코드 값에 따라 로직을 분기시키는 것이다. 하지만 이 방법은 낮은 응집도와 높은 결합도의 문제가 있다.</p>
+<h5 id="상속을-이용해-중복-코드-제거하기"><a href="#상속을-이용해-중복-코드-제거하기" class="headerlink" title="상속을 이용해 중복 코드 제거하기"></a>상속을 이용해 중복 코드 제거하기</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NightlyDiscountPhone</span> <span class="keyword">extends</span> <span class="title">Phone</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">calculateFee</span><span class="params">()</span></span>&#123;</span><br><span class="line">      ...</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>10시 이전의 통화요금 계산하는 경우는 Phone 에 구현된 로직을 재사용하고 10시 이후의 통화 요금 계산은 NightlyDiscountPhone 에서 구현하기로 결정한다.</p>
+<p>이 예제처럼, 상속을 이용해 코드 재사용 하기 위해서는 부모 클래스의 개발자가 세웠던 가정이나 추론 가정을 정확하게 이해해야한다. 이것은 자식 클래스의 작성자가 부모 클래스의 구현 방법에 대한 정확한 지식을 가져야한다는 것을 의미한다.</p>
+<p>따라서 상속은 결합도를 높인다.</p>
+<h5 id="강하게-결합된-Phone-과-NightlyDiscountPhone"><a href="#강하게-결합된-Phone-과-NightlyDiscountPhone" class="headerlink" title="강하게 결합된 Phone 과 NightlyDiscountPhone"></a>강하게 결합된 Phone 과 NightlyDiscountPhone</h5><p>자식 클래스가 부모 클래스의 구현에 강하게 결합되면 부모 클래스의 변경에 의해 자식 클래스가 영향을 받는다. </p>
+<h2 id="02-취약한-기반-클래스-문제"><a href="#02-취약한-기반-클래스-문제" class="headerlink" title="02 취약한 기반 클래스 문제"></a>02 취약한 기반 클래스 문제</h2><p>부모 클래스의 변경에 의해 자식 클래스가 영향을 받는 현상을 취약한 기반 클래스 문제라고 한다.</p>
+<p>취약한 기반 클래스 문제는, 자식 클래스가 부모 클래스의 구현 세부 사항에 의존하도록 만들기 때문에</p>
+<ol>
+<li>결합도를 높인다. </li>
+<li>캡슐화를 약화 시킨다. </li>
+</ol>
+<h5 id="불필요한-인터페이스-상속-문제"><a href="#불필요한-인터페이스-상속-문제" class="headerlink" title="불필요한 인터페이스 상속 문제"></a>불필요한 인터페이스 상속 문제</h5><ol>
+<li>다음 코드를 보자.</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Stack&lt;String&gt; stack = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line"></span><br><span class="line">stack.push(<span class="string">"1st"</span>);</span><br><span class="line">stack.push(<span class="string">"2nd"</span>);</span><br><span class="line">stack.push(<span class="string">"3rd"</span>);</span><br><span class="line"></span><br><span class="line">stack.add(<span class="number">0</span>, <span class="string">"4th"</span>);</span><br><span class="line"></span><br><span class="line">assertEquals(<span class="string">"4th"</span>, stack.pop()); <span class="comment">// 에러</span></span><br></pre></td></tr></table></figure>
+
+<p>반환값은 3rd 이다. 왜냐하면, Vector 의 add 메서드를 이용해서 스택의 맨 앞에 “4th” 를 추가했기 때문이다.</p>
+<p>문제 원인은, Stack 이 규칙을 무너뜨릴 여지가 있는 위험한 Vector 의 퍼블릭 인터페이스까지도 함께 상속 받았기 때문이다.</p>
+<ol start="2">
+<li>다음 코드를 보자.</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Properties properties = <span class="keyword">new</span> Properties();</span><br><span class="line">properties.setProperty(<span class="string">"aaa"</span>, <span class="string">"C++"</span>);</span><br><span class="line">properties.setProperty(<span class="string">"bbb"</span>, <span class="string">"Java"</span>);</span><br><span class="line"></span><br><span class="line">properties.put(<span class="string">"ccc"</span>, <span class="number">67</span>);</span><br><span class="line"></span><br><span class="line">assertEquals(<span class="string">"C"</span>, properties.getProperty(<span class="string">"ccc"</span>)); <span class="comment">// 에러</span></span><br></pre></td></tr></table></figure>
+
+<p>“ccc” 를 키로 검색하면 null 이 반환된다. Properties 의 getProperty 메서드가 반환할 값이 String 이 아니면 null 을 반환하도록 구현되어 있기 때문이다. </p>
+<p>Hashtable 의 인터페이스에 포함되어 있는 put 메서드를 이용해서 String 타입 이외의 키 값이라도 Properties 에 저장을 한 것이다.</p>
+<h5 id="메서드-오버라이딩의-오작용-문제"><a href="#메서드-오버라이딩의-오작용-문제" class="headerlink" title="메서드 오버라이딩의 오작용 문제"></a>메서드 오버라이딩의 오작용 문제</h5><p>상속은 코드 재사용을 위해 캡슐화를 희생한다.</p>
+<h5 id="부모-클래스와-자식-클래스의-동시-수정-문제"><a href="#부모-클래스와-자식-클래스의-동시-수정-문제" class="headerlink" title="부모 클래스와 자식 클래스의 동시 수정 문제"></a>부모 클래스와 자식 클래스의 동시 수정 문제</h5><h2 id="03-Phone-다시-살펴보기"><a href="#03-Phone-다시-살펴보기" class="headerlink" title="03 Phone 다시 살펴보기"></a>03 Phone 다시 살펴보기</h2><h5 id="추상화에-의존하자"><a href="#추상화에-의존하자" class="headerlink" title="추상화에 의존하자"></a>추상화에 의존하자</h5><p>부모 클래스와 자식 클래스 모두 추상화에 의존하도록 수정하자</p>
+<h5 id="차이를-메서드로-추출하자"><a href="#차이를-메서드로-추출하자" class="headerlink" title="차이를 메서드로 추출하자"></a>차이를 메서드로 추출하자</h5><p>변하는 것으로부터 변하지 않는 걸을 분리하자. 변하는 부분을 찾고 이를 캡슐화하자.</p>
+<h5 id="중복-코드를-부모-클래스로-올려라"><a href="#중복-코드를-부모-클래스로-올려라" class="headerlink" title="중복 코드를 부모 클래스로 올려라"></a>중복 코드를 부모 클래스로 올려라</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractPhone</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;Call&gt; calls = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">calculateFee</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Money result = Money.ZERO;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(Call calls : calls)&#123;</span><br><span class="line">            result = result.plus(calculateCallFee(call));</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">   	<span class="function"><span class="keyword">abstract</span> <span class="keyword">protected</span> Money <span class="title">calculateCallFee</span><span class="params">(Call call)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Phone</span> <span class="keyword">extends</span> <span class="title">AbstractPhone</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Money amount;</span><br><span class="line">    <span class="keyword">private</span> Duration seconds;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Phone</span><span class="params">(Money amount, Duration seconds)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.amount = amount;</span><br><span class="line">        <span class="keyword">this</span>.seconds = seconds;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Money <span class="title">calculateCallFee</span><span class="params">(Call call)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> amount.times(call.getDuration().getSeconds() / seconds.getSeconds());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NightlyDiscountPhone</span> <span class="keyword">extends</span> <span class="title">AbstractPhone</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> LATE_NITGHT_HOUR = <span class="number">22</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Money nightlyAmount;</span><br><span class="line">    <span class="keyword">private</span> Money regularAmount;</span><br><span class="line">    <span class="keyword">private</span> Duration seconds;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">NightlyDiscountPhone</span><span class="params">(Money nightlyAmount, Money regularAmount, Duration seconds)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.nightlyAmount = nightlyAmount;</span><br><span class="line">        <span class="keyword">this</span>.regularAmount = regularAmount;</span><br><span class="line">        <span class="keyword">this</span>.seconds = seconds;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">calculateCallFee</span><span class="params">(Call call)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(call.getFrom().getHour() &gt;= LATE_NITGHT_HOUR)&#123;</span><br><span class="line">            <span class="keyword">return</span> nightlyAmount.times(call.getDuration().getSeconds() / seconds.getSeconds());</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> regularAmount.times(call.getDuration().getSeconds() / seconds.getSeconds());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="추상화가-핵심이다"><a href="#추상화가-핵심이다" class="headerlink" title="추상화가 핵심이다"></a>추상화가 핵심이다</h5><p>공통 코드를 이동시킨 후에, 각 클래스는 서로 다른 변경 이유를 가진다.</p>
+<ol>
+<li><p>AbstractPhone</p>
+<p>전체 통화 목록을 계산하는 방법이 바뀔 경우에만 변경</p>
+</li>
+<li><p>Phone</p>
+<p>일반 요금제의 통화 한건을 계산하는 방법이 바뀔 경우에만 변경</p>
+</li>
+<li><p>NightlyDisoucoutPhone</p>
+<p>심야 할인 요금제의 통화 한건을 계산하는 방법이 바뀔 경우에만 변경</p>
+</li>
+</ol>
+<p>그리고, 추상화에 의존함으로써</p>
+<ol>
+<li>부모 클래스는 자신의 내부에 구현된 추상 메서드를 호출함으로써 추상화에 의존하고,</li>
+<li>요금 계산과 상위 수준의 정책을 구현하는 AbstractPhone 이 세부적인 요금 계산 로직을 구현하는 Phone 과 NightlyDisoucoutPhone 에 의존하지 않고 그 반대로 의존하기 때문에 의존성 역전 원칙을 지키고,</li>
+<li>새로운 요금제룰 추가하기도 쉽다. AbstractPhone 을 상속받는 클래스를 추가하고 calculateCallFee 메서드만 오버라이딩 하면 된다.</li>
+<li>개방 폐쇄 원칙을 준수한다. 확장에 열려있고 수정에 닫혀 있기 때문이다.</li>
+</ol>
+<h5 id="의도를-드러내는-이름-선택하기"><a href="#의도를-드러내는-이름-선택하기" class="headerlink" title="의도를 드러내는 이름 선택하기"></a>의도를 드러내는 이름 선택하기</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Phone</span> </span>&#123; ... &#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RegularPhone</span> <span class="keyword">extends</span> <span class="title">Phone</span> </span>&#123; ... &#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NightlyDiscountPhone</span> <span class="keyword">extends</span> <span class="title">Phone</span> </span>&#123; ... &#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="세금-추가하기"><a href="#세금-추가하기" class="headerlink" title="세금 추가하기"></a>세금 추가하기</h5><p>통화 요금에 세금 부과하는 요구사항 추가해보자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Phone</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">double</span> taxRate;</span><br><span class="line">    <span class="keyword">private</span> List&lt;Call&gt; calls = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">calculateFee</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Money result = Money.ZERO;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(Call calls : calls)&#123;</span><br><span class="line">            result = result.plus(calculateCallFee(call));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result.plus(result.times(taxRate));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">abstract</span> <span class="keyword">protected</span> Money <span class="title">calculateCallFee</span><span class="params">(Call call)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="04-차이에-의한-프로그래밍"><a href="#04-차이에-의한-프로그래밍" class="headerlink" title="04 차이에 의한 프로그래밍"></a>04 차이에 의한 프로그래밍</h2><p>기존 코드와 다른부분을 추가해서 애플리케이션의 기능을 확장하는 방법을 차이에 의한 프로그래밍이라고 한다. </p>
+<p>차이에 의한 프로그래밍의 목표는 중복 코드를 제거하고 코드를 재사용 하는 것이다.</p>
+<p>객체지향 세계에서 중복 코드 제거하고 코드 재사용하는 가장 유명한 방법은 상속이다. 상속의 오용과 남용은 애플리케이션을 이해하고 확장하기 어렵게 만든다. </p>
+<p>“정말로 필요한 경우에만 상속을 사용해라”</p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/12/15/object-chapter9/" data-tooltip="[오브젝트] 9장_유연한 설계" aria-label="NEXT: [오브젝트] 9장_유연한 설계">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2019/12/22/object-chapter10/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 junhee.ko. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="2">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/12/15/object-chapter9/" data-tooltip="[오브젝트] 9장_유연한 설계" aria-label="NEXT: [오브젝트] 9장_유연한 설계">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2019/12/22/object-chapter10/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="2">
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2019/12/22/object-chapter10/">
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">junhee.ko</h4>
+        
+            <div id="about-card-bio"><p>Always Learning</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Engineer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Incheon
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/jquery.js"></script>
+<script src="/assets/js/jquery.fancybox.js"></script>
+<script src="/assets/js/thumbs.js"></script>
+<script src="/assets/js/tranquilpeak.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://kojunhee.github.io/2019/12/22/object-chapter10/';
+                 
+                    this.page.identifier = '2019/12/22/object-chapter10/';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'junheeko';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>
