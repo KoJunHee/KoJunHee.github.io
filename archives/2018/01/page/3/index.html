@@ -313,6 +313,75 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2018/01/07/retrofit/">
+                            Retrofit
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-01-07T00:00:00+09:00">
+	
+		    Jan 07, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/android/">Android</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h5 id="Retrofit이란"><a href="#Retrofit이란" class="headerlink" title="Retrofit이란?"></a>Retrofit이란?</h5><p>HTTP API를 자바 인터페이스 형태로 사용할 수 있도록 만들어 놓은 라이브러리입니다.</p>
+<h5 id="retrofit의-특징은"><a href="#retrofit의-특징은" class="headerlink" title="retrofit의 특징은?"></a>retrofit의 특징은?</h5><ol>
+<li><p>Rest API에서 사용하는 CURD 기능을 모두 제공합니다. </p>
+<p>POST (create) , PUT (update), GET (read), DELETE (delete)</p>
+</li>
+<li><p>annotation(@) 을 활용하여 손쉽게 통신 코드를 작성할 수 있습니다.</p>
+</li>
+</ol>
+<h5 id="어떻게-사용하나요"><a href="#어떻게-사용하나요" class="headerlink" title="어떻게 사용하나요 ?"></a>어떻게 사용하나요 ?</h5><ol>
+<li><p>build.gradle 에 추가합니다</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">compile <span class="string">'com.squareup.retrofit2:retrofit:(insert latest version)'</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>interface를 정의합니다</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">GitHubService</span> </span>&#123;</span><br><span class="line">	<span class="meta">@GET</span>(<span class="string">"/users/&#123;user&#125;/repos"</span>)</span><br><span class="line">	Call&lt;List&lt;Repo&gt;&gt; listRepos(<span class="meta">@Path</span>(<span class="string">"user"</span>) String user);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>이 interface class를 retrofit에 초기화합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Retrofit retrofit = <span class="keyword">new</span> Retrofit.Builder()</span><br><span class="line">  .baseUrl(<span class="string">"https://api.github.com"</span>)</span><br><span class="line">  .build();</span><br><span class="line"></span><br><span class="line">GitHubService service = retrofit.create(GitHubService.class);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="http://devflow.github.io/retrofit-kr/" target="_blank" rel="noopener">http://devflow.github.io/retrofit-kr/</a>    </p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/01/07/retrofit/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2018/01/07/activity life cycle/">
                             activity life cycle
                         </a>
@@ -493,75 +562,6 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/01/07/retrofit/">
-                            Retrofit
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-01-07T00:00:00+09:00">
-	
-		    Jan 07, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/android/">Android</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h5 id="Retrofit이란"><a href="#Retrofit이란" class="headerlink" title="Retrofit이란?"></a>Retrofit이란?</h5><p>HTTP API를 자바 인터페이스 형태로 사용할 수 있도록 만들어 놓은 라이브러리입니다.</p>
-<h5 id="retrofit의-특징은"><a href="#retrofit의-특징은" class="headerlink" title="retrofit의 특징은?"></a>retrofit의 특징은?</h5><ol>
-<li><p>Rest API에서 사용하는 CURD 기능을 모두 제공합니다. </p>
-<p>POST (create) , PUT (update), GET (read), DELETE (delete)</p>
-</li>
-<li><p>annotation(@) 을 활용하여 손쉽게 통신 코드를 작성할 수 있습니다.</p>
-</li>
-</ol>
-<h5 id="어떻게-사용하나요"><a href="#어떻게-사용하나요" class="headerlink" title="어떻게 사용하나요 ?"></a>어떻게 사용하나요 ?</h5><ol>
-<li><p>build.gradle 에 추가합니다</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">compile <span class="string">'com.squareup.retrofit2:retrofit:(insert latest version)'</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>interface를 정의합니다</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">GitHubService</span> </span>&#123;</span><br><span class="line">	<span class="meta">@GET</span>(<span class="string">"/users/&#123;user&#125;/repos"</span>)</span><br><span class="line">	Call&lt;List&lt;Repo&gt;&gt; listRepos(<span class="meta">@Path</span>(<span class="string">"user"</span>) String user);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>이 interface class를 retrofit에 초기화합니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Retrofit retrofit = <span class="keyword">new</span> Retrofit.Builder()</span><br><span class="line">  .baseUrl(<span class="string">"https://api.github.com"</span>)</span><br><span class="line">  .build();</span><br><span class="line"></span><br><span class="line">GitHubService service = retrofit.create(GitHubService.class);</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="http://devflow.github.io/retrofit-kr/" target="_blank" rel="noopener">http://devflow.github.io/retrofit-kr/</a>    </p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/01/07/retrofit/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
                         <a class="link-unstyled" href="/2018/01/07/ViewPager/">
                             ViewPager
                         </a>
@@ -612,82 +612,6 @@
                     
                         <p>
                             <a href="/2018/01/07/ViewPager/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/01/06/개근상/">
-                            개근상
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-01-06T00:00:00+09:00">
-	
-		    Jan 06, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p><a href="https://www.acmicpc.net/problem/1563" target="_blank" rel="noopener">https://www.acmicpc.net/problem/1563</a></p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
-<li>어렵다</li>
-<li>D[i][j][k] </li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">i일, 지각 j번, 연속 결석 k번</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>오늘 출석 </p>
-<ul>
-<li>전날에 출석, 지각, 결석 중에 하나</li>
-<li>D[i][j][0] += D[i-1][j][k] (0 ≤ k ≤ 2)</li>
-</ul>
-</li>
-<li><p>오늘 지각</p>
-<ul>
-<li>j 가 1</li>
-<li>D[i][1][0] += d[i-1][0][k]</li>
-</ul>
-</li>
-<li><p>오늘 결석</p>
-<ul>
-<li>k &lt; 2</li>
-<li>D[i][j][k+1] += D[i-1][j][k]</li>
-</ul>
-</li>
-</ul>
-<p>​     </p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/01/06/개근상/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -809,6 +733,82 @@
                     
                         <p>
                             <a href="/2018/01/06/functional programming/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2018/01/06/개근상/">
+                            개근상
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-01-06T00:00:00+09:00">
+	
+		    Jan 06, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p><a href="https://www.acmicpc.net/problem/1563" target="_blank" rel="noopener">https://www.acmicpc.net/problem/1563</a></p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
+<li>어렵다</li>
+<li>D[i][j][k] </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">i일, 지각 j번, 연속 결석 k번</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>오늘 출석 </p>
+<ul>
+<li>전날에 출석, 지각, 결석 중에 하나</li>
+<li>D[i][j][0] += D[i-1][j][k] (0 ≤ k ≤ 2)</li>
+</ul>
+</li>
+<li><p>오늘 지각</p>
+<ul>
+<li>j 가 1</li>
+<li>D[i][1][0] += d[i-1][0][k]</li>
+</ul>
+</li>
+<li><p>오늘 결석</p>
+<ul>
+<li>k &lt; 2</li>
+<li>D[i][j][k+1] += D[i-1][j][k]</li>
+</ul>
+</li>
+</ul>
+<p>​     </p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/01/06/개근상/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>

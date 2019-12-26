@@ -193,6 +193,169 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2019/06/05/web-application/">
+                            [자바 ORM 표준 JPA 프로그래밍] 11장_웹 어플리케이션 제작
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-06-05T00:00:00+09:00">
+	
+		    Jun 05, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/jpa/">JPA</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p>11장은 Spring Framework 와 JPA 를 사용해서 Web Application 을 만들어보는 장입니다. 진행 순서는 다음과 같습니다.</p>
+<ol>
+<li>프로젝트 환경설정</li>
+<li>도메인 모델과 테이블 설계</li>
+<li>기능 구현</li>
+</ol>
+<p>코드 위주의 챕터이기 때문에, 핵심 키워드 위주로 정리하려고 합니다.</p>
+<h4 id="11-1-프로젝트-환경설정"><a href="#11-1-프로젝트-환경설정" class="headerlink" title="11.1 프로젝트 환경설정"></a>11.1 프로젝트 환경설정</h4><h4 id="11-2-도메인-모델과-테이블-설계"><a href="#11-2-도메인-모델과-테이블-설계" class="headerlink" title="11.2 도메인 모델과 테이블 설계"></a>11.2 도메인 모델과 테이블 설계</h4><h5 id="11-2-1-요구사항-분석"><a href="#11-2-1-요구사항-분석" class="headerlink" title="11.2.1 요구사항 분석"></a>11.2.1 요구사항 분석</h5><ul>
+<li><p>회원 기능</p>
+<ul>
+<li>등록</li>
+<li>조회</li>
+</ul>
+</li>
+<li><p>상품 기능</p>
+<ul>
+<li>등록</li>
+<li>수정</li>
+<li>조회</li>
+</ul>
+</li>
+<li><p>주문</p>
+<ul>
+<li>주문</li>
+<li>조회</li>
+<li>취소</li>
+</ul>
+</li>
+<li><p>기타</p>
+<ul>
+<li>상품 종류 : 도서 / 음반 / 영화</li>
+<li>상품은 카테고리로 구분 가능</li>
+<li>상품 주문 시 배송 정보 입력 가능</li>
+</ul>
+</li>
+</ul>
+<h5 id="11-2-2-도메인-모델-설계"><a href="#11-2-2-도메인-모델-설계" class="headerlink" title="11.2.2 도메인 모델 설계"></a>11.2.2 도메인 모델 설계</h5><ul>
+<li>회원 / 주문 / 상품<ul>
+<li>주문과 상품은 다대다 관계<ul>
+<li>다대다 관계는 관계형 데이터베이스는 물론이고, 엔티티에서도 거의 사용하지 않음</li>
+<li>주문 상품이라는 엔티티를 추가해서 다다대 관계를 일대다, 다대일 관계로 풀어냄</li>
+</ul>
+</li>
+<li>상품 분류<ul>
+<li>상품은 도서, 음반, 영화로 구분되는데, 상품이라는 공통 속성을 사용하므로 상속 구조로 표현</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="11-2-3-테이블-설계"><a href="#11-2-3-테이블-설계" class="headerlink" title="11.2.3 테이블 설계"></a>11.2.3 테이블 설계</h5><h5 id="11-2-4-연관-관계-정리"><a href="#11-2-4-연관-관계-정리" class="headerlink" title="11.2.4 연관 관계 정리"></a>11.2.4 연관 관계 정리</h5><ul>
+<li>회원과 주문<ul>
+<li>일대다 양방향 관계</li>
+<li>연관 관계의 주인을 정해야함. 외래키가 있는 주문이 연관 관계의 주인.</li>
+</ul>
+</li>
+<li>주문 상품과 주문<ul>
+<li>다대일 양방향 관계</li>
+<li>주문 상품이 연관관계의 주인</li>
+</ul>
+</li>
+<li>주문 상품과 상품<ul>
+<li>일대일 단방향 관계</li>
+</ul>
+</li>
+<li>주문과 배송<ul>
+<li>일대일 양방향 관계</li>
+</ul>
+</li>
+<li>카테고리와 상품<ul>
+<li>@ManyToMany</li>
+</ul>
+</li>
+</ul>
+<h5 id="11-2-5-엔티티-클래스"><a href="#11-2-5-엔티티-클래스" class="headerlink" title="11.2.5 엔티티 클래스"></a>11.2.5 엔티티 클래스</h5><h4 id="11-3-애플리케이션-구현"><a href="#11-3-애플리케이션-구현" class="headerlink" title="11.3 애플리케이션 구현"></a>11.3 애플리케이션 구현</h4><h5 id="11-3-1-개발-방법"><a href="#11-3-1-개발-방법" class="headerlink" title="11.3.1 개발 방법"></a>11.3.1 개발 방법</h5><ul>
+<li>Controller<ul>
+<li>MVC 의 컨트롤러가 모여있는 곳</li>
+<li>서비스 계층을 호출하고 결과를 뷰에 전달</li>
+</ul>
+</li>
+<li>Service<ul>
+<li>비즈니스 로직이 있고 트렌젝션을 시작</li>
+<li>데이터 접근 계층인 Repository를 호출</li>
+</ul>
+</li>
+<li>Repository<ul>
+<li>JPA 를 직접 사용하는 곳</li>
+<li>Entity Manager 를 사용해서 Entity 를 저장하고 조회</li>
+</ul>
+</li>
+<li>Domain<ul>
+<li>엔티티가 모여 있는 계층</li>
+<li>모든 계층에서 사용</li>
+</ul>
+</li>
+</ul>
+<h5 id="11-3-2-회원-기능"><a href="#11-3-2-회원-기능" class="headerlink" title="11.3.2 회원 기능"></a>11.3.2 회원 기능</h5><p>순수 자바 환경에셔는 엔티티 메니저 팩토리에서 엔티티 메니저를 직접 생성해서 사용했지만, 스프링이나 J2EE 컨테이너를 사용하면 컨테이너가 엔티티 메니저를 관리하고 제공합니다. 그래서, 엔티티 메니저 팩토리에서 엔티티 메니저를 직접 생성해서 사용하지 않고, 컨테이너가 제공하는 엔티티 메니저를 사용합니다.</p>
+<p>@PersistenceContext 는 컨테이너가 관리하는 엔티티 메니저를 주입하는 Annotation 입니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@PersistenceContext</span></span><br><span class="line">EntityManager em;</span><br></pre></td></tr></table></figure>
+
+<h5 id="11-3-3-상품-기능"><a href="#11-3-3-상품-기능" class="headerlink" title="11.3.3 상품 기능"></a>11.3.3 상품 기능</h5><h5 id="11-3-4-주문-기능"><a href="#11-3-4-주문-기능" class="headerlink" title="11.3.4 주문 기능"></a>11.3.4 주문 기능</h5><p>주문 서비스의 주문과 주문 취소 메소드를 보면 비즈니스 로직 대부분이 엔티티에 있습니다. 서비스 계층은 단순히 엔티티에 필요한 요청을 위임하는 역할을 합니다. 이처럼, 엔티티가 비즈니로스 로직을 가지고 객체지향의 특성을 활용하는 것을 도메인 모델 패턴이라고 합니다.</p>
+<p>반대로, 엔티티에는 비즈니스 로직이 거의 없고 서비스 계층에서 대부분의 비즈니스 로직을 처리하는 것을 트랜잭션 스크립트 패턴이라고 합니다. </p>
+<h5 id="11-3-5-웹-계층-구현"><a href="#11-3-5-웹-계층-구현" class="headerlink" title="11.3.5 웹 계층 구현"></a>11.3.5 웹 계층 구현</h5><p>준영속 엔티티를 수정하는 방법은 2가지입니다.</p>
+<ul>
+<li>변경 감지 기능 사용</li>
+<li>병합 사용</li>
+</ul>
+<p>변경 감지 기능을 사용하는 방법은, 영속성 컨텍스트에서 엔티티를 다시 조회한 후에 데이터를 수정하는 방법입니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="comment">//itemParam : Parameter 로 넘어온 준영속 상태의 엔티티</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">update</span><span class="params">(Item itemParam)</span></span>&#123;</span><br><span class="line">  <span class="comment">//같은 엔티티를 조회</span></span><br><span class="line">  Item findItem = em.find(Item.class, itemParam.getId());</span><br><span class="line">  </span><br><span class="line">  findItem.setPrice(itemParam.getPrice()); <span class="comment">//데이터 수정</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>위 코드처럼, 트렌젝션 안에서 준영속 엔티티의 식별자로 엔티티를 다시 조회하면, 영속 상태의 엔티티를 얻을 수 있습니다. 이렇게 영속 상태인 엔티티의 값을 파라미터로 넘어온 준영속 사앹의 엔티티 값으로 변경하면 됩니다. 이렇게 하면, 이후 트렌젝션이 커밋될때 변경감지 기능이 동작해서 데이터베이스에 수정사항이 반영됩니다.</p>
+<p>병합은 파라미터로 넘긴 준영속 엔티티의 식별자 값으로 영속 엔티티를 조회하고, 영속 엔티티의 값을 준영속 엔티티의 값으로 채워넣습니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="comment">//itemParam : Parameter 로 넘어온 준영속 상태의 엔티티</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">update</span><span class="params">(Item itemParam)</span></span>&#123;</span><br><span class="line">  Item mergeItem = em.merge(itemParam);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>변경 감지 기능을 사용하면, 원하는 속성만 선택해서 변경할 수 있지만, 병합을 사용하면 모든 속성이 변경됩니다.</p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2019/06/05/web-application/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2019/04/21/spring-data-jpa/">
                             [자바 ORM 표준 JPA 프로그래밍] 12장_스프링 데이터 JPA
                         </a>
@@ -1579,81 +1742,6 @@
                     
                         <p>
                             <a href="/2019/03/20/entity mapping/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2019/03/18/JPA Simple Test/">
-                            JPA Simple Test
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-03-18T00:00:00+09:00">
-	
-		    Mar 18, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/jpa/">JPA</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p>이번 포스팅에서는 JPA를 이용해 객체를 Database 에 저장하는 Test를 하고자 합니다. Database는 Docker 를 통해 Postgres를 사용합니다.</p>
-<h4 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h4><p>Docker는 공식 홈페이지에서 쉽게 설치할 수 있습니다 : <a href="https://docs.docker.com/docker-for-mac/install/" target="_blank" rel="noopener">https://docs.docker.com/docker-for-mac/install/</a> </p>
-<p>Docker 를 설치하고 다음 명령어를 통해 Postgres Container를 띄웁니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -p <span class="number">5432</span>:<span class="number">5432</span> -e POSTGRES_PASSWORD=<span class="number">1234</span> -e POSTGRES_USER=jko -e POSTGRES_DB=springdata --name postgres_boot -d postgres</span><br></pre></td></tr></table></figure>
-
-<p>Postgres Bash에 붙습니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -i -t postgres_boot bash</span><br></pre></td></tr></table></figure>
-
-<p>postgres 계정으로 springdata 데이터베이스에 접근합니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">su - postgres</span><br><span class="line">psql springdata</span><br></pre></td></tr></table></figure>
-
-<p>Account 테이블을 생성합니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">CREATE TABLE <span class="title">ACCOUNT</span> <span class="params">(id <span class="keyword">int</span>, username varchar(<span class="number">255</span>)</span>, password <span class="title">varchar</span><span class="params">(<span class="number">255</span>)</span>)</span>;</span><br></pre></td></tr></table></figure>
-
-<h4 id="의존성-추가"><a href="#의존성-추가" class="headerlink" title="의존성 추가"></a>의존성 추가</h4><p>JPA를 사용하기 위한 의존성과 Postgresql 을 사용하기 위한 의존성을 추가합니다.</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;org.postgresql&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;postgresql&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
-
-<h4 id="설정"><a href="#설정" class="headerlink" title="설정"></a>설정</h4><p>Database 연결을 위한 정보를 입력하고, Database Schema를 실행시마다 새로 생성되게 (ddl-auto=create) 설정합니다. 그리고, non_contextual_create=true 를 설정해야 어플리케이션 실행시 발생하는 postgres 에러를 해결할 수 있습니다. </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">spring.datasource.url=jdbc:postgresql:<span class="comment">//localhost:5432/springdata</span></span><br><span class="line">spring.datasource.username=jko</span><br><span class="line">spring.datasource.password=<span class="number">1234</span></span><br><span class="line"></span><br><span class="line">spring.jpa.hibernate.ddl-auto=create</span><br><span class="line">spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=<span class="keyword">true</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="Account"><a href="#Account" class="headerlink" title="Account"></a>Account</h4><p>Account Class를 다음과 같이 정의합니다. @Entity 에 이름을 따로 정하지 않으면 Class의 이름이 Table의 이름으로 매칭됩니다. 그리고, 각 필드 (id, username, password) 에는 @Column 이 생략되어 있습니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> jko.jpatest;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.persistence.Entity;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.GeneratedValue;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.Id;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Account</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Id</span></span><br><span class="line">    <span class="meta">@GeneratedValue</span></span><br><span class="line">    <span class="keyword">private</span> Long id;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String username;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String password;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Long <span class="title">getId</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setId</span><span class="params">(Long id)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.id = id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getUsername</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> username;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUsername</span><span class="params">(String username)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.username = username;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getPassword</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> password;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPassword</span><span class="params">(String password)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.password = password;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="JpaRunner"><a href="#JpaRunner" class="headerlink" title="JpaRunner"></a>JpaRunner</h4><p>Database 에 Insert Query 를 날리기 위해 JPA api 를 사용할 수도 있고, Hibernate api 를 사용할 수 도 있습니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> jko.jpatest;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.hibernate.Session;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.ApplicationArguments;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.ApplicationRunner;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"><span class="keyword">import</span> org.springframework.transaction.annotation.Transactional;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.persistence.EntityManager;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.PersistenceContext;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JpaRunner</span> <span class="keyword">implements</span> <span class="title">ApplicationRunner</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@PersistenceContext</span></span><br><span class="line">    EntityManager entityManager;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">(ApplicationArguments args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"></span><br><span class="line">        Account account = <span class="keyword">new</span> Account();</span><br><span class="line">        account.setUsername(<span class="string">"jko"</span>);</span><br><span class="line">        account.setPassword(<span class="string">"123"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//        1. jpa api</span></span><br><span class="line"><span class="comment">//        entityManager.persist(account);</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//		2. hibernate api</span></span><br><span class="line">        Session session = entityManager.unwrap(Session.class);</span><br><span class="line">        session.save(account);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><p><a href="https://www.inflearn.com/course/스프링-데이터-jpa" target="_blank" rel="noopener">https://www.inflearn.com/course/스프링-데이터-jpa</a></p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2019/03/18/JPA Simple Test/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
