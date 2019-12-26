@@ -193,8 +193,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/11/12/Transaction/">
-                            Transaction
+                        <a class="link-unstyled" href="/2018/11/12/REST/">
+                            REST
                         </a>
                     
                 </h1>
@@ -207,7 +207,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/database/">Database</a>
+    <a class="category-link" href="/categories/android/">Android</a>
 
 
     
@@ -216,44 +216,23 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h5 id="트렌젝션이란"><a href="#트렌젝션이란" class="headerlink" title="트렌젝션이란 ?"></a>트렌젝션이란 ?</h5><p>하나의 논리적인 작업 단위를 구성하는 연산들의 집합입니다.</p>
-<h5 id="트렌젝션의-상태는-뭐가-있나요"><a href="#트렌젝션의-상태는-뭐가-있나요" class="headerlink" title="트렌젝션의 상태는 뭐가 있나요 ?"></a>트렌젝션의 상태는 뭐가 있나요 ?</h5><ol>
-<li><p>Active<br>트랜잭션이 실행중이며 동작중인 상태를 말합니다.</p>
+                    <h5 id="REST가-뭔가요"><a href="#REST가-뭔가요" class="headerlink" title="REST가 뭔가요 ?"></a>REST가 뭔가요 ?</h5><p>소프트웨어 아키텍처의 한 형식입니다. </p>
+<h5 id="REST-구성-요소는"><a href="#REST-구성-요소는" class="headerlink" title="REST 구성 요소는 ?"></a>REST 구성 요소는 ?</h5><ol>
+<li><p>URI</p>
+<p>자원의 주소입니다.</p>
 </li>
-<li><p>Failed<br>트랜잭션이 더이상 정상적으로 진행 할 수 없는 상태를 말합니다.</p>
+<li><p>HTTP Method</p>
+<p>어떤 자원에 행할 수 있는 행위입니다. CRDU로 나타냅니다.</p>
+<p>POST : 해당 URI를 요청하면 리소스를 생성합니다.</p>
+<p>GET : 해당 리소스를 조회하고 해당 도큐먼트에 대한 자세한 정보를 가져옵니다.</p>
+<p>PUT : 해당 리소스를 수정합니다.</p>
+<p>DELETE : 해당 리소스를 삭제합니다.</p>
 </li>
-<li><p>Partial Committed<br>트랜잭션의 Commit 명령이 도착한 상태입니다. commit만 남은 상태입니다.</p>
-</li>
-<li><p>Committed<br>트랜잭션 완료 상태입니다.</p>
-</li>
-<li><p>Aborted<br>트랜잭션이 취소되고, 트랜잭션 실행 이전 데이터로 돌아간 상태입니다.</p>
-</li>
-</ol>
-<h5 id="ACID란"><a href="#ACID란" class="headerlink" title="ACID란 ?"></a>ACID란 ?</h5><p>트렌젝션의 네 가지 주요 특징입니다.</p>
-<ol>
-<li><p>Atomicity</p>
-<p>all or nothing 입니다. 트랜잭션의 모든 연산들이 정상적으로 수행 완료되거나, 아니면 전혀 어떠한 연산도 수행되지 않은 상태를 보장해야 합니다.</p>
-</li>
-<li><p>Consistency</p>
-<p>트랜잭션이 완료된 다음의 상태에서도, 트랜잭션이 일어나기 전의 상황과 동일하게 데이터의 일관성을 보장해야합니다. 트랜잭션 수행이 보존해야 할 일관성은 기본 키, 외래 키 제약과 같은 명시적인 무결성 제약 조건들뿐만 아니라, 자금 이체 예에서 두 계좌 잔고의 합은 이체 전후가 같아야 한다는 사항과 같은 비명시적인 일관성 조건들도 있습니다.</p>
-</li>
-<li><p>Isolation</p>
-<p>여러 트랜잭션이 동시에 수행되더라도, 각각의 트랜잭션은 다른 트랜잭션의 수행에 영향을 받지 않고 독립적으로 수행되어야 합니다.</p>
-</li>
-<li><p>Durability</p>
-<p>트랜잭션이 성공적으로 완료되어 커밋되고 나면, 해당 트랜잭션에 의한 모든 변경은 향후에 어떤 소프트웨어나 하드웨어 장애가 발생되더라도 보존되어야 합니다.</p>
+<li><p>Representation</p>
+<p>자원의 URI에 특정 행위를 요청하면 그 결과로 Representation 을 응답 받습니다. </p>
+<p>html, xml, text, json, rss 등 다양한 형태로 표현될 수 있습니다.</p>
 </li>
 </ol>
-<h5 id="Commit-Rollback-이란"><a href="#Commit-Rollback-이란" class="headerlink" title="Commit, Rollback 이란 ?"></a>Commit, Rollback 이란 ?</h5><ol>
-<li><p>Commit</p>
-<p>모든 작업을 정상적으로 처리하겠다고 확정하는 명령어이입니다. 트랜젝션의 처리 과정을 데이터베이스에 반영하기 위해서, 변경된 내용을 모두 영구 저장합니다.</p>
-</li>
-<li><p>Rollback</p>
-<p>작업 중 문제가 발생했을 때, 트랜젝션의 처리 과정에서 발생한 변경 사항을 취소하고, 트랜젝션 과정을 종료시킨는 명령어입니다. 트랜젝션으로 인한 하나의 묶음 처리가 시작되기 이전의 상태로 되돌립니다.</p>
-</li>
-</ol>
-<h5 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h5><p><a href="https://github.com/JaeYeopHan/Interview_Question_for_Beginner/tree/master/Database#transaction" target="_blank" rel="noopener">https://github.com/JaeYeopHan/Interview_Question_for_Beginner/tree/master/Database#transaction</a></p>
-<p><a href="https://wikidocs.net/4096" target="_blank" rel="noopener">https://wikidocs.net/4096</a></p>
 
                     
                         
@@ -261,7 +240,7 @@
                     
                     
                         <p>
-                            <a href="/2018/11/12/Transaction/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/11/12/REST/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -408,63 +387,6 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/11/11/삽입정렬/">
-                            삽입정렬
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-11-11T00:00:00+09:00">
-	
-		    Nov 11, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/data-structure/">Data Structure</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h2 id="삽입정렬이란"><a href="#삽입정렬이란" class="headerlink" title="삽입정렬이란"></a>삽입정렬이란</h2><p>배열의 모든 요소를 앞에서부터 차례대로 이미 정렬된 배열 부분과 비교하여, 자신의 위치를 찾아 삽입함으로써 정렬을 완성하는 알고리즘이다.</p>
-<p>두 번째 자료는 첫 번째 자료, 세 번째 자료는 두 번째와 첫 번째 자료, 네 번째 자료는 세 번째, 두 번째, 첫 번째 자료와 비교한 후 자료가 삽입될 위치를 찾는다. 자료가 삽입될 위치를 찾았다면 그 위치에 자료를 삽입하기 위해 자료를 한 칸씩 뒤로 이동시킨다.</p>
-<p><img src="/image/insertionSort01.png" alt></p>
-<h2 id="시간-복잡도"><a href="#시간-복잡도" class="headerlink" title="시간 복잡도"></a>시간 복잡도</h2><ol>
-<li>for 루프는 n-1번 반복 되고</li>
-<li>최악의 경우 데이터 삽입을 위한 비교는 i-1번 비교</li>
-</ol>
-<p>따라서 최악의 경우 T(n) = (n-1) + (n-2) + … + 2 + 1 = n(n-1)/2 = O(n^2)</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ko.wikipedia.org/wiki/삽입_정렬" target="_blank" rel="noopener">https://ko.wikipedia.org/wiki/삽입_정렬</a><br><a href="https://jongmin92.github.io/2017/11/06/Algorithm/Concept/basic-sort/" target="_blank" rel="noopener">https://jongmin92.github.io/2017/11/06/Algorithm/Concept/basic-sort/</a></p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/11/11/삽입정렬/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
                         <a class="link-unstyled" href="/2018/11/11/선택정렬/">
                             선택정렬
                         </a>
@@ -593,6 +515,63 @@
                     
                         <p>
                             <a href="/2018/11/11/MongoDB/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2018/11/11/삽입정렬/">
+                            삽입정렬
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-11-11T00:00:00+09:00">
+	
+		    Nov 11, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/data-structure/">Data Structure</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h2 id="삽입정렬이란"><a href="#삽입정렬이란" class="headerlink" title="삽입정렬이란"></a>삽입정렬이란</h2><p>배열의 모든 요소를 앞에서부터 차례대로 이미 정렬된 배열 부분과 비교하여, 자신의 위치를 찾아 삽입함으로써 정렬을 완성하는 알고리즘이다.</p>
+<p>두 번째 자료는 첫 번째 자료, 세 번째 자료는 두 번째와 첫 번째 자료, 네 번째 자료는 세 번째, 두 번째, 첫 번째 자료와 비교한 후 자료가 삽입될 위치를 찾는다. 자료가 삽입될 위치를 찾았다면 그 위치에 자료를 삽입하기 위해 자료를 한 칸씩 뒤로 이동시킨다.</p>
+<p><img src="/image/insertionSort01.png" alt></p>
+<h2 id="시간-복잡도"><a href="#시간-복잡도" class="headerlink" title="시간 복잡도"></a>시간 복잡도</h2><ol>
+<li>for 루프는 n-1번 반복 되고</li>
+<li>최악의 경우 데이터 삽입을 위한 비교는 i-1번 비교</li>
+</ol>
+<p>따라서 최악의 경우 T(n) = (n-1) + (n-2) + … + 2 + 1 = n(n-1)/2 = O(n^2)</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ko.wikipedia.org/wiki/삽입_정렬" target="_blank" rel="noopener">https://ko.wikipedia.org/wiki/삽입_정렬</a><br><a href="https://jongmin92.github.io/2017/11/06/Algorithm/Concept/basic-sort/" target="_blank" rel="noopener">https://jongmin92.github.io/2017/11/06/Algorithm/Concept/basic-sort/</a></p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/11/11/삽입정렬/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>

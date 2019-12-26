@@ -11,7 +11,7 @@
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg"},"articleBody":"대용량, 대규모 메세지 데이터를 빠르게 처리하도록 개발된 메시징 플랫폼이다.\n1. 탄생 배경\n위 그림 처럼 end-to-end 아키텍쳐의 문제점은,\n\n실시간     트랜잭션 (OLTP) 처리와 비동기 처리가 동시에 이뤄지지만, 통합된 전송 영여이 없어서 복잡도 증가\n데이터 파이프라인의 관리가 어려움\n\n\n위 그림처럼 카프카는,\n\n모든 시스템으로 데이터 전송 가능 \n실시간 처리 가능\n확장이 용이\n\n2. 동작 방식과 원리메시징 시스템을 먼저 살펴보자.\n중앙에 메시징 시스템 서버를 두고 메시지를 Publish 하고 Subscribe 하는 형태의 통신을 Pub/Sub 모델이라고 한다.\n프로듀서가 메시지를 컨슈머에게 직접 전달하는 것이 아니라, 중간의 메시징 시스템으로 전달한다. 그래서,\n\n프로듀서가 수신 불능 상태가 되어도 메세징 시스템이 살아있으면 메세지가 유실이 되지 않는다.\n메세징 시스템을 중심으로 연결되기 때문에, 확장성이 용이하다.\n\n카프카의 메세지 전달 순서는,\n\n프로듀서가 메세지를 카프카에게 보낸다.\n메세지가 Topic 에 도착해 저장된다.\n컨슈머는 카프카 서버에 접속해 메세지를 가져간다. \n\n3. 특징\n프로듀서와 컨슈머의 분리\n어느 한쪽 시스템에서 문제가 발생해도 연쇄 작용이 발생할 확률이 낮다.\n서버 추가에 대한 부담이 준다.\n\n멀티 프로듀서, 멀티 컨슈머\n데이터 분석 및 처리 프로세스에서 하나의 데이터를 다양한 용도로 사용하는 요구 사항을 충족할 수 있다.\n\n디스크에 메세지 저장\n컨슈머가 메세지를 읽어가도 보관 주기 동안 디스크에 메세지를 저장한다.\n( 일반적인 메세지 시스템은 컨슈머가 메세지를 읽어가면 큐에서 바로 메세지 삭제 )\n\n확장성\n온라인 상태에서 확장 작업 가능\n\n높은 성능\n\n\n","dateCreated":"2019-12-26T00:00:00+09:00","dateModified":"2019-12-26T14:52:03+09:00","datePublished":"2019-12-26T00:00:00+09:00","description":"","headline":"[카프카] 1장_카프카란 무엇인가","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://kojunhee.github.io/2019/12/26/kafka-chapter1/"},"publisher":{"@type":"Organization","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg","logo":{"@type":"ImageObject","url":"profile.jpg"}},"url":"https://kojunhee.github.io/2019/12/26/kafka-chapter1/"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg"},"articleBody":"대용량, 대규모 메세지 데이터를 빠르게 처리하도록 개발된 메시징 플랫폼이다.\n1. 탄생 배경\n위 그림 처럼 end-to-end 아키텍쳐의 문제점은,\n\n실시간     트랜잭션 (OLTP) 처리와 비동기 처리가 동시에 이뤄지지만, 통합된 전송 영여이 없어서 복잡도 증가\n데이터 파이프라인의 관리가 어려움\n\n\n위 그림처럼 카프카는,\n\n모든 시스템으로 데이터 전송 가능 \n실시간 처리 가능\n확장이 용이\n\n2. 동작 방식과 원리메시징 시스템을 먼저 살펴보자.\n중앙에 메시징 시스템 서버를 두고 메시지를 Publish 하고 Subscribe 하는 형태의 통신을 Pub/Sub 모델이라고 한다.\n프로듀서가 메시지를 컨슈머에게 직접 전달하는 것이 아니라, 중간의 메시징 시스템으로 전달한다. 그래서,\n\n프로듀서가 수신 불능 상태가 되어도 메세징 시스템이 살아있으면 메세지가 유실이 되지 않는다.\n메세징 시스템을 중심으로 연결되기 때문에, 확장성이 용이하다.\n\n카프카의 메세지 전달 순서는,\n\n프로듀서가 메세지를 카프카에게 보낸다.\n메세지가 Topic 에 도착해 저장된다.\n컨슈머는 카프카 서버에 접속해 메세지를 가져간다. \n\n3. 특징\n프로듀서와 컨슈머의 분리\n어느 한쪽 시스템에서 문제가 발생해도 연쇄 작용이 발생할 확률이 낮다.\n서버 추가에 대한 부담이 준다.\n\n멀티 프로듀서, 멀티 컨슈머\n데이터 분석 및 처리 프로세스에서 하나의 데이터를 다양한 용도로 사용하는 요구 사항을 충족할 수 있다.\n\n디스크에 메세지 저장\n컨슈머가 메세지를 읽어가도 보관 주기 동안 디스크에 메세지를 저장한다.\n( 일반적인 메세지 시스템은 컨슈머가 메세지를 읽어가면 큐에서 바로 메세지 삭제 )\n\n확장성\n온라인 상태에서 확장 작업 가능\n\n높은 성능\n\n\n\n카프카, 데이터 플랫폼의 창시자 &lt;고승범, 공용준&gt;\n","dateCreated":"2019-12-26T00:00:00+09:00","dateModified":"2019-12-26T16:48:13+09:00","datePublished":"2019-12-26T00:00:00+09:00","description":"","headline":"[카프카] 1장_카프카란 무엇인가","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://kojunhee.github.io/2019/12/26/kafka-chapter1/"},"publisher":{"@type":"Organization","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg","logo":{"@type":"ImageObject","url":"profile.jpg"}},"url":"https://kojunhee.github.io/2019/12/26/kafka-chapter1/"}</script>
     <meta name="description" content="대용량, 대규모 메세지 데이터를 빠르게 처리하도록 개발된 메시징 플랫폼이다. 1. 탄생 배경 위 그림 처럼 end-to-end 아키텍쳐의 문제점은,  실시간     트랜잭션 (OLTP) 처리와 비동기 처리가 동시에 이뤄지지만, 통합된 전송 영여이 없어서 복잡도 증가 데이터 파이프라인의 관리가 어려움   위 그림처럼 카프카는,  모든 시스템으로 데이터 전송">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="[카프카] 1장_카프카란 무엇인가">
@@ -21,7 +21,7 @@
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://kojunhee.github.io/image/kafka_end_to_end.png">
 <meta property="og:image" content="https://kojunhee.github.io/image/kafka_architecture.png">
-<meta property="og:updated_time" content="2019-12-26T05:52:03.089Z">
+<meta property="og:updated_time" content="2019-12-26T07:48:13.976Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="[카프카] 1장_카프카란 무엇인가">
 <meta name="twitter:description" content="대용량, 대규모 메세지 데이터를 빠르게 처리하도록 개발된 메시징 플랫폼이다. 1. 탄생 배경 위 그림 처럼 end-to-end 아키텍쳐의 문제점은,  실시간     트랜잭션 (OLTP) 처리와 비동기 처리가 동시에 이뤄지지만, 통합된 전송 영여이 없어서 복잡도 증가 데이터 파이프라인의 관리가 어려움   위 그림처럼 카프카는,  모든 시스템으로 데이터 전송">
@@ -265,6 +265,8 @@
 <li><p>높은 성능</p>
 </li>
 </ol>
+<hr>
+<p>카프카, 데이터 플랫폼의 창시자 &lt;고승범, 공용준&gt;</p>
 
             
 

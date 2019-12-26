@@ -194,94 +194,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/12/05/isolation level/">
-                            isolation level
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-12-05T00:00:00+09:00">
-	
-		    Dec 05, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/database/">Database</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h5 id="Isolation-level이-무엇인가요"><a href="#Isolation-level이-무엇인가요" class="headerlink" title="Isolation level이 무엇인가요 ?"></a>Isolation level이 무엇인가요 ?</h5><p>트랜잭션에서 일관성이 없는 데이터를 허용하는 수준입니다.</p>
-<h5 id="고립화-수준을-높이는-것이-좋을-까요-낮추는-것이-좋을까요"><a href="#고립화-수준을-높이는-것이-좋을-까요-낮추는-것이-좋을까요" class="headerlink" title="고립화 수준을 높이는 것이 좋을 까요, 낮추는 것이 좋을까요 ?"></a>고립화 수준을 높이는 것이 좋을 까요, 낮추는 것이 좋을까요 ?</h5><p>트랜잭션 고립화 수준을 높이면 일관성은 향상 되지만, 더 넓은 범위의 Lock을 더 오랫동안 유지하는 방식으로 동시성을 저하시킵니다.</p>
-<h5 id="낮은-단계의-고립화-수준에서-발생하는-에러는-뭐가-있나요"><a href="#낮은-단계의-고립화-수준에서-발생하는-에러는-뭐가-있나요" class="headerlink" title="낮은 단계의 고립화 수준에서 발생하는 에러는 뭐가 있나요?"></a>낮은 단계의 고립화 수준에서 발생하는 에러는 뭐가 있나요?</h5><p>Dirty Read, Non Repeatable Read, Phantom Read가 있습니다.</p>
-<ol>
-<li><p>Dirty Read</p>
-<p>데이터 캐시에는 변경이 되었지만, 아직 디스크에는 변경되지 않은 데이터(페이지)를 읽는 행위 입니다.</p>
-</li>
-<li><p>Non Repeatable Read</p>
-<p>트랜잭션 내에서 한 번 읽은 데이터가 트랜잭션이 끝나기 전에 변경되었다면, 다시 읽었을 때 새로운 값이 읽히는 것입니다.</p>
-</li>
-<li><p>Phantom Read</p>
-<p>트랜잭션 중에 없던 행이 추가되어 새로 입력된 데이터를 읽는 것입니다.</p>
-</li>
-</ol>
-<h5 id="isolation-level-에는-뭐가-있나요"><a href="#isolation-level-에는-뭐가-있나요" class="headerlink" title="isolation level 에는 뭐가 있나요?"></a>isolation level 에는 뭐가 있나요?</h5><p>read uncommitted, read committed, repeatable read, serializable 이 있습니다.</p>
-<ol>
-<li><p>read uncommitted</p>
-<p>고립화 수준에서 가장 낮은 수준입니다. 아직 커밋되지 않은 데이터를 다른 트랜잭션이 읽는 것을 허용합니다.세션 1)에서 price * 10을 처리하고 있으므로 price에 10 이 곱해진 결과가 세션 2)에서 보이게 됩니다. 만일 세션 1)에서 ROLLBACK 시켜버리면 세션 2)는 잘못된 결과를 보게 됩니다. 이러한 것을 Dirty Page를 읽었다고 합니다 (Dirty Read). </p>
-<p><img src="/image/isolationLevel01.png" alt></p>
-</li>
-<li><p>read committed</p>
-<p>DIrty Read를 방지합니다. COMMIT 하지 않은 트랜잭션이 이용한 자원에 대해 트랜잭션이 완료되어야 (= 잠금이 해제되어야) 데이터를 읽을 수 있습니다.</p>
-</li>
-<li><p>repeatable read</p>
-<p>트랜잭션이 완료될 때까지 공유 잠금을 유지하여 여러번 같은 데이터를 읽어도 항상 같은 값이 얻어지도록 합니다.</p>
-<p>주의해야할 사항은 REPEATABLE READ가 설정되면 원래 읽었던 데이터에 대하여서는 항상 같은 값이 유지 되지만 새로 추가되는 데이터를 막을 수는 없습니다. </p>
-<p>예를 들어 특정 조건에 만족한 레코드가 5개였으면 이 5개의 레코드는 언제든 같은 값을 보이게 되지만 다른 트랜잭션에 의해 이 조건을 만족하는 새로운 레코드가 추가되면 원래 없었던 새로운 레코드가 보이게 됩니다. 이러한 것을 Pantom Read라고 합니다.</p>
-<p>세션 1) 에서 Test 테이블을 만들어서 3개의 레코드를 추가하였습니다. 트랜잭션에서 검색의 범위가 1부터 4이므로 INSERT한 3개의 레코드가 위 빨간색 박스안의 내용처럼 표시됩니다.</p>
-<p>REPEATABLE READ 가 설정되었으므로 이 3개의 레코드는 트랜잭션이 끝날 때 까지 아무도 변경 할 수 없습니다. 예를 들어 세션 2)에서 col1 컬럼이 1인 레코드의 col2를 ‘AAAAA’ 에서 ‘BBBBB’로 바꾸려고 하면 잠금으로 인하여 처리되지 못합니다.</p>
-<p>하지만 세션 2)에서는 검색 범위안에는 들어가지만 아직 존재하지 않는 레코드를 추가할 때 아무 문제 없이 처리가 됩니다. 세션 2)의 수행 결과를 보면 (1개 행 적용됨) 이 표시된 것을 볼 수 있습니다.</p>
-<p>이 상태에서 세션 1)에서 똑같은 검색을 수행하면 새로운 레코드가 하나 추가되어 이전의 결과와 다르게 됩니다. 이것이 Pantom Read 입니다.</p>
-<p><img src="/image/isolationLevel02.png" alt></p>
-</li>
-<li><p>serializble</p>
-<p>가장 높은 고립화 수준으로 REPEATABLE READ 고립화 수준이 막지 못하는 Pantom Read까지 방지해줍니다. 완벽한 데이터베이스의 일관성은 유지해 주지만 잠금을 유지하기 위하여 오버헤드는 증가하게 됩니다.바로 위의 그림에서, 만일 세션 1) 에서 SERIALIZABLE 고립화 수준이 설정되었다면 세션 2)에서의 INSERT 는 불가능하게 됩니다.</p>
-</li>
-</ol>
-<h5 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h5><p><a href="http://goforaurora.tistory.com/entry/SQL-%ED%8A%B8%EB%9E%9C%EC%9E%AD%EC%85%98%EC%9D%98-%EA%B3%A0%EB%A6%BD%ED%99%94-%EC%88%98%EC%A4%80Isolation-Level" target="_blank" rel="noopener">http://goforaurora.tistory.com/entry/SQL-%ED%8A%B8%EB%9E%9C%EC%9E%AD%EC%85%98%EC%9D%98-%EA%B3%A0%EB%A6%BD%ED%99%94-%EC%88%98%EC%A4%80Isolation-Level</a></p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/12/05/isolation level/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/12/05/OOP/">
-                            OOP
+                        <a class="link-unstyled" href="/2018/12/05/Java Feature/">
+                            Java 특징
                         </a>
                     
                 </h1>
@@ -303,16 +217,10 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h5 id="객체지향프로그래밍-OOP-가-뭔가요"><a href="#객체지향프로그래밍-OOP-가-뭔가요" class="headerlink" title="객체지향프로그래밍(OOP) 가 뭔가요?"></a>객체지향프로그래밍(OOP) 가 뭔가요?</h5><p>프로그래밍에서 필요한 데이터를 추상화 시켜서 상태와 행위를 가진 객체를 만들고, 그 객체들 간의 유기적인 상호작용을 통해 로직을 구성하는 프로그래밍 방법입니다.</p>
-<h5 id="장점이-무엇인가요"><a href="#장점이-무엇인가요" class="headerlink" title="장점이 무엇인가요?"></a>장점이 무엇인가요?</h5><ol>
-<li>코드 재사용이 쉽습니다.<br>상속을 통해 확장해서 사용할 수 있고, 남이 만든 클래스를 가져와서 사용할 수 있습니다.</li>
-<li>유지보수가 쉽습니다.<br>절차 지향 프로그래밍에서는 코드를 수정 할 때 일일이 찾아야합니다. 반면, 객체지향 프로그래밍에서는 수정해야 할 부분이 클래스 내부에 멤버 변수 혹은 메소드로 있기 때문에 해당 부분만 수정하면 됩니다.</li>
-</ol>
-<h5 id="단점은-무엇인가요"><a href="#단점은-무엇인가요" class="headerlink" title="단점은 무엇인가요?"></a>단점은 무엇인가요?</h5><ol>
-<li>처리 속도가 상대적으로 느립니다.</li>
-<li>객체가 많으면 용량이 커질 수 있습니다.</li>
-<li>설계시 많은 시간이 소요됩니다.</li>
-</ol>
+                    <h5 id="추상화란"><a href="#추상화란" class="headerlink" title="추상화란?"></a>추상화란?</h5><p>불필요한 정보는 숨기고, 중요한 정보만을 표현함으로써 공통의 속성이나 기능을 묶어 이름을 붙이는 것입니다.</p>
+<h5 id="캡슐화란"><a href="#캡슐화란" class="headerlink" title="캡슐화란?"></a>캡슐화란?</h5><p>데이터와 데이터를 처리하는 함수를 하나로 묶는 것입니다.</p>
+<h5 id="상속이란"><a href="#상속이란" class="headerlink" title="상속이란?"></a>상속이란?</h5><p>부모 클래스가 가지고있는 모든것을(생성자 제외) 자식클래스가 물려받아 같이 공유하며 나아가 확장(extends)하는 개념이다</p>
+<h5 id="다형성이란"><a href="#다형성이란" class="headerlink" title="다형성이란?"></a>다형성이란?</h5><p>서로 다른 클래스의 객체가 같은 메세지를 받았을 때 각자의 방식으로 동작하는 능력입니다.<br>ex) Pet : abstract class / (Dog, Cat, Parrot) extends Parrot</p>
 
                     
                         
@@ -320,7 +228,121 @@
                     
                     
                         <p>
-                            <a href="/2018/12/05/OOP/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/12/05/Java Feature/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2018/12/05/Java 8/">
+                            Java 8
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-12-05T00:00:00+09:00">
+	
+		    Dec 05, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/java/">Java</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h5 id="자바-8의-변경사항은-어떠한-것이-있나요"><a href="#자바-8의-변경사항은-어떠한-것이-있나요" class="headerlink" title="자바 8의 변경사항은 어떠한 것이 있나요?"></a>자바 8의 변경사항은 어떠한 것이 있나요?</h5><ol>
+<li><p>람다 표현식(lambda expression) : 함수형 프로그래밍</p>
+<p>람다표현식(Lambda Expressions)은 람다를 이용하여 작성된 함수입니다.<br>‘-&gt;’ 화살표를 기준으로 왼쪽은 ‘()’로 감싸져서 매개변수를 나타내고, 오른쪽은 매개변수를 사용하는 함수 몸체를 정의합니다. 이때, 오른쪽의 정의되는 함수 몸체가 여러 줄이면 다음처럼 ‘{}’를 이용할 수 있습니다. </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        List&lt;Integer&gt; numbers = Arrays.asList(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>);</span><br><span class="line"> </span><br><span class="line">        <span class="comment">// 자바7</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> number : numbers) &#123;</span><br><span class="line">            System.out.println(number);</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        <span class="comment">// 자바8</span></span><br><span class="line">        numbers.forEach((Integer value) -&gt; System.out.println(value)); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>스트림 API(stream API) : 데이터의 추상화</p>
+<p>스트림 API는 데이터를 추상화하여 다루므로, 다양한 방식으로 저장된 데이터를 읽고 쓰기 위한 공통된 방법을 제공합니다.따라서 스트림 API를 이용하면 배열이나 컬렉션뿐만 아니라 파일에 저장된 데이터도 모두 같은 방법으로 다룰 수 있습니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">String[] arr = <span class="keyword">new</span> String[]&#123;<span class="string">"넷"</span>, <span class="string">"둘"</span>, <span class="string">"셋"</span>, <span class="string">"하나"</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 배열에서 스트림 생성</span></span><br><span class="line">Stream&lt;String&gt; stream1 = Arrays.stream(arr);</span><br><span class="line">stream1.forEach(e -&gt; System.out.print(e + <span class="string">" "</span>));</span><br><span class="line">System.out.println();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 배열의 특정 부분만을 이용한 스트림 생성</span></span><br><span class="line">Stream&lt;String&gt; stream2 = Arrays.stream(arr, <span class="number">1</span>, <span class="number">3</span>);</span><br><span class="line">stream2.forEach(e -&gt; System.out.print(e + <span class="string">" "</span>));</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>java.time 패키지 : Joda-Time을 이용한 새로운 날짜와 시간 API</p>
+</li>
+<li><p>나즈혼(Nashorn) : 자바스크립트의 새로운 엔진</p>
+</li>
+</ol>
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="http://tcpschool.com/java/java_intro_java8" target="_blank" rel="noopener">http://tcpschool.com/java/java_intro_java8</a></p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/12/05/Java 8/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2018/12/05/Byte Order/">
+                            Byte Order
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-12-05T00:00:00+09:00">
+	
+		    Dec 05, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/network/">Network</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h5 id="Endian이-무엇이죠"><a href="#Endian이-무엇이죠" class="headerlink" title="Endian이 무엇이죠 ?"></a>Endian이 무엇이죠 ?</h5><p>메모리와 같은 1차원 공간에 여러 개의 연속된 대상을 배열하는 Byte order 입니다. 빅 엔디안과 리틀 엔디안이 있습니다.</p>
+<h5 id="빅-엔디안과-리틀-엔디안의-차이는-무엇이죠"><a href="#빅-엔디안과-리틀-엔디안의-차이는-무엇이죠" class="headerlink" title="빅 엔디안과 리틀 엔디안의 차이는 무엇이죠 ?"></a>빅 엔디안과 리틀 엔디안의 차이는 무엇이죠 ?</h5><p>빅 엔디안은 최상위 바위트(most significant byte) 부터 차례대로 저장하는 방식이고, 리틀 엔디안은 최하위 바이트(least significant byte) 부터 차례대로 저장하는 방식입니다.</p>
+<h5 id="Network-Byte-Order은-뭔가요"><a href="#Network-Byte-Order은-뭔가요" class="headerlink" title="Network Byte Order은 뭔가요 ?"></a>Network Byte Order은 뭔가요 ?</h5><p>네트워크 통신시 표준 Byte Order은 빅 엔디안입니다. 리틀 엔디안을 사용하는 머신에서는 빅 엔디안으로 변화하여 전송해야 합니다.</p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/12/05/Byte Order/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -409,69 +431,6 @@
                     
                         <p>
                             <a href="/2018/12/05/High Availability/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/12/05/Java 8/">
-                            Java 8
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-12-05T00:00:00+09:00">
-	
-		    Dec 05, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/java/">Java</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h5 id="자바-8의-변경사항은-어떠한-것이-있나요"><a href="#자바-8의-변경사항은-어떠한-것이-있나요" class="headerlink" title="자바 8의 변경사항은 어떠한 것이 있나요?"></a>자바 8의 변경사항은 어떠한 것이 있나요?</h5><ol>
-<li><p>람다 표현식(lambda expression) : 함수형 프로그래밍</p>
-<p>람다표현식(Lambda Expressions)은 람다를 이용하여 작성된 함수입니다.<br>‘-&gt;’ 화살표를 기준으로 왼쪽은 ‘()’로 감싸져서 매개변수를 나타내고, 오른쪽은 매개변수를 사용하는 함수 몸체를 정의합니다. 이때, 오른쪽의 정의되는 함수 몸체가 여러 줄이면 다음처럼 ‘{}’를 이용할 수 있습니다. </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        List&lt;Integer&gt; numbers = Arrays.asList(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>);</span><br><span class="line"> </span><br><span class="line">        <span class="comment">// 자바7</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> number : numbers) &#123;</span><br><span class="line">            System.out.println(number);</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        <span class="comment">// 자바8</span></span><br><span class="line">        numbers.forEach((Integer value) -&gt; System.out.println(value)); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>스트림 API(stream API) : 데이터의 추상화</p>
-<p>스트림 API는 데이터를 추상화하여 다루므로, 다양한 방식으로 저장된 데이터를 읽고 쓰기 위한 공통된 방법을 제공합니다.따라서 스트림 API를 이용하면 배열이나 컬렉션뿐만 아니라 파일에 저장된 데이터도 모두 같은 방법으로 다룰 수 있습니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">String[] arr = <span class="keyword">new</span> String[]&#123;<span class="string">"넷"</span>, <span class="string">"둘"</span>, <span class="string">"셋"</span>, <span class="string">"하나"</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 배열에서 스트림 생성</span></span><br><span class="line">Stream&lt;String&gt; stream1 = Arrays.stream(arr);</span><br><span class="line">stream1.forEach(e -&gt; System.out.print(e + <span class="string">" "</span>));</span><br><span class="line">System.out.println();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 배열의 특정 부분만을 이용한 스트림 생성</span></span><br><span class="line">Stream&lt;String&gt; stream2 = Arrays.stream(arr, <span class="number">1</span>, <span class="number">3</span>);</span><br><span class="line">stream2.forEach(e -&gt; System.out.print(e + <span class="string">" "</span>));</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>java.time 패키지 : Joda-Time을 이용한 새로운 날짜와 시간 API</p>
-</li>
-<li><p>나즈혼(Nashorn) : 자바스크립트의 새로운 엔진</p>
-</li>
-</ol>
-<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="http://tcpschool.com/java/java_intro_java8" target="_blank" rel="noopener">http://tcpschool.com/java/java_intro_java8</a></p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/12/05/Java 8/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
