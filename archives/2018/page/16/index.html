@@ -264,6 +264,81 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2018/05/21/Histogram Sliding/">
+                            Histogram Sliding
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-05-21T00:00:00+09:00">
+	
+		    May 21, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/dip/">DIP</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h2 id="Histogram-sliding"><a href="#Histogram-sliding" class="headerlink" title="Histogram sliding"></a>Histogram sliding</h2><ul>
+<li>In histogram sliding, we just simply shift a complete histogram rightwards or leftwards. </li>
+<li>Due to shifting or sliding of histogram towards right or left, </li>
+<li>a clear change can be seen in the image.</li>
+</ul>
+<h2 id="Increasing-brightness-using-histogram-sliding"><a href="#Increasing-brightness-using-histogram-sliding" class="headerlink" title="Increasing brightness using histogram sliding"></a>Increasing brightness using histogram sliding</h2><p><img src="/image/hisSl01.png" alt></p>
+<p><img src="/image/hisSl02.png" alt></p>
+<ul>
+<li>On the y axis of this histogram are the frequency or count. </li>
+<li>And on the x axis, we have gray level values. </li>
+<li>As you can see from the above histogram, that those gray level intensities whose count is more then 700, lies in the first half portion, means towards blacker portion. </li>
+<li>Thats why we got an image that is a bit darker.</li>
+<li>In order to bright it, we will slide its histogram towards right, or towards whiter portion. </li>
+<li>In order to do we need to add atleast a value of 50 to this image. </li>
+<li>Because we can see from the histogram above, that this image also has 0 pixel intensities, that are pure black. </li>
+<li>So if we add 0 to 50, we will shift all the values lies at 0 intensity to 50 intensity and all the rest of the values will be shifted accordingly.</li>
+</ul>
+<p><img src="/image/hisSl03.png" alt></p>
+<p><img src="/image/hisSl04.png" alt></p>
+<p><img src="/image/hisSl05.png" alt></p>
+<h2 id="Decreasing-brightness-using-histogram-sliding"><a href="#Decreasing-brightness-using-histogram-sliding" class="headerlink" title="Decreasing brightness using histogram sliding"></a>Decreasing brightness using histogram sliding</h2><ul>
+<li>Now if we were to decrease brightness of this new image to such an extent that the old image look brighter, </li>
+<li>we got to subtract some value from all the matrix of the new image. </li>
+<li>The value which we are going to subtract is 80. </li>
+<li>Because we already add 50 to the original image and we got a new brighter image, </li>
+<li>now if we want to make it darker, we have to subtract at least more than 50 from it.</li>
+</ul>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/05/21/Histogram Sliding/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2018/05/21/Mask/">
                             Mask
                         </a>
@@ -436,105 +511,6 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/05/21/Histogram Equalization/">
-                            Histogram Equalization
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-05-21T00:00:00+09:00">
-	
-		    May 21, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/dip/">DIP</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h2 id="Histogram-Equalization"><a href="#Histogram-Equalization" class="headerlink" title="Histogram Equalization"></a>Histogram Equalization</h2><ul>
-<li><p>Histogram equalization is used to enhance contrast.</p>
-</li>
-<li><p>Lets start histogram equalization by taking this image below as a simple image.</p>
-</li>
-<li><p>The histogram of this image has been shown below.</p>
-<p><img src="/image/hisE01.png" alt></p>
-<p><img src="/image/hisE02.png" alt></p>
-</li>
-<li><p>Now we will perform histogram equalization to it.</p>
-</li>
-<li><p>First we have to calculate the PMF (probability mass function) of all the pixels in this image.</p>
-</li>
-<li><p>Our next step involves calculation of CDF (cumulative distributive function).  </p>
-</li>
-</ul>
-<h2 id="Calculate-CDF-according-to-gray-levels"><a href="#Calculate-CDF-according-to-gray-levels" class="headerlink" title="Calculate CDF according to gray levels"></a>Calculate CDF according to gray levels</h2><p><img src="/image/hisE03.png" alt></p>
-<ul>
-<li><p>Then in this step you will multiply the CDF value with (Gray levels (minus) 1) .</p>
-</li>
-<li><p>Considering we have an 3 bpp image. </p>
-</li>
-<li><p>Then number of levels we have are 8.</p>
-</li>
-<li><p>And 1 subtracts 8 is 7. So we multiply CDF by 7. Here what we got after multiplying.</p>
-<p><img src="/image/hisE04.png" alt></p>
-</li>
-<li><p>we have to map the new gray level values into number of pixels.</p>
-</li>
-<li><p>Lets assume our old gray levels values has these number of pixels.</p>
-</li>
-</ul>
-<p><img src="/image/hisE05.png" alt></p>
-<ul>
-<li><p>Now if we map our new values to , then this is what we got.</p>
-<p><img src="/image/hisE06.png" alt></p>
-</li>
-<li><p>Now map these new values you are onto histogram, and you are done.</p>
-</li>
-<li><p>Lets apply this technique to our original image. </p>
-</li>
-<li><p>After applying we got the following image and its following histogram.</p>
-</li>
-</ul>
-<h2 id="Cumulative-Distributive-function-of-this-image"><a href="#Cumulative-Distributive-function-of-this-image" class="headerlink" title="Cumulative Distributive function of this image"></a>Cumulative Distributive function of this image</h2><p><img src="/image/hisE07.png" alt></p>
-<h2 id="Histogram-Equalization-histogram"><a href="#Histogram-Equalization-histogram" class="headerlink" title="Histogram Equalization histogram"></a>Histogram Equalization histogram</h2><p><img src="/image/hisE08.png" alt></p>
-<h2 id="Comparing-both-the-histograms-and-images"><a href="#Comparing-both-the-histograms-and-images" class="headerlink" title="Comparing both the histograms and images"></a>Comparing both the histograms and images</h2><p><img src="/image/hisE09.png" alt></p>
-<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li>during histogram equalization the overall shape of the histogram changes, </li>
-<li>where as in histogram stretching the overall shape of histogram remains same.</li>
-</ul>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/05/21/Histogram Equalization/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
                         <a class="link-unstyled" href="/2018/05/21/Histogram Stretching/">
                             Histogram Stretching
                         </a>
@@ -637,8 +613,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/05/21/Histogram Sliding/">
-                            Histogram Sliding
+                        <a class="link-unstyled" href="/2018/05/21/Histogram Equalization/">
+                            Histogram Equalization
                         </a>
                     
                 </h1>
@@ -660,32 +636,56 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="Histogram-sliding"><a href="#Histogram-sliding" class="headerlink" title="Histogram sliding"></a>Histogram sliding</h2><ul>
-<li>In histogram sliding, we just simply shift a complete histogram rightwards or leftwards. </li>
-<li>Due to shifting or sliding of histogram towards right or left, </li>
-<li>a clear change can be seen in the image.</li>
+                    <h2 id="Histogram-Equalization"><a href="#Histogram-Equalization" class="headerlink" title="Histogram Equalization"></a>Histogram Equalization</h2><ul>
+<li><p>Histogram equalization is used to enhance contrast.</p>
+</li>
+<li><p>Lets start histogram equalization by taking this image below as a simple image.</p>
+</li>
+<li><p>The histogram of this image has been shown below.</p>
+<p><img src="/image/hisE01.png" alt></p>
+<p><img src="/image/hisE02.png" alt></p>
+</li>
+<li><p>Now we will perform histogram equalization to it.</p>
+</li>
+<li><p>First we have to calculate the PMF (probability mass function) of all the pixels in this image.</p>
+</li>
+<li><p>Our next step involves calculation of CDF (cumulative distributive function).  </p>
+</li>
 </ul>
-<h2 id="Increasing-brightness-using-histogram-sliding"><a href="#Increasing-brightness-using-histogram-sliding" class="headerlink" title="Increasing brightness using histogram sliding"></a>Increasing brightness using histogram sliding</h2><p><img src="/image/hisSl01.png" alt></p>
-<p><img src="/image/hisSl02.png" alt></p>
+<h2 id="Calculate-CDF-according-to-gray-levels"><a href="#Calculate-CDF-according-to-gray-levels" class="headerlink" title="Calculate CDF according to gray levels"></a>Calculate CDF according to gray levels</h2><p><img src="/image/hisE03.png" alt></p>
 <ul>
-<li>On the y axis of this histogram are the frequency or count. </li>
-<li>And on the x axis, we have gray level values. </li>
-<li>As you can see from the above histogram, that those gray level intensities whose count is more then 700, lies in the first half portion, means towards blacker portion. </li>
-<li>Thats why we got an image that is a bit darker.</li>
-<li>In order to bright it, we will slide its histogram towards right, or towards whiter portion. </li>
-<li>In order to do we need to add atleast a value of 50 to this image. </li>
-<li>Because we can see from the histogram above, that this image also has 0 pixel intensities, that are pure black. </li>
-<li>So if we add 0 to 50, we will shift all the values lies at 0 intensity to 50 intensity and all the rest of the values will be shifted accordingly.</li>
+<li><p>Then in this step you will multiply the CDF value with (Gray levels (minus) 1) .</p>
+</li>
+<li><p>Considering we have an 3 bpp image. </p>
+</li>
+<li><p>Then number of levels we have are 8.</p>
+</li>
+<li><p>And 1 subtracts 8 is 7. So we multiply CDF by 7. Here what we got after multiplying.</p>
+<p><img src="/image/hisE04.png" alt></p>
+</li>
+<li><p>we have to map the new gray level values into number of pixels.</p>
+</li>
+<li><p>Lets assume our old gray levels values has these number of pixels.</p>
+</li>
 </ul>
-<p><img src="/image/hisSl03.png" alt></p>
-<p><img src="/image/hisSl04.png" alt></p>
-<p><img src="/image/hisSl05.png" alt></p>
-<h2 id="Decreasing-brightness-using-histogram-sliding"><a href="#Decreasing-brightness-using-histogram-sliding" class="headerlink" title="Decreasing brightness using histogram sliding"></a>Decreasing brightness using histogram sliding</h2><ul>
-<li>Now if we were to decrease brightness of this new image to such an extent that the old image look brighter, </li>
-<li>we got to subtract some value from all the matrix of the new image. </li>
-<li>The value which we are going to subtract is 80. </li>
-<li>Because we already add 50 to the original image and we got a new brighter image, </li>
-<li>now if we want to make it darker, we have to subtract at least more than 50 from it.</li>
+<p><img src="/image/hisE05.png" alt></p>
+<ul>
+<li><p>Now if we map our new values to , then this is what we got.</p>
+<p><img src="/image/hisE06.png" alt></p>
+</li>
+<li><p>Now map these new values you are onto histogram, and you are done.</p>
+</li>
+<li><p>Lets apply this technique to our original image. </p>
+</li>
+<li><p>After applying we got the following image and its following histogram.</p>
+</li>
+</ul>
+<h2 id="Cumulative-Distributive-function-of-this-image"><a href="#Cumulative-Distributive-function-of-this-image" class="headerlink" title="Cumulative Distributive function of this image"></a>Cumulative Distributive function of this image</h2><p><img src="/image/hisE07.png" alt></p>
+<h2 id="Histogram-Equalization-histogram"><a href="#Histogram-Equalization-histogram" class="headerlink" title="Histogram Equalization histogram"></a>Histogram Equalization histogram</h2><p><img src="/image/hisE08.png" alt></p>
+<h2 id="Comparing-both-the-histograms-and-images"><a href="#Comparing-both-the-histograms-and-images" class="headerlink" title="Comparing both the histograms and images"></a>Comparing both the histograms and images</h2><p><img src="/image/hisE09.png" alt></p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
+<li>during histogram equalization the overall shape of the histogram changes, </li>
+<li>where as in histogram stretching the overall shape of histogram remains same.</li>
 </ul>
 
                     
@@ -694,86 +694,7 @@
                     
                     
                         <p>
-                            <a href="/2018/05/21/Histogram Sliding/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/05/21/Brightness and Contrast/">
-                            Brightness and Contrast
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-05-21T00:00:00+09:00">
-	
-		    May 21, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/dip/">DIP</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h2 id="Brightness"><a href="#Brightness" class="headerlink" title="Brightness"></a>Brightness</h2><ul>
-<li><p>Brightness is a relative term. </p>
-</li>
-<li><p>It depends on your visual perception. </p>
-</li>
-<li><p>Since brightness is a relative term, so brightness can be defined as the amount of energy output by a source of light relative to the source we are comparing it to. </p>
-</li>
-<li><p>In some cases we can easily say that the image is bright, and in some cases, its not easy to perceive.</p>
-</li>
-<li><p>Consider this black image of 5 rows and 5 columns</p>
-<p><img src="/image/bri01.png" alt></p>
-<p><img src="/image/bri02.png" alt></p>
-<p><img src="/image/bri03.png" alt></p>
-<p><img src="/image/bri04.png" alt></p>
-</li>
-</ul>
-<h2 id="Contrast"><a href="#Contrast" class="headerlink" title="Contrast"></a>Contrast</h2><ul>
-<li><p>Contrast can be simply explained as the difference between maximum and minimum pixel intensity in an image.</p>
-<p><img src="/image/bri05.png" alt></p>
-<ul>
-<li><p>The maximum value in this matrix is 100.</p>
-</li>
-<li><p>The minimum value in this matrix is 100.</p>
-</li>
-<li><p>Contrast = maximum pixel intensity(subtracted by) minimum pixel intensity</p>
-<p>= 100 (subtracted by) 100</p>
-<p>= 0</p>
-</li>
-</ul>
-</li>
-</ul>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/05/21/Brightness and Contrast/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/05/21/Histogram Equalization/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -1066,6 +987,85 @@
                     
                         <p>
                             <a href="/2018/05/21/Bits Per Pixel/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2018/05/21/Brightness and Contrast/">
+                            Brightness and Contrast
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-05-21T00:00:00+09:00">
+	
+		    May 21, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/dip/">DIP</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h2 id="Brightness"><a href="#Brightness" class="headerlink" title="Brightness"></a>Brightness</h2><ul>
+<li><p>Brightness is a relative term. </p>
+</li>
+<li><p>It depends on your visual perception. </p>
+</li>
+<li><p>Since brightness is a relative term, so brightness can be defined as the amount of energy output by a source of light relative to the source we are comparing it to. </p>
+</li>
+<li><p>In some cases we can easily say that the image is bright, and in some cases, its not easy to perceive.</p>
+</li>
+<li><p>Consider this black image of 5 rows and 5 columns</p>
+<p><img src="/image/bri01.png" alt></p>
+<p><img src="/image/bri02.png" alt></p>
+<p><img src="/image/bri03.png" alt></p>
+<p><img src="/image/bri04.png" alt></p>
+</li>
+</ul>
+<h2 id="Contrast"><a href="#Contrast" class="headerlink" title="Contrast"></a>Contrast</h2><ul>
+<li><p>Contrast can be simply explained as the difference between maximum and minimum pixel intensity in an image.</p>
+<p><img src="/image/bri05.png" alt></p>
+<ul>
+<li><p>The maximum value in this matrix is 100.</p>
+</li>
+<li><p>The minimum value in this matrix is 100.</p>
+</li>
+<li><p>Contrast = maximum pixel intensity(subtracted by) minimum pixel intensity</p>
+<p>= 100 (subtracted by) 100</p>
+<p>= 0</p>
+</li>
+</ul>
+</li>
+</ul>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/05/21/Brightness and Contrast/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>

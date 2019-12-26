@@ -194,8 +194,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/05/21/Bits Per Pixel/">
-                            Bits Per Pixel
+                        <a class="link-unstyled" href="/2018/05/21/Brightness and Contrast/">
+                            Brightness and Contrast
                         </a>
                     
                 </h1>
@@ -217,41 +217,36 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>Bpp or bits per pixel denotes the number of bits per pixel.</p>
-<h4 id="Number-of-different-colors"><a href="#Number-of-different-colors" class="headerlink" title="Number of different colors"></a>Number of different colors</h4><ul>
-<li><p>the number of different colors depend on the number of bits per pixel.</p>
-<p><img src="https://github.com/KoJunHee/kojunhee.github.io/raw/master/img/bppTable.png" alt="img"></p>
+                    <h2 id="Brightness"><a href="#Brightness" class="headerlink" title="Brightness"></a>Brightness</h2><ul>
+<li><p>Brightness is a relative term. </p>
+</li>
+<li><p>It depends on your visual perception. </p>
+</li>
+<li><p>Since brightness is a relative term, so brightness can be defined as the amount of energy output by a source of light relative to the source we are comparing it to. </p>
+</li>
+<li><p>In some cases we can easily say that the image is bright, and in some cases, its not easy to perceive.</p>
+</li>
+<li><p>Consider this black image of 5 rows and 5 columns</p>
+<p><img src="/image/bri01.png" alt></p>
+<p><img src="/image/bri02.png" alt></p>
+<p><img src="/image/bri03.png" alt></p>
+<p><img src="/image/bri04.png" alt></p>
 </li>
 </ul>
-<h4 id="Shades"><a href="#Shades" class="headerlink" title="Shades"></a>Shades</h4><ul>
-<li>Shades = number of colors = (2)<sup>bpp<sup></sup></sup></li>
-<li>black color<ul>
-<li>0 pixel value always denotes black color. </li>
-</ul>
+<h2 id="Contrast"><a href="#Contrast" class="headerlink" title="Contrast"></a>Contrast</h2><ul>
+<li><p>Contrast can be simply explained as the difference between maximum and minimum pixel intensity in an image.</p>
+<p><img src="/image/bri05.png" alt></p>
+<ul>
+<li><p>The maximum value in this matrix is 100.</p>
 </li>
-<li>white color<ul>
-<li>(2)<sup>bpp<sup> -1</sup></sup></li>
-<li>In case of 1 bpp, 0 denotes black, and 1 denotes white.</li>
-<li>In case 8 bpp, 0 denotes black, and 255 denotes white.</li>
-</ul>
+<li><p>The minimum value in this matrix is 100.</p>
 </li>
-<li>gray color<ul>
-<li>Gray color is actually the mid point of black and white.</li>
-<li>In case of 8bpp, the pixel value that denotes gray color is 127 or 128bpp (if you count from 1, not from 0).</li>
-</ul>
+<li><p>Contrast = maximum pixel intensity(subtracted by) minimum pixel intensity</p>
+<p>= 100 (subtracted by) 100</p>
+<p>= 0</p>
 </li>
 </ul>
-<h4 id="Image-Size"><a href="#Image-Size" class="headerlink" title="Image Size"></a>Image Size</h4><ul>
-<li>Size of an image = rows * cols * bpp</li>
-<li>Assuming it has 1024 rows and it has 1024 columns. </li>
-<li>And since it is a gray scale image, it has 256 different shades of gray or it has bits per pixel</li>
-<li>rows * cols * bpp = 1024 * 1024 * 8 = 8388608 bits.</li>
-<li>Converting it into bytes = 8388608 / 8 = 1048576 bytes.</li>
-<li>Converting into kilo bytes = 1048576 / 1024 = 1024kb.</li>
-<li>Converting into Mega bytes = 1024 / 1024 = 1 Mb.</li>
-</ul>
-<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><ul>
-<li><a href="https://www.tutorialspoint.com/dip/concept_of_bits_per_pixel.htm" target="_blank" rel="noopener">https://www.tutorialspoint.com/dip/concept_of_bits_per_pixel.htm</a></li>
+</li>
 </ul>
 
                     
@@ -260,7 +255,7 @@
                     
                     
                         <p>
-                            <a href="/2018/05/21/Bits Per Pixel/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/05/21/Brightness and Contrast/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -278,8 +273,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/05/15/안전영역/">
-                            안전영역
+                        <a class="link-unstyled" href="/2018/05/15/Pixel/">
+                            Pixel
                         </a>
                     
                 </h1>
@@ -292,7 +287,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
+    <a class="category-link" href="/categories/dip/">DIP</a>
 
 
     
@@ -301,15 +296,51 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p><a href="https://www.acmicpc.net/problem/2468" target="_blank" rel="noopener">https://www.acmicpc.net/problem/2468</a></p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p>비의 높이(지역 높이 최소~최대) 로 다음을 반복</p>
-<ol>
-<li>물에 잠긴 영역 체크</li>
-<li>BFS로 안정 영역 개수 체크</li>
-</ol>
-<h2 id="오답-원인"><a href="#오답-원인" class="headerlink" title="오답 원인"></a>오답 원인</h2><p>최소 답을 0으로 설정하였기 때문에 계속 틀렸었다.</p>
-<h2 id="해결"><a href="#해결" class="headerlink" title="해결"></a>해결</h2><p>최소 답은 1이다. </p>
-<p>왜냐하면, 아무 것도 잠기지 않는다면 하나의 영역이기 때문이다.</p>
+                    <h4 id="Pixel"><a href="#Pixel" class="headerlink" title="Pixel"></a>Pixel</h4><ul>
+<li>Pixel is the smallest element of an image.</li>
+<li>Each pixel correspond to any one value.<ul>
+<li>In an 8-bit gray scale image, the value of the pixel between 0 and 255</li>
+<li>each value denotes the intensity of light at that point of the image.</li>
+</ul>
+</li>
+</ul>
+<h4 id="Calculation-of-total-number-of-pixels"><a href="#Calculation-of-total-number-of-pixels" class="headerlink" title="Calculation of total number of pixels"></a>Calculation of total number of pixels</h4><ul>
+<li>We have define an image as a two dimensional signal or matrix.</li>
+<li>Total number of pixels<ul>
+<li>number of rows ( X ) number of columns</li>
+<li>the number of (x,y) coordinate pairs</li>
+</ul>
+</li>
+</ul>
+<h4 id="Gray-Scale"><a href="#Gray-Scale" class="headerlink" title="Gray Scale"></a>Gray Scale</h4><ul>
+<li>The value of the pixel at any point denotes the intensity of image at that location, and that is also known as gray level.</li>
+</ul>
+<h4 id="Pixel-value-0"><a href="#Pixel-value-0" class="headerlink" title="Pixel value (0)"></a>Pixel value (0)</h4><ul>
+<li><p>each pixel can have only one value and each value denotes the intensity of light at that point of the image.</p>
+</li>
+<li><p>The value 0 means absence of light. </p>
+</li>
+<li><p>It means that 0 denotes dark, </p>
+</li>
+<li><p>and it further means that when ever a pixel has a value of 0, it means at that point, black color would be formed.</p>
+<p><img src="https://github.com/KoJunHee/kojunhee.github.io/raw/master/img/pixelTable.png" alt="img"></p>
+</li>
+<li><p>this image matrix has all filled up with 0. </p>
+</li>
+<li><p>All the pixels have a value of 0. </p>
+</li>
+<li><p>an image would be formed with 9 pixels, </p>
+</li>
+<li><p>and that image would have a dimension of 3 rows and 3 column </p>
+</li>
+<li><p>and most importantly that image would be black.</p>
+</li>
+<li><p>Because all the pixels in the image had a value of 0.</p>
+</li>
+</ul>
+<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><ul>
+<li><a href="https://www.tutorialspoint.com/dip/concept_of_pixel.htm" target="_blank" rel="noopener">https://www.tutorialspoint.com/dip/concept_of_pixel.htm</a></li>
+</ul>
 
                     
                         
@@ -317,7 +348,7 @@
                     
                     
                         <p>
-                            <a href="/2018/05/15/안전영역/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/05/15/Pixel/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -421,8 +452,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/05/15/Pixel/">
-                            Pixel
+                        <a class="link-unstyled" href="/2018/05/15/안전영역/">
+                            안전영역
                         </a>
                     
                 </h1>
@@ -435,7 +466,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/dip/">DIP</a>
+    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
 
 
     
@@ -444,51 +475,15 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h4 id="Pixel"><a href="#Pixel" class="headerlink" title="Pixel"></a>Pixel</h4><ul>
-<li>Pixel is the smallest element of an image.</li>
-<li>Each pixel correspond to any one value.<ul>
-<li>In an 8-bit gray scale image, the value of the pixel between 0 and 255</li>
-<li>each value denotes the intensity of light at that point of the image.</li>
-</ul>
-</li>
-</ul>
-<h4 id="Calculation-of-total-number-of-pixels"><a href="#Calculation-of-total-number-of-pixels" class="headerlink" title="Calculation of total number of pixels"></a>Calculation of total number of pixels</h4><ul>
-<li>We have define an image as a two dimensional signal or matrix.</li>
-<li>Total number of pixels<ul>
-<li>number of rows ( X ) number of columns</li>
-<li>the number of (x,y) coordinate pairs</li>
-</ul>
-</li>
-</ul>
-<h4 id="Gray-Scale"><a href="#Gray-Scale" class="headerlink" title="Gray Scale"></a>Gray Scale</h4><ul>
-<li>The value of the pixel at any point denotes the intensity of image at that location, and that is also known as gray level.</li>
-</ul>
-<h4 id="Pixel-value-0"><a href="#Pixel-value-0" class="headerlink" title="Pixel value (0)"></a>Pixel value (0)</h4><ul>
-<li><p>each pixel can have only one value and each value denotes the intensity of light at that point of the image.</p>
-</li>
-<li><p>The value 0 means absence of light. </p>
-</li>
-<li><p>It means that 0 denotes dark, </p>
-</li>
-<li><p>and it further means that when ever a pixel has a value of 0, it means at that point, black color would be formed.</p>
-<p><img src="https://github.com/KoJunHee/kojunhee.github.io/raw/master/img/pixelTable.png" alt="img"></p>
-</li>
-<li><p>this image matrix has all filled up with 0. </p>
-</li>
-<li><p>All the pixels have a value of 0. </p>
-</li>
-<li><p>an image would be formed with 9 pixels, </p>
-</li>
-<li><p>and that image would have a dimension of 3 rows and 3 column </p>
-</li>
-<li><p>and most importantly that image would be black.</p>
-</li>
-<li><p>Because all the pixels in the image had a value of 0.</p>
-</li>
-</ul>
-<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><ul>
-<li><a href="https://www.tutorialspoint.com/dip/concept_of_pixel.htm" target="_blank" rel="noopener">https://www.tutorialspoint.com/dip/concept_of_pixel.htm</a></li>
-</ul>
+                    <p><a href="https://www.acmicpc.net/problem/2468" target="_blank" rel="noopener">https://www.acmicpc.net/problem/2468</a></p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p>비의 높이(지역 높이 최소~최대) 로 다음을 반복</p>
+<ol>
+<li>물에 잠긴 영역 체크</li>
+<li>BFS로 안정 영역 개수 체크</li>
+</ol>
+<h2 id="오답-원인"><a href="#오답-원인" class="headerlink" title="오답 원인"></a>오답 원인</h2><p>최소 답을 0으로 설정하였기 때문에 계속 틀렸었다.</p>
+<h2 id="해결"><a href="#해결" class="headerlink" title="해결"></a>해결</h2><p>최소 답은 1이다. </p>
+<p>왜냐하면, 아무 것도 잠기지 않는다면 하나의 영역이기 때문이다.</p>
 
                     
                         
@@ -496,7 +491,7 @@
                     
                     
                         <p>
-                            <a href="/2018/05/15/Pixel/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/05/15/안전영역/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>

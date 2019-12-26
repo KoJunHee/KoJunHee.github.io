@@ -193,6 +193,143 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2019/06/12/web-application-persistencen-context/">
+                            [자바 ORM 표준 JPA 프로그래밍] 13장_웹 어플리케이션과 영속성 관리
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-06-12T00:00:00+09:00">
+	
+		    Jun 12, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/jpa/">JPA</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p>이번 장에서는 컨테이너 환경에서 JPA 가 동작하는 내부 동작 방식을 이해하고, 발생할 수 있는 문제점과 해결방안을 정리합니다.</p>
+<h4 id="13-1-트렌젝션-범위의-영속성-컨텍스트"><a href="#13-1-트렌젝션-범위의-영속성-컨텍스트" class="headerlink" title="13.1 트렌젝션 범위의 영속성 컨텍스트"></a>13.1 트렌젝션 범위의 영속성 컨텍스트</h4><p>스프링이나 J2EE 컨테이너 환경에서 JPA 를 사용하면 컨테이너가 제공하는 전략을 따라야합니다.</p>
+<h5 id="13-1-1-스프링-컨테이너의-기본-전략"><a href="#13-1-1-스프링-컨테이너의-기본-전략" class="headerlink" title="13.1.1 스프링 컨테이너의 기본 전략"></a>13.1.1 스프링 컨테이너의 기본 전략</h5><p>스프링 컨테이너는 트렌젝션 범위의 영속성 컨텐스트 전략을 기본으로 합니다. 즉, 트렌젝션을 시작할 때 영속성 컨텍스트를 생성하고 끝날 때 영속성 컨텍스트를 종료합니다. 그리고, 같은 트렌젝션 안에서는 항상 같은 영속성 컨텍스트에 접근합니다. </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HelloController</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Autowired</span> HelloService helloService;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">hello</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//반환된 member 엔티티는 준영속 상태</span></span><br><span class="line">    Member member = helloService.logic();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HelloService</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 엔티티 메니저 주입</span></span><br><span class="line">  <span class="meta">@PersistenceContext</span></span><br><span class="line">  EntityManager em;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Autowired</span> Repository1 repository1;</span><br><span class="line">  <span class="meta">@Autowired</span> Repository2 repository2;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//트랜잭션 시작</span></span><br><span class="line">  <span class="meta">@Transactional</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">logic</span><span class="params">()</span></span>&#123;</span><br><span class="line">    repository1.hello();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//Member 는 영속상태</span></span><br><span class="line">    Member member = repository2.findMember();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> member;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//트렌젝션 종료</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Repository1</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@PersistenceContext</span></span><br><span class="line">  EntityManager em;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">hello</span><span class="params">()</span></span>&#123;</span><br><span class="line">    em.xxx(); <span class="comment">//영속성 컨텍스트 접근</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Repository2</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@PersistenceContext</span></span><br><span class="line">  EntityManager em;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> Member <span class="title">findMember</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> em.find(Member.class, <span class="string">"id1"</span>); <span class="comment">//영속성 컨텍스트 접근</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="13-2-준영속-상태와-지연-로딩"><a href="#13-2-준영속-상태와-지연-로딩" class="headerlink" title="13.2 준영속 상태와 지연 로딩"></a>13.2 준영속 상태와 지연 로딩</h4><p>조회한 엔티티가 서비스와 리포지토리 계층에서는 영속성 컨텍스트에 관리되면서 영속 상태를 유지하지만, 컨트롤러나 뷰 같은 프리젠테이션 계층에서는 준영속 상태가 됩니다. 따라서, 변경감지와 지연로딩이 동작하지 않습니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Order</span></span>&#123;</span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span></span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@ManyToOne</span>(fetch = FetchType.LAZY) <span class="comment">//지연로딩</span></span><br><span class="line">  <span class="keyword">private</span> Member member; <span class="comment">//주문 회원</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">OrderController</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">view</span><span class="params">(Long orderId)</span></span>&#123;</span><br><span class="line">    Order order = orderService.findOne(orderId);</span><br><span class="line">    Member member = order.getMember();</span><br><span class="line">    member.getName(); <span class="comment">//지연로딩 시 예외 발생</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>준영속 상태와 변경 감지</li>
+</ul>
+<p>변경감지 기능이 프리젠테이션 계층에서 동작하지 않는것은 문제가 되지 않습니다. 변경 감지 기능이 프리젠테이션 계층에서도 동작하면 애플리케이션 계층이 가지는 책임이 모호해지고, 데이터를 어디서 어떻게 변경했는지 프리젠테이션 계층까지 다 찾아야 하므로 유지보수하기 어렵습니다. 비즈니스 로직은 서비스 계층에서 끝내야합니다.</p>
+<ul>
+<li>준영속 상태와 지연 로딩</li>
+</ul>
+<p>준영속 상태의 지연 로딩을 해결하는 방법은 두 가지 입니다. </p>
+<ol>
+<li>뷰가 필요한 엔티티를 미리 로딩</li>
+<li>OSIV</li>
+</ol>
+<p>뷰가 필요한 엔티티를 미리 로딩하는 방법은 어디서 미리 로딩 하느냐에 따라 세가지가 있습니다.</p>
+<ol>
+<li>글로벌 페치 전략 수정</li>
+<li>JPQL Fetch Join</li>
+<li>강제 초기화</li>
+</ol>
+<h5 id="13-2-1-글로벌-페치-전략-수정"><a href="#13-2-1-글로벌-페치-전략-수정" class="headerlink" title="13.2.1 글로벌 페치 전략 수정"></a>13.2.1 글로벌 페치 전략 수정</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Order</span></span>&#123;</span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span></span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@ManyToOne</span>(fetch = FetchType.EAGER) <span class="comment">//즉시 로딩 전략</span></span><br><span class="line">  <span class="keyword">private</span> Member member; <span class="comment">//주문 회원</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//Presentation Logic</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">OrderController</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">view</span><span class="params">(Long orderId)</span></span>&#123;</span><br><span class="line">    Order order = orderService.findOne(orderId);</span><br><span class="line">    Member member = order.getMember();</span><br><span class="line">    member.getName(); <span class="comment">//이미 로딩된 엔티티</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>글로벌 페치 전략에 즉시 로딩 사용시 단점은 두가지가 있습니다.</p>
+<ol>
+<li>사용하지 않는 엔티티를 로딩</li>
+</ol>
+<p>order 를 조회하면서 사용하지 않는 member 도 함께 조회</p>
+<ol start="2">
+<li>N+1 문제</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Order order = em.find(Order.class, <span class="number">1L</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//실행된 SQL</span></span><br><span class="line">select o.*, m.*</span><br><span class="line">from Order o</span><br><span class="line">left outer join Member m on o.MEMBER_ID = m.MEMBER_ID</span><br><span class="line">where o.id = <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>여기까지 보면 글로벌 즉시 로딩 전략이 좋아보이지만, 문제는 JPQL 을 사용할 때 발생합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">List &lt;Order&gt; orders = em.createQuery(<span class="string">"select o from Order o"</span>, Order.class).getResultList();</span><br><span class="line"></span><br><span class="line"><span class="comment">//실행된 SQL</span></span><br><span class="line">select * from Order <span class="comment">//JPQL 로 실행된 SQL</span></span><br><span class="line">select * from Member where id = ? <span class="comment">//EAGER 로 실행된 SQL</span></span><br><span class="line">select * from Member where id = ? <span class="comment">//EAGER 로 실행된 SQL</span></span><br><span class="line">select * from Member where id = ? <span class="comment">//EAGER 로 실행된 SQL</span></span><br><span class="line">select * from Member where id = ? <span class="comment">//EAGER 로 실행된 SQL</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>JPA 가 JPQL 을 분석해서 SQL 을 생성할 때, 글로벌 패치 전략을 참고하지 않고 오직 JPQL 자체만 사용합니다. 따라서, 즉시로딩이든 지연 로딩이등 구분하지 않고 JPQL 쿼리 자체에 충신한 SQL 을 만듦니다.</p>
+<p>이런 N+1 문제는 이어서 소개할 JPQL Fetch Join 으로 해결할 수 있습니다.</p>
+<h5 id="13-2-2-JPQL-Fetch-Join"><a href="#13-2-2-JPQL-Fetch-Join" class="headerlink" title="13.2.2 JPQL Fetch Join"></a>13.2.2 JPQL Fetch Join</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Fetch Join 사용 전</span></span><br><span class="line">JPQL : select o from Order o</span><br><span class="line">SQL : select * from Order</span><br><span class="line"></span><br><span class="line"><span class="comment">//Fetch Join 사용 후</span></span><br><span class="line">JPQL :</span><br><span class="line">	select o </span><br><span class="line">	from Order o</span><br><span class="line">	join fetch o.member</span><br><span class="line">	</span><br><span class="line">SQL :</span><br><span class="line">	select o.*, m.*</span><br><span class="line">	from Order o</span><br><span class="line">	join Member m on o.MEMBER_ID = m.MEMBER_ID</span><br></pre></td></tr></table></figure>
+
+<p>Fetch Join 을 사용하면, SQL JOIN 을 사용해서 페치 조인 대상까지 함께 조회합니다. N+1 문제가 발생하지 않습니다.</p>
+<ul>
+<li>JPQL Fetch Join 의 단점</li>
+</ul>
+<p>무분별하게 사용하면 화면에 맞춘 리포지토리 메소드가 증가할 수 있습니다. 결국 프리젠테이션 계층이 데이터 접근 계층을 침범하는 것입니다.</p>
+<h5 id="13-2-3-강제로-초기화"><a href="#13-2-3-강제로-초기화" class="headerlink" title="13.2.3 강제로 초기화"></a>13.2.3 강제로 초기화</h5><p>영속성 컨테스트가 살아있을 때 프리젠테이션 계층이 필요한 엔티티를 강제로 초기화해서 반환하는 방법입니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">OrderService</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Transactional</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> Order <span class="title">findOrder</span><span class="params">(id)</span></span>&#123;</span><br><span class="line">    Order order = oderRepository.findOrder(id);</span><br><span class="line">    order.getMember().getName(); <span class="comment">//프록시 객체를 강제로 초기화</span></span><br><span class="line">    <span class="keyword">return</span> order;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>글로벌 페치 전략을 지연로딩으로 설정하면, 연관된 엔티리를 실제 엔티티가 아닌 프록시 객체로 조회합니다. 프록시 객체는 실제 사용하는 시점에 초기화됩니다. order.getMember() 까지만 호출하면. 단순히 프록시 객체만 반환합니다. 아직 초기화 하지 않습니다. member.getName() 처럼 실제 값을 사용할 때 초기화됩니다.</p>
+<p>프록시 초기화 하는 역하을 서비스 계층이 담당하면, 뷰가 필요한 엔티티에 따라 서비스 계층의 로직을 변경해야 합니다. 비즈니스 로직을 담당하는 서비스 계층에서 프리젠테이션 계층을 위한 프록시 초기화 역할을 하는 FACADE 계층이 그 역할을 담당해줍니다.</p>
+<h5 id="13-2-4-FACADE-계층-추가"><a href="#13-2-4-FACADE-계층-추가" class="headerlink" title="13.2.4 FACADE 계층 추가"></a>13.2.4 FACADE 계층 추가</h5><ul>
+<li><p>프리젠테이션 계층과 도메인 모델 계층간의 논리적 의존성을 분리합니다. </p>
+</li>
+<li><p>프리젠테이션 계층에서 필요한 프록시 객체를 초기화합니다.</p>
+</li>
+<li><p>서비스 계층을 호출해서 비즈니스 로직을 실행합니다.</p>
+</li>
+<li><p>리포지토리를 직접 호출해서 뷰가 요구하는 엔티티를 찾습니다.</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">OrderFacade</span></span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span> OrderService orderService;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> Order <span class="title">findOrder</span><span class="params">(id)</span></span>&#123;</span><br><span class="line">    Order order = orderService.findOrder(id);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//프리젠테이션 계층이 필요한 프록시 객체를 강제 초기화</span></span><br><span class="line">    order.getMember().getName();</span><br><span class="line">    <span class="keyword">return</span> order;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">OrderService</span></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> Order <span class="title">findOrder</span><span class="params">(id)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> orderRepository.findOrder(id);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="13-3-OSIV-Open-Session-in-View"><a href="#13-3-OSIV-Open-Session-in-View" class="headerlink" title="13.3 OSIV (Open Session in View)"></a>13.3 OSIV (Open Session in View)</h4><p>영속성 컨텍스트를 뷰까지 열어둔다는 뜻입니다. </p>
+<h5 id="13-3-1-과거-OSIV-요청-당-트렌젝션"><a href="#13-3-1-과거-OSIV-요청-당-트렌젝션" class="headerlink" title="13.3.1 과거 OSIV : 요청 당 트렌젝션"></a>13.3.1 과거 OSIV : 요청 당 트렌젝션</h5><p>OSIV 의 핵심은 뷰에서도 지연로딩이 가능하도록 하는 것입니다. 가장 단순한 구현은 클라이언트의 요청이 들어오자마자 서플릿 필터나 스프링 인터셉터에서 트렌젝션을 시작하고 요청을 끝날 때 트렌젝션도 끝내는 것입니다. 이것을 요청 당 트렌젝션 방식의 OSIV 라고 합니다.</p>
+<p>문제는, 프레센테이션 계층이 엔티티를 변경할 수 있다는 것입니다. </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MemberControlelr</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">viewMember</span><span class="params">(Long id)</span></span>&#123;</span><br><span class="line">    Member member = memberService.getMember(id);</span><br><span class="line">    member.setName(<span class="string">"XXX"</span>);</span><br><span class="line">    model.addAttribute(<span class="string">"member"</span>, member);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>개발자의 의도는 단순히 뷰에 노출할 때만 고객이름을 XXX 로 변경하고 싶은 것이지, 데이터베이스에 있는 고객 이름까지 변경하고자 하는 것이 아니었습니다. 하지만 요청당 트렌젝션 방식은 뷰 렌더링 이후에 트렌젝션으 커밋합니다. 커밋을 하면 영속성 컨텍스트를 플러쉬합니다. 영속성 컨텍스트의 변경 감지 기능이 동작해서 변경된 엔티티를 데이터베이스에 반영해버립니다.</p>
+<p>따라서, 프레젠테이션 계층에서 엔티티를 수정하지 못하게 해야합니다.</p>
+<ul>
+<li>엔티티를 읽기 전용 인터페이스로 제공</li>
+<li>엔티티 레핑</li>
+<li>DTO 만 반환</li>
+</ul>
+<h6 id="엔티티를-읽기-전용-인터페이스로-제공"><a href="#엔티티를-읽기-전용-인터페이스로-제공" class="headerlink" title="엔티티를 읽기 전용 인터페이스로 제공"></a>엔티티를 읽기 전용 인터페이스로 제공</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">MemberView</span></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Member</span> <span class="keyword">implements</span> <span class="title">MemberView</span></span>&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MemberService</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> MemberView <span class="title">getMember</span><span class="params">(id)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> memberRepository.findById(id);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="엔티티-레핑"><a href="#엔티티-레핑" class="headerlink" title="엔티티 레핑"></a>엔티티 레핑</h6><p>엔티티의 읽기 전용 메소드만 가지고 있는 엔티티를 감싼 객체를 만들고, 이것을 프리젠테이션 계층에 반환하는 방법입니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MemberWrapper</span></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> Member member;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">MemberWrapper</span><span class="params">(member)</span></span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.member = member;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 읽기 전용 메소드만 제공</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span></span>&#123;</span><br><span class="line">    member.getName;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="DTO-만-반환"><a href="#DTO-만-반환" class="headerlink" title="DTO 만 반환"></a>DTO 만 반환</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MemberDTO</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> STring name;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//GETTER, SETTER</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line">MemberDTO memberDTO = <span class="keyword">new</span> MemberDTO();</span><br><span class="line">memberDTO.setName(member.getName());</span><br><span class="line"><span class="keyword">return</span> memberDTO;</span><br></pre></td></tr></table></figure>
+
+<p>최근에는 비즈니스 계층에서만 트렌젝션을 유지하는 방식의 OSIV 를 사용합니다. 스프링 프레임워크가 제공하는 OSIV 방식입니다.</p>
+<h5 id="13-3-2-스프링-OSIV-비즈니스-계층-트렌젝션"><a href="#13-3-2-스프링-OSIV-비즈니스-계층-트렌젝션" class="headerlink" title="13.3.2 스프링 OSIV : 비즈니스 계층 트렌젝션"></a>13.3.2 스프링 OSIV : 비즈니스 계층 트렌젝션</h5><p>클라이언트의 요청이 들어오면 영속성 컨텍스트를 생성합니다. 이 때, 트렌젝션을 시작하지 않습니다. 서비스 계층에서 트렌젝션을 시작하면 앞에서 생성해둔 영속성 켄텍스트에 트렌젝션을 시작합니다. 비즈니스 로직을 실행하고 서비스 계층이 끝나면 트렌젝셩르 커밋하면서 영속성 컨텍스트를 플러쉬합니다. 이때, 트렌젝션만 종료하고 영속성 컨텍스트를 살려둡니다. 클라이언트의 요청이 끝날 때 영속성 컨텍스트를 종료합니다.</p>
+<p>엔티티를 변경하지 않고 단순히 조회만 할 때는 트렌젝션이 없어도 되는데, 이것을 트렌젝션 없이 읽기라고 합니다. 영속성 컨텍스트는 트렌젝션 범위 안에서 엔티티를 조회하고 수정할 수 있습니다. 영속성 컨텍스트는 트렌젝션 범위 밖에서 엔티리를 조회만 할 수 있습니다.</p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2019/06/12/web-application-persistencen-context/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2019/06/05/web-application/">
                             [자바 ORM 표준 JPA 프로그래밍] 11장_웹 어플리케이션 제작
                         </a>
@@ -1650,98 +1787,6 @@
                     
                         <p>
                             <a href="/2019/03/20/persistence context/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2019/03/20/entity mapping/">
-                            [자바 ORM 표준 JPA 프로그래밍] 4장_앤티티 매핑
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-03-20T00:00:00+09:00">
-	
-		    Mar 20, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/jpa/">JPA</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p>엔티티와 테이블을 정확히 매핑하기 위해 JPA는 다양한 어노테이션을 지원합니다. 이번 포스팅에서는 다음 매핑에 대해 다룹니다.</p>
-<ul>
-<li>객체와 테이블 매핑<ul>
-<li>@Entity, @Table</li>
-</ul>
-</li>
-<li>기본 키 매핑<ul>
-<li>@Id</li>
-</ul>
-</li>
-<li>필드와 컬럼 매핑<ul>
-<li>@Column</li>
-</ul>
-</li>
-</ul>
-<h4 id="Entity"><a href="#Entity" class="headerlink" title="@Entity"></a>@Entity</h4><p>JPA를 사용해서 테이블을 매핑할 클래스는 @Entity 를 필수로 붙여야합니다. @Entity 적용시 기본 생성자는 필수입니다.</p>
-<h4 id="Table"><a href="#Table" class="headerlink" title="@Table"></a>@Table</h4><p>엔티티와 매핑할 테이블을 지정합니다. </p>
-<h4 id="데이터베이스-스키마-자동-생성"><a href="#데이터베이스-스키마-자동-생성" class="headerlink" title="데이터베이스 스키마 자동 생성"></a>데이터베이스 스키마 자동 생성</h4><p>JPA는 클래스의 매핑 정보와 데이터베이스 방언을 사용해서 데이터베이스 스키마를 생성합니다. 다음과 같이 설정하면 기존 테이블을 삭제하고 새로 생성합니다 (DROP+CREATE).  create-drop / update / validate / none 옵션이 있습니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spring.jpa.hibernate.ddl-auto=create</span><br></pre></td></tr></table></figure>
-
-<h4 id="기본-키-Primary-Key-매핑"><a href="#기본-키-Primary-Key-매핑" class="headerlink" title="기본 키 (Primary Key) 매핑"></a>기본 키 (Primary Key) 매핑</h4><p>JPA가 제공하는 데이터베이스 기본 키 생성 전략은 다음과 같습니다.</p>
-<ul>
-<li>직접 할당<ul>
-<li>애플리케이션에서 직접 할당합니다.</li>
-</ul>
-</li>
-<li>자동 생성<ul>
-<li>IDENTITY<ul>
-<li>기본 키 생성을 데이터베이스에 위임합니다.</li>
-</ul>
-</li>
-<li>SEQUENCE<ul>
-<li>데이터베이스 시퀀스를 사용해 기본 키를 할당합니다.</li>
-</ul>
-</li>
-<li>TABLE<ul>
-<li>키 생성 테이블을 사용합니다.</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h4 id="Column"><a href="#Column" class="headerlink" title="@Column"></a>@Column</h4><p>객체 필드를 테이블 칼럼에 매핑합니다. 속성 중에 name, nullable 이 주로 사용됩니다.</p>
-<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><p>자바 ORM 표준 프로그래밍 &lt;김영한&gt;</p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2019/03/20/entity mapping/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>

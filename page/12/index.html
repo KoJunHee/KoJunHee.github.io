@@ -263,6 +263,220 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2018/10/09/Deadlock/">
+                            Deadlock
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-10-09T00:00:00+09:00">
+	
+		    Oct 09, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/os/">OS</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p>출처 : 이화여자대학교 반효경 (<a href="http://www.kocw.net/home/search/kemView.do?kemId=1046323" target="_blank" rel="noopener">http://www.kocw.net/home/search/kemView.do?kemId=1046323</a>)</p>
+<h2 id="Deadlock"><a href="#Deadlock" class="headerlink" title="Deadlock"></a>Deadlock</h2><p><img src="/image/dealock01.png" alt></p>
+<p>일련의 프로세스들이 서로가 가진 자원을 기다리며 block된 상태</p>
+<ul>
+<li>자원<ul>
+<li>하드웨어, 소프트웨어 등을 포함하느 개념</li>
+<li>ex) I/O device, CPU cycle, memory space, semaphore 등</li>
+</ul>
+</li>
+<li>예시<ul>
+<li>시스템 2개의 tape drive가 있다</li>
+<li>프로세스 P1과 P2 각각이 하나의 tape drive 를 보유한 채 다른 하나를 기다리고 있음</li>
+</ul>
+</li>
+</ul>
+<h2 id="Deadlock-발생의-4가지-조건"><a href="#Deadlock-발생의-4가지-조건" class="headerlink" title="Deadlock 발생의 4가지 조건"></a>Deadlock 발생의 4가지 조건</h2><ul>
+<li>Mutual Exlusioin<ul>
+<li>매 순간 하나의 프로세스만이 자원을 사용할 수 있음</li>
+</ul>
+</li>
+<li>No Preemption <ul>
+<li>프로세스는 자원을 스스로 내어놓을 뿐 강제로 뺏기지 않음 </li>
+</ul>
+</li>
+<li>Hold and wiat <ul>
+<li>자원을 가진 프로세스가 다른 자원을 기달리때 보유 자원을 놓지 않고 계속 가지고 있음</li>
+</ul>
+</li>
+<li>Circular wait<ul>
+<li>자워을 기다리는 프로세스 간에 사이클이 형성되어야 함 </li>
+<li>P0은 P1이 가진 자원을 기다림</li>
+<li>P1은 P2가 가진 자원을 기다림 ..</li>
+</ul>
+</li>
+</ul>
+<h2 id="자원-할당-그래프"><a href="#자원-할당-그래프" class="headerlink" title="자원 할당 그래프"></a>자원 할당 그래프</h2><p><img src="/image/dealock02.png" alt></p>
+<ul>
+<li><p>자원에서 프로세스쪽으로 나가는 화살표 </p>
+</li>
+<li><p>이 프로세스가 이 자원을 가지고 있다.</p>
+</li>
+<li><p>프로세스에서 자원쪽으로 나가는 화살표</p>
+<ul>
+<li>이 프로세스가 이 자원을 요청</li>
+</ul>
+</li>
+<li><p>자원 안에 동그라미</p>
+<ul>
+<li>자원 개수</li>
+</ul>
+</li>
+<li><p>그래프 안에 cycle이 없으면 deadlock이 아니다</p>
+</li>
+<li><p>cycle이 있으면</p>
+<ul>
+<li>자원당 인스턴스가 하나밖에 없으면, 데드락</li>
+<li>자원의 인스턴스가 여러개면, 데드락수도 있고 아닐수도 있고</li>
+</ul>
+</li>
+<li><p>왼쪽은 데드락, 오른쪽은 데드락이 아님</p>
+</li>
+</ul>
+<h2 id="Deadlock-Prevention"><a href="#Deadlock-Prevention" class="headerlink" title="Deadlock Prevention"></a>Deadlock Prevention</h2><p>자원 할당시 Deadlock의 4가지 필요 조건 중 어느 하나가 만족되지 않도록 하는 것 </p>
+<ul>
+<li>Mutual Exclusion<ul>
+<li>공유해서는 안되는 자원의 경우 반드시 성립해야함 </li>
+</ul>
+</li>
+<li>Hold and wait<ul>
+<li>프로세스 시작 시 모든 필요한 자원을 할당받게 하는 방법</li>
+<li>자원이 필요할 경우 보유 자원을 모두 놓고 다시 요청</li>
+</ul>
+</li>
+<li>No preemption <ul>
+<li>빼앗아 올수 있게 하면 됨 </li>
+<li>모든 필요한 자원을 얻을 수 있을 때 그 프로세스는 다시 시작된다. </li>
+</ul>
+</li>
+<li>Circular Wait<ul>
+<li>모든 자원 유형에 할당 순서를 정하여 정해진 순서대로 자원 할당</li>
+</ul>
+</li>
+</ul>
+<h2 id="Deadlock-Avoidance"><a href="#Deadlock-Avoidance" class="headerlink" title="Deadlock Avoidance"></a>Deadlock Avoidance</h2><p>자원 요청에 대한 부가적인 정보를 이용해서 데드락의 가능성이 없는 경우에만 자원 할당.</p>
+<p>데드락으로부터 항상 safe한 상태를 유지.</p>
+<p>자원 요청에 대한 부가정보를 이용해서 자원 할당이 데드락으로부터 safe한지를 동적으로 조사해서 안전한 경우에만 할당.</p>
+<p>프로세스들이 필요로 하는 각 자원별 최대 사용량을 미리 선언</p>
+<ul>
+<li>Single instance per resouce types <ul>
+<li>Resource Allocation Graph algorithm</li>
+</ul>
+</li>
+<li>Multiple instance per resouce types  <ul>
+<li>Banker’s Algorithm</li>
+</ul>
+</li>
+</ul>
+<h2 id="Resource-Allocation-Graph-algorithm"><a href="#Resource-Allocation-Graph-algorithm" class="headerlink" title="Resource Allocation Graph algorithm"></a>Resource Allocation Graph algorithm</h2><p>자원 당 인스턴스 하나</p>
+<p>데드락의 위험성이 있으면 애초부터 자원을 내주지 않음.</p>
+<p>점선 화살표 : 이 프로세스가 평생 적어도 한번 이 자원을 사용할 것이다.</p>
+<p><img src="/image/dealock03.png" alt></p>
+<h2 id="Banker’s-Algorithm"><a href="#Banker’s-Algorithm" class="headerlink" title="Banker’s Algorithm"></a>Banker’s Algorithm</h2><p>자원 당 인스턴스 여러개</p>
+<p><img src="/image/dealock04.png" alt></p>
+<p>5개의 프로세스 : P0 P1 P2 P3 P4</p>
+<p>A자원 인스턴스 10개</p>
+<p>B자원 인스턴스 5개</p>
+<p>C자원 인스턴스 7개</p>
+<ul>
+<li><p>Allocation</p>
+<ul>
+<li>0번 프로세스는 현재 A 0개 / B 1개 / C 0개 할당되어 있음 </li>
+</ul>
+</li>
+<li><p>Available</p>
+<ul>
+<li>현재 가용 자원</li>
+<li>아무도 사용하지 않고 남아 있는 자원</li>
+</ul>
+</li>
+<li><p>Max</p>
+<ul>
+<li>이 프로세스가 시작될 때, 이 프로세스가 평생 최대로 사용할 자원 개수를 선언했음</li>
+</ul>
+</li>
+<li><p>Need</p>
+<ul>
+<li>추가로 요청 할 수  있는 양 </li>
+</ul>
+</li>
+</ul>
+<p>이 알고리즘은 프로세스가 자원을 요청했을 때, 이 요청을 받아들일것인지 결정하는 것임 </p>
+<p>프로세스가 최대(Need)로 요청할 것을 가정한다. 그리고 이게 가용 자원으로 가능한지 체크. 가용자원으로 가능하지 않으면 요청을 거절.</p>
+<p>P0는 7 4 3 으로 요청할것이다. 이게 3 3 2 로 커버 가능? NO. 요청 거절.</p>
+<h2 id="Deadlock-Detection-and-recovery"><a href="#Deadlock-Detection-and-recovery" class="headerlink" title="Deadlock Detection and recovery"></a>Deadlock Detection and recovery</h2><p>Deadlock 발생은 허용하되 그에 대한 detection 루틴을 두어 deadlock 발생시 recover</p>
+<ul>
+<li><p>Single instance per resouce types </p>
+<ul>
+<li>Resource Allocation Graph algorithm</li>
+<li>cycle이 곧 데드락</li>
+</ul>
+</li>
+<li><p>Multiple instance per resouce types  </p>
+<ul>
+<li>Banker’s Algorithm과 유사한 방법 활용</li>
+</ul>
+</li>
+<li><p>Recovery</p>
+<ul>
+<li><p>Process Termination</p>
+<ul>
+<li>abort all deadlocked processes(한꺼번에)</li>
+<li>데드락에 연루된 프로세스드을 하나씩 죽여봄. 여전히 데드락이면 또 하나의 다른 프로세스 죽여봄.</li>
+</ul>
+</li>
+<li><p>Resource Preemption</p>
+<ul>
+<li>데드락에 연루된 프로세스로부터 자원을 뺏음</li>
+<li>safe state로 roolback하여 prcess를 restart</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="Deadlock-Ignorance"><a href="#Deadlock-Ignorance" class="headerlink" title="Deadlock Ignorance"></a>Deadlock Ignorance</h2><p>Deadlock을 시스템이 책임지지 않음</p>
+<p>UNIX를 포함한 대부분의 OS가 채택</p>
+<p>데드락이 일어나지 않는다고 생각하고 아무런 조치 취하지 않음</p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/10/09/Deadlock/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2018/10/09/Memory Management/">
                             Memory Management
                         </a>
@@ -1345,130 +1559,6 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/10/04/보물상자 비밀번호/">
-                            보물상자 비밀번호
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-10-04T00:00:00+09:00">
-	
-		    Oct 04, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p><a href="https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AWXRUN9KfZ8DFAUo&amp;categoryId=AWXRUN9KfZ8DFAUo&amp;categoryType=CODE" target="_blank" rel="noopener">https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AWXRUN9KfZ8DFAUo&amp;categoryId=AWXRUN9KfZ8DFAUo&amp;categoryType=CODE</a></p>
-<p>쉬운 문제이다. 이 문제에서는 정렬과 진법 변환을 배울 수 있다.</p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ol>
-<li>회전 시키고</li>
-<li>각 변 확인하며 리스트에 저장</li>
-</ol>
-<h2 id="개념"><a href="#개념" class="headerlink" title="개념"></a>개념</h2><ol>
-<li><p>정렬</p>
-<p>오름차순 정렬 : Collections.sort(list)</p>
-<p>내림차순 정렬 : Collections.sort(list) –&gt;  Collections.reverse(list)</p>
-</li>
-<li><p>진법 변환</p>
-<p>string 을 radix 진법으로 변환 : Integer.parseInt(String s, int radix) </p>
-</li>
-</ol>
-<h2 id="코드"><a href="#코드" class="headerlink" title="코드"></a>코드</h2><p><img src="/image/treasurepwd01.png" alt></p>
-<p><img src="/image/treasurepwd02.png" alt></p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/10/04/보물상자 비밀번호/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/10/04/벽돌깨기/">
-                            벽돌깨기
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-10-04T00:00:00+09:00">
-	
-		    Oct 04, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p><a href="https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AWXRQm6qfL0DFAUo&amp;categoryId=AWXRQm6qfL0DFAUo&amp;categoryType=CODE&amp;&amp;&amp;" target="_blank" rel="noopener">https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AWXRQm6qfL0DFAUo&amp;categoryId=AWXRQm6qfL0DFAUo&amp;categoryType=CODE&amp;&amp;&amp;</a></p>
-<p>어려운 문제는 아니다. 방향은 잡았는데, 코드로 구현하는데 오래 걸렸다.</p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ol>
-<li>구슬 선택 : DFS</li>
-<li>벽돌 깨기 : 재귀</li>
-</ol>
-<p>DFS는 다음 그림과 같이 진행한다. 구슬을 쏠 수 있는 칼럼은 0, 1, 2, 3 으로 4개가 있다고 하면,</p>
-<p><img src="/image/breakBrick02.png" alt></p>
-<p>재귀는 다음 그림과 같이 구현한다. 3을 기준으로 벽돌을 깬다고 하면, </p>
-<p>3 기준 동서남북을 체크한다. 3의 동쪽을 깨는 중에, 9가 나오기 때문에, 9 위치에서 다시 재귀 함수를 호출 한다.</p>
-<p><img src="/image/breakBrick01.png" alt></p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/10/04/벽돌깨기/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
                         <a class="link-unstyled" href="/2018/10/04/Process Managemnet/">
                             Process Management
                         </a>
@@ -1629,21 +1719,21 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/10/03/Process/">
-                            Process
+                        <a class="link-unstyled" href="/2018/10/04/벽돌깨기/">
+                            벽돌깨기
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2018-10-03T00:00:00+09:00">
+    <time datetime="2018-10-04T00:00:00+09:00">
 	
-		    Oct 03, 2018
+		    Oct 04, 2018
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/os/">OS</a>
+    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
 
 
     
@@ -1652,55 +1742,17 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h5 id="Process란"><a href="#Process란" class="headerlink" title="Process란 ?"></a>Process란 ?</h5><p>실행중인 프로그램입니다. 메모리에 적재되어 CPU 할당을 받을 수 있습니다.</p>
-<p><img src="/image/100201.png" alt></p>
-<h5 id="Context란"><a href="#Context란" class="headerlink" title="Context란 ?"></a>Context란 ?</h5><p>CPU 수행상태를 나타내는 하드웨어 문맥입니다.</p>
-<h5 id="프로세스의-상태-Process-State-란"><a href="#프로세스의-상태-Process-State-란" class="headerlink" title="프로세스의 상태 (Process State) 란 ?"></a>프로세스의 상태 (Process State) 란 ?</h5><p>프로세스는 상태가 변경되며 수행됩니다.</p>
-<ol>
-<li>Running<br>CPU를 잡고 instruction을 수행중인 상태입니다.</li>
-<li>Ready<br>메모리 등 다른 조건을 모두 만족하고 CPU를 기다리는 상태 입니다.</li>
-<li>Blocked (wait, sleep)<br>CPU를 주어도 당장 instruction을 수행할 수 없는 상태입니다. 프로세스 자신이 요청한 event(io같은거) 가 만족되지않아 이를 기다리는 상태입니다. 자신이 요청한 event 만족되면 ready 상태가 됩니다.</li>
-<li>New<br>프로세스가 생성중인 상태입니다.</li>
-<li>Terminated<br>execution이 끝난 상태입니다.</li>
-<li>Suspended (stopped)<br>프로세스가 통째로 메모리에서 쫓겨난 상태입니다. 디스크에 swap out 됩니다.  외부에서 resume해 주어야 active가 됩니다.</li>
+                    <p><a href="https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AWXRQm6qfL0DFAUo&amp;categoryId=AWXRQm6qfL0DFAUo&amp;categoryType=CODE&amp;&amp;&amp;" target="_blank" rel="noopener">https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AWXRQm6qfL0DFAUo&amp;categoryId=AWXRQm6qfL0DFAUo&amp;categoryType=CODE&amp;&amp;&amp;</a></p>
+<p>어려운 문제는 아니다. 방향은 잡았는데, 코드로 구현하는데 오래 걸렸다.</p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ol>
+<li>구슬 선택 : DFS</li>
+<li>벽돌 깨기 : 재귀</li>
 </ol>
-<p><img src="/image/100202.png" alt></p>
-<p><img src="/image/100203.png" alt></p>
-<h5 id="PCB란"><a href="#PCB란" class="headerlink" title="PCB란 ?"></a>PCB란 ?</h5><p>운영체제가 각 프로세스를 관리하기 위해 프로세스당 유지하는 정보입니다. 프로세스는 CPU 를 할당받아 작업을 처리하다가도 프로세스 전환이 발생하면 진행하던 작업을 저장하고 CPU 를 반환해야 하는데, 이때 작업의 진행 상황을 모두 PCB 에 저장하게 됩니다. </p>
-<ol>
-<li>OS가 관리상 사용하는 부분</li>
-<li>CPU 수행 관련 하드웨어 값</li>
-<li>메모리 관련</li>
-<li>파일 관련</li>
-</ol>
-<p><img src="/image/100204.png" alt></p>
-<h5 id="문맥-교환이-뭔가요"><a href="#문맥-교환이-뭔가요" class="headerlink" title="문맥 교환이 뭔가요?"></a>문맥 교환이 뭔가요?</h5><p>CPU를 한 프로세스에서 다른 프로세스로 넘겨누는 과정입니다. </p>
-<p><img src="/image/100205.png" alt></p>
-<h5 id="system-call이나-interrupt-발생시-항상-문맥교환이-일어납니까"><a href="#system-call이나-interrupt-발생시-항상-문맥교환이-일어납니까" class="headerlink" title="system call이나 interrupt 발생시 항상 문맥교환이 일어납니까?"></a>system call이나 interrupt 발생시 항상 문맥교환이 일어납니까?</h5><p>system call이나 interrupt 발생시 context switch가 반드시 일어나는 것은 아닙니다. 프로세스 A가 CPU를 잡고 있다가, interrupt 가 걸리거나, system call을 하게되어 user mode에서 kernel mode에 갔다가, 다시 사용자 프로세스 A가 CPU를 잡게 되면 문맥교환이 일어나지 않습니다.</p>
-<h5 id="프로세스-스케쥴링-큐의-모습은"><a href="#프로세스-스케쥴링-큐의-모습은" class="headerlink" title="프로세스 스케쥴링 큐의 모습은 ?"></a>프로세스 스케쥴링 큐의 모습은 ?</h5><p><img src="/image/100206.png" alt></p>
-<h5 id="스케쥴러란"><a href="#스케쥴러란" class="headerlink" title="스케쥴러란 ?"></a>스케쥴러란 ?</h5><ol>
-<li><p>Long-term scheduler (job scheduler)<br>메모리를 어떤 프로세스에게 줄지 결정합니다. 시작 프로세스 중 어떤 것들을 ready queue로 보낼지 결정합니다.</p>
-</li>
-<li><p>Short-term scheduler (cpu scheduler)<br>어떤 프로세스에게 cpu를 줄지 결정합니다. 어떤 프로세스를 다음번에 running시킬지 결정합니다.</p>
-</li>
-<li><p>Medum-term scheduler (swapper)<br>메모리에 많은 프로그램이 올라가있으면 일부를 골라서 쫓아냅니다. 프로세스에게서 메모리를 뺏는 문제입니다.</p>
-</li>
-</ol>
-<h5 id="Thread-란"><a href="#Thread-란" class="headerlink" title="Thread 란 ?"></a>Thread 란 ?</h5><p>프로세스의 내부의 CPU 수행단위입니다. 스레드는 스레드 ID, PC, register set, 그리고 stack으로 구성됩니다. 같은 프로세스에 속한 다른 스레드와 code seciton, data section, 그리고 OS resource를 공유합니다.</p>
-<p><img src="/image/100207.png" alt></p>
-<p><img src="/image/100208.png" alt></p>
-<h5 id="왜-스레드마다-스택을-독립적으로-가지고-있나요"><a href="#왜-스레드마다-스택을-독립적으로-가지고-있나요" class="headerlink" title="왜 스레드마다 스택을 독립적으로 가지고 있나요?"></a>왜 스레드마다 스택을 독립적으로 가지고 있나요?</h5><p>스레드는 독립적인 실행 흐름이기 때문입니다. </p>
-<p>함수 호출 시 전달되는 인자, 되돌아갈 주소값 및 함수 내에서 선언하는 변수 등을 저장하기 위해 사용되는 메모리 공간인 스택을 독립적으로 가지고 있어야 합니다. </p>
-<h5 id="왜-스레드마다-PC-레지스터를-독립적으로-가지고-있나요"><a href="#왜-스레드마다-PC-레지스터를-독립적으로-가지고-있나요" class="headerlink" title="왜 스레드마다 PC 레지스터를 독립적으로 가지고 있나요?"></a>왜 스레드마다 PC 레지스터를 독립적으로 가지고 있나요?</h5><p>스레드가 CPU를 할당받았다가 스케쥴러에 의해 CPU를 빼앗기면, 어느 부분까지 수행되었는지 기억할 필요가 있기 때문에 PC 레지스터를 독립적으로 가지고 있어야 합니다.</p>
-<h5 id="멀티스레딩이-무엇인가요"><a href="#멀티스레딩이-무엇인가요" class="headerlink" title="멀티스레딩이 무엇인가요?"></a>멀티스레딩이 무엇인가요?</h5><p>하나의 프로세스를 다수의 실행 단위로 구분하여, 자원을 공유하고 자원의 생성과 관리의 중복성을 최소화하여, 수행 능력을 향상 시키는 것입니다.</p>
-<h5 id="멀티스레딩의-장점은-무엇인가요"><a href="#멀티스레딩의-장점은-무엇인가요" class="headerlink" title="멀티스레딩의 장점은 무엇인가요?"></a>멀티스레딩의 장점은 무엇인가요?</h5><p>Responsiveness와 Resource Sharing 이 뛰어나며, 스레드 간 통신 방법이 간단합니다.</p>
-<ol>
-<li>Responsiveness가 좋습니다.<br>한 스레드가 blocked 되어도, 다른 스레드는 continue 가능합니다</li>
-<li>Resource Sharing 이 가능합니다.<br>n개의 스레드는 프로세스의 코드 영역, 데이터 영역 그리고 자원을 공유합니다.</li>
-<li>프로세스 간 통신 방법에 비해 스레드 간 통신 방법이 간단합니다.<br>별도의 자원을 이용하지 않고 전역 변수의 공간, 또는 동적으로 할당된 공간인 Heap 영역을 이용해 데이터를 주고 받을 수 있습니다.</li>
-</ol>
-<h5 id="멀티스레딩의-단점은-무엇인가요"><a href="#멀티스레딩의-단점은-무엇인가요" class="headerlink" title="멀티스레딩의 단점은 무엇인가요?"></a>멀티스레딩의 단점은 무엇인가요?</h5><p>동기화 작업이 필요합니다. 서로 다른 스레드가 data 영역과 heap 영역을 공유하기 때문입니다.</p>
-<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p>이화여자대학교 반효경 (<a href="http://www.kocw.net/home/search/kemView.do?kemId=1046323" target="_blank" rel="noopener">http://www.kocw.net/home/search/kemView.do?kemId=1046323</a>)</p>
+<p>DFS는 다음 그림과 같이 진행한다. 구슬을 쏠 수 있는 칼럼은 0, 1, 2, 3 으로 4개가 있다고 하면,</p>
+<p><img src="/image/breakBrick02.png" alt></p>
+<p>재귀는 다음 그림과 같이 구현한다. 3을 기준으로 벽돌을 깬다고 하면, </p>
+<p>3 기준 동서남북을 체크한다. 3의 동쪽을 깨는 중에, 9가 나오기 때문에, 9 위치에서 다시 재귀 함수를 호출 한다.</p>
+<p><img src="/image/breakBrick01.png" alt></p>
 
                     
                         
@@ -1708,7 +1760,72 @@
                     
                     
                         <p>
-                            <a href="/2018/10/03/Process/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/10/04/벽돌깨기/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2018/10/04/보물상자 비밀번호/">
+                            보물상자 비밀번호
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-10-04T00:00:00+09:00">
+	
+		    Oct 04, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p><a href="https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AWXRUN9KfZ8DFAUo&amp;categoryId=AWXRUN9KfZ8DFAUo&amp;categoryType=CODE" target="_blank" rel="noopener">https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AWXRUN9KfZ8DFAUo&amp;categoryId=AWXRUN9KfZ8DFAUo&amp;categoryType=CODE</a></p>
+<p>쉬운 문제이다. 이 문제에서는 정렬과 진법 변환을 배울 수 있다.</p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ol>
+<li>회전 시키고</li>
+<li>각 변 확인하며 리스트에 저장</li>
+</ol>
+<h2 id="개념"><a href="#개념" class="headerlink" title="개념"></a>개념</h2><ol>
+<li><p>정렬</p>
+<p>오름차순 정렬 : Collections.sort(list)</p>
+<p>내림차순 정렬 : Collections.sort(list) –&gt;  Collections.reverse(list)</p>
+</li>
+<li><p>진법 변환</p>
+<p>string 을 radix 진법으로 변환 : Integer.parseInt(String s, int radix) </p>
+</li>
+</ol>
+<h2 id="코드"><a href="#코드" class="headerlink" title="코드"></a>코드</h2><p><img src="/image/treasurepwd01.png" alt></p>
+<p><img src="/image/treasurepwd02.png" alt></p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/10/04/보물상자 비밀번호/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
