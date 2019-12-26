@@ -1,0 +1,547 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="junhee.ko">
+    <title>[카프카] 3장_카프카 디자인 - junhee.ko</title>
+    <meta name="author" content="junhee.ko">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg"},"articleBody":"대용량, 대규모 메세지 데이터를 빠르게 처리하도록 개발된 메시징 플랫폼이다.\n1. 카프카 디자인의 특징1.1 분산 시스템분산 시스템이란, 같은 역할을 하는 여러 대의 서버로 이뤄진 서버 그룹이다.\n장점은,\n\n단일 시스템 보다 높은 성능\n하나의 서버가 장애가 발생해도 다른 서버가 대신 처리\n시스템 확장 용이\n\n1.2 페이지 캐시OS 는 물리적 메모리에 애플리케이션이 사용하는 부분을 할당하고, 남은 잔여 메모리 일부를 페이지 케시로 이용한다. \n즉, 디스크에 읽고 쓰기를 하지 않고 페이지 케시를 읽고 쓰는 방식으로 처리 속도가 빠르고 전체적인 성능을 향상 시킨다.\n카프카는 이 특징을 이용해 디자인되었다.\n1.3 배치 전송 처리서버와 클라이언트 사이, 또는 서버 내부적으로 데이터를 주고 받는 과정에서 I/O 가 발한다. \n작은 I/O 가 빈번하게 발생하는 것을 막기 위해, 작은 I/O 들을 묶어러 처리할 수 있도록 배치 작업으로 처리한다.\n2. 카프카 데이터 모델2.1 토픽메세지를 받을 수 있도록 논리적으로 묶은 개념이다. 메일 주소라고 생각하면 쉽다.\n2.2 파티션토픽을 분할한 것이다. \n\n위 그림에서, ‘뉴스 토픽’ 으로 4 개의 메세지를 보내는데 4 초가 걸린다.\n\n위 그림에서, ‘뉴스 토픽’ 으로 4 개의 메세지를 보내는데 1 초가 걸린다.\n이렇게 빠른 전송을 위해서는, 토픽의 파티션 수와 프로듀서 수를 모두 늘려줘야한다.\n\n무조건 파티션 수를 늘려야 하나 ?\n\n파티션 수가 늘어나면 카프카에 좋지 않은 영향을 끼칠 수 있다.\n\n파일 핸들러의 낭비\n각 파티션은 브로커의 디렉토리와 매핑되고, 저장되는 데이터는 2 개의 파일 ( 인덱스, 실제 데이터 ) 이 있다.\n파티션이 많을 수록, 파일 핸들 수 역시 많아져 리소스가 낭비가 될 수 있다.\n\n장애 복구 시간 증가\n\n\n\n토픽의 적절한 파티션 수는 ?\n\n먼저, 원하는 목표 처리량의 기준을 정해야한다. \n\n프로듀서\n4 개의 프로듀서가 초당 10 개의 메세지를 토픽으로 보내면, 토픽에서 초당 40 개의 메시지를 받아줘야한다.\n\n토픽\n해당 토픽에서 파티션을 1로 했을 때 초당 10개의 메세지만 받아준다면, 파티션 수를 4로 조정하면 목표치를 달성한다.\n\n컨슈머\n8 개의 컨슈머가 각각 초당 5 개의 메세지를 토픽에서 가져올 수 있으면, 토픽의 파티션수는 8개로 맞춰서 각 컨슈머마다 각각의 파티션에 접근하게 해줘야한다.\n\n\n주의할 점은, 파티션 수를 늘리는 것은 가능하지만 파티션 수을 줄이는 것은 불가능하다.\n2.3 오프셋과 메세지 순서오프셋이란, 각 파티션마다 메세지가 저장되는 위치이다. 파티션 내에서 유일한 숫자이고, 순차적으로 증가한다.\n만약 컨슈머가 파티션 0 에서 데이터를 가져간다고 하면, 오프셋 0 1 2 3 4 5 순서대로 가져갈 수 있다. 절대로 오프셋 순서가 바뀐 상태로 가져갈 수 없다.\n3. 고가용성과 리플리케이션토픽을 이루는 각각의 파티션을 리플리케이션 하는 것이다.\n3.1 리플리케이션 팩터와 리더, 팔로워의 역할\n모든 읽기와 쓰기는 리더를 통해서만 일어난다. 팔로워는 리더의 데이터를 그대로 리플리케이션만 한다.\n리더와 팔로워는 저장된 데이터의 순서도 일치하고 동일한 오프셋과 메시지를 갖는다.\n리플리케이션된 토픽의 서버가 다운되어도, 리더 변경으롤 문제 없이 프로듀서의 요청을 처리할 수 있다.\n리플리케이션의 단점은,\n\n디스크 사용량 증가\n토픽의 사이즈가 100 GB, 리플리케이션 팩터 3 이면, 카프카 클러스터 내 필요 저장소 크기는 300 GB 이다.\n\n브로커 리소스 사용량 증가\n브로커는 리플리케이션 보장을 위해, 비활성화된 토픽이 리플리케이션을 잘하고 있는지 비활성화된 토픽을 계속 체크한다. \n\n\n3.2 리더와 팔로워의 관리팔로워에 문제가 있어서, 리더로부터 데이터를 가져오지 못하면 정합성이 맞지 않는다.\n이를 해결하기 위해, ISR ( In Sync Replica ) 라는 개념이 있다. 현재 리플리케이션 되고 있는 리플리케이션 그룹이다.\nISR 에 속한 구성원만이 리더의 자격이 있다. \n프로듀서 1, 브로커 3, 리플리케이션 팩터 3 일때, ISR 동작 순서는\n\n프로듀서가 메세지를 토픽의 리더에게 보낸다. \n리더는 메세지를 저장한다.\n팔로워는 매우 짧은 주기로 리더에 새로운 메세지가 저장된 것이 있는지 확인한다.\n팔로워 1은 잘 동작하고 2는 잘 동작하지 않는다고 가정하자.\n리더는 팔로워가 일정 주기 동안 확인 요청을 하지 않으면 그 팔로워를 ISR 그룹에서 추방한다.\n리더는 팔로워 2를 ISR 그룹에서 추방한다.\n팔로워 1은 리더에게 새로운 메세지가 있음을 확인하고 메세지를 가져가서 저장한다.\n\n4. 모든 브로커가 다운된다면\n마지막 리더가 살아나기를 기다린다.\n마지막 리더에게 모든 메세지가 저장되어 있을 때, 나중에 다시 살아난다면 메세지 손실이 없다.\n하지만 마지막 리더가 살아나지 않는 경우가 있을 수 있고, 결국 마지막 리더가 정상화 될때 까지 카프카 클러스터 장애가 길어진다.\n\nISR 에서 추방되었지만 먼저 살아나면 자동으로 리더가 된다.\n메세지가 일부 손실되지만, 브로커 하나만이라도 정상화되어 서비스가 빠르게 정상화된다.\n\n\n다음 그림은, 토픽 / 파티션 / 리플리케이션 팩터 / 브로커 구성 예시이다.\n\n\n","dateCreated":"2019-12-26T00:00:00+09:00","dateModified":"2019-12-26T16:41:17+09:00","datePublished":"2019-12-26T00:00:00+09:00","description":"","headline":"[카프카] 3장_카프카 디자인","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://kojunhee.github.io/2019/12/26/kafka-chapter3/"},"publisher":{"@type":"Organization","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg","logo":{"@type":"ImageObject","url":"profile.jpg"}},"url":"https://kojunhee.github.io/2019/12/26/kafka-chapter3/"}</script>
+    <meta name="description" content="대용량, 대규모 메세지 데이터를 빠르게 처리하도록 개발된 메시징 플랫폼이다. 1. 카프카 디자인의 특징1.1 분산 시스템분산 시스템이란, 같은 역할을 하는 여러 대의 서버로 이뤄진 서버 그룹이다. 장점은,  단일 시스템 보다 높은 성능 하나의 서버가 장애가 발생해도 다른 서버가 대신 처리 시스템 확장 용이  1.2 페이지 캐시OS 는 물리적 메모리에 애플리">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="[카프카] 3장_카프카 디자인">
+<meta property="og:url" content="https://kojunhee.github.io/2019/12/26/kafka-chapter3/index.html">
+<meta property="og:site_name" content="junhee.ko">
+<meta property="og:description" content="대용량, 대규모 메세지 데이터를 빠르게 처리하도록 개발된 메시징 플랫폼이다. 1. 카프카 디자인의 특징1.1 분산 시스템분산 시스템이란, 같은 역할을 하는 여러 대의 서버로 이뤄진 서버 그룹이다. 장점은,  단일 시스템 보다 높은 성능 하나의 서버가 장애가 발생해도 다른 서버가 대신 처리 시스템 확장 용이  1.2 페이지 캐시OS 는 물리적 메모리에 애플리">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://kojunhee.github.io/image/kafka_one_producer.png">
+<meta property="og:image" content="https://kojunhee.github.io/image/kafka_many_producer.png">
+<meta property="og:image" content="https://kojunhee.github.io/image/kafka_reflecation.png">
+<meta property="og:image" content="https://kojunhee.github.io/image/kafka_example01.png">
+<meta property="og:image" content="https://kojunhee.github.io/image/kafka_example02.png">
+<meta property="og:updated_time" content="2019-12-26T07:41:17.021Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[카프카] 3장_카프카 디자인">
+<meta name="twitter:description" content="대용량, 대규모 메세지 데이터를 빠르게 처리하도록 개발된 메시징 플랫폼이다. 1. 카프카 디자인의 특징1.1 분산 시스템분산 시스템이란, 같은 역할을 하는 여러 대의 서버로 이뤄진 서버 그룹이다. 장점은,  단일 시스템 보다 높은 성능 하나의 서버가 장애가 발생해도 다른 서버가 대신 처리 시스템 확장 용이  1.2 페이지 캐시OS 는 물리적 메모리에 애플리">
+<meta name="twitter:image" content="https://kojunhee.github.io/image/kafka_one_producer.png">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://kojunhee.github.io/assets/images/profile.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/all.css">
+    <link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
+    <link rel="stylesheet" href="/assets/css/thumbs.css">
+    <link rel="stylesheet" href="/assets/css/tranquilpeak.css">
+    <!--STYLES END-->
+    
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="2">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">junhee.ko</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="2">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">junhee.ko</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>Always Learning</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/kojunhee" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://facebook.com/kojunheee" target="_blank" rel="noopener" title="Facebook">
+                    
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/junheeko" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="mailto:junheee.ko@gmail.com" target="_blank" rel="noopener" title="Mail">
+                    
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Mail</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="2"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            [카프카] 3장_카프카 디자인
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2019-12-26T00:00:00+09:00">
+	
+		    Dec 26, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/kafka/">Kafka</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>대용량, 대규모 메세지 데이터를 빠르게 처리하도록 개발된 메시징 플랫폼이다.</p>
+<h3 id="1-카프카-디자인의-특징"><a href="#1-카프카-디자인의-특징" class="headerlink" title="1. 카프카 디자인의 특징"></a>1. 카프카 디자인의 특징</h3><h4 id="1-1-분산-시스템"><a href="#1-1-분산-시스템" class="headerlink" title="1.1 분산 시스템"></a>1.1 분산 시스템</h4><p>분산 시스템이란, 같은 역할을 하는 여러 대의 서버로 이뤄진 서버 그룹이다.</p>
+<p>장점은,</p>
+<ol>
+<li>단일 시스템 보다 높은 성능</li>
+<li>하나의 서버가 장애가 발생해도 다른 서버가 대신 처리</li>
+<li>시스템 확장 용이</li>
+</ol>
+<h4 id="1-2-페이지-캐시"><a href="#1-2-페이지-캐시" class="headerlink" title="1.2 페이지 캐시"></a>1.2 페이지 캐시</h4><p>OS 는 물리적 메모리에 애플리케이션이 사용하는 부분을 할당하고, 남은 잔여 메모리 일부를 페이지 케시로 이용한다. </p>
+<p>즉, 디스크에 읽고 쓰기를 하지 않고 페이지 케시를 읽고 쓰는 방식으로 처리 속도가 빠르고 전체적인 성능을 향상 시킨다.</p>
+<p>카프카는 이 특징을 이용해 디자인되었다.</p>
+<h4 id="1-3-배치-전송-처리"><a href="#1-3-배치-전송-처리" class="headerlink" title="1.3 배치 전송 처리"></a>1.3 배치 전송 처리</h4><p>서버와 클라이언트 사이, 또는 서버 내부적으로 데이터를 주고 받는 과정에서 I/O 가 발한다. </p>
+<p>작은 I/O 가 빈번하게 발생하는 것을 막기 위해, 작은 I/O 들을 묶어러 처리할 수 있도록 배치 작업으로 처리한다.</p>
+<h3 id="2-카프카-데이터-모델"><a href="#2-카프카-데이터-모델" class="headerlink" title="2. 카프카 데이터 모델"></a>2. 카프카 데이터 모델</h3><h4 id="2-1-토픽"><a href="#2-1-토픽" class="headerlink" title="2.1 토픽"></a>2.1 토픽</h4><p>메세지를 받을 수 있도록 논리적으로 묶은 개념이다. 메일 주소라고 생각하면 쉽다.</p>
+<h4 id="2-2-파티션"><a href="#2-2-파티션" class="headerlink" title="2.2 파티션"></a>2.2 파티션</h4><p>토픽을 분할한 것이다. </p>
+<p><img src="/image/kafka_one_producer.png" alt></p>
+<p>위 그림에서, ‘뉴스 토픽’ 으로 4 개의 메세지를 보내는데 4 초가 걸린다.</p>
+<p><img src="/image/kafka_many_producer.png" alt></p>
+<p>위 그림에서, ‘뉴스 토픽’ 으로 4 개의 메세지를 보내는데 1 초가 걸린다.</p>
+<p>이렇게 빠른 전송을 위해서는, 토픽의 파티션 수와 프로듀서 수를 모두 늘려줘야한다.</p>
+<blockquote>
+<p>무조건 파티션 수를 늘려야 하나 ?</p>
+</blockquote>
+<p>파티션 수가 늘어나면 카프카에 좋지 않은 영향을 끼칠 수 있다.</p>
+<ol>
+<li><p>파일 핸들러의 낭비</p>
+<p>각 파티션은 브로커의 디렉토리와 매핑되고, 저장되는 데이터는 2 개의 파일 ( 인덱스, 실제 데이터 ) 이 있다.</p>
+<p>파티션이 많을 수록, 파일 핸들 수 역시 많아져 리소스가 낭비가 될 수 있다.</p>
+</li>
+<li><p>장애 복구 시간 증가</p>
+</li>
+</ol>
+<blockquote>
+<p>토픽의 적절한 파티션 수는 ?</p>
+</blockquote>
+<p>먼저, 원하는 목표 처리량의 기준을 정해야한다. </p>
+<ol>
+<li><p>프로듀서</p>
+<p>4 개의 프로듀서가 초당 10 개의 메세지를 토픽으로 보내면, 토픽에서 초당 40 개의 메시지를 받아줘야한다.</p>
+</li>
+<li><p>토픽</p>
+<p>해당 토픽에서 파티션을 1로 했을 때 초당 10개의 메세지만 받아준다면, 파티션 수를 4로 조정하면 목표치를 달성한다.</p>
+</li>
+<li><p>컨슈머</p>
+<p>8 개의 컨슈머가 각각 초당 5 개의 메세지를 토픽에서 가져올 수 있으면, 토픽의 파티션수는 8개로 맞춰서 각 컨슈머마다 각각의 파티션에 접근하게 해줘야한다.</p>
+</li>
+</ol>
+<p>주의할 점은, 파티션 수를 늘리는 것은 가능하지만 파티션 수을 줄이는 것은 불가능하다.</p>
+<h4 id="2-3-오프셋과-메세지-순서"><a href="#2-3-오프셋과-메세지-순서" class="headerlink" title="2.3 오프셋과 메세지 순서"></a>2.3 오프셋과 메세지 순서</h4><p>오프셋이란, 각 파티션마다 메세지가 저장되는 위치이다. 파티션 내에서 유일한 숫자이고, 순차적으로 증가한다.</p>
+<p>만약 컨슈머가 파티션 0 에서 데이터를 가져간다고 하면, 오프셋 0 1 2 3 4 5 순서대로 가져갈 수 있다. 절대로 오프셋 순서가 바뀐 상태로 가져갈 수 없다.</p>
+<h3 id="3-고가용성과-리플리케이션"><a href="#3-고가용성과-리플리케이션" class="headerlink" title="3. 고가용성과 리플리케이션"></a>3. 고가용성과 리플리케이션</h3><p>토픽을 이루는 각각의 <code>파티션을</code> 리플리케이션 하는 것이다.</p>
+<h4 id="3-1-리플리케이션-팩터와-리더-팔로워의-역할"><a href="#3-1-리플리케이션-팩터와-리더-팔로워의-역할" class="headerlink" title="3.1 리플리케이션 팩터와 리더, 팔로워의 역할"></a>3.1 리플리케이션 팩터와 리더, 팔로워의 역할</h4><p><img src="/image/kafka_reflecation.png" alt></p>
+<p>모든 읽기와 쓰기는 리더를 통해서만 일어난다. 팔로워는 리더의 데이터를 그대로 리플리케이션만 한다.</p>
+<p>리더와 팔로워는 저장된 데이터의 순서도 일치하고 동일한 오프셋과 메시지를 갖는다.</p>
+<p>리플리케이션된 토픽의 서버가 다운되어도, 리더 변경으롤 문제 없이 프로듀서의 요청을 처리할 수 있다.</p>
+<p>리플리케이션의 단점은,</p>
+<ol>
+<li><p>디스크 사용량 증가</p>
+<p>토픽의 사이즈가 100 GB, 리플리케이션 팩터 3 이면, 카프카 클러스터 내 필요 저장소 크기는 300 GB 이다.</p>
+</li>
+<li><p>브로커 리소스 사용량 증가</p>
+<p>브로커는 리플리케이션 보장을 위해, 비활성화된 토픽이 리플리케이션을 잘하고 있는지 비활성화된 토픽을 계속 체크한다. </p>
+</li>
+</ol>
+<h4 id="3-2-리더와-팔로워의-관리"><a href="#3-2-리더와-팔로워의-관리" class="headerlink" title="3.2 리더와 팔로워의 관리"></a>3.2 리더와 팔로워의 관리</h4><p>팔로워에 문제가 있어서, 리더로부터 데이터를 가져오지 못하면 정합성이 맞지 않는다.</p>
+<p>이를 해결하기 위해, ISR ( In Sync Replica ) 라는 개념이 있다. 현재 리플리케이션 되고 있는 리플리케이션 그룹이다.</p>
+<p>ISR 에 속한 구성원만이 리더의 자격이 있다. </p>
+<p>프로듀서 1, 브로커 3, 리플리케이션 팩터 3 일때, ISR 동작 순서는</p>
+<ol>
+<li>프로듀서가 메세지를 토픽의 리더에게 보낸다. </li>
+<li>리더는 메세지를 저장한다.</li>
+<li>팔로워는 매우 짧은 주기로 리더에 새로운 메세지가 저장된 것이 있는지 확인한다.</li>
+<li>팔로워 1은 잘 동작하고 2는 잘 동작하지 않는다고 가정하자.</li>
+<li>리더는 팔로워가 일정 주기 동안 확인 요청을 하지 않으면 그 팔로워를 ISR 그룹에서 추방한다.</li>
+<li>리더는 팔로워 2를 ISR 그룹에서 추방한다.</li>
+<li>팔로워 1은 리더에게 새로운 메세지가 있음을 확인하고 메세지를 가져가서 저장한다.</li>
+</ol>
+<h3 id="4-모든-브로커가-다운된다면"><a href="#4-모든-브로커가-다운된다면" class="headerlink" title="4. 모든 브로커가 다운된다면"></a>4. 모든 브로커가 다운된다면</h3><ol>
+<li><p>마지막 리더가 살아나기를 기다린다.</p>
+<p>마지막 리더에게 모든 메세지가 저장되어 있을 때, 나중에 다시 살아난다면 메세지 손실이 없다.</p>
+<p>하지만 마지막 리더가 살아나지 않는 경우가 있을 수 있고, 결국 마지막 리더가 정상화 될때 까지 카프카 클러스터 장애가 길어진다.</p>
+</li>
+<li><p>ISR 에서 추방되었지만 먼저 살아나면 자동으로 리더가 된다.</p>
+<p>메세지가 일부 손실되지만, 브로커 하나만이라도 정상화되어 서비스가 빠르게 정상화된다.</p>
+</li>
+</ol>
+<p>다음 그림은, 토픽 / 파티션 / 리플리케이션 팩터 / 브로커 구성 예시이다.</p>
+<p><img src="/image/kafka_example01.png" alt></p>
+<p><img src="/image/kafka_example02.png" alt></p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/12/26/kafka-chapter1/" data-tooltip="[카프카] 1장_카프카란 무엇인가" aria-label="NEXT: [카프카] 1장_카프카란 무엇인가">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2019/12/26/kafka-chapter3/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 junhee.ko. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="2">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/12/26/kafka-chapter1/" data-tooltip="[카프카] 1장_카프카란 무엇인가" aria-label="NEXT: [카프카] 1장_카프카란 무엇인가">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2019/12/26/kafka-chapter3/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="2">
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2019/12/26/kafka-chapter3/">
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">junhee.ko</h4>
+        
+            <div id="about-card-bio"><p>Always Learning</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Engineer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Incheon
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/jquery.js"></script>
+<script src="/assets/js/jquery.fancybox.js"></script>
+<script src="/assets/js/thumbs.js"></script>
+<script src="/assets/js/tranquilpeak.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://kojunhee.github.io/2019/12/26/kafka-chapter3/';
+                 
+                    this.page.identifier = '2019/12/26/kafka-chapter3/';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'junheeko';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>

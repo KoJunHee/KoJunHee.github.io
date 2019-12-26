@@ -194,8 +194,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/11/21/flow control/">
-                            flow control
+                        <a class="link-unstyled" href="/2018/11/21/길찾기/">
+                            길찾기
                         </a>
                     
                 </h1>
@@ -208,7 +208,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/network/">Network</a>
+    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
 
 
     
@@ -217,32 +217,21 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h5 id="flow-control-이란"><a href="#flow-control-이란" class="headerlink" title="flow control 이란 ?"></a>flow control 이란 ?</h5><p>flow control은 송신측과 수신측의 데이터 처리 속도 차이를 해결하기 위한 방법입니다. stop and wait 와 sliding window 방식이 있습니다.</p>
-<h5 id="stop-and-wait-란"><a href="#stop-and-wait-란" class="headerlink" title="stop and wait 란?"></a>stop and wait 란?</h5><p>매번 전송한 패킷에 대해 확인응답을 받아야만 그 다음 패킷을 전송하는 방법입니다.</p>
-<p><img src="/image/flowcontrol01.png" alt></p>
-<h5 id="sliding-window-란"><a href="#sliding-window-란" class="headerlink" title="sliding window 란?"></a>sliding window 란?</h5><p>수신측에서 설정한 윈도우 크기만큼 송신측에서 확인 응답 없이 세그먼트를 전송하여 데이터 흐름을 동적으로 조절하는 제어 기법입니다.</p>
+                    <p><a href="https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV14geLqABQCFAYD&amp;categoryId=AV14geLqABQCFAYD&amp;categoryType=CODE" target="_blank" rel="noopener">https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV14geLqABQCFAYD&amp;categoryId=AV14geLqABQCFAYD&amp;categoryType=CODE</a></p>
+<p>오랜만에 푸는 관계로, 쉬운 문제를 선택하였습니다. 탐색 기본 문제입니다.</p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p><a href="https://github.com/KoJunHee/algorithm/blob/master/src/swa_1219/Solution.java" target="_blank" rel="noopener">https://github.com/KoJunHee/algorithm/blob/master/src/swa_1219/Solution.java</a></p>
 <ol>
-<li><p>초기 구조를 다음과 같다고 가정합시다. </p>
-<p><img src="/image/slidingWindow01.png" alt></p>
+<li><p>그래프 그리기</p>
+<p>주어진 그래프를 두 개의 배열로 표현합니다. 한 지점에서 최대 두 개의 길이 있기 때문입니다.</p>
+<p>예를 들어, 1번 지점에서  3번과 4번의 길로 갈 수 있다면 다음과 같이 배열에 저장합니다.</p>
+<p>arr01[1] =3 , arr02[1] =4</p>
+<p>마찬가지로 3번 지점에서 7번 길로만 갈 수 있다면 다음과 같이 배열에 저장합니다.</p>
+<p>arr01[3] = 7, arr02[3] = 0</p>
 </li>
-<li><p>위 그림에서 데이터 0과 1을 전송했다고 가정하면,  슬라이딩 윈도우의 구조는 다음과 같이 변합니다. </p>
-<p><img src="/image/slidingWindow02.png" alt></p>
-</li>
-<li><p>만약 수신측으로부터 ACK라는 프레임을 받게 된다면 전송측은 0, 1이 데이터를 정상적으로 받았음을 알게 되고, 전송측은 ACK 프레임에 따른 프레임의 수만큼 오른쪽으로 확장됩니다.</p>
-<p><img src="/image/slidingWindow03.png" alt></p>
+<li><p>경로 유무 찾기</p>
+<p>DFS를 사용합니다. 최대한 깊게 들어가다가 99번 위치에 도착하면 탐색을 종료합니다.</p>
 </li>
 </ol>
-<h5 id="sliding-window-구현은-어떻게"><a href="#sliding-window-구현은-어떻게" class="headerlink" title="sliding window 구현은 어떻게 ?"></a>sliding window 구현은 어떻게 ?</h5><p>Go Back n ARQ 와 Selective Reject ARQ 방식이 있습니다.</p>
-<ol>
-<li><p>Go Back n ARQ(Automatic Repeat Request)</p>
-<p>손상되거나 분실된 프레임 이후의 프레임을 모두 재전송하는 기법입니다. 데이터 폐기 방식을 사용하여 추가    적 버퍼가 필요 없습니다.</p>
-</li>
-<li><p>Selective Reject ARQ</p>
-<p>손상되거나 분실된 프레임만을 재전송하는 기법입니다. 데이터 폐기 방식을 사용하지 않으므로 순차적이지 않    은 프레임을 재배열하기 위해 필요합니다.</p>
-</li>
-</ol>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://jwprogramming.tistory.com/36" target="_blank" rel="noopener">http://jwprogramming.tistory.com/36</a></p>
-<p><a href="https://goodgid.github.io/Error-Flow-Control/" target="_blank" rel="noopener">https://goodgid.github.io/Error-Flow-Control/</a></p>
 
                     
                         
@@ -250,85 +239,7 @@
                     
                     
                         <p>
-                            <a href="/2018/11/21/flow control/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/11/13/SOLID/">
-                            SOLID
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-11-13T00:00:00+09:00">
-	
-		    Nov 13, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/design-pattern/">Design Pattern</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h5 id="객체지향-개발-5대-원리는-무엇인가요"><a href="#객체지향-개발-5대-원리는-무엇인가요" class="headerlink" title="객체지향 개발 5대 원리는 무엇인가요?"></a>객체지향 개발 5대 원리는 무엇인가요?</h5><p>SOLID입니다.<br><br></p>
-<ol>
-<li><p>S : SRP - Single Responsibility Principle (단일 책임 원칙)</p>
-<p>객체는 단 하나의 책임(변경 이유)만 가져야 합니다.</p>
-</li>
-<li><p>O : OCP - Open-Closed Principle (개방-폐쇄 원칙)</p>
-<p>open for extension, closed for modifications.</p>
-<p>다음 예는, 새로운 shape class 가 추가 될때마다 GraphicEditor 클래스가  변경되어야 합니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Open-Close Principle - Bad example</span></span><br><span class="line"> <span class="class"><span class="keyword">class</span> <span class="title">GraphicEditor</span> </span>&#123;</span><br><span class="line"> </span><br><span class="line"> 	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">drawShape</span><span class="params">(Shape s)</span> </span>&#123;</span><br><span class="line"> 		<span class="keyword">if</span> (s.m_type==<span class="number">1</span>)</span><br><span class="line"> 			drawRectangle(s);</span><br><span class="line"> 		<span class="keyword">else</span> <span class="keyword">if</span> (s.m_type==<span class="number">2</span>)</span><br><span class="line"> 			drawCircle(s);</span><br><span class="line"> 	&#125;</span><br><span class="line"> 	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">drawCircle</span><span class="params">(Circle r)</span> </span>&#123;....&#125;</span><br><span class="line"> 	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">drawRectangle</span><span class="params">(Rectangle r)</span> </span>&#123;....&#125;</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line"> <span class="class"><span class="keyword">class</span> <span class="title">Shape</span> </span>&#123;</span><br><span class="line"> 	<span class="keyword">int</span> m_type;</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line"> <span class="class"><span class="keyword">class</span> <span class="title">Rectangle</span> <span class="keyword">extends</span> <span class="title">Shape</span> </span>&#123;</span><br><span class="line"> 	Rectangle() &#123;</span><br><span class="line"> 		<span class="keyword">super</span>.m_type=<span class="number">1</span>;</span><br><span class="line"> 	&#125;</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line"> <span class="class"><span class="keyword">class</span> <span class="title">Circle</span> <span class="keyword">extends</span> <span class="title">Shape</span> </span>&#123;</span><br><span class="line"> 	Circle() &#123;</span><br><span class="line"> 		<span class="keyword">super</span>.m_type=<span class="number">2</span>;</span><br><span class="line"> 	&#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-
-<p>다음 예는, 새로운 shape class 가 추가 될때마다 GraphicEditor 클래스가  변경되지 않습니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Open-Close Principle - Good example</span></span><br><span class="line"> <span class="class"><span class="keyword">class</span> <span class="title">GraphicEditor</span> </span>&#123;</span><br><span class="line"> 	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">drawShape</span><span class="params">(Shape s)</span> </span>&#123;</span><br><span class="line"> 		s.draw();</span><br><span class="line"> 	&#125;</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line"> <span class="class"><span class="keyword">class</span> <span class="title">Shape</span> </span>&#123;</span><br><span class="line"> 	<span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">draw</span><span class="params">()</span></span>;</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line"> <span class="class"><span class="keyword">class</span> <span class="title">Rectangle</span> <span class="keyword">extends</span> <span class="title">Shape</span>  </span>&#123;</span><br><span class="line"> 	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">draw</span><span class="params">()</span> </span>&#123;</span><br><span class="line"> 		<span class="comment">// draw the rectangle</span></span><br><span class="line"> 	&#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>L : LSP - Liskov Subsititution Principle ( 리스코프 치환 법칙 )</p>
-<p>자식 클래스는 최소한 부모 클래스에서 가능한 행위는 수행할 수 있어야 합니다. 이를 위해, 자식 클래스는 부모 클래스의 behavior을 바꾸지 않고 확장해야합니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Violation of Likov's Substitution Principle</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Rectangle</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="keyword">protected</span> <span class="keyword">int</span> m_width;</span><br><span class="line">	<span class="keyword">protected</span> <span class="keyword">int</span> m_height;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setWidth</span><span class="params">(<span class="keyword">int</span> width)</span></span>&#123;</span><br><span class="line">		m_width = width;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setHeight</span><span class="params">(<span class="keyword">int</span> height)</span></span>&#123;</span><br><span class="line">		m_height = height;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getWidth</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> m_width;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getHeight</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> m_height;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getArea</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> m_width * m_height;</span><br><span class="line">	&#125;	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Square</span> <span class="keyword">extends</span> <span class="title">Rectangle</span> </span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setWidth</span><span class="params">(<span class="keyword">int</span> width)</span></span>&#123;</span><br><span class="line">		m_width = width;</span><br><span class="line">		m_height = width;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setHeight</span><span class="params">(<span class="keyword">int</span> height)</span></span>&#123;</span><br><span class="line">		m_width = height;</span><br><span class="line">		m_height = height;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LspTest</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> Rectangle <span class="title">getNewRectangle</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="comment">// it can be an object returned by some factory ... </span></span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> Square();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span> <span class="params">(String args[])</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		Rectangle r = LspTest.getNewRectangle();</span><br><span class="line">        </span><br><span class="line">		r.setWidth(<span class="number">5</span>);</span><br><span class="line">		r.setHeight(<span class="number">10</span>);</span><br><span class="line">		<span class="comment">// user knows that r it's a rectangle. </span></span><br><span class="line">		<span class="comment">// It assumes that he's able to set the width and height as for the base class</span></span><br><span class="line"></span><br><span class="line">		System.out.println(r.getArea());</span><br><span class="line">		<span class="comment">// now he's surprised to see that the area is 100 instead of 50.</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>I : ISP - Interface Segregation Principle ( 인터페이스 분리 법칙 )</p>
-<p>사용하지 않는 인터페이스에 의존하지 않아야 합니다. 이를 위해, fat interface 보다 many small interface로 구성해야 합니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// interface segregation principle - bad example</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">IWorker</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">work</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Worker</span> <span class="keyword">implements</span> <span class="title">IWorker</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">work</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// ....working</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// ...... eating in launch break</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SuperWorker</span> <span class="keyword">implements</span> <span class="title">IWorker</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">work</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">//.... working much more</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">//.... eating in launch break</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Manager</span> </span>&#123;</span><br><span class="line">	IWorker worker;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setWorker</span><span class="params">(IWorker w)</span> </span>&#123;</span><br><span class="line">		worker=w;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">manage</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		worker.work();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>다음은, IWorker 인터페이스를 분리함으로써 로봇 클래스가 더 이상 eat method를 구현할 필요가 없습니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// interface segregation principle - good example</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">IWorker</span> <span class="keyword">extends</span> <span class="title">Feedable</span>, <span class="title">Workable</span> </span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">IWorkable</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">work</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">IFeedable</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Worker</span> <span class="keyword">implements</span> <span class="title">IWorkable</span>, <span class="title">IFeedable</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">work</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// ....working</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">//.... eating in launch break</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Robot</span> <span class="keyword">implements</span> <span class="title">IWorkable</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">work</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// ....working</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SuperWorker</span> <span class="keyword">implements</span> <span class="title">IWorkable</span>, <span class="title">IFeedable</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">work</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">//.... working much more</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">//.... eating in launch break</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Manager</span> </span>&#123;</span><br><span class="line">	Workable worker;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setWorker</span><span class="params">(Workable w)</span> </span>&#123;</span><br><span class="line">		worker=w;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">manage</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		worker.work();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>D : DIP - Dependency Inversion Principle ( 의존 역전 법칙 )</p>
-<p>어떤 클래스가 도움을 받을 때, 구체적인 클래스보다는 인터페이스나 추상 클래스와 의존 관계를 맺어야합니다.</p>
-</li>
-</ol>
-<h5 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h5><p><a href="http://www.oodesign.com/single-responsibility-principle.html" target="_blank" rel="noopener">http://www.oodesign.com/single-responsibility-principle.html</a></p>
-<p>JAVA 객체지향 디자인 패턴 (정인상, 채흥석 지음)</p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/11/13/SOLID/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/11/21/길찾기/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -469,21 +380,21 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/11/12/워터폴,에자일/">
-                            워터폴,에자일
+                        <a class="link-unstyled" href="/2018/11/13/SOLID/">
+                            SOLID
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2018-11-12T00:00:00+09:00">
+    <time datetime="2018-11-13T00:00:00+09:00">
 	
-		    Nov 12, 2018
+		    Nov 13, 2018
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/software-engineering/">Software Engineering</a>
+    <a class="category-link" href="/categories/design-pattern/">Design Pattern</a>
 
 
     
@@ -492,19 +403,36 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h5 id="Waterfall-Model"><a href="#Waterfall-Model" class="headerlink" title="Waterfall Model"></a>Waterfall Model</h5><p>순차적인 소프트웨어 개발 프로세스입니다. </p>
-<p>개발의 흐름이 마치 폭포수처럼 지속적으로 아래로 향하는 것처럼 보이는 데서 이름이 붙여졌습니다. 이 폭포수 모델의 흐름은 다음과 같습니다.</p>
+                    <h5 id="객체지향-개발-5대-원리는-무엇인가요"><a href="#객체지향-개발-5대-원리는-무엇인가요" class="headerlink" title="객체지향 개발 5대 원리는 무엇인가요?"></a>객체지향 개발 5대 원리는 무엇인가요?</h5><p>SOLID입니다.<br><br></p>
 <ol>
-<li>요구사항 분석</li>
-<li>설계</li>
-<li>구현</li>
-<li>유지보수</li>
+<li><p>S : SRP - Single Responsibility Principle (단일 책임 원칙)</p>
+<p>객체는 단 하나의 책임(변경 이유)만 가져야 합니다.</p>
+</li>
+<li><p>O : OCP - Open-Closed Principle (개방-폐쇄 원칙)</p>
+<p>open for extension, closed for modifications.</p>
+<p>다음 예는, 새로운 shape class 가 추가 될때마다 GraphicEditor 클래스가  변경되어야 합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Open-Close Principle - Bad example</span></span><br><span class="line"> <span class="class"><span class="keyword">class</span> <span class="title">GraphicEditor</span> </span>&#123;</span><br><span class="line"> </span><br><span class="line"> 	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">drawShape</span><span class="params">(Shape s)</span> </span>&#123;</span><br><span class="line"> 		<span class="keyword">if</span> (s.m_type==<span class="number">1</span>)</span><br><span class="line"> 			drawRectangle(s);</span><br><span class="line"> 		<span class="keyword">else</span> <span class="keyword">if</span> (s.m_type==<span class="number">2</span>)</span><br><span class="line"> 			drawCircle(s);</span><br><span class="line"> 	&#125;</span><br><span class="line"> 	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">drawCircle</span><span class="params">(Circle r)</span> </span>&#123;....&#125;</span><br><span class="line"> 	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">drawRectangle</span><span class="params">(Rectangle r)</span> </span>&#123;....&#125;</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line"> <span class="class"><span class="keyword">class</span> <span class="title">Shape</span> </span>&#123;</span><br><span class="line"> 	<span class="keyword">int</span> m_type;</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line"> <span class="class"><span class="keyword">class</span> <span class="title">Rectangle</span> <span class="keyword">extends</span> <span class="title">Shape</span> </span>&#123;</span><br><span class="line"> 	Rectangle() &#123;</span><br><span class="line"> 		<span class="keyword">super</span>.m_type=<span class="number">1</span>;</span><br><span class="line"> 	&#125;</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line"> <span class="class"><span class="keyword">class</span> <span class="title">Circle</span> <span class="keyword">extends</span> <span class="title">Shape</span> </span>&#123;</span><br><span class="line"> 	Circle() &#123;</span><br><span class="line"> 		<span class="keyword">super</span>.m_type=<span class="number">2</span>;</span><br><span class="line"> 	&#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>다음 예는, 새로운 shape class 가 추가 될때마다 GraphicEditor 클래스가  변경되지 않습니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Open-Close Principle - Good example</span></span><br><span class="line"> <span class="class"><span class="keyword">class</span> <span class="title">GraphicEditor</span> </span>&#123;</span><br><span class="line"> 	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">drawShape</span><span class="params">(Shape s)</span> </span>&#123;</span><br><span class="line"> 		s.draw();</span><br><span class="line"> 	&#125;</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line"> <span class="class"><span class="keyword">class</span> <span class="title">Shape</span> </span>&#123;</span><br><span class="line"> 	<span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">draw</span><span class="params">()</span></span>;</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line"> <span class="class"><span class="keyword">class</span> <span class="title">Rectangle</span> <span class="keyword">extends</span> <span class="title">Shape</span>  </span>&#123;</span><br><span class="line"> 	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">draw</span><span class="params">()</span> </span>&#123;</span><br><span class="line"> 		<span class="comment">// draw the rectangle</span></span><br><span class="line"> 	&#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>L : LSP - Liskov Subsititution Principle ( 리스코프 치환 법칙 )</p>
+<p>자식 클래스는 최소한 부모 클래스에서 가능한 행위는 수행할 수 있어야 합니다. 이를 위해, 자식 클래스는 부모 클래스의 behavior을 바꾸지 않고 확장해야합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Violation of Likov's Substitution Principle</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Rectangle</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="keyword">protected</span> <span class="keyword">int</span> m_width;</span><br><span class="line">	<span class="keyword">protected</span> <span class="keyword">int</span> m_height;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setWidth</span><span class="params">(<span class="keyword">int</span> width)</span></span>&#123;</span><br><span class="line">		m_width = width;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setHeight</span><span class="params">(<span class="keyword">int</span> height)</span></span>&#123;</span><br><span class="line">		m_height = height;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getWidth</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> m_width;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getHeight</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> m_height;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getArea</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> m_width * m_height;</span><br><span class="line">	&#125;	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Square</span> <span class="keyword">extends</span> <span class="title">Rectangle</span> </span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setWidth</span><span class="params">(<span class="keyword">int</span> width)</span></span>&#123;</span><br><span class="line">		m_width = width;</span><br><span class="line">		m_height = width;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setHeight</span><span class="params">(<span class="keyword">int</span> height)</span></span>&#123;</span><br><span class="line">		m_width = height;</span><br><span class="line">		m_height = height;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LspTest</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> Rectangle <span class="title">getNewRectangle</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="comment">// it can be an object returned by some factory ... </span></span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> Square();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span> <span class="params">(String args[])</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		Rectangle r = LspTest.getNewRectangle();</span><br><span class="line">        </span><br><span class="line">		r.setWidth(<span class="number">5</span>);</span><br><span class="line">		r.setHeight(<span class="number">10</span>);</span><br><span class="line">		<span class="comment">// user knows that r it's a rectangle. </span></span><br><span class="line">		<span class="comment">// It assumes that he's able to set the width and height as for the base class</span></span><br><span class="line"></span><br><span class="line">		System.out.println(r.getArea());</span><br><span class="line">		<span class="comment">// now he's surprised to see that the area is 100 instead of 50.</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>I : ISP - Interface Segregation Principle ( 인터페이스 분리 법칙 )</p>
+<p>사용하지 않는 인터페이스에 의존하지 않아야 합니다. 이를 위해, fat interface 보다 many small interface로 구성해야 합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// interface segregation principle - bad example</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">IWorker</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">work</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Worker</span> <span class="keyword">implements</span> <span class="title">IWorker</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">work</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// ....working</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// ...... eating in launch break</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SuperWorker</span> <span class="keyword">implements</span> <span class="title">IWorker</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">work</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">//.... working much more</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">//.... eating in launch break</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Manager</span> </span>&#123;</span><br><span class="line">	IWorker worker;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setWorker</span><span class="params">(IWorker w)</span> </span>&#123;</span><br><span class="line">		worker=w;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">manage</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		worker.work();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>다음은, IWorker 인터페이스를 분리함으로써 로봇 클래스가 더 이상 eat method를 구현할 필요가 없습니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// interface segregation principle - good example</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">IWorker</span> <span class="keyword">extends</span> <span class="title">Feedable</span>, <span class="title">Workable</span> </span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">IWorkable</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">work</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">IFeedable</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Worker</span> <span class="keyword">implements</span> <span class="title">IWorkable</span>, <span class="title">IFeedable</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">work</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// ....working</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">//.... eating in launch break</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Robot</span> <span class="keyword">implements</span> <span class="title">IWorkable</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">work</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// ....working</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SuperWorker</span> <span class="keyword">implements</span> <span class="title">IWorkable</span>, <span class="title">IFeedable</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">work</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">//.... working much more</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">//.... eating in launch break</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Manager</span> </span>&#123;</span><br><span class="line">	Workable worker;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setWorker</span><span class="params">(Workable w)</span> </span>&#123;</span><br><span class="line">		worker=w;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">manage</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		worker.work();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>D : DIP - Dependency Inversion Principle ( 의존 역전 법칙 )</p>
+<p>어떤 클래스가 도움을 받을 때, 구체적인 클래스보다는 인터페이스나 추상 클래스와 의존 관계를 맺어야합니다.</p>
+</li>
 </ol>
-<h5 id="Agile-Model"><a href="#Agile-Model" class="headerlink" title="Agile Model"></a>Agile Model</h5><p><img src="/image/agile01.png" alt></p>
-<p>개발과 즉시 피드백을 받아 유동적으로 개발하는 방법론입니다.</p>
-<p>애자일 모델은 전체적인 플랜을 짜고 문서를 통해 주도해 나가던 과거의 방식 (워터폴 모델) 과 달리 앞을 예측하며 개발하지 않고, 일정한 주기를 가지고 끊임없이 프로토 타입을 만들어 내며 필요할 때마다 요구사항을 더하고 수정<br>하여 커다란 소프트웨어를 개발해 나가는 방식입니다.</p>
-<h5 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h5><p><a href="https://ko.wikipedia.org/wiki/%ED%8F%AD%ED%8F%AC%EC%88%98_%EB%AA%A8%EB%8D%B8" target="_blank" rel="noopener">https://ko.wikipedia.org/wiki/%ED%8F%AD%ED%8F%AC%EC%88%98_%EB%AA%A8%EB%8D%B8</a></p>
-<p><a href="http://blog.rightbrain.co.kr/?p=5810" target="_blank" rel="noopener">http://blog.rightbrain.co.kr/?p=5810</a></p>
+<h5 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h5><p><a href="http://www.oodesign.com/single-responsibility-principle.html" target="_blank" rel="noopener">http://www.oodesign.com/single-responsibility-principle.html</a></p>
+<p>JAVA 객체지향 디자인 패턴 (정인상, 채흥석 지음)</p>
 
                     
                         
@@ -512,7 +440,7 @@
                     
                     
                         <p>
-                            <a href="/2018/11/12/워터폴,에자일/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/11/13/SOLID/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -678,6 +606,67 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2018/11/12/워터폴,에자일/">
+                            워터폴,에자일
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-11-12T00:00:00+09:00">
+	
+		    Nov 12, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/software-engineering/">Software Engineering</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h5 id="Waterfall-Model"><a href="#Waterfall-Model" class="headerlink" title="Waterfall Model"></a>Waterfall Model</h5><p>순차적인 소프트웨어 개발 프로세스입니다. </p>
+<p>개발의 흐름이 마치 폭포수처럼 지속적으로 아래로 향하는 것처럼 보이는 데서 이름이 붙여졌습니다. 이 폭포수 모델의 흐름은 다음과 같습니다.</p>
+<ol>
+<li>요구사항 분석</li>
+<li>설계</li>
+<li>구현</li>
+<li>유지보수</li>
+</ol>
+<h5 id="Agile-Model"><a href="#Agile-Model" class="headerlink" title="Agile Model"></a>Agile Model</h5><p><img src="/image/agile01.png" alt></p>
+<p>개발과 즉시 피드백을 받아 유동적으로 개발하는 방법론입니다.</p>
+<p>애자일 모델은 전체적인 플랜을 짜고 문서를 통해 주도해 나가던 과거의 방식 (워터폴 모델) 과 달리 앞을 예측하며 개발하지 않고, 일정한 주기를 가지고 끊임없이 프로토 타입을 만들어 내며 필요할 때마다 요구사항을 더하고 수정<br>하여 커다란 소프트웨어를 개발해 나가는 방식입니다.</p>
+<h5 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h5><p><a href="https://ko.wikipedia.org/wiki/%ED%8F%AD%ED%8F%AC%EC%88%98_%EB%AA%A8%EB%8D%B8" target="_blank" rel="noopener">https://ko.wikipedia.org/wiki/%ED%8F%AD%ED%8F%AC%EC%88%98_%EB%AA%A8%EB%8D%B8</a></p>
+<p><a href="http://blog.rightbrain.co.kr/?p=5810" target="_blank" rel="noopener">http://blog.rightbrain.co.kr/?p=5810</a></p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/11/12/워터폴,에자일/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2018/11/12/Transaction/">
                             Transaction
                         </a>
@@ -818,8 +807,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/11/11/선택정렬/">
-                            선택정렬
+                        <a class="link-unstyled" href="/2018/11/11/점근 표기법/">
+                            점근 표기법
                         </a>
                     
                 </h1>
@@ -841,16 +830,33 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="선택정렬이란"><a href="#선택정렬이란" class="headerlink" title="선택정렬이란"></a>선택정렬이란</h2><p>해당 순서에 원소를 넣을 위치는 이미 정해져 있고, 어떤 원소를 넣을지 선택하는 정렬이다.</p>
-<p>첫 번째 자료를 두 번째 자료부터 마지막 자료까지 차례대로 비교하여 가장 작은 값을 찾아 첫 번째에 놓고, 두 번째 자료를 세 번째 자료부터 마지막 자료까지와 차례대로 비교하여 그 중 가장 작은 값을 찾아 두 번째 위치에 놓는 과정을 반복하며 정렬을 수행한다.</p>
-<p><img src="/image/selectionSort01.png" alt></p>
-<h2 id="시간-복잡도"><a href="#시간-복잡도" class="headerlink" title="시간 복잡도"></a>시간 복잡도</h2><ol>
-<li>for 루프는 n-1번 반복 되고</li>
-<li>최소값을 찾기 위한 비교 횟수는 n-1, n-2, … , 2, 1</li>
-<li>교환은 상수 시간 작업이므로</li>
+                    <h2 id="시간-복잡도와-공간-복잡도"><a href="#시간-복잡도와-공간-복잡도" class="headerlink" title="시간 복잡도와 공간 복잡도"></a>시간 복잡도와 공간 복잡도</h2><ol>
+<li>시간 복잡도 : 알고리즘의 수행시간 분석결과</li>
+<li>공간 복잡도 : 알고리즘의 메모리 사용량에 대한 분석결과</li>
 </ol>
-<p>T(n) = (n-1) + (n-2) + … + 2 + 1 = n(n-1)/2 = O(n^2)</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://jongmin92.github.io/2017/11/06/Algorithm/Concept/basic-sort/" target="_blank" rel="noopener">https://jongmin92.github.io/2017/11/06/Algorithm/Concept/basic-sort/</a><br><a href="https://gmlwjd9405.github.io/2018/05/06/algorithm-selection-sort.html" target="_blank" rel="noopener">https://gmlwjd9405.github.io/2018/05/06/algorithm-selection-sort.html</a></p>
+<p>알고리즘 성능평가는 시간 복잡도와 공간 복잡도를 계산하고 점근적 표기법으로 나타내면 된다.</p>
+<h2 id="점근적-분석이란"><a href="#점근적-분석이란" class="headerlink" title="점근적 분석이란"></a>점근적 분석이란</h2><p>알고리즘의 수행 시간을 분석하기 위해, 항상 입력의 크기가 충분히 클 때에 대해서 분석하는 방법 </p>
+<h2 id="점근적-표기법이란"><a href="#점근적-표기법이란" class="headerlink" title="점근적 표기법이란"></a>점근적 표기법이란</h2><p>점근적 증가율은 입력의 크기에 따라 함수가 증가하는 비율이다. 그 표기법을 점근적 표기법이라 한다.<br>세 가지가 있다.</p>
+<ul>
+<li>빅오 표기법</li>
+<li>오메가 표기법</li>
+<li>세타 표기법</li>
+</ul>
+<h2 id="빅오-표기법"><a href="#빅오-표기법" class="headerlink" title="빅오 표기법"></a>빅오 표기법</h2><p><img src="/image/asymptonic01.png" alt></p>
+<p>f(n)을 O(g(n))이라고 표시한다. </p>
+<p>이 때 g(n)를 f(n)의 점근 상한이라고 한다.</p>
+<p>알고리즘 f(n)이 O(g(n))에 속한다면, f(n)의 계산복잡도는 최악의 경우라도 g(n)과 같거나 혹은 작다는 뜻이다.</p>
+<p><img src="/image/asymptonic011.png" alt></p>
+<h2 id="오메가-표기법"><a href="#오메가-표기법" class="headerlink" title="오메가 표기법"></a>오메가 표기법</h2><p><img src="/image/asymptonic02.png" alt></p>
+<p>f(n)를 Ω(g(n))이라고 표시한다. </p>
+<p>이 때 g(n)는 f(n)의 점근 하한이라고 한다. </p>
+<p>알고리즘 f(n)의 계산복잡도가 Ω(g(n))에 속한다면, f(n)의 계산복잡도는 최선의 경우를 상정하더라도 g(n)과 같거나 혹은 크다는 뜻이다.</p>
+<h2 id="세타-표기법"><a href="#세타-표기법" class="headerlink" title="세타 표기법"></a>세타 표기법</h2><p><img src="/image/asymptonic03.png" alt></p>
+<p>f(n)을 Θ(g(n))이라고 표시한다. </p>
+<p>g(n)은 f(n)의 점근적 상한과 하한의 교집합이라고 한다. </p>
+<p>알고리즘 f(n)이 아무리 나쁘거나 좋더라도 그 계산복잡도는 g(n)의 범위 내에 있다는 뜻이다.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ratsgo.github.io/data%20structure&amp;algorithm/2017/09/13/asymptotic/" target="_blank" rel="noopener">https://ratsgo.github.io/data%20structure&amp;algorithm/2017/09/13/asymptotic/</a></p>
+<p><a href="http://ledgku.tistory.com/33" target="_blank" rel="noopener">http://ledgku.tistory.com/33</a></p>
 
                     
                         
@@ -858,7 +864,7 @@
                     
                     
                         <p>
-                            <a href="/2018/11/11/선택정렬/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/11/11/점근 표기법/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>

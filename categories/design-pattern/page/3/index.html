@@ -194,8 +194,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/05/31/State Pattern02/">
-                            State Pattern02
+                        <a class="link-unstyled" href="/2018/05/31/Template Method Pattern01/">
+                            Template Method Pattern01
                         </a>
                     
                 </h1>
@@ -217,43 +217,23 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>상태에 따라 동일한 작업이 다른 방식으로 실행될 때 해당 상태가 작업을 수행하도록 위임하는 디자인 패턴이다. </p>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/sp031.png" alt></p>
+                    <h2 id="Intent"><a href="#Intent" class="headerlink" title="Intent"></a>Intent</h2><ul>
+<li>Define the skeleton of an algorithm in an operation, deferring some steps to subclasses. </li>
+<li>Template Method lets subclasses redefine certain steps of an algorithm without letting them to change the algorithm’s structure.</li>
+</ul>
+<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/tmplate01.png" alt></p>
 <ul>
-<li>State<ul>
-<li>시스템의 모든 상태에 공통의 인터페이스를 제공</li>
-<li>이 인터페이스를 실체화한 어떤 상태 클래스도 기존 상태 클래스를 대신해 고체해서 사용할 수 있다.</li>
+<li>AbstractClass <ul>
+<li>defines abstract primitive operations that concrete subclasses define to implement steps of an algorithm. </li>
+<li>implements a template method which defines the skeleton of an algorithm. The template method calls primitive operations as well as operations defined in AbstractClass or those of other objects.</li>
 </ul>
 </li>
-<li>State1, State2, State3<ul>
-<li>Context 객체가 요청한 작업을 자신의 방식으로 실제 실행</li>
-<li>대부분의 경우 다음 상태를 결정해 상태 변경을 Context 객체에 요청하는 역할도 수행 </li>
-</ul>
-</li>
-<li>Context<ul>
-<li>State를 이용하는 역할 수행</li>
-<li>현재 시스템의 상태를 나타내는 상태 변수(state) , 실제 시스템의 상태를 구현하는 여러가지 변수가 있다</li>
-<li>각 상태 클래스에서 상태 변경을 요청해 상태를 바꿀수 있도록 하는 method (setState) 가 제공된다.</li>
-<li>Context 요소를 구현한 클래스의 request method는 실제 행위를 실행하는 대신 해당 상태 객체에 행위 실행을 위임</li>
+<li>ConcreteClass <ul>
+<li>implements the primitive operations to carry out subclass-specific steps of the algorithm. When a concrete class is called the template method code will be executed from the base class while for each method used inside the template method will be called the implementation from the derived class.</li>
 </ul>
 </li>
 </ul>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/sp032.png" alt></p>
-<ul>
-<li>Light <ul>
-<li>Context</li>
-</ul>
-</li>
-<li>State inteface<ul>
-<li>State</li>
-</ul>
-</li>
-<li>ON, OFF<ul>
-<li>State1, State2</li>
-</ul>
-</li>
-</ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Java 객체지향 디자인 패턴 &lt;정인상, 채흥석 지음&gt;</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.oodesign.com/template-method-pattern.html" target="_blank" rel="noopener">https://www.oodesign.com/template-method-pattern.html</a></p>
 
                     
                         
@@ -261,63 +241,7 @@
                     
                     
                         <p>
-                            <a href="/2018/05/31/State Pattern02/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/05/31/Template Method Pattern02/">
-                            Template Method Pattern02
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-05-31T00:00:00+09:00">
-	
-		    May 31, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/design-pattern/">Design Pattern</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/tmplate02.png" alt></p>
-<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><img src="/image/tmplate03.png" alt></p>
-<p><img src="/image/tmplate04.png" alt></p>
-<p><img src="/image/tmplate05.png" alt></p>
-<p><img src="/image/tmplate06.png" alt></p>
-<p><img src="/image/tmplate07.png" alt></p>
-<p>##Reference</p>
-<p><a href="https://www.tutorialspoint.com/design_pattern/template_pattern.htm" target="_blank" rel="noopener">https://www.tutorialspoint.com/design_pattern/template_pattern.htm</a></p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/05/31/Template Method Pattern02/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/05/31/Template Method Pattern01/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -388,6 +312,91 @@
                     
                         <p>
                             <a href="/2018/05/31/State Pattern01/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2018/05/31/State Pattern02/">
+                            State Pattern02
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-05-31T00:00:00+09:00">
+	
+		    May 31, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/design-pattern/">Design Pattern</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>상태에 따라 동일한 작업이 다른 방식으로 실행될 때 해당 상태가 작업을 수행하도록 위임하는 디자인 패턴이다. </p>
+<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/sp031.png" alt></p>
+<ul>
+<li>State<ul>
+<li>시스템의 모든 상태에 공통의 인터페이스를 제공</li>
+<li>이 인터페이스를 실체화한 어떤 상태 클래스도 기존 상태 클래스를 대신해 고체해서 사용할 수 있다.</li>
+</ul>
+</li>
+<li>State1, State2, State3<ul>
+<li>Context 객체가 요청한 작업을 자신의 방식으로 실제 실행</li>
+<li>대부분의 경우 다음 상태를 결정해 상태 변경을 Context 객체에 요청하는 역할도 수행 </li>
+</ul>
+</li>
+<li>Context<ul>
+<li>State를 이용하는 역할 수행</li>
+<li>현재 시스템의 상태를 나타내는 상태 변수(state) , 실제 시스템의 상태를 구현하는 여러가지 변수가 있다</li>
+<li>각 상태 클래스에서 상태 변경을 요청해 상태를 바꿀수 있도록 하는 method (setState) 가 제공된다.</li>
+<li>Context 요소를 구현한 클래스의 request method는 실제 행위를 실행하는 대신 해당 상태 객체에 행위 실행을 위임</li>
+</ul>
+</li>
+</ul>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/sp032.png" alt></p>
+<ul>
+<li>Light <ul>
+<li>Context</li>
+</ul>
+</li>
+<li>State inteface<ul>
+<li>State</li>
+</ul>
+</li>
+<li>ON, OFF<ul>
+<li>State1, State2</li>
+</ul>
+</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Java 객체지향 디자인 패턴 &lt;정인상, 채흥석 지음&gt;</p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/05/31/State Pattern02/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -800,8 +809,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/05/13/Factory Method Pattern01/">
-                            Factory Method Pattern01
+                        <a class="link-unstyled" href="/2018/05/13/Factory Method Pattern02/">
+                            Factory Method Pattern02
                         </a>
                     
                 </h1>
@@ -823,13 +832,47 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>The Factory Method Pattern defines an interface for creating an object, </p>
-<p>but lets subclasses decide which class to instantiate. </p>
-<p>Factory Method lets a class defer instantiation to subclasses. </p>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/factoryMethod01.png" alt> </p>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/factoryMethod02.png" alt> </p>
-<h2 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h2><p><img src="/image/fm15.png" alt> </p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Head First Design Pattern</p>
+                    <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>객체를 생성하는 코드를 별도의 클래스/메소드로 분리함으로써 객체 생성 방식의 변화에 대비하는데 유용하다.</p>
+<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/factorymethodpa01.png" alt></p>
+<ul>
+<li>Product <ul>
+<li>펙토리 메서드로 생설될 객체의 공통 인터페이스</li>
+</ul>
+</li>
+<li>ConcreteProduct<ul>
+<li>구체적으로 객체가 생성되는 클래스</li>
+</ul>
+</li>
+<li>Creator<ul>
+<li>팩토리 메서드를 갖는 클래스</li>
+</ul>
+</li>
+<li>ConcreteCreator<ul>
+<li>팩토리 매서드를 구현하는 클래스</li>
+<li>ConcreteProduct 객체를 생성 </li>
+</ul>
+</li>
+</ul>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/factorymethodpa02.png" alt></p>
+<ul>
+<li>ElevatorScheduler interface<ul>
+<li>Prudct</li>
+</ul>
+</li>
+<li>ResponseTimeScheduler, ThroughputScheduler<ul>
+<li>ConcretePrudct</li>
+</ul>
+</li>
+<li>ElevatorManger<ul>
+<li>Creator</li>
+</ul>
+</li>
+<li>ElevatorMangerWithThroughputScheduling, ElevatorMangerWithDynamicScheduling, ElevatorManagerWithResponseTimeScheduling<ul>
+<li>ConcreteCreator</li>
+</ul>
+</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Java 객체 지향 디자인 패턴 &lt;정인상, 채흥석 지음&gt;</p>
 
                     
                         
@@ -837,7 +880,7 @@
                     
                     
                         <p>
-                            <a href="/2018/05/13/Factory Method Pattern01/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/05/13/Factory Method Pattern02/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
