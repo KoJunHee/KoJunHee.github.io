@@ -193,6 +193,106 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2019/03/20/persistence context/">
+                            [자바 ORM 표준 JPA 프로그래밍] 3장_영속성 관리
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-03-20T00:00:00+09:00">
+	
+		    Mar 20, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/jpa/">JPA</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p>이번 포스팅에서는 Mapping 한 Entity 를 Entity Manager 를 통해 어떻게 사용하는지 정리합니다.</p>
+<h4 id="Entity-Manager-Factory-Entity-Manager"><a href="#Entity-Manager-Factory-Entity-Manager" class="headerlink" title="Entity Manager Factory, Entity Manager"></a>Entity Manager Factory, Entity Manager</h4><p>엔티티 메니저 펙토리는 한 개만 만들어서 애플리케이션 전체에서 공유합니다. 엔티티 메니저 펙토리는 서도 다른 스레드 간에 공유해도 되지만, 엔티티 메니저는 여러 스레드가 동시에 접근하면 동시성 문제가 발생하므로 스레드 간에 절대 공유하면 안됩니다.</p>
+<h4 id="Persistence-Context"><a href="#Persistence-Context" class="headerlink" title="Persistence Context"></a>Persistence Context</h4><p>엔티티를 여구 저장하는 환경입니다. 엔티티 메니저로 엔티티를 저장하거나 조회하면 엔티티 메니저는 영속성 컨텍스트에 엔티티를 보관하고 관리합니다.</p>
+<h4 id="엔티티의-생명주기"><a href="#엔티티의-생명주기" class="headerlink" title="엔티티의 생명주기"></a>엔티티의 생명주기</h4><p>4가지 상태가 있습니다.</p>
+<ul>
+<li>비영속<ul>
+<li>영속성 컨텍스트와 관계 없는 상태 </li>
+</ul>
+</li>
+<li>영속<ul>
+<li>영속성 컨텍스트에 저장된 상태</li>
+</ul>
+</li>
+<li>준영속<ul>
+<li>영속성 컨텍스트에 저장되었다가 분리된 상태</li>
+</ul>
+</li>
+<li>삭제<ul>
+<li>삭제된 상태</li>
+</ul>
+</li>
+</ul>
+<h4 id="영속성-컨텍스트의-특징"><a href="#영속성-컨텍스트의-특징" class="headerlink" title="영속성 컨텍스트의 특징"></a>영속성 컨텍스트의 특징</h4><ul>
+<li>영속 상태는 식별자 값이 반드시 있어야합니다.</li>
+<li>보통 Transaction 을 Commit 하는 순간 영속성 컨텍스트에 저장된 엔티티를 데이터베이스에 반영합니다. (Flush)</li>
+<li>1차 캐쉬 / 동일성 보장 / 쓰기 지연 / 변경 감지 / 지연 로딩</li>
+</ul>
+<h4 id="엔티티-조회"><a href="#엔티티-조회" class="headerlink" title="엔티티 조회"></a>엔티티 조회</h4><p>영속성 컨텍스트는 내부에 1차 캐시를 가지고 있습니다. 쉽게 이야기해, Map 처럼 키는 @Id로 매핑한 식별자이고 값은 엔티티 인스턴스입니다. 1차 캐시에 저장된 엔티티를 조회할 때 , 1차 캐시에 엔티티가 있으면 데이터베이스를 조회하지 않고 메모리에 있는 1차 캐시에서 엔티티를 조회합니다. 만약, 1차 캐시에 없으면 엔티티 메니저는 데이터베이스를 조회해서 엔티티를 생성하고 1차 캐시에 저장한 후에 영속 상태의 엔티티를 반환합니다. </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">entityManger.find(Member.class, <span class="string">"member1"</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="영속-엔티티의-동일성-보장"><a href="#영속-엔티티의-동일성-보장" class="headerlink" title="영속 엔티티의 동일성 보장"></a>영속 엔티티의 동일성 보장</h4><p>영속성 컨텍스트는 성능상 이점과 엔티티의 동일성을 보장합니다. 따라서, 다음 코드의 결과는 참입니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Member a = em.find(Member.class, <span class="string">"member1"</span>);</span><br><span class="line">Member b = em.find(Member.class, <span class="string">"member1"</span>);</span><br><span class="line"></span><br><span class="line">System.out.println(a==b);</span><br></pre></td></tr></table></figure>
+
+<h4 id="엔티티-등록"><a href="#엔티티-등록" class="headerlink" title="엔티티 등록"></a>엔티티 등록</h4><p>엔티티 메니저는 트랜잭션을 커밋하기 직전까지 데이터베이스에 엔티티를 저장하지 않고 내부 쿼리 저장소에 INSERT SQL을 모아둡니다. 그리고 커밋할 때 모아둔 쿼리를 데이터베이스에 보냅니다. 이것을 Transactional Write Behind (쓰기 지연) 라고 합니다.</p>
+<h4 id="엔티티-수정"><a href="#엔티티-수정" class="headerlink" title="엔티티 수정"></a>엔티티 수정</h4><p>엔티티의 변경사항을 데이터베이스에 자동으로 반영하는 기능을 Dirty Checking (변경 감지) 이라고 합니다. 순서는 다음과 같습니다.</p>
+<ol>
+<li>커밋하면 엔티티 메니저 내부에서 flush() 가 호출됩니다.</li>
+<li>엔티티와 스냅샷 (JPA는 엔티티를 영속성 컨텐스트에 보관할 때, 최초 상태를 복사해서 저장합니다 )을 비교해서 변경된 엔티티를 찾습니다.</li>
+<li>변경된 엔티티가 있으면 수정 쿼리를 생성해서 쓰기 지연 SQL 저장소에 보냅니다.</li>
+<li>데이터베이스 트랜잭션을 커밋합니다.</li>
+</ol>
+<p>그리고 UPDATE SQL 을 생성할 때, 변경된 부분만 사용해서 동적으로 생성되는 것이 아니라, 엔티티의 모든 필드를 업데이트 합니다.</p>
+<h4 id="엔티티-삭제"><a href="#엔티티-삭제" class="headerlink" title="엔티티 삭제"></a>엔티티 삭제</h4><p>엔티티 등록과 비슷하게 삭제 쿼리를 쓰기 지연 SQL 저장소에 등록하고 트랜잭션을 커밋해서 flush()를 호출하면 데이터베이스에 삭제 쿼리를 전달합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Member a = em.find(Member.class, <span class="string">"member1"</span>);</span><br><span class="line">em.remove(a);</span><br></pre></td></tr></table></figure>
+
+<h4 id="플러쉬"><a href="#플러쉬" class="headerlink" title="플러쉬"></a>플러쉬</h4><p>영속성 컨테르를 플러쉬하는 방법은 3가지입니다.</p>
+<ul>
+<li>em.flush() 직접 호출</li>
+<li>트랜잭션 커밋 시 플러쉬 자동 호출</li>
+<li>JPQL 쿼리 실행시 플러쉬 자동 호출</li>
+</ul>
+<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><p>자바 ORM 표준 프로그래밍 &lt;김영한&gt;</p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2019/03/20/persistence context/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2019/03/20/entity mapping/">
                             [자바 ORM 표준 JPA 프로그래밍] 4장_앤티티 매핑
                         </a>
@@ -702,6 +802,59 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2018/12/09/joi/">
+                            Joi
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-12-09T00:00:00+09:00">
+	
+		    Dec 09, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/node-js/">Node.js</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h5 id="Joi-가-뭡니까"><a href="#Joi-가-뭡니까" class="headerlink" title="Joi 가 뭡니까 ?"></a>Joi 가 뭡니까 ?</h5><p>Hapi.js에서 사용하는 parameter 검증 모듈입니다.</p>
+<h5 id="Joi-를-사용하지-않으면"><a href="#Joi-를-사용하지-않으면" class="headerlink" title="Joi 를 사용하지 않으면 ?"></a>Joi 를 사용하지 않으면 ?</h5><p>routing 의 handler 에서 parameter 를 검증하는 로직과 서버 자원을 조회하는 로직이 섞여있습니다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> users = [<span class="string">'Chris'</span>, <span class="string">'Mod'</span>, <span class="string">'Daniel'</span>, <span class="string">'JT'</span>, <span class="string">'Justin'</span>];</span><br><span class="line"></span><br><span class="line">server.route(&#123;</span><br><span class="line">    method: <span class="string">'GET'</span>,</span><br><span class="line">    path:<span class="string">'/users/&#123;id&#125;'</span>,</span><br><span class="line">    handler: <span class="function"><span class="keyword">function</span> (<span class="params">req, reply</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 파라메터 검증 </span></span><br><span class="line">      <span class="keyword">if</span> (req.params.id &amp;lt; users.length) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 검증을 통과하면 로직 수행</span></span><br><span class="line">        reply(&#123;<span class="attr">user</span>: users[req.params.id]&#125;);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 검증 미통과시 404 에러코드 반환 </span></span><br><span class="line">        reply(<span class="string">'No user'</span>).code(<span class="number">404</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h5 id="Joi-를-사용하면"><a href="#Joi-를-사용하면" class="headerlink" title="Joi 를 사용하면 ?"></a>Joi 를 사용하면 ?</h5><p>config 속성을 통해 parameter 를 검증할 수 있습니다. config.validate 속성에 자바스크립트 객체를 설정했습니다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Joi = <span class="built_in">require</span>(<span class="string">'joi'</span>);</span><br><span class="line"></span><br><span class="line">server.route(&#123;</span><br><span class="line">  method: <span class="string">'GET'</span>,</span><br><span class="line">  path:<span class="string">'/users/&#123;id&#125;'</span>,</span><br><span class="line">  handler: <span class="function"><span class="keyword">function</span> (<span class="params">req, reply</span>) </span>&#123;</span><br><span class="line">    reply(&#123;<span class="attr">user</span>: users[req.params.id]&#125;);</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// config.validate 속성에 검증 로직을 추가한다. 일종의 스키마 형태 </span></span><br><span class="line">  config: &#123;</span><br><span class="line">    validate: &#123;</span><br><span class="line">      params: &#123;</span><br><span class="line">        id: Joi.number().integer().min(<span class="number">0</span>).max(users.length)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/12/09/joi/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2018/12/09/exports/">
                             exports
                         </a>
@@ -888,115 +1041,6 @@
                     
                         <p>
                             <a href="/2018/12/09/RabbitMQ/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/12/09/REPL/">
-                            REPL
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-12-09T00:00:00+09:00">
-	
-		    Dec 09, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/node-js/">Node.js</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h5 id="REPL-Read-Eval-Print-Loop-은"><a href="#REPL-Read-Eval-Print-Loop-은" class="headerlink" title="REPL (Read Eval Print Loop)은?"></a>REPL (Read Eval Print Loop)은?</h5><p>node.js 코드를 입력할 수 있는 대화형 인터프리터입니다. 터미널에서 node 명령어를 실행하면 실행됩니다.</p>
-<h5 id="cf-event-loop-thread-란"><a href="#cf-event-loop-thread-란" class="headerlink" title="(cf) event loop thread 란 ?"></a>(cf) event loop thread 란 ?</h5><p>node.js는 io 작업시 기다리지 않습니다. 즉, block 되지 않습니다. 따라서 하나의 thread가 다른 요청을 받아서 작업을 처리할수 있습니다. 이 요청을 받아서 처리하는 Thread를 ELP(Event Loop Thread) 라고 합니다.</p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/12/09/REPL/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/12/09/Docker/">
-                            Docker
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-12-09T00:00:00+09:00">
-	
-		    Dec 09, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/etc/">etc</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h5 id="도커가-뭔가요"><a href="#도커가-뭔가요" class="headerlink" title="도커가 뭔가요?"></a>도커가 뭔가요?</h5><p>컨테이너 기반의 가상화 플랫폼입니다.</p>
-<h5 id="컨테이너가-뭔가요"><a href="#컨테이너가-뭔가요" class="headerlink" title="컨테이너가 뭔가요?"></a>컨테이너가 뭔가요?</h5><p>격리된 공간에서 프로세스가 동작하는 기술입니다. 추가되거나 변하는 값은 변하는 값은 컨테이너에 저장됩니다.</p>
-<h5 id="이미지가-뭔가요"><a href="#이미지가-뭔가요" class="headerlink" title="이미지가 뭔가요?"></a>이미지가 뭔가요?</h5><p>컨테이너 실행에 필요한 파일과 설정값등을 포함하고 있는 것 입니다. 상태값을 가지지 않고 변하지 않습니다(Immutable).</p>
-<h5 id="이미지와-컨테이너의-관계는"><a href="#이미지와-컨테이너의-관계는" class="headerlink" title="이미지와 컨테이너의 관계는?"></a>이미지와 컨테이너의 관계는?</h5><p>컨테이너는 이미지가 실행된 상태입니다. 같은 이미지에서 여러개의 컨테이너를 생성할 수 있고 컨테이너의 상태가 바뀌거나 컨테이너가 삭제되더라도 이미지는 변하지 않고 그대로 남아있습니다.</p>
-<h5 id="예를-들면"><a href="#예를-들면" class="headerlink" title="예를 들면?"></a>예를 들면?</h5><p>ubuntu이미지는 ubuntu를 실행하기 위한 모든 파일을 가지고 있습니다. MySQL이미지는 debian을 기반으로 MySQL을 실행하는데 필요한 파일과 실행 명령어, 포트 정보등을 가지고 있습니다.</p>
-<h5 id="이미지는-어떻게-관리하나요"><a href="#이미지는-어떻게-관리하나요" class="headerlink" title="이미지는 어떻게 관리하나요?"></a>이미지는 어떻게 관리하나요?</h5><p>도커 이미지는 Docker hub 에 등록하거나 Docker Registry 저장소를 직접 만들어 관리할 수 있습니다</p>
-<h5 id="기존의-가상화-기술이랑-차이점은"><a href="#기존의-가상화-기술이랑-차이점은" class="headerlink" title="기존의 가상화 기술이랑 차이점은?"></a>기존의 가상화 기술이랑 차이점은?</h5><p>VMware나 VirtualBox같은 가상머신은 호스트 OS위에 게스트 OS 전체를 가상화하여 사용하는 방식입니다. 이 방식은 여러가지 OS를 가상화(리눅스에서 윈도우를 돌린다던가) 할 수 있고 비교적 사용법이 간단하지만 무겁고 느려서 운영환경에선 사용할 수 없었습니다.</p>
-<p>이러한 상황을 개선하기 위해, CPU의 가상화 기술을 이용한 반 가상화 기술이 등장했습니다. 게스트 OS가 필요하긴 하지만 전체OS를 가상화하는 방식이 아니였기 때문에 호스트형 가상화 방식에 비해 성능이 향상되었습니다.</p>
-<p>전가상화든 반가상화든 추가적인 OS를 설치하여 가상화하는 방법은 어쨋든 성능문제가 있었고 이를 개선하기 위해 <strong>프로세스를 격리</strong> 하는 방식이 등장합니다.</p>
-<h5 id="도커의-장점은"><a href="#도커의-장점은" class="headerlink" title="도커의 장점은?"></a>도커의 장점은?</h5><p>더 이상 의존성 파일을 컴파일하고 이것저것 설치할 필요가 없습니다. 말그대로 이미지는 컨테이너를 실행하기 위한 모든 정보를 가지고 있기 때문입니다. 이제 새로운 서버가 추가되면 미리 만들어 놓은 이미지를 다운받고 컨테이너를 생성만 하면 됩니다. 한 서버에 여러개의 컨테이너를 실행할 수 있고, 수십, 수백, 수천대의 서버도 문제없습니다.</p>
-<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://subicura.com/2017/01/19/docker-guide-for-beginners-1.html" target="_blank" rel="noopener">https://subicura.com/2017/01/19/docker-guide-for-beginners-1.html</a></p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/12/09/Docker/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>

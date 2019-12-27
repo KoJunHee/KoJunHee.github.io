@@ -194,8 +194,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/04/09/LSP/">
-                            LSP
+                        <a class="link-unstyled" href="/2018/04/09/SRP/">
+                            SRP
                         </a>
                     
                 </h1>
@@ -217,40 +217,42 @@
             </div>
             
                 <div class="postShorten-content">
-                    <ul>
-<li>Liskov Subsititution Principle ( 리스코프 치환 법칙 )</li>
-</ul>
+                    <h2 id="SRP란"><a href="#SRP란" class="headerlink" title="SRP란"></a>SRP란</h2><p>Single Responsibility Principle (단일 책임 원칙)</p>
 <ul>
 <li><p>Intent</p>
 <ul>
-<li>Derived types must be completely substitutable for their base types.</li>
-<li>상속 관계에서,</li>
-<li>자식 클래스는 최소한 부모 클래스에서 가능한 행위는 수행할 수 있어야 한다</li>
-<li>부모 클래스와 자식 클래스 사이의 행위가 일관성이 있어야 한다</li>
-<li>LSP를 만족하면,</li>
-<li>프로그램에서 부모 클래스의 인스턴스 대신에 자식 클래스의 인스턴스로 대체해도 프로그램의 의미는 변화 X</li>
+<li>A class should have only one reason to change.</li>
+<li>객체는 단 하나의 책임(변경 이유)만 가져야 한다.</li>
 </ul>
 </li>
-<li><p>LSP를 만족시키는 방법</p>
+<li><p>산탄총 수술</p>
 <ul>
-<li>재정의 하지 않는다 </li>
+<li>수의사가 산탄총을 맞은 동물을 치료하는 상황처럼,</li>
+<li>어떤 변경이 있을 때 하나가 아닌 여러 클래스를 변경해야한다</li>
 </ul>
 </li>
 </ul>
 <ul>
-<li><p>Violation</p>
-<p><img src="/image/lsp011.png" alt></p>
-<p><img src="/image/lsp022.png" alt></p>
-<p><img src="/image/lsp033.png" alt></p>
-<p><img src="/image/lsp044.png" alt></p>
+<li><p>Bad Example</p>
+<ul>
+<li>each change for a responsibility might affect the other one:<ul>
+<li>Adding a new protocol will create the need to add code for parsing and serializing the content for each type of field.</li>
+<li>Adding a new content type (like html) make us to add code for each protocol implemented.</li>
+</ul>
 </li>
 </ul>
-<ul>
-<li>Reference<ul>
+<p><img src="/image/srpp01.png" alt></p>
+<p><img src="/image/srpp02.png" alt></p>
+</li>
+<li><p>Good Example</p>
+<p><img src="/image/srpp03.png" alt></p>
+<p><img src="/image/srpp04.png" alt></p>
+<p><img src="/image/srpp05.png" alt></p>
+</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
 <li><a href="http://www.oodesign.com/single-responsibility-principle.html" target="_blank" rel="noopener">http://www.oodesign.com/single-responsibility-principle.html</a></li>
-<li>Java 객체지향 디자인 패턴 (정인상, 채흥석 지음)</li>
-</ul>
-</li>
+<li>JAVA 객체지향 디자인 패턴 (정인상, 채흥석 지음)</li>
 </ul>
 
                     
@@ -259,7 +261,7 @@
                     
                     
                         <p>
-                            <a href="/2018/04/09/LSP/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/04/09/SRP/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -277,8 +279,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/04/09/Bridge Pattern/">
-                            Bridge Pattern
+                        <a class="link-unstyled" href="/2018/04/09/Composite Pattern/">
+                            Composite Pattern
                         </a>
                     
                 </h1>
@@ -303,34 +305,49 @@
                     <ul>
 <li><p>Intent</p>
 <ul>
-<li>decouple an abstraction from its implementation so that the two can vary independently.</li>
-<li>추상을 구현으로부터 분리하여, </li>
-<li>독립적으로 변하게 함</li>
-<li>여기에서 구현의 의미<ul>
-<li>추상을 구현한 concrete class X</li>
-<li>궂은 일을 하는 로직 / 코드</li>
+<li>Compose objects into tree structures to represent part-whole hierarchies.</li>
+<li>Lets clients treat individual objects and compositions of objects uniformly.</li>
+<li>Part-whole Hierarchy를 표현하기 위하여 객체들을 트리 구조로 구성</li>
+<li>Client가 개개의 객체와 그룹 객체를 동일하게 취급할 수 있게 만든다<ul>
+<li>Clinet는 모든 객체들을 컴포넌트 객체로 간주하여 이용</li>
 </ul>
 </li>
-<li>구현 뿐만 아니라 추상화된 부분까지 변경시켜야 하는 경우에는 bridge pattern을 사용</li>
 </ul>
 </li>
-<li><p>Class Diagram</p>
-<p><img src="/image/myBridge.png" alt></p>
-<p><img src="/image/myBridgee.png" alt></p>
+<li><p>자식 관리 오퍼레이션</p>
+<ul>
+<li><p>add(), remove(), getChild()</p>
+<ul>
+<li><p>component와 composite 에 선언 : client가 편하다. 개체과 그룹에 관계없이 부를 수 있다</p>
+<p><img src="/image/compo01.png" alt></p>
+</li>
+<li><p>composite 에 선언 : client가 불편하다. 개체인지 그룹인지 구별을 해야한다</p>
+<p><img src="/image/compo02.png" alt></p>
+</li>
+</ul>
+</li>
+<li><p>remove()</p>
+<ul>
+<li>자식을 삭제하는 책임은 composite 객체에 주는것이 가장 좋다</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Implementation</p>
+<p><img src="/image/compositeUML.png" alt></p>
 </li>
 </ul>
 <ul>
-<li>Code</li>
+<li>EX )</li>
 </ul>
-<p><img src="/image/b01.png" alt></p>
-<p><img src="/image/b02.png" alt></p>
-<p><img src="/image/b03.png" alt></p>
-<p><img src="/image/b04.png" alt></p>
-<p><img src="/image/b05.png" alt></p>
-<p><img src="/image/b06.png" alt></p>
+<p><img src="/image/device.png" alt></p>
+<p><img src="/image/computer.png" alt></p>
+<p><img src="/image/client" alt></p>
+<p><img src="/image/body.png" alt></p>
 <ul>
 <li>Reference<ul>
-<li><a href="https://www.tutorialspoint.com/design_pattern/bridge_pattern.htm" target="_blank" rel="noopener">https://www.tutorialspoint.com/design_pattern/bridge_pattern.htm</a></li>
+<li><a href="http://www.oodesign.com/composite-pattern.html" target="_blank" rel="noopener">http://www.oodesign.com/composite-pattern.html</a></li>
+<li>Java 객체지향 디자인 패턴 (정인상, 채홍석 지음)</li>
 </ul>
 </li>
 </ul>
@@ -341,7 +358,7 @@
                     
                     
                         <p>
-                            <a href="/2018/04/09/Bridge Pattern/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/04/09/Composite Pattern/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -464,8 +481,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/04/09/DIP/">
-                            DIP
+                        <a class="link-unstyled" href="/2018/04/09/Bridge Pattern/">
+                            Bridge Pattern
                         </a>
                     
                 </h1>
@@ -488,46 +505,36 @@
             
                 <div class="postShorten-content">
                     <ul>
-<li>Dependency Inversion Principle ( 의존 역전 법칙 )</li>
-</ul>
-<ul>
 <li><p>Intent</p>
 <ul>
-<li>High-level modules should not depend on low-level modules. Both should depend on abstractions.</li>
-<li>Abstractions should not depend on details. Details should depend on abstractions.</li>
-<li>의존 관계를 맺을 때 변화하기 쉬운 것 또는 자주 변화하는 것보다는 </li>
-<li>변화하기 어려운 것, 거의 변화가 없는 것에 의존하라는 원칙</li>
-<li>DIP를 만족하려면,</li>
-<li>어떤 클래스가 도움을 받을 때, 구체적인 클래스보다는 인터페이스나 추상 클래스와 의존 관계를 맺도록.</li>
+<li>decouple an abstraction from its implementation so that the two can vary independently.</li>
+<li>추상을 구현으로부터 분리하여, </li>
+<li>독립적으로 변하게 함</li>
+<li>여기에서 구현의 의미<ul>
+<li>추상을 구현한 concrete class X</li>
+<li>궂은 일을 하는 로직 / 코드</li>
 </ul>
 </li>
-<li><p>Bad Example</p>
+<li>구현 뿐만 아니라 추상화된 부분까지 변경시켜야 하는 경우에는 bridge pattern을 사용</li>
+</ul>
+</li>
+<li><p>Class Diagram</p>
+<p><img src="/image/myBridge.png" alt></p>
+<p><img src="/image/myBridgee.png" alt></p>
+</li>
+</ul>
 <ul>
-<li>the manager class which is a high level class, and the low level class called Worker</li>
-<li>now we have to change Manager class in order to introduce the new SuperWorker<ul>
-<li>Adding a new protocol will create the need to add code for parsing and serializing the content for each type of field.</li>
-<li>Adding a new content type (like html) make us to add code for each protocol implemented.</li>
+<li>Code</li>
 </ul>
-</li>
-</ul>
-<p><img src="/image/dip011.png" alt></p>
-<p><img src="/image/dip022.png" alt></p>
-<p><img src="/image/dip033.png" alt></p>
-</li>
-<li><p>Good Example</p>
-<ul>
-<li>Manager class doesn’t require changes when adding SuperWorkers.</li>
-</ul>
-<p><img src="/image/dip044.png" alt></p>
-<p><img src="/image/dip055.png" alt></p>
-<p><img src="/image/dip066.png" alt></p>
-<p><img src="/image/dip077.png" alt></p>
-</li>
-</ul>
+<p><img src="/image/b01.png" alt></p>
+<p><img src="/image/b02.png" alt></p>
+<p><img src="/image/b03.png" alt></p>
+<p><img src="/image/b04.png" alt></p>
+<p><img src="/image/b05.png" alt></p>
+<p><img src="/image/b06.png" alt></p>
 <ul>
 <li>Reference<ul>
-<li><a href="http://www.oodesign.com/dependency-inversion-principle.html" target="_blank" rel="noopener">http://www.oodesign.com/dependency-inversion-principle.html</a></li>
-<li>Java 객체지향 디자인 패턴 (정인상, 채흥석 지음)</li>
+<li><a href="https://www.tutorialspoint.com/design_pattern/bridge_pattern.htm" target="_blank" rel="noopener">https://www.tutorialspoint.com/design_pattern/bridge_pattern.htm</a></li>
 </ul>
 </li>
 </ul>
@@ -538,7 +545,7 @@
                     
                     
                         <p>
-                            <a href="/2018/04/09/DIP/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/04/09/Bridge Pattern/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>

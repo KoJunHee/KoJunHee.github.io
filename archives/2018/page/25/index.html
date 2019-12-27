@@ -194,90 +194,6 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/02/06/프로퍼티와 메서드/">
-                            프로퍼티와 메서드
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-02-06T00:00:00+09:00">
-	
-		    Feb 06, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/ios/">iOS</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p><a href="https://developer.apple.com/swift/" target="_blank" rel="noopener">https://developer.apple.com/swift/</a></p>
-<h2 id="Properties"><a href="#Properties" class="headerlink" title="Properties"></a>Properties</h2><ul>
-<li>Properties associate values with a particular class, structure, or enumeration. <ul>
-<li>Stored properties store constant and variable values as part of an instance. Stored properties are provided only by classes and structures.</li>
-<li>computed properties calculate (rather than store) a value. Computed properties are provided by classes, structures, and enumerations. </li>
-</ul>
-</li>
-</ul>
-<h2 id="Methods"><a href="#Methods" class="headerlink" title="Methods"></a>Methods</h2><ul>
-<li><p>Methods are functions that are associated with a particular type. </p>
-</li>
-<li><p>Classes, structures, and enumerations can all define instance methods, </p>
-<ul>
-<li>which encapsulate specific tasks and functionality for working with an instance of a given type. - Classes, structures, and enumerations can also define type methods, </li>
-<li>which are associated with the type itself. Type methods are similar to class methods in Objective-C.</li>
-</ul>
-</li>
-<li><p>Instance methods are functions </p>
-</li>
-<li><p>that belong to instances of a particular class, structure, or enumeration. </p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class Counter &#123;</span><br><span class="line">    var count = 0</span><br><span class="line">    func increment() &#123;</span><br><span class="line">        count += 1</span><br><span class="line">    &#125;</span><br><span class="line">    func increment(by amount: Int) &#123;</span><br><span class="line">        count += amount</span><br><span class="line">    &#125;</span><br><span class="line">    func reset() &#123;</span><br><span class="line">        count = 0</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>The Counter class defines three instance methods:</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">increment() increments the counter by 1.</span><br><span class="line">increment(by: Int) increments the counter by a specified integer amount.</span><br><span class="line">reset() resets the counter to zero.</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>can also define methods that are called on the type itself. These kinds of methods are called type methods</li>
-<li>You indicate type methods by writing the static keyword before the method’s func keyword. </li>
-<li>Classes may also use the class keyword to allow subclasses to override the superclass’s implementation of that method</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">struct LevelTracker &#123;</span><br><span class="line">    static var highestUnlockedLevel = 1</span><br><span class="line">    var currentLevel = 1</span><br><span class="line">    </span><br><span class="line">    static func unlock(_ level: Int) &#123;</span><br><span class="line">        if level &gt; highestUnlockedLevel &#123; highestUnlockedLevel = level &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    static func isUnlocked(_ level: Int) -&gt; Bool &#123;</span><br><span class="line">        return level &lt;= highestUnlockedLevel</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    @discardableResult</span><br><span class="line">    mutating func advance(to level: Int) -&gt; Bool &#123;</span><br><span class="line">        if LevelTracker.isUnlocked(level) &#123;</span><br><span class="line">            currentLevel = level</span><br><span class="line">            return true</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            return false</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/02/06/프로퍼티와 메서드/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
                         <a class="link-unstyled" href="/2018/02/06/접근제어/">
                             접근제어
                         </a>
@@ -465,6 +381,90 @@
                     
                         <p>
                             <a href="/2018/02/06/구조체,클래스/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2018/02/06/프로퍼티와 메서드/">
+                            프로퍼티와 메서드
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-02-06T00:00:00+09:00">
+	
+		    Feb 06, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/ios/">iOS</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p><a href="https://developer.apple.com/swift/" target="_blank" rel="noopener">https://developer.apple.com/swift/</a></p>
+<h2 id="Properties"><a href="#Properties" class="headerlink" title="Properties"></a>Properties</h2><ul>
+<li>Properties associate values with a particular class, structure, or enumeration. <ul>
+<li>Stored properties store constant and variable values as part of an instance. Stored properties are provided only by classes and structures.</li>
+<li>computed properties calculate (rather than store) a value. Computed properties are provided by classes, structures, and enumerations. </li>
+</ul>
+</li>
+</ul>
+<h2 id="Methods"><a href="#Methods" class="headerlink" title="Methods"></a>Methods</h2><ul>
+<li><p>Methods are functions that are associated with a particular type. </p>
+</li>
+<li><p>Classes, structures, and enumerations can all define instance methods, </p>
+<ul>
+<li>which encapsulate specific tasks and functionality for working with an instance of a given type. - Classes, structures, and enumerations can also define type methods, </li>
+<li>which are associated with the type itself. Type methods are similar to class methods in Objective-C.</li>
+</ul>
+</li>
+<li><p>Instance methods are functions </p>
+</li>
+<li><p>that belong to instances of a particular class, structure, or enumeration. </p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class Counter &#123;</span><br><span class="line">    var count = 0</span><br><span class="line">    func increment() &#123;</span><br><span class="line">        count += 1</span><br><span class="line">    &#125;</span><br><span class="line">    func increment(by amount: Int) &#123;</span><br><span class="line">        count += amount</span><br><span class="line">    &#125;</span><br><span class="line">    func reset() &#123;</span><br><span class="line">        count = 0</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>The Counter class defines three instance methods:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">increment() increments the counter by 1.</span><br><span class="line">increment(by: Int) increments the counter by a specified integer amount.</span><br><span class="line">reset() resets the counter to zero.</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>can also define methods that are called on the type itself. These kinds of methods are called type methods</li>
+<li>You indicate type methods by writing the static keyword before the method’s func keyword. </li>
+<li>Classes may also use the class keyword to allow subclasses to override the superclass’s implementation of that method</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">struct LevelTracker &#123;</span><br><span class="line">    static var highestUnlockedLevel = 1</span><br><span class="line">    var currentLevel = 1</span><br><span class="line">    </span><br><span class="line">    static func unlock(_ level: Int) &#123;</span><br><span class="line">        if level &gt; highestUnlockedLevel &#123; highestUnlockedLevel = level &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    static func isUnlocked(_ level: Int) -&gt; Bool &#123;</span><br><span class="line">        return level &lt;= highestUnlockedLevel</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    @discardableResult</span><br><span class="line">    mutating func advance(to level: Int) -&gt; Bool &#123;</span><br><span class="line">        if LevelTracker.isUnlocked(level) &#123;</span><br><span class="line">            currentLevel = level</span><br><span class="line">            return true</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            return false</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/02/06/프로퍼티와 메서드/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>

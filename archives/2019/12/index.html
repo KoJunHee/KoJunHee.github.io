@@ -194,21 +194,21 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2019/12/26/kafka-chapter3/">
-                            [카프카] 3장_카프카 디자인
+                        <a class="link-unstyled" href="/2019/12/27/object-chapter11/">
+                            [오브젝트] 11장_합성과 유연한 설계
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2019-12-26T00:00:00+09:00">
+    <time datetime="2019-12-27T00:00:00+09:00">
 	
-		    Dec 26, 2019
+		    Dec 27, 2019
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/kafka/">Kafka</a>
+    <a class="category-link" href="/categories/object/">Object</a>
 
 
     
@@ -217,97 +217,82 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>대용량, 대규모 메세지 데이터를 빠르게 처리하도록 개발된 메시징 플랫폼이다.</p>
-<h3 id="1-카프카-디자인의-특징"><a href="#1-카프카-디자인의-특징" class="headerlink" title="1. 카프카 디자인의 특징"></a>1. 카프카 디자인의 특징</h3><h4 id="1-1-분산-시스템"><a href="#1-1-분산-시스템" class="headerlink" title="1.1 분산 시스템"></a>1.1 분산 시스템</h4><p>분산 시스템이란, 같은 역할을 하는 여러 대의 서버로 이뤄진 서버 그룹이다.</p>
-<p>장점은,</p>
+                    <p>코드 재사용 기법으로는,</p>
 <ol>
-<li>단일 시스템 보다 높은 성능</li>
-<li>하나의 서버가 장애가 발생해도 다른 서버가 대신 처리</li>
-<li>시스템 확장 용이</li>
+<li><p>상속</p>
+<p>부모클래스와 자식클래스를 연결해서, 부모클래스의 코드 재사용</p>
+</li>
+<li><p>합성</p>
+<p>전체를 표현하는 객체가 부분을 표현하는 객체를 포함해서 객체의 코드 재사용</p>
+<p>내부에 포함되는 객체의 구현이 아니라 <code>퍼블릭 인터페이스</code>에 의존</p>
+</li>
 </ol>
-<h4 id="1-2-페이지-캐시"><a href="#1-2-페이지-캐시" class="headerlink" title="1.2 페이지 캐시"></a>1.2 페이지 캐시</h4><p>OS 는 물리적 메모리에 애플리케이션이 사용하는 부분을 할당하고, 남은 잔여 메모리 일부를 페이지 케시로 이용한다. </p>
-<p>즉, 디스크에 읽고 쓰기를 하지 않고 페이지 케시를 읽고 쓰는 방식으로 처리 속도가 빠르고 전체적인 성능을 향상 시킨다.</p>
-<p>카프카는 이 특징을 이용해 디자인되었다.</p>
-<h4 id="1-3-배치-전송-처리"><a href="#1-3-배치-전송-처리" class="headerlink" title="1.3 배치 전송 처리"></a>1.3 배치 전송 처리</h4><p>서버와 클라이언트 사이, 또는 서버 내부적으로 데이터를 주고 받는 과정에서 I/O 가 발한다. </p>
-<p>작은 I/O 가 빈번하게 발생하는 것을 막기 위해, 작은 I/O 들을 묶어러 처리할 수 있도록 배치 작업으로 처리한다.</p>
-<h3 id="2-카프카-데이터-모델"><a href="#2-카프카-데이터-모델" class="headerlink" title="2. 카프카 데이터 모델"></a>2. 카프카 데이터 모델</h3><h4 id="2-1-토픽"><a href="#2-1-토픽" class="headerlink" title="2.1 토픽"></a>2.1 토픽</h4><p>메세지를 받을 수 있도록 논리적으로 묶은 개념이다. 메일 주소라고 생각하면 쉽다.</p>
-<h4 id="2-2-파티션"><a href="#2-2-파티션" class="headerlink" title="2.2 파티션"></a>2.2 파티션</h4><p>토픽을 분할한 것이다. </p>
-<p><img src="/image/kafka_one_producer.png" alt></p>
-<p>위 그림에서, ‘뉴스 토픽’ 으로 4 개의 메세지를 보내는데 4 초가 걸린다.</p>
-<p><img src="/image/kafka_many_producer.png" alt></p>
-<p>위 그림에서, ‘뉴스 토픽’ 으로 4 개의 메세지를 보내는데 1 초가 걸린다.</p>
-<p>이렇게 빠른 전송을 위해서는, 토픽의 파티션 수와 프로듀서 수를 모두 늘려줘야한다.</p>
-<blockquote>
-<p>무조건 파티션 수를 늘려야 하나 ?</p>
-</blockquote>
-<p>파티션 수가 늘어나면 카프카에 좋지 않은 영향을 끼칠 수 있다.</p>
+<h2 id="01-상속을-합성으로-변경하기"><a href="#01-상속을-합성으로-변경하기" class="headerlink" title="01 상속을 합성으로 변경하기"></a>01 상속을 합성으로 변경하기</h2><p>상속의 문제는,</p>
 <ol>
-<li><p>파일 핸들러의 낭비</p>
-<p>각 파티션은 브로커의 디렉토리와 매핑되고, 저장되는 데이터는 2 개의 파일 ( 인덱스, 실제 데이터 ) 이 있다.</p>
-<p>파티션이 많을 수록, 파일 핸들 수 역시 많아져 리소스가 낭비가 될 수 있다.</p>
-</li>
-<li><p>장애 복구 시간 증가</p>
-</li>
+<li>불필요한 인터페이스 상속</li>
+<li>메서드 오버라이딩 오작용</li>
+<li>부모 클래스와 자식 클래스 동시 수정</li>
 </ol>
-<blockquote>
-<p>토픽의 적절한 파티션 수는 ?</p>
-</blockquote>
-<p>먼저, 원하는 목표 처리량의 기준을 정해야한다. </p>
+<p>이 문제들을 합성으로 해결해보자.</p>
+<h5 id="불필요한-인터페이스-상속-java-utils-Properties-java-utils-Stack"><a href="#불필요한-인터페이스-상속-java-utils-Properties-java-utils-Stack" class="headerlink" title="불필요한 인터페이스 상속 : java.utils.Properties, java.utils.Stack"></a>불필요한 인터페이스 상속 : java.utils.Properties, java.utils.Stack</h5><ol>
+<li>불필요한 Hasbtable 의 오퍼레이션들이 Properties 클래스의 퍼블릭 인터페이스를 오염시키지 않는다.</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Properties</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Hashtable&lt;String, String&gt; properties = <span class="keyword">new</span> Hashtable&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">setProperty</span><span class="params">(String key, String value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> properties.put(key, value);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getProperty</span><span class="params">(String key)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> properties.get(key);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>불필요한 Vector 의 오퍼레이션들이 Stack 클래스의 퍼블릭 인터페이스를 오염시키지 않는다.</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Stack</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Vector&lt;E&gt; elements = <span class="keyword">new</span> Vector&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> E <span class="title">push</span><span class="params">(E item)</span> </span>&#123;</span><br><span class="line">        elements.addElement(item);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> item;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> E <span class="title">Pop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (elements.isEmpty()) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> EmptyStackException();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> elements.remove(elements.size() - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="메서드-오버라이딩-오작용-InstrumentedHashSet"><a href="#메서드-오버라이딩-오작용-InstrumentedHashSet" class="headerlink" title="메서드 오버라이딩 오작용 : InstrumentedHashSet"></a>메서드 오버라이딩 오작용 : InstrumentedHashSet</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InstrumentedHashSet</span>&lt;<span class="title">E</span>&gt; <span class="keyword">implements</span> <span class="title">Set</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Set&lt;E&gt; set;</span><br><span class="line">   	...   </span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span> ..</span><br><span class="line">    <span class="meta">@Override</span> ..      </span><br><span class="line">		<span class="meta">@Override</span> ..</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="부모-클래스와-자식-클래스의-동시-수정-PersonalPlaylist"><a href="#부모-클래스와-자식-클래스의-동시-수정-PersonalPlaylist" class="headerlink" title="부모 클래스와 자식 클래스의 동시 수정 : PersonalPlaylist"></a>부모 클래스와 자식 클래스의 동시 수정 : PersonalPlaylist</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PersonalPlaylis</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Playlist playlist = <span class="keyword">new</span> Playlist();</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">append</span><span class="params">(Song song)</span></span>&#123;</span><br><span class="line">        playlis.append(song);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(Song song)</span></span>&#123;</span><br><span class="line">        playlist.getTracks().remove(song);</span><br><span class="line">        playlist.getSingers().remove(song.getSinger());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="02-상속으로-인한-조합의-폭발적인-증가"><a href="#02-상속으로-인한-조합의-폭발적인-증가" class="headerlink" title="02 상속으로 인한 조합의 폭발적인 증가"></a>02 상속으로 인한 조합의 폭발적인 증가</h2><p>상속으로 작은 기능들을 조합해 더 큰 기능을 수행하는 객체를 만들 때의 문제는,</p>
 <ol>
-<li><p>프로듀서</p>
-<p>4 개의 프로듀서가 초당 10 개의 메세지를 토픽으로 보내면, 토픽에서 초당 40 개의 메시지를 받아줘야한다.</p>
+<li>하나의 기능을 추가하거나 수정을 위해 <code>불필요하게 많은 수의 클래스를 추가하거나 수정</code>해야한다.</li>
+<li>단일 상속만 지원하는 언어에서는 상속으로 <code>중복 코드</code>가 중가한다.</li>
+</ol>
+<h5 id="기본-정책과-부가-정책-조합하기"><a href="#기본-정책과-부가-정책-조합하기" class="headerlink" title="기본 정책과 부가 정책 조합하기"></a>기본 정책과 부가 정책 조합하기</h5><ol>
+<li><p>기본 정책 : 일반 요금제 / 심야 할인 요금제</p>
 </li>
-<li><p>토픽</p>
-<p>해당 토픽에서 파티션을 1로 했을 때 초당 10개의 메세지만 받아준다면, 파티션 수를 4로 조정하면 목표치를 달성한다.</p>
-</li>
-<li><p>컨슈머</p>
-<p>8 개의 컨슈머가 각각 초당 5 개의 메세지를 토픽에서 가져올 수 있으면, 토픽의 파티션수는 8개로 맞춰서 각 컨슈머마다 각각의 파티션에 접근하게 해줘야한다.</p>
+<li><p>부가 정책 : 세금 정책 / 기본 요금 할인 정책</p>
+<p>기본 정책의 계산 결과에 적용, 선택적으로 적용 가능, 조합 가능, 임의의 순서로 적용 가능</p>
 </li>
 </ol>
-<p>주의할 점은, 파티션 수를 늘리는 것은 가능하지만 파티션 수을 줄이는 것은 불가능하다.</p>
-<h4 id="2-3-오프셋과-메세지-순서"><a href="#2-3-오프셋과-메세지-순서" class="headerlink" title="2.3 오프셋과 메세지 순서"></a>2.3 오프셋과 메세지 순서</h4><p>오프셋이란, 각 파티션마다 메세지가 저장되는 위치이다. 파티션 내에서 유일한 숫자이고, 순차적으로 증가한다.</p>
-<p>만약 컨슈머가 파티션 0 에서 데이터를 가져간다고 하면, 오프셋 0 1 2 3 4 5 순서대로 가져갈 수 있다. 절대로 오프셋 순서가 바뀐 상태로 가져갈 수 없다.</p>
-<h3 id="3-고가용성과-리플리케이션"><a href="#3-고가용성과-리플리케이션" class="headerlink" title="3. 고가용성과 리플리케이션"></a>3. 고가용성과 리플리케이션</h3><p>토픽을 이루는 각각의 <code>파티션을</code> 리플리케이션 하는 것이다.</p>
-<h4 id="3-1-리플리케이션-팩터와-리더-팔로워의-역할"><a href="#3-1-리플리케이션-팩터와-리더-팔로워의-역할" class="headerlink" title="3.1 리플리케이션 팩터와 리더, 팔로워의 역할"></a>3.1 리플리케이션 팩터와 리더, 팔로워의 역할</h4><p><img src="/image/kafka_reflecation.png" alt></p>
-<p>모든 읽기와 쓰기는 리더를 통해서만 일어난다. 팔로워는 리더의 데이터를 그대로 리플리케이션만 한다.</p>
-<p>리더와 팔로워는 저장된 데이터의 순서도 일치하고 동일한 오프셋과 메시지를 갖는다.</p>
-<p>리플리케이션된 토픽의 서버가 다운되어도, 리더 변경으롤 문제 없이 프로듀서의 요청을 처리할 수 있다.</p>
-<p>리플리케이션의 단점은,</p>
+<h5 id="상속을-이용해서-기본-정책-구현하기"><a href="#상속을-이용해서-기본-정책-구현하기" class="headerlink" title="상속을 이용해서 기본 정책 구현하기"></a>상속을 이용해서 기본 정책 구현하기</h5><h5 id="기본-정책에-세금-정책-조합하기"><a href="#기본-정책에-세금-정책-조합하기" class="headerlink" title="기본 정책에 세금 정책 조합하기"></a>기본 정책에 세금 정책 조합하기</h5><h5 id="기본-정책에-기본-요금-할인-정책-조합하기"><a href="#기본-정책에-기본-요금-할인-정책-조합하기" class="headerlink" title="기본 정책에 기본 요금 할인 정책 조합하기"></a>기본 정책에 기본 요금 할인 정책 조합하기</h5><h5 id="중복-코드의-덫에-걸리다"><a href="#중복-코드의-덫에-걸리다" class="headerlink" title="중복 코드의 덫에 걸리다"></a>중복 코드의 덫에 걸리다</h5><p><img src="/image/object_inheritance_problem.png" alt></p>
+<p>상속의 남용으로 하나의 기능을 추가하기 위해 필요 이상으로 많은 수의 클래스를 추가해야하는 경우를 <code>클래스 폭발 문제</code>,  <code>조합의 폭발 문제</code> 라고 한다.</p>
+<p>이 문제는, 자식 클래스가 부모 클래스의 구현에 강하게 결합되도록 강요하는 상속의 한계 때문에 발생하는 문제이다.</p>
+<h2 id="03-합성-관계로-변경하기"><a href="#03-합성-관계로-변경하기" class="headerlink" title="03 합성 관계로 변경하기"></a>03 합성 관계로 변경하기</h2><ol>
+<li><p>상속</p>
+<p>조합의 결과를 개별 클래스 안으로 밀어 넣는 방법</p>
+</li>
+<li><p>합성</p>
+<p>합성은 조합을 구성하는 요소들을 개별 클래스로 구현한 후 실행 시점에 인스턴스를 조립하는 방법</p>
+</li>
+</ol>
+<h5 id="기본-정책-합성하기"><a href="#기본-정책-합성하기" class="headerlink" title="기본 정책 합성하기"></a>기본 정책 합성하기</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">RatePolicy</span> </span>&#123;</span><br><span class="line">    <span class="function">Money <span class="title">calculateFee</span><span class="params">(Phone phone)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BasicRatePolicy</span> <span class="keyword">implements</span> <span class="title">RatePolicy</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">calculateFee</span><span class="params">(Phone phone)</span> </span>&#123;</span><br><span class="line">        Money result = Money.ZERO;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(Call call phone.getCalls()&#123;</span><br><span class="line">            result.plus(calculateCallFee(call));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> Money <span class="title">calculateCallFee</span><span class="params">(Call call)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RegularPolicy</span> <span class="keyword">extends</span> <span class="title">BasicRatePolicy</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Money amnount;</span><br><span class="line">    <span class="keyword">private</span> Duration seconds;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">RegularPolicy</span><span class="params">(Money amnount, Duration seconds)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.amnount = amnount;</span><br><span class="line">        <span class="keyword">this</span>.seconds = seconds;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Money <span class="title">calculateCallFee</span><span class="params">(Call call)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> amnount.times(call.getDuration().getSeconds() / seconds.getSeconds());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;            </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NightlyDiscountPolicy</span> <span class="keyword">extends</span> <span class="title">BasicRatePolicy</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> LATE_NIGHT_HOUR = <span class="number">22</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Money nightlyAmnount;</span><br><span class="line">    <span class="keyword">private</span> Money regularAmnount;</span><br><span class="line">    <span class="keyword">private</span> Duration seconds;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">NightlyDiscountPolicy</span><span class="params">(Money nightlyAmnount, Money regularAmnount, Duration seconds)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.nightlyAmnount = nightlyAmnount;</span><br><span class="line">        <span class="keyword">this</span>.regularAmnount = regularAmnount;</span><br><span class="line">        <span class="keyword">this</span>.seconds = seconds;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Money <span class="title">calculateCallFee</span><span class="params">(Call call)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (call.getFrom.getHour() &gt;= LATE_NIGHT_HOUR) &#123;</span><br><span class="line">            <span class="keyword">return</span> nightlyAmnount.times(call.getDuration().getSeconds() / seconds.getSeconds());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> regularAmnount.times(call.getDuration().getSeconds() / seconds.getSeconds());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">            </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Phone</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> RatePolicy ratePolicy; <span class="comment">// Phone 이 다양한 요금 정책과 협력할수 있어야 하므로 인터페이스</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;Call&gt; calls = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Phone</span><span class="params">(RatePolicy ratePolicy)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.ratePolicy = ratePolicy;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Call&gt; <span class="title">getCalls</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Collections.unmodifiableList(calls);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">calculateFee</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> ratePolicy.calculateFee(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 일반 요금제</span></span><br><span class="line">Phone phone = <span class="keyword">new</span> Phone(<span class="keyword">new</span> RegularPolicy(Money.wons(<span class="number">10</span>), Duration.ofSeconds(<span class="number">10</span>)));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 심야 할인 요금제</span></span><br><span class="line">Phone phone = <span class="keyword">new</span> Phone(<span class="keyword">new</span> NightlyDiscountPolicy(Money.wons(<span class="number">5</span>), Money.wons(<span class="number">10</span>), Duration.ofSeconds(<span class="number">10</span>)));</span><br></pre></td></tr></table></figure>
+
+<h5 id="부가-정책-적용하기"><a href="#부가-정책-적용하기" class="headerlink" title="부가 정책 적용하기"></a>부가 정책 적용하기</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AdditionalRatePolicy</span> <span class="keyword">implements</span> <span class="title">RatePolicy</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> RatePolicy next;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AdditionalRatePolicy</span><span class="params">(RatePolicy next)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.next = next;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">calculateFee</span><span class="params">(Phone phone)</span> </span>&#123;</span><br><span class="line">        Money fee = next.calculateFee(phone);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> afterCalculated(fee);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">abstract</span> <span class="keyword">protected</span> Money <span class="title">afterCalculated</span><span class="params">(Money fee)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TaxablePolicy</span> <span class="keyword">extends</span> <span class="title">AdditionalRatePolicy</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">double</span> taxRatio;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TaxablePolicy</span><span class="params">(RatePolicy next, <span class="keyword">double</span> taxRatio)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(next);</span><br><span class="line">        <span class="keyword">this</span>.taxRatio = taxRatio;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Money <span class="title">afterCalculated</span><span class="params">(Money fee)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> fee.plus(fee.times(taxRatio));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RateDiscountPolicy</span> <span class="keyword">extends</span> <span class="title">AdditionalRatePolicy</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Money disoucntAmount;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">RateDiscountPolicy</span><span class="params">(RatePolicy next, Money disoucntAmount)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(next);</span><br><span class="line">        <span class="keyword">this</span>.disoucntAmount = disoucntAmount;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Money <span class="title">afterCalculated</span><span class="params">(Money fee)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> fee.minus(disoucntAmount);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="기본-정책과-부가-정책-합성하기"><a href="#기본-정책과-부가-정책-합성하기" class="headerlink" title="기본 정책과 부가 정책 합성하기"></a>기본 정책과 부가 정책 합성하기</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 일반 요금제에 세금 정책 조합</span></span><br><span class="line">Phone phone = <span class="keyword">new</span> Phone(</span><br><span class="line">    <span class="keyword">new</span> TaxablePolicy(<span class="number">0.05</span>, </span><br><span class="line">        <span class="keyword">new</span> RegularPolicy(...)));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 일반 요금제에 기본 요금 할인 정책을 조합한 결과에 세금 정책 조합</span></span><br><span class="line">Phone phone = <span class="keyword">new</span> Phone(</span><br><span class="line">    <span class="keyword">new</span> TaxablePolicy(<span class="number">0.05</span>, </span><br><span class="line">        <span class="keyword">new</span> RateDiscountablePolicy(Money.wons(<span class="number">1000</span>),</span><br><span class="line">            <span class="keyword">new</span> RegularPolicy(...))));</span><br></pre></td></tr></table></figure>
+
+<h5 id="새로운-정책-추가하기"><a href="#새로운-정책-추가하기" class="headerlink" title="새로운 정책 추가하기"></a>새로운 정책 추가하기</h5><p><img src="/image/object_composition.png" alt></p>
+<p>요구사항이 변경되면 오직 하나의 클래스만 수정하면 된다.</p>
+<p>세금 정책을 변경한다고 할 때,</p>
 <ol>
-<li><p>디스크 사용량 증가</p>
-<p>토픽의 사이즈가 100 GB, 리플리케이션 팩터 3 이면, 카프카 클러스터 내 필요 저장소 크기는 300 GB 이다.</p>
+<li><p>상속</p>
+<p>여러 클래스를 수정</p>
 </li>
-<li><p>브로커 리소스 사용량 증가</p>
-<p>브로커는 리플리케이션 보장을 위해, 비활성화된 토픽이 리플리케이션을 잘하고 있는지 비활성화된 토픽을 계속 체크한다. </p>
-</li>
-</ol>
-<h4 id="3-2-리더와-팔로워의-관리"><a href="#3-2-리더와-팔로워의-관리" class="headerlink" title="3.2 리더와 팔로워의 관리"></a>3.2 리더와 팔로워의 관리</h4><p>팔로워에 문제가 있어서, 리더로부터 데이터를 가져오지 못하면 정합성이 맞지 않는다.</p>
-<p>이를 해결하기 위해, ISR ( In Sync Replica ) 라는 개념이 있다. 현재 리플리케이션 되고 있는 리플리케이션 그룹이다.</p>
-<p>ISR 에 속한 구성원만이 리더의 자격이 있다. </p>
-<p>프로듀서 1, 브로커 3, 리플리케이션 팩터 3 일때, ISR 동작 순서는</p>
-<ol>
-<li>프로듀서가 메세지를 토픽의 리더에게 보낸다. </li>
-<li>리더는 메세지를 저장한다.</li>
-<li>팔로워는 매우 짧은 주기로 리더에 새로운 메세지가 저장된 것이 있는지 확인한다.</li>
-<li>팔로워 1은 잘 동작하고 2는 잘 동작하지 않는다고 가정하자.</li>
-<li>리더는 팔로워가 일정 주기 동안 확인 요청을 하지 않으면 그 팔로워를 ISR 그룹에서 추방한다.</li>
-<li>리더는 팔로워 2를 ISR 그룹에서 추방한다.</li>
-<li>팔로워 1은 리더에게 새로운 메세지가 있음을 확인하고 메세지를 가져가서 저장한다.</li>
-</ol>
-<h3 id="4-모든-브로커가-다운된다면"><a href="#4-모든-브로커가-다운된다면" class="headerlink" title="4. 모든 브로커가 다운된다면"></a>4. 모든 브로커가 다운된다면</h3><ol>
-<li><p>마지막 리더가 살아나기를 기다린다.</p>
-<p>마지막 리더에게 모든 메세지가 저장되어 있을 때, 나중에 다시 살아난다면 메세지 손실이 없다.</p>
-<p>하지만 마지막 리더가 살아나지 않는 경우가 있을 수 있고, 결국 마지막 리더가 정상화 될때 까지 카프카 클러스터 장애가 길어진다.</p>
-</li>
-<li><p>ISR 에서 추방되었지만 먼저 살아나면 자동으로 리더가 된다.</p>
-<p>메세지가 일부 손실되지만, 브로커 하나만이라도 정상화되어 서비스가 빠르게 정상화된다.</p>
+<li><p>합성</p>
+<p>오직 TaxablePolicy 클래스 하나만 변경</p>
 </li>
 </ol>
-<p>다음 그림은, 토픽 / 파티션 / 리플리케이션 팩터 / 브로커 구성 예시이다.</p>
-<p><img src="/image/kafka_example01.png" alt></p>
-<p><img src="/image/kafka_example02.png" alt></p>
-<hr>
-<p>카프카, 데이터 플랫폼의 최강자 &lt;고승범, 공용준&gt;</p>
+<h2 id="04-믹스인"><a href="#04-믹스인" class="headerlink" title="04 믹스인"></a>04 믹스인</h2><p>객체를 생성할 때 코드 일부를 클래스 안에 섞어 넣어 재사용하는 기법이다.</p>
+<p>합성처럼 유연하며 상속처럼 쉽게 코드 재사용할 수 있다.</p>
+<p>스칼라의 trait 를 이용하면 믹스인 구현이 가능하다.</p>
 
                     
                         
@@ -315,7 +300,7 @@
                     
                     
                         <p>
-                            <a href="/2019/12/26/kafka-chapter3/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2019/12/27/object-chapter11/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -567,6 +552,145 @@
                     
                         <p>
                             <a href="/2019/12/26/kafka-chapter4/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2019/12/26/kafka-chapter3/">
+                            [카프카] 3장_카프카 디자인
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-12-26T00:00:00+09:00">
+	
+		    Dec 26, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/kafka/">Kafka</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p>대용량, 대규모 메세지 데이터를 빠르게 처리하도록 개발된 메시징 플랫폼이다.</p>
+<h3 id="1-카프카-디자인의-특징"><a href="#1-카프카-디자인의-특징" class="headerlink" title="1. 카프카 디자인의 특징"></a>1. 카프카 디자인의 특징</h3><h4 id="1-1-분산-시스템"><a href="#1-1-분산-시스템" class="headerlink" title="1.1 분산 시스템"></a>1.1 분산 시스템</h4><p>분산 시스템이란, 같은 역할을 하는 여러 대의 서버로 이뤄진 서버 그룹이다.</p>
+<p>장점은,</p>
+<ol>
+<li>단일 시스템 보다 높은 성능</li>
+<li>하나의 서버가 장애가 발생해도 다른 서버가 대신 처리</li>
+<li>시스템 확장 용이</li>
+</ol>
+<h4 id="1-2-페이지-캐시"><a href="#1-2-페이지-캐시" class="headerlink" title="1.2 페이지 캐시"></a>1.2 페이지 캐시</h4><p>OS 는 물리적 메모리에 애플리케이션이 사용하는 부분을 할당하고, 남은 잔여 메모리 일부를 페이지 케시로 이용한다. </p>
+<p>즉, 디스크에 읽고 쓰기를 하지 않고 페이지 케시를 읽고 쓰는 방식으로 처리 속도가 빠르고 전체적인 성능을 향상 시킨다.</p>
+<p>카프카는 이 특징을 이용해 디자인되었다.</p>
+<h4 id="1-3-배치-전송-처리"><a href="#1-3-배치-전송-처리" class="headerlink" title="1.3 배치 전송 처리"></a>1.3 배치 전송 처리</h4><p>서버와 클라이언트 사이, 또는 서버 내부적으로 데이터를 주고 받는 과정에서 I/O 가 발한다. </p>
+<p>작은 I/O 가 빈번하게 발생하는 것을 막기 위해, 작은 I/O 들을 묶어러 처리할 수 있도록 배치 작업으로 처리한다.</p>
+<h3 id="2-카프카-데이터-모델"><a href="#2-카프카-데이터-모델" class="headerlink" title="2. 카프카 데이터 모델"></a>2. 카프카 데이터 모델</h3><h4 id="2-1-토픽"><a href="#2-1-토픽" class="headerlink" title="2.1 토픽"></a>2.1 토픽</h4><p>메세지를 받을 수 있도록 논리적으로 묶은 개념이다. 메일 주소라고 생각하면 쉽다.</p>
+<h4 id="2-2-파티션"><a href="#2-2-파티션" class="headerlink" title="2.2 파티션"></a>2.2 파티션</h4><p>토픽을 분할한 것이다. </p>
+<p><img src="/image/kafka_one_producer.png" alt></p>
+<p>위 그림에서, ‘뉴스 토픽’ 으로 4 개의 메세지를 보내는데 4 초가 걸린다.</p>
+<p><img src="/image/kafka_many_producer.png" alt></p>
+<p>위 그림에서, ‘뉴스 토픽’ 으로 4 개의 메세지를 보내는데 1 초가 걸린다.</p>
+<p>이렇게 빠른 전송을 위해서는, 토픽의 파티션 수와 프로듀서 수를 모두 늘려줘야한다.</p>
+<blockquote>
+<p>무조건 파티션 수를 늘려야 하나 ?</p>
+</blockquote>
+<p>파티션 수가 늘어나면 카프카에 좋지 않은 영향을 끼칠 수 있다.</p>
+<ol>
+<li><p>파일 핸들러의 낭비</p>
+<p>각 파티션은 브로커의 디렉토리와 매핑되고, 저장되는 데이터는 2 개의 파일 ( 인덱스, 실제 데이터 ) 이 있다.</p>
+<p>파티션이 많을 수록, 파일 핸들 수 역시 많아져 리소스가 낭비가 될 수 있다.</p>
+</li>
+<li><p>장애 복구 시간 증가</p>
+</li>
+</ol>
+<blockquote>
+<p>토픽의 적절한 파티션 수는 ?</p>
+</blockquote>
+<p>먼저, 원하는 목표 처리량의 기준을 정해야한다. </p>
+<ol>
+<li><p>프로듀서</p>
+<p>4 개의 프로듀서가 초당 10 개의 메세지를 토픽으로 보내면, 토픽에서 초당 40 개의 메시지를 받아줘야한다.</p>
+</li>
+<li><p>토픽</p>
+<p>해당 토픽에서 파티션을 1로 했을 때 초당 10개의 메세지만 받아준다면, 파티션 수를 4로 조정하면 목표치를 달성한다.</p>
+</li>
+<li><p>컨슈머</p>
+<p>8 개의 컨슈머가 각각 초당 5 개의 메세지를 토픽에서 가져올 수 있으면, 토픽의 파티션수는 8개로 맞춰서 각 컨슈머마다 각각의 파티션에 접근하게 해줘야한다.</p>
+</li>
+</ol>
+<p>주의할 점은, 파티션 수를 늘리는 것은 가능하지만 파티션 수을 줄이는 것은 불가능하다.</p>
+<h4 id="2-3-오프셋과-메세지-순서"><a href="#2-3-오프셋과-메세지-순서" class="headerlink" title="2.3 오프셋과 메세지 순서"></a>2.3 오프셋과 메세지 순서</h4><p>오프셋이란, 각 파티션마다 메세지가 저장되는 위치이다. 파티션 내에서 유일한 숫자이고, 순차적으로 증가한다.</p>
+<p>만약 컨슈머가 파티션 0 에서 데이터를 가져간다고 하면, 오프셋 0 1 2 3 4 5 순서대로 가져갈 수 있다. 절대로 오프셋 순서가 바뀐 상태로 가져갈 수 없다.</p>
+<h3 id="3-고가용성과-리플리케이션"><a href="#3-고가용성과-리플리케이션" class="headerlink" title="3. 고가용성과 리플리케이션"></a>3. 고가용성과 리플리케이션</h3><p>토픽을 이루는 각각의 <code>파티션을</code> 리플리케이션 하는 것이다.</p>
+<h4 id="3-1-리플리케이션-팩터와-리더-팔로워의-역할"><a href="#3-1-리플리케이션-팩터와-리더-팔로워의-역할" class="headerlink" title="3.1 리플리케이션 팩터와 리더, 팔로워의 역할"></a>3.1 리플리케이션 팩터와 리더, 팔로워의 역할</h4><p><img src="/image/kafka_reflecation.png" alt></p>
+<p>모든 읽기와 쓰기는 리더를 통해서만 일어난다. 팔로워는 리더의 데이터를 그대로 리플리케이션만 한다.</p>
+<p>리더와 팔로워는 저장된 데이터의 순서도 일치하고 동일한 오프셋과 메시지를 갖는다.</p>
+<p>리플리케이션된 토픽의 서버가 다운되어도, 리더 변경으롤 문제 없이 프로듀서의 요청을 처리할 수 있다.</p>
+<p>리플리케이션의 단점은,</p>
+<ol>
+<li><p>디스크 사용량 증가</p>
+<p>토픽의 사이즈가 100 GB, 리플리케이션 팩터 3 이면, 카프카 클러스터 내 필요 저장소 크기는 300 GB 이다.</p>
+</li>
+<li><p>브로커 리소스 사용량 증가</p>
+<p>브로커는 리플리케이션 보장을 위해, 비활성화된 토픽이 리플리케이션을 잘하고 있는지 비활성화된 토픽을 계속 체크한다. </p>
+</li>
+</ol>
+<h4 id="3-2-리더와-팔로워의-관리"><a href="#3-2-리더와-팔로워의-관리" class="headerlink" title="3.2 리더와 팔로워의 관리"></a>3.2 리더와 팔로워의 관리</h4><p>팔로워에 문제가 있어서, 리더로부터 데이터를 가져오지 못하면 정합성이 맞지 않는다.</p>
+<p>이를 해결하기 위해, ISR ( In Sync Replica ) 라는 개념이 있다. 현재 리플리케이션 되고 있는 리플리케이션 그룹이다.</p>
+<p>ISR 에 속한 구성원만이 리더의 자격이 있다. </p>
+<p>프로듀서 1, 브로커 3, 리플리케이션 팩터 3 일때, ISR 동작 순서는</p>
+<ol>
+<li>프로듀서가 메세지를 토픽의 리더에게 보낸다. </li>
+<li>리더는 메세지를 저장한다.</li>
+<li>팔로워는 매우 짧은 주기로 리더에 새로운 메세지가 저장된 것이 있는지 확인한다.</li>
+<li>팔로워 1은 잘 동작하고 2는 잘 동작하지 않는다고 가정하자.</li>
+<li>리더는 팔로워가 일정 주기 동안 확인 요청을 하지 않으면 그 팔로워를 ISR 그룹에서 추방한다.</li>
+<li>리더는 팔로워 2를 ISR 그룹에서 추방한다.</li>
+<li>팔로워 1은 리더에게 새로운 메세지가 있음을 확인하고 메세지를 가져가서 저장한다.</li>
+</ol>
+<h3 id="4-모든-브로커가-다운된다면"><a href="#4-모든-브로커가-다운된다면" class="headerlink" title="4. 모든 브로커가 다운된다면"></a>4. 모든 브로커가 다운된다면</h3><ol>
+<li><p>마지막 리더가 살아나기를 기다린다.</p>
+<p>마지막 리더에게 모든 메세지가 저장되어 있을 때, 나중에 다시 살아난다면 메세지 손실이 없다.</p>
+<p>하지만 마지막 리더가 살아나지 않는 경우가 있을 수 있고, 결국 마지막 리더가 정상화 될때 까지 카프카 클러스터 장애가 길어진다.</p>
+</li>
+<li><p>ISR 에서 추방되었지만 먼저 살아나면 자동으로 리더가 된다.</p>
+<p>메세지가 일부 손실되지만, 브로커 하나만이라도 정상화되어 서비스가 빠르게 정상화된다.</p>
+</li>
+</ol>
+<p>다음 그림은, 토픽 / 파티션 / 리플리케이션 팩터 / 브로커 구성 예시이다.</p>
+<p><img src="/image/kafka_example01.png" alt></p>
+<p><img src="/image/kafka_example02.png" alt></p>
+<hr>
+<p>카프카, 데이터 플랫폼의 최강자 &lt;고승범, 공용준&gt;</p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2019/12/26/kafka-chapter3/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>

@@ -194,6 +194,71 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2018/01/11/소음/">
+                            소음
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-01-11T00:00:00+09:00">
+	
+		    Jan 11, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p><a href="https://www.acmicpc.net/problem/2935" target="_blank" rel="noopener">https://www.acmicpc.net/problem/2935</a></p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
+<li>처음에 런타임에러 나옴</li>
+<li>런타임 에러 이유 <ul>
+<li>수를 단순 입력 후에 단순 출력했음</li>
+<li>문제의 조건에 숫자는 최대 100자리</li>
+<li>하지만, </li>
+<li>int 의 범위 : –2,147,483,648 ~ 2,147,483,647</li>
+<li>long long 의 범위 : –9,223,372,036,854,775,808 ~ 9,223,372,036,854,775,807</li>
+<li>따라서 단순 입력을 하면 100자리를 모두 담을 수 없음</li>
+</ul>
+</li>
+<li>해결<ul>
+<li>문자로 입력받고 문자를 출력</li>
+</ul>
+</li>
+</ul>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/01/11/소음/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2018/01/10/TV크기/">
                             TV크기
                         </a>
@@ -445,73 +510,6 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/01/07/ViewPager/">
-                            ViewPager
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-01-07T00:00:00+09:00">
-	
-		    Jan 07, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/android/">Android</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p><a href="https://developer.android.com/training/animation/screen-slide.html" target="_blank" rel="noopener">https://developer.android.com/training/animation/screen-slide.html</a></p>
-<h2 id="Create-the-Views"><a href="#Create-the-Views" class="headerlink" title="Create the Views"></a>Create the Views</h2><ul>
-<li>프레그먼트의 내용물로서 사용될 레이아웃</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- fragment_screen_slide_page.xml --&gt;</span><br><span class="line">&lt;ScrollView xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</span><br><span class="line">    android:id=&quot;@+id/content&quot;</span><br><span class="line">    android:layout_width=&quot;match_parent&quot;</span><br><span class="line">    android:layout_height=&quot;match_parent&quot; &gt;</span><br><span class="line"></span><br><span class="line">    &lt;TextView style=&quot;?android:textAppearanceMedium&quot;</span><br><span class="line">        android:padding=&quot;16dp&quot;</span><br><span class="line">        android:lineSpacingMultiplier=&quot;1.2&quot;</span><br><span class="line">        android:layout_width=&quot;match_parent&quot;</span><br><span class="line">        android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">        android:text=&quot;@string/lorem_ipsum&quot; /&gt;</span><br><span class="line">&lt;/ScrollView&gt;</span><br></pre></td></tr></table></figure>
-
-<h2 id="Create-the-Fragment"><a href="#Create-the-Fragment" class="headerlink" title="Create the Fragment"></a>Create the Fragment</h2><ul>
-<li>부모 엑티비티에서 사용자에게 보여줄 새로운 페이지가 필요할 때마다, 이 프레그먼트의 인스턴스를  생성 할 수 있다. </li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import android.support.v4.app.Fragment;</span><br><span class="line">...</span><br><span class="line">public class ScreenSlidePageFragment extends Fragment &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public View onCreateView(LayoutInflater inflater, ViewGroup container,</span><br><span class="line">            Bundle savedInstanceState) &#123;</span><br><span class="line">        ViewGroup rootView = (ViewGroup) inflater.inflate(</span><br><span class="line">                R.layout.fragment_screen_slide_page, container, false);</span><br><span class="line"></span><br><span class="line">        return rootView;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="Add-a-ViewPager"><a href="#Add-a-ViewPager" class="headerlink" title="Add a ViewPager"></a>Add a ViewPager</h2><ul>
-<li>ViewPager는 새로운 페이지를 보여주기 위해 PagerAdapters를 사용한다. </li>
-<li>PagerAdapter 는 앞서 만든 프레그먼트 클래스를 사용한다.</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- activity_screen_slide.xml --&gt;</span><br><span class="line">&lt;android.support.v4.view.ViewPager</span><br><span class="line">    xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</span><br><span class="line">    android:id=&quot;@+id/pager&quot;</span><br><span class="line">    android:layout_width=&quot;match_parent&quot;</span><br><span class="line">    android:layout_height=&quot;match_parent&quot; /&gt;</span><br></pre></td></tr></table></figure>
-
-<h2 id="Create-an-Activity"><a href="#Create-an-Activity" class="headerlink" title="Create an Activity"></a>Create an Activity</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">import android.support.v4.app.Fragment;</span><br><span class="line">import android.support.v4.app.FragmentManager;</span><br><span class="line">...</span><br><span class="line">public class ScreenSlidePagerActivity extends FragmentActivity &#123;</span><br><span class="line">    /**</span><br><span class="line">     * The number of pages (wizard steps) to show in this demo.</span><br><span class="line">     */</span><br><span class="line">    private static final int NUM_PAGES = 5;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * The pager widget, which handles animation and allows swiping horizontally to access previous</span><br><span class="line">     * and next wizard steps.</span><br><span class="line">     */</span><br><span class="line">    private ViewPager mPager;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * The pager adapter, which provides the pages to the view pager widget.</span><br><span class="line">     */</span><br><span class="line">    private PagerAdapter mPagerAdapter;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_screen_slide);</span><br><span class="line"></span><br><span class="line">        // Instantiate a ViewPager and a PagerAdapter.</span><br><span class="line">        mPager = (ViewPager) findViewById(R.id.pager);</span><br><span class="line">        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());</span><br><span class="line">        mPager.setAdapter(mPagerAdapter);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void onBackPressed() &#123;</span><br><span class="line">        if (mPager.getCurrentItem() == 0) &#123;</span><br><span class="line">            // If the user is currently looking at the first step, allow the system to handle the</span><br><span class="line">            // Back button. This calls finish() on this activity and pops the back stack.</span><br><span class="line">            super.onBackPressed();</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            // Otherwise, select the previous step.</span><br><span class="line">            mPager.setCurrentItem(mPager.getCurrentItem() - 1);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in</span><br><span class="line">     * sequence.</span><br><span class="line">     */</span><br><span class="line">    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter &#123;</span><br><span class="line">        public ScreenSlidePagerAdapter(FragmentManager fm) &#123;</span><br><span class="line">            super(fm);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public Fragment getItem(int position) &#123;</span><br><span class="line">            return new ScreenSlidePageFragment();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public int getCount() &#123;</span><br><span class="line">            return NUM_PAGES;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/01/07/ViewPager/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
                         <a class="link-unstyled" href="/2018/01/07/retrofit/">
                             Retrofit
                         </a>
@@ -564,6 +562,73 @@
                     
                         <p>
                             <a href="/2018/01/07/retrofit/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2018/01/07/ViewPager/">
+                            ViewPager
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-01-07T00:00:00+09:00">
+	
+		    Jan 07, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/android/">Android</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p><a href="https://developer.android.com/training/animation/screen-slide.html" target="_blank" rel="noopener">https://developer.android.com/training/animation/screen-slide.html</a></p>
+<h2 id="Create-the-Views"><a href="#Create-the-Views" class="headerlink" title="Create the Views"></a>Create the Views</h2><ul>
+<li>프레그먼트의 내용물로서 사용될 레이아웃</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- fragment_screen_slide_page.xml --&gt;</span><br><span class="line">&lt;ScrollView xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</span><br><span class="line">    android:id=&quot;@+id/content&quot;</span><br><span class="line">    android:layout_width=&quot;match_parent&quot;</span><br><span class="line">    android:layout_height=&quot;match_parent&quot; &gt;</span><br><span class="line"></span><br><span class="line">    &lt;TextView style=&quot;?android:textAppearanceMedium&quot;</span><br><span class="line">        android:padding=&quot;16dp&quot;</span><br><span class="line">        android:lineSpacingMultiplier=&quot;1.2&quot;</span><br><span class="line">        android:layout_width=&quot;match_parent&quot;</span><br><span class="line">        android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">        android:text=&quot;@string/lorem_ipsum&quot; /&gt;</span><br><span class="line">&lt;/ScrollView&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Create-the-Fragment"><a href="#Create-the-Fragment" class="headerlink" title="Create the Fragment"></a>Create the Fragment</h2><ul>
+<li>부모 엑티비티에서 사용자에게 보여줄 새로운 페이지가 필요할 때마다, 이 프레그먼트의 인스턴스를  생성 할 수 있다. </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import android.support.v4.app.Fragment;</span><br><span class="line">...</span><br><span class="line">public class ScreenSlidePageFragment extends Fragment &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public View onCreateView(LayoutInflater inflater, ViewGroup container,</span><br><span class="line">            Bundle savedInstanceState) &#123;</span><br><span class="line">        ViewGroup rootView = (ViewGroup) inflater.inflate(</span><br><span class="line">                R.layout.fragment_screen_slide_page, container, false);</span><br><span class="line"></span><br><span class="line">        return rootView;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Add-a-ViewPager"><a href="#Add-a-ViewPager" class="headerlink" title="Add a ViewPager"></a>Add a ViewPager</h2><ul>
+<li>ViewPager는 새로운 페이지를 보여주기 위해 PagerAdapters를 사용한다. </li>
+<li>PagerAdapter 는 앞서 만든 프레그먼트 클래스를 사용한다.</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- activity_screen_slide.xml --&gt;</span><br><span class="line">&lt;android.support.v4.view.ViewPager</span><br><span class="line">    xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</span><br><span class="line">    android:id=&quot;@+id/pager&quot;</span><br><span class="line">    android:layout_width=&quot;match_parent&quot;</span><br><span class="line">    android:layout_height=&quot;match_parent&quot; /&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Create-an-Activity"><a href="#Create-an-Activity" class="headerlink" title="Create an Activity"></a>Create an Activity</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">import android.support.v4.app.Fragment;</span><br><span class="line">import android.support.v4.app.FragmentManager;</span><br><span class="line">...</span><br><span class="line">public class ScreenSlidePagerActivity extends FragmentActivity &#123;</span><br><span class="line">    /**</span><br><span class="line">     * The number of pages (wizard steps) to show in this demo.</span><br><span class="line">     */</span><br><span class="line">    private static final int NUM_PAGES = 5;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * The pager widget, which handles animation and allows swiping horizontally to access previous</span><br><span class="line">     * and next wizard steps.</span><br><span class="line">     */</span><br><span class="line">    private ViewPager mPager;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * The pager adapter, which provides the pages to the view pager widget.</span><br><span class="line">     */</span><br><span class="line">    private PagerAdapter mPagerAdapter;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_screen_slide);</span><br><span class="line"></span><br><span class="line">        // Instantiate a ViewPager and a PagerAdapter.</span><br><span class="line">        mPager = (ViewPager) findViewById(R.id.pager);</span><br><span class="line">        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());</span><br><span class="line">        mPager.setAdapter(mPagerAdapter);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void onBackPressed() &#123;</span><br><span class="line">        if (mPager.getCurrentItem() == 0) &#123;</span><br><span class="line">            // If the user is currently looking at the first step, allow the system to handle the</span><br><span class="line">            // Back button. This calls finish() on this activity and pops the back stack.</span><br><span class="line">            super.onBackPressed();</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            // Otherwise, select the previous step.</span><br><span class="line">            mPager.setCurrentItem(mPager.getCurrentItem() - 1);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in</span><br><span class="line">     * sequence.</span><br><span class="line">     */</span><br><span class="line">    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter &#123;</span><br><span class="line">        public ScreenSlidePagerAdapter(FragmentManager fm) &#123;</span><br><span class="line">            super(fm);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public Fragment getItem(int position) &#123;</span><br><span class="line">            return new ScreenSlidePageFragment();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public int getCount() &#123;</span><br><span class="line">            return NUM_PAGES;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/01/07/ViewPager/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -666,6 +731,82 @@
                     
                         <p>
                             <a href="/2018/01/07/activity life cycle/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2018/01/06/개근상/">
+                            개근상
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-01-06T00:00:00+09:00">
+	
+		    Jan 06, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p><a href="https://www.acmicpc.net/problem/1563" target="_blank" rel="noopener">https://www.acmicpc.net/problem/1563</a></p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
+<li>어렵다</li>
+<li>D[i][j][k] </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">i일, 지각 j번, 연속 결석 k번</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>오늘 출석 </p>
+<ul>
+<li>전날에 출석, 지각, 결석 중에 하나</li>
+<li>D[i][j][0] += D[i-1][j][k] (0 ≤ k ≤ 2)</li>
+</ul>
+</li>
+<li><p>오늘 지각</p>
+<ul>
+<li>j 가 1</li>
+<li>D[i][1][0] += d[i-1][0][k]</li>
+</ul>
+</li>
+<li><p>오늘 결석</p>
+<ul>
+<li>k &lt; 2</li>
+<li>D[i][j][k+1] += D[i-1][j][k]</li>
+</ul>
+</li>
+</ul>
+<p>​     </p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/01/06/개근상/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -787,136 +928,6 @@
                     
                         <p>
                             <a href="/2018/01/06/functional programming/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/01/06/개근상/">
-                            개근상
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-01-06T00:00:00+09:00">
-	
-		    Jan 06, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p><a href="https://www.acmicpc.net/problem/1563" target="_blank" rel="noopener">https://www.acmicpc.net/problem/1563</a></p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
-<li>어렵다</li>
-<li>D[i][j][k] </li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">i일, 지각 j번, 연속 결석 k번</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>오늘 출석 </p>
-<ul>
-<li>전날에 출석, 지각, 결석 중에 하나</li>
-<li>D[i][j][0] += D[i-1][j][k] (0 ≤ k ≤ 2)</li>
-</ul>
-</li>
-<li><p>오늘 지각</p>
-<ul>
-<li>j 가 1</li>
-<li>D[i][1][0] += d[i-1][0][k]</li>
-</ul>
-</li>
-<li><p>오늘 결석</p>
-<ul>
-<li>k &lt; 2</li>
-<li>D[i][j][k+1] += D[i-1][j][k]</li>
-</ul>
-</li>
-</ul>
-<p>​     </p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/01/06/개근상/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/01/05/파일합치기/">
-                            파일합치기
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-01-05T00:00:00+09:00">
-	
-		    Jan 05, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p><a href="https://www.acmicpc.net/problem/11066" target="_blank" rel="noopener">https://www.acmicpc.net/problem/11066</a></p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
-<li><p>dp[i][j]<br>  ​    </p>
-<pre><code>수열에서 i번째~j번째 수까지 합치는데 필요한 최소 비용</code></pre><p>  ​    min(dp[i][k] + dp[k+1][j]) + (i~j 수열의 합) (i &lt;= k &lt; j) 일 때</p>
-<pre><code>i _ _ _ k k+1 _ _ _ j     </code></pre></li>
-</ul>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/01/05/파일합치기/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>

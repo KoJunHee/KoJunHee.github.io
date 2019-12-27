@@ -194,8 +194,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/05/21/Brightness and Contrast/">
-                            Brightness and Contrast
+                        <a class="link-unstyled" href="/2018/05/21/PMF, CDF/">
+                            PMF, CDF
                         </a>
                     
                 </h1>
@@ -217,35 +217,48 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="Brightness"><a href="#Brightness" class="headerlink" title="Brightness"></a>Brightness</h2><ul>
-<li><p>Brightness is a relative term. </p>
+                    <p>In the histogram equalization, the first and the second step are PMF and CDF. </p>
+<h2 id="What-is-PMF"><a href="#What-is-PMF" class="headerlink" title="What is PMF?"></a>What is PMF?</h2><ul>
+<li>probability mass function</li>
+<li>it gives the probability of each number in the data set or </li>
+<li>you can say that it basically gives the count or frequency of each element.</li>
+</ul>
+<h2 id="How-PMF-is-calculated"><a href="#How-PMF-is-calculated" class="headerlink" title="How PMF is calculated"></a>How PMF is calculated</h2><ul>
+<li><p>Consider this matrix.</p>
+<p><img src="/image/pmf01.png" alt></p>
 </li>
-<li><p>It depends on your visual perception. </p>
+<li><p>Now if we were to calculate the PMF of this matrix, </p>
 </li>
-<li><p>Since brightness is a relative term, so brightness can be defined as the amount of energy output by a source of light relative to the source we are comparing it to. </p>
+<li><p>here how we are going to do it.</p>
 </li>
-<li><p>In some cases we can easily say that the image is bright, and in some cases, its not easy to perceive.</p>
+<li><p>At first, we will take the first value in the matrix , and then we will count, how much time this value appears in the whole matrix. </p>
 </li>
-<li><p>Consider this black image of 5 rows and 5 columns</p>
-<p><img src="/image/bri01.png" alt></p>
-<p><img src="/image/bri02.png" alt></p>
-<p><img src="/image/bri03.png" alt></p>
-<p><img src="/image/bri04.png" alt></p>
+<li><p>After count they can either be represented in a histogram, or in a table like this below.</p>
+<p><img src="/image/pmf02.png" alt></p>
 </li>
 </ul>
-<h2 id="Contrast"><a href="#Contrast" class="headerlink" title="Contrast"></a>Contrast</h2><ul>
-<li><p>Contrast can be simply explained as the difference between maximum and minimum pixel intensity in an image.</p>
-<p><img src="/image/bri05.png" alt></p>
+<h2 id="Calculating-PMF-from-histogram"><a href="#Calculating-PMF-from-histogram" class="headerlink" title="Calculating PMF from histogram"></a>Calculating PMF from histogram</h2><p><img src="/image/pmf03.png" alt></p>
 <ul>
-<li><p>The maximum value in this matrix is 100.</p>
-</li>
-<li><p>The minimum value in this matrix is 100.</p>
-</li>
-<li><p>Contrast = maximum pixel intensity(subtracted by) minimum pixel intensity</p>
-<p>= 100 (subtracted by) 100</p>
-<p>= 0</p>
-</li>
+<li>The above histogram shows frequency of gray level values for an 8 bits per pixel image.</li>
+<li>Now if we have to calculate its PMF, </li>
+<li>we will simple look at the count of each bar from vertical axis and then divide it by total count.</li>
+<li>So the PMF of the above histogram is this.</li>
 </ul>
+<p><img src="/image/pmf04.png" alt></p>
+<h2 id="What-is-CDF"><a href="#What-is-CDF" class="headerlink" title="What is CDF?"></a>What is CDF?</h2><ul>
+<li>cumulative distributive function</li>
+<li>it is a function that calculates the cumulative sum of all the values that are calculated by PMF. </li>
+<li>It basically sums the previous one.</li>
+</ul>
+<h2 id="How-CDF-is-calculated"><a href="#How-CDF-is-calculated" class="headerlink" title="How CDF is calculated"></a>How CDF is calculated</h2><ul>
+<li><p>Since this histogram is not increasing monotonically, so will make it grow monotonically.</p>
+</li>
+<li><p>the first value of PMF remain as it is. </p>
+</li>
+<li><p>The second value of PMF is added in the first value and placed over 128. </p>
+</li>
+<li><p>The third value of PMF is added in the second value of CDF , that gives 110/110 which is equal to 1.</p>
+<p><img src="/image/pmf05.png" alt></p>
 </li>
 </ul>
 
@@ -255,7 +268,7 @@
                     
                     
                         <p>
-                            <a href="/2018/05/21/Brightness and Contrast/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/05/21/PMF, CDF/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -273,8 +286,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/05/15/Pixel/">
-                            Pixel
+                        <a class="link-unstyled" href="/2018/05/15/안전영역/">
+                            안전영역
                         </a>
                     
                 </h1>
@@ -287,7 +300,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/dip/">DIP</a>
+    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
 
 
     
@@ -296,51 +309,15 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h4 id="Pixel"><a href="#Pixel" class="headerlink" title="Pixel"></a>Pixel</h4><ul>
-<li>Pixel is the smallest element of an image.</li>
-<li>Each pixel correspond to any one value.<ul>
-<li>In an 8-bit gray scale image, the value of the pixel between 0 and 255</li>
-<li>each value denotes the intensity of light at that point of the image.</li>
-</ul>
-</li>
-</ul>
-<h4 id="Calculation-of-total-number-of-pixels"><a href="#Calculation-of-total-number-of-pixels" class="headerlink" title="Calculation of total number of pixels"></a>Calculation of total number of pixels</h4><ul>
-<li>We have define an image as a two dimensional signal or matrix.</li>
-<li>Total number of pixels<ul>
-<li>number of rows ( X ) number of columns</li>
-<li>the number of (x,y) coordinate pairs</li>
-</ul>
-</li>
-</ul>
-<h4 id="Gray-Scale"><a href="#Gray-Scale" class="headerlink" title="Gray Scale"></a>Gray Scale</h4><ul>
-<li>The value of the pixel at any point denotes the intensity of image at that location, and that is also known as gray level.</li>
-</ul>
-<h4 id="Pixel-value-0"><a href="#Pixel-value-0" class="headerlink" title="Pixel value (0)"></a>Pixel value (0)</h4><ul>
-<li><p>each pixel can have only one value and each value denotes the intensity of light at that point of the image.</p>
-</li>
-<li><p>The value 0 means absence of light. </p>
-</li>
-<li><p>It means that 0 denotes dark, </p>
-</li>
-<li><p>and it further means that when ever a pixel has a value of 0, it means at that point, black color would be formed.</p>
-<p><img src="https://github.com/KoJunHee/kojunhee.github.io/raw/master/img/pixelTable.png" alt="img"></p>
-</li>
-<li><p>this image matrix has all filled up with 0. </p>
-</li>
-<li><p>All the pixels have a value of 0. </p>
-</li>
-<li><p>an image would be formed with 9 pixels, </p>
-</li>
-<li><p>and that image would have a dimension of 3 rows and 3 column </p>
-</li>
-<li><p>and most importantly that image would be black.</p>
-</li>
-<li><p>Because all the pixels in the image had a value of 0.</p>
-</li>
-</ul>
-<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><ul>
-<li><a href="https://www.tutorialspoint.com/dip/concept_of_pixel.htm" target="_blank" rel="noopener">https://www.tutorialspoint.com/dip/concept_of_pixel.htm</a></li>
-</ul>
+                    <p><a href="https://www.acmicpc.net/problem/2468" target="_blank" rel="noopener">https://www.acmicpc.net/problem/2468</a></p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p>비의 높이(지역 높이 최소~최대) 로 다음을 반복</p>
+<ol>
+<li>물에 잠긴 영역 체크</li>
+<li>BFS로 안정 영역 개수 체크</li>
+</ol>
+<h2 id="오답-원인"><a href="#오답-원인" class="headerlink" title="오답 원인"></a>오답 원인</h2><p>최소 답을 0으로 설정하였기 때문에 계속 틀렸었다.</p>
+<h2 id="해결"><a href="#해결" class="headerlink" title="해결"></a>해결</h2><p>최소 답은 1이다. </p>
+<p>왜냐하면, 아무 것도 잠기지 않는다면 하나의 영역이기 때문이다.</p>
 
                     
                         
@@ -348,7 +325,7 @@
                     
                     
                         <p>
-                            <a href="/2018/05/15/Pixel/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/05/15/안전영역/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -452,8 +429,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/05/15/안전영역/">
-                            안전영역
+                        <a class="link-unstyled" href="/2018/05/15/Pixel/">
+                            Pixel
                         </a>
                     
                 </h1>
@@ -466,7 +443,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
+    <a class="category-link" href="/categories/dip/">DIP</a>
 
 
     
@@ -475,15 +452,51 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p><a href="https://www.acmicpc.net/problem/2468" target="_blank" rel="noopener">https://www.acmicpc.net/problem/2468</a></p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p>비의 높이(지역 높이 최소~최대) 로 다음을 반복</p>
-<ol>
-<li>물에 잠긴 영역 체크</li>
-<li>BFS로 안정 영역 개수 체크</li>
-</ol>
-<h2 id="오답-원인"><a href="#오답-원인" class="headerlink" title="오답 원인"></a>오답 원인</h2><p>최소 답을 0으로 설정하였기 때문에 계속 틀렸었다.</p>
-<h2 id="해결"><a href="#해결" class="headerlink" title="해결"></a>해결</h2><p>최소 답은 1이다. </p>
-<p>왜냐하면, 아무 것도 잠기지 않는다면 하나의 영역이기 때문이다.</p>
+                    <h4 id="Pixel"><a href="#Pixel" class="headerlink" title="Pixel"></a>Pixel</h4><ul>
+<li>Pixel is the smallest element of an image.</li>
+<li>Each pixel correspond to any one value.<ul>
+<li>In an 8-bit gray scale image, the value of the pixel between 0 and 255</li>
+<li>each value denotes the intensity of light at that point of the image.</li>
+</ul>
+</li>
+</ul>
+<h4 id="Calculation-of-total-number-of-pixels"><a href="#Calculation-of-total-number-of-pixels" class="headerlink" title="Calculation of total number of pixels"></a>Calculation of total number of pixels</h4><ul>
+<li>We have define an image as a two dimensional signal or matrix.</li>
+<li>Total number of pixels<ul>
+<li>number of rows ( X ) number of columns</li>
+<li>the number of (x,y) coordinate pairs</li>
+</ul>
+</li>
+</ul>
+<h4 id="Gray-Scale"><a href="#Gray-Scale" class="headerlink" title="Gray Scale"></a>Gray Scale</h4><ul>
+<li>The value of the pixel at any point denotes the intensity of image at that location, and that is also known as gray level.</li>
+</ul>
+<h4 id="Pixel-value-0"><a href="#Pixel-value-0" class="headerlink" title="Pixel value (0)"></a>Pixel value (0)</h4><ul>
+<li><p>each pixel can have only one value and each value denotes the intensity of light at that point of the image.</p>
+</li>
+<li><p>The value 0 means absence of light. </p>
+</li>
+<li><p>It means that 0 denotes dark, </p>
+</li>
+<li><p>and it further means that when ever a pixel has a value of 0, it means at that point, black color would be formed.</p>
+<p><img src="https://github.com/KoJunHee/kojunhee.github.io/raw/master/img/pixelTable.png" alt="img"></p>
+</li>
+<li><p>this image matrix has all filled up with 0. </p>
+</li>
+<li><p>All the pixels have a value of 0. </p>
+</li>
+<li><p>an image would be formed with 9 pixels, </p>
+</li>
+<li><p>and that image would have a dimension of 3 rows and 3 column </p>
+</li>
+<li><p>and most importantly that image would be black.</p>
+</li>
+<li><p>Because all the pixels in the image had a value of 0.</p>
+</li>
+</ul>
+<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><ul>
+<li><a href="https://www.tutorialspoint.com/dip/concept_of_pixel.htm" target="_blank" rel="noopener">https://www.tutorialspoint.com/dip/concept_of_pixel.htm</a></li>
+</ul>
 
                     
                         
@@ -491,7 +504,7 @@
                     
                     
                         <p>
-                            <a href="/2018/05/15/안전영역/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/05/15/Pixel/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -728,8 +741,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/05/13/Factory Method Pattern01/">
-                            Factory Method Pattern01
+                        <a class="link-unstyled" href="/2018/05/13/Abstract Factory Pattern01/">
+                            Abstract Factory Pattern01
                         </a>
                     
                 </h1>
@@ -751,12 +764,46 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>The Factory Method Pattern defines an interface for creating an object, </p>
-<p>but lets subclasses decide which class to instantiate. </p>
-<p>Factory Method lets a class defer instantiation to subclasses. </p>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/factoryMethod01.png" alt> </p>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/factoryMethod02.png" alt> </p>
-<h2 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h2><p><img src="/image/fm15.png" alt> </p>
+                    <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>The Abstract Factory Pattern provides an interface for creating families of related or dependent objects without specifying their concrete classes. </p>
+<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/abstractFactoryPattern.png" alt></p>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/abstarct001.png" alt></p>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><img src="/image/afp01.png" alt></p>
+<p><img src="/image/afp02.png" alt></p>
+<p><img src="/image/afp03.png" alt></p>
+<p><img src="/image/afp04.png" alt></p>
+<p><img src="/image/afp05.png" alt></p>
+<p><img src="/image/afp06.png" alt></p>
+<p><img src="/image/afp07.png" alt></p>
+<p><img src="/image/afp08.png" alt></p>
+<p><img src="/image/afp09.png" alt></p>
+<p><img src="/image/afp10.png" alt></p>
+<p><img src="/image/afp11.png" alt></p>
+<p><img src="/image/afp12.png" alt></p>
+<p><img src="/image/afp13.png" alt></p>
+<p><img src="/image/afp14.png" alt></p>
+<p><img src="/image/afp15.png" alt></p>
+<p><img src="/image/afp16.png" alt></p>
+<p><img src="/image/afp17.png" alt></p>
+<p><img src="/image/afp18.png" alt></p>
+<p><img src="/image/afp19.png" alt></p>
+<p><img src="/image/afp20.png" alt></p>
+<p><img src="/image/afp21.png" alt></p>
+<p><img src="/image/afp22.png" alt></p>
+<p><img src="/image/afp23.png" alt></p>
+<p><img src="/image/afp24.png" alt></p>
+<p><img src="/image/afp25.png" alt></p>
+<p><img src="/image/afp26.png" alt></p>
+<p><img src="/image/afp27.png" alt></p>
+<p><img src="/image/afp28.png" alt></p>
+<p><img src="/image/afp29.png" alt></p>
+<p><img src="/image/afp30.png" alt></p>
+<p><img src="/image/afp31.png" alt></p>
+<p><img src="/image/afp32.png" alt></p>
+<p><img src="/image/afp33.png" alt></p>
+<p><img src="/image/afp34.png" alt></p>
+<p><img src="/image/afp35.png" alt></p>
+<p><img src="/image/afp36.png" alt></p>
+<p><img src="/image/afp37.png" alt></p>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Head First Design Pattern</p>
 
                     
@@ -765,7 +812,7 @@
                     
                     
                         <p>
-                            <a href="/2018/05/13/Factory Method Pattern01/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/05/13/Abstract Factory Pattern01/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -881,8 +928,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/05/13/Abstract Factory Pattern01/">
-                            Abstract Factory Pattern01
+                        <a class="link-unstyled" href="/2018/05/13/Factory Method Pattern01/">
+                            Factory Method Pattern01
                         </a>
                     
                 </h1>
@@ -904,46 +951,12 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>The Abstract Factory Pattern provides an interface for creating families of related or dependent objects without specifying their concrete classes. </p>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/abstractFactoryPattern.png" alt></p>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/abstarct001.png" alt></p>
-<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><img src="/image/afp01.png" alt></p>
-<p><img src="/image/afp02.png" alt></p>
-<p><img src="/image/afp03.png" alt></p>
-<p><img src="/image/afp04.png" alt></p>
-<p><img src="/image/afp05.png" alt></p>
-<p><img src="/image/afp06.png" alt></p>
-<p><img src="/image/afp07.png" alt></p>
-<p><img src="/image/afp08.png" alt></p>
-<p><img src="/image/afp09.png" alt></p>
-<p><img src="/image/afp10.png" alt></p>
-<p><img src="/image/afp11.png" alt></p>
-<p><img src="/image/afp12.png" alt></p>
-<p><img src="/image/afp13.png" alt></p>
-<p><img src="/image/afp14.png" alt></p>
-<p><img src="/image/afp15.png" alt></p>
-<p><img src="/image/afp16.png" alt></p>
-<p><img src="/image/afp17.png" alt></p>
-<p><img src="/image/afp18.png" alt></p>
-<p><img src="/image/afp19.png" alt></p>
-<p><img src="/image/afp20.png" alt></p>
-<p><img src="/image/afp21.png" alt></p>
-<p><img src="/image/afp22.png" alt></p>
-<p><img src="/image/afp23.png" alt></p>
-<p><img src="/image/afp24.png" alt></p>
-<p><img src="/image/afp25.png" alt></p>
-<p><img src="/image/afp26.png" alt></p>
-<p><img src="/image/afp27.png" alt></p>
-<p><img src="/image/afp28.png" alt></p>
-<p><img src="/image/afp29.png" alt></p>
-<p><img src="/image/afp30.png" alt></p>
-<p><img src="/image/afp31.png" alt></p>
-<p><img src="/image/afp32.png" alt></p>
-<p><img src="/image/afp33.png" alt></p>
-<p><img src="/image/afp34.png" alt></p>
-<p><img src="/image/afp35.png" alt></p>
-<p><img src="/image/afp36.png" alt></p>
-<p><img src="/image/afp37.png" alt></p>
+                    <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>The Factory Method Pattern defines an interface for creating an object, </p>
+<p>but lets subclasses decide which class to instantiate. </p>
+<p>Factory Method lets a class defer instantiation to subclasses. </p>
+<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/factoryMethod01.png" alt> </p>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/factoryMethod02.png" alt> </p>
+<h2 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h2><p><img src="/image/fm15.png" alt> </p>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Head First Design Pattern</p>
 
                     
@@ -952,7 +965,7 @@
                     
                     
                         <p>
-                            <a href="/2018/05/13/Abstract Factory Pattern01/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/05/13/Factory Method Pattern01/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>

@@ -1,0 +1,531 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="junhee.ko">
+    <title>[오브젝트] 11장_합성과 유연한 설계 - junhee.ko</title>
+    <meta name="author" content="junhee.ko">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg"},"articleBody":"코드 재사용 기법으로는,\n\n상속\n부모클래스와 자식클래스를 연결해서, 부모클래스의 코드 재사용\n\n합성\n전체를 표현하는 객체가 부분을 표현하는 객체를 포함해서 객체의 코드 재사용\n내부에 포함되는 객체의 구현이 아니라 퍼블릭 인터페이스에 의존\n\n\n01 상속을 합성으로 변경하기상속의 문제는,\n\n불필요한 인터페이스 상속\n메서드 오버라이딩 오작용\n부모 클래스와 자식 클래스 동시 수정\n\n이 문제들을 합성으로 해결해보자.\n불필요한 인터페이스 상속 : java.utils.Properties, java.utils.Stack\n불필요한 Hasbtable 의 오퍼레이션들이 Properties 클래스의 퍼블릭 인터페이스를 오염시키지 않는다.\n\n1234567891011public class Properties &#123;    private Hashtable&lt;String, String&gt; properties = new Hashtable&lt;&gt;();    public String setProperty(String key, String value) &#123;        return properties.put(key, value);    &#125;    public String getProperty(String key) &#123;        return properties.get(key);    &#125;&#125;\n\n\n불필요한 Vector 의 오퍼레이션들이 Stack 클래스의 퍼블릭 인터페이스를 오염시키지 않는다.\n\n1234567891011121314151617public class Stack&lt;E&gt; &#123;    private Vector&lt;E&gt; elements = new Vector&lt;&gt;();    public E push(E item) &#123;        elements.addElement(item);        return item;    &#125;    public E Pop() &#123;        if (elements.isEmpty()) &#123;            throw new EmptyStackException();        &#125;        return elements.remove(elements.size() - 1);    &#125;&#125;\n\n메서드 오버라이딩 오작용 : InstrumentedHashSet12345678public class InstrumentedHashSet&lt;E&gt; implements Set &#123;    private Set&lt;E&gt; set;   \t...           @Override ..    @Override ..      \t\t@Override ..&#125;\n\n부모 클래스와 자식 클래스의 동시 수정 : PersonalPlaylist123456789101112public class PersonalPlaylis &#123;    private Playlist playlist = new Playlist();        public void append(Song song)&#123;        playlis.append(song);    &#125;        public void remove(Song song)&#123;        playlist.getTracks().remove(song);        playlist.getSingers().remove(song.getSinger());    &#125;&#125;\n\n02 상속으로 인한 조합의 폭발적인 증가상속으로 작은 기능들을 조합해 더 큰 기능을 수행하는 객체를 만들 때의 문제는,\n\n하나의 기능을 추가하거나 수정을 위해 불필요하게 많은 수의 클래스를 추가하거나 수정해야한다.\n단일 상속만 지원하는 언어에서는 상속으로 중복 코드가 중가한다.\n\n기본 정책과 부가 정책 조합하기\n기본 정책 : 일반 요금제 / 심야 할인 요금제\n\n부가 정책 : 세금 정책 / 기본 요금 할인 정책\n기본 정책의 계산 결과에 적용, 선택적으로 적용 가능, 조합 가능, 임의의 순서로 적용 가능\n\n\n상속을 이용해서 기본 정책 구현하기기본 정책에 세금 정책 조합하기기본 정책에 기본 요금 할인 정책 조합하기중복 코드의 덫에 걸리다\n상속의 남용으로 하나의 기능을 추가하기 위해 필요 이상으로 많은 수의 클래스를 추가해야하는 경우를 클래스 폭발 문제,  조합의 폭발 문제 라고 한다.\n이 문제는, 자식 클래스가 부모 클래스의 구현에 강하게 결합되도록 강요하는 상속의 한계 때문에 발생하는 문제이다.\n03 합성 관계로 변경하기\n상속\n조합의 결과를 개별 클래스 안으로 밀어 넣는 방법\n\n합성\n합성은 조합을 구성하는 요소들을 개별 클래스로 구현한 후 실행 시점에 인스턴스를 조립하는 방법\n\n\n기본 정책 합성하기12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273public interface RatePolicy &#123;    Money calculateFee(Phone phone);&#125;public abstract class BasicRatePolicy implements RatePolicy &#123;    @Override    public Money calculateFee(Phone phone) &#123;        Money result = Money.ZERO;        for(Call call phone.getCalls()&#123;            result.plus(calculateCallFee(call));        &#125;        return result;    &#125;    protected abstract Money calculateCallFee(Call call);&#125;public class RegularPolicy extends BasicRatePolicy &#123;    private Money amnount;    private Duration seconds;    public RegularPolicy(Money amnount, Duration seconds) &#123;        this.amnount = amnount;        this.seconds = seconds;    &#125;    @Override    protected Money calculateCallFee(Call call) &#123;        return amnount.times(call.getDuration().getSeconds() / seconds.getSeconds());    &#125;&#125;            public class NightlyDiscountPolicy extends BasicRatePolicy &#123;    private static final int LATE_NIGHT_HOUR = 22;    private Money nightlyAmnount;    private Money regularAmnount;    private Duration seconds;    public NightlyDiscountPolicy(Money nightlyAmnount, Money regularAmnount, Duration seconds) &#123;        this.nightlyAmnount = nightlyAmnount;        this.regularAmnount = regularAmnount;        this.seconds = seconds;    &#125;    @Override    protected Money calculateCallFee(Call call) &#123;        if (call.getFrom.getHour() &gt;= LATE_NIGHT_HOUR) &#123;            return nightlyAmnount.times(call.getDuration().getSeconds() / seconds.getSeconds());        &#125;        return regularAmnount.times(call.getDuration().getSeconds() / seconds.getSeconds());    &#125;&#125;            public class Phone &#123;    private RatePolicy ratePolicy; // Phone 이 다양한 요금 정책과 협력할수 있어야 하므로 인터페이스    private List&lt;Call&gt; calls = new ArrayList&lt;&gt;();    public Phone(RatePolicy ratePolicy) &#123;        this.ratePolicy = ratePolicy;    &#125;    public List&lt;Call&gt; getCalls() &#123;        return Collections.unmodifiableList(calls);    &#125;    public Money calculateFee() &#123;        return ratePolicy.calculateFee(this);    &#125;&#125;\n\n12345// 일반 요금제Phone phone = new Phone(new RegularPolicy(Money.wons(10), Duration.ofSeconds(10)));// 심야 할인 요금제Phone phone = new Phone(new NightlyDiscountPolicy(Money.wons(5), Money.wons(10), Duration.ofSeconds(10)));\n\n부가 정책 적용하기123456789101112131415161718192021222324252627282930313233343536373839404142434445public abstract class AdditionalRatePolicy implements RatePolicy &#123;    private RatePolicy next;    public AdditionalRatePolicy(RatePolicy next) &#123;        this.next = next;    &#125;    @Override    public Money calculateFee(Phone phone) &#123;        Money fee = next.calculateFee(phone);        return afterCalculated(fee);    &#125;    abstract protected Money afterCalculated(Money fee);&#125;public class TaxablePolicy extends AdditionalRatePolicy &#123;    private double taxRatio;    public TaxablePolicy(RatePolicy next, double taxRatio) &#123;        super(next);        this.taxRatio = taxRatio;    &#125;    @Override    protected Money afterCalculated(Money fee) &#123;        return fee.plus(fee.times(taxRatio));    &#125;&#125;public class RateDiscountPolicy extends AdditionalRatePolicy&#123;    private Money disoucntAmount;    public RateDiscountPolicy(RatePolicy next, Money disoucntAmount) &#123;        super(next);        this.disoucntAmount = disoucntAmount;    &#125;    @Override    protected Money afterCalculated(Money fee) &#123;        return fee.minus(disoucntAmount);    &#125;&#125;\n\n기본 정책과 부가 정책 합성하기12345678910// 일반 요금제에 세금 정책 조합Phone phone = new Phone(    new TaxablePolicy(0.05,         new RegularPolicy(...)));// 일반 요금제에 기본 요금 할인 정책을 조합한 결과에 세금 정책 조합Phone phone = new Phone(    new TaxablePolicy(0.05,         new RateDiscountablePolicy(Money.wons(1000),            new RegularPolicy(...))));\n\n새로운 정책 추가하기\n요구사항이 변경되면 오직 하나의 클래스만 수정하면 된다.\n세금 정책을 변경한다고 할 때,\n\n상속\n여러 클래스를 수정\n\n합성\n오직 TaxablePolicy 클래스 하나만 변경\n\n\n04 믹스인객체를 생성할 때 코드 일부를 클래스 안에 섞어 넣어 재사용하는 기법이다.\n합성처럼 유연하며 상속처럼 쉽게 코드 재사용할 수 있다.\n스칼라의 trait 를 이용하면 믹스인 구현이 가능하다.\n","dateCreated":"2019-12-27T00:00:00+09:00","dateModified":"2019-12-27T15:06:14+09:00","datePublished":"2019-12-27T00:00:00+09:00","description":"","headline":"[오브젝트] 11장_합성과 유연한 설계","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://kojunhee.github.io/2019/12/27/object-chapter11/"},"publisher":{"@type":"Organization","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg","logo":{"@type":"ImageObject","url":"profile.jpg"}},"url":"https://kojunhee.github.io/2019/12/27/object-chapter11/"}</script>
+    <meta name="description" content="코드 재사용 기법으로는,  상속 부모클래스와 자식클래스를 연결해서, 부모클래스의 코드 재사용  합성 전체를 표현하는 객체가 부분을 표현하는 객체를 포함해서 객체의 코드 재사용 내부에 포함되는 객체의 구현이 아니라 퍼블릭 인터페이스에 의존   01 상속을 합성으로 변경하기상속의 문제는,  불필요한 인터페이스 상속 메서드 오버라이딩 오작용 부모 클래스와 자식">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="[오브젝트] 11장_합성과 유연한 설계">
+<meta property="og:url" content="https://kojunhee.github.io/2019/12/27/object-chapter11/index.html">
+<meta property="og:site_name" content="junhee.ko">
+<meta property="og:description" content="코드 재사용 기법으로는,  상속 부모클래스와 자식클래스를 연결해서, 부모클래스의 코드 재사용  합성 전체를 표현하는 객체가 부분을 표현하는 객체를 포함해서 객체의 코드 재사용 내부에 포함되는 객체의 구현이 아니라 퍼블릭 인터페이스에 의존   01 상속을 합성으로 변경하기상속의 문제는,  불필요한 인터페이스 상속 메서드 오버라이딩 오작용 부모 클래스와 자식">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://kojunhee.github.io/image/object_inheritance_problem.png">
+<meta property="og:image" content="https://kojunhee.github.io/image/object_composition.png">
+<meta property="og:updated_time" content="2019-12-27T06:06:14.471Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[오브젝트] 11장_합성과 유연한 설계">
+<meta name="twitter:description" content="코드 재사용 기법으로는,  상속 부모클래스와 자식클래스를 연결해서, 부모클래스의 코드 재사용  합성 전체를 표현하는 객체가 부분을 표현하는 객체를 포함해서 객체의 코드 재사용 내부에 포함되는 객체의 구현이 아니라 퍼블릭 인터페이스에 의존   01 상속을 합성으로 변경하기상속의 문제는,  불필요한 인터페이스 상속 메서드 오버라이딩 오작용 부모 클래스와 자식">
+<meta name="twitter:image" content="https://kojunhee.github.io/image/object_inheritance_problem.png">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://kojunhee.github.io/assets/images/profile.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/all.css">
+    <link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
+    <link rel="stylesheet" href="/assets/css/thumbs.css">
+    <link rel="stylesheet" href="/assets/css/tranquilpeak.css">
+    <!--STYLES END-->
+    
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="2">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">junhee.ko</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="2">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">junhee.ko</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>Always Learning</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/kojunhee" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://facebook.com/kojunheee" target="_blank" rel="noopener" title="Facebook">
+                    
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/junheeko" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="mailto:junheee.ko@gmail.com" target="_blank" rel="noopener" title="Mail">
+                    
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Mail</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="2"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            [오브젝트] 11장_합성과 유연한 설계
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2019-12-27T00:00:00+09:00">
+	
+		    Dec 27, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/object/">Object</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>코드 재사용 기법으로는,</p>
+<ol>
+<li><p>상속</p>
+<p>부모클래스와 자식클래스를 연결해서, 부모클래스의 코드 재사용</p>
+</li>
+<li><p>합성</p>
+<p>전체를 표현하는 객체가 부분을 표현하는 객체를 포함해서 객체의 코드 재사용</p>
+<p>내부에 포함되는 객체의 구현이 아니라 <code>퍼블릭 인터페이스</code>에 의존</p>
+</li>
+</ol>
+<h2 id="01-상속을-합성으로-변경하기"><a href="#01-상속을-합성으로-변경하기" class="headerlink" title="01 상속을 합성으로 변경하기"></a>01 상속을 합성으로 변경하기</h2><p>상속의 문제는,</p>
+<ol>
+<li>불필요한 인터페이스 상속</li>
+<li>메서드 오버라이딩 오작용</li>
+<li>부모 클래스와 자식 클래스 동시 수정</li>
+</ol>
+<p>이 문제들을 합성으로 해결해보자.</p>
+<h5 id="불필요한-인터페이스-상속-java-utils-Properties-java-utils-Stack"><a href="#불필요한-인터페이스-상속-java-utils-Properties-java-utils-Stack" class="headerlink" title="불필요한 인터페이스 상속 : java.utils.Properties, java.utils.Stack"></a>불필요한 인터페이스 상속 : java.utils.Properties, java.utils.Stack</h5><ol>
+<li>불필요한 Hasbtable 의 오퍼레이션들이 Properties 클래스의 퍼블릭 인터페이스를 오염시키지 않는다.</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Properties</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Hashtable&lt;String, String&gt; properties = <span class="keyword">new</span> Hashtable&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">setProperty</span><span class="params">(String key, String value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> properties.put(key, value);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getProperty</span><span class="params">(String key)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> properties.get(key);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>불필요한 Vector 의 오퍼레이션들이 Stack 클래스의 퍼블릭 인터페이스를 오염시키지 않는다.</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Stack</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Vector&lt;E&gt; elements = <span class="keyword">new</span> Vector&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> E <span class="title">push</span><span class="params">(E item)</span> </span>&#123;</span><br><span class="line">        elements.addElement(item);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> item;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> E <span class="title">Pop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (elements.isEmpty()) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> EmptyStackException();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> elements.remove(elements.size() - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="메서드-오버라이딩-오작용-InstrumentedHashSet"><a href="#메서드-오버라이딩-오작용-InstrumentedHashSet" class="headerlink" title="메서드 오버라이딩 오작용 : InstrumentedHashSet"></a>메서드 오버라이딩 오작용 : InstrumentedHashSet</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InstrumentedHashSet</span>&lt;<span class="title">E</span>&gt; <span class="keyword">implements</span> <span class="title">Set</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Set&lt;E&gt; set;</span><br><span class="line">   	...   </span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span> ..</span><br><span class="line">    <span class="meta">@Override</span> ..      </span><br><span class="line">		<span class="meta">@Override</span> ..</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="부모-클래스와-자식-클래스의-동시-수정-PersonalPlaylist"><a href="#부모-클래스와-자식-클래스의-동시-수정-PersonalPlaylist" class="headerlink" title="부모 클래스와 자식 클래스의 동시 수정 : PersonalPlaylist"></a>부모 클래스와 자식 클래스의 동시 수정 : PersonalPlaylist</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PersonalPlaylis</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Playlist playlist = <span class="keyword">new</span> Playlist();</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">append</span><span class="params">(Song song)</span></span>&#123;</span><br><span class="line">        playlis.append(song);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(Song song)</span></span>&#123;</span><br><span class="line">        playlist.getTracks().remove(song);</span><br><span class="line">        playlist.getSingers().remove(song.getSinger());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="02-상속으로-인한-조합의-폭발적인-증가"><a href="#02-상속으로-인한-조합의-폭발적인-증가" class="headerlink" title="02 상속으로 인한 조합의 폭발적인 증가"></a>02 상속으로 인한 조합의 폭발적인 증가</h2><p>상속으로 작은 기능들을 조합해 더 큰 기능을 수행하는 객체를 만들 때의 문제는,</p>
+<ol>
+<li>하나의 기능을 추가하거나 수정을 위해 <code>불필요하게 많은 수의 클래스를 추가하거나 수정</code>해야한다.</li>
+<li>단일 상속만 지원하는 언어에서는 상속으로 <code>중복 코드</code>가 중가한다.</li>
+</ol>
+<h5 id="기본-정책과-부가-정책-조합하기"><a href="#기본-정책과-부가-정책-조합하기" class="headerlink" title="기본 정책과 부가 정책 조합하기"></a>기본 정책과 부가 정책 조합하기</h5><ol>
+<li><p>기본 정책 : 일반 요금제 / 심야 할인 요금제</p>
+</li>
+<li><p>부가 정책 : 세금 정책 / 기본 요금 할인 정책</p>
+<p>기본 정책의 계산 결과에 적용, 선택적으로 적용 가능, 조합 가능, 임의의 순서로 적용 가능</p>
+</li>
+</ol>
+<h5 id="상속을-이용해서-기본-정책-구현하기"><a href="#상속을-이용해서-기본-정책-구현하기" class="headerlink" title="상속을 이용해서 기본 정책 구현하기"></a>상속을 이용해서 기본 정책 구현하기</h5><h5 id="기본-정책에-세금-정책-조합하기"><a href="#기본-정책에-세금-정책-조합하기" class="headerlink" title="기본 정책에 세금 정책 조합하기"></a>기본 정책에 세금 정책 조합하기</h5><h5 id="기본-정책에-기본-요금-할인-정책-조합하기"><a href="#기본-정책에-기본-요금-할인-정책-조합하기" class="headerlink" title="기본 정책에 기본 요금 할인 정책 조합하기"></a>기본 정책에 기본 요금 할인 정책 조합하기</h5><h5 id="중복-코드의-덫에-걸리다"><a href="#중복-코드의-덫에-걸리다" class="headerlink" title="중복 코드의 덫에 걸리다"></a>중복 코드의 덫에 걸리다</h5><p><img src="/image/object_inheritance_problem.png" alt></p>
+<p>상속의 남용으로 하나의 기능을 추가하기 위해 필요 이상으로 많은 수의 클래스를 추가해야하는 경우를 <code>클래스 폭발 문제</code>,  <code>조합의 폭발 문제</code> 라고 한다.</p>
+<p>이 문제는, 자식 클래스가 부모 클래스의 구현에 강하게 결합되도록 강요하는 상속의 한계 때문에 발생하는 문제이다.</p>
+<h2 id="03-합성-관계로-변경하기"><a href="#03-합성-관계로-변경하기" class="headerlink" title="03 합성 관계로 변경하기"></a>03 합성 관계로 변경하기</h2><ol>
+<li><p>상속</p>
+<p>조합의 결과를 개별 클래스 안으로 밀어 넣는 방법</p>
+</li>
+<li><p>합성</p>
+<p>합성은 조합을 구성하는 요소들을 개별 클래스로 구현한 후 실행 시점에 인스턴스를 조립하는 방법</p>
+</li>
+</ol>
+<h5 id="기본-정책-합성하기"><a href="#기본-정책-합성하기" class="headerlink" title="기본 정책 합성하기"></a>기본 정책 합성하기</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">RatePolicy</span> </span>&#123;</span><br><span class="line">    <span class="function">Money <span class="title">calculateFee</span><span class="params">(Phone phone)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BasicRatePolicy</span> <span class="keyword">implements</span> <span class="title">RatePolicy</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">calculateFee</span><span class="params">(Phone phone)</span> </span>&#123;</span><br><span class="line">        Money result = Money.ZERO;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(Call call phone.getCalls()&#123;</span><br><span class="line">            result.plus(calculateCallFee(call));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> Money <span class="title">calculateCallFee</span><span class="params">(Call call)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RegularPolicy</span> <span class="keyword">extends</span> <span class="title">BasicRatePolicy</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Money amnount;</span><br><span class="line">    <span class="keyword">private</span> Duration seconds;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">RegularPolicy</span><span class="params">(Money amnount, Duration seconds)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.amnount = amnount;</span><br><span class="line">        <span class="keyword">this</span>.seconds = seconds;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Money <span class="title">calculateCallFee</span><span class="params">(Call call)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> amnount.times(call.getDuration().getSeconds() / seconds.getSeconds());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;            </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NightlyDiscountPolicy</span> <span class="keyword">extends</span> <span class="title">BasicRatePolicy</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> LATE_NIGHT_HOUR = <span class="number">22</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Money nightlyAmnount;</span><br><span class="line">    <span class="keyword">private</span> Money regularAmnount;</span><br><span class="line">    <span class="keyword">private</span> Duration seconds;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">NightlyDiscountPolicy</span><span class="params">(Money nightlyAmnount, Money regularAmnount, Duration seconds)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.nightlyAmnount = nightlyAmnount;</span><br><span class="line">        <span class="keyword">this</span>.regularAmnount = regularAmnount;</span><br><span class="line">        <span class="keyword">this</span>.seconds = seconds;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Money <span class="title">calculateCallFee</span><span class="params">(Call call)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (call.getFrom.getHour() &gt;= LATE_NIGHT_HOUR) &#123;</span><br><span class="line">            <span class="keyword">return</span> nightlyAmnount.times(call.getDuration().getSeconds() / seconds.getSeconds());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> regularAmnount.times(call.getDuration().getSeconds() / seconds.getSeconds());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">            </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Phone</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> RatePolicy ratePolicy; <span class="comment">// Phone 이 다양한 요금 정책과 협력할수 있어야 하므로 인터페이스</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;Call&gt; calls = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Phone</span><span class="params">(RatePolicy ratePolicy)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.ratePolicy = ratePolicy;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Call&gt; <span class="title">getCalls</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Collections.unmodifiableList(calls);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">calculateFee</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> ratePolicy.calculateFee(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 일반 요금제</span></span><br><span class="line">Phone phone = <span class="keyword">new</span> Phone(<span class="keyword">new</span> RegularPolicy(Money.wons(<span class="number">10</span>), Duration.ofSeconds(<span class="number">10</span>)));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 심야 할인 요금제</span></span><br><span class="line">Phone phone = <span class="keyword">new</span> Phone(<span class="keyword">new</span> NightlyDiscountPolicy(Money.wons(<span class="number">5</span>), Money.wons(<span class="number">10</span>), Duration.ofSeconds(<span class="number">10</span>)));</span><br></pre></td></tr></table></figure>
+
+<h5 id="부가-정책-적용하기"><a href="#부가-정책-적용하기" class="headerlink" title="부가 정책 적용하기"></a>부가 정책 적용하기</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AdditionalRatePolicy</span> <span class="keyword">implements</span> <span class="title">RatePolicy</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> RatePolicy next;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AdditionalRatePolicy</span><span class="params">(RatePolicy next)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.next = next;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">calculateFee</span><span class="params">(Phone phone)</span> </span>&#123;</span><br><span class="line">        Money fee = next.calculateFee(phone);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> afterCalculated(fee);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">abstract</span> <span class="keyword">protected</span> Money <span class="title">afterCalculated</span><span class="params">(Money fee)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TaxablePolicy</span> <span class="keyword">extends</span> <span class="title">AdditionalRatePolicy</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">double</span> taxRatio;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TaxablePolicy</span><span class="params">(RatePolicy next, <span class="keyword">double</span> taxRatio)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(next);</span><br><span class="line">        <span class="keyword">this</span>.taxRatio = taxRatio;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Money <span class="title">afterCalculated</span><span class="params">(Money fee)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> fee.plus(fee.times(taxRatio));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RateDiscountPolicy</span> <span class="keyword">extends</span> <span class="title">AdditionalRatePolicy</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Money disoucntAmount;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">RateDiscountPolicy</span><span class="params">(RatePolicy next, Money disoucntAmount)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(next);</span><br><span class="line">        <span class="keyword">this</span>.disoucntAmount = disoucntAmount;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Money <span class="title">afterCalculated</span><span class="params">(Money fee)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> fee.minus(disoucntAmount);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="기본-정책과-부가-정책-합성하기"><a href="#기본-정책과-부가-정책-합성하기" class="headerlink" title="기본 정책과 부가 정책 합성하기"></a>기본 정책과 부가 정책 합성하기</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 일반 요금제에 세금 정책 조합</span></span><br><span class="line">Phone phone = <span class="keyword">new</span> Phone(</span><br><span class="line">    <span class="keyword">new</span> TaxablePolicy(<span class="number">0.05</span>, </span><br><span class="line">        <span class="keyword">new</span> RegularPolicy(...)));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 일반 요금제에 기본 요금 할인 정책을 조합한 결과에 세금 정책 조합</span></span><br><span class="line">Phone phone = <span class="keyword">new</span> Phone(</span><br><span class="line">    <span class="keyword">new</span> TaxablePolicy(<span class="number">0.05</span>, </span><br><span class="line">        <span class="keyword">new</span> RateDiscountablePolicy(Money.wons(<span class="number">1000</span>),</span><br><span class="line">            <span class="keyword">new</span> RegularPolicy(...))));</span><br></pre></td></tr></table></figure>
+
+<h5 id="새로운-정책-추가하기"><a href="#새로운-정책-추가하기" class="headerlink" title="새로운 정책 추가하기"></a>새로운 정책 추가하기</h5><p><img src="/image/object_composition.png" alt></p>
+<p>요구사항이 변경되면 오직 하나의 클래스만 수정하면 된다.</p>
+<p>세금 정책을 변경한다고 할 때,</p>
+<ol>
+<li><p>상속</p>
+<p>여러 클래스를 수정</p>
+</li>
+<li><p>합성</p>
+<p>오직 TaxablePolicy 클래스 하나만 변경</p>
+</li>
+</ol>
+<h2 id="04-믹스인"><a href="#04-믹스인" class="headerlink" title="04 믹스인"></a>04 믹스인</h2><p>객체를 생성할 때 코드 일부를 클래스 안에 섞어 넣어 재사용하는 기법이다.</p>
+<p>합성처럼 유연하며 상속처럼 쉽게 코드 재사용할 수 있다.</p>
+<p>스칼라의 trait 를 이용하면 믹스인 구현이 가능하다.</p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/12/26/kafka-chapter5/" data-tooltip="[카프카] 5장_카프카 컨슈머" aria-label="NEXT: [카프카] 5장_카프카 컨슈머">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2019/12/27/object-chapter11/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 junhee.ko. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="2">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/12/26/kafka-chapter5/" data-tooltip="[카프카] 5장_카프카 컨슈머" aria-label="NEXT: [카프카] 5장_카프카 컨슈머">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2019/12/27/object-chapter11/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="2">
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2019/12/27/object-chapter11/">
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">junhee.ko</h4>
+        
+            <div id="about-card-bio"><p>Always Learning</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Engineer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Incheon
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/jquery.js"></script>
+<script src="/assets/js/jquery.fancybox.js"></script>
+<script src="/assets/js/thumbs.js"></script>
+<script src="/assets/js/tranquilpeak.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://kojunhee.github.io/2019/12/27/object-chapter11/';
+                 
+                    this.page.identifier = '2019/12/27/object-chapter11/';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'junheeko';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>
