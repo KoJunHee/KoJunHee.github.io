@@ -194,8 +194,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/05/31/State Pattern01/">
-                            State Pattern01
+                        <a class="link-unstyled" href="/2018/05/31/Template Method Pattern03/">
+                            Template Method Pattern03
                         </a>
                     
                 </h1>
@@ -217,27 +217,19 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>The State Pattern allows an object to alter its behavior when its internal state changes. </p>
-<p>The object will appear to change its class. </p>
-<h2 id="Explanation"><a href="#Explanation" class="headerlink" title="Explanation"></a>Explanation</h2><ul>
-<li>The first part of this description makes a lot of sense, right?  Because the pattern encapsulates state into separate classes and delegates to the object representing the current state, we know that behavior changes along with the internal state. The Gumball Machine provides a good example: when the gumball machine is in the NoQuarterState and you insert a quarter, you get different behavior (the machine accepts the quarter) than if you insert a quarter when it’s in the HasQuarterState (the machine rejects the quarter). </li>
-<li>What about the second part of the definition? What does it mean for an object to “appear to change its class?” Think about it from the perspective of a client: if an object you’re using can completely change its behavior, then it appears to you that the object is actually instantiated from another class. In reality, however, you know that we are using composition to give the appearance of a class change by simply referencing different state objects. </li>
-</ul>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/statePatternUML01.png" alt></p>
-<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><img src="/image/statePatternUML02.png" alt></p>
-<p><img src="/image/statePatternUML03.png" alt></p>
-<p><img src="/image/statePatternUML04.png" alt></p>
-<h2 id="Compared-to-‘Strategy-Pattern’"><a href="#Compared-to-‘Strategy-Pattern’" class="headerlink" title="Compared to ‘Strategy Pattern’"></a>Compared to ‘Strategy Pattern’</h2><p>The State and Strategy Patterns have the same class diagram, but they differ in intent. </p>
-<ul>
-<li>Strategy Pattern <ul>
-<li>typically configures Context classes with a behavior or algorithm. </li>
-</ul>
-</li>
-<li>State Pattern <ul>
-<li>allows a Context to change its behavior as the state of the Context changes.</li>
-</ul>
-</li>
-</ul>
+                    <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>The Template Method Pattern defines the skeleton of an algorithm in a method, deferring some steps to subclasses. </p>
+<p>Template Method lets subclasses redefine certain steps of an algorithm without changing the algorithm’s structure. </p>
+<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/templateh01.png" alt></p>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><img src="/image/tmppattern01.png" alt></p>
+<p><img src="/image/tmppattern02.png" alt></p>
+<p><img src="/image/tmppattern03.png" alt></p>
+<h2 id="Using-the-hook"><a href="#Using-the-hook" class="headerlink" title="Using the hook"></a>Using the hook</h2><p>To use the hook, we override it in our subclass. </p>
+<p>Here, the hook controls whether the CaffeineBeverage evaluates a certain part of the algorithm; </p>
+<p>that is, whether it adds a condiment to the beverage. </p>
+<p>How do we know whether the customer wants the condiment? Just ask ! </p>
+<p><img src="/image/tmppattern04.png" alt></p>
+<p><img src="/image/tmppattern05.png" alt></p>
+<p><img src="/image/tmppattern06.png" alt></p>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Head First Design Pattern</p>
 
                     
@@ -246,7 +238,7 @@
                     
                     
                         <p>
-                            <a href="/2018/05/31/State Pattern01/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/05/31/Template Method Pattern03/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -320,8 +312,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/05/31/Template Method Pattern01/">
-                            Template Method Pattern01
+                        <a class="link-unstyled" href="/2018/05/31/State Pattern01/">
+                            State Pattern01
                         </a>
                     
                 </h1>
@@ -343,23 +335,28 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="Intent"><a href="#Intent" class="headerlink" title="Intent"></a>Intent</h2><ul>
-<li>Define the skeleton of an algorithm in an operation, deferring some steps to subclasses. </li>
-<li>Template Method lets subclasses redefine certain steps of an algorithm without letting them to change the algorithm’s structure.</li>
+                    <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>The State Pattern allows an object to alter its behavior when its internal state changes. </p>
+<p>The object will appear to change its class. </p>
+<h2 id="Explanation"><a href="#Explanation" class="headerlink" title="Explanation"></a>Explanation</h2><ul>
+<li>The first part of this description makes a lot of sense, right?  Because the pattern encapsulates state into separate classes and delegates to the object representing the current state, we know that behavior changes along with the internal state. The Gumball Machine provides a good example: when the gumball machine is in the NoQuarterState and you insert a quarter, you get different behavior (the machine accepts the quarter) than if you insert a quarter when it’s in the HasQuarterState (the machine rejects the quarter). </li>
+<li>What about the second part of the definition? What does it mean for an object to “appear to change its class?” Think about it from the perspective of a client: if an object you’re using can completely change its behavior, then it appears to you that the object is actually instantiated from another class. In reality, however, you know that we are using composition to give the appearance of a class change by simply referencing different state objects. </li>
 </ul>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/tmplate01.png" alt></p>
+<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/statePatternUML01.png" alt></p>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><img src="/image/statePatternUML02.png" alt></p>
+<p><img src="/image/statePatternUML03.png" alt></p>
+<p><img src="/image/statePatternUML04.png" alt></p>
+<h2 id="Compared-to-‘Strategy-Pattern’"><a href="#Compared-to-‘Strategy-Pattern’" class="headerlink" title="Compared to ‘Strategy Pattern’"></a>Compared to ‘Strategy Pattern’</h2><p>The State and Strategy Patterns have the same class diagram, but they differ in intent. </p>
 <ul>
-<li>AbstractClass <ul>
-<li>defines abstract primitive operations that concrete subclasses define to implement steps of an algorithm. </li>
-<li>implements a template method which defines the skeleton of an algorithm. The template method calls primitive operations as well as operations defined in AbstractClass or those of other objects.</li>
+<li>Strategy Pattern <ul>
+<li>typically configures Context classes with a behavior or algorithm. </li>
 </ul>
 </li>
-<li>ConcreteClass <ul>
-<li>implements the primitive operations to carry out subclass-specific steps of the algorithm. When a concrete class is called the template method code will be executed from the base class while for each method used inside the template method will be called the implementation from the derived class.</li>
+<li>State Pattern <ul>
+<li>allows a Context to change its behavior as the state of the Context changes.</li>
 </ul>
 </li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.oodesign.com/template-method-pattern.html" target="_blank" rel="noopener">https://www.oodesign.com/template-method-pattern.html</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Head First Design Pattern</p>
 
                     
                         
@@ -367,7 +364,7 @@
                     
                     
                         <p>
-                            <a href="/2018/05/31/Template Method Pattern01/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/05/31/State Pattern01/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>

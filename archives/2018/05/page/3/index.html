@@ -194,8 +194,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/05/22/Frequency domain/">
-                            Frequency domain
+                        <a class="link-unstyled" href="/2018/05/22/Blurring/">
+                            Blurring
                         </a>
                     
                 </h1>
@@ -217,28 +217,75 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="Frequency-domain-analysis"><a href="#Frequency-domain-analysis" class="headerlink" title="Frequency domain analysis"></a>Frequency domain analysis</h2><p>Till now, all the domains in which we have analyzed a signal , we analyze it with respect to time. </p>
-<p>But in frequency domain we don’t analyze signal with respect to time, but with respect of frequency.</p>
-<h2 id="Difference-between-spatial-domain-and-frequency-domain"><a href="#Difference-between-spatial-domain-and-frequency-domain" class="headerlink" title="Difference between spatial domain and frequency domain"></a>Difference between spatial domain and frequency domain</h2><p>In spatial domain, we deal with images as it is. The value of the pixels of the image change with respect to scene. </p>
-<p>Whereas in frequency domain, we deal with the rate at which the pixel values are changing in spatial domain.</p>
-<h2 id="Spatial-Domain"><a href="#Spatial-Domain" class="headerlink" title="Spatial Domain"></a>Spatial Domain</h2><p>In simple spatial domain, we directly deal with the image matrix</p>
-<p><img src="/image/frequencyD01.png" alt></p>
-<h2 id="Frequency-Domain"><a href="#Frequency-Domain" class="headerlink" title="Frequency Domain"></a>Frequency Domain</h2><p>We first transform the image to its frequency distribution. </p>
-<p>Then our black box system perform what ever processing it has to performed, </p>
-<p>and the output of the black box in this case is not an image, but a transformation. </p>
-<p>After performing inverse transformation, it is converted into an image which is then viewed in spatial domain.</p>
-<p><img src="/image/frequencyD02.png" alt></p>
-<h2 id="Transformation"><a href="#Transformation" class="headerlink" title="Transformation"></a>Transformation</h2><p>A signal can be converted from time domain into frequency domain using mathematical operators called transforms. There are many kind of transformation that does this. Some of them are given below.</p>
-<ul>
-<li>Fourier Series</li>
-<li>Fourier transformation</li>
-<li>Laplace transform</li>
-<li>Z transform</li>
+                    <h2 id="Blurring"><a href="#Blurring" class="headerlink" title="Blurring"></a>Blurring</h2><ul>
+<li>In blurring, we simple blur an image. </li>
+<li>An image looks more sharp or more detailed if we are able to perceive all the objects and their shapes correctly in it. </li>
+<li>For example. An image with a face, looks clear when we are able to identify eyes, ears, nose, lips, forehead e.t.c very clear. </li>
+<li>This shape of an object is due to its edges. </li>
+<li>So in blurring, we simple reduce the edge content and makes the transition form one color to the other very smooth.</li>
 </ul>
-<h2 id="Frequency-components"><a href="#Frequency-components" class="headerlink" title="Frequency components"></a>Frequency components</h2><p>Any image in spatial domain can be represented in a frequency domain. </p>
-<p>We will divide frequency components into two major components.</p>
-<h2 id="Low-frequency-components"><a href="#Low-frequency-components" class="headerlink" title="Low frequency components"></a>Low frequency components</h2><p>Low frequency components in an image correspond to smooth regions.</p>
-<h2 id="High-frequency-components"><a href="#High-frequency-components" class="headerlink" title="High frequency components"></a>High frequency components</h2><p>High frequency components correspond to edges in an image.</p>
+<h2 id="Blurring-vs-zooming"><a href="#Blurring-vs-zooming" class="headerlink" title="Blurring vs zooming"></a>Blurring vs zooming</h2><ul>
+<li>You might have seen a blurred image when you zoom an image. <ul>
+<li>When you zoom an image using pixel replication, and zooming factor is increased, you saw a blurred image. This image also has less details, but it is not true blurring.</li>
+</ul>
+</li>
+<li>In zooming, you add new pixels to an image, that increase the overall number of pixels in an image, </li>
+<li>In blurring, the number of pixels of a normal image and a blurred image remains the same.</li>
+</ul>
+<h2 id="Common-example-of-a-blurred-image"><a href="#Common-example-of-a-blurred-image" class="headerlink" title="Common example of a blurred image"></a>Common example of a blurred image</h2><p><img src="/image/blur01.png" alt></p>
+<h2 id="Types-of-filters"><a href="#Types-of-filters" class="headerlink" title="Types of filters"></a>Types of filters</h2><ul>
+<li>Blurring can be achieved by many ways. </li>
+<li>The common type of filters that are used to perform blurring are.<ul>
+<li>Mean filter</li>
+<li>Weighted average filter</li>
+<li>Gaussian filter</li>
+</ul>
+</li>
+</ul>
+<h2 id="Mean-filter"><a href="#Mean-filter" class="headerlink" title="Mean filter"></a>Mean filter</h2><ul>
+<li>Mean filter is also known as Box filter and average filter. </li>
+<li>A mean filter has the following properties.<ul>
+<li>It must be odd ordered</li>
+<li>The sum of all the elements should be 1</li>
+<li>All the elements should be same</li>
+</ul>
+</li>
+<li>If we follow this rule, then for a mask of 3x3. We get the following result.</li>
+</ul>
+<p><img src="/image/blur02.png" alt></p>
+<ul>
+<li>The blurring can be increased by increasing the size of the mask. </li>
+<li>The more is the size of the mask, the more is the blurring. </li>
+<li>Because with greater mask, greater number of pixels are catered and one smooth transition is defined.</li>
+</ul>
+<p><img src="/image/blur03.png" alt></p>
+<h2 id="Weighted-average-filter"><a href="#Weighted-average-filter" class="headerlink" title="Weighted average filter"></a>Weighted average filter</h2><ul>
+<li><p>In weighted average filter, </p>
+</li>
+<li><p>we gave more weight to the center value. </p>
+</li>
+<li><p>Due to which the contribution of center becomes more then the rest of the values. Due to weighted average filtering, we can actually control the blurring.</p>
+</li>
+<li><p>Properties of the weighted average filter are.</p>
+<ul>
+<li>It must be odd ordered</li>
+<li>The sum of all the elements should be 1</li>
+<li>The weight of center element should be more then all of the other elements</li>
+</ul>
+</li>
+<li><p>Filter01</p>
+<p><img src="/image/blur04.png" alt></p>
+<ul>
+<li>The two properties are satisfied which are (1 and 3). But the property 2 is not satisfied. So in order to satisfy that we will simple divide the whole filter by 10, or multiply it with 1/10.</li>
+</ul>
+</li>
+<li><p>Filter02</p>
+<p><img src="/image/blur05.png" alt></p>
+<ul>
+<li>Dividing factor = 18.</li>
+</ul>
+</li>
+</ul>
 
                     
                         
@@ -246,7 +293,86 @@
                     
                     
                         <p>
-                            <a href="/2018/05/22/Frequency domain/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/05/22/Blurring/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2018/05/21/Brightness and Contrast/">
+                            Brightness and Contrast
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-05-21T00:00:00+09:00">
+	
+		    May 21, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/dip/">DIP</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h2 id="Brightness"><a href="#Brightness" class="headerlink" title="Brightness"></a>Brightness</h2><ul>
+<li><p>Brightness is a relative term. </p>
+</li>
+<li><p>It depends on your visual perception. </p>
+</li>
+<li><p>Since brightness is a relative term, so brightness can be defined as the amount of energy output by a source of light relative to the source we are comparing it to. </p>
+</li>
+<li><p>In some cases we can easily say that the image is bright, and in some cases, its not easy to perceive.</p>
+</li>
+<li><p>Consider this black image of 5 rows and 5 columns</p>
+<p><img src="/image/bri01.png" alt></p>
+<p><img src="/image/bri02.png" alt></p>
+<p><img src="/image/bri03.png" alt></p>
+<p><img src="/image/bri04.png" alt></p>
+</li>
+</ul>
+<h2 id="Contrast"><a href="#Contrast" class="headerlink" title="Contrast"></a>Contrast</h2><ul>
+<li><p>Contrast can be simply explained as the difference between maximum and minimum pixel intensity in an image.</p>
+<p><img src="/image/bri05.png" alt></p>
+<ul>
+<li><p>The maximum value in this matrix is 100.</p>
+</li>
+<li><p>The minimum value in this matrix is 100.</p>
+</li>
+<li><p>Contrast = maximum pixel intensity(subtracted by) minimum pixel intensity</p>
+<p>= 100 (subtracted by) 100</p>
+<p>= 0</p>
+</li>
+</ul>
+</li>
+</ul>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/05/21/Brightness and Contrast/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -608,6 +734,90 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2018/05/21/Bits Per Pixel/">
+                            Bits Per Pixel
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-05-21T00:00:00+09:00">
+	
+		    May 21, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/dip/">DIP</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p>Bpp or bits per pixel denotes the number of bits per pixel.</p>
+<h4 id="Number-of-different-colors"><a href="#Number-of-different-colors" class="headerlink" title="Number of different colors"></a>Number of different colors</h4><ul>
+<li><p>the number of different colors depend on the number of bits per pixel.</p>
+<p><img src="https://github.com/KoJunHee/kojunhee.github.io/raw/master/img/bppTable.png" alt="img"></p>
+</li>
+</ul>
+<h4 id="Shades"><a href="#Shades" class="headerlink" title="Shades"></a>Shades</h4><ul>
+<li>Shades = number of colors = (2)<sup>bpp<sup></sup></sup></li>
+<li>black color<ul>
+<li>0 pixel value always denotes black color. </li>
+</ul>
+</li>
+<li>white color<ul>
+<li>(2)<sup>bpp<sup> -1</sup></sup></li>
+<li>In case of 1 bpp, 0 denotes black, and 1 denotes white.</li>
+<li>In case 8 bpp, 0 denotes black, and 255 denotes white.</li>
+</ul>
+</li>
+<li>gray color<ul>
+<li>Gray color is actually the mid point of black and white.</li>
+<li>In case of 8bpp, the pixel value that denotes gray color is 127 or 128bpp (if you count from 1, not from 0).</li>
+</ul>
+</li>
+</ul>
+<h4 id="Image-Size"><a href="#Image-Size" class="headerlink" title="Image Size"></a>Image Size</h4><ul>
+<li>Size of an image = rows * cols * bpp</li>
+<li>Assuming it has 1024 rows and it has 1024 columns. </li>
+<li>And since it is a gray scale image, it has 256 different shades of gray or it has bits per pixel</li>
+<li>rows * cols * bpp = 1024 * 1024 * 8 = 8388608 bits.</li>
+<li>Converting it into bytes = 8388608 / 8 = 1048576 bytes.</li>
+<li>Converting into kilo bytes = 1048576 / 1024 = 1024kb.</li>
+<li>Converting into Mega bytes = 1024 / 1024 = 1 Mb.</li>
+</ul>
+<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><ul>
+<li><a href="https://www.tutorialspoint.com/dip/concept_of_bits_per_pixel.htm" target="_blank" rel="noopener">https://www.tutorialspoint.com/dip/concept_of_bits_per_pixel.htm</a></li>
+</ul>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/05/21/Bits Per Pixel/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2018/05/21/Histogram Sliding/">
                             Histogram Sliding
                         </a>
@@ -765,169 +975,6 @@
                     
                         <p>
                             <a href="/2018/05/21/Histogram Equalization/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/05/21/Brightness and Contrast/">
-                            Brightness and Contrast
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-05-21T00:00:00+09:00">
-	
-		    May 21, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/dip/">DIP</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h2 id="Brightness"><a href="#Brightness" class="headerlink" title="Brightness"></a>Brightness</h2><ul>
-<li><p>Brightness is a relative term. </p>
-</li>
-<li><p>It depends on your visual perception. </p>
-</li>
-<li><p>Since brightness is a relative term, so brightness can be defined as the amount of energy output by a source of light relative to the source we are comparing it to. </p>
-</li>
-<li><p>In some cases we can easily say that the image is bright, and in some cases, its not easy to perceive.</p>
-</li>
-<li><p>Consider this black image of 5 rows and 5 columns</p>
-<p><img src="/image/bri01.png" alt></p>
-<p><img src="/image/bri02.png" alt></p>
-<p><img src="/image/bri03.png" alt></p>
-<p><img src="/image/bri04.png" alt></p>
-</li>
-</ul>
-<h2 id="Contrast"><a href="#Contrast" class="headerlink" title="Contrast"></a>Contrast</h2><ul>
-<li><p>Contrast can be simply explained as the difference between maximum and minimum pixel intensity in an image.</p>
-<p><img src="/image/bri05.png" alt></p>
-<ul>
-<li><p>The maximum value in this matrix is 100.</p>
-</li>
-<li><p>The minimum value in this matrix is 100.</p>
-</li>
-<li><p>Contrast = maximum pixel intensity(subtracted by) minimum pixel intensity</p>
-<p>= 100 (subtracted by) 100</p>
-<p>= 0</p>
-</li>
-</ul>
-</li>
-</ul>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/05/21/Brightness and Contrast/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/05/21/Bits Per Pixel/">
-                            Bits Per Pixel
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-05-21T00:00:00+09:00">
-	
-		    May 21, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/dip/">DIP</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p>Bpp or bits per pixel denotes the number of bits per pixel.</p>
-<h4 id="Number-of-different-colors"><a href="#Number-of-different-colors" class="headerlink" title="Number of different colors"></a>Number of different colors</h4><ul>
-<li><p>the number of different colors depend on the number of bits per pixel.</p>
-<p><img src="https://github.com/KoJunHee/kojunhee.github.io/raw/master/img/bppTable.png" alt="img"></p>
-</li>
-</ul>
-<h4 id="Shades"><a href="#Shades" class="headerlink" title="Shades"></a>Shades</h4><ul>
-<li>Shades = number of colors = (2)<sup>bpp<sup></sup></sup></li>
-<li>black color<ul>
-<li>0 pixel value always denotes black color. </li>
-</ul>
-</li>
-<li>white color<ul>
-<li>(2)<sup>bpp<sup> -1</sup></sup></li>
-<li>In case of 1 bpp, 0 denotes black, and 1 denotes white.</li>
-<li>In case 8 bpp, 0 denotes black, and 255 denotes white.</li>
-</ul>
-</li>
-<li>gray color<ul>
-<li>Gray color is actually the mid point of black and white.</li>
-<li>In case of 8bpp, the pixel value that denotes gray color is 127 or 128bpp (if you count from 1, not from 0).</li>
-</ul>
-</li>
-</ul>
-<h4 id="Image-Size"><a href="#Image-Size" class="headerlink" title="Image Size"></a>Image Size</h4><ul>
-<li>Size of an image = rows * cols * bpp</li>
-<li>Assuming it has 1024 rows and it has 1024 columns. </li>
-<li>And since it is a gray scale image, it has 256 different shades of gray or it has bits per pixel</li>
-<li>rows * cols * bpp = 1024 * 1024 * 8 = 8388608 bits.</li>
-<li>Converting it into bytes = 8388608 / 8 = 1048576 bytes.</li>
-<li>Converting into kilo bytes = 1048576 / 1024 = 1024kb.</li>
-<li>Converting into Mega bytes = 1024 / 1024 = 1 Mb.</li>
-</ul>
-<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><ul>
-<li><a href="https://www.tutorialspoint.com/dip/concept_of_bits_per_pixel.htm" target="_blank" rel="noopener">https://www.tutorialspoint.com/dip/concept_of_bits_per_pixel.htm</a></li>
-</ul>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/05/21/Bits Per Pixel/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>

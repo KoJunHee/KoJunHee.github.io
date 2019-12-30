@@ -194,6 +194,161 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2018/12/05/isolation level/">
+                            isolation level
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-12-05T00:00:00+09:00">
+	
+		    Dec 05, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/database/">Database</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h5 id="Isolation-level이-무엇인가요"><a href="#Isolation-level이-무엇인가요" class="headerlink" title="Isolation level이 무엇인가요 ?"></a>Isolation level이 무엇인가요 ?</h5><p>트랜잭션에서 일관성이 없는 데이터를 허용하는 수준입니다.</p>
+<h5 id="고립화-수준을-높이는-것이-좋을-까요-낮추는-것이-좋을까요"><a href="#고립화-수준을-높이는-것이-좋을-까요-낮추는-것이-좋을까요" class="headerlink" title="고립화 수준을 높이는 것이 좋을 까요, 낮추는 것이 좋을까요 ?"></a>고립화 수준을 높이는 것이 좋을 까요, 낮추는 것이 좋을까요 ?</h5><p>트랜잭션 고립화 수준을 높이면 일관성은 향상 되지만, 더 넓은 범위의 Lock을 더 오랫동안 유지하는 방식으로 동시성을 저하시킵니다.</p>
+<h5 id="낮은-단계의-고립화-수준에서-발생하는-에러는-뭐가-있나요"><a href="#낮은-단계의-고립화-수준에서-발생하는-에러는-뭐가-있나요" class="headerlink" title="낮은 단계의 고립화 수준에서 발생하는 에러는 뭐가 있나요?"></a>낮은 단계의 고립화 수준에서 발생하는 에러는 뭐가 있나요?</h5><p>Dirty Read, Non Repeatable Read, Phantom Read가 있습니다.</p>
+<ol>
+<li><p>Dirty Read</p>
+<p>데이터 캐시에는 변경이 되었지만, 아직 디스크에는 변경되지 않은 데이터(페이지)를 읽는 행위 입니다.</p>
+</li>
+<li><p>Non Repeatable Read</p>
+<p>트랜잭션 내에서 한 번 읽은 데이터가 트랜잭션이 끝나기 전에 변경되었다면, 다시 읽었을 때 새로운 값이 읽히는 것입니다.</p>
+</li>
+<li><p>Phantom Read</p>
+<p>트랜잭션 중에 없던 행이 추가되어 새로 입력된 데이터를 읽는 것입니다.</p>
+</li>
+</ol>
+<h5 id="isolation-level-에는-뭐가-있나요"><a href="#isolation-level-에는-뭐가-있나요" class="headerlink" title="isolation level 에는 뭐가 있나요?"></a>isolation level 에는 뭐가 있나요?</h5><p>read uncommitted, read committed, repeatable read, serializable 이 있습니다.</p>
+<ol>
+<li><p>read uncommitted</p>
+<p>고립화 수준에서 가장 낮은 수준입니다. 아직 커밋되지 않은 데이터를 다른 트랜잭션이 읽는 것을 허용합니다.세션 1)에서 price * 10을 처리하고 있으므로 price에 10 이 곱해진 결과가 세션 2)에서 보이게 됩니다. 만일 세션 1)에서 ROLLBACK 시켜버리면 세션 2)는 잘못된 결과를 보게 됩니다. 이러한 것을 Dirty Page를 읽었다고 합니다 (Dirty Read). </p>
+<p><img src="/image/isolationLevel01.png" alt></p>
+</li>
+<li><p>read committed</p>
+<p>DIrty Read를 방지합니다. COMMIT 하지 않은 트랜잭션이 이용한 자원에 대해 트랜잭션이 완료되어야 (= 잠금이 해제되어야) 데이터를 읽을 수 있습니다.</p>
+</li>
+<li><p>repeatable read</p>
+<p>트랜잭션이 완료될 때까지 공유 잠금을 유지하여 여러번 같은 데이터를 읽어도 항상 같은 값이 얻어지도록 합니다.</p>
+<p>주의해야할 사항은 REPEATABLE READ가 설정되면 원래 읽었던 데이터에 대하여서는 항상 같은 값이 유지 되지만 새로 추가되는 데이터를 막을 수는 없습니다. </p>
+<p>예를 들어 특정 조건에 만족한 레코드가 5개였으면 이 5개의 레코드는 언제든 같은 값을 보이게 되지만 다른 트랜잭션에 의해 이 조건을 만족하는 새로운 레코드가 추가되면 원래 없었던 새로운 레코드가 보이게 됩니다. 이러한 것을 Pantom Read라고 합니다.</p>
+<p>세션 1) 에서 Test 테이블을 만들어서 3개의 레코드를 추가하였습니다. 트랜잭션에서 검색의 범위가 1부터 4이므로 INSERT한 3개의 레코드가 위 빨간색 박스안의 내용처럼 표시됩니다.</p>
+<p>REPEATABLE READ 가 설정되었으므로 이 3개의 레코드는 트랜잭션이 끝날 때 까지 아무도 변경 할 수 없습니다. 예를 들어 세션 2)에서 col1 컬럼이 1인 레코드의 col2를 ‘AAAAA’ 에서 ‘BBBBB’로 바꾸려고 하면 잠금으로 인하여 처리되지 못합니다.</p>
+<p>하지만 세션 2)에서는 검색 범위안에는 들어가지만 아직 존재하지 않는 레코드를 추가할 때 아무 문제 없이 처리가 됩니다. 세션 2)의 수행 결과를 보면 (1개 행 적용됨) 이 표시된 것을 볼 수 있습니다.</p>
+<p>이 상태에서 세션 1)에서 똑같은 검색을 수행하면 새로운 레코드가 하나 추가되어 이전의 결과와 다르게 됩니다. 이것이 Pantom Read 입니다.</p>
+<p><img src="/image/isolationLevel02.png" alt></p>
+</li>
+<li><p>serializble</p>
+<p>가장 높은 고립화 수준으로 REPEATABLE READ 고립화 수준이 막지 못하는 Pantom Read까지 방지해줍니다. 완벽한 데이터베이스의 일관성은 유지해 주지만 잠금을 유지하기 위하여 오버헤드는 증가하게 됩니다.바로 위의 그림에서, 만일 세션 1) 에서 SERIALIZABLE 고립화 수준이 설정되었다면 세션 2)에서의 INSERT 는 불가능하게 됩니다.</p>
+</li>
+</ol>
+<h5 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h5><p><a href="http://goforaurora.tistory.com/entry/SQL-%ED%8A%B8%EB%9E%9C%EC%9E%AD%EC%85%98%EC%9D%98-%EA%B3%A0%EB%A6%BD%ED%99%94-%EC%88%98%EC%A4%80Isolation-Level" target="_blank" rel="noopener">http://goforaurora.tistory.com/entry/SQL-%ED%8A%B8%EB%9E%9C%EC%9E%AD%EC%85%98%EC%9D%98-%EA%B3%A0%EB%A6%BD%ED%99%94-%EC%88%98%EC%A4%80Isolation-Level</a></p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/12/05/isolation level/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2018/12/05/graph/">
+                            그래프
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-12-05T00:00:00+09:00">
+	
+		    Dec 05, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/data-structure/">Data Structure</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h5 id="그래프란"><a href="#그래프란" class="headerlink" title="그래프란 ?"></a>그래프란 ?</h5><p>노드 (N, node) 와 그 노드를 연결하는 간선 (E, edge) 을 하나로 모아 놓은 자료 구조입니다.</p>
+<h5 id="트리와-그래프의-차이는"><a href="#트리와-그래프의-차이는" class="headerlink" title="트리와 그래프의 차이는?"></a>트리와 그래프의 차이는?</h5><p>트리는 그래프의 한 종류입니다. 트리는 방향성이 있는 비순환 그래프입니다.</p>
+<h5 id="그래프는-어떻게-구현하나요"><a href="#그래프는-어떻게-구현하나요" class="headerlink" title="그래프는 어떻게 구현하나요 ?"></a>그래프는 어떻게 구현하나요 ?</h5><p>인접행렬과 인접리스트로 구현할 수 있습니다.</p>
+<ol>
+<li><p>인접행렬</p>
+<p>그래프의 연결 관계를 이차원 배열로 나타내는 방식입니다.<br>장점은, 노드 i와 노드 j가 연결되어 있는지 확인하고 싶을 때, adj(i)(j)가 1인지 0인지만 확인하면 되기 때문에 시간복잡도 O(1) 이라는 점입니다. 단점은, 노드 i에 연결된 모든 노드들에 방문해보고 싶은 경우, adj(i)(1)부터 adj(i)(v)를 모두 확인해보아야 하기 때문에 총 O(v)의 시간이 걸린다는 점입니다.</p>
+</li>
+<li><p>인접리스트</p>
+<p>그래프의 연결 관계를 연결 리스트로 나타내는 방식입니다.<br>장점은, 실제로 연결된 노드들에 대한 정보만 저장합니다. 단점은, 노드 i와 노드 j가 연결되어 있는지 알고 싶다면, adj[i]가 j를 성분으로 갖는지 확인해봐야합니다. 시간복잡도 O(v)가 됩니다.</p>
+</li>
+</ol>
+<h5 id="그래프를-어떻게-탐색하나요"><a href="#그래프를-어떻게-탐색하나요" class="headerlink" title="그래프를 어떻게 탐색하나요?"></a>그래프를 어떻게 탐색하나요?</h5><p>깊이 우선 탐색 (DFS) 와 너비 우선 탐색 (BFS)가 있습니다.</p>
+<ol>
+<li><p>DFS</p>
+<p>루트 노드(혹은 다른 임의의 노드)에서 시작해서 다음 분기(branch)로 넘어가기 전에 해당 분기를 완벽하게 탐색하는 방법입니다.</p>
+</li>
+<li><p>BFS</p>
+<p>루트 노드(혹은 다른 임의의 노드)에서 시작해서 인접한 노드를 먼저 탐색하는 방법입니다.</p>
+</li>
+</ol>
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://gmlwjd9405.github.io/2018/08/13/data-structure-graph.html" target="_blank" rel="noopener">https://gmlwjd9405.github.io/2018/08/13/data-structure-graph.html</a></p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/12/05/graph/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2018/12/05/static/">
                             static
                         </a>
@@ -308,8 +463,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/12/05/infix/">
-                            순회
+                        <a class="link-unstyled" href="/2018/12/05/ADT/">
+                            ADT
                         </a>
                     
                 </h1>
@@ -331,17 +486,8 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h5 id="infix-prefix-postfixt-표기법이-뭔가요"><a href="#infix-prefix-postfixt-표기법이-뭔가요" class="headerlink" title="infix, prefix, postfixt 표기법이 뭔가요?"></a>infix, prefix, postfixt 표기법이 뭔가요?</h5><p>연산자가 놓이는 위치를 기준으로 구분합니다.<br>infix는 연산자가 피연자 사이에, prefix는 연산자가 피연산자 앞에, postfix는 연산자가 피연산자 뒤에 놓입니다.</p>
-<h5 id="infix를-postfix로-어떻게-바꾸나요"><a href="#infix를-postfix로-어떻게-바꾸나요" class="headerlink" title="infix를 postfix로 어떻게 바꾸나요?"></a>infix를 postfix로 어떻게 바꾸나요?</h5><ol>
-<li>취할 수 있는 모든 괄호를 취합니다.</li>
-<li>각 괄호를 기준으로 연산자를 모두 뒤로 뺍니다.</li>
-<li>괄호를 모두 삭제합니다.</li>
-</ol>
-<h5 id="infix를-prefix로-어떻게-바꾸나요"><a href="#infix를-prefix로-어떻게-바꾸나요" class="headerlink" title="infix를 prefix로 어떻게 바꾸나요?"></a>infix를 prefix로 어떻게 바꾸나요?</h5><ol>
-<li>취할 수 있는 모든 괄호를 취합니다.</li>
-<li>각 괄호를 기준으로 연산자를 모두 앞으로 뺍니다.</li>
-<li>괄호를 모두 삭제합니다.</li>
-</ol>
+                    <p>추상자료형이란 기능의 구현 부분을 나타내지 않고 순수한 기능이 무엇인지 나열한 것입니다.</p>
+<p>예를 들면, 스택은 FILO(First In Last Out)/LIFO(Last In First Out)의 자료구조로, 마지막에 입력된 데이터가 먼저 출력되는 자료구조입니다. push는 스택에 데이터를 입력합니다. pop은 스택에 있는 데이터중에 가장 나중에 입력된 데이터를 출력하고, 스택에서 삭제합니다.</p>
 
                     
                         
@@ -349,76 +495,7 @@
                     
                     
                         <p>
-                            <a href="/2018/12/05/infix/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/12/05/graph/">
-                            그래프
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-12-05T00:00:00+09:00">
-	
-		    Dec 05, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/data-structure/">Data Structure</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h5 id="그래프란"><a href="#그래프란" class="headerlink" title="그래프란 ?"></a>그래프란 ?</h5><p>노드 (N, node) 와 그 노드를 연결하는 간선 (E, edge) 을 하나로 모아 놓은 자료 구조입니다.</p>
-<h5 id="트리와-그래프의-차이는"><a href="#트리와-그래프의-차이는" class="headerlink" title="트리와 그래프의 차이는?"></a>트리와 그래프의 차이는?</h5><p>트리는 그래프의 한 종류입니다. 트리는 방향성이 있는 비순환 그래프입니다.</p>
-<h5 id="그래프는-어떻게-구현하나요"><a href="#그래프는-어떻게-구현하나요" class="headerlink" title="그래프는 어떻게 구현하나요 ?"></a>그래프는 어떻게 구현하나요 ?</h5><p>인접행렬과 인접리스트로 구현할 수 있습니다.</p>
-<ol>
-<li><p>인접행렬</p>
-<p>그래프의 연결 관계를 이차원 배열로 나타내는 방식입니다.<br>장점은, 노드 i와 노드 j가 연결되어 있는지 확인하고 싶을 때, adj(i)(j)가 1인지 0인지만 확인하면 되기 때문에 시간복잡도 O(1) 이라는 점입니다. 단점은, 노드 i에 연결된 모든 노드들에 방문해보고 싶은 경우, adj(i)(1)부터 adj(i)(v)를 모두 확인해보아야 하기 때문에 총 O(v)의 시간이 걸린다는 점입니다.</p>
-</li>
-<li><p>인접리스트</p>
-<p>그래프의 연결 관계를 연결 리스트로 나타내는 방식입니다.<br>장점은, 실제로 연결된 노드들에 대한 정보만 저장합니다. 단점은, 노드 i와 노드 j가 연결되어 있는지 알고 싶다면, adj[i]가 j를 성분으로 갖는지 확인해봐야합니다. 시간복잡도 O(v)가 됩니다.</p>
-</li>
-</ol>
-<h5 id="그래프를-어떻게-탐색하나요"><a href="#그래프를-어떻게-탐색하나요" class="headerlink" title="그래프를 어떻게 탐색하나요?"></a>그래프를 어떻게 탐색하나요?</h5><p>깊이 우선 탐색 (DFS) 와 너비 우선 탐색 (BFS)가 있습니다.</p>
-<ol>
-<li><p>DFS</p>
-<p>루트 노드(혹은 다른 임의의 노드)에서 시작해서 다음 분기(branch)로 넘어가기 전에 해당 분기를 완벽하게 탐색하는 방법입니다.</p>
-</li>
-<li><p>BFS</p>
-<p>루트 노드(혹은 다른 임의의 노드)에서 시작해서 인접한 노드를 먼저 탐색하는 방법입니다.</p>
-</li>
-</ol>
-<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://gmlwjd9405.github.io/2018/08/13/data-structure-graph.html" target="_blank" rel="noopener">https://gmlwjd9405.github.io/2018/08/13/data-structure-graph.html</a></p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/12/05/graph/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/12/05/ADT/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -574,59 +651,6 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/12/05/coupling/">
-                            coupling
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-12-05T00:00:00+09:00">
-	
-		    Dec 05, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/java/">Java</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h5 id="is-a-relationship-과-has-a-relationship의-차이는"><a href="#is-a-relationship-과-has-a-relationship의-차이는" class="headerlink" title="is-a relationship 과 has-a relationship의 차이는 ?"></a>is-a relationship 과 has-a relationship의 차이는 ?</h5><p>IS-A relationship 은 inheritance 이고, HAS - A relationship 은 composition입니다. inheritance 는 composition 보다 coupling 이 높습니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//상속</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Apple</span> <span class="keyword">extends</span> <span class="title">Fruit</span></span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//구성</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Room</span> </span>&#123;</span><br><span class="line">    Table table = <span class="keyword">new</span> Table();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h5 id="응집도-cohesion-와-결합도-coupling-란"><a href="#응집도-cohesion-와-결합도-coupling-란" class="headerlink" title="응집도(cohesion)와 결합도(coupling) 란 ?"></a>응집도(cohesion)와 결합도(coupling) 란 ?</h5><p>응집도는 하나의 클래스가 하나의 기능(책임)을 온전히 순도 높게 담당하고 있는 정도이고, 결합도는 클래스간의 서로 다른 책임들이 얽혀 있는 상호 의존도의 정도입니다. 약한 결합도, 강한 응집도가 좋습니다.</p>
-<h5 id="강한결합과-약한-결합의-차이는-무엇인가요"><a href="#강한결합과-약한-결합의-차이는-무엇인가요" class="headerlink" title="강한결합과 약한 결합의 차이는 무엇인가요?"></a>강한결합과 약한 결합의 차이는 무엇인가요?</h5><p>느슨한 결합(Loose Coupling)은 다른 클래스를 직접적으로 사용하는 클래스의 의존성을 줄이는 것이고,<br>강한 결합(Tight Coupling)은 클래스와 객체가 서로 의존하고 있는 것입니다.</p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/12/05/coupling/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
                         <a class="link-unstyled" href="/2018/12/05/abstract class, interface/">
                             abstract class, interface
                         </a>
@@ -682,94 +706,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/12/05/isolation level/">
-                            isolation level
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-12-05T00:00:00+09:00">
-	
-		    Dec 05, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/database/">Database</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h5 id="Isolation-level이-무엇인가요"><a href="#Isolation-level이-무엇인가요" class="headerlink" title="Isolation level이 무엇인가요 ?"></a>Isolation level이 무엇인가요 ?</h5><p>트랜잭션에서 일관성이 없는 데이터를 허용하는 수준입니다.</p>
-<h5 id="고립화-수준을-높이는-것이-좋을-까요-낮추는-것이-좋을까요"><a href="#고립화-수준을-높이는-것이-좋을-까요-낮추는-것이-좋을까요" class="headerlink" title="고립화 수준을 높이는 것이 좋을 까요, 낮추는 것이 좋을까요 ?"></a>고립화 수준을 높이는 것이 좋을 까요, 낮추는 것이 좋을까요 ?</h5><p>트랜잭션 고립화 수준을 높이면 일관성은 향상 되지만, 더 넓은 범위의 Lock을 더 오랫동안 유지하는 방식으로 동시성을 저하시킵니다.</p>
-<h5 id="낮은-단계의-고립화-수준에서-발생하는-에러는-뭐가-있나요"><a href="#낮은-단계의-고립화-수준에서-발생하는-에러는-뭐가-있나요" class="headerlink" title="낮은 단계의 고립화 수준에서 발생하는 에러는 뭐가 있나요?"></a>낮은 단계의 고립화 수준에서 발생하는 에러는 뭐가 있나요?</h5><p>Dirty Read, Non Repeatable Read, Phantom Read가 있습니다.</p>
-<ol>
-<li><p>Dirty Read</p>
-<p>데이터 캐시에는 변경이 되었지만, 아직 디스크에는 변경되지 않은 데이터(페이지)를 읽는 행위 입니다.</p>
-</li>
-<li><p>Non Repeatable Read</p>
-<p>트랜잭션 내에서 한 번 읽은 데이터가 트랜잭션이 끝나기 전에 변경되었다면, 다시 읽었을 때 새로운 값이 읽히는 것입니다.</p>
-</li>
-<li><p>Phantom Read</p>
-<p>트랜잭션 중에 없던 행이 추가되어 새로 입력된 데이터를 읽는 것입니다.</p>
-</li>
-</ol>
-<h5 id="isolation-level-에는-뭐가-있나요"><a href="#isolation-level-에는-뭐가-있나요" class="headerlink" title="isolation level 에는 뭐가 있나요?"></a>isolation level 에는 뭐가 있나요?</h5><p>read uncommitted, read committed, repeatable read, serializable 이 있습니다.</p>
-<ol>
-<li><p>read uncommitted</p>
-<p>고립화 수준에서 가장 낮은 수준입니다. 아직 커밋되지 않은 데이터를 다른 트랜잭션이 읽는 것을 허용합니다.세션 1)에서 price * 10을 처리하고 있으므로 price에 10 이 곱해진 결과가 세션 2)에서 보이게 됩니다. 만일 세션 1)에서 ROLLBACK 시켜버리면 세션 2)는 잘못된 결과를 보게 됩니다. 이러한 것을 Dirty Page를 읽었다고 합니다 (Dirty Read). </p>
-<p><img src="/image/isolationLevel01.png" alt></p>
-</li>
-<li><p>read committed</p>
-<p>DIrty Read를 방지합니다. COMMIT 하지 않은 트랜잭션이 이용한 자원에 대해 트랜잭션이 완료되어야 (= 잠금이 해제되어야) 데이터를 읽을 수 있습니다.</p>
-</li>
-<li><p>repeatable read</p>
-<p>트랜잭션이 완료될 때까지 공유 잠금을 유지하여 여러번 같은 데이터를 읽어도 항상 같은 값이 얻어지도록 합니다.</p>
-<p>주의해야할 사항은 REPEATABLE READ가 설정되면 원래 읽었던 데이터에 대하여서는 항상 같은 값이 유지 되지만 새로 추가되는 데이터를 막을 수는 없습니다. </p>
-<p>예를 들어 특정 조건에 만족한 레코드가 5개였으면 이 5개의 레코드는 언제든 같은 값을 보이게 되지만 다른 트랜잭션에 의해 이 조건을 만족하는 새로운 레코드가 추가되면 원래 없었던 새로운 레코드가 보이게 됩니다. 이러한 것을 Pantom Read라고 합니다.</p>
-<p>세션 1) 에서 Test 테이블을 만들어서 3개의 레코드를 추가하였습니다. 트랜잭션에서 검색의 범위가 1부터 4이므로 INSERT한 3개의 레코드가 위 빨간색 박스안의 내용처럼 표시됩니다.</p>
-<p>REPEATABLE READ 가 설정되었으므로 이 3개의 레코드는 트랜잭션이 끝날 때 까지 아무도 변경 할 수 없습니다. 예를 들어 세션 2)에서 col1 컬럼이 1인 레코드의 col2를 ‘AAAAA’ 에서 ‘BBBBB’로 바꾸려고 하면 잠금으로 인하여 처리되지 못합니다.</p>
-<p>하지만 세션 2)에서는 검색 범위안에는 들어가지만 아직 존재하지 않는 레코드를 추가할 때 아무 문제 없이 처리가 됩니다. 세션 2)의 수행 결과를 보면 (1개 행 적용됨) 이 표시된 것을 볼 수 있습니다.</p>
-<p>이 상태에서 세션 1)에서 똑같은 검색을 수행하면 새로운 레코드가 하나 추가되어 이전의 결과와 다르게 됩니다. 이것이 Pantom Read 입니다.</p>
-<p><img src="/image/isolationLevel02.png" alt></p>
-</li>
-<li><p>serializble</p>
-<p>가장 높은 고립화 수준으로 REPEATABLE READ 고립화 수준이 막지 못하는 Pantom Read까지 방지해줍니다. 완벽한 데이터베이스의 일관성은 유지해 주지만 잠금을 유지하기 위하여 오버헤드는 증가하게 됩니다.바로 위의 그림에서, 만일 세션 1) 에서 SERIALIZABLE 고립화 수준이 설정되었다면 세션 2)에서의 INSERT 는 불가능하게 됩니다.</p>
-</li>
-</ol>
-<h5 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h5><p><a href="http://goforaurora.tistory.com/entry/SQL-%ED%8A%B8%EB%9E%9C%EC%9E%AD%EC%85%98%EC%9D%98-%EA%B3%A0%EB%A6%BD%ED%99%94-%EC%88%98%EC%A4%80Isolation-Level" target="_blank" rel="noopener">http://goforaurora.tistory.com/entry/SQL-%ED%8A%B8%EB%9E%9C%EC%9E%AD%EC%85%98%EC%9D%98-%EA%B3%A0%EB%A6%BD%ED%99%94-%EC%88%98%EC%A4%80Isolation-Level</a></p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/12/05/isolation level/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/12/05/OOP/">
-                            OOP
+                        <a class="link-unstyled" href="/2018/12/05/coupling/">
+                            coupling
                         </a>
                     
                 </h1>
@@ -791,15 +729,69 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h5 id="객체지향프로그래밍-OOP-가-뭔가요"><a href="#객체지향프로그래밍-OOP-가-뭔가요" class="headerlink" title="객체지향프로그래밍(OOP) 가 뭔가요?"></a>객체지향프로그래밍(OOP) 가 뭔가요?</h5><p>프로그래밍에서 필요한 데이터를 추상화 시켜서 상태와 행위를 가진 객체를 만들고, 그 객체들 간의 유기적인 상호작용을 통해 로직을 구성하는 프로그래밍 방법입니다.</p>
-<h5 id="장점이-무엇인가요"><a href="#장점이-무엇인가요" class="headerlink" title="장점이 무엇인가요?"></a>장점이 무엇인가요?</h5><ol>
-<li>코드 재사용이 쉽습니다.<br>상속을 통해 확장해서 사용할 수 있고, 남이 만든 클래스를 가져와서 사용할 수 있습니다.</li>
-<li>유지보수가 쉽습니다.<br>절차 지향 프로그래밍에서는 코드를 수정 할 때 일일이 찾아야합니다. 반면, 객체지향 프로그래밍에서는 수정해야 할 부분이 클래스 내부에 멤버 변수 혹은 메소드로 있기 때문에 해당 부분만 수정하면 됩니다.</li>
+                    <h5 id="is-a-relationship-과-has-a-relationship의-차이는"><a href="#is-a-relationship-과-has-a-relationship의-차이는" class="headerlink" title="is-a relationship 과 has-a relationship의 차이는 ?"></a>is-a relationship 과 has-a relationship의 차이는 ?</h5><p>IS-A relationship 은 inheritance 이고, HAS - A relationship 은 composition입니다. inheritance 는 composition 보다 coupling 이 높습니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//상속</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Apple</span> <span class="keyword">extends</span> <span class="title">Fruit</span></span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//구성</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Room</span> </span>&#123;</span><br><span class="line">    Table table = <span class="keyword">new</span> Table();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="응집도-cohesion-와-결합도-coupling-란"><a href="#응집도-cohesion-와-결합도-coupling-란" class="headerlink" title="응집도(cohesion)와 결합도(coupling) 란 ?"></a>응집도(cohesion)와 결합도(coupling) 란 ?</h5><p>응집도는 하나의 클래스가 하나의 기능(책임)을 온전히 순도 높게 담당하고 있는 정도이고, 결합도는 클래스간의 서로 다른 책임들이 얽혀 있는 상호 의존도의 정도입니다. 약한 결합도, 강한 응집도가 좋습니다.</p>
+<h5 id="강한결합과-약한-결합의-차이는-무엇인가요"><a href="#강한결합과-약한-결합의-차이는-무엇인가요" class="headerlink" title="강한결합과 약한 결합의 차이는 무엇인가요?"></a>강한결합과 약한 결합의 차이는 무엇인가요?</h5><p>느슨한 결합(Loose Coupling)은 다른 클래스를 직접적으로 사용하는 클래스의 의존성을 줄이는 것이고,<br>강한 결합(Tight Coupling)은 클래스와 객체가 서로 의존하고 있는 것입니다.</p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/12/05/coupling/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2018/12/05/infix/">
+                            순회
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-12-05T00:00:00+09:00">
+	
+		    Dec 05, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/data-structure/">Data Structure</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h5 id="infix-prefix-postfixt-표기법이-뭔가요"><a href="#infix-prefix-postfixt-표기법이-뭔가요" class="headerlink" title="infix, prefix, postfixt 표기법이 뭔가요?"></a>infix, prefix, postfixt 표기법이 뭔가요?</h5><p>연산자가 놓이는 위치를 기준으로 구분합니다.<br>infix는 연산자가 피연자 사이에, prefix는 연산자가 피연산자 앞에, postfix는 연산자가 피연산자 뒤에 놓입니다.</p>
+<h5 id="infix를-postfix로-어떻게-바꾸나요"><a href="#infix를-postfix로-어떻게-바꾸나요" class="headerlink" title="infix를 postfix로 어떻게 바꾸나요?"></a>infix를 postfix로 어떻게 바꾸나요?</h5><ol>
+<li>취할 수 있는 모든 괄호를 취합니다.</li>
+<li>각 괄호를 기준으로 연산자를 모두 뒤로 뺍니다.</li>
+<li>괄호를 모두 삭제합니다.</li>
 </ol>
-<h5 id="단점은-무엇인가요"><a href="#단점은-무엇인가요" class="headerlink" title="단점은 무엇인가요?"></a>단점은 무엇인가요?</h5><ol>
-<li>처리 속도가 상대적으로 느립니다.</li>
-<li>객체가 많으면 용량이 커질 수 있습니다.</li>
-<li>설계시 많은 시간이 소요됩니다.</li>
+<h5 id="infix를-prefix로-어떻게-바꾸나요"><a href="#infix를-prefix로-어떻게-바꾸나요" class="headerlink" title="infix를 prefix로 어떻게 바꾸나요?"></a>infix를 prefix로 어떻게 바꾸나요?</h5><ol>
+<li>취할 수 있는 모든 괄호를 취합니다.</li>
+<li>각 괄호를 기준으로 연산자를 모두 앞으로 뺍니다.</li>
+<li>괄호를 모두 삭제합니다.</li>
 </ol>
 
                     
@@ -808,7 +800,7 @@
                     
                     
                         <p>
-                            <a href="/2018/12/05/OOP/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/12/05/infix/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>

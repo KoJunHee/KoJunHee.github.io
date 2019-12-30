@@ -194,8 +194,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/05/31/Template Method Pattern04/">
-                            Template Method Pattern04
+                        <a class="link-unstyled" href="/2018/05/31/Template Method Pattern02/">
+                            Template Method Pattern02
                         </a>
                     
                 </h1>
@@ -217,36 +217,95 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>전체적인 알고리즘은 상위 클래스에서 구현하면서 다른 부분은 하위 클래스에서 구현할 수 있도록 하는 디자인 패턴이다. 전체적인 알고리즘 코드를 재사용하는 데 유용하다.</p>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/template031.png" alt></p>
+                    <h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/tmplate02.png" alt></p>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><img src="/image/tmplate03.png" alt></p>
+<p><img src="/image/tmplate04.png" alt></p>
+<p><img src="/image/tmplate05.png" alt></p>
+<p><img src="/image/tmplate06.png" alt></p>
+<p><img src="/image/tmplate07.png" alt></p>
+<p>##Reference</p>
+<p><a href="https://www.tutorialspoint.com/design_pattern/template_pattern.htm" target="_blank" rel="noopener">https://www.tutorialspoint.com/design_pattern/template_pattern.htm</a></p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/05/31/Template Method Pattern02/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2018/05/31/State Pattern02/">
+                            State Pattern02
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-05-31T00:00:00+09:00">
+	
+		    May 31, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/design-pattern/">Design Pattern</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>상태에 따라 동일한 작업이 다른 방식으로 실행될 때 해당 상태가 작업을 수행하도록 위임하는 디자인 패턴이다. </p>
+<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/sp031.png" alt></p>
 <ul>
-<li>AbstractClass<ul>
-<li>템플릿 메서드를 정의하는 클래스</li>
-<li>하위 클래스에 공통 알고리즘을 정의하고, 하위 클래스에서 구현될 기능을 primitive method 또는 hook method로 정의하는 클래스</li>
+<li>State<ul>
+<li>시스템의 모든 상태에 공통의 인터페이스를 제공</li>
+<li>이 인터페이스를 실체화한 어떤 상태 클래스도 기존 상태 클래스를 대신해 고체해서 사용할 수 있다.</li>
 </ul>
 </li>
-<li>ConcreteClass<ul>
-<li>물려받은 primitive method 나 hook method 를 구현하는 클래스</li>
-<li>상위 클래스에서 구현된 템플릿 메서드의 일반적인 알고리즘에서 하위 클래스에 적합하게 primitive method나 hook method를 오버라이드하는 클래스</li>
+<li>State1, State2, State3<ul>
+<li>Context 객체가 요청한 작업을 자신의 방식으로 실제 실행</li>
+<li>대부분의 경우 다음 상태를 결정해 상태 변경을 Context 객체에 요청하는 역할도 수행 </li>
+</ul>
+</li>
+<li>Context<ul>
+<li>State를 이용하는 역할 수행</li>
+<li>현재 시스템의 상태를 나타내는 상태 변수(state) , 실제 시스템의 상태를 구현하는 여러가지 변수가 있다</li>
+<li>각 상태 클래스에서 상태 변경을 요청해 상태를 바꿀수 있도록 하는 method (setState) 가 제공된다.</li>
+<li>Context 요소를 구현한 클래스의 request method는 실제 행위를 실행하는 대신 해당 상태 객체에 행위 실행을 위임</li>
 </ul>
 </li>
 </ul>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/template032.png" alt></p>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/sp032.png" alt></p>
 <ul>
-<li>Motor <ul>
-<li>AbstractClass</li>
+<li>Light <ul>
+<li>Context</li>
 </ul>
 </li>
-<li>HyundaiMotor, LGMotor<ul>
-<li>ConcreteClass</li>
+<li>State inteface<ul>
+<li>State</li>
 </ul>
 </li>
-<li>Motor 클래스의 move method <ul>
-<li>template method </li>
-</ul>
-</li>
-<li>Motor 클래스의 moveMotor method <ul>
-<li>primitive method</li>
+<li>ON, OFF<ul>
+<li>State1, State2</li>
 </ul>
 </li>
 </ul>
@@ -258,7 +317,77 @@
                     
                     
                         <p>
-                            <a href="/2018/05/31/Template Method Pattern04/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/05/31/State Pattern02/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2018/05/31/State Pattern01/">
+                            State Pattern01
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-05-31T00:00:00+09:00">
+	
+		    May 31, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/design-pattern/">Design Pattern</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>The State Pattern allows an object to alter its behavior when its internal state changes. </p>
+<p>The object will appear to change its class. </p>
+<h2 id="Explanation"><a href="#Explanation" class="headerlink" title="Explanation"></a>Explanation</h2><ul>
+<li>The first part of this description makes a lot of sense, right?  Because the pattern encapsulates state into separate classes and delegates to the object representing the current state, we know that behavior changes along with the internal state. The Gumball Machine provides a good example: when the gumball machine is in the NoQuarterState and you insert a quarter, you get different behavior (the machine accepts the quarter) than if you insert a quarter when it’s in the HasQuarterState (the machine rejects the quarter). </li>
+<li>What about the second part of the definition? What does it mean for an object to “appear to change its class?” Think about it from the perspective of a client: if an object you’re using can completely change its behavior, then it appears to you that the object is actually instantiated from another class. In reality, however, you know that we are using composition to give the appearance of a class change by simply referencing different state objects. </li>
+</ul>
+<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/statePatternUML01.png" alt></p>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><img src="/image/statePatternUML02.png" alt></p>
+<p><img src="/image/statePatternUML03.png" alt></p>
+<p><img src="/image/statePatternUML04.png" alt></p>
+<h2 id="Compared-to-‘Strategy-Pattern’"><a href="#Compared-to-‘Strategy-Pattern’" class="headerlink" title="Compared to ‘Strategy Pattern’"></a>Compared to ‘Strategy Pattern’</h2><p>The State and Strategy Patterns have the same class diagram, but they differ in intent. </p>
+<ul>
+<li>Strategy Pattern <ul>
+<li>typically configures Context classes with a behavior or algorithm. </li>
+</ul>
+</li>
+<li>State Pattern <ul>
+<li>allows a Context to change its behavior as the state of the Context changes.</li>
+</ul>
+</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Head First Design Pattern</p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/05/31/State Pattern01/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -324,6 +453,65 @@
                     
                         <p>
                             <a href="/2018/05/28/Prototype Pattern02/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2018/05/28/촌수 계산/">
+                            촌수 계산
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-05-28T00:00:00+09:00">
+	
+		    May 28, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
+<li><p>결국 최단 거리 문제. 따라서 BFS</p>
+</li>
+<li><p>테스트 케이스 대로 그래프를 그리면 다음과 같다</p>
+<ul>
+<li>7에서 3까지의 최단 거리를 구하면 된다. </li>
+<li>이는 곧 7에서 3까지의 depth를 구하는 것이다.</li>
+</ul>
+<p><img src="/image/family04.png" alt></p>
+</li>
+</ul>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/05/28/촌수 계산/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -573,65 +761,6 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/05/28/촌수 계산/">
-                            촌수 계산
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-05-28T00:00:00+09:00">
-	
-		    May 28, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
-<li><p>결국 최단 거리 문제. 따라서 BFS</p>
-</li>
-<li><p>테스트 케이스 대로 그래프를 그리면 다음과 같다</p>
-<ul>
-<li>7에서 3까지의 최단 거리를 구하면 된다. </li>
-<li>이는 곧 7에서 3까지의 depth를 구하는 것이다.</li>
-</ul>
-<p><img src="/image/family04.png" alt></p>
-</li>
-</ul>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/05/28/촌수 계산/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
                         <a class="link-unstyled" href="/2018/05/27/나이트의 이동/">
                             나이트의 이동
                         </a>
@@ -758,153 +887,6 @@
                     
                         <p>
                             <a href="/2018/05/22/Sobel Operator/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/05/22/Robinson Compass Mask/">
-                            Robinson Compass Mask
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-05-22T00:00:00+09:00">
-	
-		    May 22, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/dip/">DIP</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p>Robinson compass masks are another type of derrivate mask which is used for edge detection. </p>
-<p>This operator is also known as direction mask. In this operator we take one mask and rotate it in all the 8 compass major directions that are following:</p>
-<ul>
-<li>North</li>
-<li>North West</li>
-<li>West</li>
-<li>South West</li>
-<li>South</li>
-<li>South East</li>
-<li>East</li>
-<li>North East</li>
-</ul>
-<p>There is no fixed mask. </p>
-<p>You can take any mask and you have to rotate it to find edges in all the above mentioned directions. </p>
-<p>All the masks are rotated on the bases of direction of zero columns.</p>
-<p>For example let’s see the following mask which is in North Direction and then rotate it to make all the direction masks.</p>
-<p><img src="/image/robinson01.png" alt></p>
-<p><img src="/image/robinson02.png" alt></p>
-<p>As you can see that all the directions are covered on the basis of zeros direction. </p>
-<p>Each mask will give you the edges on its direction. </p>
-<p>Now let’s see the result of the entire above masks. </p>
-<p>Suppose we have a sample picture from which we have to find all the edges. </p>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/robinson03.png" alt></p>
-<p>As you can see that by applying all the above masks you will get edges in all the direction. </p>
-<p>Result is also depends on the image. </p>
-<p>Suppose there is an image, which do not have any North East direction edges so then that mask will be ineffective.</p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/05/22/Robinson Compass Mask/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/05/22/Laplacian Operator/">
-                            Laplacian Operator
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-05-22T00:00:00+09:00">
-	
-		    May 22, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/dip/">DIP</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p>Laplacian Operator is also a derivative operator which is used to find edges in an image. </p>
-<p>The major difference between Laplacian and other operators like Prewitt, Sobel, Robinson and Kirsch is that these all are first order derivative masks but Laplacian is a second order derivative mask. </p>
-<p>In this mask we have two further classifications one is Positive Laplacian Operator and other is Negative Laplacian Operator.</p>
-<p>Another difference between Laplacian and other operators is that unlike other operators Laplacian didn’t take out edges in any particular direction but it take out edges in following classification.</p>
-<ul>
-<li>Inward Edges</li>
-<li>Outward Edges</li>
-</ul>
-<p>Let’s see that how Laplacian operator works.</p>
-<h2 id="Positive-Laplacian-Operator"><a href="#Positive-Laplacian-Operator" class="headerlink" title="Positive Laplacian Operator"></a>Positive Laplacian Operator</h2><p>In Positive Laplacian we have standard mask in which center element of the mask should be negative </p>
-<p>and corner elements of mask should be zero.</p>
-<p>Positive Laplacian Operator is use to take out outward edges in an image.</p>
-<p><img src="/image/laplacian01.png" alt> </p>
-<h2 id="Negative-Laplacian-Operator"><a href="#Negative-Laplacian-Operator" class="headerlink" title="Negative Laplacian Operator"></a>Negative Laplacian Operator</h2><p>In negative Laplacian operator we also have a standard mask, in which center element should be positive. All the elements in the corner should be zero and rest of all the elements in the mask should be -1.</p>
-<p>Negative Laplacian operator is use to take out inward edges in an image</p>
-<p><img src="/image/laplacian02.png" alt> </p>
-<h2 id="How-it-works"><a href="#How-it-works" class="headerlink" title="How it works"></a>How it works</h2><p>Laplacian is a derivative operator; its uses highlight gray level discontinuities in an image and try to deemphasize regions with slowly varying gray levels. </p>
-<p>This operation in result produces such images which have grayish edge lines and other discontinuities on a dark background. T</p>
-<p>his produces inward and outward edges in an image</p>
-<p>The important thing is how to apply these filters onto image. </p>
-<p>Remember we can’t apply both the positive and negative Laplacian operator on the same image. </p>
-<p>We have to apply just one but the thing to remember is that if we apply positive Laplacian operator on the image then we subtract the resultant image from the original image to get the sharpened image. </p>
-<p>Similarly if we apply negative Laplacian operator then we have to add the resultant image onto original image to get the sharpened image.</p>
-<p>Let’s apply these filters onto an image and see how it will get us inward and outward edges from an image. </p>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/laplacian03.png" alt> </p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/05/22/Laplacian Operator/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
