@@ -194,6 +194,107 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2018/05/08/JDBC/">
+                            JDBC
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-05-08T00:00:00+09:00">
+	
+		    May 08, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/boost-course/">Boost Course</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <ul>
+<li><p>JDBC</p>
+<ul>
+<li>자바를 이용한 데이터베이스 접속과 SQL 문장의 실행, 그리고 실행 결과로 얻어진 데이터의 핸들링을 제공하는 방법과 절차에 관한 규약</li>
+<li>자바 프로그램 내에서 SQL문을 실행하기 위한 자바 API</li>
+<li>SQL과 프로그래밍 언어의 통합 접근 중 한 형태</li>
+<li>JAVA는 표준 인터페이스인 JDBC API를 제공</li>
+<li>데이터베이스 벤더, 또는 기타 써드파티에서는 JDBC 인터페이스를 구현한 드라이버(driver)를 제공한다.</li>
+</ul>
+</li>
+<li><p>JDBC를 이용한 프로그래밍 방법</p>
+<p><img src="/image/jdbc.png" alt></p>
+<ul>
+<li><p>import java.sql.*;</p>
+</li>
+<li><p>드라이버를 로드 한다.</p>
+<ul>
+<li><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Class.forName( <span class="string">"com.mysql.jdbc.Driver"</span> );</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>Connection 객체를 생성한다.</p>
+<ul>
+<li><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String dburl  = <span class="string">"jdbc:mysql://localhost/dbName"</span>;</span><br><span class="line"></span><br><span class="line">Connection con =  DriverManager.getConnection ( dburl, ID, PWD );</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>Statement 객체를 생성 및 질의 수행</p>
+<ul>
+<li><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Statement stmt = con.createStatement(); </span><br><span class="line">ResultSet rs = stmt.executeQuery(<span class="string">"select no from user"</span> );</span><br><span class="line"></span><br><span class="line">stmt.execute(“query”);             <span class="comment">//any SQL</span></span><br><span class="line">stmt.executeQuery(“query”);     <span class="comment">//SELECT</span></span><br><span class="line">stmt.executeUpdate(“query”);   <span class="comment">//INSERT, UPDATE, DELETE</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>SQL문에 결과물이 있다면 ResultSet 객체를 생성한다.</p>
+<ul>
+<li><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ResultSet rs =  stmt.executeQuery( <span class="string">"select no from user"</span> );</span><br><span class="line"><span class="keyword">while</span> ( rs.next() )</span><br><span class="line">      System.out.println( rs.getInt( <span class="string">"no"</span>) );</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>모든 객체를 닫는다.</p>
+<ul>
+<li><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rs.close();</span><br><span class="line">stmt.close();</span><br><span class="line">con.close();</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Reference</p>
+<ul>
+<li>NAVER edwith boostcourse Full-Stack Web Developer </li>
+</ul>
+</li>
+</ul>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/05/08/JDBC/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2018/05/08/Spring MVC/">
                             Spring MVC
                         </a>
@@ -256,144 +357,6 @@
                     
                         <p>
                             <a href="/2018/05/08/Spring MVC/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/05/08/SQL/">
-                            SQL
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-05-08T00:00:00+09:00">
-	
-		    May 08, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/boost-course/">Boost Course</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <ul>
-<li><p>SQL(Structured Query Language)</p>
-<ul>
-<li>SQL은 데이터를 보다 쉽게 검색하고 추가, 삭제, 수정 같은 조작을 할 수 있도록 고안된 컴퓨터 언어입니다.</li>
-<li>관계형 데이터베이스에서 데이터를 조작하고 쿼리하는 표준 수단입니다.</li>
-<li>DML (Data Manipulation Language)<ul>
-<li>데이터를 조작하기 위해 사용합니다.</li>
-<li>INSERT, UPDATE, DELETE, SELECT 등이 여기에 해당합니다.</li>
-</ul>
-</li>
-<li>DDL (Data Definition Language)<ul>
-<li>데이터베이스의 스키마를 정의하거나 조작하기 위해 사용합니다.</li>
-<li>CREATE, DROP, ALTER 등이 여기에 해당합니다.</li>
-</ul>
-</li>
-<li>DCL (Data Control Language) <ul>
-<li>데이터를 제어하는 언어입니다. 권한을 관리하고, 테이터의 보안, 무결성 등을 정의합니다.</li>
-<li>GRANT, REVOKE 등이 여기에 해당합니다.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Database 생성하기</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql –uroot  -p</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>MySQL 관리자 계정인 root로 데이터베이스 관리 시스템에 접속하겠다는 것입니다.</li>
-<li>MySQL DBMS에 접속하면 “mysql&gt;” 프롬프트가 보입니다.</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create database connectdb;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>다음과 같은 명령을 실행하여 DB이름을 “connectdb＂로 생성하도록 하겠습니다.</li>
-</ul>
-</li>
-<li><p>Database 사용자 생성과 권한 주기</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">grant all privileges on db이름.* to 계정이름@&apos;%&apos; identified by ＇암호’;</span><br><span class="line">grant all privileges on db이름.* to 계정이름@&apos;localhost&apos; identified by ＇암호’;</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>Database를 생성했다면, 해당 데이터베이스를 사용하는 계정을 생성해야 합니다.</li>
-<li>또한, 해당 계정이 데이터베이스를 이용할 수 있는 권한을 줘야 합니다.</li>
-<li>db이름 뒤의 * 는 모든 권한을 의미한다.</li>
-<li>@’%’는 어떤 클라이언트에서든 접근 가능하다는 의미이고, @’localhost’는 해당 컴퓨터에서만 접근 가능하다는 의미입니다.</li>
-<li>flush privileges는 DBMS에게 적용을 하라는 의미입니다.</li>
-<li>해당 명령을 반드시 실행해줘야 합니다.</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">grant all privileges on connectdb.* to connectuser@&apos;%&apos; identified by &apos;connect123!@#&apos;;</span><br><span class="line"></span><br><span class="line">grant all privileges on connectdb.* to connectuser@&apos;localhost&apos; identified by &apos;connect123!@#&apos;;</span><br><span class="line"></span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>생성한 Database에 접속하기</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; –h호스트명 –uDB계정명 –p 데이터베이스이름</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>db이름이 connectdb, db계정이 connectuser, 암호가 connect123!@# 일 경우 콘솔창에서 다음과 같이 입력합니다.</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql –h127.0.0.1 –uconnectuser –p connectdb [enter]</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>DBMS에 존재하는 데이터베이스 확인하기</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show databases;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>사용중인 데이터베이스 전환하기</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; use mydb;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>데이터베이스를 전환하려면, </li>
-<li>이미 데이터베이스가 존재해야 하며 </li>
-<li>현재 접속 중인 계정이 해당 데이터베이스를 사용할 수 있는 권한이 있어야 합니다.</li>
-</ul>
-</li>
-<li><p>데이터를 저장하는 공간 테이블(Table)</p>
-<p><img src="/image/table.png" alt></p>
-<ul>
-<li>마이크로소프트의 엑셀(Excel)을 실행하면 표가 나옵니다. 이러한 표에 각종 값을 저장할 수 있습니다.</li>
-<li>데이터베이스도 엑셀의 표와 유사한 테이블을 가질 수 있습니다.</li>
-<li>엑셀과 다른 점은 데이터베이스를 생성해도 테이블은 존재하지 않는다는 것입니다.</li>
-<li>테이블을 사용하려면 테이블을 생성하는 SQL을 사용해야 합니다.</li>
-<li>그리고, 테이블에 값을 저장하려면 저장하기 위한 SQL을 사용해야 합니다.</li>
-</ul>
-</li>
-<li><p>현재 데이터베이스에 존재하는 테이블 목록 확인하기</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show tables;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>테이블 구조를 확인하기 위한 DESCRIBE 명령</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; desc EMPLOYEE;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Reference</p>
-<ul>
-<li>NAVER edwith boostcourse Full-Stack Web Developer </li>
-</ul>
-</li>
-</ul>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/05/08/SQL/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -581,6 +544,228 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2018/05/08/SQL/">
+                            SQL
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-05-08T00:00:00+09:00">
+	
+		    May 08, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/boost-course/">Boost Course</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <ul>
+<li><p>SQL(Structured Query Language)</p>
+<ul>
+<li>SQL은 데이터를 보다 쉽게 검색하고 추가, 삭제, 수정 같은 조작을 할 수 있도록 고안된 컴퓨터 언어입니다.</li>
+<li>관계형 데이터베이스에서 데이터를 조작하고 쿼리하는 표준 수단입니다.</li>
+<li>DML (Data Manipulation Language)<ul>
+<li>데이터를 조작하기 위해 사용합니다.</li>
+<li>INSERT, UPDATE, DELETE, SELECT 등이 여기에 해당합니다.</li>
+</ul>
+</li>
+<li>DDL (Data Definition Language)<ul>
+<li>데이터베이스의 스키마를 정의하거나 조작하기 위해 사용합니다.</li>
+<li>CREATE, DROP, ALTER 등이 여기에 해당합니다.</li>
+</ul>
+</li>
+<li>DCL (Data Control Language) <ul>
+<li>데이터를 제어하는 언어입니다. 권한을 관리하고, 테이터의 보안, 무결성 등을 정의합니다.</li>
+<li>GRANT, REVOKE 등이 여기에 해당합니다.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Database 생성하기</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql –uroot  -p</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>MySQL 관리자 계정인 root로 데이터베이스 관리 시스템에 접속하겠다는 것입니다.</li>
+<li>MySQL DBMS에 접속하면 “mysql&gt;” 프롬프트가 보입니다.</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create database connectdb;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>다음과 같은 명령을 실행하여 DB이름을 “connectdb＂로 생성하도록 하겠습니다.</li>
+</ul>
+</li>
+<li><p>Database 사용자 생성과 권한 주기</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">grant all privileges on db이름.* to 계정이름@&apos;%&apos; identified by ＇암호’;</span><br><span class="line">grant all privileges on db이름.* to 계정이름@&apos;localhost&apos; identified by ＇암호’;</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Database를 생성했다면, 해당 데이터베이스를 사용하는 계정을 생성해야 합니다.</li>
+<li>또한, 해당 계정이 데이터베이스를 이용할 수 있는 권한을 줘야 합니다.</li>
+<li>db이름 뒤의 * 는 모든 권한을 의미한다.</li>
+<li>@’%’는 어떤 클라이언트에서든 접근 가능하다는 의미이고, @’localhost’는 해당 컴퓨터에서만 접근 가능하다는 의미입니다.</li>
+<li>flush privileges는 DBMS에게 적용을 하라는 의미입니다.</li>
+<li>해당 명령을 반드시 실행해줘야 합니다.</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">grant all privileges on connectdb.* to connectuser@&apos;%&apos; identified by &apos;connect123!@#&apos;;</span><br><span class="line"></span><br><span class="line">grant all privileges on connectdb.* to connectuser@&apos;localhost&apos; identified by &apos;connect123!@#&apos;;</span><br><span class="line"></span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>생성한 Database에 접속하기</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; –h호스트명 –uDB계정명 –p 데이터베이스이름</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>db이름이 connectdb, db계정이 connectuser, 암호가 connect123!@# 일 경우 콘솔창에서 다음과 같이 입력합니다.</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql –h127.0.0.1 –uconnectuser –p connectdb [enter]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>DBMS에 존재하는 데이터베이스 확인하기</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show databases;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>사용중인 데이터베이스 전환하기</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; use mydb;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>데이터베이스를 전환하려면, </li>
+<li>이미 데이터베이스가 존재해야 하며 </li>
+<li>현재 접속 중인 계정이 해당 데이터베이스를 사용할 수 있는 권한이 있어야 합니다.</li>
+</ul>
+</li>
+<li><p>데이터를 저장하는 공간 테이블(Table)</p>
+<p><img src="/image/table.png" alt></p>
+<ul>
+<li>마이크로소프트의 엑셀(Excel)을 실행하면 표가 나옵니다. 이러한 표에 각종 값을 저장할 수 있습니다.</li>
+<li>데이터베이스도 엑셀의 표와 유사한 테이블을 가질 수 있습니다.</li>
+<li>엑셀과 다른 점은 데이터베이스를 생성해도 테이블은 존재하지 않는다는 것입니다.</li>
+<li>테이블을 사용하려면 테이블을 생성하는 SQL을 사용해야 합니다.</li>
+<li>그리고, 테이블에 값을 저장하려면 저장하기 위한 SQL을 사용해야 합니다.</li>
+</ul>
+</li>
+<li><p>현재 데이터베이스에 존재하는 테이블 목록 확인하기</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show tables;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>테이블 구조를 확인하기 위한 DESCRIBE 명령</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; desc EMPLOYEE;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Reference</p>
+<ul>
+<li>NAVER edwith boostcourse Full-Stack Web Developer </li>
+</ul>
+</li>
+</ul>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/05/08/SQL/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2018/05/08/DTO, DAO/">
+                            DTO, DAO
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-05-08T00:00:00+09:00">
+	
+		    May 08, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/boost-course/">Boost Course</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <ul>
+<li><p>DTO (Data Transfer Object)</p>
+<p><img src="/image/dto.png" alt></p>
+<ul>
+<li>계층간 데이터 교환을 위한 자바빈즈입니다.<ul>
+<li>여기서의 계층이란 컨트롤러 뷰, 비지니스 계층, 퍼시스턴스 계층을 의미합니다.</li>
+</ul>
+</li>
+<li>일반적으로 DTO는 로직을 가지고 있지 않고, 순수한 데이터 객체입니다.</li>
+<li>필드와 getter, setter를 가진다. <ul>
+<li>추가적으로 toString(), equals(), hashCode()등의 Object 메소드를 오버라이딩 할 수 있습니다.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>DAO ( Data Access Object)</p>
+<ul>
+<li>데이터를 조회하거나 조작하는 기능을 전담하도록 만든 객체입니다.</li>
+<li>보통 데이터베이스를 조작하는 기능을 전담하는 목적으로 만들어집니다.</li>
+</ul>
+</li>
+<li><p>ConnectionPool</p>
+<p><img src="/image/cppp.png" alt></p>
+<ul>
+<li>DB연결은 비용이 많이 듭니다.</li>
+<li>커넥션 풀은 미리 커넥션을 여러 개 맺어 둡니다.</li>
+<li>커넥션이 필요하면 커넥션 풀에게 빌려서 사용한 후 반납합니다.</li>
+<li>커넥션을 반납하지 않으면 컨넥션풀에서 사용가능한 컨넥션이 없어서  프로그램이 늦어지거나 장애 발생</li>
+</ul>
+</li>
+<li><p>Reference</p>
+<ul>
+<li>NAVER edwith boostcourse Full-Stack Web Developer </li>
+</ul>
+</li>
+</ul>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/05/08/DTO, DAO/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2018/05/08/Database/">
                             Database
                         </a>
@@ -672,191 +857,6 @@
                     
                         <p>
                             <a href="/2018/05/08/Database/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/05/08/JDBC/">
-                            JDBC
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-05-08T00:00:00+09:00">
-	
-		    May 08, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/boost-course/">Boost Course</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <ul>
-<li><p>JDBC</p>
-<ul>
-<li>자바를 이용한 데이터베이스 접속과 SQL 문장의 실행, 그리고 실행 결과로 얻어진 데이터의 핸들링을 제공하는 방법과 절차에 관한 규약</li>
-<li>자바 프로그램 내에서 SQL문을 실행하기 위한 자바 API</li>
-<li>SQL과 프로그래밍 언어의 통합 접근 중 한 형태</li>
-<li>JAVA는 표준 인터페이스인 JDBC API를 제공</li>
-<li>데이터베이스 벤더, 또는 기타 써드파티에서는 JDBC 인터페이스를 구현한 드라이버(driver)를 제공한다.</li>
-</ul>
-</li>
-<li><p>JDBC를 이용한 프로그래밍 방법</p>
-<p><img src="/image/jdbc.png" alt></p>
-<ul>
-<li><p>import java.sql.*;</p>
-</li>
-<li><p>드라이버를 로드 한다.</p>
-<ul>
-<li><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Class.forName( <span class="string">"com.mysql.jdbc.Driver"</span> );</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><p>Connection 객체를 생성한다.</p>
-<ul>
-<li><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String dburl  = <span class="string">"jdbc:mysql://localhost/dbName"</span>;</span><br><span class="line"></span><br><span class="line">Connection con =  DriverManager.getConnection ( dburl, ID, PWD );</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><p>Statement 객체를 생성 및 질의 수행</p>
-<ul>
-<li><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Statement stmt = con.createStatement(); </span><br><span class="line">ResultSet rs = stmt.executeQuery(<span class="string">"select no from user"</span> );</span><br><span class="line"></span><br><span class="line">stmt.execute(“query”);             <span class="comment">//any SQL</span></span><br><span class="line">stmt.executeQuery(“query”);     <span class="comment">//SELECT</span></span><br><span class="line">stmt.executeUpdate(“query”);   <span class="comment">//INSERT, UPDATE, DELETE</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><p>SQL문에 결과물이 있다면 ResultSet 객체를 생성한다.</p>
-<ul>
-<li><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ResultSet rs =  stmt.executeQuery( <span class="string">"select no from user"</span> );</span><br><span class="line"><span class="keyword">while</span> ( rs.next() )</span><br><span class="line">      System.out.println( rs.getInt( <span class="string">"no"</span>) );</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><p>모든 객체를 닫는다.</p>
-<ul>
-<li><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rs.close();</span><br><span class="line">stmt.close();</span><br><span class="line">con.close();</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Reference</p>
-<ul>
-<li>NAVER edwith boostcourse Full-Stack Web Developer </li>
-</ul>
-</li>
-</ul>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/05/08/JDBC/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/05/08/DTO, DAO/">
-                            DTO, DAO
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-05-08T00:00:00+09:00">
-	
-		    May 08, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/boost-course/">Boost Course</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <ul>
-<li><p>DTO (Data Transfer Object)</p>
-<p><img src="/image/dto.png" alt></p>
-<ul>
-<li>계층간 데이터 교환을 위한 자바빈즈입니다.<ul>
-<li>여기서의 계층이란 컨트롤러 뷰, 비지니스 계층, 퍼시스턴스 계층을 의미합니다.</li>
-</ul>
-</li>
-<li>일반적으로 DTO는 로직을 가지고 있지 않고, 순수한 데이터 객체입니다.</li>
-<li>필드와 getter, setter를 가진다. <ul>
-<li>추가적으로 toString(), equals(), hashCode()등의 Object 메소드를 오버라이딩 할 수 있습니다.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>DAO ( Data Access Object)</p>
-<ul>
-<li>데이터를 조회하거나 조작하는 기능을 전담하도록 만든 객체입니다.</li>
-<li>보통 데이터베이스를 조작하는 기능을 전담하는 목적으로 만들어집니다.</li>
-</ul>
-</li>
-<li><p>ConnectionPool</p>
-<p><img src="/image/cppp.png" alt></p>
-<ul>
-<li>DB연결은 비용이 많이 듭니다.</li>
-<li>커넥션 풀은 미리 커넥션을 여러 개 맺어 둡니다.</li>
-<li>커넥션이 필요하면 커넥션 풀에게 빌려서 사용한 후 반납합니다.</li>
-<li>커넥션을 반납하지 않으면 컨넥션풀에서 사용가능한 컨넥션이 없어서  프로그램이 늦어지거나 장애 발생</li>
-</ul>
-</li>
-<li><p>Reference</p>
-<ul>
-<li>NAVER edwith boostcourse Full-Stack Web Developer </li>
-</ul>
-</li>
-</ul>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/05/08/DTO, DAO/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -1131,8 +1131,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/05/05/프론트엔드, 백엔드/">
-                            프론트엔드, 백엔드
+                        <a class="link-unstyled" href="/2018/05/05/web 동작/">
+                            web 동작
                         </a>
                     
                 </h1>
@@ -1155,31 +1155,109 @@
             
                 <div class="postShorten-content">
                     <ul>
-<li><p>웹 프론트엔드</p>
+<li><p>물리적인 하나의 컴퓨터에 여러개의 서버가 동작 가능</p>
+</li>
+<li><p>각각 서버는 포트를 가지고 잇음</p>
+</li>
+<li><p>인터넷은 네트워크들의 네트워크. 네트워크들의 결합체</p>
+</li>
+<li><p>TCP/IP로 연결되어 있다</p>
+</li>
+<li><p>통신을 하기 위해 HTTP를 사용함</p>
 <ul>
-<li>사용자에게 웹을 통해 다양한 콘텐츠(문서, 동영상, 사진 등)을 제공</li>
-<li>사용자의 요청(요구사항)에 반응해서 동작</li>
+<li>HTTP v0.9가 최초</li>
+<li>HTTP : 서바와 클라이언트가 인터넷상에서 데이터 주고 받기 위한 프로토콜</li>
+<li>어떤 종류의 데이터도 전송 가능<ul>
+<li>이미지, 동영상, 텍스트 등 …</li>
 </ul>
 </li>
-<li><p>웹 프론트엔드의 역할</p>
-<ul>
-<li>웹 콘텐츠를 보여주기 위해 구조를 만들어야함 - HTML : 구조를 잡아</li>
-<li>적절한 배치와 일관된 디자인 제공(보기좋게) - CSS : 디자인</li>
-<li>사용장 요청을 잘 반영해야함 (소통하듯이) - JacaScript : 동적 제어. 프로그래밍</li>
+<li>HTTP/2 까지 등장</li>
+<li>HTTP/1.1 을 다룰거임</li>
 </ul>
 </li>
-<li><p>벡엔드 개발자가 알아야할 것들</p>
+<li><p>HTTP 작동방식</p>
+</li>
+<li><p>네트워크 통신방식에는 유상태와 무상태 두개가 있다</p>
 <ul>
-<li>프로그래밍 언어(JAVA, Python, PHP, JavaScript)</li>
-<li>웹의 동작 원리</li>
-<li>알고리즘, 자료구조 등 프로그래밍 기반 지식</li>
-<li>운영체제, 네트워크 등에 대한 이해</li>
-<li>프레임워크에 대한 이해(ex: Spring)</li>
-<li>DBMS에 대한 이해와 사용방법(ex: MySQL, Oracle)  </li>
+<li>유상태  방식 :  stateful<ul>
+<li>접속이 계속 유지</li>
+<li>클라이언트와 서버 간에 지속적으로 데이터 주고 받을 수 있어</li>
+<li>채탱, 온라인 게임에 적합</li>
+<li>서버가 동시에 접속 유지 할수 있는 수 정해짐<ul>
+<li>그래서 클라이언트 수가 많아지면 서버의 수도 많아져야해</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>무상태 : stateless  &lt;– HTTP는 이걸 써<ul>
+<li>계속 연결을 맺지 않아</li>
+<li>필요한 경우에만 연결을 맺어</li>
+<li>클라이언트가 계속 연결을 맺고 있지 않아</li>
+<li>하나의 서버가 굉장히 많은 요청/ 응답 처리 가능</li>
+<li>서버/ 클라이언트 모델을 따름</li>
+<li>불특정 다수를 대상으로 하는 서비스에는 적합</li>
+<li>클라이언트와 서버가 계속 연결된 형태가 아니기 때문에 클라이언트와 서버 간의 최대 연결 수보다 훨씬 많은 요청과 응답을 처리할 수 있다.</li>
+<li>연결을 끊어버리기 때문에, 클라이언트의 이전 상황을 알 수가 없다. </li>
+<li>이러한 특징을 무상태(Stateless)라고 말한다. </li>
+<li>이러한 특징 때문에 정보를 유지하기 위해서 Cookie와 같은 기술이 등장하게 되었다.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>URL</p>
+<ul>
+<li>인터넷 상의 자원의 위치</li>
+<li>문서/이미지/동영상등의 위치</li>
+<li>크게 세부분으로 나뉨</li>
+<li>프로토콜의 종류 / 서버의 IP주소(도메인주소) / 자원의 위치</li>
+<li>IP : 집의 집 주소</li>
+<li>하나의 컴퓨터에는 하나의 IP 존재</li>
+<li>집에는 방들이 여러개 ㅇ있어</li>
+<li>각각의 하나의 방을 포트</li>
+<li>한방에 여러명이 생활하기도해. 서버는 이렇게 불가능</li>
+<li>서버는 각 하나의 방을 하나씩 차지</li>
+<li>하나의 방에 여러개의 서버가 존재할수 없다</li>
+<li>포트 번호가 각각 달라야됨</li>
+<li>하나의 물리적 컴퓨터에는 여러개의 서버가 동작 가능</li>
+<li>서버는 포트값이 다르게 동작</li>
+<li>포트값은 0보다 큰 숫자값이다</li>
+<li>HTTP 서버는 기본 포트값이 80 이다</li>
+</ul>
+</li>
+<li><p>웹 동작 원리</p>
+<ul>
+<li>클라이언트가 서버에 접속을 함</li>
+<li>다시 클라이언트가 요청을 함<ul>
+<li>요청되는 데이터들은 정해진 규칙이 있어. 요청데이터포맷 이라고 함</li>
+<li>요청 데이터 포맷<ul>
+<li>헤더<ul>
+<li>요청 메서드 + 요청URI(요청하는 자원의 위치 명시) + HTTP 프로토콜의 버젼<ul>
+<li>요청 메서드 : GET 말고도 많아</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>요청 바디<ul>
+<li>GET방식은 요청바디가 없어</li>
+<li>POST나 PUT을 사용하면 바디에 들어가</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>응답 데이터 포맷<ul>
+<li>헤더</li>
+<li>바디</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>요청에 따른 응답결과를 클라이언트게 응답</li>
+<li>응답이 끝나고 나면 서버와 클라이어트의 연결이 끊겨</li>
 </ul>
 </li>
 <li><p>Reference</p>
 <ul>
+<li><a href="https://www.html5rocks.com/en/tutorials/internals/howbrowserswork/#Introduction" target="_blank" rel="noopener">https://www.html5rocks.com/en/tutorials/internals/howbrowserswork/#Introduction</a></li>
 <li>NAVER edwith boostcourse Full-Stack Web Developer </li>
 </ul>
 </li>
@@ -1191,7 +1269,7 @@
                     
                     
                         <p>
-                            <a href="/2018/05/05/프론트엔드, 백엔드/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/05/05/web 동작/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>

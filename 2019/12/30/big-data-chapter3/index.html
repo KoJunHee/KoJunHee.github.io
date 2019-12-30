@@ -1,0 +1,612 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="junhee.ko">
+    <title>[빅데이터를 지탱하는 기술] 3장_빅데이터 분산처리 - junhee.ko</title>
+    <meta name="author" content="junhee.ko">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg"},"articleBody":"1. 대규모 분산 처리의 프레임워크비구조화 데이터를 읽어 들여 열 지향 스토리지로 변환하는 과정에서, 데이터의 가공 및 압축을 위해 많은 컴퓨터 리소스가 소비된다. \n그래서 사용하는 것이 Hadoop, Spark 같은 분산 처리 프레임워크다.\n구조화 데이터, 비구조화 데이터, 스키마리스 데이터\n구조화 데이터\n스키마가 명확하게 정의된 데이터.\n기존의 데이터 웨어하우스에서는 항상 구조화 데이터로 축적하는 것이 일반적이었다.\n\n비구조화 데이터\n스키마가 없는 데이터.\n이 상태로는 SQL 로 제대로 집계할 수 없다.\n\n스키마리스 데이터\nCSV, JSON, XML 등의 데이터는 서식은 정해져 있지만, 칼럼 수나 데이터 형은 명확하지 않다.\n\n\n데이터 구조화의 파이프라인\n분산 스토리지에 수집된 데이터는 명확한 스키마를 갖지 않아 그대로는 SQL 로 집계할 수 없다. \n그래서, 먼저 스키마를 명확하게 한 테이블 형식으로 변환해야한다.\n구조화된 데이터는 데이터 압축률을 높이기 위해 열 지향 스토리지에 저장한다. \n열 지향 스토리지의 작성Hadoop 의 열 지향 스토리지는,\n\nApache ORC\n처음에 스키마를 정한 후 데이터를 저장\n\nApache Parquet\n스키마리스에 가까운 데이터 구조로 되어 있어서 JSON 같은 데이터도 그대로 저장\n\n\nHadoop\n단일 소프트웨어가 아니라 분산 시스템을 구성하는 다수의 소프트웨어로 이루어진 집합체이다.\n기본 구성 요소는,\n\n분산 파일 시스템\nHDFS.\n다수의 컴퓨터에 파일을 복사하여 중복성을 높이는 특징이 있다.\n\n리소스 관리자\nYARN, Mesos.\nYARN 은 애플리케이션이 사용하는 CPU 코어와 메모리를 컨테이너라는 단위로 관리한다.\nHadoop 에서 분산 애플리케이션을 실행하면 YARN 이 클러스터 전체의 부하를 보고 비어 있는 호스트부터 컨테이너를 할당한다.\n어느 애플리케이션에 얼마만큼의 리소스를 할당할 지 관리해서 모든 애플리케이션이 실행되도록 제어한다.\n\n분산 데이터 처리\nMapReduce, Tez.\nMapReduce 도 YARN 위에서 동작하는 분산 애플리케이션 중 하나이다.\n\n\n쿼리 엔진\n하둡에서는 다수의 쿼리 엔진이 개발되었다. 총칭해서 SQL-on-Hadoop 이라고 한다.\nSQL 등의 쿼리 언어에 의한 데이터 집계가 목적이면, 이를 위해 설계된 쿼리 엔진을 사용한다.\nApache Hive 가 대표적이다. 쿼리를 자동으로 MapReduce 프로그램으로 변환하는 소프트웨어이다.\n시간이 걸리는 배치 처리에는 적합하나, 애드 혹 쿼리를 여러 번 실행하는데는 부적합하다. \n왜냐하면 위 그림처럼, 스테이지가 바뀔 때 대기 시간이 있기 때문이다.\n\nApache Tez 는 Hive 를 가속화하기 위해 개발되었다. 기존의 MapReduce 를 대체할 목적이다.\nHive on MR 은, 1회의 MapReduce 스테이지가 끝날 때까지 다음의 처리를 진행할 수 없다.\nHive on Tez 는, 위 그림처럼 스테이지의 종료를 기다리지 않고 데이터를 차례대로 후속 처리에 전달하여 쿼리 전체 실행 시간을 단축한다.\n대화형 쿼리엔진\nApache Impala 와 Presto 가 대표적이다.\nYARN 과 같은 리소스 관리자를 사용하지 않고, SQL 의 실행만으로 분산처리를 구현한다.\n순간 최대 속도를 높이기 위해 모든 오버 헤드가 제거되어, 사용할 수 있는 리소스를 최대한 활용하여 쿼리를 실행한다.\nSpark\nMapReduce, Tez 모두 데이터 처리 과정에서 만들어진 중간 데이터를 디스크에 기록한다.\nSpark 는 대량의 메모리를 활용하여 고속화를 실현한다.\nHadoop 을 대체하는 것이 아니라, MapReduce 를 대체하는 존재다.\n2. 쿼리 엔진\n데이터 마트 구축의 파이프라인\nHive\n분산 스토리지에 저장된 데이터를 구조화하고 열 지향 스토리지 형식으로 저장\n\nPresto\n완성한 구조화 데이터를 결합, 집계하고 비정규화 테이블로 만든 데이터 마트에 써서 보냄\n\n\nHive 에 의한 구조화 데이터 작성1hive&gt; CREATE EXTERNAL TABLE access_log_csv (...)\n\nCSV 파일을 읽어들여 외부 테이블을 정의한다.\n외부테이블이란, Hive 의 외부에 있는 특정 파일을 참고해 마치 거기에 테이블이 존재하는 것처럼 읽어 들이기 위해 지정한다.\n쿼리를 실행할 때마다 매번 텍스트를 읽어들이기 때문에 느리다. 그래서 열 지향 스토리지로 변환해야한다.\n열 지향 스토리지로의 변환1hive&gt; CREATE TABLE access_log_orc STROED as ORC as SELECT ..\n\n텍스트 데이터를 열 지향 스토리지로 변환함으로써 데이터의 집계가 크게 고속화된다.\nHive 로 비정규화 테이블 작성하기데이터 구조화가 완료되면 데이터 마트를 구축해야한다. 즉, 테이블을 결합 및 집약해서 ‘비정규화 테이블’ 을 만든다.\nPreso 와 같은 대화형 쿼리 엔진, Hive 같은 배치형 쿼리 엔진을 사용할 수 있다. 시간이 걸리는 배치 처리는 Hive 를 사용해야한다.\n비정규화 테이블을 만드는 데 오랜 시간이 걸리므로, 가능한 효율적인 쿼리를 작성해야한다. \n\n서브 쿼리 안에서 레코드 수 줄이기\n서브 쿼리 안에서 팩트 테이블을 작게 해야한다.\n데이터의 양의 감소 시킨 후에 테이블을 결합하는 것이 쿼리 실행 시간을 단축시킨다.\n\n데이터 편향 피하기\n분산 시스템의 성능을 발휘하기 위해서, 모든 노드에 데이터가 균등하게 분산되도록 해야한다.\n\n\n대화형 쿼리 엔진 Presto 구조쿼리 실행의 지연을 감소시키는 목적으로 개발된 것이 대화형 쿼리 엔진이다.\nPresto 의 특징은,\n\n플러그인 가능한 스토리지\n다양한 데이터 소스를 테이블로 참고할 수 있다.\nex) 하나의 쿼리 안에서 분산 스토리지 상의 팩트 테이블과 MySQL 의 마스터 테이블을 조인할 있다.\n\nCPU 처리의 최적화\n코드의 실행을 멀티 스레드화되어 단일 머신에서 수백 태스크나 병렬로 실행된다.\n그래서, CPU 이용 효율이 높다.\n\n인 메모리 처리에 의한 고속화\n모든 데이터 처리는 메모리 상에서 실시하고 메모리가 부족하면 여유가 생길 때까지 기다리거나 오류로 실패한다.\n\n\n데이터 분석의 프레임워크 선택하기\nMPP Database\n비정규화 테이블을 고속으로 집계하는 데에 최적\n\nHive\n데이터 양에 좌우되지 않는 쿼리 엔진\n\nPresto\n속도 중시, 대화식으로 특화된 쿼리 엔진\n\nSpark\n분산 시스템을 사용한 프로그래밍 환경.\nETL 프로세스에서 SQL 에 이르기 까지의 일련의 흐름을 하나의 데이터 파이프라인으로 기술 가능.\n\n\n3. 데이터 마트의 구축분산 시스템이 준비되면 시각화를 위해 데이터 마트를 만든다.\n팩트 테이블팩트 테이블 작성 방법으로,\n\n추가\n새로 도착한 데이터만을 증분으로 추가\n\n치환\n과거 데이터를 포함하여 테이블 전체 치환\n\n\n테이블 파티셔닝위의 ‘추가’ 방법은 다음 문제가 있다.\n\n추가에 실패한것을 알아채지 못하면, 팩트 테이블의 일부에 결손\n추가를 잘못해서 여러번 실행하면, 일부 중복\n나중에 팩트 테이블 다시 만들고 싶으면, 관리 복잡\n\n그래서 파티셔닝이 필요하다.\n하나의 테이블을 여러 물리적인 파티션으로 나눠서 파티션 단위로 정리하여 데이터를 쓰거나 삭제하는 것이다.\n집계 테이블팩트 테이블을 어느 정도 모아서 집계하면 데이터의 양이 줄어든다. 이것은 집계 테이블이라고 한다.\n각 칼럼이 취하는 값의 범위란, 카디널리티이다. ‘성별’ 과 같이 취할 수 있는 값이 적은 것은 카디널리티가 작은 것이다.\n집계 테이블을 작게 하려면 모든 칼럼의 카디널리티를 줄여야한다.\n스냅샷 테이블, 이력 테이블마스터 데이터처럼 업데이트 될 가능성이 있는 테이블은,\n정기적으로 테이블을 통째로 저장하는 스탭샷 테이블, 또는 변경 내용만을 저장하는 이력 테이블로 관리할 수 있다.\n디멘전을 추가하여 비정규화 테이블 완성시키기팩트 테이블과 디멘젼 테이블을 결합하여 비정규화 테이블을 만든다.\n\n빅데이터를 지탱하는 기술 &lt;니시다 케이스케&gt;\n","dateCreated":"2019-12-30T00:00:00+09:00","dateModified":"2019-12-30T18:23:16+09:00","datePublished":"2019-12-30T00:00:00+09:00","description":"","headline":"[빅데이터를 지탱하는 기술] 3장_빅데이터 분산처리","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://kojunhee.github.io/2019/12/30/big-data-chapter3/"},"publisher":{"@type":"Organization","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg","logo":{"@type":"ImageObject","url":"profile.jpg"}},"url":"https://kojunhee.github.io/2019/12/30/big-data-chapter3/"}</script>
+    <meta name="description" content="1. 대규모 분산 처리의 프레임워크비구조화 데이터를 읽어 들여 열 지향 스토리지로 변환하는 과정에서, 데이터의 가공 및 압축을 위해 많은 컴퓨터 리소스가 소비된다.  그래서 사용하는 것이 Hadoop, Spark 같은 분산 처리 프레임워크다. 구조화 데이터, 비구조화 데이터, 스키마리스 데이터 구조화 데이터 스키마가 명확하게 정의된 데이터. 기존의 데이터">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="[빅데이터를 지탱하는 기술] 3장_빅데이터 분산처리">
+<meta property="og:url" content="https://kojunhee.github.io/2019/12/30/big-data-chapter3/index.html">
+<meta property="og:site_name" content="junhee.ko">
+<meta property="og:description" content="1. 대규모 분산 처리의 프레임워크비구조화 데이터를 읽어 들여 열 지향 스토리지로 변환하는 과정에서, 데이터의 가공 및 압축을 위해 많은 컴퓨터 리소스가 소비된다.  그래서 사용하는 것이 Hadoop, Spark 같은 분산 처리 프레임워크다. 구조화 데이터, 비구조화 데이터, 스키마리스 데이터 구조화 데이터 스키마가 명확하게 정의된 데이터. 기존의 데이터">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://kojunhee.github.io/image/structured_data.png">
+<meta property="og:image" content="https://kojunhee.github.io/image/big_data_hadoop.png">
+<meta property="og:image" content="https://kojunhee.github.io/image/big_data_hive_mr.png">
+<meta property="og:image" content="https://kojunhee.github.io/image/big_data_hive_tez.png">
+<meta property="og:image" content="https://kojunhee.github.io/image/big_data_presto.png">
+<meta property="og:image" content="https://kojunhee.github.io/image/big_data_spark.png">
+<meta property="og:image" content="https://kojunhee.github.io/image/big_data_hive_presto.png">
+<meta property="og:updated_time" content="2019-12-30T09:23:16.605Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[빅데이터를 지탱하는 기술] 3장_빅데이터 분산처리">
+<meta name="twitter:description" content="1. 대규모 분산 처리의 프레임워크비구조화 데이터를 읽어 들여 열 지향 스토리지로 변환하는 과정에서, 데이터의 가공 및 압축을 위해 많은 컴퓨터 리소스가 소비된다.  그래서 사용하는 것이 Hadoop, Spark 같은 분산 처리 프레임워크다. 구조화 데이터, 비구조화 데이터, 스키마리스 데이터 구조화 데이터 스키마가 명확하게 정의된 데이터. 기존의 데이터">
+<meta name="twitter:image" content="https://kojunhee.github.io/image/structured_data.png">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://kojunhee.github.io/assets/images/profile.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/all.css">
+    <link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
+    <link rel="stylesheet" href="/assets/css/thumbs.css">
+    <link rel="stylesheet" href="/assets/css/tranquilpeak.css">
+    <!--STYLES END-->
+    
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="2">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">junhee.ko</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="2">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">junhee.ko</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>Always Learning</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/kojunhee" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://facebook.com/kojunheee" target="_blank" rel="noopener" title="Facebook">
+                    
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/junheeko" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="mailto:junheee.ko@gmail.com" target="_blank" rel="noopener" title="Mail">
+                    
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Mail</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="2"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            [빅데이터를 지탱하는 기술] 3장_빅데이터 분산처리
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2019-12-30T00:00:00+09:00">
+	
+		    Dec 30, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/big-data/">Big Data</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h2 id="1-대규모-분산-처리의-프레임워크"><a href="#1-대규모-분산-처리의-프레임워크" class="headerlink" title="1. 대규모 분산 처리의 프레임워크"></a>1. 대규모 분산 처리의 프레임워크</h2><p>비구조화 데이터를 읽어 들여 열 지향 스토리지로 변환하는 과정에서, 데이터의 가공 및 압축을 위해 많은 컴퓨터 리소스가 소비된다. </p>
+<p>그래서 사용하는 것이 Hadoop, Spark 같은 분산 처리 프레임워크다.</p>
+<h5 id="구조화-데이터-비구조화-데이터-스키마리스-데이터"><a href="#구조화-데이터-비구조화-데이터-스키마리스-데이터" class="headerlink" title="구조화 데이터, 비구조화 데이터, 스키마리스 데이터"></a>구조화 데이터, 비구조화 데이터, 스키마리스 데이터</h5><ol>
+<li><p>구조화 데이터</p>
+<p>스키마가 명확하게 정의된 데이터.</p>
+<p>기존의 데이터 웨어하우스에서는 항상 구조화 데이터로 축적하는 것이 일반적이었다.</p>
+</li>
+<li><p>비구조화 데이터</p>
+<p>스키마가 없는 데이터.</p>
+<p>이 상태로는 SQL 로 제대로 집계할 수 없다.</p>
+</li>
+<li><p>스키마리스 데이터</p>
+<p>CSV, JSON, XML 등의 데이터는 서식은 정해져 있지만, 칼럼 수나 데이터 형은 명확하지 않다.</p>
+</li>
+</ol>
+<h5 id="데이터-구조화의-파이프라인"><a href="#데이터-구조화의-파이프라인" class="headerlink" title="데이터 구조화의 파이프라인"></a>데이터 구조화의 파이프라인</h5><p><img src="/image/structured_data.png" alt></p>
+<p>분산 스토리지에 수집된 데이터는 명확한 스키마를 갖지 않아 그대로는 SQL 로 집계할 수 없다. </p>
+<p>그래서, 먼저 스키마를 명확하게 한 테이블 형식으로 변환해야한다.</p>
+<p>구조화된 데이터는 데이터 압축률을 높이기 위해 열 지향 스토리지에 저장한다. </p>
+<h5 id="열-지향-스토리지의-작성"><a href="#열-지향-스토리지의-작성" class="headerlink" title="열 지향 스토리지의 작성"></a>열 지향 스토리지의 작성</h5><p>Hadoop 의 열 지향 스토리지는,</p>
+<ol>
+<li><p>Apache ORC</p>
+<p>처음에 스키마를 정한 후 데이터를 저장</p>
+</li>
+<li><p>Apache Parquet</p>
+<p>스키마리스에 가까운 데이터 구조로 되어 있어서 JSON 같은 데이터도 그대로 저장</p>
+</li>
+</ol>
+<h5 id="Hadoop"><a href="#Hadoop" class="headerlink" title="Hadoop"></a>Hadoop</h5><p><img src="/image/big_data_hadoop.png" alt></p>
+<p>단일 소프트웨어가 아니라 분산 시스템을 구성하는 다수의 소프트웨어로 이루어진 집합체이다.</p>
+<p>기본 구성 요소는,</p>
+<ol>
+<li><p>분산 파일 시스템</p>
+<p>HDFS.</p>
+<p>다수의 컴퓨터에 파일을 복사하여 중복성을 높이는 특징이 있다.</p>
+</li>
+<li><p>리소스 관리자</p>
+<p>YARN, Mesos.</p>
+<p>YARN 은 애플리케이션이 사용하는 CPU 코어와 메모리를 컨테이너라는 단위로 관리한다.</p>
+<p>Hadoop 에서 분산 애플리케이션을 실행하면 YARN 이 클러스터 전체의 부하를 보고 비어 있는 호스트부터 컨테이너를 할당한다.</p>
+<p>어느 애플리케이션에 얼마만큼의 리소스를 할당할 지 관리해서 모든 애플리케이션이 실행되도록 제어한다.</p>
+</li>
+<li><p>분산 데이터 처리</p>
+<p>MapReduce, Tez.</p>
+<p>MapReduce 도 YARN 위에서 동작하는 분산 애플리케이션 중 하나이다.</p>
+</li>
+</ol>
+<h5 id="쿼리-엔진"><a href="#쿼리-엔진" class="headerlink" title="쿼리 엔진"></a>쿼리 엔진</h5><p><img src="/image/big_data_hive_mr.png" alt></p>
+<p>하둡에서는 다수의 쿼리 엔진이 개발되었다. 총칭해서 SQL-on-Hadoop 이라고 한다.</p>
+<p>SQL 등의 쿼리 언어에 의한 데이터 집계가 목적이면, 이를 위해 설계된 쿼리 엔진을 사용한다.</p>
+<p>Apache Hive 가 대표적이다. 쿼리를 자동으로 MapReduce 프로그램으로 변환하는 소프트웨어이다.</p>
+<p>시간이 걸리는 배치 처리에는 적합하나, 애드 혹 쿼리를 여러 번 실행하는데는 부적합하다. </p>
+<p>왜냐하면 위 그림처럼, 스테이지가 바뀔 때 대기 시간이 있기 때문이다.</p>
+<p><img src="/image/big_data_hive_tez.png" alt></p>
+<p>Apache Tez 는 Hive 를 가속화하기 위해 개발되었다. 기존의 MapReduce 를 대체할 목적이다.</p>
+<p>Hive on MR 은, 1회의 MapReduce 스테이지가 끝날 때까지 다음의 처리를 진행할 수 없다.</p>
+<p>Hive on Tez 는, 위 그림처럼 스테이지의 종료를 기다리지 않고 데이터를 차례대로 후속 처리에 전달하여 쿼리 전체 실행 시간을 단축한다.</p>
+<h5 id="대화형-쿼리엔진"><a href="#대화형-쿼리엔진" class="headerlink" title="대화형 쿼리엔진"></a>대화형 쿼리엔진</h5><p><img src="/image/big_data_presto.png" alt></p>
+<p>Apache Impala 와 Presto 가 대표적이다.</p>
+<p>YARN 과 같은 리소스 관리자를 사용하지 않고, SQL 의 실행만으로 분산처리를 구현한다.</p>
+<p>순간 최대 속도를 높이기 위해 모든 오버 헤드가 제거되어, 사용할 수 있는 리소스를 최대한 활용하여 쿼리를 실행한다.</p>
+<h5 id="Spark"><a href="#Spark" class="headerlink" title="Spark"></a>Spark</h5><p><img src="/image/big_data_spark.png" alt></p>
+<p>MapReduce, Tez 모두 데이터 처리 과정에서 만들어진 중간 데이터를 디스크에 기록한다.</p>
+<p>Spark 는 대량의 메모리를 활용하여 고속화를 실현한다.</p>
+<p>Hadoop 을 대체하는 것이 아니라, MapReduce 를 대체하는 존재다.</p>
+<h2 id="2-쿼리-엔진"><a href="#2-쿼리-엔진" class="headerlink" title="2. 쿼리 엔진"></a>2. 쿼리 엔진</h2><p><img src="/image/big_data_hive_presto.png" alt></p>
+<h5 id="데이터-마트-구축의-파이프라인"><a href="#데이터-마트-구축의-파이프라인" class="headerlink" title="데이터 마트 구축의 파이프라인"></a>데이터 마트 구축의 파이프라인</h5><ol>
+<li><p>Hive</p>
+<p>분산 스토리지에 저장된 데이터를 구조화하고 열 지향 스토리지 형식으로 저장</p>
+</li>
+<li><p>Presto</p>
+<p>완성한 구조화 데이터를 결합, 집계하고 비정규화 테이블로 만든 데이터 마트에 써서 보냄</p>
+</li>
+</ol>
+<h5 id="Hive-에-의한-구조화-데이터-작성"><a href="#Hive-에-의한-구조화-데이터-작성" class="headerlink" title="Hive 에 의한 구조화 데이터 작성"></a>Hive 에 의한 구조화 데이터 작성</h5><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hive&gt; CREATE EXTERNAL TABLE access_log_csv (...)</span><br></pre></td></tr></table></figure>
+
+<p>CSV 파일을 읽어들여 외부 테이블을 정의한다.</p>
+<p>외부테이블이란, Hive 의 외부에 있는 특정 파일을 참고해 마치 거기에 테이블이 존재하는 것처럼 읽어 들이기 위해 지정한다.</p>
+<p>쿼리를 실행할 때마다 매번 텍스트를 읽어들이기 때문에 느리다. 그래서 열 지향 스토리지로 변환해야한다.</p>
+<h5 id="열-지향-스토리지로의-변환"><a href="#열-지향-스토리지로의-변환" class="headerlink" title="열 지향 스토리지로의 변환"></a>열 지향 스토리지로의 변환</h5><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hive&gt; CREATE TABLE access_log_orc STROED as ORC as SELECT ..</span><br></pre></td></tr></table></figure>
+
+<p>텍스트 데이터를 열 지향 스토리지로 변환함으로써 데이터의 집계가 크게 고속화된다.</p>
+<h5 id="Hive-로-비정규화-테이블-작성하기"><a href="#Hive-로-비정규화-테이블-작성하기" class="headerlink" title="Hive 로 비정규화 테이블 작성하기"></a>Hive 로 비정규화 테이블 작성하기</h5><p>데이터 구조화가 완료되면 데이터 마트를 구축해야한다. 즉, 테이블을 결합 및 집약해서 ‘비정규화 테이블’ 을 만든다.</p>
+<p>Preso 와 같은 대화형 쿼리 엔진, Hive 같은 배치형 쿼리 엔진을 사용할 수 있다. 시간이 걸리는 배치 처리는 Hive 를 사용해야한다.</p>
+<p>비정규화 테이블을 만드는 데 오랜 시간이 걸리므로, 가능한 효율적인 쿼리를 작성해야한다. </p>
+<ol>
+<li><p>서브 쿼리 안에서 레코드 수 줄이기</p>
+<p>서브 쿼리 안에서 팩트 테이블을 작게 해야한다.</p>
+<p>데이터의 양의 감소 시킨 후에 테이블을 결합하는 것이 쿼리 실행 시간을 단축시킨다.</p>
+</li>
+<li><p>데이터 편향 피하기</p>
+<p>분산 시스템의 성능을 발휘하기 위해서, 모든 노드에 데이터가 균등하게 분산되도록 해야한다.</p>
+</li>
+</ol>
+<h5 id="대화형-쿼리-엔진-Presto-구조"><a href="#대화형-쿼리-엔진-Presto-구조" class="headerlink" title="대화형 쿼리 엔진 Presto 구조"></a>대화형 쿼리 엔진 Presto 구조</h5><p>쿼리 실행의 지연을 감소시키는 목적으로 개발된 것이 대화형 쿼리 엔진이다.</p>
+<p>Presto 의 특징은,</p>
+<ol>
+<li><p>플러그인 가능한 스토리지</p>
+<p>다양한 데이터 소스를 테이블로 참고할 수 있다.</p>
+<p>ex) 하나의 쿼리 안에서 분산 스토리지 상의 팩트 테이블과 MySQL 의 마스터 테이블을 조인할 있다.</p>
+</li>
+<li><p>CPU 처리의 최적화</p>
+<p>코드의 실행을 멀티 스레드화되어 단일 머신에서 수백 태스크나 병렬로 실행된다.</p>
+<p>그래서, CPU 이용 효율이 높다.</p>
+</li>
+<li><p>인 메모리 처리에 의한 고속화</p>
+<p>모든 데이터 처리는 메모리 상에서 실시하고 메모리가 부족하면 여유가 생길 때까지 기다리거나 오류로 실패한다.</p>
+</li>
+</ol>
+<h5 id="데이터-분석의-프레임워크-선택하기"><a href="#데이터-분석의-프레임워크-선택하기" class="headerlink" title="데이터 분석의 프레임워크 선택하기"></a>데이터 분석의 프레임워크 선택하기</h5><ol>
+<li><p>MPP Database</p>
+<p>비정규화 테이블을 고속으로 집계하는 데에 최적</p>
+</li>
+<li><p>Hive</p>
+<p>데이터 양에 좌우되지 않는 쿼리 엔진</p>
+</li>
+<li><p>Presto</p>
+<p>속도 중시, 대화식으로 특화된 쿼리 엔진</p>
+</li>
+<li><p>Spark</p>
+<p>분산 시스템을 사용한 프로그래밍 환경.</p>
+<p>ETL 프로세스에서 SQL 에 이르기 까지의 일련의 흐름을 하나의 데이터 파이프라인으로 기술 가능.</p>
+</li>
+</ol>
+<h2 id="3-데이터-마트의-구축"><a href="#3-데이터-마트의-구축" class="headerlink" title="3. 데이터 마트의 구축"></a>3. 데이터 마트의 구축</h2><p>분산 시스템이 준비되면 시각화를 위해 데이터 마트를 만든다.</p>
+<h5 id="팩트-테이블"><a href="#팩트-테이블" class="headerlink" title="팩트 테이블"></a>팩트 테이블</h5><p>팩트 테이블 작성 방법으로,</p>
+<ol>
+<li><p>추가</p>
+<p>새로 도착한 데이터만을 증분으로 추가</p>
+</li>
+<li><p>치환</p>
+<p>과거 데이터를 포함하여 테이블 전체 치환</p>
+</li>
+</ol>
+<h5 id="테이블-파티셔닝"><a href="#테이블-파티셔닝" class="headerlink" title="테이블 파티셔닝"></a>테이블 파티셔닝</h5><p>위의 ‘추가’ 방법은 다음 문제가 있다.</p>
+<ol>
+<li>추가에 실패한것을 알아채지 못하면, 팩트 테이블의 일부에 결손</li>
+<li>추가를 잘못해서 여러번 실행하면, 일부 중복</li>
+<li>나중에 팩트 테이블 다시 만들고 싶으면, 관리 복잡</li>
+</ol>
+<p>그래서 파티셔닝이 필요하다.</p>
+<p>하나의 테이블을 여러 물리적인 파티션으로 나눠서 파티션 단위로 정리하여 데이터를 쓰거나 삭제하는 것이다.</p>
+<h5 id="집계-테이블"><a href="#집계-테이블" class="headerlink" title="집계 테이블"></a>집계 테이블</h5><p>팩트 테이블을 어느 정도 모아서 집계하면 데이터의 양이 줄어든다. 이것은 집계 테이블이라고 한다.</p>
+<p>각 칼럼이 취하는 값의 범위란, 카디널리티이다. ‘성별’ 과 같이 취할 수 있는 값이 적은 것은 카디널리티가 작은 것이다.</p>
+<p>집계 테이블을 작게 하려면 모든 칼럼의 카디널리티를 줄여야한다.</p>
+<h5 id="스냅샷-테이블-이력-테이블"><a href="#스냅샷-테이블-이력-테이블" class="headerlink" title="스냅샷 테이블, 이력 테이블"></a>스냅샷 테이블, 이력 테이블</h5><p>마스터 데이터처럼 업데이트 될 가능성이 있는 테이블은,</p>
+<p>정기적으로 테이블을 통째로 저장하는 스탭샷 테이블, 또는 변경 내용만을 저장하는 이력 테이블로 관리할 수 있다.</p>
+<h5 id="디멘전을-추가하여-비정규화-테이블-완성시키기"><a href="#디멘전을-추가하여-비정규화-테이블-완성시키기" class="headerlink" title="디멘전을 추가하여 비정규화 테이블 완성시키기"></a>디멘전을 추가하여 비정규화 테이블 완성시키기</h5><p>팩트 테이블과 디멘젼 테이블을 결합하여 비정규화 테이블을 만든다.</p>
+<hr>
+<p>빅데이터를 지탱하는 기술 &lt;니시다 케이스케&gt;</p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/12/30/big-data-chapter1/" data-tooltip="[빅데이터를 지탱하는 기술] 1장_빅데이터 기초 지식" aria-label="PREVIOUS: [빅데이터를 지탱하는 기술] 1장_빅데이터 기초 지식">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/12/27/object-chapter11/" data-tooltip="[오브젝트] 11장_합성과 유연한 설계" aria-label="NEXT: [오브젝트] 11장_합성과 유연한 설계">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2019/12/30/big-data-chapter3/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 junhee.ko. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="2">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/12/30/big-data-chapter1/" data-tooltip="[빅데이터를 지탱하는 기술] 1장_빅데이터 기초 지식" aria-label="PREVIOUS: [빅데이터를 지탱하는 기술] 1장_빅데이터 기초 지식">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/12/27/object-chapter11/" data-tooltip="[오브젝트] 11장_합성과 유연한 설계" aria-label="NEXT: [오브젝트] 11장_합성과 유연한 설계">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2019/12/30/big-data-chapter3/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="2">
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2019/12/30/big-data-chapter3/">
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">junhee.ko</h4>
+        
+            <div id="about-card-bio"><p>Always Learning</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Engineer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Incheon
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/jquery.js"></script>
+<script src="/assets/js/jquery.fancybox.js"></script>
+<script src="/assets/js/thumbs.js"></script>
+<script src="/assets/js/tranquilpeak.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://kojunhee.github.io/2019/12/30/big-data-chapter3/';
+                 
+                    this.page.identifier = '2019/12/30/big-data-chapter3/';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'junheeko';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>

@@ -194,6 +194,98 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2018/04/09/DIP/">
+                            DIP
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-04-09T00:00:00+09:00">
+	
+		    Apr 09, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/design-pattern/">Design Pattern</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <ul>
+<li>Dependency Inversion Principle ( 의존 역전 법칙 )</li>
+</ul>
+<ul>
+<li><p>Intent</p>
+<ul>
+<li>High-level modules should not depend on low-level modules. Both should depend on abstractions.</li>
+<li>Abstractions should not depend on details. Details should depend on abstractions.</li>
+<li>의존 관계를 맺을 때 변화하기 쉬운 것 또는 자주 변화하는 것보다는 </li>
+<li>변화하기 어려운 것, 거의 변화가 없는 것에 의존하라는 원칙</li>
+<li>DIP를 만족하려면,</li>
+<li>어떤 클래스가 도움을 받을 때, 구체적인 클래스보다는 인터페이스나 추상 클래스와 의존 관계를 맺도록.</li>
+</ul>
+</li>
+<li><p>Bad Example</p>
+<ul>
+<li>the manager class which is a high level class, and the low level class called Worker</li>
+<li>now we have to change Manager class in order to introduce the new SuperWorker<ul>
+<li>Adding a new protocol will create the need to add code for parsing and serializing the content for each type of field.</li>
+<li>Adding a new content type (like html) make us to add code for each protocol implemented.</li>
+</ul>
+</li>
+</ul>
+<p><img src="/image/dip011.png" alt></p>
+<p><img src="/image/dip022.png" alt></p>
+<p><img src="/image/dip033.png" alt></p>
+</li>
+<li><p>Good Example</p>
+<ul>
+<li>Manager class doesn’t require changes when adding SuperWorkers.</li>
+</ul>
+<p><img src="/image/dip044.png" alt></p>
+<p><img src="/image/dip055.png" alt></p>
+<p><img src="/image/dip066.png" alt></p>
+<p><img src="/image/dip077.png" alt></p>
+</li>
+</ul>
+<ul>
+<li>Reference<ul>
+<li><a href="http://www.oodesign.com/dependency-inversion-principle.html" target="_blank" rel="noopener">http://www.oodesign.com/dependency-inversion-principle.html</a></li>
+<li>Java 객체지향 디자인 패턴 (정인상, 채흥석 지음)</li>
+</ul>
+</li>
+</ul>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/04/09/DIP/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2018/04/09/ISP/">
                             ISP
                         </a>
@@ -299,8 +391,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/04/09/DIP/">
-                            DIP
+                        <a class="link-unstyled" href="/2018/04/09/Bridge Pattern/">
+                            Bridge Pattern
                         </a>
                     
                 </h1>
@@ -323,46 +415,36 @@
             
                 <div class="postShorten-content">
                     <ul>
-<li>Dependency Inversion Principle ( 의존 역전 법칙 )</li>
-</ul>
-<ul>
 <li><p>Intent</p>
 <ul>
-<li>High-level modules should not depend on low-level modules. Both should depend on abstractions.</li>
-<li>Abstractions should not depend on details. Details should depend on abstractions.</li>
-<li>의존 관계를 맺을 때 변화하기 쉬운 것 또는 자주 변화하는 것보다는 </li>
-<li>변화하기 어려운 것, 거의 변화가 없는 것에 의존하라는 원칙</li>
-<li>DIP를 만족하려면,</li>
-<li>어떤 클래스가 도움을 받을 때, 구체적인 클래스보다는 인터페이스나 추상 클래스와 의존 관계를 맺도록.</li>
+<li>decouple an abstraction from its implementation so that the two can vary independently.</li>
+<li>추상을 구현으로부터 분리하여, </li>
+<li>독립적으로 변하게 함</li>
+<li>여기에서 구현의 의미<ul>
+<li>추상을 구현한 concrete class X</li>
+<li>궂은 일을 하는 로직 / 코드</li>
 </ul>
 </li>
-<li><p>Bad Example</p>
+<li>구현 뿐만 아니라 추상화된 부분까지 변경시켜야 하는 경우에는 bridge pattern을 사용</li>
+</ul>
+</li>
+<li><p>Class Diagram</p>
+<p><img src="/image/myBridge.png" alt></p>
+<p><img src="/image/myBridgee.png" alt></p>
+</li>
+</ul>
 <ul>
-<li>the manager class which is a high level class, and the low level class called Worker</li>
-<li>now we have to change Manager class in order to introduce the new SuperWorker<ul>
-<li>Adding a new protocol will create the need to add code for parsing and serializing the content for each type of field.</li>
-<li>Adding a new content type (like html) make us to add code for each protocol implemented.</li>
+<li>Code</li>
 </ul>
-</li>
-</ul>
-<p><img src="/image/dip011.png" alt></p>
-<p><img src="/image/dip022.png" alt></p>
-<p><img src="/image/dip033.png" alt></p>
-</li>
-<li><p>Good Example</p>
-<ul>
-<li>Manager class doesn’t require changes when adding SuperWorkers.</li>
-</ul>
-<p><img src="/image/dip044.png" alt></p>
-<p><img src="/image/dip055.png" alt></p>
-<p><img src="/image/dip066.png" alt></p>
-<p><img src="/image/dip077.png" alt></p>
-</li>
-</ul>
+<p><img src="/image/b01.png" alt></p>
+<p><img src="/image/b02.png" alt></p>
+<p><img src="/image/b03.png" alt></p>
+<p><img src="/image/b04.png" alt></p>
+<p><img src="/image/b05.png" alt></p>
+<p><img src="/image/b06.png" alt></p>
 <ul>
 <li>Reference<ul>
-<li><a href="http://www.oodesign.com/dependency-inversion-principle.html" target="_blank" rel="noopener">http://www.oodesign.com/dependency-inversion-principle.html</a></li>
-<li>Java 객체지향 디자인 패턴 (정인상, 채흥석 지음)</li>
+<li><a href="https://www.tutorialspoint.com/design_pattern/bridge_pattern.htm" target="_blank" rel="noopener">https://www.tutorialspoint.com/design_pattern/bridge_pattern.htm</a></li>
 </ul>
 </li>
 </ul>
@@ -373,7 +455,7 @@
                     
                     
                         <p>
-                            <a href="/2018/04/09/DIP/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/04/09/Bridge Pattern/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -471,88 +553,6 @@
                     
                         <p>
                             <a href="/2018/04/09/Composite Pattern/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/04/09/Bridge Pattern/">
-                            Bridge Pattern
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-04-09T00:00:00+09:00">
-	
-		    Apr 09, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/design-pattern/">Design Pattern</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <ul>
-<li><p>Intent</p>
-<ul>
-<li>decouple an abstraction from its implementation so that the two can vary independently.</li>
-<li>추상을 구현으로부터 분리하여, </li>
-<li>독립적으로 변하게 함</li>
-<li>여기에서 구현의 의미<ul>
-<li>추상을 구현한 concrete class X</li>
-<li>궂은 일을 하는 로직 / 코드</li>
-</ul>
-</li>
-<li>구현 뿐만 아니라 추상화된 부분까지 변경시켜야 하는 경우에는 bridge pattern을 사용</li>
-</ul>
-</li>
-<li><p>Class Diagram</p>
-<p><img src="/image/myBridge.png" alt></p>
-<p><img src="/image/myBridgee.png" alt></p>
-</li>
-</ul>
-<ul>
-<li>Code</li>
-</ul>
-<p><img src="/image/b01.png" alt></p>
-<p><img src="/image/b02.png" alt></p>
-<p><img src="/image/b03.png" alt></p>
-<p><img src="/image/b04.png" alt></p>
-<p><img src="/image/b05.png" alt></p>
-<p><img src="/image/b06.png" alt></p>
-<ul>
-<li>Reference<ul>
-<li><a href="https://www.tutorialspoint.com/design_pattern/bridge_pattern.htm" target="_blank" rel="noopener">https://www.tutorialspoint.com/design_pattern/bridge_pattern.htm</a></li>
-</ul>
-</li>
-</ul>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/04/09/Bridge Pattern/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
