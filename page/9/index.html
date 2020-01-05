@@ -71,9 +71,9 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-flow control" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-flow, congestion control" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/11/21/flow control/" class="article-date">
+    <a href="/2018/11/21/flow, congestion control/" class="article-date">
   <time class="dt-published" datetime="2018-11-20T15:00:00.000Z" itemprop="datePublished">2018-11-21</time>
 </a>
     
@@ -89,7 +89,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/11/21/flow control/">flow control</a>
+      <a class="p-name article-title" href="/2018/11/21/flow, congestion control/">flow, congestion control</a>
     </h1>
   
 
@@ -97,37 +97,19 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h5 id="flow-control-이란"><a href="#flow-control-이란" class="headerlink" title="flow control 이란 ?"></a>flow control 이란 ?</h5><p>flow control은 송신측과 수신측의 데이터 처리 속도 차이를 해결하기 위한 방법입니다. stop and wait 와 sliding window 방식이 있습니다.</p>
-<h5 id="stop-and-wait-란"><a href="#stop-and-wait-란" class="headerlink" title="stop and wait 란?"></a>stop and wait 란?</h5><p>매번 전송한 패킷에 대해 확인응답을 받아야만 그 다음 패킷을 전송하는 방법입니다.</p>
-<p><img src="/image/flowcontrol01.png" alt></p>
-<h5 id="sliding-window-란"><a href="#sliding-window-란" class="headerlink" title="sliding window 란?"></a>sliding window 란?</h5><p>수신측에서 설정한 윈도우 크기만큼 송신측에서 확인 응답 없이 세그먼트를 전송하여 데이터 흐름을 동적으로 조절하는 제어 기법입니다.</p>
-<ol>
-<li><p>초기 구조를 다음과 같다고 가정합시다. </p>
-<p><img src="/image/slidingWindow01.png" alt></p>
-</li>
-<li><p>위 그림에서 데이터 0과 1을 전송했다고 가정하면,  슬라이딩 윈도우의 구조는 다음과 같이 변합니다. </p>
-<p><img src="/image/slidingWindow02.png" alt></p>
-</li>
-<li><p>만약 수신측으로부터 ACK라는 프레임을 받게 된다면 전송측은 0, 1이 데이터를 정상적으로 받았음을 알게 되고, 전송측은 ACK 프레임에 따른 프레임의 수만큼 오른쪽으로 확장됩니다.</p>
-<p><img src="/image/slidingWindow03.png" alt></p>
-</li>
-</ol>
-<h5 id="sliding-window-구현은-어떻게"><a href="#sliding-window-구현은-어떻게" class="headerlink" title="sliding window 구현은 어떻게 ?"></a>sliding window 구현은 어떻게 ?</h5><p>Go Back n ARQ 와 Selective Reject ARQ 방식이 있습니다.</p>
-<ol>
-<li><p>Go Back n ARQ(Automatic Repeat Request)</p>
-<p>손상되거나 분실된 프레임 이후의 프레임을 모두 재전송하는 기법입니다. 데이터 폐기 방식을 사용하여 추가    적 버퍼가 필요 없습니다.</p>
-</li>
-<li><p>Selective Reject ARQ</p>
-<p>손상되거나 분실된 프레임만을 재전송하는 기법입니다. 데이터 폐기 방식을 사용하지 않으므로 순차적이지 않    은 프레임을 재배열하기 위해 필요합니다.</p>
-</li>
-</ol>
+        <p>flow control은 host와 host 간에 데이터 처리를 효율적으로 하기 위한 방법입니다. congestion control은 host와 network 간의 데이터 처리를 효율적으로 하기 위한 방법입니다.</p>
+<h2 id="flow-control-이란"><a href="#flow-control-이란" class="headerlink" title="flow control 이란?"></a>flow control 이란?</h2><p>송신측과 수신측의 데이터 처리 속도 차이를 해결하기 위한 방법입니다. </p>
+<p>수신측의 데이터 처리 속도가 송신측의 데이터 처리 속도보다 빠르면 문제가 되지 않습니다. 하지만, 송신측의 데이터 처리 속도가 더 빠르면 문제가 됩니다. 수신측에서 제한된 저장용량을 초과한 이후에 도착하는 데이터는, 손실 될 수 있으며 만약 손실 된다면 불필요하게 응답과 데이터 전송이 송/수신 측 간에 빈번이 발생합니다. 이러한 위험을 줄이기 위해 송신 측의 데이터 전송량을 수신측에 따라 조절하는 flow control 이 필요합니다. </p>
+<p>stop and wait, sliding window 방식이 있습니다.</p>
+<h2 id="congestion-control-이란"><a href="#congestion-control-이란" class="headerlink" title="congestion control 이란?"></a>congestion control 이란?</h2><p>송신측과 네트워크의 데이터 처리 속도 차이를 해결하기 위한 방법입니다.</p>
+<p>송신측의 데이터는 지역망이나 인터넷으로 연결된 대형 네트워크를 통해 전달됩니다. 만약 한 라우터에 데이터가 몰릴 경우, 자신에게 온 데이터를 모두 처리 할 수 없게 됩니다. 이런 경우 호스트들은 또 다시 재전송을 하게되고 결국 혼잡만 가중시켜 오버플로우나 데이터 손실을 발생시키게 됩니다. 이러한 네트워크의 혼잡을 피하기 위해 송신측에서 보내는 데이터의 전송 속도를  강제로 줄이는 congestion control 이 필요합니다.</p>
+<p>AIMD, Slow Start, Fast Transmit, Fast Recovery 방식이 있습니다.</p>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://jwprogramming.tistory.com/36" target="_blank" rel="noopener">http://jwprogramming.tistory.com/36</a></p>
-<p><a href="https://goodgid.github.io/Error-Flow-Control/" target="_blank" rel="noopener">https://goodgid.github.io/Error-Flow-Control/</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/11/21/flow control/" data-id="ck50s91sb00jb5s6wprk1if77" data-title="flow control" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/11/21/flow, congestion control/" data-id="ck50so6tj00j9zp6w2tw534y1" data-title="flow, congestion control" class="article-share-link">Share</a>
       
       
       
@@ -184,7 +166,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/11/21/길찾기/" data-id="ck50s91sd00jf5s6waedmpb36" data-title="길찾기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/11/21/길찾기/" data-id="ck50so6tl00jdzp6wp5egqaoi" data-title="길찾기" class="article-share-link">Share</a>
       
       
       
@@ -245,7 +227,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/11/13/View Life Cycle/" data-id="ck50s91sb00j95s6wmio1xe92" data-title="View Controller Life Cycle" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/11/13/View Life Cycle/" data-id="ck50so6tj00j7zp6wtkmr2tkp" data-title="View Controller Life Cycle" class="article-share-link">Share</a>
       
       
       
@@ -317,7 +299,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/11/13/SOLID/" data-id="ck50s91sa00j75s6wjwu1o3vk" data-title="SOLID" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/11/13/SOLID/" data-id="ck50so6ti00j5zp6wvmuaxngb" data-title="SOLID" class="article-share-link">Share</a>
       
       
       
@@ -367,7 +349,62 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/11/13/Hash Table/" data-id="ck50s91s900j55s6wtfrx30nr" data-title="Hash Table" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/11/13/Hash Table/" data-id="ck50so6ti00j2zp6wx5upuua6" data-title="Hash Table" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-워터폴,에자일" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/11/12/워터폴,에자일/" class="article-date">
+  <time class="dt-published" datetime="2018-11-11T15:00:00.000Z" itemprop="datePublished">2018-11-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/software-engineering/">Software Engineering</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/11/12/워터폴,에자일/">워터폴,에자일</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="Waterfall-Model"><a href="#Waterfall-Model" class="headerlink" title="Waterfall Model"></a>Waterfall Model</h5><p>순차적인 소프트웨어 개발 프로세스입니다. </p>
+<p>개발의 흐름이 마치 폭포수처럼 지속적으로 아래로 향하는 것처럼 보이는 데서 이름이 붙여졌습니다. 이 폭포수 모델의 흐름은 다음과 같습니다.</p>
+<ol>
+<li>요구사항 분석</li>
+<li>설계</li>
+<li>구현</li>
+<li>유지보수</li>
+</ol>
+<h5 id="Agile-Model"><a href="#Agile-Model" class="headerlink" title="Agile Model"></a>Agile Model</h5><p><img src="/image/agile01.png" alt></p>
+<p>개발과 즉시 피드백을 받아 유동적으로 개발하는 방법론입니다.</p>
+<p>애자일 모델은 전체적인 플랜을 짜고 문서를 통해 주도해 나가던 과거의 방식 (워터폴 모델) 과 달리 앞을 예측하며 개발하지 않고, 일정한 주기를 가지고 끊임없이 프로토 타입을 만들어 내며 필요할 때마다 요구사항을 더하고 수정<br>하여 커다란 소프트웨어를 개발해 나가는 방식입니다.</p>
+<h5 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h5><p><a href="https://ko.wikipedia.org/wiki/%ED%8F%AD%ED%8F%AC%EC%88%98_%EB%AA%A8%EB%8D%B8" target="_blank" rel="noopener">https://ko.wikipedia.org/wiki/%ED%8F%AD%ED%8F%AC%EC%88%98_%EB%AA%A8%EB%8D%B8</a></p>
+<p><a href="http://blog.rightbrain.co.kr/?p=5810" target="_blank" rel="noopener">http://blog.rightbrain.co.kr/?p=5810</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/11/12/워터폴,에자일/" data-id="ck50so6th00j0zp6wmjwnryya" data-title="워터폴,에자일" class="article-share-link">Share</a>
       
       
       
@@ -444,7 +481,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/11/12/퀵정렬/" data-id="ck50s91s900j35s6wlz3xpipj" data-title="퀵정렬" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/11/12/퀵정렬/" data-id="ck50so6tg00iyzp6wy1b7txa0" data-title="퀵정렬" class="article-share-link">Share</a>
       
       
       
@@ -524,62 +561,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/11/12/Transaction/" data-id="ck50s91s800j05s6wmlbo588o" data-title="Transaction" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-워터폴,에자일" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/11/12/워터폴,에자일/" class="article-date">
-  <time class="dt-published" datetime="2018-11-11T15:00:00.000Z" itemprop="datePublished">2018-11-12</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/software-engineering/">Software Engineering</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/11/12/워터폴,에자일/">워터폴,에자일</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h5 id="Waterfall-Model"><a href="#Waterfall-Model" class="headerlink" title="Waterfall Model"></a>Waterfall Model</h5><p>순차적인 소프트웨어 개발 프로세스입니다. </p>
-<p>개발의 흐름이 마치 폭포수처럼 지속적으로 아래로 향하는 것처럼 보이는 데서 이름이 붙여졌습니다. 이 폭포수 모델의 흐름은 다음과 같습니다.</p>
-<ol>
-<li>요구사항 분석</li>
-<li>설계</li>
-<li>구현</li>
-<li>유지보수</li>
-</ol>
-<h5 id="Agile-Model"><a href="#Agile-Model" class="headerlink" title="Agile Model"></a>Agile Model</h5><p><img src="/image/agile01.png" alt></p>
-<p>개발과 즉시 피드백을 받아 유동적으로 개발하는 방법론입니다.</p>
-<p>애자일 모델은 전체적인 플랜을 짜고 문서를 통해 주도해 나가던 과거의 방식 (워터폴 모델) 과 달리 앞을 예측하며 개발하지 않고, 일정한 주기를 가지고 끊임없이 프로토 타입을 만들어 내며 필요할 때마다 요구사항을 더하고 수정<br>하여 커다란 소프트웨어를 개발해 나가는 방식입니다.</p>
-<h5 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h5><p><a href="https://ko.wikipedia.org/wiki/%ED%8F%AD%ED%8F%AC%EC%88%98_%EB%AA%A8%EB%8D%B8" target="_blank" rel="noopener">https://ko.wikipedia.org/wiki/%ED%8F%AD%ED%8F%AC%EC%88%98_%EB%AA%A8%EB%8D%B8</a></p>
-<p><a href="http://blog.rightbrain.co.kr/?p=5810" target="_blank" rel="noopener">http://blog.rightbrain.co.kr/?p=5810</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/11/12/워터폴,에자일/" data-id="ck50s91s600iy5s6w0qp66vi6" data-title="워터폴,에자일" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/11/12/Transaction/" data-id="ck50so6tg00iwzp6wnvc9czl1" data-title="Transaction" class="article-share-link">Share</a>
       
       
       
@@ -638,7 +620,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/11/12/REST/" data-id="ck50s91s500iw5s6w77omkt5t" data-title="REST" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/11/12/REST/" data-id="ck50so6tf00iuzp6wty3w7eim" data-title="REST" class="article-share-link">Share</a>
       
       
       
@@ -686,7 +668,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/11/12/Linked List, Array/" data-id="ck50s91s400iu5s6wgqb2eety" data-title="Array, Linked List" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/11/12/Linked List, Array/" data-id="ck50so6tf00iszp6w9c5vkb0b" data-title="Array, Linked List" class="article-share-link">Share</a>
       
       
       
