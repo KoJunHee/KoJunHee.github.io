@@ -1,19 +1,13 @@
-
 <!DOCTYPE html>
-<html lang="en">
-    
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="junhee.ko">
-    <title>[자바 ORM 표준 JPA 프로그래밍] 4장_앤티티 매핑 - junhee.ko</title>
-    <meta name="author" content="junhee.ko">
-    
-    
-    
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg"},"articleBody":"엔티티와 테이블을 정확히 매핑하기 위해 JPA는 다양한 어노테이션을 지원합니다. 이번 포스팅에서는 다음 매핑에 대해 다룹니다.\n\n객체와 테이블 매핑\n@Entity, @Table\n\n\n기본 키 매핑\n@Id\n\n\n필드와 컬럼 매핑\n@Column\n\n\n\n@EntityJPA를 사용해서 테이블을 매핑할 클래스는 @Entity 를 필수로 붙여야합니다. @Entity 적용시 기본 생성자는 필수입니다.\n@Table엔티티와 매핑할 테이블을 지정합니다. \n데이터베이스 스키마 자동 생성JPA는 클래스의 매핑 정보와 데이터베이스 방언을 사용해서 데이터베이스 스키마를 생성합니다. 다음과 같이 설정하면 기존 테이블을 삭제하고 새로 생성합니다 (DROP+CREATE).  create-drop / update / validate / none 옵션이 있습니다.\n1spring.jpa.hibernate.ddl-auto=create\n\n기본 키 (Primary Key) 매핑JPA가 제공하는 데이터베이스 기본 키 생성 전략은 다음과 같습니다.\n\n직접 할당\n애플리케이션에서 직접 할당합니다.\n\n\n자동 생성\nIDENTITY\n기본 키 생성을 데이터베이스에 위임합니다.\n\n\nSEQUENCE\n데이터베이스 시퀀스를 사용해 기본 키를 할당합니다.\n\n\nTABLE\n키 생성 테이블을 사용합니다.\n\n\n\n\n\n@Column객체 필드를 테이블 칼럼에 매핑합니다. 속성 중에 name, nullable 이 주로 사용됩니다.\nReference자바 ORM 표준 프로그래밍 &lt;김영한&gt;\n","dateCreated":"2019-03-20T00:00:00+09:00","dateModified":"2019-04-06T14:03:34+09:00","datePublished":"2019-03-20T00:00:00+09:00","description":"","headline":"[자바 ORM 표준 JPA 프로그래밍] 4장_앤티티 매핑","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://kojunhee.github.io/2019/03/20/entity mapping/"},"publisher":{"@type":"Organization","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg","logo":{"@type":"ImageObject","url":"profile.jpg"}},"url":"https://kojunhee.github.io/2019/03/20/entity mapping/"}</script>
-    <meta name="description" content="엔티티와 테이블을 정확히 매핑하기 위해 JPA는 다양한 어노테이션을 지원합니다. 이번 포스팅에서는 다음 매핑에 대해 다룹니다.  객체와 테이블 매핑 @Entity, @Table   기본 키 매핑 @Id   필드와 컬럼 매핑 @Column    @EntityJPA를 사용해서 테이블을 매핑할 클래스는 @Entity 를 필수로 붙여야합니다. @Entity 적용시">
-<meta property="og:type" content="blog">
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  
+  <title>[자바 ORM 표준 JPA 프로그래밍] 4장_앤티티 매핑 | junhee.ko</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="엔티티와 테이블을 정확히 매핑하기 위해 JPA는 다양한 어노테이션을 지원합니다. 이번 포스팅에서는 다음 매핑에 대해 다룹니다.  객체와 테이블 매핑 @Entity, @Table   기본 키 매핑 @Id   필드와 컬럼 매핑 @Column    @EntityJPA를 사용해서 테이블을 매핑할 클래스는 @Entity 를 필수로 붙여야합니다. @Entity 적용시">
+<meta property="og:type" content="article">
 <meta property="og:title" content="[자바 ORM 표준 JPA 프로그래밍] 4장_앤티티 매핑">
 <meta property="og:url" content="https://kojunhee.github.io/2019/03/20/entity mapping/index.html">
 <meta property="og:site_name" content="junhee.ko">
@@ -23,201 +17,86 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="[자바 ORM 표준 JPA 프로그래밍] 4장_앤티티 매핑">
 <meta name="twitter:description" content="엔티티와 테이블을 정확히 매핑하기 위해 JPA는 다양한 어노테이션을 지원합니다. 이번 포스팅에서는 다음 매핑에 대해 다룹니다.  객체와 테이블 매핑 @Entity, @Table   기본 키 매핑 @Id   필드와 컬럼 매핑 @Column    @EntityJPA를 사용해서 테이블을 매핑할 클래스는 @Entity 를 필수로 붙여야합니다. @Entity 적용시">
-    
-    
-        
-    
-    
-        <meta property="og:image" content="https://kojunhee.github.io/assets/images/profile.jpg"/>
-    
-    
-    
-    
-    <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/all.css">
-    <link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
-    <link rel="stylesheet" href="/assets/css/thumbs.css">
-    <link rel="stylesheet" href="/assets/css/tranquilpeak.css">
-    <!--STYLES END-->
-    
-
-    
+  
+    <link rel="alternate" href="/atom.xml" title="junhee.ko" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  
 </head>
 
-    <body>
-        <div id="blog">
-            <!-- Define author's picture -->
-
-
-    
-        
-            
-        
-    
-
-<header id="header" data-behavior="2">
-    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
-    <div class="header-title">
-        <a class="header-title-link" href="/ ">junhee.ko</a>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">junhee.ko</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">always learning</a>
+        </h2>
+      
     </div>
-    
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
         
-            <a  class="header-right-picture "
-                href="#about">
+          <a class="main-nav-link" href="/">Home</a>
         
+          <a class="main-nav-link" href="/archives">Archives</a>
         
-            <img class="header-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+      </nav>
+      <nav id="sub-nav">
         
-        </a>
-    
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://kojunhee.github.io"></form>
+      </div>
+    </div>
+  </div>
 </header>
+      <div class="outer">
+        <section id="main"><article id="post-entity mapping" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/03/20/entity mapping/" class="article-date">
+  <time class="dt-published" datetime="2019-03-19T15:00:00.000Z" itemprop="datePublished">2019-03-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/jpa/">JPA</a>
+  </div>
 
-            <!-- Define author's picture -->
-
-
-
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
         
-    
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      [자바 ORM 표준 JPA 프로그래밍] 4장_앤티티 매핑
+    </h1>
+  
 
-<nav id="sidebar" data-behavior="2">
-    <div class="sidebar-container">
-        
-            <div class="sidebar-profile">
-                <a href="/#about">
-                    <img class="sidebar-profile-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
-                </a>
-                <h4 class="sidebar-profile-name">junhee.ko</h4>
-                
-                    <h5 class="sidebar-profile-bio"><p>Always Learning</p>
-</h5>
-                
-            </div>
-        
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/ "
-                            
-                            title="Home"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Home</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/all-categories"
-                            
-                            title="Categories"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Categories</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/all-archives"
-                            
-                            title="Archives"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Archives</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://github.com/kojunhee" target="_blank" rel="noopener" title="GitHub">
-                    
-                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">GitHub</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://facebook.com/kojunheee" target="_blank" rel="noopener" title="Facebook">
-                    
-                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Facebook</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/junheeko" target="_blank" rel="noopener" title="LinkedIn">
-                    
-                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">LinkedIn</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="mailto:junheee.ko@gmail.com" target="_blank" rel="noopener" title="Mail">
-                    
-                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Mail</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-    </div>
-</nav>
-
-            
-            <div id="main" data-behavior="2"
-                 class="
-                        hasCoverMetaIn
-                        ">
-                
-<article class="post">
+      </header>
     
-    
-        <div class="post-header main-content-wrap text-left">
-    
-        <h1 class="post-title">
-            [자바 ORM 표준 JPA 프로그래밍] 4장_앤티티 매핑
-        </h1>
-    
-    
-        <div class="post-meta">
-    <time datetime="2019-03-20T00:00:00+09:00">
-	
-		    Mar 20, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/jpa/">JPA</a>
-
-
-    
-</div>
-
-    
-</div>
-
-    
-    <div class="post-content markdown">
-        <div class="main-content-wrap">
-            <p>엔티티와 테이블을 정확히 매핑하기 위해 JPA는 다양한 어노테이션을 지원합니다. 이번 포스팅에서는 다음 매핑에 대해 다룹니다.</p>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>엔티티와 테이블을 정확히 매핑하기 위해 JPA는 다양한 어노테이션을 지원합니다. 이번 포스팅에서는 다음 매핑에 대해 다룹니다.</p>
 <ul>
 <li>객체와 테이블 매핑<ul>
 <li>@Entity, @Table</li>
@@ -262,237 +141,134 @@
 <h4 id="Column"><a href="#Column" class="headerlink" title="@Column"></a>@Column</h4><p>객체 필드를 테이블 칼럼에 매핑합니다. 속성 중에 name, nullable 이 주로 사용됩니다.</p>
 <h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><p>자바 ORM 표준 프로그래밍 &lt;김영한&gt;</p>
 
-            
-
-        </div>
+      
     </div>
-    <div id="post-footer" class="post-footer main-content-wrap">
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2019/03/20/entity mapping/" data-id="ck50s2obf00luhc6wtw7pjzfl" data-title="[자바 ORM 표준 JPA 프로그래밍] 4장_앤티티 매핑" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/03/20/persistence context/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
         
+          [자바 ORM 표준 JPA 프로그래밍] 3장_영속성 관리
         
-            <div class="post-actions-wrap">
-    <nav>
-        <ul class="post-actions post-action-nav">
-            <li class="post-action">
-                
-                    
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/03/20/persistence context/" data-tooltip="[자바 ORM 표준 JPA 프로그래밍] 3장_영속성 관리" aria-label="PREVIOUS: [자바 ORM 표준 JPA 프로그래밍] 3장_영속성 관리">
-                
-                    <i class="fa fa-angle-left" aria-hidden="true"></i>
-                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
-                </a>
-            </li>
-            <li class="post-action">
-                
-                    
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/03/18/JPA Simple Test/" data-tooltip="JPA Simple Test" aria-label="NEXT: JPA Simple Test">
-                
-                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
-                    <i class="fa fa-angle-right" aria-hidden="true"></i>
-                </a>
-            </li>
-        </ul>
-    </nav>
-    <ul class="post-actions post-action-share">
-        <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
-                <i class="fa fa-share-alt" aria-hidden="true"></i>
-            </a>
-        </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2019/03/20/entity mapping/" title="Share on Facebook">
-                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-        
-            
-                <li class="post-action">
-                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment"></i>
-                    </a>
-                </li>
-            
-        
-        <li class="post-action">
-            
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
-            
-                <i class="fa fa-list" aria-hidden="true"></i>
-            </a>
-        </li>
-    </ul>
-</div>
+      </div>
+    </a>
+  
+  
+    <a href="/2019/03/18/JPA Simple Test/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">JPA Simple Test</div>
+    </a>
+  
+</nav>
 
-
-        
-        
-            
-                <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-</div>
-            
-        
-    </div>
+  
 </article>
 
 
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/big-data/">Big Data</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boost-course/">Boost Course</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/dip/">DIP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/data-structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/design-pattern/">Design Pattern</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jpa/">JPA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">Kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/network/">Network</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/os/">OS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/object/">Object</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/software-engineering/">Software Engineering</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/spark/">Spark</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/etc/">etc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ios/">iOS</a></li></ul>
+    </div>
+  </div>
 
-                <footer id="footer" class="main-content-wrap">
-    <span class="copyrights">
-        Copyrights &copy; 2020 junhee.ko. All Rights Reserved.
-    </span>
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/01/05/big-data-chapter5/">[빅데이터를 지탱하는 기술] 5장_빅데이터 파이프라인</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/02/big-data-chapter4/">[빅데이터를 지탱하는 기술] 4장_빅데이터 축적</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/30/big-data-chapter1/">[빅데이터를 지탱하는 기술] 1장_빅데이터 기초 지식</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/30/big-data-chapter2/">[빅데이터를 지탱하는 기술] 2장_빅데이터 탐색</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/30/big-data-chapter3/">[빅데이터를 지탱하는 기술] 3장_빅데이터 분산처리</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 junhee.ko<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
 </footer>
 
-            </div>
-            
-                <div id="bottom-bar" class="post-bottom-bar" data-behavior="2">
-                    <div class="post-actions-wrap">
-    <nav>
-        <ul class="post-actions post-action-nav">
-            <li class="post-action">
-                
-                    
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/03/20/persistence context/" data-tooltip="[자바 ORM 표준 JPA 프로그래밍] 3장_영속성 관리" aria-label="PREVIOUS: [자바 ORM 표준 JPA 프로그래밍] 3장_영속성 관리">
-                
-                    <i class="fa fa-angle-left" aria-hidden="true"></i>
-                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
-                </a>
-            </li>
-            <li class="post-action">
-                
-                    
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/03/18/JPA Simple Test/" data-tooltip="JPA Simple Test" aria-label="NEXT: JPA Simple Test">
-                
-                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
-                    <i class="fa fa-angle-right" aria-hidden="true"></i>
-                </a>
-            </li>
-        </ul>
-    </nav>
-    <ul class="post-actions post-action-share">
-        <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
-                <i class="fa fa-share-alt" aria-hidden="true"></i>
-            </a>
-        </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2019/03/20/entity mapping/" title="Share on Facebook">
-                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-        
-            
-                <li class="post-action">
-                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment"></i>
-                    </a>
-                </li>
-            
-        
-        <li class="post-action">
-            
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
-            
-                <i class="fa fa-list" aria-hidden="true"></i>
-            </a>
-        </li>
-    </ul>
-</div>
-
-
-                </div>
-                <div id="share-options-bar" class="share-options-bar" data-behavior="2">
-    <i id="btn-close-shareoptions" class="fa fa-times"></i>
-    <ul class="share-options">
-        
-            
-            
-            <li class="share-option">
-                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2019/03/20/entity mapping/">
-                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
-                </a>
-            </li>
-        
-    </ul>
-</div>
-
-            
-        </div>
-        
-
-
-    
-        
-    
-
-<div id="about">
-    <div id="about-card">
-        <div id="about-btn-close">
-            <i class="fa fa-times"></i>
-        </div>
-        
-            <img id="about-card-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
-        
-            <h4 id="about-card-name">junhee.ko</h4>
-        
-            <div id="about-card-bio"><p>Always Learning</p>
-</div>
-        
-        
-            <div id="about-card-job">
-                <i class="fa fa-briefcase"></i>
-                <br/>
-                <p>Engineer</p>
-
-            </div>
-        
-        
-            <div id="about-card-location">
-                <i class="fa fa-map-marker-alt"></i>
-                <br/>
-                Incheon
-            </div>
-        
     </div>
-</div>
-
-        
-        
-<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
-        <!--SCRIPTS-->
-<script src="/assets/js/jquery.js"></script>
-<script src="/assets/js/jquery.fancybox.js"></script>
-<script src="/assets/js/thumbs.js"></script>
-<script src="/assets/js/tranquilpeak.js"></script>
-<!--SCRIPTS END-->
-
-    
-        <script>
-             var disqus_config = function () {
-                 this.page.url = 'https://kojunhee.github.io/2019/03/20/entity mapping/';
-                 
-                    this.page.identifier = '2019/03/20/entity mapping/';
-                 
-             };
-            (function() {
-                var d = document, s = d.createElement('script');
-                var disqus_shortname = 'junheeko';
-                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-
-                s.setAttribute('data-timestamp', +new Date());
-                (d.head || d.body).appendChild(s);
-            })();
-        </script>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
     
 
+<script src="/js/jquery-3.4.1.min.js"></script>
 
 
-    </body>
+  <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
 </html>

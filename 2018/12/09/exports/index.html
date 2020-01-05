@@ -1,19 +1,13 @@
-
 <!DOCTYPE html>
-<html lang="en">
-    
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="junhee.ko">
-    <title>exports - junhee.ko</title>
-    <meta name="author" content="junhee.ko">
-    
-    
-    
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg"},"articleBody":"전역 객체인 exports가 뭔가요?만들고자 하는 모듈을 파일로 만들고, exports 객체의 속성이나 메소드를 정의해주면 모듈을 만들어 낼 수 있습니다. 그리고 만들어진 모듈을 전역 함수 require()를 이용하여 추출합니다.\n여러 속성과 메소드를 모듈로 만들고 이를 사용한 exports 예시는?12345678910111213141516171819// cicle.jsvar PI = Math.PI; exports.area = function (r) &#123;    return PI * r * r;&#125;; exports.circumference = function (r) &#123;    return 2 * PI * r;&#125;;// foo.jsvar circle = require('./circle.js');console.log( 'The area of a circle of radius 4 is '    + circle.area(4));// result$ node foo.jsThe area of a circle of radius 4 is 50.26548245743669\n\nexports와 module.exports 차이는?exports는 속성이나 메소드를 여러 개 정의할 수 있지만, module.exports는 하나만 정의할 수 있습니다. 파일 자체를 속성이나 메소드로 사용하는 방식입니다.\nmodule.exports의 예시는?1234567891011121314151617// square.jsmodule.exports = function(width) &#123;    return &#123;        area: function() &#123;            return width * width;        &#125;    &#125;;&#125;// bar.jsvar square = require('./square.js');var mySquare = square(2);console.log('The area of my square is ' + mySquare.area());// result$ node bar.jsThe area of my square is 4\n\nreferencehttps://opentutorials.org/module/938/7190\n","dateCreated":"2018-12-09T00:00:00+09:00","dateModified":"2019-03-15T13:07:10+09:00","datePublished":"2018-12-09T00:00:00+09:00","description":"","headline":"exports","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://kojunhee.github.io/2018/12/09/exports/"},"publisher":{"@type":"Organization","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg","logo":{"@type":"ImageObject","url":"profile.jpg"}},"url":"https://kojunhee.github.io/2018/12/09/exports/"}</script>
-    <meta name="description" content="전역 객체인 exports가 뭔가요?만들고자 하는 모듈을 파일로 만들고, exports 객체의 속성이나 메소드를 정의해주면 모듈을 만들어 낼 수 있습니다. 그리고 만들어진 모듈을 전역 함수 require()를 이용하여 추출합니다. 여러 속성과 메소드를 모듈로 만들고 이를 사용한 exports 예시는?12345678910111213141516171819//">
-<meta property="og:type" content="blog">
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  
+  <title>exports | junhee.ko</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="전역 객체인 exports가 뭔가요?만들고자 하는 모듈을 파일로 만들고, exports 객체의 속성이나 메소드를 정의해주면 모듈을 만들어 낼 수 있습니다. 그리고 만들어진 모듈을 전역 함수 require()를 이용하여 추출합니다. 여러 속성과 메소드를 모듈로 만들고 이를 사용한 exports 예시는?12345678910111213141516171819//">
+<meta property="og:type" content="article">
 <meta property="og:title" content="exports">
 <meta property="og:url" content="https://kojunhee.github.io/2018/12/09/exports/index.html">
 <meta property="og:site_name" content="junhee.ko">
@@ -23,201 +17,86 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="exports">
 <meta name="twitter:description" content="전역 객체인 exports가 뭔가요?만들고자 하는 모듈을 파일로 만들고, exports 객체의 속성이나 메소드를 정의해주면 모듈을 만들어 낼 수 있습니다. 그리고 만들어진 모듈을 전역 함수 require()를 이용하여 추출합니다. 여러 속성과 메소드를 모듈로 만들고 이를 사용한 exports 예시는?12345678910111213141516171819//">
-    
-    
-        
-    
-    
-        <meta property="og:image" content="https://kojunhee.github.io/assets/images/profile.jpg"/>
-    
-    
-    
-    
-    <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/all.css">
-    <link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
-    <link rel="stylesheet" href="/assets/css/thumbs.css">
-    <link rel="stylesheet" href="/assets/css/tranquilpeak.css">
-    <!--STYLES END-->
-    
-
-    
+  
+    <link rel="alternate" href="/atom.xml" title="junhee.ko" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  
 </head>
 
-    <body>
-        <div id="blog">
-            <!-- Define author's picture -->
-
-
-    
-        
-            
-        
-    
-
-<header id="header" data-behavior="2">
-    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
-    <div class="header-title">
-        <a class="header-title-link" href="/ ">junhee.ko</a>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">junhee.ko</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">always learning</a>
+        </h2>
+      
     </div>
-    
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
         
-            <a  class="header-right-picture "
-                href="#about">
+          <a class="main-nav-link" href="/">Home</a>
         
+          <a class="main-nav-link" href="/archives">Archives</a>
         
-            <img class="header-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+      </nav>
+      <nav id="sub-nav">
         
-        </a>
-    
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://kojunhee.github.io"></form>
+      </div>
+    </div>
+  </div>
 </header>
+      <div class="outer">
+        <section id="main"><article id="post-exports" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/09/exports/" class="article-date">
+  <time class="dt-published" datetime="2018-12-08T15:00:00.000Z" itemprop="datePublished">2018-12-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/node-js/">Node.js</a>
+  </div>
 
-            <!-- Define author's picture -->
-
-
-
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
         
-    
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      exports
+    </h1>
+  
 
-<nav id="sidebar" data-behavior="2">
-    <div class="sidebar-container">
-        
-            <div class="sidebar-profile">
-                <a href="/#about">
-                    <img class="sidebar-profile-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
-                </a>
-                <h4 class="sidebar-profile-name">junhee.ko</h4>
-                
-                    <h5 class="sidebar-profile-bio"><p>Always Learning</p>
-</h5>
-                
-            </div>
-        
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/ "
-                            
-                            title="Home"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Home</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/all-categories"
-                            
-                            title="Categories"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Categories</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/all-archives"
-                            
-                            title="Archives"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Archives</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://github.com/kojunhee" target="_blank" rel="noopener" title="GitHub">
-                    
-                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">GitHub</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://facebook.com/kojunheee" target="_blank" rel="noopener" title="Facebook">
-                    
-                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Facebook</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/junheeko" target="_blank" rel="noopener" title="LinkedIn">
-                    
-                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">LinkedIn</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="mailto:junheee.ko@gmail.com" target="_blank" rel="noopener" title="Mail">
-                    
-                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Mail</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-    </div>
-</nav>
-
-            
-            <div id="main" data-behavior="2"
-                 class="
-                        hasCoverMetaIn
-                        ">
-                
-<article class="post">
+      </header>
     
-    
-        <div class="post-header main-content-wrap text-left">
-    
-        <h1 class="post-title">
-            exports
-        </h1>
-    
-    
-        <div class="post-meta">
-    <time datetime="2018-12-09T00:00:00+09:00">
-	
-		    Dec 09, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/node-js/">Node.js</a>
-
-
-    
-</div>
-
-    
-</div>
-
-    
-    <div class="post-content markdown">
-        <div class="main-content-wrap">
-            <h5 id="전역-객체인-exports가-뭔가요"><a href="#전역-객체인-exports가-뭔가요" class="headerlink" title="전역 객체인 exports가 뭔가요?"></a>전역 객체인 exports가 뭔가요?</h5><p>만들고자 하는 모듈을 파일로 만들고, exports 객체의 속성이나 메소드를 정의해주면 모듈을 만들어 낼 수 있습니다. 그리고 만들어진 모듈을 전역 함수 require()를 이용하여 추출합니다.</p>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="전역-객체인-exports가-뭔가요"><a href="#전역-객체인-exports가-뭔가요" class="headerlink" title="전역 객체인 exports가 뭔가요?"></a>전역 객체인 exports가 뭔가요?</h5><p>만들고자 하는 모듈을 파일로 만들고, exports 객체의 속성이나 메소드를 정의해주면 모듈을 만들어 낼 수 있습니다. 그리고 만들어진 모듈을 전역 함수 require()를 이용하여 추출합니다.</p>
 <h5 id="여러-속성과-메소드를-모듈로-만들고-이를-사용한-exports-예시는"><a href="#여러-속성과-메소드를-모듈로-만들고-이를-사용한-exports-예시는" class="headerlink" title="여러 속성과 메소드를 모듈로 만들고 이를 사용한 exports 예시는?"></a>여러 속성과 메소드를 모듈로 만들고 이를 사용한 exports 예시는?</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// cicle.js</span></span><br><span class="line"><span class="keyword">var</span> PI = <span class="built_in">Math</span>.PI;</span><br><span class="line"> </span><br><span class="line">exports.area = <span class="function"><span class="keyword">function</span> (<span class="params">r</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> PI * r * r;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line">exports.circumference = <span class="function"><span class="keyword">function</span> (<span class="params">r</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">2</span> * PI * r;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// foo.js</span></span><br><span class="line"><span class="keyword">var</span> circle = <span class="built_in">require</span>(<span class="string">'./circle.js'</span>);</span><br><span class="line"><span class="built_in">console</span>.log( <span class="string">'The area of a circle of radius 4 is '</span></span><br><span class="line">    + circle.area(<span class="number">4</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// result</span></span><br><span class="line">$ node foo.js</span><br><span class="line">The area <span class="keyword">of</span> a circle <span class="keyword">of</span> radius <span class="number">4</span> is <span class="number">50.26548245743669</span></span><br></pre></td></tr></table></figure>
 
 <h5 id="exports와-module-exports-차이는"><a href="#exports와-module-exports-차이는" class="headerlink" title="exports와 module.exports 차이는?"></a>exports와 module.exports 차이는?</h5><p>exports는 속성이나 메소드를 여러 개 정의할 수 있지만, module.exports는 하나만 정의할 수 있습니다. 파일 자체를 속성이나 메소드로 사용하는 방식입니다.</p>
@@ -225,237 +104,134 @@
 
 <h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://opentutorials.org/module/938/7190" target="_blank" rel="noopener">https://opentutorials.org/module/938/7190</a></p>
 
-            
-
-        </div>
+      
     </div>
-    <div id="post-footer" class="post-footer main-content-wrap">
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/09/exports/" data-id="ck50s2obc00lhhc6wdpsedoy5" data-title="exports" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/12/09/MongoDB Replication/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
         
+          MongoDB Replication
         
-            <div class="post-actions-wrap">
-    <nav>
-        <ul class="post-actions post-action-nav">
-            <li class="post-action">
-                
-                    
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/12/09/Docker/" data-tooltip="Docker" aria-label="PREVIOUS: Docker">
-                
-                    <i class="fa fa-angle-left" aria-hidden="true"></i>
-                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
-                </a>
-            </li>
-            <li class="post-action">
-                
-                    
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/12/09/joi/" data-tooltip="Joi" aria-label="NEXT: Joi">
-                
-                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
-                    <i class="fa fa-angle-right" aria-hidden="true"></i>
-                </a>
-            </li>
-        </ul>
-    </nav>
-    <ul class="post-actions post-action-share">
-        <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
-                <i class="fa fa-share-alt" aria-hidden="true"></i>
-            </a>
-        </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2018/12/09/exports/" title="Share on Facebook">
-                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-        
-            
-                <li class="post-action">
-                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment"></i>
-                    </a>
-                </li>
-            
-        
-        <li class="post-action">
-            
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
-            
-                <i class="fa fa-list" aria-hidden="true"></i>
-            </a>
-        </li>
-    </ul>
-</div>
+      </div>
+    </a>
+  
+  
+    <a href="/2018/12/09/React.js/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">React.js</div>
+    </a>
+  
+</nav>
 
-
-        
-        
-            
-                <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-</div>
-            
-        
-    </div>
+  
 </article>
 
 
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/big-data/">Big Data</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boost-course/">Boost Course</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/dip/">DIP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/data-structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/design-pattern/">Design Pattern</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jpa/">JPA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">Kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/network/">Network</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/os/">OS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/object/">Object</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/software-engineering/">Software Engineering</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/spark/">Spark</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/etc/">etc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ios/">iOS</a></li></ul>
+    </div>
+  </div>
 
-                <footer id="footer" class="main-content-wrap">
-    <span class="copyrights">
-        Copyrights &copy; 2020 junhee.ko. All Rights Reserved.
-    </span>
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/01/05/big-data-chapter5/">[빅데이터를 지탱하는 기술] 5장_빅데이터 파이프라인</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/02/big-data-chapter4/">[빅데이터를 지탱하는 기술] 4장_빅데이터 축적</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/30/big-data-chapter1/">[빅데이터를 지탱하는 기술] 1장_빅데이터 기초 지식</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/30/big-data-chapter2/">[빅데이터를 지탱하는 기술] 2장_빅데이터 탐색</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/30/big-data-chapter3/">[빅데이터를 지탱하는 기술] 3장_빅데이터 분산처리</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 junhee.ko<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
 </footer>
 
-            </div>
-            
-                <div id="bottom-bar" class="post-bottom-bar" data-behavior="2">
-                    <div class="post-actions-wrap">
-    <nav>
-        <ul class="post-actions post-action-nav">
-            <li class="post-action">
-                
-                    
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/12/09/Docker/" data-tooltip="Docker" aria-label="PREVIOUS: Docker">
-                
-                    <i class="fa fa-angle-left" aria-hidden="true"></i>
-                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
-                </a>
-            </li>
-            <li class="post-action">
-                
-                    
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/12/09/joi/" data-tooltip="Joi" aria-label="NEXT: Joi">
-                
-                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
-                    <i class="fa fa-angle-right" aria-hidden="true"></i>
-                </a>
-            </li>
-        </ul>
-    </nav>
-    <ul class="post-actions post-action-share">
-        <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
-                <i class="fa fa-share-alt" aria-hidden="true"></i>
-            </a>
-        </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2018/12/09/exports/" title="Share on Facebook">
-                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-        
-            
-                <li class="post-action">
-                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment"></i>
-                    </a>
-                </li>
-            
-        
-        <li class="post-action">
-            
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
-            
-                <i class="fa fa-list" aria-hidden="true"></i>
-            </a>
-        </li>
-    </ul>
-</div>
-
-
-                </div>
-                <div id="share-options-bar" class="share-options-bar" data-behavior="2">
-    <i id="btn-close-shareoptions" class="fa fa-times"></i>
-    <ul class="share-options">
-        
-            
-            
-            <li class="share-option">
-                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2018/12/09/exports/">
-                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
-                </a>
-            </li>
-        
-    </ul>
-</div>
-
-            
-        </div>
-        
-
-
-    
-        
-    
-
-<div id="about">
-    <div id="about-card">
-        <div id="about-btn-close">
-            <i class="fa fa-times"></i>
-        </div>
-        
-            <img id="about-card-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
-        
-            <h4 id="about-card-name">junhee.ko</h4>
-        
-            <div id="about-card-bio"><p>Always Learning</p>
-</div>
-        
-        
-            <div id="about-card-job">
-                <i class="fa fa-briefcase"></i>
-                <br/>
-                <p>Engineer</p>
-
-            </div>
-        
-        
-            <div id="about-card-location">
-                <i class="fa fa-map-marker-alt"></i>
-                <br/>
-                Incheon
-            </div>
-        
     </div>
-</div>
-
-        
-        
-<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
-        <!--SCRIPTS-->
-<script src="/assets/js/jquery.js"></script>
-<script src="/assets/js/jquery.fancybox.js"></script>
-<script src="/assets/js/thumbs.js"></script>
-<script src="/assets/js/tranquilpeak.js"></script>
-<!--SCRIPTS END-->
-
-    
-        <script>
-             var disqus_config = function () {
-                 this.page.url = 'https://kojunhee.github.io/2018/12/09/exports/';
-                 
-                    this.page.identifier = '2018/12/09/exports/';
-                 
-             };
-            (function() {
-                var d = document, s = d.createElement('script');
-                var disqus_shortname = 'junheeko';
-                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-
-                s.setAttribute('data-timestamp', +new Date());
-                (d.head || d.body).appendChild(s);
-            })();
-        </script>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
     
 
+<script src="/js/jquery-3.4.1.min.js"></script>
 
 
-    </body>
+  <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
 </html>

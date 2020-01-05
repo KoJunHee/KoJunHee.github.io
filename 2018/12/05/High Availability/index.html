@@ -1,19 +1,13 @@
-
 <!DOCTYPE html>
-<html lang="en">
-    
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="junhee.ko">
-    <title>High Availability - junhee.ko</title>
-    <meta name="author" content="junhee.ko">
-    
-    
-    
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg"},"articleBody":"고가용성(HA, High Availability)이 뭔가요?서버가 오랜 시간 동안 지속적으로 정상 운영이 가능한 성질을 말합니다.\nHA를 이루기 위한 방법이 뭐가 있나요?클러스터링, 이중화, RAID가 있습니다.\n클러스터링이 뭔가요?마치 하나의 컴퓨터처럼 사용하기 위해, 여러 컴퓨터를 연결한 병렬 시스템입니다. 클러스터링 환경에서는 특정 장비에 문제가 생기거나 특정 장비에서 실행중인 애플리케이션에서 문제가 발생더라도 전체 서비스에 영향을 미치지 않도록 제어가 가능합니다. \n클러스터링의 장점은?\n저렴한 비용으로 다수의 서버를 증설 할 수 있습니다.\n1대의 서버 장애가 발생하여도 서비스 중단없이 다른 서버로 적절히 자동 분배되어 서비스를 계속 운용할 수 있습니다.\n서버를 확장할 때도 서비스 중단 없이 증설이 가능합니다.\n\n이중화(replication) 는 무엇인가요?replication은 물리적으로 다른 서버의 저장 공간에 동일한 데이터를 복사하는 기술입니다.\nmaster 와 slave가 뭔가요?원본 데이터가 위치하는 서버를 master 라고 하고 그 원본을 복제한 서버를 slave 라고 합니다. master에 쓰기 작업을 하고, 그 서버의 데이터를 복제해서 여러 대의 slave 서버를 만든 후에 slave 에서는 읽기 작업만을 수행합니다.\nreplication은 어떤 용도로 사용하나요?\n백업용으로 사용할 수 있습니다.\nmaster의 database와, 그로부터 복사된 slave의 database는 identical하기 때문에, master에 문제가 생겼을 경우에, slave가 하던 일을 떠맡도록 하면 다시 시스템을 정상적으로 가동하는 데 드는 시간을 절약할 수 있습니다.\n\n역할을 분산할 수 있습니다.\ndata를 직접 변경하는 처리는 master가 하도록 하고, 변경하지 않는 SELECT 같은 처리는 slave가 맡는 형식입니다.\n\n\nmysql 에서 replication은 어떤 방식으로 하나요?\nMaster에서 데이터 변경이 일어나면 자신의 데이터베이스에 반영합니다.\nMaster에서 변경된 이력을 Binary Log에 기록 후 관련 이벤트를 날립니다.\nSlave IO_THREAD에서 Master 이벤트를 감지하고, Master Binary Log를 자신의 Relay Log라는 곳에 기록을 합니다.\nSlave SQL_THREAD는 Relay Log를 읽고 자신의 데이터베이스에 기록을 합니다.\n\nRAID가 무엇인가요?한 개의 디스크에 데이터를 저장하는 방식이 아닌, 데이터 저장의 성능 및 안정성 확보를 위해 복수의 디스크를 구성하는 방식입니다.\n샤딩이 무엇인가요?Horizontal Partitioning입니다. 같은 테이블 스키마를 가진 데이터를 다수의 데이터베이스에 분산하여 저장하는 방법입니다.\n샤딩이 항상 필요하나요?가능하면 Sharding을 피하거나 지연시킬 수 있는 방법을 찾는 것이 우선되어야 합니다. \n샤딩 이외의 방법은 뭐가 있을까요?\nScale in 방식\nHardware Spec이 더 좋은 컴퓨터를 사용할 수 있습니다. \n\nCache, Repliction\nread 부하가 크다면 \n\nVertically Partition\nTable의 일부 컬럼만 자주 사용한다면\n\n\nReferencehttp://snthewhitehacker.tistory.com/4\nhttp://gywn.net/2011/12/mysql-replication-1/\n","dateCreated":"2018-12-05T00:00:00+09:00","dateModified":"2019-03-15T13:07:10+09:00","datePublished":"2018-12-05T00:00:00+09:00","description":"","headline":"High Availability","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://kojunhee.github.io/2018/12/05/High Availability/"},"publisher":{"@type":"Organization","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg","logo":{"@type":"ImageObject","url":"profile.jpg"}},"url":"https://kojunhee.github.io/2018/12/05/High Availability/"}</script>
-    <meta name="description" content="고가용성(HA, High Availability)이 뭔가요?서버가 오랜 시간 동안 지속적으로 정상 운영이 가능한 성질을 말합니다. HA를 이루기 위한 방법이 뭐가 있나요?클러스터링, 이중화, RAID가 있습니다. 클러스터링이 뭔가요?마치 하나의 컴퓨터처럼 사용하기 위해, 여러 컴퓨터를 연결한 병렬 시스템입니다. 클러스터링 환경에서는 특정 장비에 문제가 생기">
-<meta property="og:type" content="blog">
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  
+  <title>High Availability | junhee.ko</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="고가용성(HA, High Availability)이 뭔가요?서버가 오랜 시간 동안 지속적으로 정상 운영이 가능한 성질을 말합니다. HA를 이루기 위한 방법이 뭐가 있나요?클러스터링, 이중화, RAID가 있습니다. 클러스터링이 뭔가요?마치 하나의 컴퓨터처럼 사용하기 위해, 여러 컴퓨터를 연결한 병렬 시스템입니다. 클러스터링 환경에서는 특정 장비에 문제가 생기">
+<meta property="og:type" content="article">
 <meta property="og:title" content="High Availability">
 <meta property="og:url" content="https://kojunhee.github.io/2018/12/05/High Availability/index.html">
 <meta property="og:site_name" content="junhee.ko">
@@ -23,201 +17,86 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="High Availability">
 <meta name="twitter:description" content="고가용성(HA, High Availability)이 뭔가요?서버가 오랜 시간 동안 지속적으로 정상 운영이 가능한 성질을 말합니다. HA를 이루기 위한 방법이 뭐가 있나요?클러스터링, 이중화, RAID가 있습니다. 클러스터링이 뭔가요?마치 하나의 컴퓨터처럼 사용하기 위해, 여러 컴퓨터를 연결한 병렬 시스템입니다. 클러스터링 환경에서는 특정 장비에 문제가 생기">
-    
-    
-        
-    
-    
-        <meta property="og:image" content="https://kojunhee.github.io/assets/images/profile.jpg"/>
-    
-    
-    
-    
-    <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/all.css">
-    <link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
-    <link rel="stylesheet" href="/assets/css/thumbs.css">
-    <link rel="stylesheet" href="/assets/css/tranquilpeak.css">
-    <!--STYLES END-->
-    
-
-    
+  
+    <link rel="alternate" href="/atom.xml" title="junhee.ko" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  
 </head>
 
-    <body>
-        <div id="blog">
-            <!-- Define author's picture -->
-
-
-    
-        
-            
-        
-    
-
-<header id="header" data-behavior="2">
-    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
-    <div class="header-title">
-        <a class="header-title-link" href="/ ">junhee.ko</a>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">junhee.ko</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">always learning</a>
+        </h2>
+      
     </div>
-    
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
         
-            <a  class="header-right-picture "
-                href="#about">
+          <a class="main-nav-link" href="/">Home</a>
         
+          <a class="main-nav-link" href="/archives">Archives</a>
         
-            <img class="header-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+      </nav>
+      <nav id="sub-nav">
         
-        </a>
-    
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://kojunhee.github.io"></form>
+      </div>
+    </div>
+  </div>
 </header>
+      <div class="outer">
+        <section id="main"><article id="post-High Availability" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/05/High Availability/" class="article-date">
+  <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/database/">Database</a>
+  </div>
 
-            <!-- Define author's picture -->
-
-
-
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
         
-    
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      High Availability
+    </h1>
+  
 
-<nav id="sidebar" data-behavior="2">
-    <div class="sidebar-container">
-        
-            <div class="sidebar-profile">
-                <a href="/#about">
-                    <img class="sidebar-profile-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
-                </a>
-                <h4 class="sidebar-profile-name">junhee.ko</h4>
-                
-                    <h5 class="sidebar-profile-bio"><p>Always Learning</p>
-</h5>
-                
-            </div>
-        
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/ "
-                            
-                            title="Home"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Home</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/all-categories"
-                            
-                            title="Categories"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Categories</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/all-archives"
-                            
-                            title="Archives"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Archives</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://github.com/kojunhee" target="_blank" rel="noopener" title="GitHub">
-                    
-                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">GitHub</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://facebook.com/kojunheee" target="_blank" rel="noopener" title="Facebook">
-                    
-                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Facebook</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/junheeko" target="_blank" rel="noopener" title="LinkedIn">
-                    
-                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">LinkedIn</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="mailto:junheee.ko@gmail.com" target="_blank" rel="noopener" title="Mail">
-                    
-                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Mail</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-    </div>
-</nav>
-
-            
-            <div id="main" data-behavior="2"
-                 class="
-                        hasCoverMetaIn
-                        ">
-                
-<article class="post">
+      </header>
     
-    
-        <div class="post-header main-content-wrap text-left">
-    
-        <h1 class="post-title">
-            High Availability
-        </h1>
-    
-    
-        <div class="post-meta">
-    <time datetime="2018-12-05T00:00:00+09:00">
-	
-		    Dec 05, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/database/">Database</a>
-
-
-    
-</div>
-
-    
-</div>
-
-    
-    <div class="post-content markdown">
-        <div class="main-content-wrap">
-            <h5 id="고가용성-HA-High-Availability-이-뭔가요"><a href="#고가용성-HA-High-Availability-이-뭔가요" class="headerlink" title="고가용성(HA, High Availability)이 뭔가요?"></a>고가용성(HA, High Availability)이 뭔가요?</h5><p>서버가 오랜 시간 동안 지속적으로 정상 운영이 가능한 성질을 말합니다.</p>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="고가용성-HA-High-Availability-이-뭔가요"><a href="#고가용성-HA-High-Availability-이-뭔가요" class="headerlink" title="고가용성(HA, High Availability)이 뭔가요?"></a>고가용성(HA, High Availability)이 뭔가요?</h5><p>서버가 오랜 시간 동안 지속적으로 정상 운영이 가능한 성질을 말합니다.</p>
 <h5 id="HA를-이루기-위한-방법이-뭐가-있나요"><a href="#HA를-이루기-위한-방법이-뭐가-있나요" class="headerlink" title="HA를 이루기 위한 방법이 뭐가 있나요?"></a>HA를 이루기 위한 방법이 뭐가 있나요?</h5><p>클러스터링, 이중화, RAID가 있습니다.</p>
 <h5 id="클러스터링이-뭔가요"><a href="#클러스터링이-뭔가요" class="headerlink" title="클러스터링이 뭔가요?"></a>클러스터링이 뭔가요?</h5><p>마치 하나의 컴퓨터처럼 사용하기 위해, 여러 컴퓨터를 연결한 병렬 시스템입니다. 클러스터링 환경에서는 특정 장비에 문제가 생기거나 특정 장비에서 실행중인 애플리케이션에서 문제가 발생더라도 전체 서비스에 영향을 미치지 않도록 제어가 가능합니다. </p>
 <h5 id="클러스터링의-장점은"><a href="#클러스터링의-장점은" class="headerlink" title="클러스터링의 장점은?"></a>클러스터링의 장점은?</h5><ol>
@@ -258,237 +137,134 @@
 <h5 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h5><p><a href="http://snthewhitehacker.tistory.com/4" target="_blank" rel="noopener">http://snthewhitehacker.tistory.com/4</a></p>
 <p><a href="http://gywn.net/2011/12/mysql-replication-1/" target="_blank" rel="noopener">http://gywn.net/2011/12/mysql-replication-1/</a></p>
 
-            
-
-        </div>
+      
     </div>
-    <div id="post-footer" class="post-footer main-content-wrap">
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/05/High Availability/" data-id="ck50s2oat00jqhc6wtug2skeg" data-title="High Availability" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/12/05/Java 8/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
         
+          Java 8
         
-            <div class="post-actions-wrap">
-    <nav>
-        <ul class="post-actions post-action-nav">
-            <li class="post-action">
-                
-                    
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/12/05/isolation level/" data-tooltip="isolation level" aria-label="PREVIOUS: isolation level">
-                
-                    <i class="fa fa-angle-left" aria-hidden="true"></i>
-                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
-                </a>
-            </li>
-            <li class="post-action">
-                
-                    
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/12/05/overloading, overriding/" data-tooltip="overloading, overriding" aria-label="NEXT: overloading, overriding">
-                
-                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
-                    <i class="fa fa-angle-right" aria-hidden="true"></i>
-                </a>
-            </li>
-        </ul>
-    </nav>
-    <ul class="post-actions post-action-share">
-        <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
-                <i class="fa fa-share-alt" aria-hidden="true"></i>
-            </a>
-        </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2018/12/05/High Availability/" title="Share on Facebook">
-                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-        
-            
-                <li class="post-action">
-                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment"></i>
-                    </a>
-                </li>
-            
-        
-        <li class="post-action">
-            
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
-            
-                <i class="fa fa-list" aria-hidden="true"></i>
-            </a>
-        </li>
-    </ul>
-</div>
+      </div>
+    </a>
+  
+  
+    <a href="/2018/12/05/DNS/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">DNS</div>
+    </a>
+  
+</nav>
 
-
-        
-        
-            
-                <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-</div>
-            
-        
-    </div>
+  
 </article>
 
 
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/big-data/">Big Data</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boost-course/">Boost Course</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/dip/">DIP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/data-structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/design-pattern/">Design Pattern</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jpa/">JPA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">Kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/network/">Network</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/os/">OS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/object/">Object</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/software-engineering/">Software Engineering</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/spark/">Spark</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/etc/">etc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ios/">iOS</a></li></ul>
+    </div>
+  </div>
 
-                <footer id="footer" class="main-content-wrap">
-    <span class="copyrights">
-        Copyrights &copy; 2020 junhee.ko. All Rights Reserved.
-    </span>
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/01/05/big-data-chapter5/">[빅데이터를 지탱하는 기술] 5장_빅데이터 파이프라인</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/02/big-data-chapter4/">[빅데이터를 지탱하는 기술] 4장_빅데이터 축적</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/30/big-data-chapter1/">[빅데이터를 지탱하는 기술] 1장_빅데이터 기초 지식</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/30/big-data-chapter2/">[빅데이터를 지탱하는 기술] 2장_빅데이터 탐색</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/30/big-data-chapter3/">[빅데이터를 지탱하는 기술] 3장_빅데이터 분산처리</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 junhee.ko<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
 </footer>
 
-            </div>
-            
-                <div id="bottom-bar" class="post-bottom-bar" data-behavior="2">
-                    <div class="post-actions-wrap">
-    <nav>
-        <ul class="post-actions post-action-nav">
-            <li class="post-action">
-                
-                    
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/12/05/isolation level/" data-tooltip="isolation level" aria-label="PREVIOUS: isolation level">
-                
-                    <i class="fa fa-angle-left" aria-hidden="true"></i>
-                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
-                </a>
-            </li>
-            <li class="post-action">
-                
-                    
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/12/05/overloading, overriding/" data-tooltip="overloading, overriding" aria-label="NEXT: overloading, overriding">
-                
-                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
-                    <i class="fa fa-angle-right" aria-hidden="true"></i>
-                </a>
-            </li>
-        </ul>
-    </nav>
-    <ul class="post-actions post-action-share">
-        <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
-                <i class="fa fa-share-alt" aria-hidden="true"></i>
-            </a>
-        </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2018/12/05/High Availability/" title="Share on Facebook">
-                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-        
-            
-                <li class="post-action">
-                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment"></i>
-                    </a>
-                </li>
-            
-        
-        <li class="post-action">
-            
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
-            
-                <i class="fa fa-list" aria-hidden="true"></i>
-            </a>
-        </li>
-    </ul>
-</div>
-
-
-                </div>
-                <div id="share-options-bar" class="share-options-bar" data-behavior="2">
-    <i id="btn-close-shareoptions" class="fa fa-times"></i>
-    <ul class="share-options">
-        
-            
-            
-            <li class="share-option">
-                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2018/12/05/High Availability/">
-                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
-                </a>
-            </li>
-        
-    </ul>
-</div>
-
-            
-        </div>
-        
-
-
-    
-        
-    
-
-<div id="about">
-    <div id="about-card">
-        <div id="about-btn-close">
-            <i class="fa fa-times"></i>
-        </div>
-        
-            <img id="about-card-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
-        
-            <h4 id="about-card-name">junhee.ko</h4>
-        
-            <div id="about-card-bio"><p>Always Learning</p>
-</div>
-        
-        
-            <div id="about-card-job">
-                <i class="fa fa-briefcase"></i>
-                <br/>
-                <p>Engineer</p>
-
-            </div>
-        
-        
-            <div id="about-card-location">
-                <i class="fa fa-map-marker-alt"></i>
-                <br/>
-                Incheon
-            </div>
-        
     </div>
-</div>
-
-        
-        
-<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
-        <!--SCRIPTS-->
-<script src="/assets/js/jquery.js"></script>
-<script src="/assets/js/jquery.fancybox.js"></script>
-<script src="/assets/js/thumbs.js"></script>
-<script src="/assets/js/tranquilpeak.js"></script>
-<!--SCRIPTS END-->
-
-    
-        <script>
-             var disqus_config = function () {
-                 this.page.url = 'https://kojunhee.github.io/2018/12/05/High Availability/';
-                 
-                    this.page.identifier = '2018/12/05/High Availability/';
-                 
-             };
-            (function() {
-                var d = document, s = d.createElement('script');
-                var disqus_shortname = 'junheeko';
-                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-
-                s.setAttribute('data-timestamp', +new Date());
-                (d.head || d.body).appendChild(s);
-            })();
-        </script>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
     
 
+<script src="/js/jquery-3.4.1.min.js"></script>
 
 
-    </body>
+  <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
 </html>

@@ -1,19 +1,13 @@
-
 <!DOCTYPE html>
-<html lang="en">
-    
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="junhee.ko">
-    <title>[자바 ORM 표준 JPA 프로그래밍] 13장_웹 어플리케이션과 영속성 관리 - junhee.ko</title>
-    <meta name="author" content="junhee.ko">
-    
-    
-    
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg"},"articleBody":"이번 장에서는 컨테이너 환경에서 JPA 가 동작하는 내부 동작 방식을 이해하고, 발생할 수 있는 문제점과 해결방안을 정리합니다.\n13.1 트렌젝션 범위의 영속성 컨텍스트스프링이나 J2EE 컨테이너 환경에서 JPA 를 사용하면 컨테이너가 제공하는 전략을 따라야합니다.\n13.1.1 스프링 컨테이너의 기본 전략스프링 컨테이너는 트렌젝션 범위의 영속성 컨텐스트 전략을 기본으로 합니다. 즉, 트렌젝션을 시작할 때 영속성 컨텍스트를 생성하고 끝날 때 영속성 컨텍스트를 종료합니다. 그리고, 같은 트렌젝션 안에서는 항상 같은 영속성 컨텍스트에 접근합니다. \n12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455@Controllerclass HelloController&#123;    @Autowired HelloService helloService;    public void hello()&#123;    //반환된 member 엔티티는 준영속 상태    Member member = helloService.logic();  &#125;&#125;@Serviceclass HelloService&#123;    // 엔티티 메니저 주입  @PersistenceContext  EntityManager em;    @Autowired Repository1 repository1;  @Autowired Repository2 repository2;    //트랜잭션 시작  @Transactional  public void logic()&#123;    repository1.hello();        //Member 는 영속상태    Member member = repository2.findMember();        return member;  &#125;  //트렌젝션 종료&#125;@Repositoryclass Repository1 &#123;    @PersistenceContext  EntityManager em;    public void hello()&#123;    em.xxx(); //영속성 컨텍스트 접근  &#125;&#125;@Repositoryclass Repository2 &#123;    @PersistenceContext  EntityManager em;    public Member findMember() &#123;    return em.find(Member.class, \"id1\"); //영속성 컨텍스트 접근  &#125;&#125;\n\n13.2 준영속 상태와 지연 로딩조회한 엔티티가 서비스와 리포지토리 계층에서는 영속성 컨텍스트에 관리되면서 영속 상태를 유지하지만, 컨트롤러나 뷰 같은 프리젠테이션 계층에서는 준영속 상태가 됩니다. 따라서, 변경감지와 지연로딩이 동작하지 않습니다.\n12345678910111213141516@Entitypublic class Order&#123;  @Id @GeneratedValue  private Long id;    @ManyToOne(fetch = FetchType.LAZY) //지연로딩  private Member member; //주문 회원&#125;class OrderController &#123;  public String view(Long orderId)&#123;    Order order = orderService.findOne(orderId);    Member member = order.getMember();    member.getName(); //지연로딩 시 예외 발생  &#125;&#125;\n\n\n준영속 상태와 변경 감지\n\n변경감지 기능이 프리젠테이션 계층에서 동작하지 않는것은 문제가 되지 않습니다. 변경 감지 기능이 프리젠테이션 계층에서도 동작하면 애플리케이션 계층이 가지는 책임이 모호해지고, 데이터를 어디서 어떻게 변경했는지 프리젠테이션 계층까지 다 찾아야 하므로 유지보수하기 어렵습니다. 비즈니스 로직은 서비스 계층에서 끝내야합니다.\n\n준영속 상태와 지연 로딩\n\n준영속 상태의 지연 로딩을 해결하는 방법은 두 가지 입니다. \n\n뷰가 필요한 엔티티를 미리 로딩\nOSIV\n\n뷰가 필요한 엔티티를 미리 로딩하는 방법은 어디서 미리 로딩 하느냐에 따라 세가지가 있습니다.\n\n글로벌 페치 전략 수정\nJPQL Fetch Join\n강제 초기화\n\n13.2.1 글로벌 페치 전략 수정1234567891011121314151617@Entitypublic class Order&#123;  @Id @GeneratedValue  private Long id;    @ManyToOne(fetch = FetchType.EAGER) //즉시 로딩 전략  private Member member; //주문 회원&#125;//Presentation Logicclass OrderController &#123;  public String view(Long orderId)&#123;    Order order = orderService.findOne(orderId);    Member member = order.getMember();    member.getName(); //이미 로딩된 엔티티  &#125;&#125;\n\n글로벌 페치 전략에 즉시 로딩 사용시 단점은 두가지가 있습니다.\n\n사용하지 않는 엔티티를 로딩\n\norder 를 조회하면서 사용하지 않는 member 도 함께 조회\n\nN+1 문제\n\n1234567Order order = em.find(Order.class, 1L);//실행된 SQLselect o.*, m.*from Order oleft outer join Member m on o.MEMBER_ID = m.MEMBER_IDwhere o.id = 1\n\n여기까지 보면 글로벌 즉시 로딩 전략이 좋아보이지만, 문제는 JPQL 을 사용할 때 발생합니다.\n123456789List &lt;Order&gt; orders = em.createQuery(\"select o from Order o\", Order.class).getResultList();//실행된 SQLselect * from Order //JPQL 로 실행된 SQLselect * from Member where id = ? //EAGER 로 실행된 SQLselect * from Member where id = ? //EAGER 로 실행된 SQLselect * from Member where id = ? //EAGER 로 실행된 SQLselect * from Member where id = ? //EAGER 로 실행된 SQL...\n\nJPA 가 JPQL 을 분석해서 SQL 을 생성할 때, 글로벌 패치 전략을 참고하지 않고 오직 JPQL 자체만 사용합니다. 따라서, 즉시로딩이든 지연 로딩이등 구분하지 않고 JPQL 쿼리 자체에 충신한 SQL 을 만듦니다.\n이런 N+1 문제는 이어서 소개할 JPQL Fetch Join 으로 해결할 수 있습니다.\n13.2.2 JPQL Fetch Join1234567891011121314//Fetch Join 사용 전JPQL : select o from Order oSQL : select * from Order//Fetch Join 사용 후JPQL :\tselect o \tfrom Order o\tjoin fetch o.member\tSQL :\tselect o.*, m.*\tfrom Order o\tjoin Member m on o.MEMBER_ID = m.MEMBER_ID\n\nFetch Join 을 사용하면, SQL JOIN 을 사용해서 페치 조인 대상까지 함께 조회합니다. N+1 문제가 발생하지 않습니다.\n\nJPQL Fetch Join 의 단점\n\n무분별하게 사용하면 화면에 맞춘 리포지토리 메소드가 증가할 수 있습니다. 결국 프리젠테이션 계층이 데이터 접근 계층을 침범하는 것입니다.\n13.2.3 강제로 초기화영속성 컨테스트가 살아있을 때 프리젠테이션 계층이 필요한 엔티티를 강제로 초기화해서 반환하는 방법입니다.\n123456789class OrderService&#123;    @Transactional  public Order findOrder(id)&#123;    Order order = oderRepository.findOrder(id);    order.getMember().getName(); //프록시 객체를 강제로 초기화    return order;  &#125;&#125;\n\n글로벌 페치 전략을 지연로딩으로 설정하면, 연관된 엔티리를 실제 엔티티가 아닌 프록시 객체로 조회합니다. 프록시 객체는 실제 사용하는 시점에 초기화됩니다. order.getMember() 까지만 호출하면. 단순히 프록시 객체만 반환합니다. 아직 초기화 하지 않습니다. member.getName() 처럼 실제 값을 사용할 때 초기화됩니다.\n프록시 초기화 하는 역하을 서비스 계층이 담당하면, 뷰가 필요한 엔티티에 따라 서비스 계층의 로직을 변경해야 합니다. 비즈니스 로직을 담당하는 서비스 계층에서 프리젠테이션 계층을 위한 프록시 초기화 역할을 하는 FACADE 계층이 그 역할을 담당해줍니다.\n13.2.4 FACADE 계층 추가\n프리젠테이션 계층과 도메인 모델 계층간의 논리적 의존성을 분리합니다. \n\n프리젠테이션 계층에서 필요한 프록시 객체를 초기화합니다.\n\n서비스 계층을 호출해서 비즈니스 로직을 실행합니다.\n\n리포지토리를 직접 호출해서 뷰가 요구하는 엔티티를 찾습니다.\n\n\n1234567891011121314151617class OrderFacade&#123;\t@Autowired OrderService orderService;    public Order findOrder(id)&#123;    Order order = orderService.findOrder(id);        //프리젠테이션 계층이 필요한 프록시 객체를 강제 초기화    order.getMember().getName();    return order;  &#125;&#125;class OrderService&#123;  public Order findOrder(id)&#123;    return orderRepository.findOrder(id);  &#125;&#125;\n\n13.3 OSIV (Open Session in View)영속성 컨텍스트를 뷰까지 열어둔다는 뜻입니다. \n13.3.1 과거 OSIV : 요청 당 트렌젝션OSIV 의 핵심은 뷰에서도 지연로딩이 가능하도록 하는 것입니다. 가장 단순한 구현은 클라이언트의 요청이 들어오자마자 서플릿 필터나 스프링 인터셉터에서 트렌젝션을 시작하고 요청을 끝날 때 트렌젝션도 끝내는 것입니다. 이것을 요청 당 트렌젝션 방식의 OSIV 라고 합니다.\n문제는, 프레센테이션 계층이 엔티티를 변경할 수 있다는 것입니다. \n1234567class MemberControlelr&#123;\tpublic String viewMember(Long id)&#123;    Member member = memberService.getMember(id);    member.setName(\"XXX\");    model.addAttribute(\"member\", member);  &#125;&#125;\n\n개발자의 의도는 단순히 뷰에 노출할 때만 고객이름을 XXX 로 변경하고 싶은 것이지, 데이터베이스에 있는 고객 이름까지 변경하고자 하는 것이 아니었습니다. 하지만 요청당 트렌젝션 방식은 뷰 렌더링 이후에 트렌젝션으 커밋합니다. 커밋을 하면 영속성 컨텍스트를 플러쉬합니다. 영속성 컨텍스트의 변경 감지 기능이 동작해서 변경된 엔티티를 데이터베이스에 반영해버립니다.\n따라서, 프레젠테이션 계층에서 엔티티를 수정하지 못하게 해야합니다.\n\n엔티티를 읽기 전용 인터페이스로 제공\n엔티티 레핑\nDTO 만 반환\n\n엔티티를 읽기 전용 인터페이스로 제공1234567891011121314interface MemberView&#123;  public String getName();&#125;@Entityclass Member implements MemberView&#123;  ...&#125;class MemberService &#123;  public MemberView getMember(id)&#123;    return memberRepository.findById(id);  &#125;&#125;\n\n엔티티 레핑엔티티의 읽기 전용 메소드만 가지고 있는 엔티티를 감싼 객체를 만들고, 이것을 프리젠테이션 계층에 반환하는 방법입니다.\n123456789101112class MemberWrapper&#123;  private Member member;    public MemberWrapper(member)&#123;    this.member = member;  &#125;    // 읽기 전용 메소드만 제공  public String getName()&#123;    member.getName;  &#125;&#125;\n\nDTO 만 반환12345678910class MemberDTO &#123;\tprivate STring name;    //GETTER, SETTER&#125;...MemberDTO memberDTO = new MemberDTO();memberDTO.setName(member.getName());return memberDTO;\n\n최근에는 비즈니스 계층에서만 트렌젝션을 유지하는 방식의 OSIV 를 사용합니다. 스프링 프레임워크가 제공하는 OSIV 방식입니다.\n13.3.2 스프링 OSIV : 비즈니스 계층 트렌젝션클라이언트의 요청이 들어오면 영속성 컨텍스트를 생성합니다. 이 때, 트렌젝션을 시작하지 않습니다. 서비스 계층에서 트렌젝션을 시작하면 앞에서 생성해둔 영속성 켄텍스트에 트렌젝션을 시작합니다. 비즈니스 로직을 실행하고 서비스 계층이 끝나면 트렌젝셩르 커밋하면서 영속성 컨텍스트를 플러쉬합니다. 이때, 트렌젝션만 종료하고 영속성 컨텍스트를 살려둡니다. 클라이언트의 요청이 끝날 때 영속성 컨텍스트를 종료합니다.\n엔티티를 변경하지 않고 단순히 조회만 할 때는 트렌젝션이 없어도 되는데, 이것을 트렌젝션 없이 읽기라고 합니다. 영속성 컨텍스트는 트렌젝션 범위 안에서 엔티티를 조회하고 수정할 수 있습니다. 영속성 컨텍스트는 트렌젝션 범위 밖에서 엔티리를 조회만 할 수 있습니다.\n","dateCreated":"2019-06-12T00:00:00+09:00","dateModified":"2019-06-12T22:20:15+09:00","datePublished":"2019-06-12T00:00:00+09:00","description":"","headline":"[자바 ORM 표준 JPA 프로그래밍] 13장_웹 어플리케이션과 영속성 관리","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://kojunhee.github.io/2019/06/12/web-application-persistencen-context/"},"publisher":{"@type":"Organization","name":"junhee.ko","sameAs":["https://github.com/kojunhee","https://facebook.com/kojunheee","https://www.linkedin.com/in/junheeko","mailto:junheee.ko@gmail.com"],"image":"profile.jpg","logo":{"@type":"ImageObject","url":"profile.jpg"}},"url":"https://kojunhee.github.io/2019/06/12/web-application-persistencen-context/"}</script>
-    <meta name="description" content="이번 장에서는 컨테이너 환경에서 JPA 가 동작하는 내부 동작 방식을 이해하고, 발생할 수 있는 문제점과 해결방안을 정리합니다. 13.1 트렌젝션 범위의 영속성 컨텍스트스프링이나 J2EE 컨테이너 환경에서 JPA 를 사용하면 컨테이너가 제공하는 전략을 따라야합니다. 13.1.1 스프링 컨테이너의 기본 전략스프링 컨테이너는 트렌젝션 범위의 영속성 컨텐스트 전">
-<meta property="og:type" content="blog">
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  
+  <title>[자바 ORM 표준 JPA 프로그래밍] 13장_웹 어플리케이션과 영속성 관리 | junhee.ko</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="이번 장에서는 컨테이너 환경에서 JPA 가 동작하는 내부 동작 방식을 이해하고, 발생할 수 있는 문제점과 해결방안을 정리합니다. 13.1 트렌젝션 범위의 영속성 컨텍스트스프링이나 J2EE 컨테이너 환경에서 JPA 를 사용하면 컨테이너가 제공하는 전략을 따라야합니다. 13.1.1 스프링 컨테이너의 기본 전략스프링 컨테이너는 트렌젝션 범위의 영속성 컨텐스트 전">
+<meta property="og:type" content="article">
 <meta property="og:title" content="[자바 ORM 표준 JPA 프로그래밍] 13장_웹 어플리케이션과 영속성 관리">
 <meta property="og:url" content="https://kojunhee.github.io/2019/06/12/web-application-persistencen-context/index.html">
 <meta property="og:site_name" content="junhee.ko">
@@ -23,201 +17,86 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="[자바 ORM 표준 JPA 프로그래밍] 13장_웹 어플리케이션과 영속성 관리">
 <meta name="twitter:description" content="이번 장에서는 컨테이너 환경에서 JPA 가 동작하는 내부 동작 방식을 이해하고, 발생할 수 있는 문제점과 해결방안을 정리합니다. 13.1 트렌젝션 범위의 영속성 컨텍스트스프링이나 J2EE 컨테이너 환경에서 JPA 를 사용하면 컨테이너가 제공하는 전략을 따라야합니다. 13.1.1 스프링 컨테이너의 기본 전략스프링 컨테이너는 트렌젝션 범위의 영속성 컨텐스트 전">
-    
-    
-        
-    
-    
-        <meta property="og:image" content="https://kojunhee.github.io/assets/images/profile.jpg"/>
-    
-    
-    
-    
-    <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/all.css">
-    <link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
-    <link rel="stylesheet" href="/assets/css/thumbs.css">
-    <link rel="stylesheet" href="/assets/css/tranquilpeak.css">
-    <!--STYLES END-->
-    
-
-    
+  
+    <link rel="alternate" href="/atom.xml" title="junhee.ko" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  
 </head>
 
-    <body>
-        <div id="blog">
-            <!-- Define author's picture -->
-
-
-    
-        
-            
-        
-    
-
-<header id="header" data-behavior="2">
-    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
-    <div class="header-title">
-        <a class="header-title-link" href="/ ">junhee.ko</a>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">junhee.ko</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">always learning</a>
+        </h2>
+      
     </div>
-    
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
         
-            <a  class="header-right-picture "
-                href="#about">
+          <a class="main-nav-link" href="/">Home</a>
         
+          <a class="main-nav-link" href="/archives">Archives</a>
         
-            <img class="header-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
+      </nav>
+      <nav id="sub-nav">
         
-        </a>
-    
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://kojunhee.github.io"></form>
+      </div>
+    </div>
+  </div>
 </header>
+      <div class="outer">
+        <section id="main"><article id="post-web-application-persistencen-context" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/06/12/web-application-persistencen-context/" class="article-date">
+  <time class="dt-published" datetime="2019-06-11T15:00:00.000Z" itemprop="datePublished">2019-06-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/jpa/">JPA</a>
+  </div>
 
-            <!-- Define author's picture -->
-
-
-
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
         
-    
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      [자바 ORM 표준 JPA 프로그래밍] 13장_웹 어플리케이션과 영속성 관리
+    </h1>
+  
 
-<nav id="sidebar" data-behavior="2">
-    <div class="sidebar-container">
-        
-            <div class="sidebar-profile">
-                <a href="/#about">
-                    <img class="sidebar-profile-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
-                </a>
-                <h4 class="sidebar-profile-name">junhee.ko</h4>
-                
-                    <h5 class="sidebar-profile-bio"><p>Always Learning</p>
-</h5>
-                
-            </div>
-        
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/ "
-                            
-                            title="Home"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Home</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/all-categories"
-                            
-                            title="Categories"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Categories</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/all-archives"
-                            
-                            title="Archives"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Archives</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://github.com/kojunhee" target="_blank" rel="noopener" title="GitHub">
-                    
-                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">GitHub</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://facebook.com/kojunheee" target="_blank" rel="noopener" title="Facebook">
-                    
-                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Facebook</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/junheeko" target="_blank" rel="noopener" title="LinkedIn">
-                    
-                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">LinkedIn</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="mailto:junheee.ko@gmail.com" target="_blank" rel="noopener" title="Mail">
-                    
-                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Mail</span>
-                    </a>
-            </li>
-            
-        </ul>
-        
-    </div>
-</nav>
-
-            
-            <div id="main" data-behavior="2"
-                 class="
-                        hasCoverMetaIn
-                        ">
-                
-<article class="post">
+      </header>
     
-    
-        <div class="post-header main-content-wrap text-left">
-    
-        <h1 class="post-title">
-            [자바 ORM 표준 JPA 프로그래밍] 13장_웹 어플리케이션과 영속성 관리
-        </h1>
-    
-    
-        <div class="post-meta">
-    <time datetime="2019-06-12T00:00:00+09:00">
-	
-		    Jun 12, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/jpa/">JPA</a>
-
-
-    
-</div>
-
-    
-</div>
-
-    
-    <div class="post-content markdown">
-        <div class="main-content-wrap">
-            <p>이번 장에서는 컨테이너 환경에서 JPA 가 동작하는 내부 동작 방식을 이해하고, 발생할 수 있는 문제점과 해결방안을 정리합니다.</p>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>이번 장에서는 컨테이너 환경에서 JPA 가 동작하는 내부 동작 방식을 이해하고, 발생할 수 있는 문제점과 해결방안을 정리합니다.</p>
 <h4 id="13-1-트렌젝션-범위의-영속성-컨텍스트"><a href="#13-1-트렌젝션-범위의-영속성-컨텍스트" class="headerlink" title="13.1 트렌젝션 범위의 영속성 컨텍스트"></a>13.1 트렌젝션 범위의 영속성 컨텍스트</h4><p>스프링이나 J2EE 컨테이너 환경에서 JPA 를 사용하면 컨테이너가 제공하는 전략을 따라야합니다.</p>
 <h5 id="13-1-1-스프링-컨테이너의-기본-전략"><a href="#13-1-1-스프링-컨테이너의-기본-전략" class="headerlink" title="13.1.1 스프링 컨테이너의 기본 전략"></a>13.1.1 스프링 컨테이너의 기본 전략</h5><p>스프링 컨테이너는 트렌젝션 범위의 영속성 컨텐스트 전략을 기본으로 합니다. 즉, 트렌젝션을 시작할 때 영속성 컨텍스트를 생성하고 끝날 때 영속성 컨텍스트를 종료합니다. 그리고, 같은 트렌젝션 안에서는 항상 같은 영속성 컨텍스트에 접근합니다. </p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HelloController</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Autowired</span> HelloService helloService;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">hello</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//반환된 member 엔티티는 준영속 상태</span></span><br><span class="line">    Member member = helloService.logic();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HelloService</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 엔티티 메니저 주입</span></span><br><span class="line">  <span class="meta">@PersistenceContext</span></span><br><span class="line">  EntityManager em;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Autowired</span> Repository1 repository1;</span><br><span class="line">  <span class="meta">@Autowired</span> Repository2 repository2;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//트랜잭션 시작</span></span><br><span class="line">  <span class="meta">@Transactional</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">logic</span><span class="params">()</span></span>&#123;</span><br><span class="line">    repository1.hello();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//Member 는 영속상태</span></span><br><span class="line">    Member member = repository2.findMember();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> member;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//트렌젝션 종료</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Repository1</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@PersistenceContext</span></span><br><span class="line">  EntityManager em;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">hello</span><span class="params">()</span></span>&#123;</span><br><span class="line">    em.xxx(); <span class="comment">//영속성 컨텍스트 접근</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Repository2</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@PersistenceContext</span></span><br><span class="line">  EntityManager em;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> Member <span class="title">findMember</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> em.find(Member.class, <span class="string">"id1"</span>); <span class="comment">//영속성 컨텍스트 접근</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -307,237 +186,134 @@
 <h5 id="13-3-2-스프링-OSIV-비즈니스-계층-트렌젝션"><a href="#13-3-2-스프링-OSIV-비즈니스-계층-트렌젝션" class="headerlink" title="13.3.2 스프링 OSIV : 비즈니스 계층 트렌젝션"></a>13.3.2 스프링 OSIV : 비즈니스 계층 트렌젝션</h5><p>클라이언트의 요청이 들어오면 영속성 컨텍스트를 생성합니다. 이 때, 트렌젝션을 시작하지 않습니다. 서비스 계층에서 트렌젝션을 시작하면 앞에서 생성해둔 영속성 켄텍스트에 트렌젝션을 시작합니다. 비즈니스 로직을 실행하고 서비스 계층이 끝나면 트렌젝셩르 커밋하면서 영속성 컨텍스트를 플러쉬합니다. 이때, 트렌젝션만 종료하고 영속성 컨텍스트를 살려둡니다. 클라이언트의 요청이 끝날 때 영속성 컨텍스트를 종료합니다.</p>
 <p>엔티티를 변경하지 않고 단순히 조회만 할 때는 트렌젝션이 없어도 되는데, 이것을 트렌젝션 없이 읽기라고 합니다. 영속성 컨텍스트는 트렌젝션 범위 안에서 엔티티를 조회하고 수정할 수 있습니다. 영속성 컨텍스트는 트렌젝션 범위 밖에서 엔티리를 조회만 할 수 있습니다.</p>
 
-            
-
-        </div>
+      
     </div>
-    <div id="post-footer" class="post-footer main-content-wrap">
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2019/06/12/web-application-persistencen-context/" data-id="ck50s2ocq00nlhc6w8nenmuds" data-title="[자바 ORM 표준 JPA 프로그래밍] 13장_웹 어플리케이션과 영속성 관리" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/19/collections/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
         
+          [자바 ORM 표준 JPA 프로그래밍] 14장_컬렉션과 부가 기능
         
-            <div class="post-actions-wrap">
-    <nav>
-        <ul class="post-actions post-action-nav">
-            <li class="post-action">
-                
-                    
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/06/19/collections/" data-tooltip="[자바 ORM 표준 JPA 프로그래밍] 14장_컬렉션과 부가 기능" aria-label="PREVIOUS: [자바 ORM 표준 JPA 프로그래밍] 14장_컬렉션과 부가 기능">
-                
-                    <i class="fa fa-angle-left" aria-hidden="true"></i>
-                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
-                </a>
-            </li>
-            <li class="post-action">
-                
-                    
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/06/05/web-application/" data-tooltip="[자바 ORM 표준 JPA 프로그래밍] 11장_웹 어플리케이션 제작" aria-label="NEXT: [자바 ORM 표준 JPA 프로그래밍] 11장_웹 어플리케이션 제작">
-                
-                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
-                    <i class="fa fa-angle-right" aria-hidden="true"></i>
-                </a>
-            </li>
-        </ul>
-    </nav>
-    <ul class="post-actions post-action-share">
-        <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
-                <i class="fa fa-share-alt" aria-hidden="true"></i>
-            </a>
-        </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2019/06/12/web-application-persistencen-context/" title="Share on Facebook">
-                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-        
-            
-                <li class="post-action">
-                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment"></i>
-                    </a>
-                </li>
-            
-        
-        <li class="post-action">
-            
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
-            
-                <i class="fa fa-list" aria-hidden="true"></i>
-            </a>
-        </li>
-    </ul>
-</div>
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/05/web-application/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">[자바 ORM 표준 JPA 프로그래밍] 11장_웹 어플리케이션 제작</div>
+    </a>
+  
+</nav>
 
-
-        
-        
-            
-                <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-</div>
-            
-        
-    </div>
+  
 </article>
 
 
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/big-data/">Big Data</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boost-course/">Boost Course</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/dip/">DIP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/data-structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/design-pattern/">Design Pattern</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jpa/">JPA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">Kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/network/">Network</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/os/">OS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/object/">Object</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/software-engineering/">Software Engineering</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/spark/">Spark</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/etc/">etc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ios/">iOS</a></li></ul>
+    </div>
+  </div>
 
-                <footer id="footer" class="main-content-wrap">
-    <span class="copyrights">
-        Copyrights &copy; 2020 junhee.ko. All Rights Reserved.
-    </span>
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/01/05/big-data-chapter5/">[빅데이터를 지탱하는 기술] 5장_빅데이터 파이프라인</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/02/big-data-chapter4/">[빅데이터를 지탱하는 기술] 4장_빅데이터 축적</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/30/big-data-chapter1/">[빅데이터를 지탱하는 기술] 1장_빅데이터 기초 지식</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/30/big-data-chapter2/">[빅데이터를 지탱하는 기술] 2장_빅데이터 탐색</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/30/big-data-chapter3/">[빅데이터를 지탱하는 기술] 3장_빅데이터 분산처리</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 junhee.ko<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
 </footer>
 
-            </div>
-            
-                <div id="bottom-bar" class="post-bottom-bar" data-behavior="2">
-                    <div class="post-actions-wrap">
-    <nav>
-        <ul class="post-actions post-action-nav">
-            <li class="post-action">
-                
-                    
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/06/19/collections/" data-tooltip="[자바 ORM 표준 JPA 프로그래밍] 14장_컬렉션과 부가 기능" aria-label="PREVIOUS: [자바 ORM 표준 JPA 프로그래밍] 14장_컬렉션과 부가 기능">
-                
-                    <i class="fa fa-angle-left" aria-hidden="true"></i>
-                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
-                </a>
-            </li>
-            <li class="post-action">
-                
-                    
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/06/05/web-application/" data-tooltip="[자바 ORM 표준 JPA 프로그래밍] 11장_웹 어플리케이션 제작" aria-label="NEXT: [자바 ORM 표준 JPA 프로그래밍] 11장_웹 어플리케이션 제작">
-                
-                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
-                    <i class="fa fa-angle-right" aria-hidden="true"></i>
-                </a>
-            </li>
-        </ul>
-    </nav>
-    <ul class="post-actions post-action-share">
-        <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
-                <i class="fa fa-share-alt" aria-hidden="true"></i>
-            </a>
-        </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2019/06/12/web-application-persistencen-context/" title="Share on Facebook">
-                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-        
-            
-                <li class="post-action">
-                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
-                        <i class="fa fa-comment"></i>
-                    </a>
-                </li>
-            
-        
-        <li class="post-action">
-            
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
-            
-                <i class="fa fa-list" aria-hidden="true"></i>
-            </a>
-        </li>
-    </ul>
-</div>
-
-
-                </div>
-                <div id="share-options-bar" class="share-options-bar" data-behavior="2">
-    <i id="btn-close-shareoptions" class="fa fa-times"></i>
-    <ul class="share-options">
-        
-            
-            
-            <li class="share-option">
-                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kojunhee.github.io/2019/06/12/web-application-persistencen-context/">
-                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
-                </a>
-            </li>
-        
-    </ul>
-</div>
-
-            
-        </div>
-        
-
-
-    
-        
-    
-
-<div id="about">
-    <div id="about-card">
-        <div id="about-btn-close">
-            <i class="fa fa-times"></i>
-        </div>
-        
-            <img id="about-card-picture" src="/assets/images/profile.jpg" alt="Author&#39;s picture"/>
-        
-            <h4 id="about-card-name">junhee.ko</h4>
-        
-            <div id="about-card-bio"><p>Always Learning</p>
-</div>
-        
-        
-            <div id="about-card-job">
-                <i class="fa fa-briefcase"></i>
-                <br/>
-                <p>Engineer</p>
-
-            </div>
-        
-        
-            <div id="about-card-location">
-                <i class="fa fa-map-marker-alt"></i>
-                <br/>
-                Incheon
-            </div>
-        
     </div>
-</div>
-
-        
-        
-<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
-        <!--SCRIPTS-->
-<script src="/assets/js/jquery.js"></script>
-<script src="/assets/js/jquery.fancybox.js"></script>
-<script src="/assets/js/thumbs.js"></script>
-<script src="/assets/js/tranquilpeak.js"></script>
-<!--SCRIPTS END-->
-
-    
-        <script>
-             var disqus_config = function () {
-                 this.page.url = 'https://kojunhee.github.io/2019/06/12/web-application-persistencen-context/';
-                 
-                    this.page.identifier = '2019/06/12/web-application-persistencen-context/';
-                 
-             };
-            (function() {
-                var d = document, s = d.createElement('script');
-                var disqus_shortname = 'junheeko';
-                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-
-                s.setAttribute('data-timestamp', +new Date());
-                (d.head || d.body).appendChild(s);
-            })();
-        </script>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
     
 
+<script src="/js/jquery-3.4.1.min.js"></script>
 
 
-    </body>
+  <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
 </html>
