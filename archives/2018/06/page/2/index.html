@@ -266,8 +266,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/06/06/Command Pattern03/">
-                            Command Pattern03
+                        <a class="link-unstyled" href="/2018/06/06/Decorator Pattern02/">
+                            Decorator Pattern02
                         </a>
                     
                 </h1>
@@ -289,43 +289,47 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/com01.png" alt> </p>
+                    <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>기본 기능에 추가할 수 있는 많은 종류의 부가 기능에서 파생되는 다양한 조합을 동적으로 구현할 수 있는 패턴이다.</p>
+<h2 id="Class-diagram"><a href="#Class-diagram" class="headerlink" title="Class diagram"></a>Class diagram</h2><p><img src="/image/dec01.png" alt></p>
 <ul>
-<li>Command<ul>
-<li>싱핼됭 기능에 대한 인터페이스. 실행될 기능을 execute method로 선언</li>
+<li>Componet<ul>
+<li>기본 기능을 뜻하는 ConcreteComponent 와 추가 기능을 뜻하는 Decorator의 공통 기능을 정의</li>
+<li>즉, 클라이언트는 Component를 통해 실제 객체를 사용</li>
 </ul>
 </li>
-<li>ConcreteCommand<ul>
-<li>실제로 실행되는 기능을 구현.</li>
-<li>즉, Command라는 인터페이스를 구현</li>
+<li>ConcreteComponent<ul>
+<li>기본 기능을 구현하는 클래스</li>
 </ul>
 </li>
-<li>Invoker <ul>
-<li>기능의 실행을 요청하는 호출자 클래스</li>
+<li>Decorator<ul>
+<li>많은 수가 존재하는 구체적인 Decorator의 공통 기능을 제공</li>
 </ul>
 </li>
-<li>Receiver<ul>
-<li>ConcreteCommand 에서 execute method를 구현할 때 필요한 클래스</li>
-<li>즉, Concrete Command 의 기능을 실행하기 위해 사용하는 수신자 클래스</li>
+<li>ConcreteDecoratorA, ConcreteDecoratorB<ul>
+<li>Decorator의 하위 클래스로 기본 기능에 추가되는 개별적이 기능</li>
 </ul>
 </li>
 </ul>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/com02.png" alt> </p>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/dec02.png" alt></p>
 <ul>
-<li>Button<ul>
-<li>Invoker</li>
+<li>Display<ul>
+<li>Component</li>
 </ul>
 </li>
-<li>LampOnCommand, LampOffCommand<ul>
-<li>ConcreteCommand</li>
+<li>RoadDisplay<ul>
+<li>ConcreteComponent</li>
 </ul>
 </li>
-<li>Lamp<ul>
-<li>Receiver</li>
+<li>DisplayDecorator<ul>
+<li>Decorator</li>
+</ul>
+</li>
+<li>LaneDecorator, TrafficDecorator, CrossingDecorator<ul>
+<li>ConcreteDecorator</li>
 </ul>
 </li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Java 객체지향 디자인 패턴 &lt;정인상, 채흥석 지음&gt;</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Java 객체 지향 디자인 패턴 &lt;정인상, 채흥석 지음&gt;</p>
 
                     
                         
@@ -333,80 +337,7 @@
                     
                     
                         <p>
-                            <a href="/2018/06/06/Command Pattern03/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/06/06/Strategy Pattern01/">
-                            Strategy Pattern01
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-06-06T00:00:00+09:00">
-	
-		    Jun 06, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/design-pattern/">Design Pattern</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>There are common situations when classes differ only in their behavior. For this cases is a good idea to isolate the algorithms in separate classes in order to have the ability to select different algorithms at runtime. </p>
-<h2 id="Intent"><a href="#Intent" class="headerlink" title="Intent"></a>Intent</h2><p>Define a family of algorithms, encapsulate each one, and make them interchangeable. Strategy lets the algorithm vary independently from clients that use it. </p>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p>![](/image/Strategy Pattern01.png)</p>
-<ul>
-<li>The context object receives requests from the client and delegates them to the strategy object. Usually the ConcreteStartegy is created by the client and passed to the context. From this point the clients interacts only with the context.</li>
-<li>Strategy <ul>
-<li>defines an interface common to all supported algorithms. Context uses this interface to call the algorithm defined by a ConcreteStrategy.</li>
-</ul>
-</li>
-<li>Context<ul>
-<li>contains a reference to a strategy object.</li>
-<li>may define an interface that lets strategy accessing its data.</li>
-<li>The Context objects contains a reference to the ConcreteStrategy that should be used. When an operation is required then the algorithm is run from the strategy object. The Context is not aware of the strategy implementation. If necessary, addition objects can be defined to pass data from context object to strategy. </li>
-</ul>
-</li>
-<li>ConcreteStrategy <ul>
-<li>each concrete strategy implements an algorithm.</li>
-</ul>
-</li>
-</ul>
-<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p>![](/image/Strategy Pattern02.png)<br>![](/image/Strategy Pattern03.png)<br>![](/image/Strategy Pattern04.png)<br>![](/image/Strategy Pattern05.png)<br>![](/image/Strategy Pattern06.png)<br>![](/image/Strategy Pattern07.png)<br>![](/image/Strategy Pattern08.png)</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
-<li><a href="https://www.oodesign.com/strategy-pattern.html" target="_blank" rel="noopener">https://www.oodesign.com/strategy-pattern.html</a></li>
-<li><a href="https://www.tutorialspoint.com/design_pattern/strategy_pattern.htm" target="_blank" rel="noopener">https://www.tutorialspoint.com/design_pattern/strategy_pattern.htm</a></li>
-</ul>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/06/06/Strategy Pattern01/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2018/06/06/Decorator Pattern02/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -550,6 +481,79 @@
                     
                         <p>
                             <a href="/2018/06/06/Strategy Pattern03/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2018/06/06/Strategy Pattern01/">
+                            Strategy Pattern01
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-06-06T00:00:00+09:00">
+	
+		    Jun 06, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/design-pattern/">Design Pattern</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>There are common situations when classes differ only in their behavior. For this cases is a good idea to isolate the algorithms in separate classes in order to have the ability to select different algorithms at runtime. </p>
+<h2 id="Intent"><a href="#Intent" class="headerlink" title="Intent"></a>Intent</h2><p>Define a family of algorithms, encapsulate each one, and make them interchangeable. Strategy lets the algorithm vary independently from clients that use it. </p>
+<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p>![](/image/Strategy Pattern01.png)</p>
+<ul>
+<li>The context object receives requests from the client and delegates them to the strategy object. Usually the ConcreteStartegy is created by the client and passed to the context. From this point the clients interacts only with the context.</li>
+<li>Strategy <ul>
+<li>defines an interface common to all supported algorithms. Context uses this interface to call the algorithm defined by a ConcreteStrategy.</li>
+</ul>
+</li>
+<li>Context<ul>
+<li>contains a reference to a strategy object.</li>
+<li>may define an interface that lets strategy accessing its data.</li>
+<li>The Context objects contains a reference to the ConcreteStrategy that should be used. When an operation is required then the algorithm is run from the strategy object. The Context is not aware of the strategy implementation. If necessary, addition objects can be defined to pass data from context object to strategy. </li>
+</ul>
+</li>
+<li>ConcreteStrategy <ul>
+<li>each concrete strategy implements an algorithm.</li>
+</ul>
+</li>
+</ul>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p>![](/image/Strategy Pattern02.png)<br>![](/image/Strategy Pattern03.png)<br>![](/image/Strategy Pattern04.png)<br>![](/image/Strategy Pattern05.png)<br>![](/image/Strategy Pattern06.png)<br>![](/image/Strategy Pattern07.png)<br>![](/image/Strategy Pattern08.png)</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="https://www.oodesign.com/strategy-pattern.html" target="_blank" rel="noopener">https://www.oodesign.com/strategy-pattern.html</a></li>
+<li><a href="https://www.tutorialspoint.com/design_pattern/strategy_pattern.htm" target="_blank" rel="noopener">https://www.tutorialspoint.com/design_pattern/strategy_pattern.htm</a></li>
+</ul>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/06/06/Strategy Pattern01/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -766,7 +770,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 junhee.ko. All Rights Reserved.
+        Copyrights &copy; 2020 junhee.ko. All Rights Reserved.
     </span>
 </footer>
 

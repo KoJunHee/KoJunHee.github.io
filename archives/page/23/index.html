@@ -194,6 +194,186 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2018/05/08/JDBC/">
+                            JDBC
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-05-08T00:00:00+09:00">
+	
+		    May 08, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/boost-course/">Boost Course</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <ul>
+<li><p>JDBC</p>
+<ul>
+<li>자바를 이용한 데이터베이스 접속과 SQL 문장의 실행, 그리고 실행 결과로 얻어진 데이터의 핸들링을 제공하는 방법과 절차에 관한 규약</li>
+<li>자바 프로그램 내에서 SQL문을 실행하기 위한 자바 API</li>
+<li>SQL과 프로그래밍 언어의 통합 접근 중 한 형태</li>
+<li>JAVA는 표준 인터페이스인 JDBC API를 제공</li>
+<li>데이터베이스 벤더, 또는 기타 써드파티에서는 JDBC 인터페이스를 구현한 드라이버(driver)를 제공한다.</li>
+</ul>
+</li>
+<li><p>JDBC를 이용한 프로그래밍 방법</p>
+<p><img src="/image/jdbc.png" alt></p>
+<ul>
+<li><p>import java.sql.*;</p>
+</li>
+<li><p>드라이버를 로드 한다.</p>
+<ul>
+<li><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Class.forName( <span class="string">"com.mysql.jdbc.Driver"</span> );</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>Connection 객체를 생성한다.</p>
+<ul>
+<li><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String dburl  = <span class="string">"jdbc:mysql://localhost/dbName"</span>;</span><br><span class="line"></span><br><span class="line">Connection con =  DriverManager.getConnection ( dburl, ID, PWD );</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>Statement 객체를 생성 및 질의 수행</p>
+<ul>
+<li><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Statement stmt = con.createStatement(); </span><br><span class="line">ResultSet rs = stmt.executeQuery(<span class="string">"select no from user"</span> );</span><br><span class="line"></span><br><span class="line">stmt.execute(“query”);             <span class="comment">//any SQL</span></span><br><span class="line">stmt.executeQuery(“query”);     <span class="comment">//SELECT</span></span><br><span class="line">stmt.executeUpdate(“query”);   <span class="comment">//INSERT, UPDATE, DELETE</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>SQL문에 결과물이 있다면 ResultSet 객체를 생성한다.</p>
+<ul>
+<li><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ResultSet rs =  stmt.executeQuery( <span class="string">"select no from user"</span> );</span><br><span class="line"><span class="keyword">while</span> ( rs.next() )</span><br><span class="line">      System.out.println( rs.getInt( <span class="string">"no"</span>) );</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>모든 객체를 닫는다.</p>
+<ul>
+<li><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rs.close();</span><br><span class="line">stmt.close();</span><br><span class="line">con.close();</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Reference</p>
+<ul>
+<li>NAVER edwith boostcourse Full-Stack Web Developer </li>
+</ul>
+</li>
+</ul>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/05/08/JDBC/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2018/05/07/HttpServletRequest, HttpServletResponse /">
+                            HttpServletRequest, HttpServletResponse
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-05-07T00:00:00+09:00">
+	
+		    May 07, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/boost-course/">Boost Course</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <ul>
+<li><p>요청과 응답</p>
+<p><img src="/image/http.png" alt></p>
+<ul>
+<li>WAS는 웹 브라우저로부터 Servlet요청을 받으면,<ul>
+<li>요청할 때 가지고 있는 정보를 HttpServletRequest객체를 생성하여 저장합니다.</li>
+<li>웹 브라우저에게 응답을 보낼 때 사용하기 위하여 HttpServletResponse객체를 생성합니다.</li>
+<li>생성된 HttpServletRequest, HttpServletResponse 객체를 서블릿에게 전달합니다.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>HttpServletRequest</p>
+<ul>
+<li>http프로토콜의 request정보를 서블릿에게 전달하기 위한 목적으로 사용합니다.</li>
+<li>헤더정보, 파라미터, 쿠키, URI, URL 등의 정보를 읽어 들이는 메소드를 가지고 있습니다.</li>
+<li>Body의 Stream을 읽어 들이는 메소드를 가지고 있습니다.</li>
+</ul>
+</li>
+<li><p>HttpServletResponse</p>
+<ul>
+<li>WAS는 어떤 클라이언트가 요청을 보냈는지 알고 있고, 해당 클라이언트에게 응답을 보내기 위한 HttpServleResponse객체를 생성하여 서블릿에게 전달합니다.</li>
+<li>서블릿은 해당 객체를 이용하여 content type, 응답코드, 응답 메시지등을 전송합니다.</li>
+</ul>
+</li>
+<li><p>Reference</p>
+<ul>
+<li>NAVER edwith boostcourse Full-Stack Web Developer </li>
+</ul>
+</li>
+</ul>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/05/07/HttpServletRequest, HttpServletResponse /#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2018/05/07/Servlet/">
                             Servlet
                         </a>
@@ -448,6 +628,101 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2018/05/05/ browser에서의 웹 개발/">
+                             browser에서의 웹 개발
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-05-05T00:00:00+09:00">
+	
+		    May 05, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/boost-course/">Boost Course</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <ul>
+<li><p>HTML 문서구조</p>
+<ul>
+<li>크롬 개발자 도구 열기 (Option + Command + i)</li>
+<li>Network tab 에서 새로고침을 하면</li>
+</ul>
+</li>
+<li><p>알게된 몇 가지 특징</p>
+<ul>
+<li><p>html 문서는 html이라는 태그로 시작해서 html 태그로 끝남</p>
+</li>
+<li><p>head</p>
+<ul>
+<li>자세한 문서에 대한 정보를 포함</li>
+</ul>
+</li>
+<li><p>body</p>
+<ul>
+<li>화면에 포함될 div 같은것들</li>
+</ul>
+</li>
+<li><p>html은 계청적</p>
+</li>
+<li><p>html은 tag를 사용해서 표현</p>
+</li>
+<li><p>JavaScript와 CSS가 html 안에 여기 저기 존재</p>
+</li>
+</ul>
+</li>
+<li><p>CSS / JavaScript 코드 위치</p>
+<ul>
+<li>JavaScript 코드<ul>
+<li>body 태그 닫히기 전에 위치하는 것이 렌더링을 방해하지 않아도 좋고, </li>
+</ul>
+</li>
+<li>CSS<ul>
+<li>head 안에 위치해서 렌더링 처리 시에 브라우저가 더 빨리 참고할 수 있게 하는 것이 좋습니다.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Reference</p>
+<ul>
+<li>NAVER edwith boostcourse Full-Stack Web Developer </li>
+</ul>
+</li>
+</ul>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/05/05/ browser에서의 웹 개발/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2018/05/05/프론트엔드, 백엔드/">
                             프론트엔드, 백엔드
                         </a>
@@ -682,6 +957,87 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2018/05/05/HTML/">
+                            HTML Layout
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2018-05-05T00:00:00+09:00">
+	
+		    May 05, 2018
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/boost-course/">Boost Course</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <ul>
+<li><p>‘레이아웃(Layout)’ 이란 ‘배치’라는 뜻으로, HTML 태그로 감싸진 각 정보 요소를 화면상의 어느 위치에 어떻게 자리잡을지를 결정하는 것을 말합니다.</p>
+<ul>
+<li>기본적으로 상단의 <header></header></li>
+<li>하단의 <footer></footer></li>
+<li>운데의 본문 영역</li>
+</ul>
+</li>
+<li><p>레이아웃을 위한 태그</p>
+<p><img src="/image/layoutT.png" alt></p>
+</li>
+<li><p>id, class</p>
+<ul>
+<li>id<ul>
+<li>고유한 속성으로 한 HTML 문서에 하나만 사용 가능합니다.</li>
+<li>고유한 ID 값이 있으면 하나하나에 특별한 제어를 할 수 있으며 검색에도 용이합니다.</li>
+</ul>
+</li>
+<li>class<ul>
+<li>하나의 HTML문서 안에 중복해서 사용 가능합니다.</li>
+<li>하나의 태그에 여러 개의 다른 class 이름을 공백을 기준으로 나열할 수가 있습니다.</li>
+<li>홈페이지 전체적인 스타일을 일관성 있게 지정하기 위해서는 class의 사용이 필수적입니다.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Reference</p>
+<ul>
+<li>NAVER edwith boostcourse Full-Stack Web Developer </li>
+<li><a href="https://gist.github.com/thomd/9220049" target="_blank" rel="noopener">https://gist.github.com/thomd/9220049</a></li>
+</ul>
+</li>
+</ul>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2018/05/05/HTML/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2018/05/05/browser 동작/">
                             browser 동작
                         </a>
@@ -780,359 +1136,6 @@
         
     </article>
     
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/05/05/ 웹 서버/">
-                            웹 서버
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-05-05T00:00:00+09:00">
-	
-		    May 05, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/boost-course/">Boost Course</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <ul>
-<li><p>웹 서버란</p>
-<ul>
-<li>웹 서버는 소프트웨어(Software)를 보통 말하지만, 웹 서버 소프트웨어가 동작하는 컴퓨터를 말합니다.</li>
-<li>웹 서버의 가장 중요한 기능은 클라이언트(Client)가 요청하는 HTML 문서나 각종 리소스(Resource)를 전달하는 것입니다.<ul>
-<li>클라이언트 : 웹 브라우저, 웹 크롤러(네이버나 구글같은 검색 사이트가 다른 웹 사이트 정보를 읽어갈때 사용하는 소프트웨어)<ul>
-<li>HTTP에 맞게 서버에게 리소스 요쳥</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>웹 브라우저나 웹 크롤러가 요청하는 리소스는 컴퓨터에 저장된 정적(static)인 데이터이거나 동적인 결과가 될 수 있습니다.<ul>
-<li>정적 데이터 : 이미지 , HTML, CSS, JavaScript (컴퓨터에 저장된 파일들)</li>
-<li>동적 데이터 : 웹 서버에 의해 실행되는, 프로그래밍을 통해 만들어진 결과</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>웹 서버 소프트웨어 종류</p>
-<ul>
-<li>Apache, Nginx, Microsoft, Google 웹 서버<ul>
-<li>Apache웹 서버<ul>
-<li>Apache Software Foundation에서 개발한 웹서버로 오픈소스 소프트웨어(Open-source Software)이며, 거의 대부분 운영체제에서 설치 및 사용을 할 수 있습니다.</li>
-</ul>
-</li>
-<li>Nginx <ul>
-<li>차세대 웹서버로 불리며 더 적은 자원으로 더 빠르게 데이터를 서비스하는 것을 목적으로 만들어진 서버이며 Apache웹 서버와 마찬가지로 오픈소스 소프트웨어입니다.</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Reference</p>
-<ul>
-<li>NAVER edwith boostcourse Full-Stack Web Developer </li>
-</ul>
-</li>
-</ul>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/05/05/ 웹 서버/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/05/05/ browser에서의 웹 개발/">
-                             browser에서의 웹 개발
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-05-05T00:00:00+09:00">
-	
-		    May 05, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/boost-course/">Boost Course</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <ul>
-<li><p>HTML 문서구조</p>
-<ul>
-<li>크롬 개발자 도구 열기 (Option + Command + i)</li>
-<li>Network tab 에서 새로고침을 하면</li>
-</ul>
-</li>
-<li><p>알게된 몇 가지 특징</p>
-<ul>
-<li><p>html 문서는 html이라는 태그로 시작해서 html 태그로 끝남</p>
-</li>
-<li><p>head</p>
-<ul>
-<li>자세한 문서에 대한 정보를 포함</li>
-</ul>
-</li>
-<li><p>body</p>
-<ul>
-<li>화면에 포함될 div 같은것들</li>
-</ul>
-</li>
-<li><p>html은 계청적</p>
-</li>
-<li><p>html은 tag를 사용해서 표현</p>
-</li>
-<li><p>JavaScript와 CSS가 html 안에 여기 저기 존재</p>
-</li>
-</ul>
-</li>
-<li><p>CSS / JavaScript 코드 위치</p>
-<ul>
-<li>JavaScript 코드<ul>
-<li>body 태그 닫히기 전에 위치하는 것이 렌더링을 방해하지 않아도 좋고, </li>
-</ul>
-</li>
-<li>CSS<ul>
-<li>head 안에 위치해서 렌더링 처리 시에 브라우저가 더 빨리 참고할 수 있게 하는 것이 좋습니다.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Reference</p>
-<ul>
-<li>NAVER edwith boostcourse Full-Stack Web Developer </li>
-</ul>
-</li>
-</ul>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/05/05/ browser에서의 웹 개발/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/05/05/HTML/">
-                            HTML Layout
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-05-05T00:00:00+09:00">
-	
-		    May 05, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/boost-course/">Boost Course</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <ul>
-<li><p>‘레이아웃(Layout)’ 이란 ‘배치’라는 뜻으로, HTML 태그로 감싸진 각 정보 요소를 화면상의 어느 위치에 어떻게 자리잡을지를 결정하는 것을 말합니다.</p>
-<ul>
-<li>기본적으로 상단의 <header></header></li>
-<li>하단의 <footer></footer></li>
-<li>운데의 본문 영역</li>
-</ul>
-</li>
-<li><p>레이아웃을 위한 태그</p>
-<p><img src="/image/layoutT.png" alt></p>
-</li>
-<li><p>id, class</p>
-<ul>
-<li>id<ul>
-<li>고유한 속성으로 한 HTML 문서에 하나만 사용 가능합니다.</li>
-<li>고유한 ID 값이 있으면 하나하나에 특별한 제어를 할 수 있으며 검색에도 용이합니다.</li>
-</ul>
-</li>
-<li>class<ul>
-<li>하나의 HTML문서 안에 중복해서 사용 가능합니다.</li>
-<li>하나의 태그에 여러 개의 다른 class 이름을 공백을 기준으로 나열할 수가 있습니다.</li>
-<li>홈페이지 전체적인 스타일을 일관성 있게 지정하기 위해서는 class의 사용이 필수적입니다.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Reference</p>
-<ul>
-<li>NAVER edwith boostcourse Full-Stack Web Developer </li>
-<li><a href="https://gist.github.com/thomd/9220049" target="_blank" rel="noopener">https://gist.github.com/thomd/9220049</a></li>
-</ul>
-</li>
-</ul>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/05/05/HTML/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2018/05/04/프린터 큐/">
-                            프린터 큐
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-05-04T00:00:00+09:00">
-	
-		    May 04, 2018
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/algorithm/">Algorithm</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p><a href="https://www.acmicpc.net/problem/1966" target="_blank" rel="noopener">https://www.acmicpc.net/problem/1966</a></p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
-<li><p>queue에서 하나씩 dequeue하면서 우선순위가 더 큰 문서가 있는지 확인</p>
-<ul>
-<li>이를 위해, temp queue를 생성</li>
-</ul>
-</li>
-<li><p>ex</p>
-<ul>
-<li><p>original : 1 2 3 4</p>
-<ul>
-<li>temp : 2 3 4 1 <ul>
-<li>우선순위 더 큰 문서가 있음</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>original : 2 3 4 1</p>
-<ul>
-<li>temp : 3 4 1 2<ul>
-<li>우선순위 더 큰 문서가 있음</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>original : 4 1 2 3</p>
-<ul>
-<li>temp : 1 2 3 4</li>
-<li>temp : 2 3 4 1</li>
-<li>temp : 3 4 1 2<ul>
-<li>우선순위 더 큰 문서가 없음</li>
-<li>original 에서 head remove</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>original : 1 2 3</p>
-<p>….</p>
-</li>
-</ul>
-</li>
-</ul>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2018/05/04/프린터 큐/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
     <div class="pagination-bar">
     <ul class="pagination">
         
@@ -1151,7 +1154,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 23 of 42</li>
+        <li class="pagination-number">page 23 of 43</li>
     </ul>
 </div>
 
@@ -1161,7 +1164,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 junhee.ko. All Rights Reserved.
+        Copyrights &copy; 2020 junhee.ko. All Rights Reserved.
     </span>
 </footer>
 

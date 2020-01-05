@@ -194,6 +194,165 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2019/12/30/big-data-chapter1/">
+                            [빅데이터를 지탱하는 기술] 1장_빅데이터 기초 지식
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-12-30T00:00:00+09:00">
+	
+		    Dec 30, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/big-data/">Big Data</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h2 id="1-빅데이터의-정착"><a href="#1-빅데이터의-정착" class="headerlink" title="1.빅데이터의 정착"></a>1.빅데이터의 정착</h2><h5 id="빅데이터-기술의-요구-Hadoop-과-NoSQL-의-대두"><a href="#빅데이터-기술의-요구-Hadoop-과-NoSQL-의-대두" class="headerlink" title="빅데이터 기술의 요구 : Hadoop 과 NoSQL 의 대두"></a>빅데이터 기술의 요구 : Hadoop 과 NoSQL 의 대두</h5><p>세계 곳곳에서 엑세스 되는 시스템 증가로, 전통적인 관계형 데이터베이스로는 취급 할 수 없는 데이터가 쌓이게 되었다.</p>
+<p>그래서 다른 구조가 필요했다.</p>
+<ol>
+<li><p>Hadoop </p>
+<p>다수의 컴퓨터에서 대량의 데이터 처리</p>
+</li>
+<li><p>NoSQL Database </p>
+<p>빈번한 읽기/ 쓰기 및 분산처리가 강점</p>
+</li>
+</ol>
+<h5 id="분산-시스템의-비즈니스-이용-개척-데이터-웨어하우스와의-공존"><a href="#분산-시스템의-비즈니스-이용-개척-데이터-웨어하우스와의-공존" class="headerlink" title="분산 시스템의 비즈니스 이용 개척 : 데이터 웨어하우스와의 공존"></a>분산 시스템의 비즈니스 이용 개척 : 데이터 웨어하우스와의 공존</h5><p><img src="/image/bigdata_datawarehouse.png" alt></p>
+<p>위 그림처럼, 확장성이 뛰어난 Hadoop 에 데이터 처리를 맡겨 데이터 웨어하우스의 부하를 줄이고 있다.</p>
+<h5 id="직접-할-수-있는-데이터-분석-폭-확대"><a href="#직접-할-수-있는-데이터-분석-폭-확대" class="headerlink" title="직접 할 수 있는 데이터 분석 폭 확대"></a>직접 할 수 있는 데이터 분석 폭 확대</h5><p>‘여러 컴퓨터에서 분산 처리한다’ 는 빅데이터의 특징으로 하드웨어를 준비하고 관리하는게 어려웠다. </p>
+<p>하지만, 클라우드 시대에서는 필요한 자원 확보가 쉬워서 얼마든지 빅데이터를 이용할 수 있다.</p>
+<h5 id="데이터-디스커버리의-기초-지식"><a href="#데이터-디스커버리의-기초-지식" class="headerlink" title="데이터 디스커버리의 기초 지식"></a>데이터 디스커버리의 기초 지식</h5><ol>
+<li><p>데이터 디스커버리</p>
+<p>대화형으로 데이터를 시각화하여 가치있는 정보를 찾으려고하는 프로세스</p>
+</li>
+<li><p>BI 도구</p>
+<p>데이터 디스커버리를 위한 셀프 서비스용 시각화 시스템</p>
+</li>
+</ol>
+<h2 id="2-빅데이터-시대의-데이터-분석-기반"><a href="#2-빅데이터-시대의-데이터-분석-기반" class="headerlink" title="2. 빅데이터 시대의 데이터 분석 기반"></a>2. 빅데이터 시대의 데이터 분석 기반</h2><p>빅데이터 기술이 기존 데이터 웨어하우스와 다른 점은,</p>
+<p>다수의 분산 시스템을 조합하여 확장성이 뛰어난 데이터 처리 구조를 만든다는 것이다.</p>
+<h5 id="데이터-파이프라인"><a href="#데이터-파이프라인" class="headerlink" title="데이터 파이프라인"></a>데이터 파이프라인</h5><p><img src="/image/bigdata_data_pipeline.png" alt></p>
+<p>차례대로 전달해다가는 데이터로 구성된 시스템이다. 데이터 파이프라인의 기본적인 흐름은,</p>
+<ol>
+<li>데이터를 모아서 축적</li>
+<li>데이터 마트 구성</li>
+<li>시각화 도구</li>
+</ol>
+<h5 id="데이터-수집"><a href="#데이터-수집" class="headerlink" title="데이터 수집"></a>데이터 수집</h5><p>데이터 파이프라인은 데이터를 모으는 부분부터 시작한다. 수집 방법은,</p>
+<ol>
+<li><p>벌크형</p>
+<p>이미 어딘가에 있는 데이터를 정리해서 추출</p>
+<p>ex ) 데이터베이스와 파일 서버 등에서 정기적으로 데이터 수집</p>
+</li>
+<li><p>스트리밍형</p>
+<p>차례대로 생성되는 데이터를 끊임없이 보냄</p>
+<p>ex) 모바일 어플리케이션, 임베디드 장비</p>
+</li>
+</ol>
+<h5 id="스트림-처리와-배치처리"><a href="#스트림-처리와-배치처리" class="headerlink" title="스트림 처리와 배치처리"></a>스트림 처리와 배치처리</h5><ol>
+<li><p>스트림 처리</p>
+<p>스트리밍 형 방법으로 받은 데이터를 실시간으로 처리.</p>
+<p>장기적인 데이터 분석에는 적합하지 않음.</p>
+</li>
+<li><p>배치 처리</p>
+<p>정리된 데이터를 효율적으로 가공하기 위한 처리.</p>
+<p>장기적인 데이터 분석을 위해 대량의 데이터를 저장하고 처리하는데 적합한 분산 시스템이 필요.</p>
+</li>
+</ol>
+<h5 id="분산-스토리지"><a href="#분산-스토리지" class="headerlink" title="분산 스토리지"></a>분산 스토리지</h5><p>여러 컴퓨터와 디스크로 구성된 스토리지 시스템이다. 데이터 저장 방법으로,</p>
+<ol>
+<li><p>객체 스토리지</p>
+<p>한 덩어리로 모인 데이터에 이름을 부여해서 파일로 저장.</p>
+<p>ex ) Amazon S3</p>
+</li>
+<li><p>NoSQL 데이터베이스</p>
+<p>많은 데이터를 읽고 쓰기에 유리.</p>
+</li>
+</ol>
+<h5 id="분산-데이터-처리"><a href="#분산-데이터-처리" class="headerlink" title="분산 데이터 처리"></a>분산 데이터 처리</h5><p>분산 스토리지에 저장된 데이터를 처리하기 위해, 분산 데이터 처리 프레임워크가 필요하다. ex) MapReduce</p>
+<p>주 역할은, 나중에 분석하기 쉽도록 데이터를 가공해서 그 결과를 외부 데이터베이스에 저장하는 것이다.</p>
+<p>빅데이터를 SQL 로 집계하는 방법으로,</p>
+<ol>
+<li><p>쿼리 엔진</p>
+<p>Hive, 대화형 쿼리엔진</p>
+</li>
+<li><p>데이터 웨어하우스 제품</p>
+<p>ETL. </p>
+<p>데이터를 추출하고 가공한후, 데이터 웨어하우스에 로드한다.</p>
+</li>
+</ol>
+<h5 id="워크플로우-관리"><a href="#워크플로우-관리" class="headerlink" title="워크플로우 관리"></a>워크플로우 관리</h5><p>데이터파이프라인이 복잡해지면, 한곳에서 제어하지 않으면 전체 움직임 파악이 어렵다.</p>
+<h5 id="데이터-웨어하우스와-데이터-마트"><a href="#데이터-웨어하우스와-데이터-마트" class="headerlink" title="데이터 웨어하우스와 데이터 마트"></a>데이터 웨어하우스와 데이터 마트</h5><p><img src="/image/bigdata_data_pipeline_warehouse.png" alt></p>
+<ol>
+<li><p>데이터 소스</p>
+<p>RDB 나 로그 등을 저장하는 파일 서버</p>
+</li>
+<li><p>ETL 플로세스</p>
+<p>데이터 소스에 보존된 raw data 를 추출하고 필요에 따라 가공한 후 데이터 웨어하우스에 저장하기까지의 흐름</p>
+</li>
+<li><p>데이터 마트</p>
+<p>데이터웨어 하우스에서 필요한 데이터만을 추출하여 데이터마트를 구축</p>
+</li>
+</ol>
+<h5 id="데이터-레이크"><a href="#데이터-레이크" class="headerlink" title="데이터 레이크"></a>데이터 레이크</h5><p><img src="/image/bigdata_data_pipeline_lake.png" alt></p>
+<p>모든 데이터를 원래의 형태로 추적해두고 나중에 필요에 따라 가공하는 구조가 필요하다.</p>
+<p>이 데이터 축적 장소가 데이터 레이크이다. 분산 스토리지가 데이터 레이크로 이용된다. </p>
+<p>데이터 레이크의 데이터를 가공하기 위해 MapReduce 같은 분산 데이터 처리 기술이 필요하다.</p>
+<h5 id="데이터-분석-기반을-단계적으로-발전시키기"><a href="#데이터-분석-기반을-단계적으로-발전시키기" class="headerlink" title="데이터 분석 기반을 단계적으로 발전시키기"></a>데이터 분석 기반을 단계적으로 발전시키기</h5><ol>
+<li><p>데이터 엔지니어</p>
+<p>시스템의 구축 및 운용, 자동화</p>
+</li>
+<li><p>데이터 분석가</p>
+<p>데이터에서 가치있는 정보 추출</p>
+</li>
+</ol>
+<h5 id="확증적-데이터-분석과-탐색적-데이터-분석"><a href="#확증적-데이터-분석과-탐색적-데이터-분석" class="headerlink" title="확증적 데이터 분석과 탐색적 데이터 분석"></a>확증적 데이터 분석과 탐색적 데이터 분석</h5><ol>
+<li><p>확증적 데이터 분석</p>
+<p>가설을 세우고 검증.</p>
+<p>통계학적 모델링에 의한 데이터 분석.</p>
+</li>
+<li><p>탐색적 데이터 분석</p>
+<p>데이터를 보며 의미를 읽어냄.</p>
+<p>데이터를 시각화하여 사람의 힘으로 의미를 읽어냄</p>
+</li>
+</ol>
+<hr>
+<p>빅데이터를 지탱하는 기술 &lt;니시다 케이스케&gt;</p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2019/12/30/big-data-chapter1/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2019/12/30/big-data-chapter2/">
                             [빅데이터를 지탱하는 기술] 2장_빅데이터 탐색
                         </a>
@@ -368,165 +527,6 @@
                     
                         <p>
                             <a href="/2019/12/30/big-data-chapter2/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2019/12/30/big-data-chapter1/">
-                            [빅데이터를 지탱하는 기술] 1장_빅데이터 기초 지식
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-12-30T00:00:00+09:00">
-	
-		    Dec 30, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/big-data/">Big Data</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h2 id="1-빅데이터의-정착"><a href="#1-빅데이터의-정착" class="headerlink" title="1.빅데이터의 정착"></a>1.빅데이터의 정착</h2><h5 id="빅데이터-기술의-요구-Hadoop-과-NoSQL-의-대두"><a href="#빅데이터-기술의-요구-Hadoop-과-NoSQL-의-대두" class="headerlink" title="빅데이터 기술의 요구 : Hadoop 과 NoSQL 의 대두"></a>빅데이터 기술의 요구 : Hadoop 과 NoSQL 의 대두</h5><p>세계 곳곳에서 엑세스 되는 시스템 증가로, 전통적인 관계형 데이터베이스로는 취급 할 수 없는 데이터가 쌓이게 되었다.</p>
-<p>그래서 다른 구조가 필요했다.</p>
-<ol>
-<li><p>Hadoop </p>
-<p>다수의 컴퓨터에서 대량의 데이터 처리</p>
-</li>
-<li><p>NoSQL Database </p>
-<p>빈번한 읽기/ 쓰기 및 분산처리가 강점</p>
-</li>
-</ol>
-<h5 id="분산-시스템의-비즈니스-이용-개척-데이터-웨어하우스와의-공존"><a href="#분산-시스템의-비즈니스-이용-개척-데이터-웨어하우스와의-공존" class="headerlink" title="분산 시스템의 비즈니스 이용 개척 : 데이터 웨어하우스와의 공존"></a>분산 시스템의 비즈니스 이용 개척 : 데이터 웨어하우스와의 공존</h5><p><img src="/image/bigdata_datawarehouse.png" alt></p>
-<p>위 그림처럼, 확장성이 뛰어난 Hadoop 에 데이터 처리를 맡겨 데이터 웨어하우스의 부하를 줄이고 있다.</p>
-<h5 id="직접-할-수-있는-데이터-분석-폭-확대"><a href="#직접-할-수-있는-데이터-분석-폭-확대" class="headerlink" title="직접 할 수 있는 데이터 분석 폭 확대"></a>직접 할 수 있는 데이터 분석 폭 확대</h5><p>‘여러 컴퓨터에서 분산 처리한다’ 는 빅데이터의 특징으로 하드웨어를 준비하고 관리하는게 어려웠다. </p>
-<p>하지만, 클라우드 시대에서는 필요한 자원 확보가 쉬워서 얼마든지 빅데이터를 이용할 수 있다.</p>
-<h5 id="데이터-디스커버리의-기초-지식"><a href="#데이터-디스커버리의-기초-지식" class="headerlink" title="데이터 디스커버리의 기초 지식"></a>데이터 디스커버리의 기초 지식</h5><ol>
-<li><p>데이터 디스커버리</p>
-<p>대화형으로 데이터를 시각화하여 가치있는 정보를 찾으려고하는 프로세스</p>
-</li>
-<li><p>BI 도구</p>
-<p>데이터 디스커버리를 위한 셀프 서비스용 시각화 시스템</p>
-</li>
-</ol>
-<h2 id="2-빅데이터-시대의-데이터-분석-기반"><a href="#2-빅데이터-시대의-데이터-분석-기반" class="headerlink" title="2. 빅데이터 시대의 데이터 분석 기반"></a>2. 빅데이터 시대의 데이터 분석 기반</h2><p>빅데이터 기술이 기존 데이터 웨어하우스와 다른 점은,</p>
-<p>다수의 분산 시스템을 조합하여 확장성이 뛰어난 데이터 처리 구조를 만든다는 것이다.</p>
-<h5 id="데이터-파이프라인"><a href="#데이터-파이프라인" class="headerlink" title="데이터 파이프라인"></a>데이터 파이프라인</h5><p><img src="/image/bigdata_data_pipeline.png" alt></p>
-<p>차례대로 전달해다가는 데이터로 구성된 시스템이다. 데이터 파이프라인의 기본적인 흐름은,</p>
-<ol>
-<li>데이터를 모아서 축적</li>
-<li>데이터 마트 구성</li>
-<li>시각화 도구</li>
-</ol>
-<h5 id="데이터-수집"><a href="#데이터-수집" class="headerlink" title="데이터 수집"></a>데이터 수집</h5><p>데이터 파이프라인은 데이터를 모으는 부분부터 시작한다. 수집 방법은,</p>
-<ol>
-<li><p>벌크형</p>
-<p>이미 어딘가에 있는 데이터를 정리해서 추출</p>
-<p>ex ) 데이터베이스와 파일 서버 등에서 정기적으로 데이터 수집</p>
-</li>
-<li><p>스트리밍형</p>
-<p>차례대로 생성되는 데이터를 끊임없이 보냄</p>
-<p>ex) 모바일 어플리케이션, 임베디드 장비</p>
-</li>
-</ol>
-<h5 id="스트림-처리와-배치처리"><a href="#스트림-처리와-배치처리" class="headerlink" title="스트림 처리와 배치처리"></a>스트림 처리와 배치처리</h5><ol>
-<li><p>스트림 처리</p>
-<p>스트리밍 형 방법으로 받은 데이터를 실시간으로 처리.</p>
-<p>장기적인 데이터 분석에는 적합하지 않음.</p>
-</li>
-<li><p>배치 처리</p>
-<p>정리된 데이터를 효율적으로 가공하기 위한 처리.</p>
-<p>장기적인 데이터 분석을 위해 대량의 데이터를 저장하고 처리하는데 적합한 분산 시스템이 필요.</p>
-</li>
-</ol>
-<h5 id="분산-스토리지"><a href="#분산-스토리지" class="headerlink" title="분산 스토리지"></a>분산 스토리지</h5><p>여러 컴퓨터와 디스크로 구성된 스토리지 시스템이다. 데이터 저장 방법으로,</p>
-<ol>
-<li><p>객체 스토리지</p>
-<p>한 덩어리로 모인 데이터에 이름을 부여해서 파일로 저장.</p>
-<p>ex ) Amazon S3</p>
-</li>
-<li><p>NoSQL 데이터베이스</p>
-<p>많은 데이터를 읽고 쓰기에 유리.</p>
-</li>
-</ol>
-<h5 id="분산-데이터-처리"><a href="#분산-데이터-처리" class="headerlink" title="분산 데이터 처리"></a>분산 데이터 처리</h5><p>분산 스토리지에 저장된 데이터를 처리하기 위해, 분산 데이터 처리 프레임워크가 필요하다. ex) MapReduce</p>
-<p>주 역할은, 나중에 분석하기 쉽도록 데이터를 가공해서 그 결과를 외부 데이터베이스에 저장하는 것이다.</p>
-<p>빅데이터를 SQL 로 집계하는 방법으로,</p>
-<ol>
-<li><p>쿼리 엔진</p>
-<p>Hive, 대화형 쿼리엔진</p>
-</li>
-<li><p>데이터 웨어하우스 제품</p>
-<p>ETL. </p>
-<p>데이터를 추출하고 가공한후, 데이터 웨어하우스에 로드한다.</p>
-</li>
-</ol>
-<h5 id="워크플로우-관리"><a href="#워크플로우-관리" class="headerlink" title="워크플로우 관리"></a>워크플로우 관리</h5><p>데이터파이프라인이 복잡해지면, 한곳에서 제어하지 않으면 전체 움직임 파악이 어렵다.</p>
-<h5 id="데이터-웨어하우스와-데이터-마트"><a href="#데이터-웨어하우스와-데이터-마트" class="headerlink" title="데이터 웨어하우스와 데이터 마트"></a>데이터 웨어하우스와 데이터 마트</h5><p><img src="/image/bigdata_data_pipeline_warehouse.png" alt></p>
-<ol>
-<li><p>데이터 소스</p>
-<p>RDB 나 로그 등을 저장하는 파일 서버</p>
-</li>
-<li><p>ETL 플로세스</p>
-<p>데이터 소스에 보존된 raw data 를 추출하고 필요에 따라 가공한 후 데이터 웨어하우스에 저장하기까지의 흐름</p>
-</li>
-<li><p>데이터 마트</p>
-<p>데이터웨어 하우스에서 필요한 데이터만을 추출하여 데이터마트를 구축</p>
-</li>
-</ol>
-<h5 id="데이터-레이크"><a href="#데이터-레이크" class="headerlink" title="데이터 레이크"></a>데이터 레이크</h5><p><img src="/image/bigdata_data_pipeline_lake.png" alt></p>
-<p>모든 데이터를 원래의 형태로 추적해두고 나중에 필요에 따라 가공하는 구조가 필요하다.</p>
-<p>이 데이터 축적 장소가 데이터 레이크이다. 분산 스토리지가 데이터 레이크로 이용된다. </p>
-<p>데이터 레이크의 데이터를 가공하기 위해 MapReduce 같은 분산 데이터 처리 기술이 필요하다.</p>
-<h5 id="데이터-분석-기반을-단계적으로-발전시키기"><a href="#데이터-분석-기반을-단계적으로-발전시키기" class="headerlink" title="데이터 분석 기반을 단계적으로 발전시키기"></a>데이터 분석 기반을 단계적으로 발전시키기</h5><ol>
-<li><p>데이터 엔지니어</p>
-<p>시스템의 구축 및 운용, 자동화</p>
-</li>
-<li><p>데이터 분석가</p>
-<p>데이터에서 가치있는 정보 추출</p>
-</li>
-</ol>
-<h5 id="확증적-데이터-분석과-탐색적-데이터-분석"><a href="#확증적-데이터-분석과-탐색적-데이터-분석" class="headerlink" title="확증적 데이터 분석과 탐색적 데이터 분석"></a>확증적 데이터 분석과 탐색적 데이터 분석</h5><ol>
-<li><p>확증적 데이터 분석</p>
-<p>가설을 세우고 검증.</p>
-<p>통계학적 모델링에 의한 데이터 분석.</p>
-</li>
-<li><p>탐색적 데이터 분석</p>
-<p>데이터를 보며 의미를 읽어냄.</p>
-<p>데이터를 시각화하여 사람의 힘으로 의미를 읽어냄</p>
-</li>
-</ol>
-<hr>
-<p>빅데이터를 지탱하는 기술 &lt;니시다 케이스케&gt;</p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2019/12/30/big-data-chapter1/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -866,114 +866,6 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2019/12/26/kafka-chapter4/">
-                            [카프카] 4장_카프카 프로듀서
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-12-26T00:00:00+09:00">
-	
-		    Dec 26, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/kafka/">Kafka</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p>프로듀서란, 메세지를 생산해서 카프카의 토픽으로 보내는 역할을 하는 애플리케이션, 서버이다.</p>
-<p>주요 기능은, 각각의 메세지를 토픽 파티션에 매핑하고 파티션의 리더에 요청을 보내는 것이다.</p>
-<h3 id="1-콘솔-프로듀서로-메세지-보내기"><a href="#1-콘솔-프로듀서로-메세지-보내기" class="headerlink" title="1. 콘솔 프로듀서로 메세지 보내기"></a>1. 콘솔 프로듀서로 메세지 보내기</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">auto.create.topics.enable = <span class="keyword">true</span></span><br></pre></td></tr></table></figure>
-
-<p>위 처럼 설정되어 있으면, </p>
-<p>프로듀서가 카프카에 존재하지 않는 토픽으로 메세지를 보낼 때 자동으로 토픽이 생성된다.</p>
-<h3 id="2-자바와-파이썬을-이용한-프로듀서"><a href="#2-자바와-파이썬을-이용한-프로듀서" class="headerlink" title="2. 자바와 파이썬을 이용한 프로듀서"></a>2. 자바와 파이썬을 이용한 프로듀서</h3><p>프로듀서에서 send() 로 메세지를 보내는 방식은 세 가지이다.</p>
-<ol>
-<li><p>메세지 보내고 확인하지 않기</p>
-<p>메세지 손실 가능성이 있다.</p>
-</li>
-<li><p>동기 전송</p>
-<p>카프카의 응답을 기다린다.</p>
-</li>
-<li><p>비동기 전송</p>
-<p>응답을 기다리지 않기 때문에 빠른 전송이 가능하다.</p>
-</li>
-</ol>
-<h3 id="5-메세지-전송-방법"><a href="#5-메세지-전송-방법" class="headerlink" title="5. 메세지 전송 방법"></a>5. 메세지 전송 방법</h3><p>프로듀서 옵셩 중에 acks 옵션 설정에 따라, 카프카로 메세지를 전송할 때 메세지 손실 여부와 메세지 전송 속도 및 처리량이 달라진다.</p>
-<h4 id="5-1-메세지-손실-가능성-높음-빠른-전송-속도"><a href="#5-1-메세지-손실-가능성-높음-빠른-전송-속도" class="headerlink" title="5.1 메세지 손실 가능성 높음, 빠른 전송 속도"></a>5.1 메세지 손실 가능성 높음, 빠른 전송 속도</h4><p>acks = 0, 카프카 서버의 응답을 기다리지 않고 메세지 보낼 준비가 되면 즉시 다음 요청을 보낸다.</p>
-<h4 id="5-2-메세지-손실-가능성-낮음-적당한-전송-속도"><a href="#5-2-메세지-손실-가능성-낮음-적당한-전송-속도" class="headerlink" title="5.2 메세지 손실 가능성 낮음, 적당한 전송 속도"></a>5.2 메세지 손실 가능성 낮음, 적당한 전송 속도</h4><p><img src="/image/kafka_ack_1.png" alt></p>
-<p>asks = 1, 메세지를 보내고 잘 받았는지 확인한다.</p>
-<p>위 그림 처럼, 팔로워들이 주기적으로 리더를 확인하고 새로운 메세지가 확인되면 팔로워들에도 저장한다.</p>
-<p>메세지 손실이 발생하는 경우는 리더에 장애가 발생하는 경우이다. 즉, </p>
-<p>프로듀서가 리더에게 메세지를 보내고 리더는 메시지를 저장한 후에 바로 장애가 발생하는 경우이다.</p>
-<h4 id="5-3-메세지-손실-없음-느린-전송-속도"><a href="#5-3-메세지-손실-없음-느린-전송-속도" class="headerlink" title="5.3 메세지 손실 없음, 느린 전송 속도"></a>5.3 메세지 손실 없음, 느린 전송 속도</h4><p>acks = all, 메세지를 보내고 잘 받았는지 확인하고 추가적으로 팔로워들까지 메세지를 잘 받았는지 확인한다.</p>
-<p>프로듀서 설정 뿐만 아니라, 브로커 설정도 같이 해줘야한다.</p>
-<blockquote>
-<p>프로듀서 acks = all, 브로커 min.insync.replicas = 1 </p>
-</blockquote>
-<p>min.insync.replicas 는 최소 리플리케이션 팩터를 지정하는 옵션이다.</p>
-<ol>
-<li>프로듀서는 토픽의 리더에게 메세지를 보내고, </li>
-<li>리더는 메세지를 저장한다. </li>
-<li>최소 하나의 리플리케이션 조건을 갖췄기 때문에 acks 를 보낸다.</li>
-</ol>
-<blockquote>
-<p>프로듀서 acks = all, 브로커 min.insync.replicas = 2</p>
-</blockquote>
-<ol>
-<li>프로듀서는 토픽의 리더에게 메세지를 보내고, </li>
-<li>리더는 메세지를 저장한다. </li>
-<li>팔로워가 2 개가 있다고 할 때, 첫번째 팔로워는 리더로부터 주기적으로 새로운 메세지를 확인하며 새로운 메세지가 확인되면 자신도 리더의 메세지를 가져와 저장한다.</li>
-<li>최소 두 개의 리플리케이션 조건을 갖췄기 때문에 acks 를 보낸다.</li>
-</ol>
-<p>“손실 없는 메세지 전송을 위해서는,  프로듀서 acks = all, 브로커 min.insync.replicas = 2, 리플레케이션 팩터 = 3”</p>
-<blockquote>
-<p>프로듀서 acks = all, 브로커 min.insync.replicas = 3</p>
-</blockquote>
-<p>왜 카프카는 손실 없는 메세지 전송을 위해, min.insync.replicas = 3 이 아니라, min.insync.replicas = 2 를 추천할까 ?</p>
-<ol>
-<li>프로듀서는 토픽의 리더에게 메세지를 보낸다.</li>
-<li>팔로워가 2 개가 있다고 할 때, 팔로워가 위치한 브로커 하나를 강제 종료한다.</li>
-<li>에러가 발생한다.</li>
-<li>min.insync.replicas = 3 이기 때문에, 리더, 팔로워, 팔로워 이렇게 3 곳에서 모두 메세지를 받아야만 리더는 프로듀서에게 메세지를 잘 받았다는 acks 를 받을 수 있다. </li>
-<li>하지만, 팔로워 한 개를 강제 종료하였기 때문에 ISR 에는 리더와 팔로워 각각 하나만 남아 있는 상태다.</li>
-<li>결국 옵션의 조건을 충족시킬 수 없는 상황이기 때문에 에러가 발생한다.</li>
-</ol>
-<hr>
-<p>카프카, 데이터 플랫폼의 최강자 &lt;고승범, 공용준&gt;</p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2019/12/26/kafka-chapter4/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
                         <a class="link-unstyled" href="/2019/12/26/kafka-chapter3/">
                             [카프카] 3장_카프카 디자인
                         </a>
@@ -1051,7 +943,7 @@
 <h4 id="3-1-리플리케이션-팩터와-리더-팔로워의-역할"><a href="#3-1-리플리케이션-팩터와-리더-팔로워의-역할" class="headerlink" title="3.1 리플리케이션 팩터와 리더, 팔로워의 역할"></a>3.1 리플리케이션 팩터와 리더, 팔로워의 역할</h4><p><img src="/image/kafka_reflecation.png" alt></p>
 <p>모든 읽기와 쓰기는 리더를 통해서만 일어난다. 팔로워는 리더의 데이터를 그대로 리플리케이션만 한다.</p>
 <p>리더와 팔로워는 저장된 데이터의 순서도 일치하고 동일한 오프셋과 메시지를 갖는다.</p>
-<p>리플리케이션된 토픽의 서버가 다운되어도, 리더 변경으롤 문제 없이 프로듀서의 요청을 처리할 수 있다.</p>
+<p>리플리케이션된 토픽의 서버가 다운되어도, 리더 변경으로 문제 없이 프로듀서의 요청을 처리할 수 있다.</p>
 <p>리플리케이션의 단점은,</p>
 <ol>
 <li><p>디스크 사용량 증가</p>
@@ -1063,7 +955,7 @@
 </ol>
 <h4 id="3-2-리더와-팔로워의-관리"><a href="#3-2-리더와-팔로워의-관리" class="headerlink" title="3.2 리더와 팔로워의 관리"></a>3.2 리더와 팔로워의 관리</h4><p>팔로워에 문제가 있어서, 리더로부터 데이터를 가져오지 못하면 정합성이 맞지 않는다.</p>
 <p>이를 해결하기 위해, ISR ( In Sync Replica ) 라는 개념이 있다. 현재 리플리케이션 되고 있는 리플리케이션 그룹이다.</p>
-<p>ISR 에 속한 구성원만이 리더의 자격이 있다. </p>
+<p>ISR 에 속한 구성원만이 리더의 자격이 있다.</p>
 <p>프로듀서 1, 브로커 3, 리플리케이션 팩터 3 일때, ISR 동작 순서는</p>
 <ol>
 <li>프로듀서가 메세지를 토픽의 리더에게 보낸다. </li>
@@ -1096,101 +988,6 @@
                     
                         <p>
                             <a href="/2019/12/26/kafka-chapter3/#post-footer" class="postShorten-excerpt_link link">
-                                Comment and share
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2019/12/26/kafka-chapter1/">
-                            [카프카] 1장_카프카란 무엇인가
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-12-26T00:00:00+09:00">
-	
-		    Dec 26, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/kafka/">Kafka</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <p>대용량, 대규모 메세지 데이터를 빠르게 처리하도록 개발된 메시징 플랫폼이다.</p>
-<h3 id="1-탄생-배경"><a href="#1-탄생-배경" class="headerlink" title="1. 탄생 배경"></a>1. 탄생 배경</h3><p><img src="/image/kafka_end_to_end.png" alt></p>
-<p>위 그림 처럼 end-to-end 아키텍쳐의 문제점은,</p>
-<ol>
-<li>실시간     트랜잭션 (OLTP) 처리와 비동기 처리가 동시에 이뤄지지만, 통합된 전송 영여이 없어서 복잡도 증가</li>
-<li>데이터 파이프라인의 관리가 어려움</li>
-</ol>
-<p><img src="/image/kafka_architecture.png" alt></p>
-<p>위 그림처럼 카프카는,</p>
-<ol>
-<li>모든 시스템으로 데이터 전송 가능 </li>
-<li>실시간 처리 가능</li>
-<li>확장이 용이</li>
-</ol>
-<h3 id="2-동작-방식과-원리"><a href="#2-동작-방식과-원리" class="headerlink" title="2. 동작 방식과 원리"></a>2. 동작 방식과 원리</h3><p>메시징 시스템을 먼저 살펴보자.</p>
-<p>중앙에 메시징 시스템 서버를 두고 메시지를 Publish 하고 Subscribe 하는 형태의 통신을 Pub/Sub 모델이라고 한다.</p>
-<p>프로듀서가 메시지를 컨슈머에게 직접 전달하는 것이 아니라, 중간의 메시징 시스템으로 전달한다. 그래서,</p>
-<ol>
-<li>프로듀서가 수신 불능 상태가 되어도 메세징 시스템이 살아있으면 메세지가 유실이 되지 않는다.</li>
-<li>메세징 시스템을 중심으로 연결되기 때문에, 확장성이 용이하다.</li>
-</ol>
-<p>카프카의 메세지 전달 순서는,</p>
-<ol>
-<li>프로듀서가 메세지를 카프카에게 보낸다.</li>
-<li>메세지가 Topic 에 도착해 저장된다.</li>
-<li>컨슈머는 카프카 서버에 접속해 메세지를 가져간다. </li>
-</ol>
-<h3 id="3-특징"><a href="#3-특징" class="headerlink" title="3. 특징"></a>3. 특징</h3><ol>
-<li><p>프로듀서와 컨슈머의 분리</p>
-<p>어느 한쪽 시스템에서 문제가 발생해도 연쇄 작용이 발생할 확률이 낮다.</p>
-<p>서버 추가에 대한 부담이 준다.</p>
-</li>
-<li><p>멀티 프로듀서, 멀티 컨슈머</p>
-<p>데이터 분석 및 처리 프로세스에서 하나의 데이터를 다양한 용도로 사용하는 요구 사항을 충족할 수 있다.</p>
-</li>
-<li><p>디스크에 메세지 저장</p>
-<p>컨슈머가 메세지를 읽어가도 보관 주기 동안 디스크에 메세지를 저장한다.</p>
-<p>( 일반적인 메세지 시스템은 컨슈머가 메세지를 읽어가면 큐에서 바로 메세지 삭제 )</p>
-</li>
-<li><p>확장성</p>
-<p>온라인 상태에서 확장 작업 가능</p>
-</li>
-<li><p>높은 성능</p>
-</li>
-</ol>
-<hr>
-<p>카프카, 데이터 플랫폼의 최강자 &lt;고승범, 공용준&gt;</p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2019/12/26/kafka-chapter1/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -1334,6 +1131,209 @@
                     
                         <p>
                             <a href="/2019/12/26/kafka-chapter5/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2019/12/26/kafka-chapter4/">
+                            [카프카] 4장_카프카 프로듀서
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-12-26T00:00:00+09:00">
+	
+		    Dec 26, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/kafka/">Kafka</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p>프로듀서란, 메세지를 생산해서 카프카의 토픽으로 보내는 역할을 하는 애플리케이션, 서버이다.</p>
+<p>주요 기능은, 각각의 메세지를 토픽 파티션에 매핑하고 파티션의 리더에 요청을 보내는 것이다.</p>
+<h3 id="1-콘솔-프로듀서로-메세지-보내기"><a href="#1-콘솔-프로듀서로-메세지-보내기" class="headerlink" title="1. 콘솔 프로듀서로 메세지 보내기"></a>1. 콘솔 프로듀서로 메세지 보내기</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">auto.create.topics.enable = <span class="keyword">true</span></span><br></pre></td></tr></table></figure>
+
+<p>위 처럼 설정되어 있으면, </p>
+<p>프로듀서가 카프카에 존재하지 않는 토픽으로 메세지를 보낼 때 자동으로 토픽이 생성된다.</p>
+<h3 id="2-자바와-파이썬을-이용한-프로듀서"><a href="#2-자바와-파이썬을-이용한-프로듀서" class="headerlink" title="2. 자바와 파이썬을 이용한 프로듀서"></a>2. 자바와 파이썬을 이용한 프로듀서</h3><p>프로듀서에서 send() 로 메세지를 보내는 방식은 세 가지이다.</p>
+<ol>
+<li><p>메세지 보내고 확인하지 않기</p>
+<p>메세지 손실 가능성이 있다.</p>
+</li>
+<li><p>동기 전송</p>
+<p>카프카의 응답을 기다린다.</p>
+</li>
+<li><p>비동기 전송</p>
+<p>응답을 기다리지 않기 때문에 빠른 전송이 가능하다.</p>
+</li>
+</ol>
+<h3 id="5-메세지-전송-방법"><a href="#5-메세지-전송-방법" class="headerlink" title="5. 메세지 전송 방법"></a>5. 메세지 전송 방법</h3><p>프로듀서 옵셩 중에 acks 옵션 설정에 따라, 카프카로 메세지를 전송할 때 메세지 손실 여부와 메세지 전송 속도 및 처리량이 달라진다.</p>
+<h4 id="5-1-메세지-손실-가능성-높음-빠른-전송-속도"><a href="#5-1-메세지-손실-가능성-높음-빠른-전송-속도" class="headerlink" title="5.1 메세지 손실 가능성 높음, 빠른 전송 속도"></a>5.1 메세지 손실 가능성 높음, 빠른 전송 속도</h4><p>acks = 0, 카프카 서버의 응답을 기다리지 않고 메세지 보낼 준비가 되면 즉시 다음 요청을 보낸다.</p>
+<h4 id="5-2-메세지-손실-가능성-낮음-적당한-전송-속도"><a href="#5-2-메세지-손실-가능성-낮음-적당한-전송-속도" class="headerlink" title="5.2 메세지 손실 가능성 낮음, 적당한 전송 속도"></a>5.2 메세지 손실 가능성 낮음, 적당한 전송 속도</h4><p><img src="/image/kafka_ack_1.png" alt></p>
+<p>asks = 1, 메세지를 보내고 잘 받았는지 확인한다.</p>
+<p>위 그림 처럼, 팔로워들이 주기적으로 리더를 확인하고 새로운 메세지가 확인되면 팔로워들에도 저장한다.</p>
+<p>메세지 손실이 발생하는 경우는 리더에 장애가 발생하는 경우이다. 즉, </p>
+<p>프로듀서가 리더에게 메세지를 보내고 리더는 메시지를 저장한 후에 바로 장애가 발생하는 경우이다.</p>
+<h4 id="5-3-메세지-손실-없음-느린-전송-속도"><a href="#5-3-메세지-손실-없음-느린-전송-속도" class="headerlink" title="5.3 메세지 손실 없음, 느린 전송 속도"></a>5.3 메세지 손실 없음, 느린 전송 속도</h4><p>acks = all, 메세지를 보내고 잘 받았는지 확인하고 추가적으로 팔로워들까지 메세지를 잘 받았는지 확인한다.</p>
+<p>프로듀서 설정 뿐만 아니라, 브로커 설정도 같이 해줘야한다.</p>
+<blockquote>
+<p>프로듀서 acks = all, 브로커 min.insync.replicas = 1 </p>
+</blockquote>
+<p>min.insync.replicas 는 최소 리플리케이션 팩터를 지정하는 옵션이다.</p>
+<ol>
+<li>프로듀서는 토픽의 리더에게 메세지를 보내고, </li>
+<li>리더는 메세지를 저장한다. </li>
+<li>최소 하나의 리플리케이션 조건을 갖췄기 때문에 acks 를 보낸다.</li>
+</ol>
+<blockquote>
+<p>프로듀서 acks = all, 브로커 min.insync.replicas = 2</p>
+</blockquote>
+<ol>
+<li>프로듀서는 토픽의 리더에게 메세지를 보내고, </li>
+<li>리더는 메세지를 저장한다. </li>
+<li>팔로워가 2 개가 있다고 할 때, 첫번째 팔로워는 리더로부터 주기적으로 새로운 메세지를 확인하며 새로운 메세지가 확인되면 자신도 리더의 메세지를 가져와 저장한다.</li>
+<li>최소 두 개의 리플리케이션 조건을 갖췄기 때문에 acks 를 보낸다.</li>
+</ol>
+<p>“손실 없는 메세지 전송을 위해서는,  프로듀서 acks = all, 브로커 min.insync.replicas = 2, 리플레케이션 팩터 = 3”</p>
+<blockquote>
+<p>프로듀서 acks = all, 브로커 min.insync.replicas = 3</p>
+</blockquote>
+<p>왜 카프카는 손실 없는 메세지 전송을 위해, min.insync.replicas = 3 이 아니라, min.insync.replicas = 2 를 추천할까 ?</p>
+<ol>
+<li>프로듀서는 토픽의 리더에게 메세지를 보낸다.</li>
+<li>팔로워가 2 개가 있다고 할 때, 팔로워가 위치한 브로커 하나를 강제 종료한다.</li>
+<li>에러가 발생한다.</li>
+<li>min.insync.replicas = 3 이기 때문에, 리더, 팔로워, 팔로워 이렇게 3 곳에서 모두 메세지를 받아야만 리더는 프로듀서에게 메세지를 잘 받았다는 acks 를 받을 수 있다. </li>
+<li>하지만, 팔로워 한 개를 강제 종료하였기 때문에 ISR 에는 리더와 팔로워 각각 하나만 남아 있는 상태다.</li>
+<li>결국 옵션의 조건을 충족시킬 수 없는 상황이기 때문에 에러가 발생한다.</li>
+</ol>
+<hr>
+<p>카프카, 데이터 플랫폼의 최강자 &lt;고승범, 공용준&gt;</p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2019/12/26/kafka-chapter4/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2019/12/26/kafka-chapter1/">
+                            [카프카] 1장_카프카란 무엇인가
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-12-26T00:00:00+09:00">
+	
+		    Dec 26, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/kafka/">Kafka</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p>대용량, 대규모 메세지 데이터를 빠르게 처리하도록 개발된 메시징 플랫폼이다.</p>
+<h3 id="1-탄생-배경"><a href="#1-탄생-배경" class="headerlink" title="1. 탄생 배경"></a>1. 탄생 배경</h3><p><img src="/image/kafka_end_to_end.png" alt></p>
+<p>위 그림 처럼 end-to-end 아키텍쳐의 문제점은,</p>
+<ol>
+<li>실시간     트랜잭션 (OLTP) 처리와 비동기 처리가 동시에 이뤄지지만, 통합된 전송 영여이 없어서 복잡도 증가</li>
+<li>데이터 파이프라인의 관리가 어려움</li>
+</ol>
+<p><img src="/image/kafka_architecture.png" alt></p>
+<p>위 그림처럼 카프카는,</p>
+<ol>
+<li>모든 시스템으로 데이터 전송 가능 </li>
+<li>실시간 처리 가능</li>
+<li>확장이 용이</li>
+</ol>
+<h3 id="2-동작-방식과-원리"><a href="#2-동작-방식과-원리" class="headerlink" title="2. 동작 방식과 원리"></a>2. 동작 방식과 원리</h3><p>메시징 시스템을 먼저 살펴보자.</p>
+<p>중앙에 메시징 시스템 서버를 두고 메시지를 Publish 하고 Subscribe 하는 형태의 통신을 Pub/Sub 모델이라고 한다.</p>
+<p>프로듀서가 메시지를 컨슈머에게 직접 전달하는 것이 아니라, 중간의 메시징 시스템으로 전달한다. 그래서,</p>
+<ol>
+<li>프로듀서가 수신 불능 상태가 되어도 메세징 시스템이 살아있으면 메세지가 유실이 되지 않는다.</li>
+<li>메세징 시스템을 중심으로 연결되기 때문에, 확장성이 용이하다.</li>
+</ol>
+<p>카프카의 메세지 전달 순서는,</p>
+<ol>
+<li>프로듀서가 메세지를 카프카에게 보낸다.</li>
+<li>메세지가 Topic 에 도착해 저장된다.</li>
+<li>컨슈머는 카프카 서버에 접속해 메세지를 가져간다. </li>
+</ol>
+<h3 id="3-특징"><a href="#3-특징" class="headerlink" title="3. 특징"></a>3. 특징</h3><ol>
+<li><p>프로듀서와 컨슈머의 분리</p>
+<p>어느 한쪽 시스템에서 문제가 발생해도 연쇄 작용이 발생할 확률이 낮다.</p>
+<p>서버 추가에 대한 부담이 준다.</p>
+</li>
+<li><p>멀티 프로듀서, 멀티 컨슈머</p>
+<p>데이터 분석 및 처리 프로세스에서 하나의 데이터를 다양한 용도로 사용하는 요구 사항을 충족할 수 있다.</p>
+</li>
+<li><p>디스크에 메세지 저장</p>
+<p>컨슈머가 메세지를 읽어가도 보관 주기 동안 디스크에 메세지를 저장한다.</p>
+<p>( 일반적인 메세지 시스템은 컨슈머가 메세지를 읽어가면 큐에서 바로 메세지 삭제 )</p>
+</li>
+<li><p>확장성</p>
+<p>온라인 상태에서 확장 작업 가능</p>
+</li>
+<li><p>높은 성능</p>
+</li>
+</ol>
+<hr>
+<p>카프카, 데이터 플랫폼의 최강자 &lt;고승범, 공용준&gt;</p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2019/12/26/kafka-chapter1/#post-footer" class="postShorten-excerpt_link link">
                                 Comment and share
                             </a>
                         </p>
@@ -1641,7 +1641,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 junhee.ko. All Rights Reserved.
+        Copyrights &copy; 2020 junhee.ko. All Rights Reserved.
     </span>
 </footer>
 
