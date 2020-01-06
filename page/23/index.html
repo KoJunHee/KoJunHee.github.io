@@ -71,9 +71,9 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-Database" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-JDBC" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/05/08/Database/" class="article-date">
+    <a href="/2018/05/08/JDBC/" class="article-date">
   <time class="dt-published" datetime="2018-05-07T15:00:00.000Z" itemprop="datePublished">2018-05-08</time>
 </a>
     
@@ -89,7 +89,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/08/Database/">Database</a>
+      <a class="p-name article-title" href="/2018/05/08/JDBC/">JDBC</a>
     </h1>
   
 
@@ -98,57 +98,50 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <ul>
-<li><p>데이터베이스와 데이터베이스 관리 시스템</p>
+<li><p>JDBC</p>
 <ul>
-<li>어린이가 가지고 있는 책(정보)들을 데이터베이스라고 한다면, </li>
-<li>그 책을 관리해주는 엄마는 데이터베이스 관리 시스템이라고 말할 수 있습니다.</li>
+<li>자바를 이용한 데이터베이스 접속과 SQL 문장의 실행, 그리고 실행 결과로 얻어진 데이터의 핸들링을 제공하는 방법과 절차에 관한 규약</li>
+<li>자바 프로그램 내에서 SQL문을 실행하기 위한 자바 API</li>
+<li>SQL과 프로그래밍 언어의 통합 접근 중 한 형태</li>
+<li>JAVA는 표준 인터페이스인 JDBC API를 제공</li>
+<li>데이터베이스 벤더, 또는 기타 써드파티에서는 JDBC 인터페이스를 구현한 드라이버(driver)를 제공한다.</li>
 </ul>
 </li>
-<li><p>데이터베이스</p>
+<li><p>JDBC를 이용한 프로그래밍 방법</p>
+<p><img src="/image/jdbc.png" alt></p>
 <ul>
-<li><p>데이터의 집합 (a Set of Data)</p>
+<li><p>import java.sql.*;</p>
 </li>
-<li><p>여러 응용 시스템(프로그램)들의 통합된 정보들을 저장하여 운영할 수 있는 공용(share) 데이터의 집합</p>
-</li>
-<li><p>효율적으로 저장, 검색, 갱신할 수 있도록 데이터 집합들끼리 연관시키고 조직화되어야 한다.</p>
-</li>
-<li><p>특성</p>
+<li><p>드라이버를 로드 한다.</p>
 <ul>
-<li><p>실시간 접근성(Real-time Accessability)</p>
-<ul>
-<li>사용자의 요구를 즉시 처리할 수 있다.</li>
-</ul>
-</li>
-<li><p>계속적인 변화(Continuous Evolution)</p>
-<ul>
-<li>정확한 값을 유지하려고 삽입·삭제·수정 작업 등을 이용해 데이터를 지속적으로 갱신할 수 있다.</li>
-</ul>
-</li>
-<li><p>동시 공유성(Concurrent Sharing)</p>
-<ul>
-<li>사용자마다 서로 다른 목적으로 사용하므로 동시에 여러 사람이 동일한 데이터에 접근하고 이용할 수 있다.</li>
-</ul>
-</li>
-<li><p>내용 참조(Content Reference)</p>
-<ul>
-<li>저장한 데이터 레코드의 위치나 주소가 아닌 사용자가 요구하는 데이터의 내용, 즉 데이터 값에 따라 참조할 수 있어야 한다.</li>
-</ul>
+<li><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Class.forName( <span class="string">"com.mysql.jdbc.Driver"</span> );</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
-</ul>
-</li>
-<li><p>데이터베이스 관리 시스템 (Database Management System = DBMS)</p>
+<li><p>Connection 객체를 생성한다.</p>
 <ul>
-<li>데이터베이스를 관리하는 소프트웨어</li>
-<li>여러 응용 소프트웨어(프로그램) 또는 시스템이 동시에 데이터베이스에 접근하여 사용할 수 있게 한다</li>
-<li>필수 3기능<ul>
-<li>정의기능 :  데이터 베이스의 논리적, 물리적 구조를 정의</li>
-<li>조작기능 : 데이터를 검색, 삭제, 갱신, 삽입, 삭제하는 기능</li>
-<li>제어기능 :  데이터베이스의 내용 정확성과 안전성을 유지하도록 제어하는 기능</li>
+<li><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String dburl  = <span class="string">"jdbc:mysql://localhost/dbName"</span>;</span><br><span class="line"></span><br><span class="line">Connection con =  DriverManager.getConnection ( dburl, ID, PWD );</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
-<li>Oracle, SQL Server, MySQL, DB2 등의 상용 또는 공개 DBMS가 있다.</li>
+<li><p>Statement 객체를 생성 및 질의 수행</p>
+<ul>
+<li><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Statement stmt = con.createStatement(); </span><br><span class="line">ResultSet rs = stmt.executeQuery(<span class="string">"select no from user"</span> );</span><br><span class="line"></span><br><span class="line">stmt.execute(“query”);             <span class="comment">//any SQL</span></span><br><span class="line">stmt.executeQuery(“query”);     <span class="comment">//SELECT</span></span><br><span class="line">stmt.executeUpdate(“query”);   <span class="comment">//INSERT, UPDATE, DELETE</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>SQL문에 결과물이 있다면 ResultSet 객체를 생성한다.</p>
+<ul>
+<li><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ResultSet rs =  stmt.executeQuery( <span class="string">"select no from user"</span> );</span><br><span class="line"><span class="keyword">while</span> ( rs.next() )</span><br><span class="line">      System.out.println( rs.getInt( <span class="string">"no"</span>) );</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>모든 객체를 닫는다.</p>
+<ul>
+<li><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rs.close();</span><br><span class="line">stmt.close();</span><br><span class="line">con.close();</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li><p>Reference</p>
@@ -161,7 +154,80 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/08/Database/" data-id="ck50so6re00bhzp6w2zxl1x6n" data-title="Database" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/08/JDBC/" data-id="ck52ihhw800bhwh6w2wnenf3w" data-title="JDBC" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Spring MVC" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/08/Spring MVC/" class="article-date">
+  <time class="dt-published" datetime="2018-05-07T15:00:00.000Z" itemprop="datePublished">2018-05-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/boost-course/">Boost Course</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/08/Spring MVC/">Spring MVC</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <ul>
+<li><p>MVC란 ?</p>
+<ul>
+<li>MVC는 Model-View-Controller의 약자입니다.</li>
+<li>원래는 제록스 연구소에서 일하던 트뤼그베 린즈커그가 처음으로 소개한 개념으로, 데스트톱 어플리케이션용으로 고안되었습니다.</li>
+<li>Model : 모델은 뷰가 렌더링하는데 필요한 데이터입니다. 예를 들어 사용자가 요청한 상품 목록이나, 주문 내역이 이에 해당합니다.</li>
+<li>View : 웹 애플리케이션에서 뷰(View)는 실제로 보이는 부분이며, 모델을 사용해 렌더링을 합니다. 뷰는 JSP, JSF, PDF, XML등으로 결과를 표현합니다.</li>
+<li>Controller : 컨트롤러는 사용자의 액션에 응답하는 컴포넌트입니다. 컨트롤러는 모델을 업데이트하고, 다른 액션을 수행합니다.</li>
+</ul>
+</li>
+<li><p>MVC Model 1 아키텍처</p>
+<p><img src="/image/sm01.png" alt></p>
+</li>
+<li><p>MVC Model 2 아키텍처</p>
+<p><img src="/image/sm02.png" alt></p>
+</li>
+<li><p>MVC Model2 발전형태</p>
+<p><img src="/image/sm03.png" alt></p>
+</li>
+<li><p>Spring Web Module </p>
+<ul>
+<li>Model2 MVC 패턴을 지원하는 Spring Module  </li>
+</ul>
+<p><img src="/image/sm04.png" alt></p>
+</li>
+<li><p>Reference</p>
+<ul>
+<li>NAVER edwith boostcourse Full-Stack Web Developer</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/08/Spring MVC/" data-id="ck52ihhwb00btwh6wht3lk6zd" data-title="Spring MVC" class="article-share-link">Share</a>
       
       
       
@@ -234,7 +300,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/07/HttpServletRequest, HttpServletResponse /" data-id="ck50so6rc00b9zp6w4xd65rjs" data-title="HttpServletRequest, HttpServletResponse" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/07/HttpServletRequest, HttpServletResponse /" data-id="ck52ihhwa00bpwh6wt4v5vh3m" data-title="HttpServletRequest, HttpServletResponse" class="article-share-link">Share</a>
       
       
       
@@ -314,7 +380,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/07/Servlet/" data-id="ck50so6rc00bbzp6wtjm46vif" data-title="Servlet" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/07/Servlet/" data-id="ck52ihhw600bbwh6wzfukjvtk" data-title="Servlet" class="article-share-link">Share</a>
       
       
       
@@ -400,7 +466,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/06/Spring IoC:DI 컨테이너/" data-id="ck50so6ra00b4zp6wcohe3gnq" data-title="Spring IoC/DI 컨테이너" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/06/Spring IoC:DI 컨테이너/" data-id="ck52ihhw500b5wh6wwq2oef02" data-title="Spring IoC/DI 컨테이너" class="article-share-link">Share</a>
       
       
       
@@ -470,7 +536,96 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/06/물통/" data-id="ck50so6rb00b7zp6wx6sas32e" data-title="물통" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/06/물통/" data-id="ck52ihhw600b9wh6w92fkp8uq" data-title="물통" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post- browser에서의 웹 개발" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/05/ browser에서의 웹 개발/" class="article-date">
+  <time class="dt-published" datetime="2018-05-04T15:00:00.000Z" itemprop="datePublished">2018-05-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/boost-course/">Boost Course</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/05/ browser에서의 웹 개발/"> browser에서의 웹 개발</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <ul>
+<li><p>HTML 문서구조</p>
+<ul>
+<li>크롬 개발자 도구 열기 (Option + Command + i)</li>
+<li>Network tab 에서 새로고침을 하면</li>
+</ul>
+</li>
+<li><p>알게된 몇 가지 특징</p>
+<ul>
+<li><p>html 문서는 html이라는 태그로 시작해서 html 태그로 끝남</p>
+</li>
+<li><p>head</p>
+<ul>
+<li>자세한 문서에 대한 정보를 포함</li>
+</ul>
+</li>
+<li><p>body</p>
+<ul>
+<li>화면에 포함될 div 같은것들</li>
+</ul>
+</li>
+<li><p>html은 계청적</p>
+</li>
+<li><p>html은 tag를 사용해서 표현</p>
+</li>
+<li><p>JavaScript와 CSS가 html 안에 여기 저기 존재</p>
+</li>
+</ul>
+</li>
+<li><p>CSS / JavaScript 코드 위치</p>
+<ul>
+<li>JavaScript 코드<ul>
+<li>body 태그 닫히기 전에 위치하는 것이 렌더링을 방해하지 않아도 좋고, </li>
+</ul>
+</li>
+<li>CSS<ul>
+<li>head 안에 위치해서 렌더링 처리 시에 브라우저가 더 빨리 참고할 수 있게 하는 것이 좋습니다.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Reference</p>
+<ul>
+<li>NAVER edwith boostcourse Full-Stack Web Developer </li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/05/ browser에서의 웹 개발/" data-id="ck52ihhw300azwh6wjpd2fi8n" data-title=" browser에서의 웹 개발" class="article-share-link">Share</a>
       
       
       
@@ -620,7 +775,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/05/web 동작/" data-id="ck50so6r800avzp6w9vb4kimy" data-title="web 동작" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/05/web 동작/" data-id="ck52ihhw000anwh6w8cgf3ar9" data-title="web 동작" class="article-share-link">Share</a>
       
       
       
@@ -632,9 +787,9 @@
 
 
   
-    <article id="post- browser에서의 웹 개발" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-프론트엔드, 백엔드" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/05/05/ browser에서의 웹 개발/" class="article-date">
+    <a href="/2018/05/05/프론트엔드, 백엔드/" class="article-date">
   <time class="dt-published" datetime="2018-05-04T15:00:00.000Z" itemprop="datePublished">2018-05-05</time>
 </a>
     
@@ -650,7 +805,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/05/ browser에서의 웹 개발/"> browser에서의 웹 개발</a>
+      <a class="p-name article-title" href="/2018/05/05/프론트엔드, 백엔드/">프론트엔드, 백엔드</a>
     </h1>
   
 
@@ -659,44 +814,27 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <ul>
-<li><p>HTML 문서구조</p>
+<li><p>웹 프론트엔드</p>
 <ul>
-<li>크롬 개발자 도구 열기 (Option + Command + i)</li>
-<li>Network tab 에서 새로고침을 하면</li>
+<li>사용자에게 웹을 통해 다양한 콘텐츠(문서, 동영상, 사진 등)을 제공</li>
+<li>사용자의 요청(요구사항)에 반응해서 동작</li>
 </ul>
 </li>
-<li><p>알게된 몇 가지 특징</p>
+<li><p>웹 프론트엔드의 역할</p>
 <ul>
-<li><p>html 문서는 html이라는 태그로 시작해서 html 태그로 끝남</p>
+<li>웹 콘텐츠를 보여주기 위해 구조를 만들어야함 - HTML : 구조를 잡아</li>
+<li>적절한 배치와 일관된 디자인 제공(보기좋게) - CSS : 디자인</li>
+<li>사용장 요청을 잘 반영해야함 (소통하듯이) - JacaScript : 동적 제어. 프로그래밍</li>
+</ul>
 </li>
-<li><p>head</p>
+<li><p>벡엔드 개발자가 알아야할 것들</p>
 <ul>
-<li>자세한 문서에 대한 정보를 포함</li>
-</ul>
-</li>
-<li><p>body</p>
-<ul>
-<li>화면에 포함될 div 같은것들</li>
-</ul>
-</li>
-<li><p>html은 계청적</p>
-</li>
-<li><p>html은 tag를 사용해서 표현</p>
-</li>
-<li><p>JavaScript와 CSS가 html 안에 여기 저기 존재</p>
-</li>
-</ul>
-</li>
-<li><p>CSS / JavaScript 코드 위치</p>
-<ul>
-<li>JavaScript 코드<ul>
-<li>body 태그 닫히기 전에 위치하는 것이 렌더링을 방해하지 않아도 좋고, </li>
-</ul>
-</li>
-<li>CSS<ul>
-<li>head 안에 위치해서 렌더링 처리 시에 브라우저가 더 빨리 참고할 수 있게 하는 것이 좋습니다.</li>
-</ul>
-</li>
+<li>프로그래밍 언어(JAVA, Python, PHP, JavaScript)</li>
+<li>웹의 동작 원리</li>
+<li>알고리즘, 자료구조 등 프로그래밍 기반 지식</li>
+<li>운영체제, 네트워크 등에 대한 이해</li>
+<li>프레임워크에 대한 이해(ex: Spring)</li>
+<li>DBMS에 대한 이해와 사용방법(ex: MySQL, Oracle)  </li>
 </ul>
 </li>
 <li><p>Reference</p>
@@ -709,7 +847,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/05/ browser에서의 웹 개발/" data-id="ck50so6ra00b2zp6wp4r5g1fu" data-title=" browser에서의 웹 개발" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/05/프론트엔드, 백엔드/" data-id="ck52ihhw200auwh6w4sqy848m" data-title="프론트엔드, 백엔드" class="article-share-link">Share</a>
       
       
       
@@ -808,160 +946,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/05/browser 동작/" data-id="ck50so6r700aqzp6wj4kxwdre" data-title="browser 동작" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-프론트엔드, 백엔드" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/05/프론트엔드, 백엔드/" class="article-date">
-  <time class="dt-published" datetime="2018-05-04T15:00:00.000Z" itemprop="datePublished">2018-05-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/boost-course/">Boost Course</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/05/프론트엔드, 백엔드/">프론트엔드, 백엔드</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <ul>
-<li><p>웹 프론트엔드</p>
-<ul>
-<li>사용자에게 웹을 통해 다양한 콘텐츠(문서, 동영상, 사진 등)을 제공</li>
-<li>사용자의 요청(요구사항)에 반응해서 동작</li>
-</ul>
-</li>
-<li><p>웹 프론트엔드의 역할</p>
-<ul>
-<li>웹 콘텐츠를 보여주기 위해 구조를 만들어야함 - HTML : 구조를 잡아</li>
-<li>적절한 배치와 일관된 디자인 제공(보기좋게) - CSS : 디자인</li>
-<li>사용장 요청을 잘 반영해야함 (소통하듯이) - JacaScript : 동적 제어. 프로그래밍</li>
-</ul>
-</li>
-<li><p>벡엔드 개발자가 알아야할 것들</p>
-<ul>
-<li>프로그래밍 언어(JAVA, Python, PHP, JavaScript)</li>
-<li>웹의 동작 원리</li>
-<li>알고리즘, 자료구조 등 프로그래밍 기반 지식</li>
-<li>운영체제, 네트워크 등에 대한 이해</li>
-<li>프레임워크에 대한 이해(ex: Spring)</li>
-<li>DBMS에 대한 이해와 사용방법(ex: MySQL, Oracle)  </li>
-</ul>
-</li>
-<li><p>Reference</p>
-<ul>
-<li>NAVER edwith boostcourse Full-Stack Web Developer </li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/05/프론트엔드, 백엔드/" data-id="ck50so6r700aszp6w1kmhu64w" data-title="프론트엔드, 백엔드" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post- 웹 서버" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/05/ 웹 서버/" class="article-date">
-  <time class="dt-published" datetime="2018-05-04T15:00:00.000Z" itemprop="datePublished">2018-05-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/boost-course/">Boost Course</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/05/ 웹 서버/">웹 서버</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <ul>
-<li><p>웹 서버란</p>
-<ul>
-<li>웹 서버는 소프트웨어(Software)를 보통 말하지만, 웹 서버 소프트웨어가 동작하는 컴퓨터를 말합니다.</li>
-<li>웹 서버의 가장 중요한 기능은 클라이언트(Client)가 요청하는 HTML 문서나 각종 리소스(Resource)를 전달하는 것입니다.<ul>
-<li>클라이언트 : 웹 브라우저, 웹 크롤러(네이버나 구글같은 검색 사이트가 다른 웹 사이트 정보를 읽어갈때 사용하는 소프트웨어)<ul>
-<li>HTTP에 맞게 서버에게 리소스 요쳥</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>웹 브라우저나 웹 크롤러가 요청하는 리소스는 컴퓨터에 저장된 정적(static)인 데이터이거나 동적인 결과가 될 수 있습니다.<ul>
-<li>정적 데이터 : 이미지 , HTML, CSS, JavaScript (컴퓨터에 저장된 파일들)</li>
-<li>동적 데이터 : 웹 서버에 의해 실행되는, 프로그래밍을 통해 만들어진 결과</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>웹 서버 소프트웨어 종류</p>
-<ul>
-<li>Apache, Nginx, Microsoft, Google 웹 서버<ul>
-<li>Apache웹 서버<ul>
-<li>Apache Software Foundation에서 개발한 웹서버로 오픈소스 소프트웨어(Open-source Software)이며, 거의 대부분 운영체제에서 설치 및 사용을 할 수 있습니다.</li>
-</ul>
-</li>
-<li>Nginx <ul>
-<li>차세대 웹서버로 불리며 더 적은 자원으로 더 빠르게 데이터를 서비스하는 것을 목적으로 만들어진 서버이며 Apache웹 서버와 마찬가지로 오픈소스 소프트웨어입니다.</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Reference</p>
-<ul>
-<li>NAVER edwith boostcourse Full-Stack Web Developer </li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/05/ 웹 서버/" data-id="ck50so6r800axzp6wl5x0b8yv" data-title="웹 서버" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/05/browser 동작/" data-id="ck52ihhw100aswh6wo3udwutq" data-title="browser 동작" class="article-share-link">Share</a>
       
       
       
@@ -1016,6 +1001,10 @@
       <ul>
         
           <li>
+            <a href="/2020/01/06/object-chapter12/">[오브젝트] 12장_다형성</a>
+          </li>
+        
+          <li>
             <a href="/2020/01/05/big-data-chapter5/">[빅데이터를 지탱하는 기술] 5장_빅데이터 파이프라인</a>
           </li>
         
@@ -1024,15 +1013,11 @@
           </li>
         
           <li>
-            <a href="/2019/12/30/big-data-chapter2/">[빅데이터를 지탱하는 기술] 2장_빅데이터 탐색</a>
-          </li>
-        
-          <li>
-            <a href="/2019/12/30/big-data-chapter1/">[빅데이터를 지탱하는 기술] 1장_빅데이터 기초 지식</a>
-          </li>
-        
-          <li>
             <a href="/2019/12/30/big-data-chapter3/">[빅데이터를 지탱하는 기술] 3장_빅데이터 분산처리</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/30/big-data-chapter2/">[빅데이터를 지탱하는 기술] 2장_빅데이터 탐색</a>
           </li>
         
       </ul>
