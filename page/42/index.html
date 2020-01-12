@@ -71,6 +71,90 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Greedy Algorithm" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/09/17/Greedy Algorithm/" class="article-date">
+  <time class="dt-published" datetime="2017-09-16T15:00:00.000Z" itemprop="datePublished">2017-09-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/09/17/Greedy Algorithm/">Greedy Algorithm</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="정의"><a href="#정의" class="headerlink" title="정의"></a>정의</h2><ul>
+<li>어떤 것을 결정해야 하는 순간, 가장 좋다고 생각하는 것을 선택하면서 답 찾는 알고리즘</li>
+</ul>
+<h2 id="Dynamic-Programming과-비교"><a href="#Dynamic-Programming과-비교" class="headerlink" title="Dynamic Programming과 비교"></a>Dynamic Programming과 비교</h2><ul>
+<li><p>DP : 어떤 상황에서 할수 있는 상황 모두 살펴보고 거기서 가장 좋은것 선택</p>
+</li>
+<li><p>Greedy : 할수 있는 선택 중에 제일 좋다고 생각되는 것 하나 선택해서 정답 찾아감</p>
+</li>
+</ul>
+<h2 id="단점"><a href="#단점" class="headerlink" title="단점"></a>단점</h2><ul>
+<li>그 때 그 때는 최적일 수 있지만, 최종적으로는 최적이 아니 수도</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">ex)  12원을 1, 4, 5원으로 거슬러 줄 때, </span><br><span class="line"></span><br><span class="line">5원 2개, 1원 2개 --&gt; 총 4개가 필요</span><br><span class="line"></span><br><span class="line">but, 정답은 4원 3개!!!</span><br><span class="line"></span><br><span class="line">DP로 풀어야해.</span><br><span class="line"></span><br><span class="line">D[n] = n원을 거슬러 주는 동전의 최소 개수</span><br><span class="line"></span><br><span class="line">min(D[n-1], D[n-4], D[n-5]) + 1</span><br></pre></td></tr></table></figure>
+
+<h2 id="그럼-언제-쓰나"><a href="#그럼-언제-쓰나" class="headerlink" title="그럼 언제 쓰나"></a>그럼 언제 쓰나</h2><ul>
+<li><p>지금 이 순간 가장 좋은 경우 선택하는 것이 최적일 때.</p>
+</li>
+<li><p>왜 그게 최적인지 증명해야함 </p>
+</li>
+<li><p>그래서 가장 어려워</p>
+</li>
+<li><p>그래서 시험이나 대회에 나오면 가장 나중에 풀어</p>
+</li>
+</ul>
+<h2 id="예제"><a href="#예제" class="headerlink" title="예제"></a>예제</h2><p><a href="https://www.acmicpc.net/problem/11399" target="_blank" rel="noopener">https://www.acmicpc.net/problem/11399</a></p>
+<ul>
+<li>줄 서 있는 사람 N, 각 사람의 인출 시간 Pi. 각 사람이 인출하는데 필요한 시간의 합의 최소값은?</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">ex) P1=3, P2=1, P3=4, P4=3, P5=2</span><br><span class="line"></span><br><span class="line">1번  : 3분 소요</span><br><span class="line"></span><br><span class="line">2번 : 3 +1 = 4분 소요 </span><br><span class="line"></span><br><span class="line">3번 : 3 + 1 + 4 = 8분 소요 </span><br><span class="line"></span><br><span class="line">4번 : 3 + 1 + 4 + 3 = 11분  소요 </span><br><span class="line"></span><br><span class="line">5번 : 3 + 1 + 4 + 3 + 2 = 13 분 소요      </span><br><span class="line"></span><br><span class="line">따라서, 3 + 4 + 8 + 11 + 13 = 39분 소요</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>기다리는 시간 짧은 사람부터 인출하는 것이 좋음 … 이걸 증명해야함.</p>
+</li>
+<li><p>p1 &lt;= p2&lt;= ……&lt;=pn 이라고 가정</p>
+</li>
+<li><p>S = p1 + (p1+p2) + (p1+p2+p3) +  …. + (p1+p2+p3+…+pn) = n<em>p1 + (n-1)</em>p2 + … + pn</p>
+</li>
+<li><p>중간에 i&lt;j 인 pi&lt;pj 순서를 바꾸면 S는 더 커지거나 같아져야함. 즉, S &lt;= S<code>----&gt;  S-S</code> &lt;=0</p>
+</li>
+<li><p>계산결과, S-S`&lt;=0 을 성립함.  따라서 오름차순이 정답</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2017/09/17/Greedy Algorithm/" data-id="ck5aq7g4h000nkz6wbjrasijc" data-title="Greedy Algorithm" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-모의테스트01-각자릿수의합" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2017/09/12/모의테스트01-각자릿수의합/" class="article-date">
@@ -120,7 +204,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/09/12/모의테스트01-각자릿수의합/" data-id="ck52ihhr0000rwh6wjukjyf4x" data-title="모의테스트01_각 자릿수의 합" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/09/12/모의테스트01-각자릿수의합/" data-id="ck5aq7g4m0011kz6wclovvt4t" data-title="모의테스트01_각 자릿수의 합" class="article-share-link">Share</a>
       
       
       
@@ -185,7 +269,65 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/09/11/DFS와BFS문제/" data-id="ck52ihhqx000lwh6w3ep1otug" data-title="1260:DFS와BFS" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/09/11/DFS와BFS문제/" data-id="ck5aq7g4g000lkz6wyq4oa5ki" data-title="1260:DFS와BFS" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-큐" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/09/09/큐/" class="article-date">
+  <time class="dt-published" datetime="2017-09-08T15:00:00.000Z" itemprop="datePublished">2017-09-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/09/09/큐/">10845:큐</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.acmicpc.net/problem/10845" target="_blank" rel="noopener">https://www.acmicpc.net/problem/10845</a></p>
+<h2 id="DFS-풀이"><a href="#DFS-풀이" class="headerlink" title="DFS 풀이"></a>DFS 풀이</h2><ol>
+<li>head, tail 을 둔다</li>
+</ol>
+<ol start="2">
+<li>push<ul>
+<li>head는 초기 추가된 노드를 계속 가르킴</li>
+<li>tail이 가르키느 노드는, 새로 추가된 노드를 가르킴</li>
+<li>tail은, 새로 추가된 노드를 가르킴</li>
+</ul>
+</li>
+<li>pop<ul>
+<li>head가 가르키는 노드가 가르키는 노드를 head가 가르킴</li>
+</ul>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2017/09/09/큐/" data-id="ck5aq7g4f000jkz6wj4ksfe8h" data-title="10845:큐" class="article-share-link">Share</a>
       
       
       
@@ -250,65 +392,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/09/09/leve3-시저암호/" data-id="ck52ihhqw000jwh6wk3ena4tj" data-title="level3_시저암호" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-큐" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2017/09/09/큐/" class="article-date">
-  <time class="dt-published" datetime="2017-09-08T15:00:00.000Z" itemprop="datePublished">2017-09-09</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2017/09/09/큐/">10845:큐</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><a href="https://www.acmicpc.net/problem/10845" target="_blank" rel="noopener">https://www.acmicpc.net/problem/10845</a></p>
-<h2 id="DFS-풀이"><a href="#DFS-풀이" class="headerlink" title="DFS 풀이"></a>DFS 풀이</h2><ol>
-<li>head, tail 을 둔다</li>
-</ol>
-<ol start="2">
-<li>push<ul>
-<li>head는 초기 추가된 노드를 계속 가르킴</li>
-<li>tail이 가르키느 노드는, 새로 추가된 노드를 가르킴</li>
-<li>tail은, 새로 추가된 노드를 가르킴</li>
-</ul>
-</li>
-<li>pop<ul>
-<li>head가 가르키는 노드가 가르키는 노드를 head가 가르킴</li>
-</ul>
-</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/09/09/큐/" data-id="ck52ihhqv000hwh6wc8llvmt4" data-title="10845:큐" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/09/09/leve3-시저암호/" data-id="ck5aq7g4f000hkz6w97t6vd3m" data-title="level3_시저암호" class="article-share-link">Share</a>
       
       
       
@@ -359,7 +443,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/09/08/leve3-야근지수/" data-id="ck52ihhqu000fwh6wvmapegff" data-title="leve3_야근지수" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/09/08/leve3-야근지수/" data-id="ck5aq7g4e000fkz6w06ae4wrd" data-title="leve3_야근지수" class="article-share-link">Share</a>
       
       
       
@@ -444,7 +528,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/09/08/Dynamic Programming/" data-id="ck52ihhqs000cwh6wfalko71y" data-title="Dynamic Programming" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/09/08/Dynamic Programming/" data-id="ck5aq7g4c000ckz6wk37ippz2" data-title="Dynamic Programming" class="article-share-link">Share</a>
       
       
       
@@ -510,7 +594,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/09/07/leve3-n개의최소공배수/" data-id="ck52ihhqq000bwh6wg1n44ss5" data-title="level3_n개의 최소공배수" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/09/07/leve3-n개의최소공배수/" data-id="ck5aq7g4a000bkz6wtxc09bkv" data-title="level3_n개의 최소공배수" class="article-share-link">Share</a>
       
       
       
@@ -577,58 +661,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/09/06/leve3-멀리뛰기/" data-id="ck52ihhqn0009wh6wtn4maxlm" data-title="Level3_멀리뛰기" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-boj-parentheses" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2017/09/05/boj-parentheses/" class="article-date">
-  <time class="dt-published" datetime="2017-09-04T15:00:00.000Z" itemprop="datePublished">2017-09-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2017/09/05/boj-parentheses/">9012:괄호</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><a href="https://www.acmicpc.net/problem/9012" target="_blank" rel="noopener">https://www.acmicpc.net/problem/9012</a></p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ol>
-<li><p>‘(‘ 이면 스택 push</p>
-</li>
-<li><p>‘)’ 이면 스택 pop</p>
-</li>
-<li><p>마지막에 스택 size 가 0 이면 VPS</p>
-</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/09/05/boj-parentheses/" data-id="ck52ihhqg0002wh6wzlcedch8" data-title="9012:괄호" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/09/06/leve3-멀리뛰기/" data-id="ck5aq7g470008kz6w7godsqpz" data-title="Level3_멀리뛰기" class="article-share-link">Share</a>
       
       
       
@@ -684,7 +717,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/09/05/leve3-다음큰숫자/" data-id="ck52ihhql0007wh6w5aau3m3j" data-title="Level3_다음 큰 숫자" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/09/05/leve3-다음큰숫자/" data-id="ck5aq7g480009kz6we7r4kkgy" data-title="Level3_다음 큰 숫자" class="article-share-link">Share</a>
       
       
       
@@ -739,6 +772,10 @@
       <ul>
         
           <li>
+            <a href="/2020/01/12/review-2019/">2019년 회고</a>
+          </li>
+        
+          <li>
             <a href="/2020/01/06/object-chapter12/">[오브젝트] 12장_다형성</a>
           </li>
         
@@ -752,10 +789,6 @@
         
           <li>
             <a href="/2019/12/30/big-data-chapter3/">[빅데이터를 지탱하는 기술] 3장_빅데이터 분산처리</a>
-          </li>
-        
-          <li>
-            <a href="/2019/12/30/big-data-chapter2/">[빅데이터를 지탱하는 기술] 2장_빅데이터 탐색</a>
           </li>
         
       </ul>

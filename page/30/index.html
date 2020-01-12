@@ -129,7 +129,92 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/30/연산자/" data-id="ck52ihhu0007dwh6wwvnj4n68" data-title="연산자" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/30/연산자/" data-id="ck5aq7g6y007fkz6wxmmt8n30" data-title="연산자" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-흐름제어" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/01/30/흐름제어/" class="article-date">
+  <time class="dt-published" datetime="2018-01-29T15:00:00.000Z" itemprop="datePublished">2018-01-30</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/ios/">iOS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/01/30/흐름제어/">흐름제어</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/BasicOperators.html#//apple_ref/doc/uid/TP40014097-CH6-ID60" target="_blank" rel="noopener">https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/BasicOperators.html#//apple_ref/doc/uid/TP40014097-CH6-ID60</a></p>
+<h2 id="For-In-Loops"><a href="#For-In-Loops" class="headerlink" title="For-In Loops"></a>For-In Loops</h2><ul>
+<li>to iterate over the items in an array:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">let names = [&quot;Anna&quot;, &quot;Alex&quot;, &quot;Brian&quot;, &quot;Jack&quot;]</span><br><span class="line">for name in names &#123;</span><br><span class="line">    print(&quot;Hello, \(name)!&quot;)</span><br><span class="line">&#125;</span><br><span class="line">// Hello, Anna!</span><br><span class="line">// Hello, Alex!</span><br><span class="line">// Hello, Brian!</span><br><span class="line">// Hello, Jack!</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>The contents of a Dictionary are inherently unordered, and iterating over them does not guarantee the order in which they will be retrieved</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">let numberOfLegs = [&quot;spider&quot;: 8, &quot;ant&quot;: 6, &quot;cat&quot;: 4]</span><br><span class="line">for (animalName, legCount) in numberOfLegs &#123;</span><br><span class="line">    print(&quot;\(animalName)s have \(legCount) legs&quot;)</span><br><span class="line">&#125;</span><br><span class="line">// ants have 6 legs</span><br><span class="line">// spiders have 8 legs</span><br><span class="line">// cats have 4 legs</span><br><span class="line"></span><br><span class="line">//</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>for-in loops with numeric ranges.</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">for index in 1...5 &#123;</span><br><span class="line">    print(&quot;\(index) times 5 is \(index * 5)&quot;)</span><br><span class="line">&#125;</span><br><span class="line">// 1 times 5 is 5</span><br><span class="line">// 2 times 5 is 10</span><br><span class="line">// 3 times 5 is 15</span><br><span class="line">// 4 times 5 is 20</span><br><span class="line">// 5 times 5 is 25</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>If you don’t need each value from a sequence</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">let base = 3</span><br><span class="line">let power = 10</span><br><span class="line">var answer = 1</span><br><span class="line">for _ in 1...power &#123;</span><br><span class="line">    answer *= base</span><br><span class="line">&#125;</span><br><span class="line">print(&quot;\(base) to the power of \(power) is \(answer)&quot;)</span><br><span class="line">// Prints &quot;3 to the power of 10 is 59049&quot;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>to include the lower bound but not the upper bound</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let minutes = 60</span><br><span class="line">for tickMark in 0..&lt;minutes &#123;</span><br><span class="line">    // render the tick mark each minute (60 times)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>stride(from:to:by:)</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let minuteInterval = 5</span><br><span class="line">for tickMark in stride(from: 0, to: minutes, by: minuteInterval) &#123;</span><br><span class="line">    // render the tick mark every 5 minutes (0, 5, 10, 15 ... 45, 50, 55)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>stride(from:through:by:)</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">let hours = 12</span><br><span class="line">let hourInterval = 3</span><br><span class="line">for tickMark in stride(from: 3, through: hours, by: hourInterval) &#123;</span><br><span class="line">    // render the tick mark every 3 hours (3, 6, 9, 12)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Repeat-While"><a href="#Repeat-While" class="headerlink" title="Repeat-While"></a>Repeat-While</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">repeat &#123;</span><br><span class="line">    statements</span><br><span class="line">&#125; while condition</span><br></pre></td></tr></table></figure>
+
+<h2 id="Switch"><a href="#Switch" class="headerlink" title="Switch"></a>Switch</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">switch some value to consider &#123;</span><br><span class="line">case value 1:</span><br><span class="line">    respond to value 1</span><br><span class="line">case value 2,</span><br><span class="line">     value 3:</span><br><span class="line">    respond to value 2 or 3</span><br><span class="line">default:</span><br><span class="line">    otherwise, do something else</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​    </p>
+<p>​    </p>
+<p>​<br>​<br>​<br>​<br>​<br>​<br>​    </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/01/30/흐름제어/" data-id="ck5aq7g71007mkz6wcs95nm8m" data-title="흐름제어" class="article-share-link">Share</a>
       
       
       
@@ -216,7 +301,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/29/swift/" data-id="ck52ihhtz007awh6wpa3e1wcv" data-title="swift" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/29/swift/" data-id="ck5aq7g6x007akz6wot8e15v4" data-title="swift" class="article-share-link">Share</a>
       
       
       
@@ -312,7 +397,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/29/swift 처음 시작하기/" data-id="ck52ihhty0078wh6wkalcxaew" data-title="swift 처음 시작하기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/29/swift 처음 시작하기/" data-id="ck5aq7g6w0078kz6w2guxiqu9" data-title="swift 처음 시작하기" class="article-share-link">Share</a>
       
       
       
@@ -424,7 +509,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/29/Centralized Workflow /" data-id="ck52ihhtx0076wh6wgrhd2oux" data-title="Centralized Workflow" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/29/Centralized Workflow /" data-id="ck5aq7g6w0076kz6wlb7a47gh" data-title="Centralized Workflow" class="article-share-link">Share</a>
       
       
       
@@ -641,7 +726,7 @@ case west</code></pre><p>}</p>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/29/데이터 타입 고급/" data-id="ck52ihi1a00n4wh6w02u4kr09" data-title="데이터 타입 고급" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/29/데이터 타입 고급/" data-id="ck5aq7gc300nakz6wcwuzfxqi" data-title="데이터 타입 고급" class="article-share-link">Share</a>
       
       
       
@@ -758,7 +843,7 @@ case west</code></pre><p>}</p>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/29/데이터 타입 기본/" data-id="ck52ihhu8007vwh6wg51evkf2" data-title="데이터 타입 기본" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/29/데이터 타입 기본/" data-id="ck5aq7g6x007dkz6ws7v1j4gw" data-title="데이터 타입 기본" class="article-share-link">Share</a>
       
       
       
@@ -804,7 +889,7 @@ case west</code></pre><p>}</p>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/26/수이어쓰기/" data-id="ck52ihhtx0074wh6wj8z0iibd" data-title="수이어쓰기1" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/26/수이어쓰기/" data-id="ck5aq7g6v0072kz6wob8n51kw" data-title="수이어쓰기1" class="article-share-link">Share</a>
       
       
       
@@ -899,7 +984,7 @@ case west</code></pre><p>}</p>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/24/타일/" data-id="ck52ihhtw0072wh6wzbuwvzzm" data-title="타일" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/24/타일/" data-id="ck5aq7g6u0070kz6wtcagk2pt" data-title="타일" class="article-share-link">Share</a>
       
       
       
@@ -959,59 +1044,7 @@ case west</code></pre><p>}</p>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/20/슈퍼마리오/" data-id="ck52ihhtv0070wh6w2gnauqdm" data-title="슈퍼마리오" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-벽장문의 이동" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/01/19/벽장문의 이동/" class="article-date">
-  <time class="dt-published" datetime="2018-01-18T15:00:00.000Z" itemprop="datePublished">2018-01-19</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/01/19/벽장문의 이동/">벽장문의 이동</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><a href="https://www.acmicpc.net/problem/2666" target="_blank" rel="noopener">https://www.acmicpc.net/problem/2666</a></p>
-<h2 id="틀린-풀이"><a href="#틀린-풀이" class="headerlink" title="틀린 풀이"></a>틀린 풀이</h2><ul>
-<li>어렵다</li>
-<li>재귀 사용</li>
-<li>문이 있는지 없는지 체크 <ul>
-<li>문이 없으면 옮기기</li>
-<li>문이 있으면 좌우 확인 -&gt; 다시 문이 있는지 없는지 체크</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/19/벽장문의 이동/" data-id="ck52ihhtu006wwh6w48zor5dj" data-title="벽장문의 이동" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/20/슈퍼마리오/" data-id="ck5aq7g6s006ukz6w3n09g5jl" data-title="슈퍼마리오" class="article-share-link">Share</a>
       
       
       
@@ -1066,6 +1099,10 @@ case west</code></pre><p>}</p>
       <ul>
         
           <li>
+            <a href="/2020/01/12/review-2019/">2019년 회고</a>
+          </li>
+        
+          <li>
             <a href="/2020/01/06/object-chapter12/">[오브젝트] 12장_다형성</a>
           </li>
         
@@ -1079,10 +1116,6 @@ case west</code></pre><p>}</p>
         
           <li>
             <a href="/2019/12/30/big-data-chapter3/">[빅데이터를 지탱하는 기술] 3장_빅데이터 분산처리</a>
-          </li>
-        
-          <li>
-            <a href="/2019/12/30/big-data-chapter2/">[빅데이터를 지탱하는 기술] 2장_빅데이터 탐색</a>
           </li>
         
       </ul>

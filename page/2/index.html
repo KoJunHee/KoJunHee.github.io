@@ -192,7 +192,96 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/12/26/kafka-chapter3/" data-id="ck52ihi0g00mjwh6wwjpwc60e" data-title="[카프카] 3장_카프카 디자인" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/12/26/kafka-chapter3/" data-id="ck5aq7gbb00mkkz6wpw4iaqfy" data-title="[카프카] 3장_카프카 디자인" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-kafka-chapter1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/12/26/kafka-chapter1/" class="article-date">
+  <time class="dt-published" datetime="2019-12-25T15:00:00.000Z" itemprop="datePublished">2019-12-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/kafka/">Kafka</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/12/26/kafka-chapter1/">[카프카] 1장_카프카란 무엇인가</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>대용량, 대규모 메세지 데이터를 빠르게 처리하도록 개발된 메시징 플랫폼이다.</p>
+<h3 id="1-탄생-배경"><a href="#1-탄생-배경" class="headerlink" title="1. 탄생 배경"></a>1. 탄생 배경</h3><p><img src="/image/kafka_end_to_end.png" alt></p>
+<p>위 그림 처럼 end-to-end 아키텍쳐의 문제점은,</p>
+<ol>
+<li>실시간     트랜잭션 (OLTP) 처리와 비동기 처리가 동시에 이뤄지지만, 통합된 전송 영여이 없어서 복잡도 증가</li>
+<li>데이터 파이프라인의 관리가 어려움</li>
+</ol>
+<p><img src="/image/kafka_architecture.png" alt></p>
+<p>위 그림처럼 카프카는,</p>
+<ol>
+<li>모든 시스템으로 데이터 전송 가능 </li>
+<li>실시간 처리 가능</li>
+<li>확장이 용이</li>
+</ol>
+<h3 id="2-동작-방식과-원리"><a href="#2-동작-방식과-원리" class="headerlink" title="2. 동작 방식과 원리"></a>2. 동작 방식과 원리</h3><p>메시징 시스템을 먼저 살펴보자.</p>
+<p>중앙에 메시징 시스템 서버를 두고 메시지를 Publish 하고 Subscribe 하는 형태의 통신을 Pub/Sub 모델이라고 한다.</p>
+<p>프로듀서가 메시지를 컨슈머에게 직접 전달하는 것이 아니라, 중간의 메시징 시스템으로 전달한다. 그래서,</p>
+<ol>
+<li>프로듀서가 수신 불능 상태가 되어도 메세징 시스템이 살아있으면 메세지가 유실이 되지 않는다.</li>
+<li>메세징 시스템을 중심으로 연결되기 때문에, 확장성이 용이하다.</li>
+</ol>
+<p>카프카의 메세지 전달 순서는,</p>
+<ol>
+<li>프로듀서가 메세지를 카프카에게 보낸다.</li>
+<li>메세지가 Topic 에 도착해 저장된다.</li>
+<li>컨슈머는 카프카 서버에 접속해 메세지를 가져간다. </li>
+</ol>
+<h3 id="3-특징"><a href="#3-특징" class="headerlink" title="3. 특징"></a>3. 특징</h3><ol>
+<li><p>프로듀서와 컨슈머의 분리</p>
+<p>어느 한쪽 시스템에서 문제가 발생해도 연쇄 작용이 발생할 확률이 낮다.</p>
+<p>서버 추가에 대한 부담이 준다.</p>
+</li>
+<li><p>멀티 프로듀서, 멀티 컨슈머</p>
+<p>데이터 분석 및 처리 프로세스에서 하나의 데이터를 다양한 용도로 사용하는 요구 사항을 충족할 수 있다.</p>
+</li>
+<li><p>디스크에 메세지 저장</p>
+<p>컨슈머가 메세지를 읽어가도 보관 주기 동안 디스크에 메세지를 저장한다.</p>
+<p>( 일반적인 메세지 시스템은 컨슈머가 메세지를 읽어가면 큐에서 바로 메세지 삭제 )</p>
+</li>
+<li><p>확장성</p>
+<p>온라인 상태에서 확장 작업 가능</p>
+</li>
+<li><p>높은 성능</p>
+</li>
+</ol>
+<hr>
+<p>카프카, 데이터 플랫폼의 최강자 &lt;고승범, 공용준&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2019/12/26/kafka-chapter1/" data-id="ck5aq7gba00mhkz6wu17poaog" data-title="[카프카] 1장_카프카란 무엇인가" class="article-share-link">Share</a>
       
       
       
@@ -324,7 +413,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/12/22/object-chapter10/" data-id="ck52ihi1t00nxwh6woxspoqon" data-title="[오브젝트] 10장_상속과 코드 재사용" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/12/22/object-chapter10/" data-id="ck5aq7gcm00o9kz6w93ngodu7" data-title="[오브젝트] 10장_상속과 코드 재사용" class="article-share-link">Share</a>
       
       
       
@@ -456,7 +545,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/12/15/object-chapter9/" data-id="ck52ihi1u00nzwh6wsr4xid9t" data-title="[오브젝트] 9장_유연한 설계" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/12/15/object-chapter9/" data-id="ck5aq7gck00o3kz6w70cgvmi6" data-title="[오브젝트] 9장_유연한 설계" class="article-share-link">Share</a>
       
       
       
@@ -628,7 +717,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/12/10/object-chapter8/" data-id="ck52ihi1v00o1wh6wscj6ogvp" data-title="[오브젝트] 8장_의존성 관리하기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/12/10/object-chapter8/" data-id="ck5aq7gcl00o7kz6wr3q1cxa6" data-title="[오브젝트] 8장_의존성 관리하기" class="article-share-link">Share</a>
       
       
       
@@ -775,7 +864,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/12/02/object-chapter7/" data-id="ck52ihi0e00mbwh6weoxy7thc" data-title="[오브젝트] 7장_객체 분해" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/12/02/object-chapter7/" data-id="ck5aq7gb900mfkz6wojd24pbk" data-title="[오브젝트] 7장_객체 분해" class="article-share-link">Share</a>
       
       
       
@@ -921,7 +1010,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/11/24/object-chapter6/" data-id="ck52ihi1s00nvwh6wd89fyawm" data-title="[오브젝트] 6장_메세지와 인터페이스" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/11/24/object-chapter6/" data-id="ck5aq7gcj00o1kz6wc014wheq" data-title="[오브젝트] 6장_메세지와 인터페이스" class="article-share-link">Share</a>
       
       
       
@@ -1094,7 +1183,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/11/18/object-chapter5/" data-id="ck52ihi1q00nrwh6wyjj3dm34" data-title="[오브젝트] 5장_책임 할당하기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/11/18/object-chapter5/" data-id="ck5aq7gch00nvkz6wbabvu4yn" data-title="[오브젝트] 5장_책임 할당하기" class="article-share-link">Share</a>
       
       
       
@@ -1196,7 +1285,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/11/18/object-chapter4/" data-id="ck52ihi1r00ntwh6wwe19v9is" data-title="[오브젝트] 4장_설계 품질과 트레이드오프" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/11/18/object-chapter4/" data-id="ck5aq7gci00nxkz6w55mzet5a" data-title="[오브젝트] 4장_설계 품질과 트레이드오프" class="article-share-link">Share</a>
       
       
       
@@ -1314,122 +1403,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/11/12/object-chapter3/" data-id="ck52ihi0d00m9wh6wrnj4tpdi" data-title="[오브젝트] 3장_역할,책임,협력" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-object-chapter2" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/11/06/object-chapter2/" class="article-date">
-  <time class="dt-published" datetime="2019-11-05T15:00:00.000Z" itemprop="datePublished">2019-11-06</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/object/">Object</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/11/06/object-chapter2/">[오브젝트] 2장_객체지향 프로그래밍</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>이번 장의 목표는 이 책의 다양한 주제들을 가볍게 살펴보는 것이다.</p>
-<h2 id="01-영화-예매-시스템"><a href="#01-영화-예매-시스템" class="headerlink" title="01 영화 예매 시스템"></a>01 영화 예매 시스템</h2><h5 id="요구사항-살펴보기"><a href="#요구사항-살펴보기" class="headerlink" title="요구사항 살펴보기"></a>요구사항 살펴보기</h5><p>38 Page </p>
-<h2 id="02-객체지향-프로그래밍을-향해"><a href="#02-객체지향-프로그래밍을-향해" class="headerlink" title="02 객체지향 프로그래밍을 향해"></a>02 객체지향 프로그래밍을 향해</h2><h5 id="협력-객체-클래스"><a href="#협력-객체-클래스" class="headerlink" title="협력, 객체, 클래스"></a>협력, 객체, 클래스</h5><p>객치지향 패러다임은, 클래스가 아닌 객체에 초점을 맞춰야한다. 다음 두가지에 집중해야 한다.</p>
-<ol>
-<li><p>어떤 클래스가 필요한지를 고민하기 전에, 어떤 객체들이 필요한지 고민하라. 클래스는 공통적인 상태와 행동을 공유하는 객체들을 추상화한 것이다.</p>
-</li>
-<li><p>객체는 독립적인 존재가 아니라, 기능 구현을 위한 협력 공동체의 일원이다.</p>
-</li>
-</ol>
-<h5 id="도메인의-구조를-따르는-프로그램-구조"><a href="#도메인의-구조를-따르는-프로그램-구조" class="headerlink" title="도메인의 구조를 따르는 프로그램 구조"></a>도메인의 구조를 따르는 프로그램 구조</h5><p>도메인이란, 문제를 해결하기 위해 사용자가 프로그램을 사용하는 분야이다. </p>
-<p>객체지향 패러다임에서는, 도메인을 구성하는 개념들이 프로그램의 객체와 클래스로 매끄럽게 연결된다. 일반적으로, 클래스의 이름은 대응되는 도메인의 개념의 이름과 동일하거나 유사하게 지어야한다. </p>
-<h5 id="클래스-구현하기"><a href="#클래스-구현하기" class="headerlink" title="클래스 구현하기"></a>클래스 구현하기</h5><p>클래스를 구현하거나 다른 개발자에 의해 개발된 클래스를 사용할 때 가장 중요한 것은, 클래스의 경계를 구분짓는 것이다. </p>
-<p>외부에서는 객체의 속성에 직접 접근할 수 없도록 막고 적절한 public 메서드를 통해서만 내부 상태를 변경할 수 있게해야한다. 경계의 명확성이 객체의 자율성을 보장하기 때문이다. 또, 프로그래머에게 구현의 자유를 제공하기 때문이다.</p>
-<h5 id="자율적인-객체"><a href="#자율적인-객체" class="headerlink" title="자율적인 객체"></a>자율적인 객체</h5><p>객체는 스스로 판단하고 행동하는 자율적인 존재다. 객체가 자율적인 존재가 되기 위해서는, 외부의 간섭을 최소화해야한다.</p>
-<p>캡슐화와 접근 제어는 객체를 두 부분으로 나눈다. (인터베이스와 구현의 분리)</p>
-<ol>
-<li>Public Interface : 외부에서 접근 가능한 부분</li>
-<li>Implementation : 외부에서 접근 불가능한 부분</li>
-</ol>
-<h5 id="프로그래머의-자유"><a href="#프로그래머의-자유" class="headerlink" title="프로그래머의 자유"></a>프로그래머의 자유</h5><p>프로그래머의 역할은, 클래스 작성자와 클라이언트 프로그래머로 구분할 수 있다.</p>
-<ol>
-<li>클래스 작성자 : 새로운 데이터 타입을 프로그램에 추가</li>
-<li>클라이언트 프로그래머 : 클래스 작성자가 추가한 데이터 타입을 사용</li>
-</ol>
-<p>클래스 작성자는 클라이언트 프로그래머에게 필요한 부분만 공개하고 나머지는 숨겨야한다. 클라이언트 프로그래머가 숨겨 놓여진 부분에 접근하는것을 막아 내부 구현을 마음대로 변경할 수 있다. (구현 은닉)</p>
-<p>객체의 외부와 내부를 구분하면 클라이언트 프로그래머가 알아야할 지식 양이 줄고 클래스 작성자가 자유롭게 구현을 변경할 수 있다. 변경될 가능성이 있는 세부적인 내용은 private 영역으로 감춰 변경으로 인한 혼란을 막을 수 있다.</p>
-<h5 id="협력하는-객체들의-공동체"><a href="#협력하는-객체들의-공동체" class="headerlink" title="협력하는 객체들의 공동체"></a>협력하는 객체들의 공동체</h5><p>금액을 Money 클래스로 정의하면, 저장하는 값이 금액과 관련돼 있다는 의미를 전달 할 수 있다. (Long Type 은 그렇지 못함) 객체지향의 장점은 객체를 이용해 도메인의 의미를 풍부하게 표현할 수 있다. </p>
-<p>객체지향 프로그램을 작성할 때, 협력의 관점에서 어떤 객체가 필요한지 결정하고, 객체들의 공통 상태와 행위를 구현하기 위해 클래스를 작성한다.</p>
-<h5 id="협력"><a href="#협력" class="headerlink" title="협력"></a>협력</h5><p>객체는 다른 객체의 인터페이스에 공개된 행동을 수행하도록 ‘요청’ 할 수 있다. 요청 받은 객체는 요청 처리후에 ‘응답’ 한다. </p>
-<p>객체가 다른 객체와 상호작용하는 방법은, ‘메세지’ 를 전송하는 것뿐이다. 메세지를 받는 객체는 메세지를 ‘수신했다’ 고 한다. 수신된 메세지를 처리하기 위한 자신만의 방법을 ‘메서드’ 라고 한다.</p>
-<p>메시지를 수신한 Movie 는 스스로 자신의 적절한 메서드를 선택한다. </p>
-<h2 id="03-할인-요금-구하기"><a href="#03-할인-요금-구하기" class="headerlink" title="03 할인 요금 구하기"></a>03 할인 요금 구하기</h2><h5 id="할인-요금-계산을-위한-협력-시작하기"><a href="#할인-요금-계산을-위한-협력-시작하기" class="headerlink" title="할인 요금 계산을 위한 협력 시작하기"></a>할인 요금 계산을 위한 협력 시작하기</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Moview</span></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> String title;</span><br><span class="line">  <span class="keyword">private</span> Money fee;</span><br><span class="line">  ...</span><br><span class="line">    </span><br><span class="line">  <span class="function"><span class="keyword">public</span> Money <span class="title">calculateMoneyFee</span><span class="params">(Screening screening)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> fee.minus(discountPolicy.caculateDiscountAmount(screening));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>위 메서드에서, 어떤 할인 정책을 사용할것인지 결정하는 코드가 안보인다. 여기에는 상속과 다형성 개념이 숨겨져있다.</p>
-<h5 id="할인-정책과-할인-조건"><a href="#할인-정책과-할인-조건" class="headerlink" title="할인 정책과 할인 조건"></a>할인 정책과 할인 조건</h5><p>할인 정책은, 금액할인 정책 (AmountDiscountPolicy) 과 비율 할인 정책 (PercentDiscountPolicy) 이 있다. 두 클래스는 대부분의 코드가 유사하고 할인 요금 계산하는 방식만 조금 다르기 때문에, 중복 코드 제거를 위해 추상 클래스를 사용한다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">DiscountPolicy</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> List&lt;DiscountCondition&gt; conditions = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">  </span><br><span class="line">	...</span><br><span class="line">    </span><br><span class="line">  <span class="function"><span class="keyword">public</span> Money <span class="title">caculateDiscountAmount</span><span class="params">(Screening screening)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(DiscountCondition each : conditions)&#123;</span><br><span class="line">      <span class="keyword">if</span>(each.isSatifiedBy(screening))&#123;</span><br><span class="line">        <span class="keyword">return</span> getDiscountAmount(screening);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> Money.ZERO;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">abstract</span> <span class="keyword">protected</span> Money <span class="title">getDiscountAmount</span><span class="params">(Screening screening)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>이처럼 부모 클래스에 기본적인 알고리즘의 흐름을 구현하고 중간에 필요한 처리를 자식 클래스에 위임하는 디자인 패턴을, 템플릿 메서드 패턴이라고 한다.</p>
-<h5 id="할인-정책-구성하기"><a href="#할인-정책-구성하기" class="headerlink" title="할인 정책 구성하기"></a>할인 정책 구성하기</h5><p>생성자의 파라미터 목록을 이용해 초기화에 필요한 정보를 전달하도록 강제하면, 올바른 상태를 가진 객체의 생성을 보장할 수 있다.</p>
-<h2 id="04-상속과-다형성"><a href="#04-상속과-다형성" class="headerlink" title="04 상속과 다형성"></a>04 상속과 다형성</h2><p>Movie 내부에 할인 정책을 결정하는 조건문이 없는데 어떻게 영화 요금을 계산할 때 할인 정책과 비율 할인 정책을 선택할 수 있을까? 답은 상속과 다형성이다.</p>
-<h5 id="컴파일-시간-의존성과-실행-시간-의존성"><a href="#컴파일-시간-의존성과-실행-시간-의존성" class="headerlink" title="컴파일 시간 의존성과 실행 시간 의존성"></a>컴파일 시간 의존성과 실행 시간 의존성</h5><p>코드의 의존성과 실행시점의 의존성이 서로 다를 수 있다.</p>
-<p>Movie 인스턴스는 실행 시에 AmountDiscountPolicy 나 PercentDiscountPolicy 의 인스턴스에 의존해야한다. 하지만 코드 수준에서는 두 클래스 중에 어떤 것에도 의존하지 않는다. 오직 추상클래스인 DiscountPolicy 에 의존한다.</p>
-<p>Movie 인스턴스를 생성하는 코드를 보면, 생성자에서 DiscountPolicy 타입의 객체를 인자로 받는다. 이제 실행시, AmountDiscountPolicy 클래스의 인스턴스에 의존하게 된다. </p>
-<h5 id="차이에-의한-프로그래밍"><a href="#차이에-의한-프로그래밍" class="headerlink" title="차이에 의한 프로그래밍"></a>차이에 의한 프로그래밍</h5><p>부모 클래스와 다른 부분만을 추가해서 새로운 클래스를 쉽고 빠르게 만드는 방법을, 차이에 의한 프로그래밍이라고 한다. 상속을 이용하면 클래스 사이의 관게를 설정하는 것만으로 기존 클래스가 가진 모든 속성과 행동을 새로운 클래스에 포함시킬 수 있다.</p>
-<h5 id="상속과-인터페이스"><a href="#상속과-인터페이스" class="headerlink" title="상속과 인터페이스"></a>상속과 인터페이스</h5><p>자식 클래스는 부모 클래스가 수신할 수 있는 모든 메세지를 수신할 수 있기 때문에, 외부 객체는 자식 클래스를 부모 클래스와 동일한 타입으로 간주할 수 있다. 자식 클래스가 부모 클래스를 대신하는 것을 업캐스팅이라고 한다.</p>
-<h5 id="다형성"><a href="#다형성" class="headerlink" title="다형성"></a>다형성</h5><p>Movie 는 동일한 메세지를 전송하지만, 실제로 어떤 메서드가 실행될 것인지는 메시지를 수신하는 객체의 클래스가 무엇이냐에 따라 다르다. 이것이 다형성이다. </p>
-<p>다형성은 컴파일 시간 의존성과 실행 시간 의존성을 다르게 만들 수 있는 객체지향 특성을 이용해 서로 다른 메서드를 실행할 수 있게 한다.</p>
-<p>다형성을 구현하는 방법은 다양하지만, 공통점은 메세지에 응답하기 위해 실행될 메서드를 컴파일 시점이 아닌 실행시점에 결정한다는 것이다. 이를 지연바인딩 / 동적바인딩 이라고 한다.</p>
-<h5 id="인터페이스와-다형성"><a href="#인터페이스와-다형성" class="headerlink" title="인터페이스와 다형성"></a>인터페이스와 다형성</h5><p>종종 구현을 공유할 필요가 없고, 순수하게 인터페이스만 공유하고 싶을 때가 있다. 자바에서는 인터페이스라는 프로그래밍 요소를 제공한다.</p>
-<h2 id="05-추상화와-유연성"><a href="#05-추상화와-유연성" class="headerlink" title="05 추상화와 유연성"></a>05 추상화와 유연성</h2><h5 id="추상화의-힘"><a href="#추상화의-힘" class="headerlink" title="추상화의 힘"></a>추상화의 힘</h5><p>같은 계층에 속하는 클래스들이 공통으로 가질 수 있는 인턴페이스를 구현하며 구현의 일부 (추상클래스) 또는 전체 (인터페이스) 를 자식 클래스가 결정할 수 있도록 결정권을 위임한다.</p>
-<p>추상화의 장점은,</p>
-<ol>
-<li>세부사항에 억눌리지 않고 상위 개념만으로 도메인의 중요한 개념을 설명할 수 있다</li>
-<li>기존 구조를 수정하지 않고 새로운 기능을 쉽게 추가하고 확장할 수 있다.</li>
-</ol>
-<h5 id="유연한-설계"><a href="#유연한-설계" class="headerlink" title="유연한 설계"></a>유연한 설계</h5><p>책임의 위치를 결정하기 위해 조건문을 사용하는 것은 협력의 설계 측면에서 좋지 않은 선택이다. 예를 들면, 0원 이라는 할인 요금을 계산할 책임을 그대로 DiscountPolicy 계층에 유지하기 위해, NoneDiscountPolicy 클래스를 추가할 수 있다.</p>
-<p>결론은, 유연성이 필요한 곳에 추상화를 사용해라.</p>
-<h5 id="추상-클래스와-인터페이스-트레이드오프"><a href="#추상-클래스와-인터페이스-트레이드오프" class="headerlink" title="추상 클래스와 인터페이스 트레이드오프"></a>추상 클래스와 인터페이스 트레이드오프</h5><p>코드에는 합당한 이유가 있어야한다.</p>
-<h5 id="코드-재사용"><a href="#코드-재사용" class="headerlink" title="코드 재사용"></a>코드 재사용</h5><p>합성은, 다른 객체의 인스턴스를 자신의 인스턴스 변수로 포함해서 재사용하는 방법이다.</p>
-<h5 id="상속"><a href="#상속" class="headerlink" title="상속"></a>상속</h5><p>상속의 단점은, </p>
-<ol>
-<li>캡슐화 위반이다.  부모 클래스가 변경되면,  자식 클래스도 함께 변경될 확률이 높다.</li>
-<li>설계가 유연하지 않다. 부모클래스와 자식클래스의 관계를 컴파일 시점에 결정해서 실행시점에 객체의 종류를 변경할 수 없다.</li>
-</ol>
-<p>인스턴스 변수로 연결하면, 실행 시점에 할인 정책을 간단히 변경할 수 있다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Movie</span></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> DiscountPolicy discountPolicy;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">changeDiscountPolicy</span><span class="params">(DiscountPolicy discountPolicy)</span></span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.discountPolicy = discountPolicy;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Moview avater = <span class="keyword">new</span> Movie(....., <span class="keyword">new</span> AmountDiscountPolicy);</span><br><span class="line">avater.changeDiscountPolicy(<span class="keyword">new</span> PercentDiscountPolicy());</span><br></pre></td></tr></table></figure>
-
-<h5 id="합성"><a href="#합성" class="headerlink" title="합성"></a>합성</h5><p>인터페이스에 정의된 메세지를 통해서만 코드를 재사용하는 방법이 합성이다.</p>
-<p>합성은 상속의 두가지 문제를 해결한다.</p>
-<ol>
-<li>인터페이스에 정의된 메세지를 통해서만 재사용하기 때문에 구현을 효과적으로 캡슐화한다.</li>
-<li>의존하는 인스턴스를 교체하는 것이 쉽기 때문에 유연하다. 상속은 클래스를 통해 강하게 결합, 합성은 메세지를 통해 느슨하게 결합.</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/11/06/object-chapter2/" data-id="ck52ihi1o00npwh6w1ged2e1j" data-title="[오브젝트] 2장_객체지향 프로그래밍" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/11/12/object-chapter3/" data-id="ck5aq7gb900mdkz6w5wwffi6p" data-title="[오브젝트] 3장_역할,책임,협력" class="article-share-link">Share</a>
       
       
       
@@ -1484,6 +1458,10 @@
       <ul>
         
           <li>
+            <a href="/2020/01/12/review-2019/">2019년 회고</a>
+          </li>
+        
+          <li>
             <a href="/2020/01/06/object-chapter12/">[오브젝트] 12장_다형성</a>
           </li>
         
@@ -1497,10 +1475,6 @@
         
           <li>
             <a href="/2019/12/30/big-data-chapter3/">[빅데이터를 지탱하는 기술] 3장_빅데이터 분산처리</a>
-          </li>
-        
-          <li>
-            <a href="/2019/12/30/big-data-chapter2/">[빅데이터를 지탱하는 기술] 2장_빅데이터 탐색</a>
           </li>
         
       </ul>
