@@ -129,7 +129,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/30/연산자/" data-id="ck5aq7g6y007fkz6wxmmt8n30" data-title="연산자" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/30/연산자/" data-id="ck5axvwi2007hrpqx4z5zlzke" data-title="연산자" class="article-share-link">Share</a>
       
       
       
@@ -141,9 +141,9 @@
 
 
   
-    <article id="post-흐름제어" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-함수" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/01/30/흐름제어/" class="article-date">
+    <a href="/2018/01/30/함수/" class="article-date">
   <time class="dt-published" datetime="2018-01-29T15:00:00.000Z" itemprop="datePublished">2018-01-30</time>
 </a>
     
@@ -159,7 +159,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/01/30/흐름제어/">흐름제어</a>
+      <a class="p-name article-title" href="/2018/01/30/함수/">함수</a>
     </h1>
   
 
@@ -167,45 +167,41 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p><a href="https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/BasicOperators.html#//apple_ref/doc/uid/TP40014097-CH6-ID60" target="_blank" rel="noopener">https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/BasicOperators.html#//apple_ref/doc/uid/TP40014097-CH6-ID60</a></p>
-<h2 id="For-In-Loops"><a href="#For-In-Loops" class="headerlink" title="For-In Loops"></a>For-In Loops</h2><ul>
-<li>to iterate over the items in an array:</li>
+        <p><a href="https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/Functions.html#//apple_ref/doc/uid/TP40014097-CH10-ID158" target="_blank" rel="noopener">https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/Functions.html#//apple_ref/doc/uid/TP40014097-CH10-ID158</a></p>
+<ul>
+<li>Defining and Calling Functions</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">let names = [&quot;Anna&quot;, &quot;Alex&quot;, &quot;Brian&quot;, &quot;Jack&quot;]</span><br><span class="line">for name in names &#123;</span><br><span class="line">    print(&quot;Hello, \(name)!&quot;)</span><br><span class="line">&#125;</span><br><span class="line">// Hello, Anna!</span><br><span class="line">// Hello, Alex!</span><br><span class="line">// Hello, Brian!</span><br><span class="line">// Hello, Jack!</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">func greet(person: String) -&gt; String &#123;</span><br><span class="line">    let greeting = &quot;Hello, &quot; + person + &quot;!&quot;</span><br><span class="line">    return greeting</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">print(greet(person: &quot;Anna&quot;))</span><br><span class="line">// Prints &quot;Hello, Anna!&quot;</span><br><span class="line">print(greet(person: &quot;Brian&quot;))</span><br><span class="line">// Prints &quot;Hello, Brian!&quot;</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>The contents of a Dictionary are inherently unordered, and iterating over them does not guarantee the order in which they will be retrieved</li>
+<li>Functions with Multiple Return Values</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">let numberOfLegs = [&quot;spider&quot;: 8, &quot;ant&quot;: 6, &quot;cat&quot;: 4]</span><br><span class="line">for (animalName, legCount) in numberOfLegs &#123;</span><br><span class="line">    print(&quot;\(animalName)s have \(legCount) legs&quot;)</span><br><span class="line">&#125;</span><br><span class="line">// ants have 6 legs</span><br><span class="line">// spiders have 8 legs</span><br><span class="line">// cats have 4 legs</span><br><span class="line"></span><br><span class="line">//</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">func minMax(array: [Int]) -&gt; (min: Int, max: Int) &#123;</span><br><span class="line">    var currentMin = array[0]</span><br><span class="line">    var currentMax = array[0]</span><br><span class="line">    for value in array[1..&lt;array.count] &#123;</span><br><span class="line">        if value &lt; currentMin &#123;</span><br><span class="line">            currentMin = value</span><br><span class="line">        &#125; else if value &gt; currentMax &#123;</span><br><span class="line">            currentMax = value</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return (currentMin, currentMax)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>for-in loops with numeric ranges.</li>
+<li>Function Argument Labels and Parameter Names</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">for index in 1...5 &#123;</span><br><span class="line">    print(&quot;\(index) times 5 is \(index * 5)&quot;)</span><br><span class="line">&#125;</span><br><span class="line">// 1 times 5 is 5</span><br><span class="line">// 2 times 5 is 10</span><br><span class="line">// 3 times 5 is 15</span><br><span class="line">// 4 times 5 is 20</span><br><span class="line">// 5 times 5 is 25</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">func greet(person: String, from hometown: String) -&gt; String &#123;</span><br><span class="line">    return &quot;Hello \(person)!  Glad you could visit from \(hometown).&quot;</span><br><span class="line">&#125;</span><br><span class="line">print(greet(person: &quot;Bill&quot;, from: &quot;Cupertino&quot;))</span><br><span class="line">// Prints &quot;Hello Bill!  Glad you could visit from Cupertino.&quot;</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>If you don’t need each value from a sequence</li>
+<li><p>Variadic Parameters</p>
+<ul>
+<li>A variadic parameter accepts zero or more values of a specified type</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">let base = 3</span><br><span class="line">let power = 10</span><br><span class="line">var answer = 1</span><br><span class="line">for _ in 1...power &#123;</span><br><span class="line">    answer *= base</span><br><span class="line">&#125;</span><br><span class="line">print(&quot;\(base) to the power of \(power) is \(answer)&quot;)</span><br><span class="line">// Prints &quot;3 to the power of 10 is 59049&quot;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">func arithmeticMean(_ numbers: Double...) -&gt; Double &#123;</span><br><span class="line">    var total: Double = 0</span><br><span class="line">    for number in numbers &#123;</span><br><span class="line">        total += number</span><br><span class="line">    &#125;</span><br><span class="line">    return total / Double(numbers.count)</span><br><span class="line">&#125;</span><br><span class="line">arithmeticMean(1, 2, 3, 4, 5)</span><br><span class="line">// returns 3.0, which is the arithmetic mean of these five numbers</span><br><span class="line">arithmeticMean(3, 8.25, 18.75)</span><br><span class="line">// returns 10.0, which is the arithmetic mean of these three numbers</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>to include the lower bound but not the upper bound</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let minutes = 60</span><br><span class="line">for tickMark in 0..&lt;minutes &#123;</span><br><span class="line">    // render the tick mark each minute (60 times)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<li><p>In-Out Parameters</p>
 <ul>
-<li>stride(from:to:by:)</li>
+<li>If you want a function to modify a parameter’s value, and you want those changes to persist after the function call has ended, define that parameter as an in-out parameter instead.</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let minuteInterval = 5</span><br><span class="line">for tickMark in stride(from: 0, to: minutes, by: minuteInterval) &#123;</span><br><span class="line">    // render the tick mark every 5 minutes (0, 5, 10, 15 ... 45, 50, 55)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>stride(from:through:by:)</li>
+</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">let hours = 12</span><br><span class="line">let hourInterval = 3</span><br><span class="line">for tickMark in stride(from: 3, through: hours, by: hourInterval) &#123;</span><br><span class="line">    // render the tick mark every 3 hours (3, 6, 9, 12)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="Repeat-While"><a href="#Repeat-While" class="headerlink" title="Repeat-While"></a>Repeat-While</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">repeat &#123;</span><br><span class="line">    statements</span><br><span class="line">&#125; while condition</span><br></pre></td></tr></table></figure>
-
-<h2 id="Switch"><a href="#Switch" class="headerlink" title="Switch"></a>Switch</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">switch some value to consider &#123;</span><br><span class="line">case value 1:</span><br><span class="line">    respond to value 1</span><br><span class="line">case value 2,</span><br><span class="line">     value 3:</span><br><span class="line">    respond to value 2 or 3</span><br><span class="line">default:</span><br><span class="line">    otherwise, do something else</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">func swapTwoInts(_ a: inout Int, _ b: inout Int) &#123;</span><br><span class="line">    let temporaryA = a</span><br><span class="line">    a = b</span><br><span class="line">    b = temporaryA</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var someInt = 3</span><br><span class="line">var anotherInt = 107</span><br><span class="line">swapTwoInts(&amp;someInt, &amp;anotherInt)</span><br><span class="line">print(&quot;someInt is now \(someInt), and anotherInt is now \(anotherInt)&quot;)</span><br><span class="line">// Prints &quot;someInt is now 107, and anotherInt is now 3&quot;</span><br></pre></td></tr></table></figure>
 
 <p>​    </p>
 <p>​    </p>
@@ -214,7 +210,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/30/흐름제어/" data-id="ck5aq7g71007mkz6wcs95nm8m" data-title="흐름제어" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/30/함수/" data-id="ck5axvwi1007frpqxve4biny4" data-title="함수" class="article-share-link">Share</a>
       
       
       
@@ -301,7 +297,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/29/swift/" data-id="ck5aq7g6x007akz6wot8e15v4" data-title="swift" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/29/swift/" data-id="ck5axvwi0007arpqxih9ofwgr" data-title="swift" class="article-share-link">Share</a>
       
       
       
@@ -397,7 +393,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/29/swift 처음 시작하기/" data-id="ck5aq7g6w0078kz6w2guxiqu9" data-title="swift 처음 시작하기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/29/swift 처음 시작하기/" data-id="ck5axvwhz0078rpqxu7n8b5ge" data-title="swift 처음 시작하기" class="article-share-link">Share</a>
       
       
       
@@ -509,7 +505,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/29/Centralized Workflow /" data-id="ck5aq7g6w0076kz6wlb7a47gh" data-title="Centralized Workflow" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/29/Centralized Workflow /" data-id="ck5axvwhy0076rpqx89mlzkc1" data-title="Centralized Workflow" class="article-share-link">Share</a>
       
       
       
@@ -726,7 +722,7 @@ case west</code></pre><p>}</p>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/29/데이터 타입 고급/" data-id="ck5aq7gc300nakz6wcwuzfxqi" data-title="데이터 타입 고급" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/29/데이터 타입 고급/" data-id="ck5axvwp400n8rpqxlw9n5l44" data-title="데이터 타입 고급" class="article-share-link">Share</a>
       
       
       
@@ -843,7 +839,7 @@ case west</code></pre><p>}</p>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/29/데이터 타입 기본/" data-id="ck5aq7g6x007dkz6ws7v1j4gw" data-title="데이터 타입 기본" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/29/데이터 타입 기본/" data-id="ck5axvwi1007drpqxt8aztgjo" data-title="데이터 타입 기본" class="article-share-link">Share</a>
       
       
       
@@ -889,7 +885,7 @@ case west</code></pre><p>}</p>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/26/수이어쓰기/" data-id="ck5aq7g6v0072kz6wob8n51kw" data-title="수이어쓰기1" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/26/수이어쓰기/" data-id="ck5axvwhx0072rpqxm08h8jll" data-title="수이어쓰기1" class="article-share-link">Share</a>
       
       
       
@@ -984,7 +980,7 @@ case west</code></pre><p>}</p>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/24/타일/" data-id="ck5aq7g6u0070kz6wtcagk2pt" data-title="타일" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/24/타일/" data-id="ck5axvwhy0074rpqxua9zodxu" data-title="타일" class="article-share-link">Share</a>
       
       
       
@@ -1044,7 +1040,7 @@ case west</code></pre><p>}</p>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/20/슈퍼마리오/" data-id="ck5aq7g6s006ukz6w3n09g5jl" data-title="슈퍼마리오" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/20/슈퍼마리오/" data-id="ck5axvwhw0070rpqxtvzmxhth" data-title="슈퍼마리오" class="article-share-link">Share</a>
       
       
       

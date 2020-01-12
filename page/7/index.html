@@ -71,14 +71,14 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-Web Socket" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-Call back" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/12/07/Web Socket/" class="article-date">
+    <a href="/2018/12/07/Call back/" class="article-date">
   <time class="dt-published" datetime="2018-12-06T15:00:00.000Z" itemprop="datePublished">2018-12-07</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/network/">Network</a>
+    <a class="article-category-link" href="/categories/node-js/">Node.js</a>
   </div>
 
   </div>
@@ -89,7 +89,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/07/Web Socket/">Web Socket</a>
+      <a class="p-name article-title" href="/2018/12/07/Call back/">Call back</a>
     </h1>
   
 
@@ -97,15 +97,18 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h5 id="Web-Socket이란"><a href="#Web-Socket이란" class="headerlink" title="Web Socket이란?"></a>Web Socket이란?</h5><p>WebSocket은 Web server 와 Web browser 간의 쌍방향 통신을 위한 통신 규약입니다.</p>
-<h5 id="Web-Socket-전에는"><a href="#Web-Socket-전에는" class="headerlink" title="Web Socket 전에는?"></a>Web Socket 전에는?</h5><p>polling, long polling, stream이 있습니다.</p>
-<h5 id="Web-Socket이-기존-통신-방법과-차이는"><a href="#Web-Socket이-기존-통신-방법과-차이는" class="headerlink" title="Web Socket이 기존 통신 방법과 차이는?"></a>Web Socket이 기존 통신 방법과 차이는?</h5><p>WebSocket 프로토콜은 접속 확립에 HTTP를 사용하지만, 그 후의 통신은 WebSocket 독자의 프로토콜로 이루어집니다. 또한, header가 상당히 작아 overhead가 적은 특징이 있습니다. 장시간 접속을 전제로 하기 때문에, 접속한 상태라면 클라이언트나 서버로부터 데이터 송신이 가능합니다. 더불어 데이터의 송신과 수신에 각각 커넥션을 맺을 필요가 없어, 하나의 커넥션으로 데이터를 송수신 할 수 있습니다. 통신시에 지정되는 URL은 <a href="http://www.sample.com/과" target="_blank" rel="noopener">http://www.sample.com/과</a> 같은 형식이 아니라 <strong>ws://</strong><a href="http://www.sample.com/과" target="_blank" rel="noopener">www.sample.com/과</a> 같은 형식이 됩니다.</p>
-<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="http://duckdevelope.tistory.com/19" target="_blank" rel="noopener">http://duckdevelope.tistory.com/19</a></p>
+        <h5 id="콜백-함수란"><a href="#콜백-함수란" class="headerlink" title="콜백 함수란?"></a>콜백 함수란?</h5><p>다른 함수의 인자로 이용되고, 어떤 이벤트에 의해 호출되어지는 함수입니다.</p>
+<h5 id="콜백-지옥이란"><a href="#콜백-지옥이란" class="headerlink" title="콜백 지옥이란?"></a>콜백 지옥이란?</h5><p>콜백 패턴을 이용하는 함수에서, 콜백이 계속해서 중첩되는 상태를 말합니다.</p>
+<h5 id="콜백-지옥을-해결하기-위한-방법은"><a href="#콜백-지옥을-해결하기-위한-방법은" class="headerlink" title="콜백 지옥을 해결하기 위한 방법은?"></a>콜백 지옥을 해결하기 위한 방법은?</h5><p>코딩패턴으로 해결하거나, Promise 나 Async, Co 모듈을 사용할 수 있습니다.</p>
+<h5 id="코딩패턴으로-어떻게-해결하나요"><a href="#코딩패턴으로-어떻게-해결하나요" class="headerlink" title="코딩패턴으로 어떻게 해결하나요?"></a>코딩패턴으로 어떻게 해결하나요?</h5><p>콜백 함수를 분리해주면 됩니다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">parseValueDone</span>(<span class="params">id</span>) </span>&#123;</span><br><span class="line">	auth(id, authDone);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">authDone</span>(<span class="params">result</span>) </span>&#123;</span><br><span class="line">	display(result, displayDone);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">displayDone</span>(<span class="params">text</span>) </span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(text);</span><br><span class="line">&#125;</span><br><span class="line">$.get(<span class="string">'url'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">response</span>) </span>&#123;</span><br><span class="line">	parseValue(response, parseValueDone);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://joshua1988.github.io/web-development/javascript/javascript-asynchronous-operation/" target="_blank" rel="noopener">https://joshua1988.github.io/web-development/javascript/javascript-asynchronous-operation/</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/07/Web Socket/" data-id="ck5aq7gav00l0kz6ws8iqx7p8" data-title="Web Socket" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/07/Call back/" data-id="ck5axvwn700kjrpqx3t0zyrhq" data-title="Call back" class="article-share-link">Share</a>
       
       
       
@@ -168,7 +171,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/06/concurrency/" data-id="ck5aq7gap00kgkz6ww8nb48lg" data-title="동시성, 병렬성" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/06/concurrency/" data-id="ck5axvwn600khrpqx6hz6mb09" data-title="동시성, 병렬성" class="article-share-link">Share</a>
       
       
       
@@ -217,7 +220,58 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/abstract class, interface/" data-id="ck5aq7gaj00jwkz6wbkyvrkq7" data-title="abstract class, interface" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/abstract class, interface/" data-id="ck5axvwmz00jzrpqxh8nojt1u" data-title="abstract class, interface" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-static" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/05/static/" class="article-date">
+  <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/05/static/">static</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="static-예약어의-특징은"><a href="#static-예약어의-특징은" class="headerlink" title="static 예약어의 특징은?"></a>static 예약어의 특징은?</h5><ol>
+<li>인스턴스 생성 없이 바로 사용 가능합니다.</li>
+<li>메모리에 이미 올라가있으므로, static 변수나 메서드는 공유가 가능합니다. </li>
+<li>static 메소드에서 static 이 아닌 변수는 호출 할 수 없습니다.</li>
+</ol>
+<p>아래의 예시에서, 변수 b를 static 메서드 add 안에서 사용하면 오류가 발생합니다. int b는 StaticTest의 인스턴스가 생성되어야 쓸수 있는 멤버변수지만, static public void add()는 인스턴스가 생기길 기다려주지 않고 바로 메모리에 올라가기 때문입니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StaticTest</span></span>&#123;</span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">public</span> <span class="keyword">int</span> a = <span class="number">1</span>;</span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">int</span> b = <span class="number">3</span>;</span><br><span class="line">   <span class="function"><span class="keyword">static</span> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="public-staitc-void-main-String-args-에서-static-이-붙는-이유는"><a href="#public-staitc-void-main-String-args-에서-static-이-붙는-이유는" class="headerlink" title="public staitc void main(String [] args) 에서 static 이 붙는 이유는?"></a>public staitc void main(String [] args) 에서 static 이 붙는 이유는?</h5><p>Java 는 어플리케이션이 실행되면 제일 먼저 메인(main)메소드를 실행합니다. 메인 메소드가 메모리에 올라가 있지 않으면, 시작점인 main 메소드를 호출하려고 하는데 메모리에 main이 없기 때문에 실행 할 수 없습니다. 따라서, static 이 붙습니다.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/05/static/" data-id="ck5axvwn600kfrpqx1pehfica" data-title="static" class="article-share-link">Share</a>
       
       
       
@@ -268,7 +322,51 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/overloading, overriding/" data-id="ck5aq7gao00kckz6weflh830r" data-title="overloading, overriding" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/overloading, overriding/" data-id="ck5axvwn500kdrpqxzrtw2y6l" data-title="overloading, overriding" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-keep alive" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/05/keep alive/" class="article-date">
+  <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/network/">Network</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/05/keep alive/">keep alive</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="keep-alive-방식이란"><a href="#keep-alive-방식이란" class="headerlink" title="keep-alive 방식이란?"></a>keep-alive 방식이란?</h5><p>Keep Alive Time Out 이내에 Client 에서 Request를 재 요청하면 Socket을 새로 여는 것이아니라, 이미 열려 있는 Socket(port)에 전송하는 구조입니다.</p>
+<h5 id="http-connectionless-방식과-keep-alive-방식의-차이는"><a href="#http-connectionless-방식과-keep-alive-방식의-차이는" class="headerlink" title="http connectionless 방식과 keep-alive 방식의 차이는 ?"></a>http connectionless 방식과 keep-alive 방식의 차이는 ?</h5><p>connection Less 방식은 매번 Socket(port)를 열어야 하기때문에 비용적인 측면에서 비효율적이며, keep-alive 방식은 port Conenction에 소요되는 시간을 절약할 수 있습니다.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/05/keep alive/" data-id="ck5axvwn400kbrpqxfkxzaodm" data-title="keep alive" class="article-share-link">Share</a>
       
       
       
@@ -348,51 +446,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/isolation level/" data-id="ck5aq7gao00kakz6w2mxz3y9x" data-title="isolation level" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-keep alive" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/12/05/keep alive/" class="article-date">
-  <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/network/">Network</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/05/keep alive/">keep alive</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h5 id="keep-alive-방식이란"><a href="#keep-alive-방식이란" class="headerlink" title="keep-alive 방식이란?"></a>keep-alive 방식이란?</h5><p>Keep Alive Time Out 이내에 Client 에서 Request를 재 요청하면 Socket을 새로 여는 것이아니라, 이미 열려 있는 Socket(port)에 전송하는 구조입니다.</p>
-<h5 id="http-connectionless-방식과-keep-alive-방식의-차이는"><a href="#http-connectionless-방식과-keep-alive-방식의-차이는" class="headerlink" title="http connectionless 방식과 keep-alive 방식의 차이는 ?"></a>http connectionless 방식과 keep-alive 방식의 차이는 ?</h5><p>connection Less 방식은 매번 Socket(port)를 열어야 하기때문에 비용적인 측면에서 비효율적이며, keep-alive 방식은 port Conenction에 소요되는 시간을 절약할 수 있습니다.</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/keep alive/" data-id="ck5aq7gan00k8kz6wustw6tpv" data-title="keep alive" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/isolation level/" data-id="ck5axvwn300k9rpqxvcz87fkm" data-title="isolation level" class="article-share-link">Share</a>
       
       
       
@@ -445,70 +499,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/infix/" data-id="ck5aq7gam00k6kz6w98oyeaqf" data-title="순회" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-graph" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/12/05/graph/" class="article-date">
-  <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/data-structure/">Data Structure</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/05/graph/">그래프</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h5 id="그래프란"><a href="#그래프란" class="headerlink" title="그래프란 ?"></a>그래프란 ?</h5><p>노드 (N, node) 와 그 노드를 연결하는 간선 (E, edge) 을 하나로 모아 놓은 자료 구조입니다.</p>
-<h5 id="트리와-그래프의-차이는"><a href="#트리와-그래프의-차이는" class="headerlink" title="트리와 그래프의 차이는?"></a>트리와 그래프의 차이는?</h5><p>트리는 그래프의 한 종류입니다. 트리는 방향성이 있는 비순환 그래프입니다.</p>
-<h5 id="그래프는-어떻게-구현하나요"><a href="#그래프는-어떻게-구현하나요" class="headerlink" title="그래프는 어떻게 구현하나요 ?"></a>그래프는 어떻게 구현하나요 ?</h5><p>인접행렬과 인접리스트로 구현할 수 있습니다.</p>
-<ol>
-<li><p>인접행렬</p>
-<p>그래프의 연결 관계를 이차원 배열로 나타내는 방식입니다.<br>장점은, 노드 i와 노드 j가 연결되어 있는지 확인하고 싶을 때, adj(i)(j)가 1인지 0인지만 확인하면 되기 때문에 시간복잡도 O(1) 이라는 점입니다. 단점은, 노드 i에 연결된 모든 노드들에 방문해보고 싶은 경우, adj(i)(1)부터 adj(i)(v)를 모두 확인해보아야 하기 때문에 총 O(v)의 시간이 걸린다는 점입니다.</p>
-</li>
-<li><p>인접리스트</p>
-<p>그래프의 연결 관계를 연결 리스트로 나타내는 방식입니다.<br>장점은, 실제로 연결된 노드들에 대한 정보만 저장합니다. 단점은, 노드 i와 노드 j가 연결되어 있는지 알고 싶다면, adj[i]가 j를 성분으로 갖는지 확인해봐야합니다. 시간복잡도 O(v)가 됩니다.</p>
-</li>
-</ol>
-<h5 id="그래프를-어떻게-탐색하나요"><a href="#그래프를-어떻게-탐색하나요" class="headerlink" title="그래프를 어떻게 탐색하나요?"></a>그래프를 어떻게 탐색하나요?</h5><p>깊이 우선 탐색 (DFS) 와 너비 우선 탐색 (BFS)가 있습니다.</p>
-<ol>
-<li><p>DFS</p>
-<p>루트 노드(혹은 다른 임의의 노드)에서 시작해서 다음 분기(branch)로 넘어가기 전에 해당 분기를 완벽하게 탐색하는 방법입니다.</p>
-</li>
-<li><p>BFS</p>
-<p>루트 노드(혹은 다른 임의의 노드)에서 시작해서 인접한 노드를 먼저 탐색하는 방법입니다.</p>
-</li>
-</ol>
-<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://gmlwjd9405.github.io/2018/08/13/data-structure-graph.html" target="_blank" rel="noopener">https://gmlwjd9405.github.io/2018/08/13/data-structure-graph.html</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/graph/" data-id="ck5aq7gam00k4kz6weait5yhi" data-title="그래프" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/infix/" data-id="ck5axvwn300k7rpqxvhu5x0l0" data-title="순회" class="article-share-link">Share</a>
       
       
       
@@ -590,7 +581,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/http method/" data-id="ck5aq7gal00k2kz6wlp89jci0" data-title="http method" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/http method/" data-id="ck5axvwn200k5rpqx59fxwwlu" data-title="http method" class="article-share-link">Share</a>
       
       
       
@@ -602,14 +593,14 @@
 
 
   
-    <article id="post-coupling" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-graph" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/12/05/coupling/" class="article-date">
+    <a href="/2018/12/05/graph/" class="article-date">
   <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/java/">Java</a>
+    <a class="article-category-link" href="/categories/data-structure/">Data Structure</a>
   </div>
 
   </div>
@@ -620,7 +611,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/05/coupling/">coupling</a>
+      <a class="p-name article-title" href="/2018/12/05/graph/">그래프</a>
     </h1>
   
 
@@ -628,16 +619,32 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h5 id="is-a-relationship-과-has-a-relationship의-차이는"><a href="#is-a-relationship-과-has-a-relationship의-차이는" class="headerlink" title="is-a relationship 과 has-a relationship의 차이는 ?"></a>is-a relationship 과 has-a relationship의 차이는 ?</h5><p>IS-A relationship 은 inheritance 이고, HAS - A relationship 은 composition입니다. inheritance 는 composition 보다 coupling 이 높습니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//상속</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Apple</span> <span class="keyword">extends</span> <span class="title">Fruit</span></span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//구성</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Room</span> </span>&#123;</span><br><span class="line">    Table table = <span class="keyword">new</span> Table();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h5 id="응집도-cohesion-와-결합도-coupling-란"><a href="#응집도-cohesion-와-결합도-coupling-란" class="headerlink" title="응집도(cohesion)와 결합도(coupling) 란 ?"></a>응집도(cohesion)와 결합도(coupling) 란 ?</h5><p>응집도는 하나의 클래스가 하나의 기능(책임)을 온전히 순도 높게 담당하고 있는 정도이고, 결합도는 클래스간의 서로 다른 책임들이 얽혀 있는 상호 의존도의 정도입니다. 약한 결합도, 강한 응집도가 좋습니다.</p>
-<h5 id="강한결합과-약한-결합의-차이는-무엇인가요"><a href="#강한결합과-약한-결합의-차이는-무엇인가요" class="headerlink" title="강한결합과 약한 결합의 차이는 무엇인가요?"></a>강한결합과 약한 결합의 차이는 무엇인가요?</h5><p>느슨한 결합(Loose Coupling)은 다른 클래스를 직접적으로 사용하는 클래스의 의존성을 줄이는 것이고,<br>강한 결합(Tight Coupling)은 클래스와 객체가 서로 의존하고 있는 것입니다.</p>
+        <h5 id="그래프란"><a href="#그래프란" class="headerlink" title="그래프란 ?"></a>그래프란 ?</h5><p>노드 (N, node) 와 그 노드를 연결하는 간선 (E, edge) 을 하나로 모아 놓은 자료 구조입니다.</p>
+<h5 id="트리와-그래프의-차이는"><a href="#트리와-그래프의-차이는" class="headerlink" title="트리와 그래프의 차이는?"></a>트리와 그래프의 차이는?</h5><p>트리는 그래프의 한 종류입니다. 트리는 방향성이 있는 비순환 그래프입니다.</p>
+<h5 id="그래프는-어떻게-구현하나요"><a href="#그래프는-어떻게-구현하나요" class="headerlink" title="그래프는 어떻게 구현하나요 ?"></a>그래프는 어떻게 구현하나요 ?</h5><p>인접행렬과 인접리스트로 구현할 수 있습니다.</p>
+<ol>
+<li><p>인접행렬</p>
+<p>그래프의 연결 관계를 이차원 배열로 나타내는 방식입니다.<br>장점은, 노드 i와 노드 j가 연결되어 있는지 확인하고 싶을 때, adj(i)(j)가 1인지 0인지만 확인하면 되기 때문에 시간복잡도 O(1) 이라는 점입니다. 단점은, 노드 i에 연결된 모든 노드들에 방문해보고 싶은 경우, adj(i)(1)부터 adj(i)(v)를 모두 확인해보아야 하기 때문에 총 O(v)의 시간이 걸린다는 점입니다.</p>
+</li>
+<li><p>인접리스트</p>
+<p>그래프의 연결 관계를 연결 리스트로 나타내는 방식입니다.<br>장점은, 실제로 연결된 노드들에 대한 정보만 저장합니다. 단점은, 노드 i와 노드 j가 연결되어 있는지 알고 싶다면, adj[i]가 j를 성분으로 갖는지 확인해봐야합니다. 시간복잡도 O(v)가 됩니다.</p>
+</li>
+</ol>
+<h5 id="그래프를-어떻게-탐색하나요"><a href="#그래프를-어떻게-탐색하나요" class="headerlink" title="그래프를 어떻게 탐색하나요?"></a>그래프를 어떻게 탐색하나요?</h5><p>깊이 우선 탐색 (DFS) 와 너비 우선 탐색 (BFS)가 있습니다.</p>
+<ol>
+<li><p>DFS</p>
+<p>루트 노드(혹은 다른 임의의 노드)에서 시작해서 다음 분기(branch)로 넘어가기 전에 해당 분기를 완벽하게 탐색하는 방법입니다.</p>
+</li>
+<li><p>BFS</p>
+<p>루트 노드(혹은 다른 임의의 노드)에서 시작해서 인접한 노드를 먼저 탐색하는 방법입니다.</p>
+</li>
+</ol>
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://gmlwjd9405.github.io/2018/08/13/data-structure-graph.html" target="_blank" rel="noopener">https://gmlwjd9405.github.io/2018/08/13/data-structure-graph.html</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/coupling/" data-id="ck5aq7gal00k0kz6whqcuqa79" data-title="coupling" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/graph/" data-id="ck5axvwn100k3rpqx8o6tur07" data-title="그래프" class="article-share-link">Share</a>
       
       
       
