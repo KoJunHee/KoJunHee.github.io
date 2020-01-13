@@ -71,9 +71,9 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-연산자" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-흐름제어" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/01/30/연산자/" class="article-date">
+    <a href="/2018/01/30/흐름제어/" class="article-date">
   <time class="dt-published" datetime="2018-01-29T15:00:00.000Z" itemprop="datePublished">2018-01-30</time>
 </a>
     
@@ -89,7 +89,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/01/30/연산자/">연산자</a>
+      <a class="p-name article-title" href="/2018/01/30/흐름제어/">흐름제어</a>
     </h1>
   
 
@@ -98,30 +98,45 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <p><a href="https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/BasicOperators.html#//apple_ref/doc/uid/TP40014097-CH6-ID60" target="_blank" rel="noopener">https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/BasicOperators.html#//apple_ref/doc/uid/TP40014097-CH6-ID60</a></p>
-<ul>
-<li><p>Unary Minus Operator</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">let three = 3</span><br><span class="line">let minusThree = -three       // minusThree equals -3</span><br><span class="line">let plusThree = -minusThree   // plusThree equals 3, or &quot;minus minus three&quot;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Unary Plus Operator</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let minusSix = -6</span><br><span class="line">let alsoMinusSix = +minusSix  // alsoMinusSix equals -6</span><br></pre></td></tr></table></figure>
-
-
-</li>
+<h2 id="For-In-Loops"><a href="#For-In-Loops" class="headerlink" title="For-In Loops"></a>For-In Loops</h2><ul>
+<li>to iterate over the items in an array:</li>
 </ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">let names = [&quot;Anna&quot;, &quot;Alex&quot;, &quot;Brian&quot;, &quot;Jack&quot;]</span><br><span class="line">for name in names &#123;</span><br><span class="line">    print(&quot;Hello, \(name)!&quot;)</span><br><span class="line">&#125;</span><br><span class="line">// Hello, Anna!</span><br><span class="line">// Hello, Alex!</span><br><span class="line">// Hello, Brian!</span><br><span class="line">// Hello, Jack!</span><br></pre></td></tr></table></figure>
+
 <ul>
-<li><p>Comparison Operators</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(1, &quot;zebra&quot;) &lt; (2, &quot;apple&quot;)   // true because 1 is less than 2; &quot;zebra&quot; and &quot;apple&quot; are not compared</span><br><span class="line">(3, &quot;apple&quot;) &lt; (3, &quot;bird&quot;)    // true because 3 is equal to 3, and &quot;apple&quot; is less than &quot;bird&quot;</span><br><span class="line">(4, &quot;dog&quot;) == (4, &quot;dog&quot;)      // true because 4 is equal to 4, and &quot;dog&quot; is equal to &quot;dog&quot;</span><br><span class="line"></span><br><span class="line">(&quot;blue&quot;, -1) &lt; (&quot;purple&quot;, 1)        // OK, evaluates to true</span><br><span class="line">(&quot;blue&quot;, false) &lt; (&quot;purple&quot;, true)  // Error because &lt; can&apos;t compare Boolean values</span><br></pre></td></tr></table></figure>
-
-
-</li>
+<li>The contents of a Dictionary are inherently unordered, and iterating over them does not guarantee the order in which they will be retrieved</li>
 </ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">let numberOfLegs = [&quot;spider&quot;: 8, &quot;ant&quot;: 6, &quot;cat&quot;: 4]</span><br><span class="line">for (animalName, legCount) in numberOfLegs &#123;</span><br><span class="line">    print(&quot;\(animalName)s have \(legCount) legs&quot;)</span><br><span class="line">&#125;</span><br><span class="line">// ants have 6 legs</span><br><span class="line">// spiders have 8 legs</span><br><span class="line">// cats have 4 legs</span><br><span class="line"></span><br><span class="line">//</span><br></pre></td></tr></table></figure>
+
 <ul>
-<li><p>Range Operators</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">for index in 1...5 &#123;</span><br><span class="line">    print(&quot;\(index) times 5 is \(index * 5)&quot;)</span><br><span class="line">&#125;</span><br><span class="line">// 1 times 5 is 5</span><br><span class="line">// 2 times 5 is 10</span><br><span class="line">// 3 times 5 is 15</span><br><span class="line">// 4 times 5 is 20</span><br><span class="line">// 5 times 5 is 25</span><br><span class="line"></span><br><span class="line">let names = [&quot;Anna&quot;, &quot;Alex&quot;, &quot;Brian&quot;, &quot;Jack&quot;]</span><br><span class="line">let count = names.count</span><br><span class="line">for i in 0..&lt;count &#123;</span><br><span class="line">    print(&quot;Person \(i + 1) is called \(names[i])&quot;)</span><br><span class="line">&#125;</span><br><span class="line">// Person 1 is called Anna</span><br><span class="line">// Person 2 is called Alex</span><br><span class="line">// Person 3 is called Brian</span><br><span class="line">// Person 4 is called Jack</span><br><span class="line"></span><br><span class="line">for name in names[2...] &#123;</span><br><span class="line">    print(name)</span><br><span class="line">&#125;</span><br><span class="line">// Brian</span><br><span class="line">// Jack</span><br><span class="line"> </span><br><span class="line">for name in names[...2] &#123;</span><br><span class="line">    print(name)</span><br><span class="line">&#125;</span><br><span class="line">// Anna</span><br><span class="line">// Alex</span><br><span class="line">// Brian</span><br><span class="line"></span><br><span class="line">for name in names[..&lt;2] &#123;</span><br><span class="line">    print(name)</span><br><span class="line">&#125;</span><br><span class="line">// Anna</span><br><span class="line">// Alex</span><br><span class="line"></span><br><span class="line">let range = ...5</span><br><span class="line">range.contains(7)   // false</span><br><span class="line">range.contains(4)   // true</span><br><span class="line">range.contains(-1)  // true</span><br></pre></td></tr></table></figure>
-
-</li>
+<li>for-in loops with numeric ranges.</li>
 </ul>
-<p>​    </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">for index in 1...5 &#123;</span><br><span class="line">    print(&quot;\(index) times 5 is \(index * 5)&quot;)</span><br><span class="line">&#125;</span><br><span class="line">// 1 times 5 is 5</span><br><span class="line">// 2 times 5 is 10</span><br><span class="line">// 3 times 5 is 15</span><br><span class="line">// 4 times 5 is 20</span><br><span class="line">// 5 times 5 is 25</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>If you don’t need each value from a sequence</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">let base = 3</span><br><span class="line">let power = 10</span><br><span class="line">var answer = 1</span><br><span class="line">for _ in 1...power &#123;</span><br><span class="line">    answer *= base</span><br><span class="line">&#125;</span><br><span class="line">print(&quot;\(base) to the power of \(power) is \(answer)&quot;)</span><br><span class="line">// Prints &quot;3 to the power of 10 is 59049&quot;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>to include the lower bound but not the upper bound</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let minutes = 60</span><br><span class="line">for tickMark in 0..&lt;minutes &#123;</span><br><span class="line">    // render the tick mark each minute (60 times)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>stride(from:to:by:)</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let minuteInterval = 5</span><br><span class="line">for tickMark in stride(from: 0, to: minutes, by: minuteInterval) &#123;</span><br><span class="line">    // render the tick mark every 5 minutes (0, 5, 10, 15 ... 45, 50, 55)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>stride(from:through:by:)</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">let hours = 12</span><br><span class="line">let hourInterval = 3</span><br><span class="line">for tickMark in stride(from: 3, through: hours, by: hourInterval) &#123;</span><br><span class="line">    // render the tick mark every 3 hours (3, 6, 9, 12)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Repeat-While"><a href="#Repeat-While" class="headerlink" title="Repeat-While"></a>Repeat-While</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">repeat &#123;</span><br><span class="line">    statements</span><br><span class="line">&#125; while condition</span><br></pre></td></tr></table></figure>
+
+<h2 id="Switch"><a href="#Switch" class="headerlink" title="Switch"></a>Switch</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">switch some value to consider &#123;</span><br><span class="line">case value 1:</span><br><span class="line">    respond to value 1</span><br><span class="line">case value 2,</span><br><span class="line">     value 3:</span><br><span class="line">    respond to value 2 or 3</span><br><span class="line">default:</span><br><span class="line">    otherwise, do something else</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>​    </p>
 <p>​    </p>
 <p>​<br>​<br>​<br>​<br>​<br>​<br>​    </p>
@@ -129,7 +144,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/30/연산자/" data-id="ck5axvwi2007hrpqx4z5zlzke" data-title="연산자" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/30/흐름제어/" data-id="ck5cd05gt007lcyqx7cmqnrxa" data-title="흐름제어" class="article-share-link">Share</a>
       
       
       
@@ -210,7 +225,77 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/30/함수/" data-id="ck5axvwi1007frpqxve4biny4" data-title="함수" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/30/함수/" data-id="ck5cd05gs007icyqxfdn1ve86" data-title="함수" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-연산자" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/01/30/연산자/" class="article-date">
+  <time class="dt-published" datetime="2018-01-29T15:00:00.000Z" itemprop="datePublished">2018-01-30</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/ios/">iOS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/01/30/연산자/">연산자</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/BasicOperators.html#//apple_ref/doc/uid/TP40014097-CH6-ID60" target="_blank" rel="noopener">https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/BasicOperators.html#//apple_ref/doc/uid/TP40014097-CH6-ID60</a></p>
+<ul>
+<li><p>Unary Minus Operator</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">let three = 3</span><br><span class="line">let minusThree = -three       // minusThree equals -3</span><br><span class="line">let plusThree = -minusThree   // plusThree equals 3, or &quot;minus minus three&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Unary Plus Operator</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let minusSix = -6</span><br><span class="line">let alsoMinusSix = +minusSix  // alsoMinusSix equals -6</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<ul>
+<li><p>Comparison Operators</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(1, &quot;zebra&quot;) &lt; (2, &quot;apple&quot;)   // true because 1 is less than 2; &quot;zebra&quot; and &quot;apple&quot; are not compared</span><br><span class="line">(3, &quot;apple&quot;) &lt; (3, &quot;bird&quot;)    // true because 3 is equal to 3, and &quot;apple&quot; is less than &quot;bird&quot;</span><br><span class="line">(4, &quot;dog&quot;) == (4, &quot;dog&quot;)      // true because 4 is equal to 4, and &quot;dog&quot; is equal to &quot;dog&quot;</span><br><span class="line"></span><br><span class="line">(&quot;blue&quot;, -1) &lt; (&quot;purple&quot;, 1)        // OK, evaluates to true</span><br><span class="line">(&quot;blue&quot;, false) &lt; (&quot;purple&quot;, true)  // Error because &lt; can&apos;t compare Boolean values</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<ul>
+<li><p>Range Operators</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">for index in 1...5 &#123;</span><br><span class="line">    print(&quot;\(index) times 5 is \(index * 5)&quot;)</span><br><span class="line">&#125;</span><br><span class="line">// 1 times 5 is 5</span><br><span class="line">// 2 times 5 is 10</span><br><span class="line">// 3 times 5 is 15</span><br><span class="line">// 4 times 5 is 20</span><br><span class="line">// 5 times 5 is 25</span><br><span class="line"></span><br><span class="line">let names = [&quot;Anna&quot;, &quot;Alex&quot;, &quot;Brian&quot;, &quot;Jack&quot;]</span><br><span class="line">let count = names.count</span><br><span class="line">for i in 0..&lt;count &#123;</span><br><span class="line">    print(&quot;Person \(i + 1) is called \(names[i])&quot;)</span><br><span class="line">&#125;</span><br><span class="line">// Person 1 is called Anna</span><br><span class="line">// Person 2 is called Alex</span><br><span class="line">// Person 3 is called Brian</span><br><span class="line">// Person 4 is called Jack</span><br><span class="line"></span><br><span class="line">for name in names[2...] &#123;</span><br><span class="line">    print(name)</span><br><span class="line">&#125;</span><br><span class="line">// Brian</span><br><span class="line">// Jack</span><br><span class="line"> </span><br><span class="line">for name in names[...2] &#123;</span><br><span class="line">    print(name)</span><br><span class="line">&#125;</span><br><span class="line">// Anna</span><br><span class="line">// Alex</span><br><span class="line">// Brian</span><br><span class="line"></span><br><span class="line">for name in names[..&lt;2] &#123;</span><br><span class="line">    print(name)</span><br><span class="line">&#125;</span><br><span class="line">// Anna</span><br><span class="line">// Alex</span><br><span class="line"></span><br><span class="line">let range = ...5</span><br><span class="line">range.contains(7)   // false</span><br><span class="line">range.contains(4)   // true</span><br><span class="line">range.contains(-1)  // true</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>​    </p>
+<p>​    </p>
+<p>​    </p>
+<p>​<br>​<br>​<br>​<br>​<br>​<br>​    </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/01/30/연산자/" data-id="ck5cd05gr007gcyqx2y3p9g3a" data-title="연산자" class="article-share-link">Share</a>
       
       
       
@@ -297,7 +382,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/29/swift/" data-id="ck5axvwi0007arpqxih9ofwgr" data-title="swift" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/29/swift/" data-id="ck5cd05gq007bcyqxgv5ge1eh" data-title="swift" class="article-share-link">Share</a>
       
       
       
@@ -393,7 +478,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/29/swift 처음 시작하기/" data-id="ck5axvwhz0078rpqxu7n8b5ge" data-title="swift 처음 시작하기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/29/swift 처음 시작하기/" data-id="ck5cd05gp0079cyqxirbnrzal" data-title="swift 처음 시작하기" class="article-share-link">Share</a>
       
       
       
@@ -505,7 +590,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/29/Centralized Workflow /" data-id="ck5axvwhy0076rpqx89mlzkc1" data-title="Centralized Workflow" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/29/Centralized Workflow /" data-id="ck5cd05go0077cyqxzp9ti37e" data-title="Centralized Workflow" class="article-share-link">Share</a>
       
       
       
@@ -722,7 +807,7 @@ case west</code></pre><p>}</p>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/29/데이터 타입 고급/" data-id="ck5axvwp400n8rpqxlw9n5l44" data-title="데이터 타입 고급" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/29/데이터 타입 고급/" data-id="ck5cd05lw00n9cyqxwj5k1zro" data-title="데이터 타입 고급" class="article-share-link">Share</a>
       
       
       
@@ -839,7 +924,7 @@ case west</code></pre><p>}</p>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/29/데이터 타입 기본/" data-id="ck5axvwi1007drpqxt8aztgjo" data-title="데이터 타입 기본" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/29/데이터 타입 기본/" data-id="ck5cd05gq007ecyqx6prx7xfm" data-title="데이터 타입 기본" class="article-share-link">Share</a>
       
       
       
@@ -885,7 +970,7 @@ case west</code></pre><p>}</p>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/26/수이어쓰기/" data-id="ck5axvwhx0072rpqxm08h8jll" data-title="수이어쓰기1" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/26/수이어쓰기/" data-id="ck5cd05gn0073cyqxkixfglax" data-title="수이어쓰기1" class="article-share-link">Share</a>
       
       
       
@@ -980,67 +1065,7 @@ case west</code></pre><p>}</p>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/24/타일/" data-id="ck5axvwhy0074rpqxua9zodxu" data-title="타일" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-슈퍼마리오" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/01/20/슈퍼마리오/" class="article-date">
-  <time class="dt-published" datetime="2018-01-19T15:00:00.000Z" itemprop="datePublished">2018-01-20</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/01/20/슈퍼마리오/">슈퍼마리오</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><a href="https://www.acmicpc.net/problem/2851" target="_blank" rel="noopener">https://www.acmicpc.net/problem/2851</a></p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
-<li>처음에 틀렸다고 나옴<ul>
-<li>이유 : 반복문의 if-else 구문에서 else문에 걸렸을 때, 바로 출력하고 return</li>
-<li>해결 : break 걸고, 반복문 밖에서 정답 출력</li>
-</ul>
-</li>
-<li>100과의 차이는 계속해서 감소하거나 같음</li>
-<li>ex)<ul>
-<li>100과의 차이가 </li>
-<li>90 70 30 1 1 …</li>
-<li>인 경우가 있을 수 있으니</li>
-<li>현재 index에서의 차이가 </li>
-<li>전 index에서의 차이보다 커지면</li>
-<li>stop</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/20/슈퍼마리오/" data-id="ck5axvwhw0070rpqxtvzmxhth" data-title="슈퍼마리오" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/24/타일/" data-id="ck5cd05go0075cyqx8vvticui" data-title="타일" class="article-share-link">Share</a>
       
       
       
@@ -1095,6 +1120,10 @@ case west</code></pre><p>}</p>
       <ul>
         
           <li>
+            <a href="/2020/01/13/object-chapter13/">[오브젝트] 13장_서브클래싱과 서브타이핑</a>
+          </li>
+        
+          <li>
             <a href="/2020/01/12/review-2019/">2019년 회고</a>
           </li>
         
@@ -1108,10 +1137,6 @@ case west</code></pre><p>}</p>
         
           <li>
             <a href="/2020/01/02/big-data-chapter4/">[빅데이터를 지탱하는 기술] 4장_빅데이터 축적</a>
-          </li>
-        
-          <li>
-            <a href="/2019/12/30/big-data-chapter3/">[빅데이터를 지탱하는 기술] 3장_빅데이터 분산처리</a>
           </li>
         
       </ul>

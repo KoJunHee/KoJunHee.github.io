@@ -71,9 +71,9 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-Abstract Factory Pattern01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-Abstract Factory Pattern02" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/05/13/Abstract Factory Pattern01/" class="article-date">
+    <a href="/2018/05/13/Abstract Factory Pattern02/" class="article-date">
   <time class="dt-published" datetime="2018-05-12T15:00:00.000Z" itemprop="datePublished">2018-05-13</time>
 </a>
     
@@ -89,7 +89,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/13/Abstract Factory Pattern01/">Abstract Factory Pattern01</a>
+      <a class="p-name article-title" href="/2018/05/13/Abstract Factory Pattern02/">Abstract Factory Pattern02</a>
     </h1>
   
 
@@ -97,52 +97,61 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>The Abstract Factory Pattern provides an interface for creating families of related or dependent objects without specifying their concrete classes. </p>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/abstractFactoryPattern.png" alt></p>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/abstarct001.png" alt></p>
-<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><img src="/image/afp01.png" alt></p>
-<p><img src="/image/afp02.png" alt></p>
-<p><img src="/image/afp03.png" alt></p>
-<p><img src="/image/afp04.png" alt></p>
-<p><img src="/image/afp05.png" alt></p>
-<p><img src="/image/afp06.png" alt></p>
-<p><img src="/image/afp07.png" alt></p>
-<p><img src="/image/afp08.png" alt></p>
-<p><img src="/image/afp09.png" alt></p>
-<p><img src="/image/afp10.png" alt></p>
-<p><img src="/image/afp11.png" alt></p>
-<p><img src="/image/afp12.png" alt></p>
-<p><img src="/image/afp13.png" alt></p>
-<p><img src="/image/afp14.png" alt></p>
-<p><img src="/image/afp15.png" alt></p>
-<p><img src="/image/afp16.png" alt></p>
-<p><img src="/image/afp17.png" alt></p>
-<p><img src="/image/afp18.png" alt></p>
-<p><img src="/image/afp19.png" alt></p>
-<p><img src="/image/afp20.png" alt></p>
-<p><img src="/image/afp21.png" alt></p>
-<p><img src="/image/afp22.png" alt></p>
-<p><img src="/image/afp23.png" alt></p>
-<p><img src="/image/afp24.png" alt></p>
-<p><img src="/image/afp25.png" alt></p>
-<p><img src="/image/afp26.png" alt></p>
-<p><img src="/image/afp27.png" alt></p>
-<p><img src="/image/afp28.png" alt></p>
-<p><img src="/image/afp29.png" alt></p>
-<p><img src="/image/afp30.png" alt></p>
-<p><img src="/image/afp31.png" alt></p>
-<p><img src="/image/afp32.png" alt></p>
-<p><img src="/image/afp33.png" alt></p>
-<p><img src="/image/afp34.png" alt></p>
-<p><img src="/image/afp35.png" alt></p>
-<p><img src="/image/afp36.png" alt></p>
-<p><img src="/image/afp37.png" alt></p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Head First Design Pattern</p>
+        <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>관련성 있는 여러 종류의 객체를 일관성 있는 방식으로 생성할 때 유용하다.</p>
+<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/abstractF01.png" alt></p>
+<ul>
+<li>Abstarct Factory<ul>
+<li>실제 팩토리 클래스의 공통 인터페이스</li>
+<li>각 제품의 부품을 생성하는 기능을 추사 메서드로 정의</li>
+</ul>
+</li>
+<li>ConcreteFactory<ul>
+<li>구체적인 팩토리 클래스</li>
+<li>AbstractFactory 클래스의 추상 메서드를 오버라이드함으로써 구체적인 제품을 생성</li>
+</ul>
+</li>
+<li>AbstractProduct<ul>
+<li>제품의 공통 인터페이스</li>
+</ul>
+</li>
+<li>ConcreteProduct<ul>
+<li>구체적인 팩토리 클래스에서 생성되는 구체적인 제품</li>
+</ul>
+</li>
+</ul>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/abstractF02.png" alt></p>
+<ul>
+<li>ElevatorFactory<ul>
+<li>AbstractFactory</li>
+</ul>
+</li>
+<li>LGElevatorFactory, HyundaiElevatorFactory<ul>
+<li>ConcreteFactory</li>
+</ul>
+</li>
+<li>Motor<ul>
+<li>AbstractProductA</li>
+</ul>
+</li>
+<li>LGMotor, HyundaiMotor<ul>
+<li>ConcreteProductA</li>
+</ul>
+</li>
+<li>Door<ul>
+<li>AbstractProductB</li>
+</ul>
+</li>
+<li>LGDoor, HyundaiDoor<ul>
+<li>ConcreteProductB</li>
+</ul>
+</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Java 객체 지향 디자인 패턴 &lt;정인상, 채흥석 지음&gt;</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/13/Abstract Factory Pattern01/" data-id="ck5axvwk300c2rpqx5mbx1ov2" data-title="Abstract Factory Pattern01" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/13/Abstract Factory Pattern02/" data-id="ck5cd05i400c2cyqxsp1p1gxu" data-title="Abstract Factory Pattern02" class="article-share-link">Share</a>
       
       
       
@@ -154,9 +163,9 @@
 
 
   
-    <article id="post-Factory Method Pattern01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-Simple Factory" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/05/13/Factory Method Pattern01/" class="article-date">
+    <a href="/2018/05/13/Simple Factory/" class="article-date">
   <time class="dt-published" datetime="2018-05-12T15:00:00.000Z" itemprop="datePublished">2018-05-13</time>
 </a>
     
@@ -172,7 +181,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/13/Factory Method Pattern01/">Factory Method Pattern01</a>
+      <a class="p-name article-title" href="/2018/05/13/Simple Factory/">Simple Factory</a>
     </h1>
   
 
@@ -180,18 +189,106 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>The Factory Method Pattern defines an interface for creating an object, </p>
-<p>but lets subclasses decide which class to instantiate. </p>
-<p>Factory Method lets a class defer instantiation to subclasses. </p>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/factoryMethod01.png" alt> </p>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/factoryMethod02.png" alt> </p>
-<h2 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h2><p><img src="/image/fm15.png" alt> </p>
+        <p>The Simple Factory isn’t actually a Design Pattern; it’s more of a programming idiom. </p>
+<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/simpleFactoryUML.png" alt></p>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><img src="/image/pizza01.png" alt></p>
+<p><img src="/image/pizza02.png" alt></p>
+<p><img src="/image/pizza03.png" alt></p>
+<p><img src="/image/pizza08.png" alt></p>
+<p><img src="/image/pizza04.png" alt></p>
+<p><img src="/image/pizza05.png" alt></p>
+<p><img src="/image/pizza06.png" alt></p>
+<p><img src="/image/pizza07.png" alt></p>
+<h2 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h2><p><img src="/image/pizza09.png" alt></p>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Head First Design Pattern</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/13/Factory Method Pattern01/" data-id="ck5axvwk400c6rpqx08cqu03s" data-title="Factory Method Pattern01" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/13/Simple Factory/" data-id="ck5cd05i600cacyqx8bagypz2" data-title="Simple Factory" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Factory Method Pattern02" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/13/Factory Method Pattern02/" class="article-date">
+  <time class="dt-published" datetime="2018-05-12T15:00:00.000Z" itemprop="datePublished">2018-05-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/13/Factory Method Pattern02/">Factory Method Pattern02</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>객체를 생성하는 코드를 별도의 클래스/메소드로 분리함으로써 객체 생성 방식의 변화에 대비하는데 유용하다.</p>
+<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/factorymethodpa01.png" alt></p>
+<ul>
+<li>Product <ul>
+<li>펙토리 메서드로 생설될 객체의 공통 인터페이스</li>
+</ul>
+</li>
+<li>ConcreteProduct<ul>
+<li>구체적으로 객체가 생성되는 클래스</li>
+</ul>
+</li>
+<li>Creator<ul>
+<li>팩토리 메서드를 갖는 클래스</li>
+</ul>
+</li>
+<li>ConcreteCreator<ul>
+<li>팩토리 매서드를 구현하는 클래스</li>
+<li>ConcreteProduct 객체를 생성 </li>
+</ul>
+</li>
+</ul>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/factorymethodpa02.png" alt></p>
+<ul>
+<li>ElevatorScheduler interface<ul>
+<li>Prudct</li>
+</ul>
+</li>
+<li>ResponseTimeScheduler, ThroughputScheduler<ul>
+<li>ConcretePrudct</li>
+</ul>
+</li>
+<li>ElevatorManger<ul>
+<li>Creator</li>
+</ul>
+</li>
+<li>ElevatorMangerWithThroughputScheduling, ElevatorMangerWithDynamicScheduling, ElevatorManagerWithResponseTimeScheduling<ul>
+<li>ConcreteCreator</li>
+</ul>
+</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Java 객체 지향 디자인 패턴 &lt;정인상, 채흥석 지음&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/13/Factory Method Pattern02/" data-id="ck5cd05i600c8cyqxgaakvy0o" data-title="Factory Method Pattern02" class="article-share-link">Share</a>
       
       
       
@@ -244,7 +341,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/10/팀배분/" data-id="ck5axvwk200c0rpqx8jg9j33d" data-title="팀배분" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/10/팀배분/" data-id="ck5cd05i500c4cyqxwstxu3jo" data-title="팀배분" class="article-share-link">Share</a>
       
       
       
@@ -295,57 +392,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/09/Chain of Responsibility Pattern03/" data-id="ck5axvwk200byrpqx9ttg28if" data-title="Chain of Responsibility Pattern03" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Chain of Responsibility Pattern02" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/09/Chain of Responsibility Pattern02/" class="article-date">
-  <time class="dt-published" datetime="2018-05-08T15:00:00.000Z" itemprop="datePublished">2018-05-09</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/09/Chain of Responsibility Pattern02/">Chain of Responsibility Pattern02</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><img src="/image/corp01.png" alt></p>
-<p><img src="/image/corp02.png" alt></p>
-<p><img src="/image/corp03.png" alt></p>
-<p><img src="/image/corp04.png" alt></p>
-<p><img src="/image/corp05.png" alt></p>
-<p><img src="/image/corp06.png" alt></p>
-<h2 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h2><p><img src="/image/corResult.png" alt></p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://www.oodesign.com/proxy-pattern.html" target="_blank" rel="noopener">http://www.oodesign.com/proxy-pattern.html</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/09/Chain of Responsibility Pattern02/" data-id="ck5axvwk100bwrpqxjfoujnag" data-title="Chain of Responsibility Pattern02" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/09/Chain of Responsibility Pattern03/" data-id="ck5cd05i300bycyqxcenmxbvi" data-title="Chain of Responsibility Pattern03" class="article-share-link">Share</a>
       
       
       
@@ -404,7 +451,57 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/09/Chain of Responsibility Pattern01/" data-id="ck5axvwk000burpqx2d95gv1m" data-title="Chain of Responsibility Pattern01" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/09/Chain of Responsibility Pattern01/" data-id="ck5cd05i100bqcyqxppypi56b" data-title="Chain of Responsibility Pattern01" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Chain of Responsibility Pattern02" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/09/Chain of Responsibility Pattern02/" class="article-date">
+  <time class="dt-published" datetime="2018-05-08T15:00:00.000Z" itemprop="datePublished">2018-05-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/09/Chain of Responsibility Pattern02/">Chain of Responsibility Pattern02</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><img src="/image/corp01.png" alt></p>
+<p><img src="/image/corp02.png" alt></p>
+<p><img src="/image/corp03.png" alt></p>
+<p><img src="/image/corp04.png" alt></p>
+<p><img src="/image/corp05.png" alt></p>
+<p><img src="/image/corp06.png" alt></p>
+<h2 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h2><p><img src="/image/corResult.png" alt></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://www.oodesign.com/proxy-pattern.html" target="_blank" rel="noopener">http://www.oodesign.com/proxy-pattern.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/09/Chain of Responsibility Pattern02/" data-id="ck5cd05i300bwcyqxwwbs66x3" data-title="Chain of Responsibility Pattern02" class="article-share-link">Share</a>
       
       
       
@@ -536,7 +633,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/08/SQL/" data-id="ck5axvwjy00bmrpqxr7ulof68" data-title="SQL" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/08/SQL/" data-id="ck5cd05i000bmcyqxo9j0n4tr" data-title="SQL" class="article-share-link">Share</a>
       
       
       
@@ -700,7 +797,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/08/Spring MVC 구성요소/" data-id="ck5axvwjz00borpqxfy3ruotd" data-title="Spring MVC 구성요소" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/08/Spring MVC 구성요소/" data-id="ck5cd05i100bocyqxr4ke8ile" data-title="Spring MVC 구성요소" class="article-share-link">Share</a>
       
       
       
@@ -712,9 +809,9 @@
 
 
   
-    <article id="post-DTO, DAO" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-Database" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/05/08/DTO, DAO/" class="article-date">
+    <a href="/2018/05/08/Database/" class="article-date">
   <time class="dt-published" datetime="2018-05-07T15:00:00.000Z" itemprop="datePublished">2018-05-08</time>
 </a>
     
@@ -730,7 +827,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/08/DTO, DAO/">DTO, DAO</a>
+      <a class="p-name article-title" href="/2018/05/08/Database/">Database</a>
     </h1>
   
 
@@ -739,33 +836,57 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <ul>
-<li><p>DTO (Data Transfer Object)</p>
-<p><img src="/image/dto.png" alt></p>
+<li><p>데이터베이스와 데이터베이스 관리 시스템</p>
 <ul>
-<li>계층간 데이터 교환을 위한 자바빈즈입니다.<ul>
-<li>여기서의 계층이란 컨트롤러 뷰, 비지니스 계층, 퍼시스턴스 계층을 의미합니다.</li>
+<li>어린이가 가지고 있는 책(정보)들을 데이터베이스라고 한다면, </li>
+<li>그 책을 관리해주는 엄마는 데이터베이스 관리 시스템이라고 말할 수 있습니다.</li>
 </ul>
 </li>
-<li>일반적으로 DTO는 로직을 가지고 있지 않고, 순수한 데이터 객체입니다.</li>
-<li>필드와 getter, setter를 가진다. <ul>
-<li>추가적으로 toString(), equals(), hashCode()등의 Object 메소드를 오버라이딩 할 수 있습니다.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>DAO ( Data Access Object)</p>
+<li><p>데이터베이스</p>
 <ul>
-<li>데이터를 조회하거나 조작하는 기능을 전담하도록 만든 객체입니다.</li>
-<li>보통 데이터베이스를 조작하는 기능을 전담하는 목적으로 만들어집니다.</li>
+<li><p>데이터의 집합 (a Set of Data)</p>
+</li>
+<li><p>여러 응용 시스템(프로그램)들의 통합된 정보들을 저장하여 운영할 수 있는 공용(share) 데이터의 집합</p>
+</li>
+<li><p>효율적으로 저장, 검색, 갱신할 수 있도록 데이터 집합들끼리 연관시키고 조직화되어야 한다.</p>
+</li>
+<li><p>특성</p>
+<ul>
+<li><p>실시간 접근성(Real-time Accessability)</p>
+<ul>
+<li>사용자의 요구를 즉시 처리할 수 있다.</li>
 </ul>
 </li>
-<li><p>ConnectionPool</p>
-<p><img src="/image/cppp.png" alt></p>
+<li><p>계속적인 변화(Continuous Evolution)</p>
 <ul>
-<li>DB연결은 비용이 많이 듭니다.</li>
-<li>커넥션 풀은 미리 커넥션을 여러 개 맺어 둡니다.</li>
-<li>커넥션이 필요하면 커넥션 풀에게 빌려서 사용한 후 반납합니다.</li>
-<li>커넥션을 반납하지 않으면 컨넥션풀에서 사용가능한 컨넥션이 없어서  프로그램이 늦어지거나 장애 발생</li>
+<li>정확한 값을 유지하려고 삽입·삭제·수정 작업 등을 이용해 데이터를 지속적으로 갱신할 수 있다.</li>
+</ul>
+</li>
+<li><p>동시 공유성(Concurrent Sharing)</p>
+<ul>
+<li>사용자마다 서로 다른 목적으로 사용하므로 동시에 여러 사람이 동일한 데이터에 접근하고 이용할 수 있다.</li>
+</ul>
+</li>
+<li><p>내용 참조(Content Reference)</p>
+<ul>
+<li>저장한 데이터 레코드의 위치나 주소가 아닌 사용자가 요구하는 데이터의 내용, 즉 데이터 값에 따라 참조할 수 있어야 한다.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>데이터베이스 관리 시스템 (Database Management System = DBMS)</p>
+<ul>
+<li>데이터베이스를 관리하는 소프트웨어</li>
+<li>여러 응용 소프트웨어(프로그램) 또는 시스템이 동시에 데이터베이스에 접근하여 사용할 수 있게 한다</li>
+<li>필수 3기능<ul>
+<li>정의기능 :  데이터 베이스의 논리적, 물리적 구조를 정의</li>
+<li>조작기능 : 데이터를 검색, 삭제, 갱신, 삽입, 삭제하는 기능</li>
+<li>제어기능 :  데이터베이스의 내용 정확성과 안전성을 유지하도록 제어하는 기능</li>
+</ul>
+</li>
+<li>Oracle, SQL Server, MySQL, DB2 등의 상용 또는 공개 DBMS가 있다.</li>
 </ul>
 </li>
 <li><p>Reference</p>
@@ -778,102 +899,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/08/DTO, DAO/" data-id="ck5axvwjw00bgrpqxf5j4prhp" data-title="DTO, DAO" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-JDBC" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/08/JDBC/" class="article-date">
-  <time class="dt-published" datetime="2018-05-07T15:00:00.000Z" itemprop="datePublished">2018-05-08</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/boost-course/">Boost Course</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/08/JDBC/">JDBC</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <ul>
-<li><p>JDBC</p>
-<ul>
-<li>자바를 이용한 데이터베이스 접속과 SQL 문장의 실행, 그리고 실행 결과로 얻어진 데이터의 핸들링을 제공하는 방법과 절차에 관한 규약</li>
-<li>자바 프로그램 내에서 SQL문을 실행하기 위한 자바 API</li>
-<li>SQL과 프로그래밍 언어의 통합 접근 중 한 형태</li>
-<li>JAVA는 표준 인터페이스인 JDBC API를 제공</li>
-<li>데이터베이스 벤더, 또는 기타 써드파티에서는 JDBC 인터페이스를 구현한 드라이버(driver)를 제공한다.</li>
-</ul>
-</li>
-<li><p>JDBC를 이용한 프로그래밍 방법</p>
-<p><img src="/image/jdbc.png" alt></p>
-<ul>
-<li><p>import java.sql.*;</p>
-</li>
-<li><p>드라이버를 로드 한다.</p>
-<ul>
-<li><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Class.forName( <span class="string">"com.mysql.jdbc.Driver"</span> );</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><p>Connection 객체를 생성한다.</p>
-<ul>
-<li><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String dburl  = <span class="string">"jdbc:mysql://localhost/dbName"</span>;</span><br><span class="line"></span><br><span class="line">Connection con =  DriverManager.getConnection ( dburl, ID, PWD );</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><p>Statement 객체를 생성 및 질의 수행</p>
-<ul>
-<li><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Statement stmt = con.createStatement(); </span><br><span class="line">ResultSet rs = stmt.executeQuery(<span class="string">"select no from user"</span> );</span><br><span class="line"></span><br><span class="line">stmt.execute(“query”);             <span class="comment">//any SQL</span></span><br><span class="line">stmt.executeQuery(“query”);     <span class="comment">//SELECT</span></span><br><span class="line">stmt.executeUpdate(“query”);   <span class="comment">//INSERT, UPDATE, DELETE</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><p>SQL문에 결과물이 있다면 ResultSet 객체를 생성한다.</p>
-<ul>
-<li><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ResultSet rs =  stmt.executeQuery( <span class="string">"select no from user"</span> );</span><br><span class="line"><span class="keyword">while</span> ( rs.next() )</span><br><span class="line">      System.out.println( rs.getInt( <span class="string">"no"</span>) );</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><p>모든 객체를 닫는다.</p>
-<ul>
-<li><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rs.close();</span><br><span class="line">stmt.close();</span><br><span class="line">con.close();</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Reference</p>
-<ul>
-<li>NAVER edwith boostcourse Full-Stack Web Developer </li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/08/JDBC/" data-id="ck5axvwjx00bkrpqxjup80azj" data-title="JDBC" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/08/Database/" data-id="ck5cd05hz00bgcyqxh6jso0an" data-title="Database" class="article-share-link">Share</a>
       
       
       
@@ -928,6 +954,10 @@
       <ul>
         
           <li>
+            <a href="/2020/01/13/object-chapter13/">[오브젝트] 13장_서브클래싱과 서브타이핑</a>
+          </li>
+        
+          <li>
             <a href="/2020/01/12/review-2019/">2019년 회고</a>
           </li>
         
@@ -941,10 +971,6 @@
         
           <li>
             <a href="/2020/01/02/big-data-chapter4/">[빅데이터를 지탱하는 기술] 4장_빅데이터 축적</a>
-          </li>
-        
-          <li>
-            <a href="/2019/12/30/big-data-chapter3/">[빅데이터를 지탱하는 기술] 3장_빅데이터 분산처리</a>
           </li>
         
       </ul>

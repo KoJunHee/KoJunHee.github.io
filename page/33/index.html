@@ -71,9 +71,75 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-exports" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-if else VS switch" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/01/04/exports/" class="article-date">
+    <a href="/2018/01/04/if else VS switch/" class="article-date">
+  <time class="dt-published" datetime="2018-01-03T15:00:00.000Z" itemprop="datePublished">2018-01-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/01/04/if else VS switch/">if else VS switch</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="compare"><a href="#compare" class="headerlink" title="compare"></a>compare</h2><ul>
+<li><p>5개 이하 비교</p>
+<ul>
+<li>차이 무</li>
+</ul>
+</li>
+<li><p>5개 이상 비교</p>
+<ul>
+<li><p>switch</p>
+<ul>
+<li>해쉬 테이블 룩업 테이블을 구현해서 아이템에 접근</li>
+<li>어떤 아이템이든지 접손 시간 같음 =&gt; O(1)</li>
+</ul>
+</li>
+<li><p>if else</p>
+<ul>
+<li>조건에 맞을 때까지 비교</li>
+<li>최대 아이템 갯수만큼의 비교 시간이 걸릴 수 있음 =&gt; O(N)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>​     </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/01/04/if else VS switch/" data-id="ck5cd05g8005tcyqxbjffmnbe" data-title="if else VS switch" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-pm2" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/01/04/pm2/" class="article-date">
   <time class="dt-published" datetime="2018-01-03T15:00:00.000Z" itemprop="datePublished">2018-01-04</time>
 </a>
     
@@ -89,7 +155,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/01/04/exports/">exports</a>
+      <a class="p-name article-title" href="/2018/01/04/pm2/">PM2</a>
     </h1>
   
 
@@ -97,40 +163,27 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>reference by <a href="https://opentutorials.org" target="_blank" rel="noopener">https://opentutorials.org</a></p>
-<h2 id="exports"><a href="#exports" class="headerlink" title="exports"></a>exports</h2><ul>
-<li>속성이나 메소드를 여러 개 정의 가능</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// cicle.js</span><br><span class="line">var PI = Math.PI;</span><br><span class="line"> </span><br><span class="line">exports.area = function (r) &#123;</span><br><span class="line">    return PI * r * r;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line">exports.circumference = function (r) &#123;</span><br><span class="line">    return 2 * PI * r;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// foo.js</span><br><span class="line">var circle = require(&apos;./circle.js&apos;);</span><br><span class="line">console.log( &apos;The area of a circle of radius 4 is &apos;</span><br><span class="line">    + circle.area(4));</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ node foo.js</span><br><span class="line">The area of a circle of radius 4 is 50.26548245743669</span><br></pre></td></tr></table></figure>
-
-<h2 id="module-exports"><a href="#module-exports" class="headerlink" title="module.exports"></a>module.exports</h2><ul>
-<li>파일 자체를 속성이나 메소드로 사용</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// square.js</span><br><span class="line">module.exports = function(width) &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">        area: function() &#123;</span><br><span class="line">            return width * width;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// bar.js</span><br><span class="line">var square = require(&apos;./square.js&apos;);</span><br><span class="line">var mySquare = square(2);</span><br><span class="line">console.log(&apos;The area of my square is &apos; + mySquare.area());</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ node bar.js</span><br><span class="line">The area of my square is 4</span><br></pre></td></tr></table></figure>
-
-<h2 id="index-js"><a href="#index-js" class="headerlink" title="index.js"></a>index.js</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var module = require(&apos;./mymodule&apos;);</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>먼저 mymodule.js 파일을 찾음. <ul>
-<li>있다면 =&gt; 그 파일 추출</li>
-<li>없다면 =&gt; mymodule 이라는 폴더를 찾음. 그리고 그 폴더의 index.js 파일을 찾아 추출</li>
-</ul>
+        <h2 id="PM2"><a href="#PM2" class="headerlink" title="PM2"></a>PM2</h2><ul>
+<li><p>Node.js 프로세스 관리 도구</p>
+</li>
+<li><p>PM2 is a production process manager for Node.js applications with a built-in load balancer. It allows you to keep applications alive forever, to reload them without downtime and to facilitate common system admin tasks. ((<a href="https://github.com/Unitech/pm2" target="_blank" rel="noopener">https://github.com/Unitech/pm2</a>))</p>
 </li>
 </ul>
-<p>​     </p>
+<h2 id="start"><a href="#start" class="headerlink" title="start"></a>start</h2><pre><code>pm2 start app.js</code></pre><h2 id="Listing-all-running-processes"><a href="#Listing-all-running-processes" class="headerlink" title="Listing all running processes"></a>Listing all running processes</h2><pre><code>pm2 list</code></pre><p><img src="https://github.com/KoJunHee/kojunhee.github.io/raw/master/img/processmanagemnet.png" alt="img"><br>​        </p>
+<h2 id="Managing-processes"><a href="#Managing-processes" class="headerlink" title="Managing processes"></a>Managing processes</h2><pre><code>$ pm2 stop     &lt;app_name|id|&apos;all&apos;|json_conf&gt;
+$ pm2 restart  &lt;app_name|id|&apos;all&apos;|json_conf&gt;
+$ pm2 delete   &lt;app_name|id|&apos;all&apos;|json_conf&gt;</code></pre><h2 id="Logs"><a href="#Logs" class="headerlink" title="Logs"></a>Logs</h2><pre><code>$ pm2 logs [&apos;all&apos;|app_name|app_id] [--json] [--format] [--raw]
+
+$ pm2 logs APP-NAME       # Display APP-NAME logs
+$ pm2 logs --json         # JSON output
+$ pm2 logs --format       # Formated output
+$ pm2 flush               # Flush all logs
+$ pm2 reloadLogs          # Reload all logs        </code></pre><p>​     </p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/04/exports/" data-id="ck5axvwhd005srpqxysprge4u" data-title="exports" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/04/pm2/" data-id="ck5cd05g9005xcyqxuyav4ow2" data-title="PM2" class="article-share-link">Share</a>
       
       
       
@@ -191,7 +244,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/04/ 수들의합/" data-id="ck5axvwhc005qrpqx02jnnq2m" data-title="수들의 합" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/04/ 수들의합/" data-id="ck5cd05g6005ncyqxqsx9ywu9" data-title="수들의 합" class="article-share-link">Share</a>
       
       
       
@@ -242,7 +295,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/03/좋은단어/" data-id="ck5axvwhc005orpqxchht26al" data-title="좋은단어" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/03/좋은단어/" data-id="ck5cd05g7005rcyqxou2v5jvv" data-title="좋은단어" class="article-share-link">Share</a>
       
       
       
@@ -299,7 +352,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/01/설탕배달/" data-id="ck5axvwhb005mrpqxfd7963sh" data-title="설탕배달" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/01/설탕배달/" data-id="ck5cd05g5005lcyqx93pghxum" data-title="설탕배달" class="article-share-link">Share</a>
       
       
       
@@ -351,7 +404,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/12/30/팰린드롬 분할/" data-id="ck5axvwha005krpqx5fauicvo" data-title="팰린드롬 분할" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/12/30/팰린드롬 분할/" data-id="ck5cd05g7005pcyqxg0v11lhn" data-title="팰린드롬 분할" class="article-share-link">Share</a>
       
       
       
@@ -411,7 +464,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/12/29/동전/" data-id="ck5axvwh9005irpqxhjqoa9qu" data-title="동전" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/12/29/동전/" data-id="ck5cd05g5005jcyqxbfn5135v" data-title="동전" class="article-share-link">Share</a>
       
       
       
@@ -460,7 +513,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/12/28/도미노/" data-id="ck5axvwh9005grpqxkj12sara" data-title="도미노" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/12/28/도미노/" data-id="ck5cd05g4005hcyqx85akxet3" data-title="도미노" class="article-share-link">Share</a>
       
       
       
@@ -510,7 +563,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/12/27/만취한 상범/" data-id="ck5axvwh8005erpqx2us1hkjs" data-title="만취한 상범" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/12/27/만취한 상범/" data-id="ck5cd05g3005dcyqxkjekxi7f" data-title="만취한 상범" class="article-share-link">Share</a>
       
       
       
@@ -561,74 +614,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/12/26/직사각형에서 탈출/" data-id="ck5axvwh7005crpqxj16c93mr" data-title="직사각형에서 탈출" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-선물전달" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2017/12/25/선물전달/" class="article-date">
-  <time class="dt-published" datetime="2017-12-24T15:00:00.000Z" itemprop="datePublished">2017-12-25</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2017/12/25/선물전달/">선물전달</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><a href="https://www.acmicpc.net/problem/1947" target="_blank" rel="noopener">https://www.acmicpc.net/problem/1947</a></p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
-<li><p>완전 순열의 개념을 알아야함</p>
-<pre><code>완전 순열 : n명의 사람이 자신의 모자를 벗어두었다가, </code></pre><p>  ​    다시 쓰는데 모든 사람이 자기의 것이 아닌 모자를 쓰는 경우의 수</p>
-</li>
-<li><p>d[i]</p>
-<pre><code>i 명이 선물을 나누는 경우의 수</code></pre></li>
-<li><p>a1 a2 a4 a4 …. aj … ai</p>
-</li>
-<li><p>aj가 i 선물을, ai가 j 선물을 가지는 경우</p>
-<pre><code>나머지 i-2 명이 선물을 나눠 가지면 된다 =&gt; d[i-2]</code></pre><p>  ​    그리고 aj는 ai를 제외한 명 수중 한 명 이므로 i-1</p>
-</li>
-<li><p>aj가 i 선물을 가지고, ai가 j 선물으 가지지 않는 경우</p>
-<pre><code>aj를 제외한 나머지 i-1명이 선물을 나눠 가지면 된다. =&gt; d[i-1]</code></pre><p>  ​    그리고 aj는 ai를 제외한 명 수중 한 명 이므로 i-1</p>
-</li>
-<li><p>그런데, 계속해서 런타임 에러가 발생했음</p>
-<ul>
-<li><p>문제 </p>
-<pre><code>d[2]를 초기화할 때, 반복문 안에서 조건을 걸어서 하지 않고,</code></pre><p>  ​    반복문 밖에서 초기화하면 런타임 에러가 뜸.</p>
-</li>
-<li><p>해결 </p>
-<pre><code>반복문 안에서 초기화</code></pre></li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/12/25/선물전달/" data-id="ck5axvwh50058rpqx6vj7k0yk" data-title="선물전달" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/12/26/직사각형에서 탈출/" data-id="ck5cd05g3005fcyqxfn0j734v" data-title="직사각형에서 탈출" class="article-share-link">Share</a>
       
       
       
@@ -683,6 +669,10 @@
       <ul>
         
           <li>
+            <a href="/2020/01/13/object-chapter13/">[오브젝트] 13장_서브클래싱과 서브타이핑</a>
+          </li>
+        
+          <li>
             <a href="/2020/01/12/review-2019/">2019년 회고</a>
           </li>
         
@@ -696,10 +686,6 @@
         
           <li>
             <a href="/2020/01/02/big-data-chapter4/">[빅데이터를 지탱하는 기술] 4장_빅데이터 축적</a>
-          </li>
-        
-          <li>
-            <a href="/2019/12/30/big-data-chapter3/">[빅데이터를 지탱하는 기술] 3장_빅데이터 분산처리</a>
           </li>
         
       </ul>
