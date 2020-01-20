@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  
+  <title>[오브젝트] 14장_일관성 있는 협력 | junhee.ko</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="01 핸드폰 과금 시스템 변경하기 기본 정책 확장 고정 요금 방식 ex ) 10초당 18원  시간대별 방식 ex ) 00시-19시 : 10초당 19월, 19시-24시 : 10초당 15원  요일별 방식 ex ) 평일 : 10초당 38원, 공휴일 : 10초당 19원  구간별 방식 ex) 초기 1분 : 10초당 50원, 초기 1분 이후 : 10초당 20원   고">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[오브젝트] 14장_일관성 있는 협력">
+<meta property="og:url" content="https://kojunhee.github.io/2020/01/20/object-chapter14/index.html">
+<meta property="og:site_name" content="junhee.ko">
+<meta property="og:description" content="01 핸드폰 과금 시스템 변경하기 기본 정책 확장 고정 요금 방식 ex ) 10초당 18원  시간대별 방식 ex ) 00시-19시 : 10초당 19월, 19시-24시 : 10초당 15원  요일별 방식 ex ) 평일 : 10초당 38원, 공휴일 : 10초당 19원  구간별 방식 ex) 초기 1분 : 10초당 50원, 초기 1분 이후 : 10초당 20원   고">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://kojunhee.github.io/image/object_cowork_chapter14.png">
+<meta property="og:image" content="https://kojunhee.github.io/image/object_movie_chapter14.png">
+<meta property="og:image" content="https://kojunhee.github.io/image/object_encapsulation_chapter14.png">
+<meta property="og:image" content="https://kojunhee.github.io/image/object_all_chapter14.png">
+<meta property="og:image" content="https://kojunhee.github.io/image/object_rule_chapter14.png">
+<meta property="og:image" content="https://kojunhee.github.io/image/object_fee_chapter14.png">
+<meta property="og:image" content="https://kojunhee.github.io/image/object_basic_chapter14.png">
+<meta property="og:updated_time" content="2020-01-20T13:37:12.241Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[오브젝트] 14장_일관성 있는 협력">
+<meta name="twitter:description" content="01 핸드폰 과금 시스템 변경하기 기본 정책 확장 고정 요금 방식 ex ) 10초당 18원  시간대별 방식 ex ) 00시-19시 : 10초당 19월, 19시-24시 : 10초당 15원  요일별 방식 ex ) 평일 : 10초당 38원, 공휴일 : 10초당 19원  구간별 방식 ex) 초기 1분 : 10초당 50원, 초기 1분 이후 : 10초당 20원   고">
+<meta name="twitter:image" content="https://kojunhee.github.io/image/object_cowork_chapter14.png">
+  
+    <link rel="alternate" href="/atom.xml" title="junhee.ko" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">junhee.ko</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">always learning</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://kojunhee.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-object-chapter14" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/01/20/object-chapter14/" class="article-date">
+  <time class="dt-published" datetime="2020-01-19T15:00:00.000Z" itemprop="datePublished">2020-01-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/object/">Object</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      [오브젝트] 14장_일관성 있는 협력
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="01-핸드폰-과금-시스템-변경하기"><a href="#01-핸드폰-과금-시스템-변경하기" class="headerlink" title="01 핸드폰 과금 시스템 변경하기"></a>01 핸드폰 과금 시스템 변경하기</h2><p><img src="/image/object_cowork_chapter14.png" alt></p>
+<h5 id="기본-정책-확장"><a href="#기본-정책-확장" class="headerlink" title="기본 정책 확장"></a>기본 정책 확장</h5><ol>
+<li><p>고정 요금 방식</p>
+<p>ex ) 10초당 18원</p>
+</li>
+<li><p>시간대별 방식</p>
+<p>ex ) 00시-19시 : 10초당 19월, 19시-24시 : 10초당 15원</p>
+</li>
+<li><p>요일별 방식</p>
+<p>ex ) 평일 : 10초당 38원, 공휴일 : 10초당 19원</p>
+</li>
+<li><p>구간별 방식</p>
+<p>ex) 초기 1분 : 10초당 50원, 초기 1분 이후 : 10초당 20원</p>
+</li>
+</ol>
+<h5 id="고정-요금-방식-구현하기"><a href="#고정-요금-방식-구현하기" class="headerlink" title="고정 요금 방식 구현하기"></a>고정 요금 방식 구현하기</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FixedFeePolicy</span> <span class="keyword">extends</span> <span class="title">BasicRatePolicy</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Money amount;</span><br><span class="line">    <span class="keyword">private</span> Duration duration;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">FixedFeePolicy</span><span class="params">(Money amount, Duration duration)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.amount = amount;</span><br><span class="line">        <span class="keyword">this</span>.duration = duration;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Money <span class="title">calculateCallFee</span><span class="params">(Call call)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> amount.times(call.getDuration().getSeconds() / seconds.getSeconds());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="시간대별-방식-구현하기"><a href="#시간대별-방식-구현하기" class="headerlink" title="시간대별 방식 구현하기"></a>시간대별 방식 구현하기</h5><p>TimeOfDayDiscountPolicy 클래스에서 가장 중요한 것은, 시간에 따라 서로 다른 요금 규칙을 정의하는 방법을 결정하는 것이다. </p>
+<p>이를 위해 서로 다른 List 를 가질 수 있다. 같은 규칙에 포함된 요소들은 List 의 동일한 인덱스에 위치한다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TimeOfDayDiscountPolicy</span> <span class="keyword">extends</span> <span class="title">BasicRatePolicy</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;LocalTime&gt; starts = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="keyword">private</span> List&lt;LocalTime&gt; ends = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="keyword">private</span> List&lt;LocalTime&gt; duration = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="keyword">private</span> List&lt;Money&gt; amounts = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Money <span class="title">calculateCallFee</span><span class="params">(Call call)</span> </span>&#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="요일별-방식-구현하기"><a href="#요일별-방식-구현하기" class="headerlink" title="요일별 방식 구현하기"></a>요일별 방식 구현하기</h5><p>시간대별 방식의 4개 List 와 다르게, 규칙을 DayOfWeekDiscountRule 이라는 하나의 클래스로 구현해보자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DayOfWeekDiscountRule</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;DayOfWeek&gt; dayOfWeeks = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="keyword">private</span> Duration duration = Duration.ZERO;</span><br><span class="line">    <span class="keyword">private</span> Money amount = Money.ZERO;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DayOfDiscountRule</span><span class="params">(List&lt;DayOfWeek&gt; dayOfWeeks, Duration duration, Money amount)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.dayOfWeeks = dayOfWeeks;</span><br><span class="line">        <span class="keyword">this</span>.duration = duration;</span><br><span class="line">        <span class="keyword">this</span>.amount = amount;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">caculate</span><span class="params">(DateTimeInterval interval)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(dayOfWeeks.contains(interval.getFrom().getDayOfWeek()))&#123;</span><br><span class="line">            <span class="keyword">return</span> ...</span><br><span class="line">        &#125;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DayOfWeekDiscountPolicy</span> <span class="keyword">extends</span> <span class="title">BasicRatePolicy</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;DayOfWeekDiscountRule&gt; rules = <span class="keyword">new</span> ArrayList&lt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DayOfWeekDiscountPolicy</span><span class="params">(List&lt;DayOfWeekDiscountPolicy&gt; rules)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.rules = rules;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Money <span class="title">calculateCallFee</span><span class="params">(Call call)</span> </span>&#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="구간별-방식-구현하기"><a href="#구간별-방식-구현하기" class="headerlink" title="구간별 방식 구현하기"></a>구간별 방식 구현하기</h5><p>(구간별 방식 구현 코드는 생략)</p>
+<p>지금까지의 구현의 가장 큰 문제는, 이 클래스들이 <code>유사한 문제를 해결하고 있음에도 불구하고 설계에 일관성이 없다</code>는 것이다.</p>
+<h2 id="02-설계에-일관성-부여하기"><a href="#02-설계에-일관성-부여하기" class="headerlink" title="02 설계에 일관성 부여하기"></a>02 설계에 일관성 부여하기</h2><p><code>협력을 일관성 있게</code> 만들기 위해서는,</p>
+<ol>
+<li>변하는 개념을 변하지 않는 개념으로 분리하라.</li>
+<li>변하는 개념을 캡슐하하라.</li>
+</ol>
+<h5 id="조건-로직-객체-탐색"><a href="#조건-로직-객체-탐색" class="headerlink" title="조건 로직 객체 탐색"></a>조건 로직 객체 탐색</h5><p>4장의 절차적인 방식으로 구현했던 ReservationAgency 코드를 보자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReservationAgency</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Reservation <span class="title">reservation</span><span class="params">(Screening screening, Customer customer, <span class="keyword">int</span> audienceCount)</span></span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(DiscountCondition condition : movie.getDiscountConditions()&#123;</span><br><span class="line">            <span class="keyword">if</span>(condition.getType() == DiscountCondition.PERIOD)&#123;</span><br><span class="line">                <span class="comment">//기간조건</span></span><br><span class="line">            &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">//회차 조건</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">if</span>(discountable)&#123;</span><br><span class="line">            <span class="keyword">switch</span> (movie.getMovieType())&#123;</span><br><span class="line">                <span class="keyword">case</span> AMOUNT_DISCOUNT:</span><br><span class="line">                    <span class="comment">//금액할인 정책</span></span><br><span class="line">                <span class="keyword">case</span> PERCENT_DISCOUNT:</span><br><span class="line">                    <span class="comment">// 비율 할인 정책</span></span><br><span class="line">                ...</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span>&#123;</span><br><span class="line">            ...</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>객체지향에서는, 변경을 다루는 전통적인 방법은 조건 로직을 객체 사이의 이동으로 바꾸는 것이다.</p>
+<p><img src="/image/object_movie_chapter14.png" alt></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Movie</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> DiscountPolicy discountPolicy;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">calculateMovieFee</span><span class="params">(Screening screening)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> fee.minus(discountPolicy.calculateDiscountAmount(screening));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">DiscountPolicy</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;DiscountCondition&gt; conditions = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">calculateDiscountAmount</span><span class="params">(Screening screening)</span></span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(DiscountCondition each : conditions)&#123;</span><br><span class="line">            <span class="keyword">if</span>(each.isSatisfiedBy(screening))&#123;</span><br><span class="line">                <span class="keyword">return</span> getDiscountAmount(screening);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> screening.getMovieFee();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>객체지향적인 코드는 조건을 판단하지 않는다. 단지 다음 객체로 이동할 뿐이다.</p>
+<ol>
+<li><p>Movie 는 현재의 할인 정책이 어떤 종류인지 판단하지 않는다. 단지 DiscountPolicy 로 향하는 참조를 통해 메세지를 전달할 뿐이다. </p>
+</li>
+<li><p>DiscountPolicy 역시 할인 조건의 종류를 판단하지 않는다. 단지 DiscountCondition 으로 향하는 참조를 통해 메세지를 전단할 뿐이다.</p>
+</li>
+</ol>
+<p><code>협력을 일관성 있게</code> 만들기 위한 방법을 다시 정리하면,</p>
+<ol>
+<li><p>변하는 개념을 변하지 않는 개념으로 분리하라.</p>
+<p>각 조건문을 개별적인 객체로 분리했고 이 객체들을 일관성 있게 협력하기 위해 타입 계층을 구성했다.</p>
+</li>
+<li><p>변하는 개념을 캡슐하하라.</p>
+<p>Movie 가 알고 있는 사실은 협력하는 객체가 단지 DiscountPolicy 클래스의 인터페이스에 정의된 calculateDiscountAmount 메세지를 이해할 수 있다는 것 뿐이다. </p>
+<p>메세지 수신자 타입은 Movie 에 대해 완벽히 캡슐화되었다.</p>
+</li>
+</ol>
+<h5 id="캡슐화-다시-살펴보기"><a href="#캡슐화-다시-살펴보기" class="headerlink" title="캡슐화 다시 살펴보기"></a>캡슐화 다시 살펴보기</h5><p>캡슐화란 변하는 어떤 것이든 감추는 것이다.</p>
+<p>다음 그림에는 다양한 종류의 캡슐화가 공존한다.</p>
+<p><img src="/image/object_encapsulation_chapter14.png" alt></p>
+<ol>
+<li><p>데이터 캡슐화</p>
+<p>클래스는 내부에 관리하는 데이터를 캡슐화한다.</p>
+</li>
+<li><p>메서드 캡슐화</p>
+<p>DiscountPolicy 클래스에 정의된 getDiscountAmount 메서드의 가시성은 protected 이다.</p>
+<p>즉, 클래스의 외부에서는 이 메서드에 접근하지 못하고 클래스 내부와 서브 클래스에서만 접근이 가능하다.</p>
+</li>
+<li><p>객체 캡슐화</p>
+<p>Movie 클래스는 DiscountPolicy 타입의 인스턴스 변수를 포함한다. </p>
+<p>이 인스턴스 변수는 private 가시성을 가지므로 Movie 와 DiscountPolicy 사이의 관계를 변경해도 외부에는 영향을 미치지 않는다.</p>
+<p>즉, 합성이다.</p>
+</li>
+<li><p>서브타입 캡슐화</p>
+<p>Movie 는 DiscountPolicy 에 대해서 알고 있지만, AmountDiscountPolicy 에 대해서는 모른다. </p>
+<p>그러나 실행 시점에 협력할 수 있다.</p>
+<p>서트타입의 종류를 캡슐화하고 있기 때문에, 다형성의 기반이 된다.</p>
+</li>
+</ol>
+<h2 id="3-일관성-있는-기본-정책-구현하기"><a href="#3-일관성-있는-기본-정책-구현하기" class="headerlink" title="3 일관성 있는 기본 정책 구현하기"></a>3 일관성 있는 기본 정책 구현하기</h2><p>전체 설계는 다음과 같다.</p>
+<p><img src="/image/object_all_chapter14.png" alt></p>
+<h5 id="변경-분리하기"><a href="#변경-분리하기" class="headerlink" title="변경 분리하기"></a>변경 분리하기</h5><p>시간대별, 요일별, 구간별 방식의 공통점은 각 기본 정책을 구성하는 방식이 유사하는 것이다.</p>
+<ol>
+<li>기본 정책은 한 개 이상의 규칙으로 구성된다.</li>
+<li>하나의 규칙은 적용 조건과 단위요금을 조합이다.</li>
+</ol>
+<p><img src="/image/object_rule_chapter14.png" alt></p>
+<p>모든 규칙에 적용 조건이 포함된다는 사실은 변하지 않지만 실제 조건의 세부 내용은 다르다. </p>
+<p>즉, 조건의 세부 내용이 바로 변화에 해당하는 것이다. </p>
+<p>변하지 않는 ‘규칙’ 으로부터 변하는 ‘적용 조건’ 을 분리해야한다.</p>
+<h5 id="변경-캡슐화하기"><a href="#변경-캡슐화하기" class="headerlink" title="변경 캡슐화하기"></a>변경 캡슐화하기</h5><p><img src="/image/object_fee_chapter14.png" alt></p>
+<p>변하는 FeeCondition 의 서브 타입은 변하지 않는 FeeRule 로부터 캡슐화된다. </p>
+<h5 id="협력-패턴-설계하기"><a href="#협력-패턴-설계하기" class="headerlink" title="협력 패턴 설계하기"></a>협력 패턴 설계하기</h5><p><img src="/image/object_basic_chapter14.png" alt></p>
+<ol>
+<li><p>BasicRatePolicy 의 calculateFee 메서드는 인자로 전달받은 통화 목록의 전체 요금을 계산한다.</p>
+</li>
+<li><p>BasicRatePolicy 는 목록에 포함된 각 Call 별로 FeeRule 의 calculateFee 메서드를 실행한다.</p>
+</li>
+<li><p>하나의 BasicRatePolicy 는 하나 이상의 FeeRule 로 구성되어서, Call 하나당 FeeRule 에 다수의 calculateFee 메세지가 전송된다.</p>
+</li>
+</ol>
+<h5 id="추상화-수준에서-협력-패턴-구현하기"><a href="#추상화-수준에서-협력-패턴-구현하기" class="headerlink" title="추상화 수준에서 협력 패턴 구현하기"></a>추상화 수준에서 협력 패턴 구현하기</h5><p>변하지 않는 요소와 추상적인 요소만으로 요금 계산에 필요한 전체적인 협력 구조를 설명할 수 있다.</p>
+<h5 id="구체적인-협력-구현하기"><a href="#구체적인-협력-구현하기" class="headerlink" title="구체적인 협력 구현하기"></a>구체적인 협력 구현하기</h5><p>code : 505 Page</p>
+<p>유사한 기능에 대해 유사한 협력 패턴을 적용하는 것은 객체지향 시스템에서 개념적 무결성을 유지할 수 있는 방법이다. </p>
+<p>개념적 무결성이란, 일관성이다.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2020/01/20/object-chapter14/" data-id="ck5mhvjt900oh4qqxvacsazec" data-title="[오브젝트] 14장_일관성 있는 협력" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/01/13/object-chapter13/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">[오브젝트] 13장_서브클래싱과 서브타이핑</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/big-data/">Big Data</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boost-course/">Boost Course</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/dip/">DIP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/data-structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/design-pattern/">Design Pattern</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jpa/">JPA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">Kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/network/">Network</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/os/">OS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/object/">Object</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/software-engineering/">Software Engineering</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/spark/">Spark</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/etc/">etc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ios/">iOS</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/01/20/object-chapter14/">[오브젝트] 14장_일관성 있는 협력</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/13/object-chapter13/">[오브젝트] 13장_서브클래싱과 서브타이핑</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/12/review-2019/">2019년 회고</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/06/object-chapter12/">[오브젝트] 12장_다형성</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/05/big-data-chapter5/">[빅데이터를 지탱하는 기술] 5장_빅데이터 파이프라인</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 junhee.ko<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+  <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
