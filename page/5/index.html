@@ -71,6 +71,92 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-entity mapping" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/03/20/entity mapping/" class="article-date">
+  <time class="dt-published" datetime="2019-03-19T15:00:00.000Z" itemprop="datePublished">2019-03-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/jpa/">JPA</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/03/20/entity mapping/">[자바 ORM 표준 JPA 프로그래밍] 4장_앤티티 매핑</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>엔티티와 테이블을 정확히 매핑하기 위해 JPA는 다양한 어노테이션을 지원합니다. 이번 포스팅에서는 다음 매핑에 대해 다룹니다.</p>
+<ul>
+<li>객체와 테이블 매핑<ul>
+<li>@Entity, @Table</li>
+</ul>
+</li>
+<li>기본 키 매핑<ul>
+<li>@Id</li>
+</ul>
+</li>
+<li>필드와 컬럼 매핑<ul>
+<li>@Column</li>
+</ul>
+</li>
+</ul>
+<h4 id="Entity"><a href="#Entity" class="headerlink" title="@Entity"></a>@Entity</h4><p>JPA를 사용해서 테이블을 매핑할 클래스는 @Entity 를 필수로 붙여야합니다. @Entity 적용시 기본 생성자는 필수입니다.</p>
+<h4 id="Table"><a href="#Table" class="headerlink" title="@Table"></a>@Table</h4><p>엔티티와 매핑할 테이블을 지정합니다. </p>
+<h4 id="데이터베이스-스키마-자동-생성"><a href="#데이터베이스-스키마-자동-생성" class="headerlink" title="데이터베이스 스키마 자동 생성"></a>데이터베이스 스키마 자동 생성</h4><p>JPA는 클래스의 매핑 정보와 데이터베이스 방언을 사용해서 데이터베이스 스키마를 생성합니다. 다음과 같이 설정하면 기존 테이블을 삭제하고 새로 생성합니다 (DROP+CREATE).  create-drop / update / validate / none 옵션이 있습니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spring.jpa.hibernate.ddl-auto=create</span><br></pre></td></tr></table></figure>
+
+<h4 id="기본-키-Primary-Key-매핑"><a href="#기본-키-Primary-Key-매핑" class="headerlink" title="기본 키 (Primary Key) 매핑"></a>기본 키 (Primary Key) 매핑</h4><p>JPA가 제공하는 데이터베이스 기본 키 생성 전략은 다음과 같습니다.</p>
+<ul>
+<li>직접 할당<ul>
+<li>애플리케이션에서 직접 할당합니다.</li>
+</ul>
+</li>
+<li>자동 생성<ul>
+<li>IDENTITY<ul>
+<li>기본 키 생성을 데이터베이스에 위임합니다.</li>
+</ul>
+</li>
+<li>SEQUENCE<ul>
+<li>데이터베이스 시퀀스를 사용해 기본 키를 할당합니다.</li>
+</ul>
+</li>
+<li>TABLE<ul>
+<li>키 생성 테이블을 사용합니다.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="Column"><a href="#Column" class="headerlink" title="@Column"></a>@Column</h4><p>객체 필드를 테이블 칼럼에 매핑합니다. 속성 중에 name, nullable 이 주로 사용됩니다.</p>
+<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><p>자바 ORM 표준 프로그래밍 &lt;김영한&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2019/03/20/entity mapping/" data-id="ck5qcxmee00ltkl6wg4k20hvc" data-title="[자바 ORM 표준 JPA 프로그래밍] 4장_앤티티 매핑" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-persistence context" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2019/03/20/persistence context/" class="article-date">
@@ -153,93 +239,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/03/20/persistence context/" data-id="ck5qcsvei00lsy96w1g3szdf6" data-title="[자바 ORM 표준 JPA 프로그래밍] 3장_영속성 관리" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-entity mapping" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/03/20/entity mapping/" class="article-date">
-  <time class="dt-published" datetime="2019-03-19T15:00:00.000Z" itemprop="datePublished">2019-03-20</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/jpa/">JPA</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/03/20/entity mapping/">[자바 ORM 표준 JPA 프로그래밍] 4장_앤티티 매핑</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>엔티티와 테이블을 정확히 매핑하기 위해 JPA는 다양한 어노테이션을 지원합니다. 이번 포스팅에서는 다음 매핑에 대해 다룹니다.</p>
-<ul>
-<li>객체와 테이블 매핑<ul>
-<li>@Entity, @Table</li>
-</ul>
-</li>
-<li>기본 키 매핑<ul>
-<li>@Id</li>
-</ul>
-</li>
-<li>필드와 컬럼 매핑<ul>
-<li>@Column</li>
-</ul>
-</li>
-</ul>
-<h4 id="Entity"><a href="#Entity" class="headerlink" title="@Entity"></a>@Entity</h4><p>JPA를 사용해서 테이블을 매핑할 클래스는 @Entity 를 필수로 붙여야합니다. @Entity 적용시 기본 생성자는 필수입니다.</p>
-<h4 id="Table"><a href="#Table" class="headerlink" title="@Table"></a>@Table</h4><p>엔티티와 매핑할 테이블을 지정합니다. </p>
-<h4 id="데이터베이스-스키마-자동-생성"><a href="#데이터베이스-스키마-자동-생성" class="headerlink" title="데이터베이스 스키마 자동 생성"></a>데이터베이스 스키마 자동 생성</h4><p>JPA는 클래스의 매핑 정보와 데이터베이스 방언을 사용해서 데이터베이스 스키마를 생성합니다. 다음과 같이 설정하면 기존 테이블을 삭제하고 새로 생성합니다 (DROP+CREATE).  create-drop / update / validate / none 옵션이 있습니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spring.jpa.hibernate.ddl-auto=create</span><br></pre></td></tr></table></figure>
-
-<h4 id="기본-키-Primary-Key-매핑"><a href="#기본-키-Primary-Key-매핑" class="headerlink" title="기본 키 (Primary Key) 매핑"></a>기본 키 (Primary Key) 매핑</h4><p>JPA가 제공하는 데이터베이스 기본 키 생성 전략은 다음과 같습니다.</p>
-<ul>
-<li>직접 할당<ul>
-<li>애플리케이션에서 직접 할당합니다.</li>
-</ul>
-</li>
-<li>자동 생성<ul>
-<li>IDENTITY<ul>
-<li>기본 키 생성을 데이터베이스에 위임합니다.</li>
-</ul>
-</li>
-<li>SEQUENCE<ul>
-<li>데이터베이스 시퀀스를 사용해 기본 키를 할당합니다.</li>
-</ul>
-</li>
-<li>TABLE<ul>
-<li>키 생성 테이블을 사용합니다.</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h4 id="Column"><a href="#Column" class="headerlink" title="@Column"></a>@Column</h4><p>객체 필드를 테이블 칼럼에 매핑합니다. 속성 중에 name, nullable 이 주로 사용됩니다.</p>
-<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><p>자바 ORM 표준 프로그래밍 &lt;김영한&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/03/20/entity mapping/" data-id="ck5qcsveh00lny96wg98oum08" data-title="[자바 ORM 표준 JPA 프로그래밍] 4장_앤티티 매핑" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/03/20/persistence context/" data-id="ck5qcxmef00lvkl6wvp4ofvhp" data-title="[자바 ORM 표준 JPA 프로그래밍] 3장_영속성 관리" class="article-share-link">Share</a>
       
       
       
@@ -308,7 +308,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/03/18/JPA Simple Test/" data-id="ck5qcsvej00luy96wbd0yhdmp" data-title="JPA Simple Test" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/03/18/JPA Simple Test/" data-id="ck5qcxmed00lmkl6w84yihaka" data-title="JPA Simple Test" class="article-share-link">Share</a>
       
       
       
@@ -417,7 +417,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/03/13/JPA Paradigm/" data-id="ck5qcsveg00lky96w6mil8ujp" data-title="패러다임의 불일치" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/03/13/JPA Paradigm/" data-id="ck5qcxmee00lrkl6w8zforbj5" data-title="패러다임의 불일치" class="article-share-link">Share</a>
       
       
       
@@ -505,7 +505,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/03/13/ORM/" data-id="ck5qcsvek00lxy96w70fg6vs8" data-title="ORM" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/03/13/ORM/" data-id="ck5qcxmed00lokl6wk7djy4fp" data-title="ORM" class="article-share-link">Share</a>
       
       
       
@@ -632,7 +632,54 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/01/21/git note/" data-id="ck5qcsvei00lpy96wqf006tzf" data-title="Git 정리" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/01/21/git note/" data-id="ck5qcxmec00lkkl6wiwb73hon" data-title="Git 정리" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-joi" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/09/joi/" class="article-date">
+  <time class="dt-published" datetime="2018-12-08T15:00:00.000Z" itemprop="datePublished">2018-12-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/node-js/">Node.js</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/09/joi/">Joi</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="Joi-가-뭡니까"><a href="#Joi-가-뭡니까" class="headerlink" title="Joi 가 뭡니까 ?"></a>Joi 가 뭡니까 ?</h5><p>Hapi.js에서 사용하는 parameter 검증 모듈입니다.</p>
+<h5 id="Joi-를-사용하지-않으면"><a href="#Joi-를-사용하지-않으면" class="headerlink" title="Joi 를 사용하지 않으면 ?"></a>Joi 를 사용하지 않으면 ?</h5><p>routing 의 handler 에서 parameter 를 검증하는 로직과 서버 자원을 조회하는 로직이 섞여있습니다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> users = [<span class="string">'Chris'</span>, <span class="string">'Mod'</span>, <span class="string">'Daniel'</span>, <span class="string">'JT'</span>, <span class="string">'Justin'</span>];</span><br><span class="line"></span><br><span class="line">server.route(&#123;</span><br><span class="line">    method: <span class="string">'GET'</span>,</span><br><span class="line">    path:<span class="string">'/users/&#123;id&#125;'</span>,</span><br><span class="line">    handler: <span class="function"><span class="keyword">function</span> (<span class="params">req, reply</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 파라메터 검증 </span></span><br><span class="line">      <span class="keyword">if</span> (req.params.id &amp;lt; users.length) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 검증을 통과하면 로직 수행</span></span><br><span class="line">        reply(&#123;<span class="attr">user</span>: users[req.params.id]&#125;);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 검증 미통과시 404 에러코드 반환 </span></span><br><span class="line">        reply(<span class="string">'No user'</span>).code(<span class="number">404</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h5 id="Joi-를-사용하면"><a href="#Joi-를-사용하면" class="headerlink" title="Joi 를 사용하면 ?"></a>Joi 를 사용하면 ?</h5><p>config 속성을 통해 parameter 를 검증할 수 있습니다. config.validate 속성에 자바스크립트 객체를 설정했습니다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Joi = <span class="built_in">require</span>(<span class="string">'joi'</span>);</span><br><span class="line"></span><br><span class="line">server.route(&#123;</span><br><span class="line">  method: <span class="string">'GET'</span>,</span><br><span class="line">  path:<span class="string">'/users/&#123;id&#125;'</span>,</span><br><span class="line">  handler: <span class="function"><span class="keyword">function</span> (<span class="params">req, reply</span>) </span>&#123;</span><br><span class="line">    reply(&#123;<span class="attr">user</span>: users[req.params.id]&#125;);</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// config.validate 속성에 검증 로직을 추가한다. 일종의 스키마 형태 </span></span><br><span class="line">  config: &#123;</span><br><span class="line">    validate: &#123;</span><br><span class="line">      params: &#123;</span><br><span class="line">        id: Joi.number().integer().min(<span class="number">0</span>).max(users.length)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/09/joi/" data-id="ck5qcxmec00likl6w9zxoc7wl" data-title="Joi" class="article-share-link">Share</a>
       
       
       
@@ -681,98 +728,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/09/exports/" data-id="ck5qcsveg00liy96wjtdaf6y5" data-title="exports" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-joi" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/12/09/joi/" class="article-date">
-  <time class="dt-published" datetime="2018-12-08T15:00:00.000Z" itemprop="datePublished">2018-12-09</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/node-js/">Node.js</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/09/joi/">Joi</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h5 id="Joi-가-뭡니까"><a href="#Joi-가-뭡니까" class="headerlink" title="Joi 가 뭡니까 ?"></a>Joi 가 뭡니까 ?</h5><p>Hapi.js에서 사용하는 parameter 검증 모듈입니다.</p>
-<h5 id="Joi-를-사용하지-않으면"><a href="#Joi-를-사용하지-않으면" class="headerlink" title="Joi 를 사용하지 않으면 ?"></a>Joi 를 사용하지 않으면 ?</h5><p>routing 의 handler 에서 parameter 를 검증하는 로직과 서버 자원을 조회하는 로직이 섞여있습니다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> users = [<span class="string">'Chris'</span>, <span class="string">'Mod'</span>, <span class="string">'Daniel'</span>, <span class="string">'JT'</span>, <span class="string">'Justin'</span>];</span><br><span class="line"></span><br><span class="line">server.route(&#123;</span><br><span class="line">    method: <span class="string">'GET'</span>,</span><br><span class="line">    path:<span class="string">'/users/&#123;id&#125;'</span>,</span><br><span class="line">    handler: <span class="function"><span class="keyword">function</span> (<span class="params">req, reply</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 파라메터 검증 </span></span><br><span class="line">      <span class="keyword">if</span> (req.params.id &amp;lt; users.length) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 검증을 통과하면 로직 수행</span></span><br><span class="line">        reply(&#123;<span class="attr">user</span>: users[req.params.id]&#125;);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 검증 미통과시 404 에러코드 반환 </span></span><br><span class="line">        reply(<span class="string">'No user'</span>).code(<span class="number">404</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<h5 id="Joi-를-사용하면"><a href="#Joi-를-사용하면" class="headerlink" title="Joi 를 사용하면 ?"></a>Joi 를 사용하면 ?</h5><p>config 속성을 통해 parameter 를 검증할 수 있습니다. config.validate 속성에 자바스크립트 객체를 설정했습니다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Joi = <span class="built_in">require</span>(<span class="string">'joi'</span>);</span><br><span class="line"></span><br><span class="line">server.route(&#123;</span><br><span class="line">  method: <span class="string">'GET'</span>,</span><br><span class="line">  path:<span class="string">'/users/&#123;id&#125;'</span>,</span><br><span class="line">  handler: <span class="function"><span class="keyword">function</span> (<span class="params">req, reply</span>) </span>&#123;</span><br><span class="line">    reply(&#123;<span class="attr">user</span>: users[req.params.id]&#125;);</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// config.validate 속성에 검증 로직을 추가한다. 일종의 스키마 형태 </span></span><br><span class="line">  config: &#123;</span><br><span class="line">    validate: &#123;</span><br><span class="line">      params: &#123;</span><br><span class="line">        id: Joi.number().integer().min(<span class="number">0</span>).max(users.length)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/09/joi/" data-id="ck5qcsvef00lfy96wf8r7el9x" data-title="Joi" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-REPL" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/12/09/REPL/" class="article-date">
-  <time class="dt-published" datetime="2018-12-08T15:00:00.000Z" itemprop="datePublished">2018-12-09</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/node-js/">Node.js</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/09/REPL/">REPL</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h5 id="REPL-Read-Eval-Print-Loop-은"><a href="#REPL-Read-Eval-Print-Loop-은" class="headerlink" title="REPL (Read Eval Print Loop)은?"></a>REPL (Read Eval Print Loop)은?</h5><p>node.js 코드를 입력할 수 있는 대화형 인터프리터입니다. 터미널에서 node 명령어를 실행하면 실행됩니다.</p>
-<h5 id="cf-event-loop-thread-란"><a href="#cf-event-loop-thread-란" class="headerlink" title="(cf) event loop thread 란 ?"></a>(cf) event loop thread 란 ?</h5><p>node.js는 io 작업시 기다리지 않습니다. 즉, block 되지 않습니다. 따라서 하나의 thread가 다른 요청을 받아서 작업을 처리할수 있습니다. 이 요청을 받아서 처리하는 Thread를 ELP(Event Loop Thread) 라고 합니다.</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/09/REPL/" data-id="ck5qcsvee00ldy96wtwpv1j04" data-title="REPL" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/09/exports/" data-id="ck5qcxmeb00lgkl6wtxjxt1nh" data-title="exports" class="article-share-link">Share</a>
       
       
       
@@ -850,7 +806,65 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/09/React.js/" data-id="ck5qcsvee00lby96wav7hbl9y" data-title="React.js" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/09/React.js/" data-id="ck5qcxmea00lekl6wdp8m041g" data-title="React.js" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-RabbitMQ" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/09/RabbitMQ/" class="article-date">
+  <time class="dt-published" datetime="2018-12-08T15:00:00.000Z" itemprop="datePublished">2018-12-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/etc/">etc</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/09/RabbitMQ/">RabbitMQ</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="RabbitMQ가-뭔가요"><a href="#RabbitMQ가-뭔가요" class="headerlink" title="RabbitMQ가 뭔가요?"></a>RabbitMQ가 뭔가요?</h5><p>producers 로부터 메시지를 받아 consumers 에게 전달해주는 서비스입니다.</p>
+<h5 id="producing이-뭔가요"><a href="#producing이-뭔가요" class="headerlink" title="producing이 뭔가요?"></a>producing이 뭔가요?</h5><p>메시지를 전송한다는 의미입니다. 메시지들을 전송하는 프로그램을 producer 라 부릅니다.</p>
+<h5 id="consuming이-뭔가요"><a href="#consuming이-뭔가요" class="headerlink" title="consuming이 뭔가요?"></a>consuming이 뭔가요?</h5><p>Consuming은 메시지를 수신한다는 의미입니다. 메시지 수신을 기다리는 프로그램을 consumer라고 합니다. </p>
+<h5 id="메세지-큐가-왜-필요한가요"><a href="#메세지-큐가-왜-필요한가요" class="headerlink" title="메세지 큐가 왜 필요한가요?"></a>메세지 큐가 왜 필요한가요?</h5><ol>
+<li>Queue에 넣기 때문에 나중에 처리 할 수 있습니다. (비동기)</li>
+<li>애플리케이션과 분리 할 수 있습니다. </li>
+<li>다수의 프로세스들이 큐에 메시지를 보낼 수 있습니다.</li>
+</ol>
+<h5 id="다른-메세징-시스템은-뭐가-있나요"><a href="#다른-메세징-시스템은-뭐가-있나요" class="headerlink" title="다른 메세징 시스템은 뭐가 있나요?"></a>다른 메세징 시스템은 뭐가 있나요?</h5><p>activeMQ, kafka 등이 있습니다.</p>
+<h5 id="rabbitMQ와-kafka의-차이는-뭔가요"><a href="#rabbitMQ와-kafka의-차이는-뭔가요" class="headerlink" title="rabbitMQ와 kafka의 차이는 뭔가요?"></a>rabbitMQ와 kafka의 차이는 뭔가요?</h5><p>kafaka는 scale out과 high availability 를 위해, 브로커들이 클러스터로 구성되어 동작하도록 설계되었습니다.</p>
+<p>rabbitMQ는 AMQP 프로토콜을 사용하고, kafaka는 단순한 메시지 헤더를 지닌 TCP기반의 프로토콜을 사용합니다.</p>
+<p>rabbitMQ는 Producer가 broker에게 다수의 메시지를 전송할 때 각 메시지를 개별적으로 전송하고, kafka는 다수의 메시지를 batch형태로 broker에게 한 번에 전달할 수 있어 TCP/IP 라운드트립 횟수를 줄일 수 있다.</p>
+<p>rabbitMQ는 메시지를 기본적으로 메모리에 저장하고, kafka는 메시지를 파일 시스템에 저장합니다.</p>
+<p>rabbitMQ는 Consumer에 의해 처리된 메시지(acknowledged message)를 곧바로 삭제하고, kafka는 처리된 메시지를 삭제하지 않고 파일 시스템에 그대로 두었다가 설정된 수명이 지나면 삭제합니다. </p>
+<p>rabbitMQ는 broker가 consumer에게 메시지를 push해 주는 방식인데 반해, Kafka는 consumer가 broker로부터 직접 메시지를 가지고 가는 pull 방식으로 동작합니다.</p>
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="http://epicdevs.com/17" target="_blank" rel="noopener">http://epicdevs.com/17</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/09/RabbitMQ/" data-id="ck5qcxmea00lckl6wdkltnhap" data-title="RabbitMQ" class="article-share-link">Share</a>
       
       
       

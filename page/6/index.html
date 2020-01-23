@@ -71,14 +71,14 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-RabbitMQ" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-REPL" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/12/09/RabbitMQ/" class="article-date">
+    <a href="/2018/12/09/REPL/" class="article-date">
   <time class="dt-published" datetime="2018-12-08T15:00:00.000Z" itemprop="datePublished">2018-12-09</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/etc/">etc</a>
+    <a class="article-category-link" href="/categories/node-js/">Node.js</a>
   </div>
 
   </div>
@@ -89,7 +89,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/09/RabbitMQ/">RabbitMQ</a>
+      <a class="p-name article-title" href="/2018/12/09/REPL/">REPL</a>
     </h1>
   
 
@@ -97,80 +97,13 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h5 id="RabbitMQ가-뭔가요"><a href="#RabbitMQ가-뭔가요" class="headerlink" title="RabbitMQ가 뭔가요?"></a>RabbitMQ가 뭔가요?</h5><p>producers 로부터 메시지를 받아 consumers 에게 전달해주는 서비스입니다.</p>
-<h5 id="producing이-뭔가요"><a href="#producing이-뭔가요" class="headerlink" title="producing이 뭔가요?"></a>producing이 뭔가요?</h5><p>메시지를 전송한다는 의미입니다. 메시지들을 전송하는 프로그램을 producer 라 부릅니다.</p>
-<h5 id="consuming이-뭔가요"><a href="#consuming이-뭔가요" class="headerlink" title="consuming이 뭔가요?"></a>consuming이 뭔가요?</h5><p>Consuming은 메시지를 수신한다는 의미입니다. 메시지 수신을 기다리는 프로그램을 consumer라고 합니다. </p>
-<h5 id="메세지-큐가-왜-필요한가요"><a href="#메세지-큐가-왜-필요한가요" class="headerlink" title="메세지 큐가 왜 필요한가요?"></a>메세지 큐가 왜 필요한가요?</h5><ol>
-<li>Queue에 넣기 때문에 나중에 처리 할 수 있습니다. (비동기)</li>
-<li>애플리케이션과 분리 할 수 있습니다. </li>
-<li>다수의 프로세스들이 큐에 메시지를 보낼 수 있습니다.</li>
-</ol>
-<h5 id="다른-메세징-시스템은-뭐가-있나요"><a href="#다른-메세징-시스템은-뭐가-있나요" class="headerlink" title="다른 메세징 시스템은 뭐가 있나요?"></a>다른 메세징 시스템은 뭐가 있나요?</h5><p>activeMQ, kafka 등이 있습니다.</p>
-<h5 id="rabbitMQ와-kafka의-차이는-뭔가요"><a href="#rabbitMQ와-kafka의-차이는-뭔가요" class="headerlink" title="rabbitMQ와 kafka의 차이는 뭔가요?"></a>rabbitMQ와 kafka의 차이는 뭔가요?</h5><p>kafaka는 scale out과 high availability 를 위해, 브로커들이 클러스터로 구성되어 동작하도록 설계되었습니다.</p>
-<p>rabbitMQ는 AMQP 프로토콜을 사용하고, kafaka는 단순한 메시지 헤더를 지닌 TCP기반의 프로토콜을 사용합니다.</p>
-<p>rabbitMQ는 Producer가 broker에게 다수의 메시지를 전송할 때 각 메시지를 개별적으로 전송하고, kafka는 다수의 메시지를 batch형태로 broker에게 한 번에 전달할 수 있어 TCP/IP 라운드트립 횟수를 줄일 수 있다.</p>
-<p>rabbitMQ는 메시지를 기본적으로 메모리에 저장하고, kafka는 메시지를 파일 시스템에 저장합니다.</p>
-<p>rabbitMQ는 Consumer에 의해 처리된 메시지(acknowledged message)를 곧바로 삭제하고, kafka는 처리된 메시지를 삭제하지 않고 파일 시스템에 그대로 두었다가 설정된 수명이 지나면 삭제합니다. </p>
-<p>rabbitMQ는 broker가 consumer에게 메시지를 push해 주는 방식인데 반해, Kafka는 consumer가 broker로부터 직접 메시지를 가지고 가는 pull 방식으로 동작합니다.</p>
-<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="http://epicdevs.com/17" target="_blank" rel="noopener">http://epicdevs.com/17</a></p>
+        <h5 id="REPL-Read-Eval-Print-Loop-은"><a href="#REPL-Read-Eval-Print-Loop-은" class="headerlink" title="REPL (Read Eval Print Loop)은?"></a>REPL (Read Eval Print Loop)은?</h5><p>node.js 코드를 입력할 수 있는 대화형 인터프리터입니다. 터미널에서 node 명령어를 실행하면 실행됩니다.</p>
+<h5 id="cf-event-loop-thread-란"><a href="#cf-event-loop-thread-란" class="headerlink" title="(cf) event loop thread 란 ?"></a>(cf) event loop thread 란 ?</h5><p>node.js는 io 작업시 기다리지 않습니다. 즉, block 되지 않습니다. 따라서 하나의 thread가 다른 요청을 받아서 작업을 처리할수 있습니다. 이 요청을 받아서 처리하는 Thread를 ELP(Event Loop Thread) 라고 합니다.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/09/RabbitMQ/" data-id="ck5qcsved00l8y96wbhv743gq" data-title="RabbitMQ" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Docker" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/12/09/Docker/" class="article-date">
-  <time class="dt-published" datetime="2018-12-08T15:00:00.000Z" itemprop="datePublished">2018-12-09</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/etc/">etc</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/09/Docker/">Docker</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h5 id="도커가-뭔가요"><a href="#도커가-뭔가요" class="headerlink" title="도커가 뭔가요?"></a>도커가 뭔가요?</h5><p>컨테이너 기반의 가상화 플랫폼입니다.</p>
-<h5 id="컨테이너가-뭔가요"><a href="#컨테이너가-뭔가요" class="headerlink" title="컨테이너가 뭔가요?"></a>컨테이너가 뭔가요?</h5><p>격리된 공간에서 프로세스가 동작하는 기술입니다. 추가되거나 변하는 값은 변하는 값은 컨테이너에 저장됩니다.</p>
-<h5 id="이미지가-뭔가요"><a href="#이미지가-뭔가요" class="headerlink" title="이미지가 뭔가요?"></a>이미지가 뭔가요?</h5><p>컨테이너 실행에 필요한 파일과 설정값등을 포함하고 있는 것 입니다. 상태값을 가지지 않고 변하지 않습니다(Immutable).</p>
-<h5 id="이미지와-컨테이너의-관계는"><a href="#이미지와-컨테이너의-관계는" class="headerlink" title="이미지와 컨테이너의 관계는?"></a>이미지와 컨테이너의 관계는?</h5><p>컨테이너는 이미지가 실행된 상태입니다. 같은 이미지에서 여러개의 컨테이너를 생성할 수 있고 컨테이너의 상태가 바뀌거나 컨테이너가 삭제되더라도 이미지는 변하지 않고 그대로 남아있습니다.</p>
-<h5 id="예를-들면"><a href="#예를-들면" class="headerlink" title="예를 들면?"></a>예를 들면?</h5><p>ubuntu이미지는 ubuntu를 실행하기 위한 모든 파일을 가지고 있습니다. MySQL이미지는 debian을 기반으로 MySQL을 실행하는데 필요한 파일과 실행 명령어, 포트 정보등을 가지고 있습니다.</p>
-<h5 id="이미지는-어떻게-관리하나요"><a href="#이미지는-어떻게-관리하나요" class="headerlink" title="이미지는 어떻게 관리하나요?"></a>이미지는 어떻게 관리하나요?</h5><p>도커 이미지는 Docker hub 에 등록하거나 Docker Registry 저장소를 직접 만들어 관리할 수 있습니다</p>
-<h5 id="기존의-가상화-기술이랑-차이점은"><a href="#기존의-가상화-기술이랑-차이점은" class="headerlink" title="기존의 가상화 기술이랑 차이점은?"></a>기존의 가상화 기술이랑 차이점은?</h5><p>VMware나 VirtualBox같은 가상머신은 호스트 OS위에 게스트 OS 전체를 가상화하여 사용하는 방식입니다. 이 방식은 여러가지 OS를 가상화(리눅스에서 윈도우를 돌린다던가) 할 수 있고 비교적 사용법이 간단하지만 무겁고 느려서 운영환경에선 사용할 수 없었습니다.</p>
-<p>이러한 상황을 개선하기 위해, CPU의 가상화 기술을 이용한 반 가상화 기술이 등장했습니다. 게스트 OS가 필요하긴 하지만 전체OS를 가상화하는 방식이 아니였기 때문에 호스트형 가상화 방식에 비해 성능이 향상되었습니다.</p>
-<p>전가상화든 반가상화든 추가적인 OS를 설치하여 가상화하는 방법은 어쨋든 성능문제가 있었고 이를 개선하기 위해 <strong>프로세스를 격리</strong> 하는 방식이 등장합니다.</p>
-<h5 id="도커의-장점은"><a href="#도커의-장점은" class="headerlink" title="도커의 장점은?"></a>도커의 장점은?</h5><p>더 이상 의존성 파일을 컴파일하고 이것저것 설치할 필요가 없습니다. 말그대로 이미지는 컨테이너를 실행하기 위한 모든 정보를 가지고 있기 때문입니다. 이제 새로운 서버가 추가되면 미리 만들어 놓은 이미지를 다운받고 컨테이너를 생성만 하면 됩니다. 한 서버에 여러개의 컨테이너를 실행할 수 있고, 수십, 수백, 수천대의 서버도 문제없습니다.</p>
-<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://subicura.com/2017/01/19/docker-guide-for-beginners-1.html" target="_blank" rel="noopener">https://subicura.com/2017/01/19/docker-guide-for-beginners-1.html</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/09/Docker/" data-id="ck5qcsved00l6y96wdb1qn0hd" data-title="Docker" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/09/REPL/" data-id="ck5qcxme900lakl6wsmnz4787" data-title="REPL" class="article-share-link">Share</a>
       
       
       
@@ -238,7 +171,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/09/MongoDB Replication/" data-id="ck5qcsvec00l2y96w40bdxwdg" data-title="MongoDB Replication" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/09/MongoDB Replication/" data-id="ck5qcxme900l7kl6waeano5s0" data-title="MongoDB Replication" class="article-share-link">Share</a>
       
       
       
@@ -250,14 +183,14 @@
 
 
   
-    <article id="post-MVC" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-Docker" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/12/07/MVC/" class="article-date">
-  <time class="dt-published" datetime="2018-12-06T15:00:00.000Z" itemprop="datePublished">2018-12-07</time>
+    <a href="/2018/12/09/Docker/" class="article-date">
+  <time class="dt-published" datetime="2018-12-08T15:00:00.000Z" itemprop="datePublished">2018-12-09</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
+    <a class="article-category-link" href="/categories/etc/">etc</a>
   </div>
 
   </div>
@@ -268,7 +201,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/07/MVC/">MVC</a>
+      <a class="p-name article-title" href="/2018/12/09/Docker/">Docker</a>
     </h1>
   
 
@@ -276,13 +209,95 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>하나의 애플리케이션, 프로젝트를 구성할 때 그 구성요소를 Model, View, Controller로 구분한 패턴입니다. </p>
-<p>사용자가 Controller를 조작하면, Controller는 Model을 통해서 데이터를 가져오고, 그 정보를 바탕으로 시각적인 표현을 담당하는 View를 제어해서 사용자에게 전달합니다.</p>
+        <h5 id="도커가-뭔가요"><a href="#도커가-뭔가요" class="headerlink" title="도커가 뭔가요?"></a>도커가 뭔가요?</h5><p>컨테이너 기반의 가상화 플랫폼입니다.</p>
+<h5 id="컨테이너가-뭔가요"><a href="#컨테이너가-뭔가요" class="headerlink" title="컨테이너가 뭔가요?"></a>컨테이너가 뭔가요?</h5><p>격리된 공간에서 프로세스가 동작하는 기술입니다. 추가되거나 변하는 값은 변하는 값은 컨테이너에 저장됩니다.</p>
+<h5 id="이미지가-뭔가요"><a href="#이미지가-뭔가요" class="headerlink" title="이미지가 뭔가요?"></a>이미지가 뭔가요?</h5><p>컨테이너 실행에 필요한 파일과 설정값등을 포함하고 있는 것 입니다. 상태값을 가지지 않고 변하지 않습니다(Immutable).</p>
+<h5 id="이미지와-컨테이너의-관계는"><a href="#이미지와-컨테이너의-관계는" class="headerlink" title="이미지와 컨테이너의 관계는?"></a>이미지와 컨테이너의 관계는?</h5><p>컨테이너는 이미지가 실행된 상태입니다. 같은 이미지에서 여러개의 컨테이너를 생성할 수 있고 컨테이너의 상태가 바뀌거나 컨테이너가 삭제되더라도 이미지는 변하지 않고 그대로 남아있습니다.</p>
+<h5 id="예를-들면"><a href="#예를-들면" class="headerlink" title="예를 들면?"></a>예를 들면?</h5><p>ubuntu이미지는 ubuntu를 실행하기 위한 모든 파일을 가지고 있습니다. MySQL이미지는 debian을 기반으로 MySQL을 실행하는데 필요한 파일과 실행 명령어, 포트 정보등을 가지고 있습니다.</p>
+<h5 id="이미지는-어떻게-관리하나요"><a href="#이미지는-어떻게-관리하나요" class="headerlink" title="이미지는 어떻게 관리하나요?"></a>이미지는 어떻게 관리하나요?</h5><p>도커 이미지는 Docker hub 에 등록하거나 Docker Registry 저장소를 직접 만들어 관리할 수 있습니다</p>
+<h5 id="기존의-가상화-기술이랑-차이점은"><a href="#기존의-가상화-기술이랑-차이점은" class="headerlink" title="기존의 가상화 기술이랑 차이점은?"></a>기존의 가상화 기술이랑 차이점은?</h5><p>VMware나 VirtualBox같은 가상머신은 호스트 OS위에 게스트 OS 전체를 가상화하여 사용하는 방식입니다. 이 방식은 여러가지 OS를 가상화(리눅스에서 윈도우를 돌린다던가) 할 수 있고 비교적 사용법이 간단하지만 무겁고 느려서 운영환경에선 사용할 수 없었습니다.</p>
+<p>이러한 상황을 개선하기 위해, CPU의 가상화 기술을 이용한 반 가상화 기술이 등장했습니다. 게스트 OS가 필요하긴 하지만 전체OS를 가상화하는 방식이 아니였기 때문에 호스트형 가상화 방식에 비해 성능이 향상되었습니다.</p>
+<p>전가상화든 반가상화든 추가적인 OS를 설치하여 가상화하는 방법은 어쨋든 성능문제가 있었고 이를 개선하기 위해 <strong>프로세스를 격리</strong> 하는 방식이 등장합니다.</p>
+<h5 id="도커의-장점은"><a href="#도커의-장점은" class="headerlink" title="도커의 장점은?"></a>도커의 장점은?</h5><p>더 이상 의존성 파일을 컴파일하고 이것저것 설치할 필요가 없습니다. 말그대로 이미지는 컨테이너를 실행하기 위한 모든 정보를 가지고 있기 때문입니다. 이제 새로운 서버가 추가되면 미리 만들어 놓은 이미지를 다운받고 컨테이너를 생성만 하면 됩니다. 한 서버에 여러개의 컨테이너를 실행할 수 있고, 수십, 수백, 수천대의 서버도 문제없습니다.</p>
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://subicura.com/2017/01/19/docker-guide-for-beginners-1.html" target="_blank" rel="noopener">https://subicura.com/2017/01/19/docker-guide-for-beginners-1.html</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/07/MVC/" data-id="ck5qcsve700koy96wldo9c86f" data-title="MVC" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/09/Docker/" data-id="ck5qcxme800l5kl6w1k7y0axu" data-title="Docker" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-JUnit" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/07/JUnit/" class="article-date">
+  <time class="dt-published" datetime="2018-12-06T15:00:00.000Z" itemprop="datePublished">2018-12-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/software-engineering/">Software Engineering</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/07/JUnit/">JUnit</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="JUnit이란"><a href="#JUnit이란" class="headerlink" title="JUnit이란?"></a>JUnit이란?</h5><p> Java의  Testing Framework입니다.</p>
+<h5 id="JUnit-환경언-어떻게-구축하나요"><a href="#JUnit-환경언-어떻게-구축하나요" class="headerlink" title="JUnit 환경언 어떻게 구축하나요?"></a>JUnit 환경언 어떻게 구축하나요?</h5><p>pom.xml에 dependency를 추가해야합니다. Maven을 통해 쉽게 추가 할 수 있습니다. </p>
+<h5 id="어떤-flow로-동작하나요"><a href="#어떤-flow로-동작하나요" class="headerlink" title="어떤 flow로 동작하나요?"></a>어떤 flow로 동작하나요?</h5><p><img src="/image/junit.png" alt></p>
+<h5 id="Annotation-뭐가-있죠"><a href="#Annotation-뭐가-있죠" class="headerlink" title="Annotation 뭐가 있죠?"></a>Annotation 뭐가 있죠?</h5><ol>
+<li><p>@Test</p>
+<p>해당 Method는 Test 대상 메소드임을 의미합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Example</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       org.junit.Assert.assertTrue( <span class="keyword">new</span> ArrayList().isEmpty() );</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>@BeforeClass</p>
+<p>해당 테스트가 시작 전에 딱 한 번씩만 수행되도록 지정합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Example</span> </span>&#123;</span><br><span class="line">   <span class="meta">@BeforeClass</span> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">onlyOnce</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      ...</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="meta">@Test</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">one</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      ...</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="meta">@Test</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">two</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      ...</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>@AfeterClass</p>
+<p>해당 테스트가 끝나고 딱 한 번씩만 수행되도록 지정합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Example</span> </span>&#123;</span><br><span class="line">   DatabaseConnection database;</span><br><span class="line">   <span class="meta">@BeforeClass</span> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">login</span><span class="params">()</span> </span>&#123;</span><br><span class="line">         database= ...;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="meta">@Test</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">something</span><span class="params">()</span> </span>&#123;</span><br><span class="line">         ...</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="meta">@Test</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">somethingElse</span><span class="params">()</span> </span>&#123;</span><br><span class="line">         ...</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="meta">@AfterClass</span> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">logout</span><span class="params">()</span> </span>&#123;</span><br><span class="line">         database.logout();</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>@Before</p>
+<p>해당 테스트가 진행이 시작되기 전에 작업할 내용을 호출합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Example</span> </span>&#123;</span><br><span class="line">   List empty;</span><br><span class="line">   <span class="meta">@Before</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">initialize</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      empty= <span class="keyword">new</span> ArrayList();</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="meta">@Test</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">size</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      ...</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="meta">@Test</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      ...</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>@After</p>
+<p>해당 테스트가 진행이 끝난 후에 작업할 내용을 호출합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Example</span> </span>&#123;</span><br><span class="line">    File output;</span><br><span class="line">    <span class="meta">@Before</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">createOutputFile</span><span class="params">()</span> </span>&#123;</span><br><span class="line">          output= <span class="keyword">new</span> File(...);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Test</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">something</span><span class="params">()</span> </span>&#123;</span><br><span class="line">          ...</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@After</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deleteOutputFile</span><span class="params">()</span> </span>&#123;</span><br><span class="line">          output.delete();</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>@Ignore</p>
+<p>TestCase를 무시할 수 있습니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Ignore</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IgnoreMe</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Test</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test1</span><span class="params">()</span> </span>&#123; ... &#125;</span><br><span class="line">  <span class="meta">@Test</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test2</span><span class="params">()</span> </span>&#123; ... &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="http://www.nextree.co.kr/p11104/" target="_blank" rel="noopener">http://www.nextree.co.kr/p11104/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/07/JUnit/" data-id="ck5qcxme300kpkl6w1t4sxncq" data-title="JUnit" class="article-share-link">Share</a>
       
       
       
@@ -340,7 +355,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/07/jenkins/" data-id="ck5qcsvec00l4y96w1jnf562g" data-title="jenkins" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/07/jenkins/" data-id="ck5qcxme800l3kl6wstlsj2q7" data-title="jenkins" class="article-share-link">Share</a>
       
       
       
@@ -417,7 +432,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/07/Refactoring/" data-id="ck5qcsvea00kwy96whcuvfx9q" data-title="Refactoring" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/07/Refactoring/" data-id="ck5qcxme500kxkl6wzuksc2pw" data-title="Refactoring" class="article-share-link">Share</a>
       
       
       
@@ -468,68 +483,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/07/Push Server/" data-id="ck5qcsve900kuy96wxaxg3mq0" data-title="Push Server" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Devops" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/12/07/Devops/" class="article-date">
-  <time class="dt-published" datetime="2018-12-06T15:00:00.000Z" itemprop="datePublished">2018-12-07</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/software-engineering/">Software Engineering</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/07/Devops/">Devops</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h5 id="Devops-란"><a href="#Devops-란" class="headerlink" title="Devops 란 ?"></a>Devops 란 ?</h5><p>개발과 운영을 하나의 조직으로 합쳐서 팀을 운영하는 문화이자 방법론입니다.</p>
-<h5 id="Devops는-어떤-특징이-있나요"><a href="#Devops는-어떤-특징이-있나요" class="headerlink" title="Devops는 어떤 특징이 있나요 ?"></a>Devops는 어떤 특징이 있나요 ?</h5><ol>
-<li><p>Cross functional team</p>
-<p>하나의 팀에 각각 다른 역할을 할 수 있는 팀원들로 셋업해서 전체 End 2 End 서비스를 운용할 수 있도록 합니다.</p>
-</li>
-<li><p>Widely Shared Metris</p>
-<p>서비스를 개발하고 개선했을 때, 이를 평가하고 현재의 서비스의 진행 상태 (성공 여부, 시스템의 안정성, 사용자의 반응 등)를 인지할 수 있는 기준이 필요합니다.</p>
-</li>
-<li><p>Automating repetitive tasks</p>
-<p>반복적인 작업을 툴을 이용해서 자동화 합니다.</p>
-</li>
-<li><p>Post mortems</p>
-<p>사후 검증. 장애나 이슈가 있을때, 처리 후에, 그 내용을 전체 팀과 공유해야 합니다.</p>
-</li>
-<li><p>Regular release</p>
-<p>정기적으로 릴리즈 주기를 설정하면, 전체 협업을 하는 입장에서 언제 어떤 협업을 해야 할지도 명확해지고, 개발이 리듬을 타게 됩니다.</p>
-</li>
-</ol>
-<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="http://bcho.tistory.com/817" target="_blank" rel="noopener">http://bcho.tistory.com/817</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/07/Devops/" data-id="ck5qcsve900ksy96wybnsinao" data-title="Devops" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/07/Push Server/" data-id="ck5qcxme500kvkl6w0zjli0k7" data-title="Push Server" class="article-share-link">Share</a>
       
       
       
@@ -590,7 +544,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/07/Promise/" data-id="ck5qcsve800kqy96wncl5hp7m" data-title="Promise" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/07/Promise/" data-id="ck5qcxme400ktkl6wie6aqtjz" data-title="Promise" class="article-share-link">Share</a>
       
       
       
@@ -602,14 +556,14 @@
 
 
   
-    <article id="post-TDD" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-MVC" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/12/07/TDD/" class="article-date">
+    <a href="/2018/12/07/MVC/" class="article-date">
   <time class="dt-published" datetime="2018-12-06T15:00:00.000Z" itemprop="datePublished">2018-12-07</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/software-engineering/">Software Engineering</a>
+    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
   </div>
 
   </div>
@@ -620,7 +574,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/07/TDD/">TDD</a>
+      <a class="p-name article-title" href="/2018/12/07/MVC/">MVC</a>
     </h1>
   
 
@@ -628,35 +582,59 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h5 id="TDD-란"><a href="#TDD-란" class="headerlink" title="TDD 란 ?"></a>TDD 란 ?</h5><p>Test Driven Development</p>
-<p>테스트가 개발을 이끌어 나갑니다. 테스트를 먼저 만들고 테스트를 통과하기 위한 것을 짜는 것입니다. 즉, 만드는 과정에서 우선 테스트를 작성하고 그걸 통과하는 코드를 만들고를 반복하면서 제대로 동작하는지에 대한 피드백을 적극적으로 받는 것입니다.</p>
-<h5 id="TDD를-왜-해야-하나요"><a href="#TDD를-왜-해야-하나요" class="headerlink" title="TDD를 왜 해야 하나요 ?"></a>TDD를 왜 해야 하나요 ?</h5><p>피드백과 협력을 증진시키기 때문에, 불확실성이 높을 때 도움이 됩니다.</p>
-<h5 id="TDD의-장점은"><a href="#TDD의-장점은" class="headerlink" title="TDD의 장점은 ?"></a>TDD의 장점은 ?</h5><ol>
-<li><p>보다 튼튼한 객체지적인 코드 생상이 가능합니다.</p>
-<p>TDD는 모든 코드가 재사용성 기반으로 작성되어야 하기 때문에 보다 튼튼한 코드 생산이 이루어집니다.</p>
-</li>
-<li><p>재설계 시간이 단축됩니다.</p>
-</li>
-<li><p>디버깅 시간이 단축됩니다.</p>
-<p>우리는 각각의 모듈 별로 테스트를 자동화할 수 있는 코드가 없다면, 특정 버그를 찾기 위해서 모든 레벨(레이어)의 코드들을 살펴봐야 합니다. 예를 들어 사용자의 데이터가 잘못 나온다면 DB의 문제인지, 비즈니스 레이어의 문제인지 UI 단의 문제인지 실제 모든 레이어들을 전부다 디버깅할 필요 없이 자동화 된 유닛테스팅 결과로 우리는 손 쉽게 찾아 낼 수 있습니다.</p>
-</li>
-<li><p>Behavior-Driven Development를 적용하는데 있어서 큰 시너지 효과가 있습니다.</p>
-<p>BDD는 행위(동작) 중심적인 방법으로 개발을 진행하는 방법론인데 개발자 디자이너 그리고 기획자 모두 사용자 입장으로 같은 목표로 가지기 위함입니다. TDD를 진행하면 항상 그 테스트 요소들이 사용자 관점으로 정의되고 진행되기 때문에 보다 튼튼한 개발 프로세스를 만들게 됩니다.</p>
-</li>
-<li><p>테스트 문서를 대체 할 수 있습니다.</p>
-<p>TDD를 하게 될 경우에 테스팅을 자동화 시킴과 동시에 보다 정확한 테스트 근거를 산출할 수 있다.</p>
-</li>
-<li><p>추가 구현이 용이합니다.</p>
-<p>유닛 테스트로 자동화 될 경우에 수동으로 모든 테스트를 다시 진행해야 되는 시간적인 낭비를 줄일 수 있습니다.</p>
-</li>
-</ol>
-<h5 id="TDD의-단점은"><a href="#TDD의-단점은" class="headerlink" title="TDD의 단점은 ?"></a>TDD의 단점은 ?</h5><p>코드 퀄리티 보다는 빠른 결과물을 원하는 환경이라면 쉽게 도입이 어려울 수 있습니다. TDD 를 공부해야 하고 추가적으로 테스트 코드를 작성해야 하기 때문입니다.</p>
-<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://lalwr.blogspot.com/2016/02/tddtest-driven-development.html" target="_blank" rel="noopener">https://lalwr.blogspot.com/2016/02/tddtest-driven-development.html</a></p>
+        <p>하나의 애플리케이션, 프로젝트를 구성할 때 그 구성요소를 Model, View, Controller로 구분한 패턴입니다. </p>
+<p>사용자가 Controller를 조작하면, Controller는 Model을 통해서 데이터를 가져오고, 그 정보를 바탕으로 시각적인 표현을 담당하는 View를 제어해서 사용자에게 전달합니다.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/07/TDD/" data-id="ck5qcsvea00kyy96w4dh1onv6" data-title="TDD" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/07/MVC/" data-id="ck5qcxme400krkl6w2qpf64a7" data-title="MVC" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Web Socket" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/07/Web Socket/" class="article-date">
+  <time class="dt-published" datetime="2018-12-06T15:00:00.000Z" itemprop="datePublished">2018-12-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/network/">Network</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/07/Web Socket/">Web Socket</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="Web-Socket이란"><a href="#Web-Socket이란" class="headerlink" title="Web Socket이란?"></a>Web Socket이란?</h5><p>WebSocket은 Web server 와 Web browser 간의 쌍방향 통신을 위한 통신 규약입니다.</p>
+<h5 id="Web-Socket-전에는"><a href="#Web-Socket-전에는" class="headerlink" title="Web Socket 전에는?"></a>Web Socket 전에는?</h5><p>polling, long polling, stream이 있습니다.</p>
+<h5 id="Web-Socket이-기존-통신-방법과-차이는"><a href="#Web-Socket이-기존-통신-방법과-차이는" class="headerlink" title="Web Socket이 기존 통신 방법과 차이는?"></a>Web Socket이 기존 통신 방법과 차이는?</h5><p>WebSocket 프로토콜은 접속 확립에 HTTP를 사용하지만, 그 후의 통신은 WebSocket 독자의 프로토콜로 이루어집니다. 또한, header가 상당히 작아 overhead가 적은 특징이 있습니다. 장시간 접속을 전제로 하기 때문에, 접속한 상태라면 클라이언트나 서버로부터 데이터 송신이 가능합니다. 더불어 데이터의 송신과 수신에 각각 커넥션을 맺을 필요가 없어, 하나의 커넥션으로 데이터를 송수신 할 수 있습니다. 통신시에 지정되는 URL은 <a href="http://www.sample.com/과" target="_blank" rel="noopener">http://www.sample.com/과</a> 같은 형식이 아니라 <strong>ws://</strong><a href="http://www.sample.com/과" target="_blank" rel="noopener">www.sample.com/과</a> 같은 형식이 됩니다.</p>
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="http://duckdevelope.tistory.com/19" target="_blank" rel="noopener">http://duckdevelope.tistory.com/19</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/07/Web Socket/" data-id="ck5qcxme600kzkl6wqrqiibb5" data-title="Web Socket" class="article-share-link">Share</a>
       
       
       

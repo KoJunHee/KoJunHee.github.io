@@ -71,14 +71,14 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-개복치" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-Java Sort" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/10/24/개복치/" class="article-date">
+    <a href="/2018/10/24/Java Sort/" class="article-date">
   <time class="dt-published" datetime="2018-10-23T15:00:00.000Z" itemprop="datePublished">2018-10-24</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+    <a class="article-category-link" href="/categories/java/">Java</a>
   </div>
 
   </div>
@@ -89,7 +89,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/10/24/개복치/">개복치</a>
+      <a class="p-name article-title" href="/2018/10/24/Java Sort/">Java Sort</a>
     </h1>
   
 
@@ -97,28 +97,35 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p><a href="https://www.acmicpc.net/problem/16236" target="_blank" rel="noopener">https://www.acmicpc.net/problem/16236</a></p>
-<p>2018 하반기 대졸 신입 삼성 코딩 테스트 기출문제이다.</p>
-<p>시험장에서  문제를 읽고 쉬울 것이라고 예상만 하고, 1번 문제를 푸느라 풀지는 못했다.</p>
-<p>따로 풀어보니, 시간이 오래 걸렸지만 간단한 문제이다.</p>
-<p>코드를 너무 복잡하게 짜서, 더 간단하고 깔끔한 풀이를 찾아봐야겠다.</p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p>BFS + Simulation</p>
+        <p><a href="https://github.com/KoJunHee/algorithm/blob/master/src/java_sort/Main.java" target="_blank" rel="noopener">https://github.com/KoJunHee/algorithm/blob/master/src/java_sort/Main.java</a></p>
 <ol>
-<li>먹을 수 있는 물고기 후보 찾기 : BFS</li>
-<li>후보가 한 마리면 그 물고기 위치로 이동해서 먹기</li>
-<li>후보가 두 마리 이상이면 다음 조건들을 차례대로. 두 가지 이상 나오면, 다음 조건 확인 : Simulation<ol>
-<li>가장 가까운</li>
-<li>가장 i가 작은</li>
-<li>가장 j가 작은</li>
-</ol>
+<li><p>array 정렬 : Arrays.sort() </p>
+</li>
+<li><p>list 정렬 : Collections.sort()</p>
 </li>
 </ol>
-<h2 id="코드"><a href="#코드" class="headerlink" title="코드"></a>코드</h2><p><a href="https://github.com/KoJunHee/algorithm/blob/master/src/bj_16236/Main.java" target="_blank" rel="noopener">https://github.com/KoJunHee/algorithm/blob/master/src/bj_16236/Main.java</a></p>
+<h2 id="array"><a href="#array" class="headerlink" title="array"></a>array</h2><p>Arrays.sort(배열)을 통해 string type 배열과 integer type 배열을 오름차순 정렬하는 코드이다. </p>
+<p><img src="/image/javaSort01.png" alt></p>
+<h2 id="list"><a href="#list" class="headerlink" title="list"></a>list</h2><p>Collections.sort(리스트)를 통해 string type arraylist를 오름차순 정렬하는 코드이다. </p>
+<p><img src="/image/javaSort02.png" alt></p>
+<h2 id="object-list"><a href="#object-list" class="headerlink" title="object list"></a>object list</h2><p>이름과 나이를 가지는 사람들 list가 있다고 하자. </p>
+<p>단순히, 위의 코드처럼 Collections.sort(리스트) 를 하면 될까? 안된다. </p>
+<p>사람이 가지고 있는 필드는 이름과 나이인데 어떤 기준으로 정렬할 것인지 정해주지 않았기 때문이다. </p>
+<p>따라서 기준을 정해줘야 정렬이 가능하다. 정렬 기준을 정하는 방법은 두 가지가 있다.</p>
+<p>첫 번째는, 사람 클래스에 Compare implements를 하고 compareTo method를 override하는 방법이 있다.</p>
+<p>두 번째는, Comparator을 구현하는 것이다.</p>
+<h2 id="Comparable"><a href="#Comparable" class="headerlink" title="Comparable"></a>Comparable</h2><p>Person class에 Compare implements를 하고 compareTo method를 이름 기준으로 오름차순 정렬하도록 override 하였다.</p>
+<p><img src="/image/javaSort03.png" alt></p>
+<p><img src="/image/javaSort04.png" alt></p>
+<h2 id="Comparator"><a href="#Comparator" class="headerlink" title="Comparator"></a>Comparator</h2><p>Person class에 손을 대지 않고, Comparator을 구현하여 sort method에 인자로 넘겨준다. </p>
+<p>compare method에서 나이를 기준으로 오름차순 정렬하였다.</p>
+<p><img src="/image/javaSort05.png" alt></p>
+<p><img src="/image/javaSort06.png" alt></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/10/24/개복치/" data-id="ck5qcsvdd00hry96wygab9eoo" data-title="개복치" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/10/24/Java Sort/" data-id="ck5qcxmd000hpkl6wvtv0o190" data-title="Java Sort" class="article-share-link">Share</a>
       
       
       
@@ -184,7 +191,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/10/24/Type Casting/" data-id="ck5qcsvdc00hoy96wsu9jn3wy" data-title="Type Casting" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/10/24/Type Casting/" data-id="ck5qcxmd100hrkl6w1adk4ufq" data-title="Type Casting" class="article-share-link">Share</a>
       
       
       
@@ -196,14 +203,14 @@
 
 
   
-    <article id="post-Java Sort" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-개복치" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/10/24/Java Sort/" class="article-date">
+    <a href="/2018/10/24/개복치/" class="article-date">
   <time class="dt-published" datetime="2018-10-23T15:00:00.000Z" itemprop="datePublished">2018-10-24</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/java/">Java</a>
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
   </div>
 
   </div>
@@ -214,7 +221,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/10/24/Java Sort/">Java Sort</a>
+      <a class="p-name article-title" href="/2018/10/24/개복치/">개복치</a>
     </h1>
   
 
@@ -222,35 +229,28 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p><a href="https://github.com/KoJunHee/algorithm/blob/master/src/java_sort/Main.java" target="_blank" rel="noopener">https://github.com/KoJunHee/algorithm/blob/master/src/java_sort/Main.java</a></p>
+        <p><a href="https://www.acmicpc.net/problem/16236" target="_blank" rel="noopener">https://www.acmicpc.net/problem/16236</a></p>
+<p>2018 하반기 대졸 신입 삼성 코딩 테스트 기출문제이다.</p>
+<p>시험장에서  문제를 읽고 쉬울 것이라고 예상만 하고, 1번 문제를 푸느라 풀지는 못했다.</p>
+<p>따로 풀어보니, 시간이 오래 걸렸지만 간단한 문제이다.</p>
+<p>코드를 너무 복잡하게 짜서, 더 간단하고 깔끔한 풀이를 찾아봐야겠다.</p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p>BFS + Simulation</p>
 <ol>
-<li><p>array 정렬 : Arrays.sort() </p>
-</li>
-<li><p>list 정렬 : Collections.sort()</p>
+<li>먹을 수 있는 물고기 후보 찾기 : BFS</li>
+<li>후보가 한 마리면 그 물고기 위치로 이동해서 먹기</li>
+<li>후보가 두 마리 이상이면 다음 조건들을 차례대로. 두 가지 이상 나오면, 다음 조건 확인 : Simulation<ol>
+<li>가장 가까운</li>
+<li>가장 i가 작은</li>
+<li>가장 j가 작은</li>
+</ol>
 </li>
 </ol>
-<h2 id="array"><a href="#array" class="headerlink" title="array"></a>array</h2><p>Arrays.sort(배열)을 통해 string type 배열과 integer type 배열을 오름차순 정렬하는 코드이다. </p>
-<p><img src="/image/javaSort01.png" alt></p>
-<h2 id="list"><a href="#list" class="headerlink" title="list"></a>list</h2><p>Collections.sort(리스트)를 통해 string type arraylist를 오름차순 정렬하는 코드이다. </p>
-<p><img src="/image/javaSort02.png" alt></p>
-<h2 id="object-list"><a href="#object-list" class="headerlink" title="object list"></a>object list</h2><p>이름과 나이를 가지는 사람들 list가 있다고 하자. </p>
-<p>단순히, 위의 코드처럼 Collections.sort(리스트) 를 하면 될까? 안된다. </p>
-<p>사람이 가지고 있는 필드는 이름과 나이인데 어떤 기준으로 정렬할 것인지 정해주지 않았기 때문이다. </p>
-<p>따라서 기준을 정해줘야 정렬이 가능하다. 정렬 기준을 정하는 방법은 두 가지가 있다.</p>
-<p>첫 번째는, 사람 클래스에 Compare implements를 하고 compareTo method를 override하는 방법이 있다.</p>
-<p>두 번째는, Comparator을 구현하는 것이다.</p>
-<h2 id="Comparable"><a href="#Comparable" class="headerlink" title="Comparable"></a>Comparable</h2><p>Person class에 Compare implements를 하고 compareTo method를 이름 기준으로 오름차순 정렬하도록 override 하였다.</p>
-<p><img src="/image/javaSort03.png" alt></p>
-<p><img src="/image/javaSort04.png" alt></p>
-<h2 id="Comparator"><a href="#Comparator" class="headerlink" title="Comparator"></a>Comparator</h2><p>Person class에 손을 대지 않고, Comparator을 구현하여 sort method에 인자로 넘겨준다. </p>
-<p>compare method에서 나이를 기준으로 오름차순 정렬하였다.</p>
-<p><img src="/image/javaSort05.png" alt></p>
-<p><img src="/image/javaSort06.png" alt></p>
+<h2 id="코드"><a href="#코드" class="headerlink" title="코드"></a>코드</h2><p><a href="https://github.com/KoJunHee/algorithm/blob/master/src/bj_16236/Main.java" target="_blank" rel="noopener">https://github.com/KoJunHee/algorithm/blob/master/src/bj_16236/Main.java</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/10/24/Java Sort/" data-id="ck5qcsvdb00hmy96woy7u3gsb" data-title="Java Sort" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/10/24/개복치/" data-id="ck5qcxmcz00hnkl6wpmm6ke2z" data-title="개복치" class="article-share-link">Share</a>
       
       
       
@@ -327,7 +327,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/10/23/2018 하반기 삼성 코테 리뷰/" data-id="ck5qcsvdb00hky96wl8i8ir1a" data-title="2018 하반기 삼성 코테 리뷰" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/10/23/2018 하반기 삼성 코테 리뷰/" data-id="ck5qcxmcy00hlkl6wmived9u7" data-title="2018 하반기 삼성 코테 리뷰" class="article-share-link">Share</a>
       
       
       
@@ -387,7 +387,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/10/19/홈 방범 서비스/" data-id="ck5qcsvda00hiy96w8jes9w7b" data-title="홈 방범 서비스" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/10/19/홈 방범 서비스/" data-id="ck5qcxmcy00hjkl6wf4j6zbrh" data-title="홈 방범 서비스" class="article-share-link">Share</a>
       
       
       
@@ -439,62 +439,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/10/16/미생물 격리/" data-id="ck5qcsvd900hey96w8r2n4lfu" data-title="미생물 격리" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-무선 충전" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/10/12/무선 충전/" class="article-date">
-  <time class="dt-published" datetime="2018-10-11T15:00:00.000Z" itemprop="datePublished">2018-10-12</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/10/12/무선 충전/">무선 충전</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><a href="https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AWXRDL1aeugDFAUo" target="_blank" rel="noopener">https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AWXRDL1aeugDFAUo</a></p>
-<p>오래 걸렸다. 다른 풀이 방법은 없을까?</p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ol>
-<li><p>지도에 BC 정보들을 표시</p>
-<p>① bc index를 표시함</p>
-<p>② 중복되는 지점은 + 로 연결해서 표시 ( 지도의 type : String )</p>
-</li>
-<li><p>A, B 움직이며 충전</p>
-<p>① 이동한 위치를 + 를 기준하여 자름 ( 1+3 : 1번 bc , 3번 bc 겹치는 지점 )</p>
-<p>② BC 선택권이 겹치지 않는 경우, A 선택권 중 가장 power 센것과 B 선택권 중 가장 power 센것 더함</p>
-<p>③ BC 선택권이 겹치는 경우, 모든 경우 비교 ( A : 1 2 3 , B : 2 3 =&gt; 3*2 번의 비교 )</p>
-</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/10/12/무선 충전/" data-id="ck5qcsvd800hcy96watswqbgo" data-title="무선 충전" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/10/16/미생물 격리/" data-id="ck5qcxmcx00hhkl6w8cxzztvq" data-title="미생물 격리" class="article-share-link">Share</a>
       
       
       
@@ -872,7 +817,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/10/12/File System/" data-id="ck5qcsvft00ngy96w91wicjhl" data-title="File System" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/10/12/File System/" data-id="ck5qcxmfq00ngkl6wjzf41g7p" data-title="File System" class="article-share-link">Share</a>
       
       
       
@@ -884,10 +829,10 @@
 
 
   
-    <article id="post-디저트 카페" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-무선 충전" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/10/11/디저트 카페/" class="article-date">
-  <time class="dt-published" datetime="2018-10-10T15:00:00.000Z" itemprop="datePublished">2018-10-11</time>
+    <a href="/2018/10/12/무선 충전/" class="article-date">
+  <time class="dt-published" datetime="2018-10-11T15:00:00.000Z" itemprop="datePublished">2018-10-12</time>
 </a>
     
   <div class="article-category">
@@ -902,7 +847,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/10/11/디저트 카페/">디저트 카페</a>
+      <a class="p-name article-title" href="/2018/10/12/무선 충전/">무선 충전</a>
     </h1>
   
 
@@ -910,38 +855,24 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p><a href="https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV5VwAr6APYDFAWu" target="_blank" rel="noopener">https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV5VwAr6APYDFAWu</a></p>
-<p>DFS 문제이다. 오래 걸렸다. 아직 DFS 실력이 부족하다. </p>
-<p>DFS 메소드에 방문 체크 배열을 넘기고, 복사해서 사용하면 시간 초과가 발생한다.</p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
-<li><p>각 방문 지점에서 할 것</p>
-<ul>
-<li>방문 체크 </li>
-<li>현 위치 기준으로 대각선 네 방향 체크</li>
-</ul>
+        <p><a href="https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AWXRDL1aeugDFAUo" target="_blank" rel="noopener">https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AWXRDL1aeugDFAUo</a></p>
+<p>오래 걸렸다. 다른 풀이 방법은 없을까?</p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ol>
+<li><p>지도에 BC 정보들을 표시</p>
+<p>① bc index를 표시함</p>
+<p>② 중복되는 지점은 + 로 연결해서 표시 ( 지도의 type : String )</p>
 </li>
-<li><p>원점으로 돌아왔을 때 사각형인지 확인하는 방법</p>
-<ul>
-<li><p>길이가 4이상</p>
+<li><p>A, B 움직이며 충전</p>
+<p>① 이동한 위치를 + 를 기준하여 자름 ( 1+3 : 1번 bc , 3번 bc 겹치는 지점 )</p>
+<p>② BC 선택권이 겹치지 않는 경우, A 선택권 중 가장 power 센것과 B 선택권 중 가장 power 센것 더함</p>
+<p>③ BC 선택권이 겹치는 경우, 모든 경우 비교 ( A : 1 2 3 , B : 2 3 =&gt; 3*2 번의 비교 )</p>
 </li>
-<li><p>방향 전환 횟수가 4 or 3</p>
-<ul>
-<li><p>방향 전환 횟수가 4 인 경우</p>
-<p><img src="/image/desertCafe03.png" alt></p>
-</li>
-<li><p>방향 전환 횟수가 3 인 경우</p>
-<p><img src="/image/desertCafe04.png" alt></p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
+</ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/10/11/디저트 카페/" data-id="ck5qcsvda00hgy96wm1v7fsox" data-title="디저트 카페" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/10/12/무선 충전/" data-id="ck5qcxmcw00hfkl6wkgaum3rc" data-title="무선 충전" class="article-share-link">Share</a>
       
       
       
@@ -1338,7 +1269,76 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/10/11/Virtual Memory/" data-id="ck5qcsvfs00ney96wt0em3p3n" data-title="Virtual Memory" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/10/11/Virtual Memory/" data-id="ck5qcxmfp00nekl6wk3necwgz" data-title="Virtual Memory" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-디저트 카페" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/10/11/디저트 카페/" class="article-date">
+  <time class="dt-published" datetime="2018-10-10T15:00:00.000Z" itemprop="datePublished">2018-10-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/10/11/디저트 카페/">디저트 카페</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV5VwAr6APYDFAWu" target="_blank" rel="noopener">https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV5VwAr6APYDFAWu</a></p>
+<p>DFS 문제이다. 오래 걸렸다. 아직 DFS 실력이 부족하다. </p>
+<p>DFS 메소드에 방문 체크 배열을 넘기고, 복사해서 사용하면 시간 초과가 발생한다.</p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
+<li><p>각 방문 지점에서 할 것</p>
+<ul>
+<li>방문 체크 </li>
+<li>현 위치 기준으로 대각선 네 방향 체크</li>
+</ul>
+</li>
+<li><p>원점으로 돌아왔을 때 사각형인지 확인하는 방법</p>
+<ul>
+<li><p>길이가 4이상</p>
+</li>
+<li><p>방향 전환 횟수가 4 or 3</p>
+<ul>
+<li><p>방향 전환 횟수가 4 인 경우</p>
+<p><img src="/image/desertCafe03.png" alt></p>
+</li>
+<li><p>방향 전환 횟수가 3 인 경우</p>
+<p><img src="/image/desertCafe04.png" alt></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/10/11/디저트 카페/" data-id="ck5qcxmcv00hdkl6wjb03xazx" data-title="디저트 카페" class="article-share-link">Share</a>
       
       
       
