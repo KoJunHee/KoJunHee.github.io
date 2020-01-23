@@ -71,6 +71,154 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-object-chapter6" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/11/24/object-chapter6/" class="article-date">
+  <time class="dt-published" datetime="2019-11-23T15:00:00.000Z" itemprop="datePublished">2019-11-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/object/">Object</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/11/24/object-chapter6/">[오브젝트] 6장_메세지와 인터페이스</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>이번 장에서는, 유연하고 재사용 가능한 퍼블릭 인터페이스를 만드는데 도움이 되는 설계 원칙과 기법을 익힌다.</p>
+<h2 id="01-협력과-메세지"><a href="#01-협력과-메세지" class="headerlink" title="01 협력과 메세지"></a>01 협력과 메세지</h2><h5 id="클라이언트-서버-모델"><a href="#클라이언트-서버-모델" class="headerlink" title="클라이언트-서버 모델"></a>클라이언트-서버 모델</h5><ol>
+<li>클라이언트 : 메세지를 전송하는 객체</li>
+<li>서버 : 수신하는 객체</li>
+</ol>
+<p>객체는 자신의 희망을 메세지 형태로 전송하고 메세지를 수신한 객체는 요청을 처리하고 응답한다. </p>
+<p>객체는 독립적으로 수행할 수 있는 더 큰 책임을 수행하기 위해, 다른 객체와 협력해야 한다.</p>
+<h5 id="메세지와-메세지-전송"><a href="#메세지와-메세지-전송" class="headerlink" title="메세지와 메세지 전송"></a>메세지와 메세지 전송</h5><p>메세지는 객체들이 협력하기 위해 사용하는 유일한 의사소통 수단이다. 한 객체가 다른 객체에게 도움을 요청하는 것을 메세지 전송이라고 한다.</p>
+<h5 id="메세지와-메서드"><a href="#메세지와-메서드" class="headerlink" title="메세지와 메서드"></a>메세지와 메서드</h5><p>메세지를 수신했을 때 실제로 수행되는 함수 또는 프로시저를 메서드라고 한다. </p>
+<p>메세지 전송자와 메세지 수신자는 서로에 대한 상세한 정보를 알지 못하고 메세지라는 얅고 가는 끈을 통해 연결된다.</p>
+<h5 id="퍼블릭-인터페이스와-오퍼레이션"><a href="#퍼블릭-인터페이스와-오퍼레이션" class="headerlink" title="퍼블릭 인터페이스와 오퍼레이션"></a>퍼블릭 인터페이스와 오퍼레이션</h5><p><img src="/image/object_chapter6.png" alt></p>
+<p>객체가 의사소통을 위해 외부에 공개하는 메세지의 집합을 퍼블릭 인터페이스라고 한다. </p>
+<p>오퍼레이션은 내부의 구현 코드는 제외하고 단순히 메세지와 관련된 시그니처이다.</p>
+<p>메세지를 수신했을 때 실제로 실행되는 코드는 메서드이다. </p>
+<p>객체가 다른 객체에게 메세지를 전송하면 런타임 시스템은 메세지 전송을 오퍼레이션 호출로 해석하고 메세지를 수신한 객체의 실제 타입을 기반으로 적절한 메서드를 찾아 실행한다. </p>
+<h5 id="시그니처"><a href="#시그니처" class="headerlink" title="시그니처"></a>시그니처</h5><p>오퍼레이션 관점에서 다형성이란, 동일한 오퍼레이션 호출에 대해 서로 다른 메서드들이 실행되는 것이다.</p>
+<h2 id="02-인터페이스와-설계-품질"><a href="#02-인터페이스와-설계-품질" class="headerlink" title="02 인터페이스와 설계 품질"></a>02 인터페이스와 설계 품질</h2><p>퍼블릭 인터페이스의 품질에 영향을 미치는 원칙과 기법들</p>
+<ol>
+<li>디미터 법칙</li>
+<li>묻지 말고 시켜라</li>
+<li>의도를 드러내는 인터페이스</li>
+<li>명령-쿼리 분리</li>
+</ol>
+<h5 id="디미터-법칙"><a href="#디미터-법칙" class="headerlink" title="디미터 법칙"></a>디미터 법칙</h5><p>디미터 법칙은 객체의 내부 구조에 강하게 결합되지 않도록 협력 경로를 제한하라는 것이다. dot 를 이용해 메세지 전송을 표현하는 언어에서는 “오직 하나의 도트만 사용하라” 라는 말로 요약된다.</p>
+<p>디미터 법칙을 따르면 shy code 를 작성할 수 있다. shy code 란 불필요한 다른 객체에게 어떤 것도 보여주지 않으며, 다른 객체의 구현에 의존하지 않는 코드를 말한다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 디미터 법칙 위반</span></span><br><span class="line">screening.getMovie().getDiscountCondition();</span><br></pre></td></tr></table></figure>
+
+<p>위 코드는, 메세지 전송자가 수신자의 내부 구조에 대해 물어보고 반환받은 요소에 대해 연쇄적으로 메세지를 전송한다. “기차 충돌” 이라고 한다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 디미터 법칙 준수</span></span><br><span class="line">screening.calculateFee(audienceCount);</span><br></pre></td></tr></table></figure>
+
+<p>위 코드는, 객체의 내부 구조에 대해 묻지 않고 수신자에게 무언가를 시키는 메세지를 전송한다.</p>
+<h5 id="묻지-말고-시켜라"><a href="#묻지-말고-시켜라" class="headerlink" title="묻지 말고 시켜라"></a>묻지 말고 시켜라</h5><p>이 원칙을 지키다보면, 자연스럽게 정보 전문가에게 책임을 할당하고 높은 응집도를 가진 클래스를 얻게된다.</p>
+<p>호출하는 객체는 이웃 객체가 수행하는 역할을 사용해 무언을 원하는지 서술하고 호출되는 객체가 어떻게 해야하는지를 스스로 결정하게 해야한다. 일반적으로 Tell, Don’t Ask 라고 한다. 공싱적으로는 디미터 법칙이라고 한다.</p>
+<h5 id="의도를-드러내는-인터페이스"><a href="#의도를-드러내는-인터페이스" class="headerlink" title="의도를 드러내는 인터페이스"></a>의도를 드러내는 인터페이스</h5><p>메서드 명명 방법 두가지</p>
+<ol>
+<li><p>메서드가 작업을 어떻게 수행하는지 나타낸다.</p>
+<p>Bad. 메서드의 내부 구현을 설명하게 된다. </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PeriodCondition</span></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isSatisfedByPeriod</span><span class="params">(Screening screening)</span> </span>&#123;...&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SequenceCondition</span></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isSatisfedBySequence</span><span class="params">(Screening screening)</span> </span>&#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>클라이언트는 메서드의 이름이 다르기 때문에, 내구 구현일 정확히 이해하지 못하면 두 메서드가 동일한 작업을 한다는 것을 모른다.</p>
+</li>
+<li><p>무엇을 하는지 드러낸다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PeriodCondition</span></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isSatisfied</span><span class="params">(Screening screening)</span> </span>&#123;...&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SequenceCondition</span></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isSatisfied</span><span class="params">(Screening screening)</span> </span>&#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>두 메서드가 동일한 목적을 가진다는 것을 메서드 이름 통해서 명확하게 표현된다.</p>
+</li>
+</ol>
+<p>클라이언트가 두 메서드를 가진 객체를 동일한 타입드로 간주할 수 있도록 타입 계층으로 묶어야한다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">DiscountCondition</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isSatisfied</span><span class="params">(Screening screening)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이처럼 어떻게 하느냐가 아니라 무엇을 하느냐에 따라 메서드 이름 짓는 패턴을 “의도를 드러내는 선택자” 라고 한다. 에릭 에반스는 도메인 주도 설계에서 “의도를 드러내는 선택자” 를 인터페이스 레벨로 확장한 “의도를 드러내는 인터페이스” 를 제시했다. </p>
+<h5 id="함께-모으기"><a href="#함께-모으기" class="headerlink" title="함께 모으기"></a>함께 모으기</h5><ol>
+<li><p>디미터 법칙을 위반하는 티켓 판매 도메인</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">audience.getBag().minusAmount(ticket.getFee());</span><br></pre></td></tr></table></figure>
+
+<p>Audience 의 퍼블릭 인터페이스 뿐만 아니라, 내부 구조에 대해서도 결합된다.</p>
+</li>
+<li><p>묻지 말고 시켜라</p>
+</li>
+<li><p>인터페이스에 의도를 드러내자</p>
+<p>TicketSeller 의 setTicket(), Audience 의 setTicekt(), Bag 의 setTicket()  명확하게 클라이언트의 의도를 드러내는 메서드 명인가 ?</p>
+<p>Theater 가 TicketSeller 에게 setTicket 메서드를 전송해서 얻고 싶었던 결과는 ? Audience 에게 티켓을 판매하는 것이다. 따라서 setTicket 보다 sellTo 가 의도를 명확하게 드러내는 메세지이다.</p>
+<p>TicketSeller 가 Audience 에게 setTicekt 메세지를 전송하는 이유는 ? Audience 가 티켓을 사도록 만드는 것이 목적이다. 따라서 클라이언트가 원하는 것은 buy 라는 메세지이다.</p>
+<p>Audience 가 Bag 에게 setTicekt 메세지를 전송하는 이유는 ? 티켓을 보관하도록 하기 위함이다. 따라서, hold 메세지가 명확하다.</p>
+</li>
+</ol>
+<h2 id="03-원칙의-함정"><a href="#03-원칙의-함정" class="headerlink" title="03 원칙의 함정"></a>03 원칙의 함정</h2><h5 id="디미터-법칙은-하나의-도트를-강제하는-규칙이-아니다"><a href="#디미터-법칙은-하나의-도트를-강제하는-규칙이-아니다" class="headerlink" title="디미터 법칙은 하나의 도트를 강제하는 규칙이 아니다"></a>디미터 법칙은 하나의 도트를 강제하는 규칙이 아니다</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">IntStream.of(<span class="number">1</span>,<span class="number">15</span>,<span class="number">20</span>,<span class="number">3</span>,<span class="number">9</span>).filter(x-&gt; x&gt;<span class="number">10</span>).distinct().count();</span><br></pre></td></tr></table></figure>
+
+<p>위 코드는, 디미터 법칙을 위반하지 않는다.</p>
+<p>of, filter, distinct 메서드는 모두 IntStream 이라는 동일한 클래스 인스턴스를 반환한다. 즉, 이들은 IntStream 인스턴스를 또 다른 IntStream 의 인스턴스로 변환한다.</p>
+<p>단지 IntStream 을 다른 IntStream 변환할 뿐, 객체를 둘러싸고 있는 캡슐은 그대로 유지된다.</p>
+<p>기차 충돌처럼 보이는 코드라도 객체의 내부 구현에 대해 어떤 정보도 외부로 노출하고 있지 않으면 그것은 디미터 법칙을 준수한 것이다.</p>
+<p>객체는 내부 구조를 숨겨야 하므로 디미터 법칙을 따라야하고, 자료 구조라면 내부를 노출해야하므로 적용할 필요가 없다.</p>
+<h5 id="결합도와-응집도의-충돌"><a href="#결합도와-응집도의-충돌" class="headerlink" title="결합도와 응집도의 충돌"></a>결합도와 응집도의 충돌</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PeriodCondition</span> <span class="keyword">implements</span> <span class="title">DiscountConditiono</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isSatisfied</span><span class="params">(Screening screening)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> screening.getStartTime().getDayOfWeek().equals(dayOfWeek) &amp;&amp;</span><br><span class="line">      .... ;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이 코드는 얼핏 보기에, Screening 의 내부 상태를 가져와 사용하기 때문에 캡슐화를 위반한 것 처럼 보인다.</p>
+<p>그래서, 할인 여부 판단 로직을 Screening 의 isDiscountable 메서드로 옮기고 PeriodCondition 이 이 메서드를 호출하도록 변경하면 묻지 말고 시켜라 스타일을 준수하는 인터페이스를 얻는다고 생각할 것이다.</p>
+<p>하지만, 이렇게 하면 Screening 이 기간에 따른 할인 조건을 판단하는 책임을 떠안게 된다. Screening 의 본직적인 책임은 영화를 예매하는 것이다. 반면, PeriodCondition 은 할인 조건을 판단하는 것이 본질적인 책임이다.</p>
+<p>따라서, Screening 의 캡슐화를 향상시키는 것보다, Screening 의 응집도를 높이고 Screening 과 PeriodCondition 사이의 결합도를 낮추는 것이 전체적인 관점에 더 좋은 방법이다.</p>
+<h2 id="04-명령-쿼리-분리-원칙"><a href="#04-명령-쿼리-분리-원칙" class="headerlink" title="04 명령-쿼리 분리 원칙"></a>04 명령-쿼리 분리 원칙</h2><ol>
+<li><p>명령 : 객체의 상태를 수정하는 오퍼레이션 == 프로시저</p>
+</li>
+<li><p>쿼리 : 객체와 관련된 정보를 반환하는 오퍼레이션  == 함수</p>
+</li>
+</ol>
+<h5 id="반복-일정의-명령과-쿼리-분리하기"><a href="#반복-일정의-명령과-쿼리-분리하기" class="headerlink" title="반복 일정의 명령과 쿼리 분리하기"></a>반복 일정의 명령과 쿼리 분리하기</h5><p>명령과 쿼리를 섞으면 실행 결과를 예측하기 힘들다. 명령과 쿼리를 명확하게 분리해야한다.</p>
+<h5 id="명령-쿼리-분리와-참조-투명성"><a href="#명령-쿼리-분리와-참조-투명성" class="headerlink" title="명령-쿼리 분리와 참조 투명성"></a>명령-쿼리 분리와 참조 투명성</h5><p>참조 투명성이란, 표현식 e를 e 의 값으로 e 의 위치 모두에 교체하더라도 결과가 달라지지 않는 특성이다.</p>
+<p>f(1) = 3 이라고 하면,</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">f(1) + f(1) = 6</span><br><span class="line">f(1) * 2 = 6</span><br><span class="line">f(1) - 1 = 2</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">3 + 3 = 6</span><br><span class="line">3 * 2 = 6</span><br><span class="line">3 - 1 = 2</span><br></pre></td></tr></table></figure>
+
+<p>f(1) 이 항상 3인 이유는, f(1) 의 값이 변하지 않기 때문이다. 어떤 값이 변하지 않는 성질을 “불변성” 이라고 한다. 어떤 값이 불변하다는 것은 부수효과가 발생하지 않는 다는 것이다.</p>
+<p>객체지향 패러다임이 객체의 상태 변경이라는 부수 효과를 기반으로 하기 때문에, 참조 투명성은 예외이다. </p>
+<p>하지만, 명령 쿼리 분리 원칙을 사용하면 균열을 줄일 수 있다. 즉, 부수 효과를 가지는 “명령” 으로부터 부수효과를 가지지 않는 “쿼리” 를 명백하게 분리함으로써 제한적으로 참조 투명성의 혜택을 얻을 수 있다.</p>
+<h5 id="책임에-초점을-맞춰라"><a href="#책임에-초점을-맞춰라" class="headerlink" title="책임에 초점을 맞춰라"></a>책임에 초점을 맞춰라</h5><ol>
+<li><p>디미터 법칙을을 준수하고, 묻지 말고 시켜라 스타일을 따르며, 의도를 드러내는 인터페이스를 설계하는 방법은</p>
+<p>메세지를 선택하고 그 후에 메세지를 처리할 객체를 선택하는 것이다. </p>
+</li>
+<li><p>명령과 쿼리를 분리하고, 계약에 의한 설계 개념을 통해 객체의 협력 방식을 명시적으로 드러내는 방법은</p>
+<p>객체 구현 이전에 객체 사이의 협력에 초점을 맞추는 것이다.</p>
+</li>
+</ol>
+<p>이 모든 방식의 중심에는 객체가 수행할 책임이 있다.</p>
+<hr>
+<p>오브젝트 &lt;조영호&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2019/11/24/object-chapter6/" data-id="ck5qi9kjt00o4ga6w2vepm0bf" data-title="[오브젝트] 6장_메세지와 인터페이스" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-object-chapter5" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2019/11/18/object-chapter5/" class="article-date">
@@ -234,7 +382,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/11/18/object-chapter5/" data-id="ck5qcz00v00nz5v6wr3zftsno" data-title="[오브젝트] 5장_책임 할당하기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/11/18/object-chapter5/" data-id="ck5qi9kjt00o2ga6w558vkw2p" data-title="[오브젝트] 5장_책임 할당하기" class="article-share-link">Share</a>
       
       
       
@@ -338,7 +486,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/11/18/object-chapter4/" data-id="ck5qcz00v00nx5v6w72ke9dpg" data-title="[오브젝트] 4장_설계 품질과 트레이드오프" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/11/18/object-chapter4/" data-id="ck5qi9kjs00o0ga6wb3yir2j2" data-title="[오브젝트] 4장_설계 품질과 트레이드오프" class="article-share-link">Share</a>
       
       
       
@@ -458,7 +606,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/11/12/object-chapter3/" data-id="ck5qcyzzi00ma5v6wp2ayue4d" data-title="[오브젝트] 3장_역할,책임,협력" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/11/12/object-chapter3/" data-id="ck5qi9kij00mcga6wjtjmrztm" data-title="[오브젝트] 3장_역할,책임,협력" class="article-share-link">Share</a>
       
       
       
@@ -575,7 +723,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/11/06/object-chapter2/" data-id="ck5qcz00u00nv5v6wuisa1qds" data-title="[오브젝트] 2장_객체지향 프로그래밍" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/11/06/object-chapter2/" data-id="ck5qi9kjr00nwga6w7w841q17" data-title="[오브젝트] 2장_객체지향 프로그래밍" class="article-share-link">Share</a>
       
       
       
@@ -652,7 +800,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/11/04/object-chapter1/" data-id="ck5qcyzzh00m75v6w1c0rqm15" data-title="[오브젝트] 1장_객체, 설계" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/11/04/object-chapter1/" data-id="ck5qi9kii00m9ga6w7jbnhvsb" data-title="[오브젝트] 1장_객체, 설계" class="article-share-link">Share</a>
       
       
       
@@ -918,7 +1066,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/08/07/spark-sql/" data-id="ck5qcz02500ou5v6wmwmseknz" data-title="[스파크2 프로그래밍] 5장_스파크SQL 과 데이터프레임,데이터셋" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/08/07/spark-sql/" data-id="ck5qi9kky00oxga6weynzy71j" data-title="[스파크2 프로그래밍] 5장_스파크SQL 과 데이터프레임,데이터셋" class="article-share-link">Share</a>
       
       
       
@@ -1110,7 +1258,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/07/16/rdd/" data-id="ck5qcz00t00nt5v6w63uldmrk" data-title="[스파크2 프로그래밍] 2장_RDD" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/07/16/rdd/" data-id="ck5qi9kjr00nyga6w325n4vkz" data-title="[스파크2 프로그래밍] 2장_RDD" class="article-share-link">Share</a>
       
       
       
@@ -1240,7 +1388,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/07/01/spark-cluster/" data-id="ck5qcz01p00or5v6wt9z7rbxu" data-title="[스파크2 프로그래밍] 3장_클러스터 환경" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/07/01/spark-cluster/" data-id="ck5qi9kkl00ouga6wsru84uka" data-title="[스파크2 프로그래밍] 3장_클러스터 환경" class="article-share-link">Share</a>
       
       
       
@@ -1339,122 +1487,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/07/01/spark-config/" data-id="ck5qcyzzh00m55v6wx5s3epz9" data-title="[스파크2 프로그래밍] 4장_스파크 설정" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-spark-intro" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/06/23/spark-intro/" class="article-date">
-  <time class="dt-published" datetime="2019-06-22T15:00:00.000Z" itemprop="datePublished">2019-06-23</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/spark/">Spark</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/06/23/spark-intro/">[스파크2 프로그래밍] 1장_스파크 소개</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h3 id="1-1-스파크"><a href="#1-1-스파크" class="headerlink" title="1.1 스파크"></a>1.1 스파크</h3><h4 id="1-1-2-빅데이터의-정의"><a href="#1-1-2-빅데이터의-정의" class="headerlink" title="1.1.2 빅데이터의 정의"></a>1.1.2 빅데이터의 정의</h4><p>“다앙햔 형태를 지닌 대량의 데이터가 빠른 속도로 쌓이고 있다면 이를 빅데이터라고 부를 수 있다”</p>
-<p>빅데이터의 중요한 특성 세 가지는 크기, 속도, 댜양성입니다.</p>
-<ul>
-<li>크기 : 대량의 데이터를 처리</li>
-<li>속도 : 데이터의 증가가 지속적이고 빠르기 때문에 이에 부합하는 빠른 데이터 처리 기술이 필요</li>
-<li>다양성 : 빅데이터의 다양성</li>
-</ul>
-<h4 id="1-1-3-빅데이터-솔루션"><a href="#1-1-3-빅데이터-솔루션" class="headerlink" title="1.1.3 빅데이터 솔루션"></a>1.1.3 빅데이터 솔루션</h4><p>먼저 빅데이터를 처리하는 플랫폼이니만큼 데이터를 가져오는 데이터 수집 모듈이 필요합니다. 다음으로는, 이렇게 수집된 데이터를 저장하고 조회하는 저장 및 조회 모듈이 필요합니다. 다음으로, 데이터를 분석하고 그 결과를 가공할 수 있는 모듈이 필요합니다. 그리고, 이제 이 모든 과정을 제어할 수 있는 워크플로우 엔진이 필요할 수도 있습니다. </p>
-<ul>
-<li>데이터 수집 : 플럼 / 카프카 / 스쿱</li>
-<li>데이터 저장 및 처리 : 하둡 / HBase / 카산드라 / 레디스 / 피그 / 하이브 / 스파크</li>
-<li>데이터 분석 및 기타 소프트웨어 : R / 클라우데라 / 엘라스틱서치</li>
-</ul>
-<h4 id="1-1-4-스파크"><a href="#1-1-4-스파크" class="headerlink" title="1.1.4 스파크"></a>1.1.4 스파크</h4><h5 id="하둡이란"><a href="#하둡이란" class="headerlink" title="하둡이란"></a>하둡이란</h5><p>빅데이터라는 용어가 이렇게 대중적으로 알려지게 된 데는 하둡의 탄생과 성공이 크게 기여했습니다. 하둡은 구글이 대용량 처리와 관련해서 공개한 두 개의 논문을 Doug Cutting 이 실제 제품으로 구현하면서 시작된 아파치 프로젝트를 가리키는 이름입니다. </p>
-<p>하둡은 여러 대의 서버를 이용해서 하나의 클러스터를 구성하며, 이렇게 클러스터로 묶인 서버의 자원을 하나의 서버처럼 사용할 수 있는 클러스터 컴퓨팅 환경을 제공합니다. 기본 동작 방법은 <strong>분석할 데이터를 하둡 파일 시스템인 HDFS 에 저장해 두고, HDFS 상에서 Map Reduce 프로그램을 이용해 데이터 처리를 수행하는 방식</strong>입니다.</p>
-<p>데이터를 저장할 때는 전체 데이터를 ‘블록’ 이라고 하는 일정한 크기로 나눠서 여러 데이터 노드에 분산해서 저장합니다. 이 때, 각 블록들이 어느 데이터 노드에 저장돼 있는지에 대한 메타정보를 네임 노드에 기록합니다. 그리고 맵 리듀스 작업을 실행할때는 네임노드로부터 메타정보를 읽어서 처리할 데이터의 위치를 확인하고 분산 처리를 수행합니다.</p>
-<h5 id="맵리듀스란"><a href="#맵리듀스란" class="headerlink" title="맵리듀스란"></a>맵리듀스란</h5><p>맵리듀스 프레임워크는 하둡의 대표적인 데이터 처리 프레임워크입니다. 데이터를 여러 개 의 맵 프로세스와 리듀서 프로세스로 나눠서 처리하는 방식입니다. <strong>맵 프로세스는 여러 데이터 노드에서 분산 저장된 데이터를 각 서버에서 병렬로 나누어서 처리하며, 리듀서는 그러한 맵 프로세스들의 결과를 조합해 최종 결과를 만들어냅니다</strong>.</p>
-<p>맵리듀스 잡의 제어는 네임노드에서 구동되는 잡 스케쥴러와 태스크 스케쥴러라는 프로세스가 처리했습니다. 하지만, 기본적으로 하나의 클러스터에서 한개의 맵리듀서 잡만 구동할 수 있었기 때문에 CPU와 메모리를 효율적으로 사용하지 못했습니다. 그래서, 하둡 2.0 부터 데이터 처리 작업에 대한 스케쥴링과 서버 자원 관리를 YARN 이라는 자원 관리 시스템에서 전담하면서 이러한 문제점이 개선됐습니다. </p>
-<p>하둡만으로는 모든 데이터 처리를 수행하기에는 부족한 부분이 있었습니다.</p>
-<ul>
-<li>하둡의 맵리듀스 잡은 대부분의 연산 작업을 파일 시스템 기반으로 처리해서, 스파크 같은 메모리 기반 데이터 처리 방식에 비해 상대적으로 높은 성능을 기대하기 어려웠습니다.</li>
-<li>맵리듀스 잡을 이용해서 데이터를 처리하려면 대부분 자바 언어를 사용해서 맵리듀스 프로그램을 작성해야했습니다.</li>
-<li>외부 라이브러리의 도움 없이 단위 테스트를 작성하거나 실제 데이터를 대상으로 간단한 시뮬레이션을 하기 어려웠습니다.</li>
-<li>SQL on Hadoop 인 하이브의 경우, 개발자들에게 친숙한 SQL 을 사용해서 맵리듀스 잡을 생성할 수 있지만, 이를 위해서는 미리 사용할 테이블과 데이터를 설계해야합니다.</li>
-</ul>
-<p>스파크는 하둡과 달리 <strong>메모리를 이용한 데이터 저장 방식을 제공</strong>함으로써 머신러닝 등 반복적인 데이터 처리가 필요한 분야에서 높은 성능을 보여줬습니다. 또한, <strong>작업을 실행하기 전에 최적의 처리 흐름을 찾는 과정</strong>으로 성능 향과 더불어 여러 개의 맵리듀스 잡을 직접 순차적으로 실행해야하는 수고를 덜 수 있게 됐습니다. 특히, 맵리듀스에 비해 훨씬 자연스럽고 강력한 다수의 데이터 처리 함수를 제공함으로써 프로그램의 복잡도를 낮춰줍니다. 또한, 스파크 2.0 부터 자바, 스칼라, 파이썬 뿐만 아니라 R 스크립트를 이용해서도 스파크 어플리케이션을 작성할수 있게 됐습니다.</p>
-<h4 id="1-1-5-RDD-Dataset-DataFrame-소개와-연산"><a href="#1-1-5-RDD-Dataset-DataFrame-소개와-연산" class="headerlink" title="1.1.5 RDD, Dataset, DataFrame 소개와 연산"></a>1.1.5 RDD, Dataset, DataFrame 소개와 연산</h4><p>스파크 프로그램 내에서 데이터를 표현하고 처리하기 위한 프로그래밍 모델을 제공하는에 용도에 따라, RDD / Dataset / DataFrame 이라는 세가지 모델을 제공합니다.</p>
-<p>RDD 는 스파크에서 정의한 분산 데이터 모델로서 병렬 처리가 가능한 요소로 구성되며 데이터를 처리하는 과정에서 프로그램 오류가 아닌 메모리 공간 부족 등의 이유로 일시적인 문제가 발생하더라도 <strong>스스로 에러를 복구 할 수 있는 능력을 가진 데이터 모델</strong>입니다.</p>
-<p>스파크는 RDD 가 생성되어 변경되는 모든 광정을 일일이 기억 (Lineage) 하는 대신에 RDD 를 한번 생성되면 변경되지 않는 읽기 전용 모델로 만든 후 RDD 생성과 관련된 내용만 기억하고 있다가 장애가 발생하면 이전에 RDD 를 만들 때 수행했던 작업을 똑같이 실행해 (똑같은 데이터를 가진 새로운 RDD를 만들어) 데이터를 복구하는 방식을 사용하는 것입니다.</p>
-<p>RDD 는 크게 세가지 방법으로 생성할 수 있습니다.</p>
-<ul>
-<li>List 나 Set 같은 기존 프로그램의 메모리에 생성된 데이터를 이용하는 것입니다.</li>
-<li>로컬 파일시스템이나 하둡의 HDFS 같은 외부 저장소에 저장된 데이터를 읽어서 생성합니다.</li>
-<li>기존에 생성되어 있는 RDD 로부터 또 다른 RDD 를 생성하는 방법입니다.</li>
-</ul>
-<p>RDD 를 생성하고 나면, RDD 가 제공하는 다양한 연산을 이용해 데이터를 처리하면 되는데, RDD 에서 제공하는 연산은 크게 Transformation 과 Action 이라는 두 종류로 나눌 수 있습니다.</p>
-<ul>
-<li>Transformation<ul>
-<li>어떤 RDD 에 변형을 가해 새로운 RDD 를 생성하는 연산입니다. 변환 연산은 연산이 호출되는 시점에 바로 실행되는 것이 아니라, 변환을 어떻게 수행할 것인지에 대한 정보만 누적해서 가지고 있다가 Action 에 해당하는 연산이 호출될 때 한꺼번에 실행됩니다. 따라서 최종 실행이 필요한 시점에 누적된 변환 연산을 분석하고 그 중에서 최적의 방법을 찾아 변환 연산을 실행할 수 있습니다.</li>
-</ul>
-</li>
-<li>Action<ul>
-<li>연산의 결과로 RDD 가 아닌 다른 값을 반환하거나 아예 반환하지 않는 연산입니다.</li>
-</ul>
-</li>
-</ul>
-<h4 id="1-1-6-DAG"><a href="#1-1-6-DAG" class="headerlink" title="1.1.6 DAG"></a>1.1.6 DAG</h4><p>여러개의 꼭지점 또는 노드와 그 사이를 이어주는 방향성을 지닌 선으로 구성되고, 그래프를 구성하는 어느 꼭지점이나 노드에서 출발하더라도 다시 원래의 꼭지점으로 돌아오지 않도록 구성된 그래프 모델입니다.</p>
-<p>스파크는 트렌스포메이션과 액션의 조합으로 데이터 흐름을 손쉽게 표현할 수 있습니다. 스파크에서 DAG 처리를 담당하는 부분을 DAG 스케쥴러라고합니다. 스케쥴러의 동작방식을 이해하기 위해서는 스파크의 작업 실행이 어떻게 수행되는지 이해해야합니다.</p>
-<h5 id="스파크-작업-실행-순서-Driver-gt-DAG-Scheduler-gt-Cluster-Manager"><a href="#스파크-작업-실행-순서-Driver-gt-DAG-Scheduler-gt-Cluster-Manager" class="headerlink" title="스파크 작업 실행 순서 : Driver -&gt; DAG Scheduler -&gt; Cluster Manager"></a>스파크 작업 실행 순서 : Driver -&gt; DAG Scheduler -&gt; Cluster Manager</h5><p>스파크는 전체 작업을 Stage 라는 단위로 나누고, 각 스테이지를 다시 여러 개의 테스크로 나누어 실행합니다. 이 때, 최초의 메인함수를 실행해 RDD 등을 생성하고 각종 연산을 호출하는 프로그램을 Driver 프로그램이라고 합니다. Driver 프로그램은 메인 함수를 가진 일발적인 프로그램으로 작성하면 됩니다.</p>
-<p>드라이버의 메인 함수에서는 스파크 애플리케이션과 스파크 클러스터의 연동을 담당하는 SparkContext 또는 SparkSession 이라는 객체를 만들고 이를 이용해 잡을 실행하고 종료하는 역할을 수행합니다. 드라이버가 스파크컨텍스트를 통해 RDD 의 연산정보를 DAG 스케쥴러에게 전달하면 스케쥴러는 이 정보를 가지고 실행 계획을 수립한 후에 이를 클러스터 메니저에게 전달합니다. 이 때, 스케쥴러가 생성하는 정보는 주로 데이터에 대한 지역성을 높이는 전략과 관련된것입니다. 전체 데이터 처리 흐름을 분석해서 네트워크를 통한 데이터 이동이 최소화 되도록 스테이지를 구성하는 것을 주로 수행합니다.</p>
-<h4 id="1-1-7-람다-아키텍쳐"><a href="#1-1-7-람다-아키텍쳐" class="headerlink" title="1.1.7 람다 아키텍쳐"></a>1.1.7 람다 아키텍쳐</h4><p>빅데이터 처리를 위한 시스템을 구성하는 방법 중 하나입니다. 데이터를 처리하는 시스템을 일괄 처리를 담당하는 영역 (일괄 처리 계층) 과, 실시간 처리를 담당하는 영역 (속도 계층) 으로 나눈후 다음과 같이 운영합니다.</p>
-<ol>
-<li>새로운 데이터는 일관 처리 계층과 속도 계층 모두에 전달</li>
-<li>일괄 처리 계층은 원본 데이터를 저장하고 일정 주기마다 한번씩 일괄적으로 가공해서 Batch View (결과 데이터) 를 생성</li>
-<li>속도 계층은 들어오는 데이터를 즉시 또는 매우 짧은 주기로 처리해서 실시간 뷰를 생성</li>
-<li>서빙 계층은 실시간 뷰와 배치 뷰의 결과를 적절히 조합해서 사용자에게 데이터를 전달</li>
-</ol>
-<p>정리하면, <strong>일괄 처리 작업을 통해 데이터를 처리하되 아직 배치 처리가 수행되지 않은 부분은 실시간 처리를 통해 보완</strong>한다는 개념입니다.</p>
-<h3 id="1-2-스파크-설치"><a href="#1-2-스파크-설치" class="headerlink" title="1.2 스파크 설치"></a>1.2 스파크 설치</h3><h4 id="1-2-1-스파크-실행-모드의-이해"><a href="#1-2-1-스파크-실행-모드의-이해" class="headerlink" title="1.2.1 스파크 실행 모드의 이해"></a>1.2.1 스파크 실행 모드의 이해</h4><p>대부분의 빅데이터 소프트웨어들이 클러스터 환경에서 동작합니다. 클러스터란 <strong>여러대의 컴퓨터가 하나의 그룹을 형성해서 마치하나의 컴퓨터인 것처럼 동작하는 것</strong>을 의미합니다. 이처럼 여러 대의 서버가 마치 한 대의 서버처럼 동작해야하기 때문에 CPU 나 메모리, 디스크 등의 자원관리가 쉽지 않습니다. </p>
-<p>스파크나 하둡과 같이 클러스터 환경에서 동작하는 대부분의 프레임워크는 실행 모드라는 개념을 가지고 있습니다. 즉, 개발 및 테스트를 위해서는 1대의 단독 서버 혹은 개인 PC 에서 애플리케이션을 실행하고, 실 서비스에서는 여러 서버로 구성된 클러스터 환경에서 동일한 어플리케이션을 실행할 수 있는 것입니다.</p>
-<h4 id="1-2-5-스파크-쉘"><a href="#1-2-5-스파크-쉘" class="headerlink" title="1.2.5 스파크 쉘"></a>1.2.5 스파크 쉘</h4><p>스파크 어플리케이션을 실행하기 위해서는 <strong>메인 함수를 가진 어플리케이션을 작성하고, 스파크에서 제공하는 spark-submit 스크립트를 이용해서 실행</strong>합니다. </p>
-<p>스파크는 프로그램을 작성해서 실행하는 방법 외에도, 인터렉티브 방식으로 프로그램을 작성할 수 있는 스파크 쉘도 제공합니다. 스파크 쉘은 사용하는 언어에 따라 스칼라, 파이썬, R 버젼으로 나눌 수 있습니다. </p>
-<h4 id="1-2-6-실행-옵션"><a href="#1-2-6-실행-옵션" class="headerlink" title="1.2.6 실행 옵션"></a>1.2.6 실행 옵션</h4><p>스파크 쉘은 실행과 관련된 다양한 옵션을 제공합니다. “–help” 옵션으로 확인할 수 있습니다.</p>
-<p>“–master” 옵션은 스파크가 사용할 <strong>클러스터의 마스터 정보를 지정하는 옵션</strong>입니다. 사용하는 클러스터 마스터 ( 혹은 메니저) 정보를 지정하는 옵션입니다.</p>
-<p>만약 클러스터가 아닌 단일서버에서 동작시킬 경우에 “local” 이라고 입력합니다. 이 경우, 스파크 잡은 하나의 서버에서 하나의 스레드만 이용해서 동작합니다. 따라사 여러개의 스레들르 이용하려면 “local[2]” 처럼 지정합니다. 스레드 두 개를 사용한다는 의미입니다. “local[*]” 는 사용 가능한 모든 스레드를 사용합니다.</p>
-<h3 id="1-4-예제-프로젝트-설정"><a href="#1-4-예제-프로젝트-설정" class="headerlink" title="1.4 예제 프로젝트 설정"></a>1.4 예제 프로젝트 설정</h3><h4 id="1-4-1-WordCount-예제-실행"><a href="#1-4-1-WordCount-예제-실행" class="headerlink" title="1.4.1 WordCount 예제 실행"></a>1.4.1 WordCount 예제 실행</h4><p>스파크 어플리케이션을 프로그래밍 하는 방법은, </p>
-<ol>
-<li>SparkContext 생성</li>
-<li>입력 소스로부터 RDD 생성</li>
-<li>RDD 처리</li>
-<li>결과 파일 처리</li>
-<li>SparkContext 종료</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/06/23/spark-intro/" data-id="ck5qcz00s00nr5v6w6xjix9ri" data-title="[스파크2 프로그래밍] 1장_스파크 소개" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/07/01/spark-config/" data-id="ck5qi9kih00m7ga6wqbscv781" data-title="[스파크2 프로그래밍] 4장_스파크 설정" class="article-share-link">Share</a>
       
       
       
@@ -1509,6 +1542,10 @@
       <ul>
         
           <li>
+            <a href="/2020/01/26/kafka-chapter8/">[카프카] 8장_카프카 스트림즈 API</a>
+          </li>
+        
+          <li>
             <a href="/2020/01/26/kafka-chapter7/">[카프카] 7장_데이터 파이프라인 구축</a>
           </li>
         
@@ -1522,10 +1559,6 @@
         
           <li>
             <a href="/2020/01/12/review-2019/">2019년 회고</a>
-          </li>
-        
-          <li>
-            <a href="/2020/01/06/object-chapter12/">[오브젝트] 12장_다형성</a>
           </li>
         
       </ul>

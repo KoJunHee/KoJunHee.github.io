@@ -71,6 +71,152 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-High Availability" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/05/High Availability/" class="article-date">
+  <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/database/">Database</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/05/High Availability/">High Availability</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="고가용성-HA-High-Availability-이-뭔가요"><a href="#고가용성-HA-High-Availability-이-뭔가요" class="headerlink" title="고가용성(HA, High Availability)이 뭔가요?"></a>고가용성(HA, High Availability)이 뭔가요?</h5><p>서버가 오랜 시간 동안 지속적으로 정상 운영이 가능한 성질을 말합니다.</p>
+<h5 id="HA를-이루기-위한-방법이-뭐가-있나요"><a href="#HA를-이루기-위한-방법이-뭐가-있나요" class="headerlink" title="HA를 이루기 위한 방법이 뭐가 있나요?"></a>HA를 이루기 위한 방법이 뭐가 있나요?</h5><p>클러스터링, 이중화, RAID가 있습니다.</p>
+<h5 id="클러스터링이-뭔가요"><a href="#클러스터링이-뭔가요" class="headerlink" title="클러스터링이 뭔가요?"></a>클러스터링이 뭔가요?</h5><p>마치 하나의 컴퓨터처럼 사용하기 위해, 여러 컴퓨터를 연결한 병렬 시스템입니다. 클러스터링 환경에서는 특정 장비에 문제가 생기거나 특정 장비에서 실행중인 애플리케이션에서 문제가 발생더라도 전체 서비스에 영향을 미치지 않도록 제어가 가능합니다. </p>
+<h5 id="클러스터링의-장점은"><a href="#클러스터링의-장점은" class="headerlink" title="클러스터링의 장점은?"></a>클러스터링의 장점은?</h5><ol>
+<li>저렴한 비용으로 다수의 서버를 증설 할 수 있습니다.</li>
+<li>1대의 서버 장애가 발생하여도 서비스 중단없이 다른 서버로 적절히 자동 분배되어 서비스를 계속 운용할 수 있습니다.</li>
+<li>서버를 확장할 때도 서비스 중단 없이 증설이 가능합니다.</li>
+</ol>
+<h5 id="이중화-replication-는-무엇인가요"><a href="#이중화-replication-는-무엇인가요" class="headerlink" title="이중화(replication) 는 무엇인가요?"></a>이중화(replication) 는 무엇인가요?</h5><p>replication은 물리적으로 다른 서버의 저장 공간에 동일한 데이터를 복사하는 기술입니다.</p>
+<h5 id="master-와-slave가-뭔가요"><a href="#master-와-slave가-뭔가요" class="headerlink" title="master 와 slave가 뭔가요?"></a>master 와 slave가 뭔가요?</h5><p>원본 데이터가 위치하는 서버를 master 라고 하고 그 원본을 복제한 서버를 slave 라고 합니다. master에 쓰기 작업을 하고, 그 서버의 데이터를 복제해서 여러 대의 slave 서버를 만든 후에 slave 에서는 읽기 작업만을 수행합니다.</p>
+<h5 id="replication은-어떤-용도로-사용하나요"><a href="#replication은-어떤-용도로-사용하나요" class="headerlink" title="replication은 어떤 용도로 사용하나요?"></a>replication은 어떤 용도로 사용하나요?</h5><ol>
+<li><p>백업용으로 사용할 수 있습니다.</p>
+<p>master의 database와, 그로부터 복사된 slave의 database는 identical하기 때문에, master에 문제가 생겼을 경우에, slave가 하던 일을 떠맡도록 하면 다시 시스템을 정상적으로 가동하는 데 드는 시간을 절약할 수 있습니다.</p>
+</li>
+<li><p>역할을 분산할 수 있습니다.</p>
+<p>data를 직접 변경하는 처리는 master가 하도록 하고, 변경하지 않는 SELECT 같은 처리는 slave가 맡는 형식입니다.</p>
+</li>
+</ol>
+<h5 id="mysql-에서-replication은-어떤-방식으로-하나요"><a href="#mysql-에서-replication은-어떤-방식으로-하나요" class="headerlink" title="mysql 에서 replication은 어떤 방식으로 하나요?"></a>mysql 에서 replication은 어떤 방식으로 하나요?</h5><ol>
+<li>Master에서 데이터 변경이 일어나면 자신의 데이터베이스에 반영합니다.</li>
+<li>Master에서 변경된 이력을 Binary Log에 기록 후 관련 이벤트를 날립니다.</li>
+<li>Slave IO_THREAD에서 Master 이벤트를 감지하고, Master Binary Log를 자신의 Relay Log라는 곳에 기록을 합니다.</li>
+<li>Slave SQL_THREAD는 Relay Log를 읽고 자신의 데이터베이스에 기록을 합니다.</li>
+</ol>
+<h5 id="RAID가-무엇인가요"><a href="#RAID가-무엇인가요" class="headerlink" title="RAID가 무엇인가요?"></a>RAID가 무엇인가요?</h5><p>한 개의 디스크에 데이터를 저장하는 방식이 아닌, 데이터 저장의 성능 및 안정성 확보를 위해 복수의 디스크를 구성하는 방식입니다.</p>
+<h5 id="샤딩이-무엇인가요"><a href="#샤딩이-무엇인가요" class="headerlink" title="샤딩이 무엇인가요?"></a>샤딩이 무엇인가요?</h5><p>Horizontal Partitioning입니다. 같은 테이블 스키마를 가진 데이터를 다수의 데이터베이스에 분산하여 저장하는 방법입니다.</p>
+<h5 id="샤딩이-항상-필요하나요"><a href="#샤딩이-항상-필요하나요" class="headerlink" title="샤딩이 항상 필요하나요?"></a>샤딩이 항상 필요하나요?</h5><p>가능하면 Sharding을 피하거나 지연시킬 수 있는 방법을 찾는 것이 우선되어야 합니다. </p>
+<h5 id="샤딩-이외의-방법은-뭐가-있을까요"><a href="#샤딩-이외의-방법은-뭐가-있을까요" class="headerlink" title="샤딩 이외의 방법은 뭐가 있을까요?"></a>샤딩 이외의 방법은 뭐가 있을까요?</h5><ol>
+<li><p>Scale in 방식</p>
+<p>Hardware Spec이 더 좋은 컴퓨터를 사용할 수 있습니다. </p>
+</li>
+<li><p>Cache, Repliction</p>
+<p>read 부하가 크다면 </p>
+</li>
+<li><p>Vertically Partition</p>
+<p>Table의 일부 컬럼만 자주 사용한다면</p>
+</li>
+</ol>
+<h5 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h5><p><a href="http://snthewhitehacker.tistory.com/4" target="_blank" rel="noopener">http://snthewhitehacker.tistory.com/4</a></p>
+<p><a href="http://gywn.net/2011/12/mysql-replication-1/" target="_blank" rel="noopener">http://gywn.net/2011/12/mysql-replication-1/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/05/High Availability/" data-id="ck5qi9khq00joga6wvedmilyx" data-title="High Availability" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-DNS" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/05/DNS/" class="article-date">
+  <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/network/">Network</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/05/DNS/">DNS</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="DNS가-무엇인가요"><a href="#DNS가-무엇인가요" class="headerlink" title="DNS가 무엇인가요?"></a>DNS가 무엇인가요?</h5><p>Domain Name System은 사람이 읽을 수 있는 도메인 이름을 머신이 읽을 수 있는 IP주소로 변환합니다.</p>
+<h5 id="어떤-순서로-동작하나요"><a href="#어떤-순서로-동작하나요" class="headerlink" title="어떤 순서로 동작하나요?"></a>어떤 순서로 동작하나요?</h5><ol>
+<li>local DNS 서버</li>
+<li>root DNS 서버</li>
+<li>.com DNS 서버</li>
+<li>naver.com DNS 서버</li>
+</ol>
+<h5 id="어떻게-동작하나요"><a href="#어떻게-동작하나요" class="headerlink" title="어떻게 동작하나요?"></a>어떻게 동작하나요?</h5><p>naver.com의 IP 주소를 얻는 과정은 다음과 같습니다.</p>
+<ol>
+<li>PC 브라우저에서 <a href="http://www.naver.com을" target="_blank" rel="noopener">www.naver.com을</a> 입력합니다. 그러면 PC는 미리 설정되어 있는 DNS (단말에 설정되어 있는 이 DNS를 Local DNS라 부름)에게 “<a href="http://www.naver.com이라는" target="_blank" rel="noopener">www.naver.com이라는</a> hostname”에 대한 IP 주소를 물어봅니다.</li>
+<li>Local DNS에는 “<a href="http://www.naver.com에" target="_blank" rel="noopener">www.naver.com에</a> 대한 IP 주소”가 있을 수도 없을 수도 있습니다. 만약 있다면 Local DNS가 바로 PC에 IP 주소를 주고 끝나겠지요. 본 설명에서는 Local DNS에 “<a href="http://www.naver.com에" target="_blank" rel="noopener">www.naver.com에</a> 대한 IP 주소”가 없다고 가정합니다.</li>
+<li>Local DNS는 이제 “<a href="http://www.naver.com에" target="_blank" rel="noopener">www.naver.com에</a> 대한 IP 주소”를 찾아내기 위해 다른 DNS 서버들과 통신(DNS 메시지)을 시작합니다. 먼저 Root DNS 서버에게 “너 혹시 <a href="http://www.naver.com에" target="_blank" rel="noopener">www.naver.com에</a> 대한 IP 주소 아니?”라고 물어봅니다. 이를 위해 각 Local DNS 서버에는 Root DNS 서버의 정보 (IP 주소)가 미리 설정되어 있어야 합니다.</li>
+<li>이 Root DNS 서버는 전세계에 13대가 구축되어 있습니다. 미국에 10대, 일본/네덜란드/노르웨이에 각 1대씩… 그리고 우리나라의 경우 Root DNS 서버가 존재하지는 않지만 Root DNS 서버에 대한 미러 서버를 3대 운용하고 있다고 합니다.</li>
+<li>Root DNS 서버는 “<a href="http://www.naver.com의" target="_blank" rel="noopener">www.naver.com의</a> IP 주소”를 모릅니다. 그래서 Local DNS 서버에게 “난 <a href="http://www.naver.com에" target="_blank" rel="noopener">www.naver.com에</a> 대한 IP 주소 몰라. 나 말고 내가 알려주는 다른 DNS 서버에게 물어봐~”라고 응답을 합니다.</li>
+<li>이 다른 DNS 서버는 “com 도메인”을 관리하는 DNS 서버입니다.</li>
+<li>이제 Local DNS 서버는 “com 도메인을 관리하는 DNS 서버”에게 다시 “너 혹시 <a href="http://www.naver.com에" target="_blank" rel="noopener">www.naver.com에</a> 대한 IP 주소 아니?”라고 물어봅니다.</li>
+<li>역시 “com 도메인을 관리하는 DNS 서버”에도 해당 정보가 없습니다. 그래서 이 DNS 서버는 Local DNS 서버에게 “난 <a href="http://www.naver.com에" target="_blank" rel="noopener">www.naver.com에</a> 대한 IP 주소 몰라. 나 말고 내가 알려주는 다른 DNS 서버에게 물어봐~”라고 응답을 합니다. 이 다른 DNS 서버는 “naver.com 도메인”을 관리하는 DNS 서버입니다.</li>
+<li>이제 Local DNS 서버는 “naver.com 도메인을 관리하는 DNS 서버”에게 다시 “너 혹시 <a href="http://www.naver.com에" target="_blank" rel="noopener">www.naver.com에</a> 대한 IP 주소 있니?”라고 물어봅니다.</li>
+<li>“naver.com 도메인을 관리하는 DNS 서버”에는 “<a href="http://www.naver.com" target="_blank" rel="noopener">www.naver.com</a> 호스트네임에 대한 IP 주소”가 있습니다. 그래서 Local DNS 서버에게 “응! <a href="http://www.naver.com에" target="_blank" rel="noopener">www.naver.com에</a> 대한 IP 주소는 222.122.195.6이야~”라고 응답을 해 줍니다.</li>
+<li>이를 수신한 Local DNS는 <a href="http://www.naver.com에" target="_blank" rel="noopener">www.naver.com에</a> 대한 IP 주소를 캐싱을 하고(이후 다른 넘이 물어보면 바로 응답을 줄 수 있도록) 그 IP 주소 정보를 단말(PC)에 전달해 줍니다.</li>
+</ol>
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://www.netmanias.com/ko/post/blog/5353/dns/dns-basic-operation" target="_blank" rel="noopener">https://www.netmanias.com/ko/post/blog/5353/dns/dns-basic-operation</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/05/DNS/" data-id="ck5qi9khp00jmga6w8wwrsqa3" data-title="DNS" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-Connection Pool" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2018/12/05/Connection Pool/" class="article-date">
@@ -108,7 +254,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/Connection Pool/" data-id="ck5qcyzyn00jj5v6wtvuhaif5" data-title="Connection Pool" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/Connection Pool/" data-id="ck5qi9khp00jkga6waksmbjcm" data-title="Connection Pool" class="article-share-link">Share</a>
       
       
       
@@ -153,51 +299,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/Byte Order/" data-id="ck5qcyzyn00jh5v6wfekx59hj" data-title="Byte Order" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-ADT" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/12/05/ADT/" class="article-date">
-  <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/data-structure/">Data Structure</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/05/ADT/">ADT</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>추상자료형이란 기능의 구현 부분을 나타내지 않고 순수한 기능이 무엇인지 나열한 것입니다.</p>
-<p>예를 들면, 스택은 FILO(First In Last Out)/LIFO(Last In First Out)의 자료구조로, 마지막에 입력된 데이터가 먼저 출력되는 자료구조입니다. push는 스택에 데이터를 입력합니다. pop은 스택에 있는 데이터중에 가장 나중에 입력된 데이터를 출력하고, 스택에서 삭제합니다.</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/ADT/" data-id="ck5qcyzym00jf5v6w4ulc7qyy" data-title="ADT" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/Byte Order/" data-id="ck5qi9kho00jiga6wpkhuf3z2" data-title="Byte Order" class="article-share-link">Share</a>
       
       
       
@@ -254,64 +356,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/11/22/Components/" data-id="ck5qcyzyl00jb5v6wgikle78v" data-title="Components" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-길찾기" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/11/21/길찾기/" class="article-date">
-  <time class="dt-published" datetime="2018-11-20T15:00:00.000Z" itemprop="datePublished">2018-11-21</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/11/21/길찾기/">길찾기</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><a href="https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV14geLqABQCFAYD&amp;categoryId=AV14geLqABQCFAYD&amp;categoryType=CODE" target="_blank" rel="noopener">https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV14geLqABQCFAYD&amp;categoryId=AV14geLqABQCFAYD&amp;categoryType=CODE</a></p>
-<p>오랜만에 푸는 관계로, 쉬운 문제를 선택하였습니다. 탐색 기본 문제입니다.</p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p><a href="https://github.com/KoJunHee/algorithm/blob/master/src/swa_1219/Solution.java" target="_blank" rel="noopener">https://github.com/KoJunHee/algorithm/blob/master/src/swa_1219/Solution.java</a></p>
-<ol>
-<li><p>그래프 그리기</p>
-<p>주어진 그래프를 두 개의 배열로 표현합니다. 한 지점에서 최대 두 개의 길이 있기 때문입니다.</p>
-<p>예를 들어, 1번 지점에서  3번과 4번의 길로 갈 수 있다면 다음과 같이 배열에 저장합니다.</p>
-<p>arr01[1] =3 , arr02[1] =4</p>
-<p>마찬가지로 3번 지점에서 7번 길로만 갈 수 있다면 다음과 같이 배열에 저장합니다.</p>
-<p>arr01[3] = 7, arr02[3] = 0</p>
-</li>
-<li><p>경로 유무 찾기</p>
-<p>DFS를 사용합니다. 최대한 깊게 들어가다가 99번 위치에 도착하면 탐색을 종료합니다.</p>
-</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/11/21/길찾기/" data-id="ck5qcyzyl00jd5v6w7mtwzqpp" data-title="길찾기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/11/22/Components/" data-id="ck5qi9khs00jsga6wgpj8p4h5" data-title="Components" class="article-share-link">Share</a>
       
       
       
@@ -361,7 +406,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/11/21/flow, congestion control/" data-id="ck5qcyzyk00j95v6wf0fyqqli" data-title="flow, congestion control" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/11/21/flow, congestion control/" data-id="ck5qi9khn00jcga6w2cphesak" data-title="flow, congestion control" class="article-share-link">Share</a>
       
       
       
@@ -429,7 +474,64 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/11/21/flow control/" data-id="ck5qcyzyk00j75v6way9sjg7z" data-title="flow control" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/11/21/flow control/" data-id="ck5qi9khm00jaga6wtkhv15dj" data-title="flow control" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-길찾기" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/11/21/길찾기/" class="article-date">
+  <time class="dt-published" datetime="2018-11-20T15:00:00.000Z" itemprop="datePublished">2018-11-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/11/21/길찾기/">길찾기</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV14geLqABQCFAYD&amp;categoryId=AV14geLqABQCFAYD&amp;categoryType=CODE" target="_blank" rel="noopener">https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV14geLqABQCFAYD&amp;categoryId=AV14geLqABQCFAYD&amp;categoryType=CODE</a></p>
+<p>오랜만에 푸는 관계로, 쉬운 문제를 선택하였습니다. 탐색 기본 문제입니다.</p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p><a href="https://github.com/KoJunHee/algorithm/blob/master/src/swa_1219/Solution.java" target="_blank" rel="noopener">https://github.com/KoJunHee/algorithm/blob/master/src/swa_1219/Solution.java</a></p>
+<ol>
+<li><p>그래프 그리기</p>
+<p>주어진 그래프를 두 개의 배열로 표현합니다. 한 지점에서 최대 두 개의 길이 있기 때문입니다.</p>
+<p>예를 들어, 1번 지점에서  3번과 4번의 길로 갈 수 있다면 다음과 같이 배열에 저장합니다.</p>
+<p>arr01[1] =3 , arr02[1] =4</p>
+<p>마찬가지로 3번 지점에서 7번 길로만 갈 수 있다면 다음과 같이 배열에 저장합니다.</p>
+<p>arr01[3] = 7, arr02[3] = 0</p>
+</li>
+<li><p>경로 유무 찾기</p>
+<p>DFS를 사용합니다. 최대한 깊게 들어가다가 99번 위치에 도착하면 탐색을 종료합니다.</p>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/11/21/길찾기/" data-id="ck5qi9khn00jega6wp67rjf89" data-title="길찾기" class="article-share-link">Share</a>
       
       
       
@@ -490,7 +592,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/11/13/View Life Cycle/" data-id="ck5qcyzyj00j55v6wdx8f6j42" data-title="View Controller Life Cycle" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/11/13/View Life Cycle/" data-id="ck5qi9khm00j8ga6w0k4yi3j0" data-title="View Controller Life Cycle" class="article-share-link">Share</a>
       
       
       
@@ -562,57 +664,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/11/13/SOLID/" data-id="ck5qcyzyj00j35v6wfgyr16y3" data-title="SOLID" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Hash Table" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/11/13/Hash Table/" class="article-date">
-  <time class="dt-published" datetime="2018-11-12T15:00:00.000Z" itemprop="datePublished">2018-11-13</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/data-structure/">Data Structure</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/11/13/Hash Table/">Hash Table</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h5 id="Hash-Table"><a href="#Hash-Table" class="headerlink" title="Hash Table"></a>Hash Table</h5><p>Key에 Value를 저장하는 데이타 구조</p>
-<h5 id="Hash-Function"><a href="#Hash-Function" class="headerlink" title="Hash Function"></a>Hash Function</h5><p><img src="/image/hashtable01.png" alt></p>
-<p>key에 대한 데이터를 찾을때, hash_function을 한번만 수행하면 array내에 저장된 index 위치를 찾아낼 수 있기 때문에, 데이타의 저장과 삭제가 빠르다. 하지만 어설픈 hash function 을 통해서 key 값들을 결정한다면 동일한 값이 도출될 수가 있다. 이렇게 되면 동일한 key 값에 복수 개의 데이터가 하나의 테이블에 존재할 수 있게 되는 것인데  이를 Collision 이라고 한다. Collision을 해결하는 방법으로, Separate chaining과 Open addressing 이 있다.</p>
-<h5 id="Separate-Chaining"><a href="#Separate-Chaining" class="headerlink" title="Separate Chaining"></a>Separate Chaining</h5><p><img src="/image/hashtable02.png" alt></p>
-<p>Linked List를 이용하는 방식이다. 각 index에 데이터를 저장하는 Linked list 에 대한 포인터를 가지는 방식이다. 동일 index로 인해서 충돌이 발생하면 그 index가 가리키고 있는 Linked list에 노드를 추가하여 값을 추가한다.</p>
-<h5 id="Open-Addressing"><a href="#Open-Addressing" class="headerlink" title="Open Addressing"></a>Open Addressing</h5><p>Open addressing  방식은 index에 대한 충돌 처리에 대해서 Linked List와 같은 추가적인 메모리 공간을 사용하지 않고, hash table array의 빈공간을 사용하는 방법이다. 여러 가지 구현 방식이 있다. Linear Probing 방식은 index에 대해서 충돌 이 발생했을 때, index 뒤에 있는 버킷중에 빈 버킷을 찾아서 데이터를 넣는 방식이다. </p>
-<h5 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h5><p><a href="https://github.com/JaeYeopHan/Interview_Question_for_Beginner/tree/master/DataStructure#array-vs-linkedlist" target="_blank" rel="noopener">https://github.com/JaeYeopHan/Interview_Question_for_Beginner/tree/master/DataStructure#array-vs-linkedlist</a></p>
-<p><a href="http://bcho.tistory.com/1072" target="_blank" rel="noopener">http://bcho.tistory.com/1072</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/11/13/Hash Table/" data-id="ck5qcyzyi00j15v6wrfa2jk0f" data-title="Hash Table" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/11/13/SOLID/" data-id="ck5qi9khl00j5ga6ws5j5wvlf" data-title="SOLID" class="article-share-link">Share</a>
       
       
       
@@ -667,6 +719,10 @@
       <ul>
         
           <li>
+            <a href="/2020/01/26/kafka-chapter8/">[카프카] 8장_카프카 스트림즈 API</a>
+          </li>
+        
+          <li>
             <a href="/2020/01/26/kafka-chapter7/">[카프카] 7장_데이터 파이프라인 구축</a>
           </li>
         
@@ -680,10 +736,6 @@
         
           <li>
             <a href="/2020/01/12/review-2019/">2019년 회고</a>
-          </li>
-        
-          <li>
-            <a href="/2020/01/06/object-chapter12/">[오브젝트] 12장_다형성</a>
           </li>
         
       </ul>
