@@ -6,22 +6,22 @@
   
   <title>[카프카] 8장_카프카 스트림즈 API | junhee.ko</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="카프카 스트림즈 API 를 통해 스트림을 처리하는 방법을 정리한다. 1. 스트림 프로세싱 기초####1.1 스트림 프로세싱과 배치 프로세싱 오늘날 데이터 분석 시스템은 스트림 처리 시스템과 배치 처리 시스템을 모두 갖추어서 실시간과 정확성을 보장한다.  스트림 프로세싱 데이터들이 지속적으로 유입되고 나가는 과정에서 데이터에 대한 분석이나 질의를 수행하는 것">
+  <meta name="description" content="카프카 스트림즈 API 를 통해 스트림을 처리하는 방법을 정리한다. 1. 스트림 프로세싱 기초1.1 스트림 프로세싱과 배치 프로세싱오늘날 데이터 분석 시스템은 스트림 처리 시스템과 배치 처리 시스템을 모두 갖추어서 실시간과 정확성을 보장한다.  스트림 프로세싱 데이터들이 지속적으로 유입되고 나가는 과정에서 데이터에 대한 분석이나 질의를 수행하는 것이다.데이">
 <meta property="og:type" content="article">
 <meta property="og:title" content="[카프카] 8장_카프카 스트림즈 API">
 <meta property="og:url" content="https://kojunhee.github.io/2020/01/26/kafka-chapter8/index.html">
 <meta property="og:site_name" content="junhee.ko">
-<meta property="og:description" content="카프카 스트림즈 API 를 통해 스트림을 처리하는 방법을 정리한다. 1. 스트림 프로세싱 기초####1.1 스트림 프로세싱과 배치 프로세싱 오늘날 데이터 분석 시스템은 스트림 처리 시스템과 배치 처리 시스템을 모두 갖추어서 실시간과 정확성을 보장한다.  스트림 프로세싱 데이터들이 지속적으로 유입되고 나가는 과정에서 데이터에 대한 분석이나 질의를 수행하는 것">
+<meta property="og:description" content="카프카 스트림즈 API 를 통해 스트림을 처리하는 방법을 정리한다. 1. 스트림 프로세싱 기초1.1 스트림 프로세싱과 배치 프로세싱오늘날 데이터 분석 시스템은 스트림 처리 시스템과 배치 처리 시스템을 모두 갖추어서 실시간과 정확성을 보장한다.  스트림 프로세싱 데이터들이 지속적으로 유입되고 나가는 과정에서 데이터에 대한 분석이나 질의를 수행하는 것이다.데이">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://kojunhee.github.io/image/kafka_chapter08_01.png">
 <meta property="og:image" content="https://kojunhee.github.io/image/kafka_chapter08_02.png">
 <meta property="og:image" content="https://kojunhee.github.io/image/kafka_chapter08_03.png">
 <meta property="og:image" content="https://kojunhee.github.io/image/kafka_chapter08_04.png">
 <meta property="og:image" content="https://kojunhee.github.io/image/kafka_chapter08_05.png">
-<meta property="og:updated_time" content="2020-01-23T08:59:06.280Z">
+<meta property="og:updated_time" content="2020-01-23T09:05:04.658Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="[카프카] 8장_카프카 스트림즈 API">
-<meta name="twitter:description" content="카프카 스트림즈 API 를 통해 스트림을 처리하는 방법을 정리한다. 1. 스트림 프로세싱 기초####1.1 스트림 프로세싱과 배치 프로세싱 오늘날 데이터 분석 시스템은 스트림 처리 시스템과 배치 처리 시스템을 모두 갖추어서 실시간과 정확성을 보장한다.  스트림 프로세싱 데이터들이 지속적으로 유입되고 나가는 과정에서 데이터에 대한 분석이나 질의를 수행하는 것">
+<meta name="twitter:description" content="카프카 스트림즈 API 를 통해 스트림을 처리하는 방법을 정리한다. 1. 스트림 프로세싱 기초1.1 스트림 프로세싱과 배치 프로세싱오늘날 데이터 분석 시스템은 스트림 처리 시스템과 배치 처리 시스템을 모두 갖추어서 실시간과 정확성을 보장한다.  스트림 프로세싱 데이터들이 지속적으로 유입되고 나가는 과정에서 데이터에 대한 분석이나 질의를 수행하는 것이다.데이">
 <meta name="twitter:image" content="https://kojunhee.github.io/image/kafka_chapter08_01.png">
   
     <link rel="alternate" href="/atom.xml" title="junhee.ko" type="application/atom+xml">
@@ -103,12 +103,10 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <p>카프카 스트림즈 API 를 통해 스트림을 처리하는 방법을 정리한다.</p>
-<h2 id="1-스트림-프로세싱-기초"><a href="#1-스트림-프로세싱-기초" class="headerlink" title="1. 스트림 프로세싱 기초"></a>1. 스트림 프로세싱 기초</h2><p>####1.1 스트림 프로세싱과 배치 프로세싱</p>
-<p>오늘날 데이터 분석 시스템은 스트림 처리 시스템과 배치 처리 시스템을 모두 갖추어서 실시간과 정확성을 보장한다.</p>
+<h2 id="1-스트림-프로세싱-기초"><a href="#1-스트림-프로세싱-기초" class="headerlink" title="1. 스트림 프로세싱 기초"></a>1. 스트림 프로세싱 기초</h2><h4 id="1-1-스트림-프로세싱과-배치-프로세싱"><a href="#1-1-스트림-프로세싱과-배치-프로세싱" class="headerlink" title="1.1 스트림 프로세싱과 배치 프로세싱"></a>1.1 스트림 프로세싱과 배치 프로세싱</h4><p>오늘날 데이터 분석 시스템은 스트림 처리 시스템과 배치 처리 시스템을 모두 갖추어서 실시간과 정확성을 보장한다.</p>
 <ol>
 <li><p>스트림 프로세싱</p>
-<p>데이터들이 지속적으로 유입되고 나가는 과정에서 데이터에 대한 분석이나 질의를 수행하는 것이다.</p>
-<p>데이터가 분석 시스템이나 프로그램에 도달하자마자 처리를 해서 실시간 분석이라고도 한다.</p>
+<p>데이터들이 지속적으로 유입되고 나가는 과정에서 데이터에 대한 분석이나 질의를 수행하는 것이다.<br>데이터가 분석 시스템이나 프로그램에 도달하자마자 처리를 해서 실시간 분석이라고도 한다.</p>
 </li>
 <li><p>배치 처리</p>
 <p>이미 저장된 데이터를 기반으로 분석이나 질의를 수행하고 특정 시간에 처리하는 것이다.</p>
@@ -116,10 +114,14 @@
 </ol>
 <p>스티름 프로세싱의 장점은,</p>
 <ol>
-<li>이벤트 발생, 분석, 조치에 지연시간이 없기때문에, 스트림 프로세싱을 통한 분석은 <code>최신의 데이터</code>를 반영한다.</li>
-<li>데이터 저장 후 분석을 하지 않으므로, 정적 분석보다 <code>더 많은 데이터를 분석</code>할 수 있다.</li>
-<li>시간에 따라 <code>지속적으로 유입되는 데이터 분석에 최적화</code>되어 있다.</li>
-<li>대규모 공유 데이터베이스에 대한 요구를 줄일 수 있어 <code>인프라에 독립적</code>으로 수행될 수 있다.</li>
+<li><p>이벤트 발생, 분석, 조치에 지연시간이 없기 때문에, <code>최신의 데이터</code>를 반영한다.</p>
+</li>
+<li><p>데이터 저장 후 분석을 하지 않으므로, 정적 분석보다 <code>더 많은 데이터를 분석</code>할 수 있다.</p>
+</li>
+<li><p>시간에 따라 <code>지속적으로 유입되는 데이터 분석에 최적화</code>되어 있다.</p>
+</li>
+<li><p>대규모 공유 데이터베이스에 대한 요구를 줄일 수 있어 <code>인프라에 독립적</code>으로 수행될 수 있다.</p>
+</li>
 </ol>
 <h4 id="1-2-상태-기반-스트림-처리-무상태-스트림-처리"><a href="#1-2-상태-기반-스트림-처리-무상태-스트림-처리" class="headerlink" title="1.2 상태 기반 스트림 처리, 무상태 스트림 처리"></a>1.2 상태 기반 스트림 처리, 무상태 스트림 처리</h4><ol>
 <li><p>상태 기반 스트림 처리</p>
@@ -133,12 +135,18 @@
 <h2 id="2-카프카-스트림즈"><a href="#2-카프카-스트림즈" class="headerlink" title="2. 카프카 스트림즈"></a>2. 카프카 스트림즈</h2><h4 id="2-1-카프카-스트림즈의-특징과-개념"><a href="#2-1-카프카-스트림즈의-특징과-개념" class="headerlink" title="2.1 카프카 스트림즈의 특징과 개념"></a>2.1 카프카 스트림즈의 특징과 개념</h4><p>카프카 스트림즈는 카프카에 저장된 데이터를 처리하고 분석하기 위해 개발된 클라이언트 라이브러리이다.</p>
 <p>카프카 스트림즈의 특징은,</p>
 <ol>
-<li>간단하고 가벼운 클라이언트 라이브러리이다.</li>
-<li>시스템이나 카프카에 대한 의존성이 없다.</li>
-<li>이중화된 로컬 상태 저장소를 지원한다.</li>
-<li>카프카 브로커나 클라이언트에 장애가 생겨도, 스트림에 대해선 1번만 처리되도록 보장한다.</li>
-<li>한 번에 한 레코드만 처리한다.</li>
-<li>고수준의 스트림 DSL 를 지원하고, 저수준의 프로세싱 API 도 제공한다.</li>
+<li><p>간단하고 가벼운 클라이언트 라이브러리이다.</p>
+</li>
+<li><p>시스템이나 카프카에 대한 의존성이 없다.</p>
+</li>
+<li><p>이중화된 로컬 상태 저장소를 지원한다.</p>
+</li>
+<li><p>카프카 브로커나 클라이언트에 장애가 생겨도, 스트림에 대해선 1번만 처리되도록 보장한다.</p>
+</li>
+<li><p>한 번에 한 레코드만 처리한다.</p>
+</li>
+<li><p>고수준의 스트림 DSL 를 지원하고, 저수준의 프로세싱 API 도 제공한다.</p>
+</li>
 </ol>
 <p>카프카 스트림즈는 <code>스트림 처리를 하는 프로세서들이 서로 연결되어 항상 Topology 를 만들어 처리하는 API</code> 이다.</p>
 <p>다음 그림은 카프카 스트림즈 프로세스 토폴리지의 예이다.</p>
@@ -163,9 +171,12 @@
 <h4 id="2-2-카프카-스트림즈-아키텍처"><a href="#2-2-카프카-스트림즈-아키텍처" class="headerlink" title="2.2 카프카 스트림즈 아키텍처"></a>2.2 카프카 스트림즈 아키텍처</h4><p>카프카 스트림즈에 들어오는 데이터는 카프카 토픽의 메세지이다.</p>
 <p>카프카 토픽과 스트림의 관계는,</p>
 <ol>
-<li>각 스트림 파티션은 카프카의 토픽 파티션에 저장된 졍렬된 메세지이다.</li>
-<li>스트림의 데이터 레코드는 카프카 해당 토픽의 메세지이다.</li>
-<li>데이터 레코드의 키를 통해 다음 스트림으로 전달된다.</li>
+<li><p>각 스트림 파티션은 카프카의 토픽 파티션에 저장된 졍렬된 메세지이다.</p>
+</li>
+<li><p>스트림의 데이터 레코드는 카프카 해당 토픽의 메세지이다.</p>
+</li>
+<li><p>데이터 레코드의 키를 통해 다음 스트림으로 전달된다.</p>
+</li>
 </ol>
 <p>카프카 스트림즈는 입력 스트림의  파티션 개수만큼 태스크를 생성한다.</p>
 <p>각 태스크에는 입력 스트림, 즉 카프카 토픽 파티션들이 할당된다. 이것은 한번 정해지면 입력 토픽의 파티션이 변하지 않는한 변하지 않는다.</p>
@@ -184,7 +195,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/01/26/kafka-chapter8/" data-id="ck5qi9kip00mxga6wi5cb7358" data-title="[카프카] 8장_카프카 스트림즈 API" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/01/26/kafka-chapter8/" data-id="ck5qih3cg00mxs16wuxc48f10" data-title="[카프카] 8장_카프카 스트림즈 API" class="article-share-link">Share</a>
       
       
       

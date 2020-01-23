@@ -71,9 +71,9 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-DIP" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-LSP" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/04/09/DIP/" class="article-date">
+    <a href="/2018/04/09/LSP/" class="article-date">
   <time class="dt-published" datetime="2018-04-08T15:00:00.000Z" itemprop="datePublished">2018-04-09</time>
 </a>
     
@@ -89,7 +89,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/04/09/DIP/">DIP</a>
+      <a class="p-name article-title" href="/2018/04/09/LSP/">LSP</a>
     </h1>
   
 
@@ -98,45 +98,36 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <ul>
-<li>Dependency Inversion Principle ( 의존 역전 법칙 )</li>
+<li>Liskov Subsititution Principle ( 리스코프 치환 법칙 )</li>
 </ul>
 <ul>
 <li><p>Intent</p>
 <ul>
-<li>High-level modules should not depend on low-level modules. Both should depend on abstractions.</li>
-<li>Abstractions should not depend on details. Details should depend on abstractions.</li>
-<li>의존 관계를 맺을 때 변화하기 쉬운 것 또는 자주 변화하는 것보다는 </li>
-<li>변화하기 어려운 것, 거의 변화가 없는 것에 의존하라는 원칙</li>
-<li>DIP를 만족하려면,</li>
-<li>어떤 클래스가 도움을 받을 때, 구체적인 클래스보다는 인터페이스나 추상 클래스와 의존 관계를 맺도록.</li>
+<li>Derived types must be completely substitutable for their base types.</li>
+<li>상속 관계에서,</li>
+<li>자식 클래스는 최소한 부모 클래스에서 가능한 행위는 수행할 수 있어야 한다</li>
+<li>부모 클래스와 자식 클래스 사이의 행위가 일관성이 있어야 한다</li>
+<li>LSP를 만족하면,</li>
+<li>프로그램에서 부모 클래스의 인스턴스 대신에 자식 클래스의 인스턴스로 대체해도 프로그램의 의미는 변화 X</li>
 </ul>
 </li>
-<li><p>Bad Example</p>
+<li><p>LSP를 만족시키는 방법</p>
 <ul>
-<li>the manager class which is a high level class, and the low level class called Worker</li>
-<li>now we have to change Manager class in order to introduce the new SuperWorker<ul>
-<li>Adding a new protocol will create the need to add code for parsing and serializing the content for each type of field.</li>
-<li>Adding a new content type (like html) make us to add code for each protocol implemented.</li>
+<li>재정의 하지 않는다 </li>
 </ul>
 </li>
 </ul>
-<p><img src="/image/dip011.png" alt></p>
-<p><img src="/image/dip022.png" alt></p>
-<p><img src="/image/dip033.png" alt></p>
-</li>
-<li><p>Good Example</p>
 <ul>
-<li>Manager class doesn’t require changes when adding SuperWorkers.</li>
-</ul>
-<p><img src="/image/dip044.png" alt></p>
-<p><img src="/image/dip055.png" alt></p>
-<p><img src="/image/dip066.png" alt></p>
-<p><img src="/image/dip077.png" alt></p>
+<li><p>Violation</p>
+<p><img src="/image/lsp011.png" alt></p>
+<p><img src="/image/lsp022.png" alt></p>
+<p><img src="/image/lsp033.png" alt></p>
+<p><img src="/image/lsp044.png" alt></p>
 </li>
 </ul>
 <ul>
 <li>Reference<ul>
-<li><a href="http://www.oodesign.com/dependency-inversion-principle.html" target="_blank" rel="noopener">http://www.oodesign.com/dependency-inversion-principle.html</a></li>
+<li><a href="http://www.oodesign.com/single-responsibility-principle.html" target="_blank" rel="noopener">http://www.oodesign.com/single-responsibility-principle.html</a></li>
 <li>Java 객체지향 디자인 패턴 (정인상, 채흥석 지음)</li>
 </ul>
 </li>
@@ -145,7 +136,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/04/09/DIP/" data-id="ck5qi9kev0093ga6wnciw7ogm" data-title="DIP" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/04/09/LSP/" data-id="ck5qih38j0095s16wa4avrfap" data-title="LSP" class="article-share-link">Share</a>
       
       
       
@@ -194,7 +185,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/04/08/로또/" data-id="ck5qi9keu008wga6w9p6uyavd" data-title="로또" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/04/08/로또/" data-id="ck5qih38f008vs16whnrpc5xr" data-title="로또" class="article-share-link">Share</a>
       
       
       
@@ -267,7 +258,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/04/06/Adapter Pattern01/" data-id="ck5qi9keu008yga6wsc22ktv5" data-title="Adapter Pattern01" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/04/06/Adapter Pattern01/" data-id="ck5qih38d008os16wic55n3xk" data-title="Adapter Pattern01" class="article-share-link">Share</a>
       
       
       
@@ -320,7 +311,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/04/03/영역 구하기/" data-id="ck5qi9ker008pga6w0k84o1ke" data-title="영역 구하기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/04/03/영역 구하기/" data-id="ck5qih38e008qs16w7v44dr2a" data-title="영역 구하기" class="article-share-link">Share</a>
       
       
       
@@ -391,7 +382,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/04/02/경로찾기/" data-id="ck5qi9keq008nga6wabw7tjav" data-title="경로찾기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/04/02/경로찾기/" data-id="ck5qih38c008ms16wodeupsi7" data-title="경로찾기" class="article-share-link">Share</a>
       
       
       
@@ -454,7 +445,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/03/12/최대상금/" data-id="ck5qi9kem008jga6wbsafzc2k" data-title="최대상금" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/03/12/최대상금/" data-id="ck5qih38e008ts16wievcbqdm" data-title="최대상금" class="article-share-link">Share</a>
       
       
       
@@ -596,7 +587,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/03/10/그래프/" data-id="ck5qi9keo008lga6w4w0znxlg" data-title="그래프" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/03/10/그래프/" data-id="ck5qih38b008ks16wqv9417hb" data-title="그래프" class="article-share-link">Share</a>
       
       
       
@@ -646,7 +637,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/03/09/최빈수 구하기/" data-id="ck5qi9kem008hga6wk5cunwv0" data-title="최빈수" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/03/09/최빈수 구하기/" data-id="ck5qih38b008is16wcejxuw7w" data-title="최빈수" class="article-share-link">Share</a>
       
       
       
@@ -693,7 +684,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/03/05/프로세서 연결하기/" data-id="ck5qi9keu0090ga6wwnkjvzy7" data-title="프로세서 연결하기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/03/05/프로세서 연결하기/" data-id="ck5qih388008gs16wzoqb319m" data-title="프로세서 연결하기" class="article-share-link">Share</a>
       
       
       
@@ -740,7 +731,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/02/28/구슬게임/" data-id="ck5qi9kek008dga6wq4cmr9ia" data-title="구슬게임" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/02/28/구슬게임/" data-id="ck5qih388008es16wiqc7aunx" data-title="구슬게임" class="article-share-link">Share</a>
       
       
       

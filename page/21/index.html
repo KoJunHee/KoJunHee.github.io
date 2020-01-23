@@ -127,7 +127,265 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/21/Histograms Introduction/" data-id="ck5qi9kfy00d1ga6wjfr7plxi" data-title="Histograms Introduction" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/21/Histograms Introduction/" data-id="ck5qih39n00cys16wo39esg1y" data-title="Histograms Introduction" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Histogram Stretching" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/21/Histogram Stretching/" class="article-date">
+  <time class="dt-published" datetime="2018-05-20T15:00:00.000Z" itemprop="datePublished">2018-05-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/dip/">DIP</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/21/Histogram Stretching/">Histogram Stretching</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>There are two methods of enhancing contrast. </p>
+<ul>
+<li>The first one is called Histogram stretching that increase contrast. </li>
+<li>The second one is called Histogram equalization that enhance contrast.</li>
+</ul>
+<h2 id="Contrast"><a href="#Contrast" class="headerlink" title="Contrast"></a>Contrast</h2><ul>
+<li><p>Contrast is the difference between maximum and minimum pixel intensity.</p>
+<p><img src="/image/hisStretch01.png" alt></p>
+</li>
+<li><p>Contrast = 225.</p>
+</li>
+<li><p>Now we will increase the contrast of the image.</p>
+</li>
+</ul>
+<h2 id="Increasing-the-contrast-of-the-image"><a href="#Increasing-the-contrast-of-the-image" class="headerlink" title="Increasing the contrast of the image"></a>Increasing the contrast of the image</h2><ul>
+<li><p>The formula for stretching the histogram of the image to increase the contrast is</p>
+<p><img src="/image/hisStretch02.png" alt></p>
+</li>
+<li><p>The formula requires finding the minimum and maximum pixel intensity multiply by levels of gray. </p>
+</li>
+<li><p>In our case the image is 8bpp, so levels of gray are 256.</p>
+</li>
+<li><p>The minimum value is 0 and the maximum value is 225. So the formula in our case is</p>
+<p><img src="/image/hisStretch03.png" alt></p>
+</li>
+<li><p>where f(x,y) denotes the value of each pixel intensity. For each f(x,y) in an image , we will calculate this formula.</p>
+</li>
+<li><p>Note the shape and symmetry of histogram. The histogram is now stretched or in other means expand. Have a look at it.</p>
+<p><img src="/image/hisStretch04.png" alt></p>
+</li>
+<li><p>In this case the contrast of the image can be calculated as Contrast = 240</p>
+</li>
+<li><p>Hence we can say that the contrast of the image is increased.</p>
+</li>
+</ul>
+<h2 id="Failing-of-histogram-stretching"><a href="#Failing-of-histogram-stretching" class="headerlink" title="Failing of histogram stretching"></a>Failing of histogram stretching</h2><ul>
+<li><p>the algorithm fails on some cases. </p>
+</li>
+<li><p>Those cases include images with when there is pixel intensity 0 and 255 are present in the image</p>
+</li>
+<li><p>Original Formula</p>
+<p><img src="/image/hisStretch05.png" alt></p>
+</li>
+<li><p>Putting fail case values in the formula</p>
+<p><img src="/image/hisStretch06.png" alt></p>
+</li>
+<li><p>Simplify that expression gives</p>
+<p><img src="/image/hisStretch07.png" alt></p>
+</li>
+<li><p>That means the output image is equal to the processed image. </p>
+</li>
+<li><p>That means there is no effect of histogram stretching has been done at this image.</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/21/Histogram Stretching/" data-id="ck5qih39m00cws16we32l0gvq" data-title="Histogram Stretching" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Histogram Sliding" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/21/Histogram Sliding/" class="article-date">
+  <time class="dt-published" datetime="2018-05-20T15:00:00.000Z" itemprop="datePublished">2018-05-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/dip/">DIP</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/21/Histogram Sliding/">Histogram Sliding</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="Histogram-sliding"><a href="#Histogram-sliding" class="headerlink" title="Histogram sliding"></a>Histogram sliding</h2><ul>
+<li>In histogram sliding, we just simply shift a complete histogram rightwards or leftwards. </li>
+<li>Due to shifting or sliding of histogram towards right or left, </li>
+<li>a clear change can be seen in the image.</li>
+</ul>
+<h2 id="Increasing-brightness-using-histogram-sliding"><a href="#Increasing-brightness-using-histogram-sliding" class="headerlink" title="Increasing brightness using histogram sliding"></a>Increasing brightness using histogram sliding</h2><p><img src="/image/hisSl01.png" alt></p>
+<p><img src="/image/hisSl02.png" alt></p>
+<ul>
+<li>On the y axis of this histogram are the frequency or count. </li>
+<li>And on the x axis, we have gray level values. </li>
+<li>As you can see from the above histogram, that those gray level intensities whose count is more then 700, lies in the first half portion, means towards blacker portion. </li>
+<li>Thats why we got an image that is a bit darker.</li>
+<li>In order to bright it, we will slide its histogram towards right, or towards whiter portion. </li>
+<li>In order to do we need to add atleast a value of 50 to this image. </li>
+<li>Because we can see from the histogram above, that this image also has 0 pixel intensities, that are pure black. </li>
+<li>So if we add 0 to 50, we will shift all the values lies at 0 intensity to 50 intensity and all the rest of the values will be shifted accordingly.</li>
+</ul>
+<p><img src="/image/hisSl03.png" alt></p>
+<p><img src="/image/hisSl04.png" alt></p>
+<p><img src="/image/hisSl05.png" alt></p>
+<h2 id="Decreasing-brightness-using-histogram-sliding"><a href="#Decreasing-brightness-using-histogram-sliding" class="headerlink" title="Decreasing brightness using histogram sliding"></a>Decreasing brightness using histogram sliding</h2><ul>
+<li>Now if we were to decrease brightness of this new image to such an extent that the old image look brighter, </li>
+<li>we got to subtract some value from all the matrix of the new image. </li>
+<li>The value which we are going to subtract is 80. </li>
+<li>Because we already add 50 to the original image and we got a new brighter image, </li>
+<li>now if we want to make it darker, we have to subtract at least more than 50 from it.</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/21/Histogram Sliding/" data-id="ck5qih39l00cus16wonh4uslx" data-title="Histogram Sliding" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Histogram Equalization" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/21/Histogram Equalization/" class="article-date">
+  <time class="dt-published" datetime="2018-05-20T15:00:00.000Z" itemprop="datePublished">2018-05-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/dip/">DIP</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/21/Histogram Equalization/">Histogram Equalization</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="Histogram-Equalization"><a href="#Histogram-Equalization" class="headerlink" title="Histogram Equalization"></a>Histogram Equalization</h2><ul>
+<li><p>Histogram equalization is used to enhance contrast.</p>
+</li>
+<li><p>Lets start histogram equalization by taking this image below as a simple image.</p>
+</li>
+<li><p>The histogram of this image has been shown below.</p>
+<p><img src="/image/hisE01.png" alt></p>
+<p><img src="/image/hisE02.png" alt></p>
+</li>
+<li><p>Now we will perform histogram equalization to it.</p>
+</li>
+<li><p>First we have to calculate the PMF (probability mass function) of all the pixels in this image.</p>
+</li>
+<li><p>Our next step involves calculation of CDF (cumulative distributive function).  </p>
+</li>
+</ul>
+<h2 id="Calculate-CDF-according-to-gray-levels"><a href="#Calculate-CDF-according-to-gray-levels" class="headerlink" title="Calculate CDF according to gray levels"></a>Calculate CDF according to gray levels</h2><p><img src="/image/hisE03.png" alt></p>
+<ul>
+<li><p>Then in this step you will multiply the CDF value with (Gray levels (minus) 1) .</p>
+</li>
+<li><p>Considering we have an 3 bpp image. </p>
+</li>
+<li><p>Then number of levels we have are 8.</p>
+</li>
+<li><p>And 1 subtracts 8 is 7. So we multiply CDF by 7. Here what we got after multiplying.</p>
+<p><img src="/image/hisE04.png" alt></p>
+</li>
+<li><p>we have to map the new gray level values into number of pixels.</p>
+</li>
+<li><p>Lets assume our old gray levels values has these number of pixels.</p>
+</li>
+</ul>
+<p><img src="/image/hisE05.png" alt></p>
+<ul>
+<li><p>Now if we map our new values to , then this is what we got.</p>
+<p><img src="/image/hisE06.png" alt></p>
+</li>
+<li><p>Now map these new values you are onto histogram, and you are done.</p>
+</li>
+<li><p>Lets apply this technique to our original image. </p>
+</li>
+<li><p>After applying we got the following image and its following histogram.</p>
+</li>
+</ul>
+<h2 id="Cumulative-Distributive-function-of-this-image"><a href="#Cumulative-Distributive-function-of-this-image" class="headerlink" title="Cumulative Distributive function of this image"></a>Cumulative Distributive function of this image</h2><p><img src="/image/hisE07.png" alt></p>
+<h2 id="Histogram-Equalization-histogram"><a href="#Histogram-Equalization-histogram" class="headerlink" title="Histogram Equalization histogram"></a>Histogram Equalization histogram</h2><p><img src="/image/hisE08.png" alt></p>
+<h2 id="Comparing-both-the-histograms-and-images"><a href="#Comparing-both-the-histograms-and-images" class="headerlink" title="Comparing both the histograms and images"></a>Comparing both the histograms and images</h2><p><img src="/image/hisE09.png" alt></p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
+<li>during histogram equalization the overall shape of the histogram changes, </li>
+<li>where as in histogram stretching the overall shape of histogram remains same.</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/21/Histogram Equalization/" data-id="ck5qih39k00css16w8mrqjwf4" data-title="Histogram Equalization" class="article-share-link">Share</a>
       
       
       
@@ -237,265 +495,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/21/Convolution/" data-id="ck5qi9kfx00czga6w0ga43dv2" data-title="Convolution" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Histogram Stretching" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/21/Histogram Stretching/" class="article-date">
-  <time class="dt-published" datetime="2018-05-20T15:00:00.000Z" itemprop="datePublished">2018-05-21</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/dip/">DIP</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/21/Histogram Stretching/">Histogram Stretching</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>There are two methods of enhancing contrast. </p>
-<ul>
-<li>The first one is called Histogram stretching that increase contrast. </li>
-<li>The second one is called Histogram equalization that enhance contrast.</li>
-</ul>
-<h2 id="Contrast"><a href="#Contrast" class="headerlink" title="Contrast"></a>Contrast</h2><ul>
-<li><p>Contrast is the difference between maximum and minimum pixel intensity.</p>
-<p><img src="/image/hisStretch01.png" alt></p>
-</li>
-<li><p>Contrast = 225.</p>
-</li>
-<li><p>Now we will increase the contrast of the image.</p>
-</li>
-</ul>
-<h2 id="Increasing-the-contrast-of-the-image"><a href="#Increasing-the-contrast-of-the-image" class="headerlink" title="Increasing the contrast of the image"></a>Increasing the contrast of the image</h2><ul>
-<li><p>The formula for stretching the histogram of the image to increase the contrast is</p>
-<p><img src="/image/hisStretch02.png" alt></p>
-</li>
-<li><p>The formula requires finding the minimum and maximum pixel intensity multiply by levels of gray. </p>
-</li>
-<li><p>In our case the image is 8bpp, so levels of gray are 256.</p>
-</li>
-<li><p>The minimum value is 0 and the maximum value is 225. So the formula in our case is</p>
-<p><img src="/image/hisStretch03.png" alt></p>
-</li>
-<li><p>where f(x,y) denotes the value of each pixel intensity. For each f(x,y) in an image , we will calculate this formula.</p>
-</li>
-<li><p>Note the shape and symmetry of histogram. The histogram is now stretched or in other means expand. Have a look at it.</p>
-<p><img src="/image/hisStretch04.png" alt></p>
-</li>
-<li><p>In this case the contrast of the image can be calculated as Contrast = 240</p>
-</li>
-<li><p>Hence we can say that the contrast of the image is increased.</p>
-</li>
-</ul>
-<h2 id="Failing-of-histogram-stretching"><a href="#Failing-of-histogram-stretching" class="headerlink" title="Failing of histogram stretching"></a>Failing of histogram stretching</h2><ul>
-<li><p>the algorithm fails on some cases. </p>
-</li>
-<li><p>Those cases include images with when there is pixel intensity 0 and 255 are present in the image</p>
-</li>
-<li><p>Original Formula</p>
-<p><img src="/image/hisStretch05.png" alt></p>
-</li>
-<li><p>Putting fail case values in the formula</p>
-<p><img src="/image/hisStretch06.png" alt></p>
-</li>
-<li><p>Simplify that expression gives</p>
-<p><img src="/image/hisStretch07.png" alt></p>
-</li>
-<li><p>That means the output image is equal to the processed image. </p>
-</li>
-<li><p>That means there is no effect of histogram stretching has been done at this image.</p>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/21/Histogram Stretching/" data-id="ck5qi9kfw00cwga6wyipgi5sz" data-title="Histogram Stretching" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Histogram Sliding" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/21/Histogram Sliding/" class="article-date">
-  <time class="dt-published" datetime="2018-05-20T15:00:00.000Z" itemprop="datePublished">2018-05-21</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/dip/">DIP</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/21/Histogram Sliding/">Histogram Sliding</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Histogram-sliding"><a href="#Histogram-sliding" class="headerlink" title="Histogram sliding"></a>Histogram sliding</h2><ul>
-<li>In histogram sliding, we just simply shift a complete histogram rightwards or leftwards. </li>
-<li>Due to shifting or sliding of histogram towards right or left, </li>
-<li>a clear change can be seen in the image.</li>
-</ul>
-<h2 id="Increasing-brightness-using-histogram-sliding"><a href="#Increasing-brightness-using-histogram-sliding" class="headerlink" title="Increasing brightness using histogram sliding"></a>Increasing brightness using histogram sliding</h2><p><img src="/image/hisSl01.png" alt></p>
-<p><img src="/image/hisSl02.png" alt></p>
-<ul>
-<li>On the y axis of this histogram are the frequency or count. </li>
-<li>And on the x axis, we have gray level values. </li>
-<li>As you can see from the above histogram, that those gray level intensities whose count is more then 700, lies in the first half portion, means towards blacker portion. </li>
-<li>Thats why we got an image that is a bit darker.</li>
-<li>In order to bright it, we will slide its histogram towards right, or towards whiter portion. </li>
-<li>In order to do we need to add atleast a value of 50 to this image. </li>
-<li>Because we can see from the histogram above, that this image also has 0 pixel intensities, that are pure black. </li>
-<li>So if we add 0 to 50, we will shift all the values lies at 0 intensity to 50 intensity and all the rest of the values will be shifted accordingly.</li>
-</ul>
-<p><img src="/image/hisSl03.png" alt></p>
-<p><img src="/image/hisSl04.png" alt></p>
-<p><img src="/image/hisSl05.png" alt></p>
-<h2 id="Decreasing-brightness-using-histogram-sliding"><a href="#Decreasing-brightness-using-histogram-sliding" class="headerlink" title="Decreasing brightness using histogram sliding"></a>Decreasing brightness using histogram sliding</h2><ul>
-<li>Now if we were to decrease brightness of this new image to such an extent that the old image look brighter, </li>
-<li>we got to subtract some value from all the matrix of the new image. </li>
-<li>The value which we are going to subtract is 80. </li>
-<li>Because we already add 50 to the original image and we got a new brighter image, </li>
-<li>now if we want to make it darker, we have to subtract at least more than 50 from it.</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/21/Histogram Sliding/" data-id="ck5qi9kfv00cuga6wkd8phv73" data-title="Histogram Sliding" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Histogram Equalization" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/21/Histogram Equalization/" class="article-date">
-  <time class="dt-published" datetime="2018-05-20T15:00:00.000Z" itemprop="datePublished">2018-05-21</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/dip/">DIP</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/21/Histogram Equalization/">Histogram Equalization</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Histogram-Equalization"><a href="#Histogram-Equalization" class="headerlink" title="Histogram Equalization"></a>Histogram Equalization</h2><ul>
-<li><p>Histogram equalization is used to enhance contrast.</p>
-</li>
-<li><p>Lets start histogram equalization by taking this image below as a simple image.</p>
-</li>
-<li><p>The histogram of this image has been shown below.</p>
-<p><img src="/image/hisE01.png" alt></p>
-<p><img src="/image/hisE02.png" alt></p>
-</li>
-<li><p>Now we will perform histogram equalization to it.</p>
-</li>
-<li><p>First we have to calculate the PMF (probability mass function) of all the pixels in this image.</p>
-</li>
-<li><p>Our next step involves calculation of CDF (cumulative distributive function).  </p>
-</li>
-</ul>
-<h2 id="Calculate-CDF-according-to-gray-levels"><a href="#Calculate-CDF-according-to-gray-levels" class="headerlink" title="Calculate CDF according to gray levels"></a>Calculate CDF according to gray levels</h2><p><img src="/image/hisE03.png" alt></p>
-<ul>
-<li><p>Then in this step you will multiply the CDF value with (Gray levels (minus) 1) .</p>
-</li>
-<li><p>Considering we have an 3 bpp image. </p>
-</li>
-<li><p>Then number of levels we have are 8.</p>
-</li>
-<li><p>And 1 subtracts 8 is 7. So we multiply CDF by 7. Here what we got after multiplying.</p>
-<p><img src="/image/hisE04.png" alt></p>
-</li>
-<li><p>we have to map the new gray level values into number of pixels.</p>
-</li>
-<li><p>Lets assume our old gray levels values has these number of pixels.</p>
-</li>
-</ul>
-<p><img src="/image/hisE05.png" alt></p>
-<ul>
-<li><p>Now if we map our new values to , then this is what we got.</p>
-<p><img src="/image/hisE06.png" alt></p>
-</li>
-<li><p>Now map these new values you are onto histogram, and you are done.</p>
-</li>
-<li><p>Lets apply this technique to our original image. </p>
-</li>
-<li><p>After applying we got the following image and its following histogram.</p>
-</li>
-</ul>
-<h2 id="Cumulative-Distributive-function-of-this-image"><a href="#Cumulative-Distributive-function-of-this-image" class="headerlink" title="Cumulative Distributive function of this image"></a>Cumulative Distributive function of this image</h2><p><img src="/image/hisE07.png" alt></p>
-<h2 id="Histogram-Equalization-histogram"><a href="#Histogram-Equalization-histogram" class="headerlink" title="Histogram Equalization histogram"></a>Histogram Equalization histogram</h2><p><img src="/image/hisE08.png" alt></p>
-<h2 id="Comparing-both-the-histograms-and-images"><a href="#Comparing-both-the-histograms-and-images" class="headerlink" title="Comparing both the histograms and images"></a>Comparing both the histograms and images</h2><p><img src="/image/hisE09.png" alt></p>
-<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li>during histogram equalization the overall shape of the histogram changes, </li>
-<li>where as in histogram stretching the overall shape of histogram remains same.</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/21/Histogram Equalization/" data-id="ck5qi9kfu00crga6wbpdo1ibn" data-title="Histogram Equalization" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/21/Convolution/" data-id="ck5qih39j00cqs16w5mgt0e9w" data-title="Convolution" class="article-share-link">Share</a>
       
       
       
@@ -568,7 +568,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/21/Brightness and Contrast/" data-id="ck5qi9kft00cpga6wsci9jxne" data-title="Brightness and Contrast" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/21/Brightness and Contrast/" data-id="ck5qih39j00cns16w4bvyilaz" data-title="Brightness and Contrast" class="article-share-link">Share</a>
       
       
       
@@ -646,7 +646,58 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/21/Bits Per Pixel/" data-id="ck5qi9kfs00ciga6w1d4cg7bn" data-title="Bits Per Pixel" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/21/Bits Per Pixel/" data-id="ck5qih39i00cls16w2e7naqex" data-title="Bits Per Pixel" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-안전영역" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/15/안전영역/" class="article-date">
+  <time class="dt-published" datetime="2018-05-14T15:00:00.000Z" itemprop="datePublished">2018-05-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/15/안전영역/">안전영역</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.acmicpc.net/problem/2468" target="_blank" rel="noopener">https://www.acmicpc.net/problem/2468</a></p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p>비의 높이(지역 높이 최소~최대) 로 다음을 반복</p>
+<ol>
+<li>물에 잠긴 영역 체크</li>
+<li>BFS로 안정 영역 개수 체크</li>
+</ol>
+<h2 id="오답-원인"><a href="#오답-원인" class="headerlink" title="오답 원인"></a>오답 원인</h2><p>최소 답을 0으로 설정하였기 때문에 계속 틀렸었다.</p>
+<h2 id="해결"><a href="#해결" class="headerlink" title="해결"></a>해결</h2><p>최소 답은 1이다. </p>
+<p>왜냐하면, 아무 것도 잠기지 않는다면 하나의 영역이기 때문이다.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/15/안전영역/" data-id="ck5qih39i00cjs16wlsarei0y" data-title="안전영역" class="article-share-link">Share</a>
       
       
       
@@ -733,7 +784,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/15/Pixel/" data-id="ck5qi9kfs00ckga6wb3t2eq2o" data-title="Pixel" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/15/Pixel/" data-id="ck5qih39h00cgs16wwhod4rdx" data-title="Pixel" class="article-share-link">Share</a>
       
       
       
@@ -813,58 +864,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/15/Sampling, Quantization/" data-id="ck5qi9kft00cnga6wp3b4igoc" data-title="Sampling, Quantization" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-안전영역" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/15/안전영역/" class="article-date">
-  <time class="dt-published" datetime="2018-05-14T15:00:00.000Z" itemprop="datePublished">2018-05-15</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/15/안전영역/">안전영역</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><a href="https://www.acmicpc.net/problem/2468" target="_blank" rel="noopener">https://www.acmicpc.net/problem/2468</a></p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p>비의 높이(지역 높이 최소~최대) 로 다음을 반복</p>
-<ol>
-<li>물에 잠긴 영역 체크</li>
-<li>BFS로 안정 영역 개수 체크</li>
-</ol>
-<h2 id="오답-원인"><a href="#오답-원인" class="headerlink" title="오답 원인"></a>오답 원인</h2><p>최소 답을 0으로 설정하였기 때문에 계속 틀렸었다.</p>
-<h2 id="해결"><a href="#해결" class="headerlink" title="해결"></a>해결</h2><p>최소 답은 1이다. </p>
-<p>왜냐하면, 아무 것도 잠기지 않는다면 하나의 영역이기 때문이다.</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/15/안전영역/" data-id="ck5qi9kfr00cgga6w5l091l21" data-title="안전영역" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/15/Sampling, Quantization/" data-id="ck5qih39g00ces16wz6ib7c2v" data-title="Sampling, Quantization" class="article-share-link">Share</a>
       
       
       

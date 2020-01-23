@@ -71,9 +71,9 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-graph" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-infix" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/12/05/graph/" class="article-date">
+    <a href="/2018/12/05/infix/" class="article-date">
   <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
 </a>
     
@@ -89,7 +89,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/05/graph/">그래프</a>
+      <a class="p-name article-title" href="/2018/12/05/infix/">순회</a>
     </h1>
   
 
@@ -97,76 +97,22 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h5 id="그래프란"><a href="#그래프란" class="headerlink" title="그래프란 ?"></a>그래프란 ?</h5><p>노드 (N, node) 와 그 노드를 연결하는 간선 (E, edge) 을 하나로 모아 놓은 자료 구조입니다.</p>
-<h5 id="트리와-그래프의-차이는"><a href="#트리와-그래프의-차이는" class="headerlink" title="트리와 그래프의 차이는?"></a>트리와 그래프의 차이는?</h5><p>트리는 그래프의 한 종류입니다. 트리는 방향성이 있는 비순환 그래프입니다.</p>
-<h5 id="그래프는-어떻게-구현하나요"><a href="#그래프는-어떻게-구현하나요" class="headerlink" title="그래프는 어떻게 구현하나요 ?"></a>그래프는 어떻게 구현하나요 ?</h5><p>인접행렬과 인접리스트로 구현할 수 있습니다.</p>
-<ol>
-<li><p>인접행렬</p>
-<p>그래프의 연결 관계를 이차원 배열로 나타내는 방식입니다.<br>장점은, 노드 i와 노드 j가 연결되어 있는지 확인하고 싶을 때, adj(i)(j)가 1인지 0인지만 확인하면 되기 때문에 시간복잡도 O(1) 이라는 점입니다. 단점은, 노드 i에 연결된 모든 노드들에 방문해보고 싶은 경우, adj(i)(1)부터 adj(i)(v)를 모두 확인해보아야 하기 때문에 총 O(v)의 시간이 걸린다는 점입니다.</p>
-</li>
-<li><p>인접리스트</p>
-<p>그래프의 연결 관계를 연결 리스트로 나타내는 방식입니다.<br>장점은, 실제로 연결된 노드들에 대한 정보만 저장합니다. 단점은, 노드 i와 노드 j가 연결되어 있는지 알고 싶다면, adj[i]가 j를 성분으로 갖는지 확인해봐야합니다. 시간복잡도 O(v)가 됩니다.</p>
-</li>
+        <h5 id="infix-prefix-postfixt-표기법이-뭔가요"><a href="#infix-prefix-postfixt-표기법이-뭔가요" class="headerlink" title="infix, prefix, postfixt 표기법이 뭔가요?"></a>infix, prefix, postfixt 표기법이 뭔가요?</h5><p>연산자가 놓이는 위치를 기준으로 구분합니다.<br>infix는 연산자가 피연자 사이에, prefix는 연산자가 피연산자 앞에, postfix는 연산자가 피연산자 뒤에 놓입니다.</p>
+<h5 id="infix를-postfix로-어떻게-바꾸나요"><a href="#infix를-postfix로-어떻게-바꾸나요" class="headerlink" title="infix를 postfix로 어떻게 바꾸나요?"></a>infix를 postfix로 어떻게 바꾸나요?</h5><ol>
+<li>취할 수 있는 모든 괄호를 취합니다.</li>
+<li>각 괄호를 기준으로 연산자를 모두 뒤로 뺍니다.</li>
+<li>괄호를 모두 삭제합니다.</li>
 </ol>
-<h5 id="그래프를-어떻게-탐색하나요"><a href="#그래프를-어떻게-탐색하나요" class="headerlink" title="그래프를 어떻게 탐색하나요?"></a>그래프를 어떻게 탐색하나요?</h5><p>깊이 우선 탐색 (DFS) 와 너비 우선 탐색 (BFS)가 있습니다.</p>
-<ol>
-<li><p>DFS</p>
-<p>루트 노드(혹은 다른 임의의 노드)에서 시작해서 다음 분기(branch)로 넘어가기 전에 해당 분기를 완벽하게 탐색하는 방법입니다.</p>
-</li>
-<li><p>BFS</p>
-<p>루트 노드(혹은 다른 임의의 노드)에서 시작해서 인접한 노드를 먼저 탐색하는 방법입니다.</p>
-</li>
+<h5 id="infix를-prefix로-어떻게-바꾸나요"><a href="#infix를-prefix로-어떻게-바꾸나요" class="headerlink" title="infix를 prefix로 어떻게 바꾸나요?"></a>infix를 prefix로 어떻게 바꾸나요?</h5><ol>
+<li>취할 수 있는 모든 괄호를 취합니다.</li>
+<li>각 괄호를 기준으로 연산자를 모두 앞으로 뺍니다.</li>
+<li>괄호를 모두 삭제합니다.</li>
 </ol>
-<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://gmlwjd9405.github.io/2018/08/13/data-structure-graph.html" target="_blank" rel="noopener">https://gmlwjd9405.github.io/2018/08/13/data-structure-graph.html</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/graph/" data-id="ck5qi9khx00k8ga6wakhmosx4" data-title="그래프" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-keep alive" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/12/05/keep alive/" class="article-date">
-  <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/network/">Network</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/05/keep alive/">keep alive</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h5 id="keep-alive-방식이란"><a href="#keep-alive-방식이란" class="headerlink" title="keep-alive 방식이란?"></a>keep-alive 방식이란?</h5><p>Keep Alive Time Out 이내에 Client 에서 Request를 재 요청하면 Socket을 새로 여는 것이아니라, 이미 열려 있는 Socket(port)에 전송하는 구조입니다.</p>
-<h5 id="http-connectionless-방식과-keep-alive-방식의-차이는"><a href="#http-connectionless-방식과-keep-alive-방식의-차이는" class="headerlink" title="http connectionless 방식과 keep-alive 방식의 차이는 ?"></a>http connectionless 방식과 keep-alive 방식의 차이는 ?</h5><p>connection Less 방식은 매번 Socket(port)를 열어야 하기때문에 비용적인 측면에서 비효율적이며, keep-alive 방식은 port Conenction에 소요되는 시간을 절약할 수 있습니다.</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/keep alive/" data-id="ck5qi9khw00k6ga6wcahv26ai" data-title="keep alive" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/infix/" data-id="ck5qih3bo00k7s16w1as1haq2" data-title="순회" class="article-share-link">Share</a>
       
       
       
@@ -248,7 +194,70 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/http method/" data-id="ck5qi9khw00k4ga6w9q26u5e2" data-title="http method" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/http method/" data-id="ck5qih3bn00k5s16wvv7t03kg" data-title="http method" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-graph" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/05/graph/" class="article-date">
+  <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/data-structure/">Data Structure</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/05/graph/">그래프</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="그래프란"><a href="#그래프란" class="headerlink" title="그래프란 ?"></a>그래프란 ?</h5><p>노드 (N, node) 와 그 노드를 연결하는 간선 (E, edge) 을 하나로 모아 놓은 자료 구조입니다.</p>
+<h5 id="트리와-그래프의-차이는"><a href="#트리와-그래프의-차이는" class="headerlink" title="트리와 그래프의 차이는?"></a>트리와 그래프의 차이는?</h5><p>트리는 그래프의 한 종류입니다. 트리는 방향성이 있는 비순환 그래프입니다.</p>
+<h5 id="그래프는-어떻게-구현하나요"><a href="#그래프는-어떻게-구현하나요" class="headerlink" title="그래프는 어떻게 구현하나요 ?"></a>그래프는 어떻게 구현하나요 ?</h5><p>인접행렬과 인접리스트로 구현할 수 있습니다.</p>
+<ol>
+<li><p>인접행렬</p>
+<p>그래프의 연결 관계를 이차원 배열로 나타내는 방식입니다.<br>장점은, 노드 i와 노드 j가 연결되어 있는지 확인하고 싶을 때, adj(i)(j)가 1인지 0인지만 확인하면 되기 때문에 시간복잡도 O(1) 이라는 점입니다. 단점은, 노드 i에 연결된 모든 노드들에 방문해보고 싶은 경우, adj(i)(1)부터 adj(i)(v)를 모두 확인해보아야 하기 때문에 총 O(v)의 시간이 걸린다는 점입니다.</p>
+</li>
+<li><p>인접리스트</p>
+<p>그래프의 연결 관계를 연결 리스트로 나타내는 방식입니다.<br>장점은, 실제로 연결된 노드들에 대한 정보만 저장합니다. 단점은, 노드 i와 노드 j가 연결되어 있는지 알고 싶다면, adj[i]가 j를 성분으로 갖는지 확인해봐야합니다. 시간복잡도 O(v)가 됩니다.</p>
+</li>
+</ol>
+<h5 id="그래프를-어떻게-탐색하나요"><a href="#그래프를-어떻게-탐색하나요" class="headerlink" title="그래프를 어떻게 탐색하나요?"></a>그래프를 어떻게 탐색하나요?</h5><p>깊이 우선 탐색 (DFS) 와 너비 우선 탐색 (BFS)가 있습니다.</p>
+<ol>
+<li><p>DFS</p>
+<p>루트 노드(혹은 다른 임의의 노드)에서 시작해서 다음 분기(branch)로 넘어가기 전에 해당 분기를 완벽하게 탐색하는 방법입니다.</p>
+</li>
+<li><p>BFS</p>
+<p>루트 노드(혹은 다른 임의의 노드)에서 시작해서 인접한 노드를 먼저 탐색하는 방법입니다.</p>
+</li>
+</ol>
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://gmlwjd9405.github.io/2018/08/13/data-structure-graph.html" target="_blank" rel="noopener">https://gmlwjd9405.github.io/2018/08/13/data-structure-graph.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/05/graph/" data-id="ck5qih3bn00k3s16wzqdpoc3a" data-title="그래프" class="article-share-link">Share</a>
       
       
       
@@ -295,7 +304,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/coupling/" data-id="ck5qi9khv00k2ga6wz87faus4" data-title="coupling" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/coupling/" data-id="ck5qih3bm00k1s16wh09w9mci" data-title="coupling" class="article-share-link">Share</a>
       
       
       
@@ -344,7 +353,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/abstract class, interface/" data-id="ck5qi9khu00k0ga6wy426ihmw" data-title="abstract class, interface" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/abstract class, interface/" data-id="ck5qih3bm00jzs16wdwymkiu6" data-title="abstract class, interface" class="article-share-link">Share</a>
       
       
       
@@ -395,7 +404,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/Redis/" data-id="ck5qi9kht00jyga6wom3akn38" data-title="Redis" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/Redis/" data-id="ck5qih3bl00jxs16wnhu4ozy2" data-title="Redis" class="article-share-link">Share</a>
       
       
       
@@ -447,7 +456,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/OOP/" data-id="ck5qi9kht00jwga6w70ny5gft" data-title="OOP" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/OOP/" data-id="ck5qih3bl00jvs16wwa97zpht" data-title="OOP" class="article-share-link">Share</a>
       
       
       
@@ -493,51 +502,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/Java Feature/" data-id="ck5qi9khs00juga6w3h5xuez9" data-title="Java 특징" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-ADT" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/12/05/ADT/" class="article-date">
-  <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/data-structure/">Data Structure</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/05/ADT/">ADT</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>추상자료형이란 기능의 구현 부분을 나타내지 않고 순수한 기능이 무엇인지 나열한 것입니다.</p>
-<p>예를 들면, 스택은 FILO(First In Last Out)/LIFO(Last In First Out)의 자료구조로, 마지막에 입력된 데이터가 먼저 출력되는 자료구조입니다. push는 스택에 데이터를 입력합니다. pop은 스택에 있는 데이터중에 가장 나중에 입력된 데이터를 출력하고, 스택에서 삭제합니다.</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/ADT/" data-id="ck5qi9kho00jgga6w2pcfy51w" data-title="ADT" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/Java Feature/" data-id="ck5qih3bk00jts16we2kbnm93" data-title="Java 특징" class="article-share-link">Share</a>
       
       
       
@@ -594,7 +559,89 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/Java 8/" data-id="ck5qi9khr00jqga6w33vq8qao" data-title="Java 8" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/Java 8/" data-id="ck5qih3bj00jrs16ww1p9ex6o" data-title="Java 8" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-High Availability" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/05/High Availability/" class="article-date">
+  <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/database/">Database</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/05/High Availability/">High Availability</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="고가용성-HA-High-Availability-이-뭔가요"><a href="#고가용성-HA-High-Availability-이-뭔가요" class="headerlink" title="고가용성(HA, High Availability)이 뭔가요?"></a>고가용성(HA, High Availability)이 뭔가요?</h5><p>서버가 오랜 시간 동안 지속적으로 정상 운영이 가능한 성질을 말합니다.</p>
+<h5 id="HA를-이루기-위한-방법이-뭐가-있나요"><a href="#HA를-이루기-위한-방법이-뭐가-있나요" class="headerlink" title="HA를 이루기 위한 방법이 뭐가 있나요?"></a>HA를 이루기 위한 방법이 뭐가 있나요?</h5><p>클러스터링, 이중화, RAID가 있습니다.</p>
+<h5 id="클러스터링이-뭔가요"><a href="#클러스터링이-뭔가요" class="headerlink" title="클러스터링이 뭔가요?"></a>클러스터링이 뭔가요?</h5><p>마치 하나의 컴퓨터처럼 사용하기 위해, 여러 컴퓨터를 연결한 병렬 시스템입니다. 클러스터링 환경에서는 특정 장비에 문제가 생기거나 특정 장비에서 실행중인 애플리케이션에서 문제가 발생더라도 전체 서비스에 영향을 미치지 않도록 제어가 가능합니다. </p>
+<h5 id="클러스터링의-장점은"><a href="#클러스터링의-장점은" class="headerlink" title="클러스터링의 장점은?"></a>클러스터링의 장점은?</h5><ol>
+<li>저렴한 비용으로 다수의 서버를 증설 할 수 있습니다.</li>
+<li>1대의 서버 장애가 발생하여도 서비스 중단없이 다른 서버로 적절히 자동 분배되어 서비스를 계속 운용할 수 있습니다.</li>
+<li>서버를 확장할 때도 서비스 중단 없이 증설이 가능합니다.</li>
+</ol>
+<h5 id="이중화-replication-는-무엇인가요"><a href="#이중화-replication-는-무엇인가요" class="headerlink" title="이중화(replication) 는 무엇인가요?"></a>이중화(replication) 는 무엇인가요?</h5><p>replication은 물리적으로 다른 서버의 저장 공간에 동일한 데이터를 복사하는 기술입니다.</p>
+<h5 id="master-와-slave가-뭔가요"><a href="#master-와-slave가-뭔가요" class="headerlink" title="master 와 slave가 뭔가요?"></a>master 와 slave가 뭔가요?</h5><p>원본 데이터가 위치하는 서버를 master 라고 하고 그 원본을 복제한 서버를 slave 라고 합니다. master에 쓰기 작업을 하고, 그 서버의 데이터를 복제해서 여러 대의 slave 서버를 만든 후에 slave 에서는 읽기 작업만을 수행합니다.</p>
+<h5 id="replication은-어떤-용도로-사용하나요"><a href="#replication은-어떤-용도로-사용하나요" class="headerlink" title="replication은 어떤 용도로 사용하나요?"></a>replication은 어떤 용도로 사용하나요?</h5><ol>
+<li><p>백업용으로 사용할 수 있습니다.</p>
+<p>master의 database와, 그로부터 복사된 slave의 database는 identical하기 때문에, master에 문제가 생겼을 경우에, slave가 하던 일을 떠맡도록 하면 다시 시스템을 정상적으로 가동하는 데 드는 시간을 절약할 수 있습니다.</p>
+</li>
+<li><p>역할을 분산할 수 있습니다.</p>
+<p>data를 직접 변경하는 처리는 master가 하도록 하고, 변경하지 않는 SELECT 같은 처리는 slave가 맡는 형식입니다.</p>
+</li>
+</ol>
+<h5 id="mysql-에서-replication은-어떤-방식으로-하나요"><a href="#mysql-에서-replication은-어떤-방식으로-하나요" class="headerlink" title="mysql 에서 replication은 어떤 방식으로 하나요?"></a>mysql 에서 replication은 어떤 방식으로 하나요?</h5><ol>
+<li>Master에서 데이터 변경이 일어나면 자신의 데이터베이스에 반영합니다.</li>
+<li>Master에서 변경된 이력을 Binary Log에 기록 후 관련 이벤트를 날립니다.</li>
+<li>Slave IO_THREAD에서 Master 이벤트를 감지하고, Master Binary Log를 자신의 Relay Log라는 곳에 기록을 합니다.</li>
+<li>Slave SQL_THREAD는 Relay Log를 읽고 자신의 데이터베이스에 기록을 합니다.</li>
+</ol>
+<h5 id="RAID가-무엇인가요"><a href="#RAID가-무엇인가요" class="headerlink" title="RAID가 무엇인가요?"></a>RAID가 무엇인가요?</h5><p>한 개의 디스크에 데이터를 저장하는 방식이 아닌, 데이터 저장의 성능 및 안정성 확보를 위해 복수의 디스크를 구성하는 방식입니다.</p>
+<h5 id="샤딩이-무엇인가요"><a href="#샤딩이-무엇인가요" class="headerlink" title="샤딩이 무엇인가요?"></a>샤딩이 무엇인가요?</h5><p>Horizontal Partitioning입니다. 같은 테이블 스키마를 가진 데이터를 다수의 데이터베이스에 분산하여 저장하는 방법입니다.</p>
+<h5 id="샤딩이-항상-필요하나요"><a href="#샤딩이-항상-필요하나요" class="headerlink" title="샤딩이 항상 필요하나요?"></a>샤딩이 항상 필요하나요?</h5><p>가능하면 Sharding을 피하거나 지연시킬 수 있는 방법을 찾는 것이 우선되어야 합니다. </p>
+<h5 id="샤딩-이외의-방법은-뭐가-있을까요"><a href="#샤딩-이외의-방법은-뭐가-있을까요" class="headerlink" title="샤딩 이외의 방법은 뭐가 있을까요?"></a>샤딩 이외의 방법은 뭐가 있을까요?</h5><ol>
+<li><p>Scale in 방식</p>
+<p>Hardware Spec이 더 좋은 컴퓨터를 사용할 수 있습니다. </p>
+</li>
+<li><p>Cache, Repliction</p>
+<p>read 부하가 크다면 </p>
+</li>
+<li><p>Vertically Partition</p>
+<p>Table의 일부 컬럼만 자주 사용한다면</p>
+</li>
+</ol>
+<h5 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h5><p><a href="http://snthewhitehacker.tistory.com/4" target="_blank" rel="noopener">http://snthewhitehacker.tistory.com/4</a></p>
+<p><a href="http://gywn.net/2011/12/mysql-replication-1/" target="_blank" rel="noopener">http://gywn.net/2011/12/mysql-replication-1/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/05/High Availability/" data-id="ck5qih3bj00jps16wjvin1dha" data-title="High Availability" class="article-share-link">Share</a>
       
       
       
