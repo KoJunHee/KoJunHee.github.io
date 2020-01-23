@@ -71,14 +71,14 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-Process Managemnet" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-보물상자 비밀번호" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/10/04/Process Managemnet/" class="article-date">
+    <a href="/2018/10/04/보물상자 비밀번호/" class="article-date">
   <time class="dt-published" datetime="2018-10-03T15:00:00.000Z" itemprop="datePublished">2018-10-04</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/os/">OS</a>
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
   </div>
 
   </div>
@@ -89,7 +89,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/10/04/Process Managemnet/">Process Management</a>
+      <a class="p-name article-title" href="/2018/10/04/보물상자 비밀번호/">보물상자 비밀번호</a>
     </h1>
   
 
@@ -97,123 +97,28 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>출처 : 이화여자대학교 반효경 (<a href="http://www.kocw.net/home/search/kemView.do?kemId=1046323" target="_blank" rel="noopener">http://www.kocw.net/home/search/kemView.do?kemId=1046323</a>)</p>
-<h2 id="프로세스-생성"><a href="#프로세스-생성" class="headerlink" title="프로세스 생성"></a>프로세스 생성</h2><ul>
-<li>부모 프로세스가 자식 프로세스 생성</li>
-<li>프로세스의 트리(계층 구조) 생성</li>
-<li>프로세스는 자원을 필요로 함<ul>
-<li>운영체제로부터 받는다</li>
-<li>부모와 공유한다</li>
-</ul>
+        <p><a href="https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AWXRUN9KfZ8DFAUo&amp;categoryId=AWXRUN9KfZ8DFAUo&amp;categoryType=CODE" target="_blank" rel="noopener">https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AWXRUN9KfZ8DFAUo&amp;categoryId=AWXRUN9KfZ8DFAUo&amp;categoryType=CODE</a></p>
+<p>쉬운 문제이다. 이 문제에서는 정렬과 진법 변환을 배울 수 있다.</p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ol>
+<li>회전 시키고</li>
+<li>각 변 확인하며 리스트에 저장</li>
+</ol>
+<h2 id="개념"><a href="#개념" class="headerlink" title="개념"></a>개념</h2><ol>
+<li><p>정렬</p>
+<p>오름차순 정렬 : Collections.sort(list)</p>
+<p>내림차순 정렬 : Collections.sort(list) –&gt;  Collections.reverse(list)</p>
 </li>
-<li>주소 공간<ul>
-<li>자식은 부모의 공간을 복사</li>
-<li>자식은 그 공간에 새로운 프로그램을 올림</li>
-</ul>
+<li><p>진법 변환</p>
+<p>string 을 radix 진법으로 변환 : Integer.parseInt(String s, int radix) </p>
 </li>
-<li>유닉스의 예 : 복제 생성하고 덮어씌움<ul>
-<li>fork() 시스템 콜이 새로운 프로세스를 복제 생성<ul>
-<li>부모를 그대로 복사</li>
-<li>주소 공간 할당</li>
-</ul>
-</li>
-<li>exec()<ul>
-<li>fork 다음에 이어지는  exec() 시스템 콜을 통해 새로운 프로그램을 메모리에 올림 (덮어 씌움)</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="프로세스-종료"><a href="#프로세스-종료" class="headerlink" title="프로세스 종료"></a>프로세스 종료</h2><ul>
-<li>exit<ul>
-<li>exit 시스템 콜을 통해 프로세스가 마지막 명령을 수행한후 운영체제에게 이를 알려줌</li>
-<li>자식이 부모에게 output data를 보냄(via wait system call)</li>
-<li>프로세의 각종 자원들이 운영체제에게 반납됨</li>
-</ul>
-</li>
-<li>abort<ul>
-<li>부모 프로세스가 자식의 수행을 종료시킴</li>
-<li>자식이 할당 자원의 한계치를 넘어섬</li>
-<li>자식에게 할당된 테스크가 더 이사 필요하지 않음</li>
-<li>부모가 종료하는 경우<ul>
-<li>운영체제는 부모 프로세스가 종료하는 경우 자식이 더 이상 수행되도록 두지 않음</li>
-<li>단계적인 종료</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="fork-system-call"><a href="#fork-system-call" class="headerlink" title="fork() system call"></a>fork() system call</h2><p>왼쪽은 부모, 오른쪽은 자식. 자식은 fork() 이후의 라인부터 실행</p>
-<p><img src="/image/os100401.png" alt></p>
-<p><img src="/image/os100402.png" alt></p>
-<h2 id="exec-system-call"><a href="#exec-system-call" class="headerlink" title="exec() system call"></a>exec() system call</h2><p>새로운 프로그램을 덮어씌움. </p>
-<p>부모가 자식을 만든다음에, 자식은 오른쪽의 date라는 프로그램으로 완전히 덮어씌었음</p>
-<p><img src="/image/os100403.png" alt></p>
-<h2 id="wait-system-call"><a href="#wait-system-call" class="headerlink" title="wait() system call"></a>wait() system call</h2><p>프로세스 A가 wait() system call을 하면, </p>
-<p>커널은 child가 종료될 때까지 프로세스 A를 slepp 시킴(block 상태)</p>
-<p>child process가 종료되면 커널은 프로세스 A를 깨움(ready 상태)</p>
-<p><img src="/image/os100404.png" alt></p>
-<h2 id="exit-system-call"><a href="#exit-system-call" class="headerlink" title="exit() system call"></a>exit() system call</h2><p>프로세스의 종료</p>
-<ul>
-<li>자발적 종료<ul>
-<li>마지막 statement 수행 후에 exit() 시스템 콜 통해</li>
-<li>프로그램에 명싱적으로 적어주지 않아도 main 함수가 리턴되는 위치에 컴파일러가 넣어줌</li>
-</ul>
-</li>
-<li>비자발적 종료<ul>
-<li>부모가 자식을 죽임<ul>
-<li>자식이 한계치 넘어서는 자원 자원 요청</li>
-<li>자식에게 할당된 테스크가 더이상 필요하지 않음</li>
-</ul>
-</li>
-<li>키모드로 kill, break 친 경우</li>
-<li>부모가 종료하는 경우<ul>
-<li>부모가 종료하기 전에 자식들이 먼저 종료됨</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="프로세스-간-협력"><a href="#프로세스-간-협력" class="headerlink" title="프로세스 간 협력"></a>프로세스 간 협력</h2><ul>
-<li>독릭접 프로세스<ul>
-<li>프로세는 각자의 주소 공간을 가지고 수행되므로 원친적으로 하나의 프로세스가 다른 프로세스의 수행에 영향을 미치지 못함</li>
-</ul>
-</li>
-<li>협력 프로세스<ul>
-<li>하나의 프로세스가 다른 프로세싀의 수행에 여향을 미칠 수 있음</li>
-</ul>
-</li>
-<li>프로세스 간 협력 메커니즘(IPC : Interprocess Communication)<ul>
-<li>메세지를 전달하는 방법 (message passing)<ul>
-<li>커널을 통해 메세지 전달</li>
-</ul>
-</li>
-<li>주소 공간을 공유하는 방법 (shraed memory)<ul>
-<li>서로 다른 프로세 간에도 일부 주소 공간을 공유하게하는 메커니즘</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="IPC"><a href="#IPC" class="headerlink" title="IPC"></a>IPC</h2><p><img src="/image/os100405.png" alt></p>
-<h2 id="Message-Passing"><a href="#Message-Passing" class="headerlink" title="Message Passing"></a>Message Passing</h2><p><img src="/image/os100406.png" alt></p>
-<ul>
-<li><p>Direcit Communicaiton</p>
-<ul>
-<li>통신하려는 프로세스의 이름을 명시적으료 표시</li>
-</ul>
-</li>
-<li><p>Indirecit Communicaiton</p>
-<ul>
-<li>mailbot or port 를 통해 메시지를 간접 전달</li>
-</ul>
-</li>
-</ul>
+</ol>
+<h2 id="코드"><a href="#코드" class="headerlink" title="코드"></a>코드</h2><p><img src="/image/treasurepwd01.png" alt></p>
+<p><img src="/image/treasurepwd02.png" alt></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/10/04/Process Managemnet/" data-id="ck5qcxmcn00gukl6wmv5pamrt" data-title="Process Management" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/10/04/보물상자 비밀번호/" data-id="ck5qcyzxv00gx5v6w2me141o4" data-title="보물상자 비밀번호" class="article-share-link">Share</a>
       
       
       
@@ -304,7 +209,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/10/03/Process/" data-id="ck5qcxmcm00gskl6w0xpwhar6" data-title="Process" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/10/03/Process/" data-id="ck5qcyzxt00go5v6wzzo5cxkl" data-title="Process" class="article-share-link">Share</a>
       
       
       
@@ -501,7 +406,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/10/01/System Structure, Program Execution/" data-id="ck5qcxmcl00gqkl6whz0a3btv" data-title="System Structure, Program Execution" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/10/01/System Structure, Program Execution/" data-id="ck5qcyzxt00gq5v6wxu93reb9" data-title="System Structure, Program Execution" class="article-share-link">Share</a>
       
       
       
@@ -675,7 +580,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/10/01/Introduction/" data-id="ck5qcxmcj00glkl6w0o7c4vsl" data-title="Introduction" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/10/01/Introduction/" data-id="ck5qcyzxr00gj5v6wdfqzlpae" data-title="Introduction" class="article-share-link">Share</a>
       
       
       
@@ -731,7 +636,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/09/30/실패율/" data-id="ck5qcxmci00ghkl6w9upgylok" data-title="실패율" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/09/30/실패율/" data-id="ck5qcyzxs00gl5v6wbbggiquf" data-title="실패율" class="article-share-link">Share</a>
       
       
       
@@ -782,7 +687,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/09/30/오픈채팅방/" data-id="ck5qcxmck00gnkl6wwjf8i68p" data-title="오픈채팅방" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/09/30/오픈채팅방/" data-id="ck5qcyzxr00gh5v6w6oauh0xu" data-title="오픈채팅방" class="article-share-link">Share</a>
       
       
       
@@ -841,56 +746,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/09/26/구슬탈출2/" data-id="ck5qcxmcj00gjkl6w7em3ldpw" data-title="구슬탈출2" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-시험감독" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/09/24/시험감독/" class="article-date">
-  <time class="dt-published" datetime="2018-09-23T15:00:00.000Z" itemprop="datePublished">2018-09-24</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/09/24/시험감독/">시험감독</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><a href="https://www.acmicpc.net/problem/13458" target="_blank" rel="noopener">https://www.acmicpc.net/problem/13458</a></p>
-<p>삼성 기출문제이다. 매우 쉬운 문제였다. </p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p>문제에서 주어진 대로 풀면 된다.</p>
-<p>처음에 틀렸다. </p>
-<p>ans 변수를 int로 선언하였을 때는 틀렸다고 나온다.</p>
-<p>long 형으로 선언하였더니 맞았다.</p>
-<h2 id="코드"><a href="#코드" class="headerlink" title="코드"></a>코드</h2><p><img src="/image/exameSee.png" alt></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/09/24/시험감독/" data-id="ck5qcxmch00gfkl6wet1ine60" data-title="시험감독" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/09/26/구슬탈출2/" data-id="ck5qcyzxq00gf5v6wpcgbpi45" data-title="구슬탈출2" class="article-share-link">Share</a>
       
       
       
@@ -947,7 +803,56 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/09/24/뱀/" data-id="ck5qcxmcg00gdkl6wpvtdyly4" data-title="뱀" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/09/24/뱀/" data-id="ck5qcyzxp00gb5v6w8iz0fu12" data-title="뱀" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-시험감독" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/09/24/시험감독/" class="article-date">
+  <time class="dt-published" datetime="2018-09-23T15:00:00.000Z" itemprop="datePublished">2018-09-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/09/24/시험감독/">시험감독</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.acmicpc.net/problem/13458" target="_blank" rel="noopener">https://www.acmicpc.net/problem/13458</a></p>
+<p>삼성 기출문제이다. 매우 쉬운 문제였다. </p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p>문제에서 주어진 대로 풀면 된다.</p>
+<p>처음에 틀렸다. </p>
+<p>ans 변수를 int로 선언하였을 때는 틀렸다고 나온다.</p>
+<p>long 형으로 선언하였더니 맞았다.</p>
+<h2 id="코드"><a href="#코드" class="headerlink" title="코드"></a>코드</h2><p><img src="/image/exameSee.png" alt></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/09/24/시험감독/" data-id="ck5qcyzxq00gd5v6wnma3snnv" data-title="시험감독" class="article-share-link">Share</a>
       
       
       
@@ -999,7 +904,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/09/24/2048/" data-id="ck5qcxmcf00gbkl6wwe4s9cvb" data-title="2048" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/09/24/2048/" data-id="ck5qcyzxp00g95v6wj9w195hl" data-title="2048" class="article-share-link">Share</a>
       
       
       
@@ -1054,6 +959,10 @@
       <ul>
         
           <li>
+            <a href="/2020/01/26/kafka-chapter7/">[카프카] 7장_데이터 파이프라인 구축</a>
+          </li>
+        
+          <li>
             <a href="/2020/01/20/object-chapter14/">[오브젝트] 14장_일관성 있는 협력</a>
           </li>
         
@@ -1067,10 +976,6 @@
         
           <li>
             <a href="/2020/01/06/object-chapter12/">[오브젝트] 12장_다형성</a>
-          </li>
-        
-          <li>
-            <a href="/2020/01/05/big-data-chapter5/">[빅데이터를 지탱하는 기술] 5장_빅데이터 파이프라인</a>
           </li>
         
       </ul>

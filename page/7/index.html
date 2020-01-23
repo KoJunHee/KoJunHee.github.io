@@ -71,6 +71,79 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-JUnit" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/07/JUnit/" class="article-date">
+  <time class="dt-published" datetime="2018-12-06T15:00:00.000Z" itemprop="datePublished">2018-12-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/software-engineering/">Software Engineering</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/07/JUnit/">JUnit</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="JUnit이란"><a href="#JUnit이란" class="headerlink" title="JUnit이란?"></a>JUnit이란?</h5><p> Java의  Testing Framework입니다.</p>
+<h5 id="JUnit-환경언-어떻게-구축하나요"><a href="#JUnit-환경언-어떻게-구축하나요" class="headerlink" title="JUnit 환경언 어떻게 구축하나요?"></a>JUnit 환경언 어떻게 구축하나요?</h5><p>pom.xml에 dependency를 추가해야합니다. Maven을 통해 쉽게 추가 할 수 있습니다. </p>
+<h5 id="어떤-flow로-동작하나요"><a href="#어떤-flow로-동작하나요" class="headerlink" title="어떤 flow로 동작하나요?"></a>어떤 flow로 동작하나요?</h5><p><img src="/image/junit.png" alt></p>
+<h5 id="Annotation-뭐가-있죠"><a href="#Annotation-뭐가-있죠" class="headerlink" title="Annotation 뭐가 있죠?"></a>Annotation 뭐가 있죠?</h5><ol>
+<li><p>@Test</p>
+<p>해당 Method는 Test 대상 메소드임을 의미합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Example</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       org.junit.Assert.assertTrue( <span class="keyword">new</span> ArrayList().isEmpty() );</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>@BeforeClass</p>
+<p>해당 테스트가 시작 전에 딱 한 번씩만 수행되도록 지정합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Example</span> </span>&#123;</span><br><span class="line">   <span class="meta">@BeforeClass</span> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">onlyOnce</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      ...</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="meta">@Test</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">one</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      ...</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="meta">@Test</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">two</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      ...</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>@AfeterClass</p>
+<p>해당 테스트가 끝나고 딱 한 번씩만 수행되도록 지정합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Example</span> </span>&#123;</span><br><span class="line">   DatabaseConnection database;</span><br><span class="line">   <span class="meta">@BeforeClass</span> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">login</span><span class="params">()</span> </span>&#123;</span><br><span class="line">         database= ...;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="meta">@Test</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">something</span><span class="params">()</span> </span>&#123;</span><br><span class="line">         ...</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="meta">@Test</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">somethingElse</span><span class="params">()</span> </span>&#123;</span><br><span class="line">         ...</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="meta">@AfterClass</span> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">logout</span><span class="params">()</span> </span>&#123;</span><br><span class="line">         database.logout();</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>@Before</p>
+<p>해당 테스트가 진행이 시작되기 전에 작업할 내용을 호출합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Example</span> </span>&#123;</span><br><span class="line">   List empty;</span><br><span class="line">   <span class="meta">@Before</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">initialize</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      empty= <span class="keyword">new</span> ArrayList();</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="meta">@Test</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">size</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      ...</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="meta">@Test</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      ...</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>@After</p>
+<p>해당 테스트가 진행이 끝난 후에 작업할 내용을 호출합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Example</span> </span>&#123;</span><br><span class="line">    File output;</span><br><span class="line">    <span class="meta">@Before</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">createOutputFile</span><span class="params">()</span> </span>&#123;</span><br><span class="line">          output= <span class="keyword">new</span> File(...);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Test</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">something</span><span class="params">()</span> </span>&#123;</span><br><span class="line">          ...</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@After</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deleteOutputFile</span><span class="params">()</span> </span>&#123;</span><br><span class="line">          output.delete();</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>@Ignore</p>
+<p>TestCase를 무시할 수 있습니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Ignore</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IgnoreMe</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Test</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test1</span><span class="params">()</span> </span>&#123; ... &#125;</span><br><span class="line">  <span class="meta">@Test</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test2</span><span class="params">()</span> </span>&#123; ... &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="http://www.nextree.co.kr/p11104/" target="_blank" rel="noopener">http://www.nextree.co.kr/p11104/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/07/JUnit/" data-id="ck5qcyzz000kn5v6w8n4fg4ch" data-title="JUnit" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-Generator" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2018/12/07/Generator/" class="article-date">
@@ -109,7 +182,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/07/Generator/" data-id="ck5qcxme200knkl6wbohpz9uc" data-title="Generator" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/07/Generator/" data-id="ck5qcyzyz00kl5v6w8mmz7585" data-title="Generator" class="article-share-link">Share</a>
       
       
       
@@ -170,7 +243,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/07/Devops/" data-id="ck5qcxme200klkl6wzwulo5zy" data-title="Devops" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/07/Devops/" data-id="ck5qcyzyz00kj5v6w063h10qx" data-title="Devops" class="article-share-link">Share</a>
       
       
       
@@ -219,73 +292,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/07/Call back/" data-id="ck5qcxme100kjkl6wje2cf6zm" data-title="Call back" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-TDD" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/12/07/TDD/" class="article-date">
-  <time class="dt-published" datetime="2018-12-06T15:00:00.000Z" itemprop="datePublished">2018-12-07</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/software-engineering/">Software Engineering</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/07/TDD/">TDD</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h5 id="TDD-란"><a href="#TDD-란" class="headerlink" title="TDD 란 ?"></a>TDD 란 ?</h5><p>Test Driven Development</p>
-<p>테스트가 개발을 이끌어 나갑니다. 테스트를 먼저 만들고 테스트를 통과하기 위한 것을 짜는 것입니다. 즉, 만드는 과정에서 우선 테스트를 작성하고 그걸 통과하는 코드를 만들고를 반복하면서 제대로 동작하는지에 대한 피드백을 적극적으로 받는 것입니다.</p>
-<h5 id="TDD를-왜-해야-하나요"><a href="#TDD를-왜-해야-하나요" class="headerlink" title="TDD를 왜 해야 하나요 ?"></a>TDD를 왜 해야 하나요 ?</h5><p>피드백과 협력을 증진시키기 때문에, 불확실성이 높을 때 도움이 됩니다.</p>
-<h5 id="TDD의-장점은"><a href="#TDD의-장점은" class="headerlink" title="TDD의 장점은 ?"></a>TDD의 장점은 ?</h5><ol>
-<li><p>보다 튼튼한 객체지적인 코드 생상이 가능합니다.</p>
-<p>TDD는 모든 코드가 재사용성 기반으로 작성되어야 하기 때문에 보다 튼튼한 코드 생산이 이루어집니다.</p>
-</li>
-<li><p>재설계 시간이 단축됩니다.</p>
-</li>
-<li><p>디버깅 시간이 단축됩니다.</p>
-<p>우리는 각각의 모듈 별로 테스트를 자동화할 수 있는 코드가 없다면, 특정 버그를 찾기 위해서 모든 레벨(레이어)의 코드들을 살펴봐야 합니다. 예를 들어 사용자의 데이터가 잘못 나온다면 DB의 문제인지, 비즈니스 레이어의 문제인지 UI 단의 문제인지 실제 모든 레이어들을 전부다 디버깅할 필요 없이 자동화 된 유닛테스팅 결과로 우리는 손 쉽게 찾아 낼 수 있습니다.</p>
-</li>
-<li><p>Behavior-Driven Development를 적용하는데 있어서 큰 시너지 효과가 있습니다.</p>
-<p>BDD는 행위(동작) 중심적인 방법으로 개발을 진행하는 방법론인데 개발자 디자이너 그리고 기획자 모두 사용자 입장으로 같은 목표로 가지기 위함입니다. TDD를 진행하면 항상 그 테스트 요소들이 사용자 관점으로 정의되고 진행되기 때문에 보다 튼튼한 개발 프로세스를 만들게 됩니다.</p>
-</li>
-<li><p>테스트 문서를 대체 할 수 있습니다.</p>
-<p>TDD를 하게 될 경우에 테스팅을 자동화 시킴과 동시에 보다 정확한 테스트 근거를 산출할 수 있다.</p>
-</li>
-<li><p>추가 구현이 용이합니다.</p>
-<p>유닛 테스트로 자동화 될 경우에 수동으로 모든 테스트를 다시 진행해야 되는 시간적인 낭비를 줄일 수 있습니다.</p>
-</li>
-</ol>
-<h5 id="TDD의-단점은"><a href="#TDD의-단점은" class="headerlink" title="TDD의 단점은 ?"></a>TDD의 단점은 ?</h5><p>코드 퀄리티 보다는 빠른 결과물을 원하는 환경이라면 쉽게 도입이 어려울 수 있습니다. TDD 를 공부해야 하고 추가적으로 테스트 코드를 작성해야 하기 때문입니다.</p>
-<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://lalwr.blogspot.com/2016/02/tddtest-driven-development.html" target="_blank" rel="noopener">https://lalwr.blogspot.com/2016/02/tddtest-driven-development.html</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/07/TDD/" data-id="ck5qcxme700l1kl6w01akyoyj" data-title="TDD" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/07/Call back/" data-id="ck5qcyzyy00kh5v6w1o2rb8ym" data-title="Call back" class="article-share-link">Share</a>
       
       
       
@@ -348,7 +355,56 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/06/concurrency/" data-id="ck5qcxme000khkl6wdlr3uu7h" data-title="동시성, 병렬성" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/06/concurrency/" data-id="ck5qcyzyx00kf5v6wwx42aj7e" data-title="동시성, 병렬성" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-abstract class, interface" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/05/abstract class, interface/" class="article-date">
+  <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/05/abstract class, interface/">abstract class, interface</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="추상-클래스와-인터페이스가-뭔가요"><a href="#추상-클래스와-인터페이스가-뭔가요" class="headerlink" title="추상 클래스와 인터페이스가 뭔가요 ?"></a>추상 클래스와 인터페이스가 뭔가요 ?</h5><p>추상클래스는 추상 메소드를 하나라도 가지는 클래스입니다.<br>인터페이스는 바디가 없는 메소드의 그룹입니다.</p>
+<h5 id="추상-클래스와-인터페이스를-사용하는-이유가-뭔가요"><a href="#추상-클래스와-인터페이스를-사용하는-이유가-뭔가요" class="headerlink" title="추상 클래스와 인터페이스를 사용하는 이유가 뭔가요 ?"></a>추상 클래스와 인터페이스를 사용하는 이유가 뭔가요 ?</h5><p>추상클래스는 추상클래스를 상속받아 그 기능을 이용하고 확장키는 목적으로 사용됩니다.<br>인터페이스는 메소드의 구현을 강제하기 위한 목적으로 사용됩니다.</p>
+<h5 id="다중-상속이-되나요"><a href="#다중-상속이-되나요" class="headerlink" title="다중 상속이 되나요?"></a>다중 상속이 되나요?</h5><p>추상클래스 다중 상속은 불가능하고, 인터페이스 다중 상속은 가능합니다.</p>
+<h5 id="추상클래스-예시는"><a href="#추상클래스-예시는" class="headerlink" title="추상클래스 예시는 ?"></a>추상클래스 예시는 ?</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Shape</span> </span>&#123; <span class="comment">//추상클래스 (슈퍼클래스)</span></span><br><span class="line">    <span class="keyword">int</span> x, y;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">move</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.x = x;</span><br><span class="line">        <span class="keyword">this</span>.y = y;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">draw</span><span class="params">()</span></span>; <span class="comment">//추상메서드</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Rectangle</span> <span class="keyword">extends</span> <span class="title">Shape</span></span>&#123; <span class="comment">//서브클래스</span></span><br><span class="line">    <span class="keyword">int</span> w, h;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">draw</span><span class="params">()</span></span>&#123; <span class="comment">//메서드 재정의</span></span><br><span class="line">       System.out.println(<span class="string">"Rectangle draw"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="인터페이스-예시는"><a href="#인터페이스-예시는" class="headerlink" title="인터페이스 예시는?"></a>인터페이스 예시는?</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">IWorker</span> </span>&#123; <span class="comment">//인터페이스</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">work</span><span class="params">()</span></span>;</span><br><span class="line">   	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line">   </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Worker</span> <span class="keyword">implements</span> <span class="title">IWorker</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">work</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// ...working</span></span><br><span class="line">   	&#125;</span><br><span class="line">   	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   		<span class="comment">// ...eating in launch break</span></span><br><span class="line">   	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/05/abstract class, interface/" data-id="ck5qcyzys00jx5v6w7f8y01ra" data-title="abstract class, interface" class="article-share-link">Share</a>
       
       
       
@@ -399,7 +455,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/static/" data-id="ck5qcxme000kfkl6wyl9sp2yt" data-title="static" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/static/" data-id="ck5qcyzyx00kd5v6wq13u54g2" data-title="static" class="article-share-link">Share</a>
       
       
       
@@ -450,7 +506,51 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/overloading, overriding/" data-id="ck5qcxmdz00kdkl6w9qbjdrcs" data-title="overloading, overriding" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/overloading, overriding/" data-id="ck5qcyzyw00kb5v6wrc6bjjat" data-title="overloading, overriding" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-keep alive" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/05/keep alive/" class="article-date">
+  <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/network/">Network</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/05/keep alive/">keep alive</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="keep-alive-방식이란"><a href="#keep-alive-방식이란" class="headerlink" title="keep-alive 방식이란?"></a>keep-alive 방식이란?</h5><p>Keep Alive Time Out 이내에 Client 에서 Request를 재 요청하면 Socket을 새로 여는 것이아니라, 이미 열려 있는 Socket(port)에 전송하는 구조입니다.</p>
+<h5 id="http-connectionless-방식과-keep-alive-방식의-차이는"><a href="#http-connectionless-방식과-keep-alive-방식의-차이는" class="headerlink" title="http connectionless 방식과 keep-alive 방식의 차이는 ?"></a>http connectionless 방식과 keep-alive 방식의 차이는 ?</h5><p>connection Less 방식은 매번 Socket(port)를 열어야 하기때문에 비용적인 측면에서 비효율적이며, keep-alive 방식은 port Conenction에 소요되는 시간을 절약할 수 있습니다.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/05/keep alive/" data-id="ck5qcyzyv00k95v6we42pdcme" data-title="keep alive" class="article-share-link">Share</a>
       
       
       
@@ -530,133 +630,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/isolation level/" data-id="ck5qcxmdz00kbkl6w0fg42o5t" data-title="isolation level" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-keep alive" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/12/05/keep alive/" class="article-date">
-  <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/network/">Network</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/05/keep alive/">keep alive</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h5 id="keep-alive-방식이란"><a href="#keep-alive-방식이란" class="headerlink" title="keep-alive 방식이란?"></a>keep-alive 방식이란?</h5><p>Keep Alive Time Out 이내에 Client 에서 Request를 재 요청하면 Socket을 새로 여는 것이아니라, 이미 열려 있는 Socket(port)에 전송하는 구조입니다.</p>
-<h5 id="http-connectionless-방식과-keep-alive-방식의-차이는"><a href="#http-connectionless-방식과-keep-alive-방식의-차이는" class="headerlink" title="http connectionless 방식과 keep-alive 방식의 차이는 ?"></a>http connectionless 방식과 keep-alive 방식의 차이는 ?</h5><p>connection Less 방식은 매번 Socket(port)를 열어야 하기때문에 비용적인 측면에서 비효율적이며, keep-alive 방식은 port Conenction에 소요되는 시간을 절약할 수 있습니다.</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/keep alive/" data-id="ck5qcxmdy00k9kl6wotti0eld" data-title="keep alive" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-http method" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/12/05/http method/" class="article-date">
-  <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/network/">Network</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/05/http method/">http method</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h5 id="http-method가-뭔가요"><a href="#http-method가-뭔가요" class="headerlink" title="http method가 뭔가요?"></a>http method가 뭔가요?</h5><p>http method 는 서버에게 무엇을 해야 하는지 말해줍니다.<br>GET, HEAD, POST, PUT, TRACE, OPTIONS, DELTE 가 있습니다.</p>
-<ol>
-<li><p>GET</p>
-<p>서버에서 어떤 문서를 가져옵니다.</p>
-</li>
-<li><p>HEAD</p>
-<p>서버에서 어떤 문서에 대해 헤더만 가져옵니다.</p>
-</li>
-<li><p>POST</p>
-<p>서버가 처리해야할 데이터를 보냅니다.</p>
-</li>
-<li><p>PUT</p>
-<p>서버에 요청 메시지의 본문을 저장합니다.</p>
-</li>
-<li><p>TRACE</p>
-<p>메시지가 프락시를 거쳐 서버에 도달하는 과정을 추적합니다.</p>
-</li>
-<li><p>OPTIONS</p>
-<p>서버가 어떤 메서드를 수행할 수 있는지 확인합니다.</p>
-</li>
-<li><p>DELETE</p>
-<p>서버에서 문서를 제거합니다.</p>
-</li>
-</ol>
-<h5 id="GET과-POST의-차이는-무엇인가요"><a href="#GET과-POST의-차이는-무엇인가요" class="headerlink" title="GET과 POST의 차이는 무엇인가요?"></a>GET과 POST의 차이는 무엇인가요?</h5><ol>
-<li><p>데이터 전송 방식</p>
-<p>GET 방식은 요청하는 데이터가 HTTP Request Message의 Header 부분의 url 에 담겨서 전송됩니다. </p>
-<p>즉, url 의 ? 뒤에 데이터가 붙어 request 를 보냅니다. 이러한 방식은 url 이라는 공간에 담겨가기 때문에 전송할 수 있는 데이터의 크기가 제한적입니다. 또 보안이 필요한 데이터에 대해서는 데이터가 그대로 url 에 노출되므로 GET방식은 적절하지 않습니다. (ex. password)</p>
-<p>POST 방식의 request 는 HTTP Message의 Body 부분에 데이터가 담겨서 전송됩니다. 때문에 바이너리 데이터를 요청하는 경우 POST 방식으로 보내야 하는 것처럼 데이터 크기가 GET 방식보다 크고 보안면에서 낫습니다. </p>
-<p>(하지만 보안적인 측면에서는 암호화를 하지 않는 이상 고만고만합니다.)</p>
-</li>
-<li><p>목적</p>
-<p>우선 GET 은 가져오는 것입니다. 서버에서 어떤 데이터를 가져와서 보여준다거나 하는 용도이지 서버의 값이나 상태 등을 변경하지 않습니다. SELECT 적인 성향을 갖고 있다고 볼 수 있는 것입니다. </p>
-<p>반면에 POST 는 서버의 값이나 상태를 변경하기 위해서 또는 추가하기 위해서 사용됩니다.</p>
-</li>
-<li><p>Caching 유무</p>
-<p>부수적인 차이점을 좀 더 살펴보자면 GET 방식의 요청은 브라우저에서 Caching 할 수 있습니다. 때문에 POST 방식으로 요청해야 할 것을 보내는 데이터의 크기가 작고 보안적인 문제가 없다는 이유로 GET 방식으로 요청한다면 기존에 caching 되었던 데이터가 응답될 가능성이 존재한다. 때문에 목적에 맞는 기술을 사용해야 하는 것입니다.</p>
-</li>
-</ol>
-<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://github.com/JaeYeopHan/Interview_Question_for_Beginner/tree/master/Network" target="_blank" rel="noopener">https://github.com/JaeYeopHan/Interview_Question_for_Beginner/tree/master/Network</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/http method/" data-id="ck5qcxmdx00k7kl6wy8kau8ad" data-title="http method" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/isolation level/" data-id="ck5qcyzyv00k75v6wuwv6787i" data-title="isolation level" class="article-share-link">Share</a>
       
       
       
@@ -711,6 +685,10 @@
       <ul>
         
           <li>
+            <a href="/2020/01/26/kafka-chapter7/">[카프카] 7장_데이터 파이프라인 구축</a>
+          </li>
+        
+          <li>
             <a href="/2020/01/20/object-chapter14/">[오브젝트] 14장_일관성 있는 협력</a>
           </li>
         
@@ -724,10 +702,6 @@
         
           <li>
             <a href="/2020/01/06/object-chapter12/">[오브젝트] 12장_다형성</a>
-          </li>
-        
-          <li>
-            <a href="/2020/01/05/big-data-chapter5/">[빅데이터를 지탱하는 기술] 5장_빅데이터 파이프라인</a>
           </li>
         
       </ul>
