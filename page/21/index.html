@@ -71,9 +71,9 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-Brightness and Contrast" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-Histograms Introduction" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/05/21/Brightness and Contrast/" class="article-date">
+    <a href="/2018/05/21/Histograms Introduction/" class="article-date">
   <time class="dt-published" datetime="2018-05-20T15:00:00.000Z" itemprop="datePublished">2018-05-21</time>
 </a>
     
@@ -89,7 +89,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/21/Brightness and Contrast/">Brightness and Contrast</a>
+      <a class="p-name article-title" href="/2018/05/21/Histograms Introduction/">Histograms Introduction</a>
     </h1>
   
 
@@ -97,34 +97,29 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h2 id="Brightness"><a href="#Brightness" class="headerlink" title="Brightness"></a>Brightness</h2><ul>
-<li><p>Brightness is a relative term. </p>
-</li>
-<li><p>It depends on your visual perception. </p>
-</li>
-<li><p>Since brightness is a relative term, so brightness can be defined as the amount of energy output by a source of light relative to the source we are comparing it to. </p>
-</li>
-<li><p>In some cases we can easily say that the image is bright, and in some cases, its not easy to perceive.</p>
-</li>
-<li><p>Consider this black image of 5 rows and 5 columns</p>
-<p><img src="/image/bri01.png" alt></p>
-<p><img src="/image/bri02.png" alt></p>
-<p><img src="/image/bri03.png" alt></p>
-<p><img src="/image/bri04.png" alt></p>
-</li>
-</ul>
-<h2 id="Contrast"><a href="#Contrast" class="headerlink" title="Contrast"></a>Contrast</h2><ul>
-<li><p>Contrast can be simply explained as the difference between maximum and minimum pixel intensity in an image.</p>
-<p><img src="/image/bri05.png" alt></p>
+        <h2 id="Histogram-of-an-image"><a href="#Histogram-of-an-image" class="headerlink" title="Histogram of an image"></a>Histogram of an image</h2><p><img src="/image/histogram.png" alt></p>
 <ul>
-<li><p>The maximum value in this matrix is 100.</p>
+<li>The x axis of the histogram shows the range of pixel values. </li>
+<li>Since its an 8 bpp image, that means it has 256 levels of gray or shades of gray in it. </li>
+<li>Thats why the range of x axis starts from 0 and end at 255 with a gap of 50. </li>
+<li>Whereas on the y axis, is the count of these intensities.</li>
+<li>that most of the bars that have high frequency lies in the first half portion which is the darker portion. </li>
+<li>That means that the image we have got is darker. </li>
+</ul>
+<h2 id="Applications-of-Histograms"><a href="#Applications-of-Histograms" class="headerlink" title="Applications of Histograms"></a>Applications of Histograms</h2><ul>
+<li>The first use as it has also been discussed above is the analysis of the image. <ul>
+<li>We can predict about an image by just looking at its histogram. </li>
+<li>Its like looking an x ray of a bone of a body.</li>
+</ul>
 </li>
-<li><p>The minimum value in this matrix is 100.</p>
+<li>The second use of histogram is for brightness purposes. <ul>
+<li>The histograms has wide application in image brightness. </li>
+<li>Not only in brightness, but histograms are also used in adjusting contrast of an image.</li>
+</ul>
 </li>
-<li><p>Contrast = maximum pixel intensity(subtracted by) minimum pixel intensity</p>
-<p>= 100 (subtracted by) 100</p>
-<p>= 0</p>
-</li>
+<li>Another important use of histogram is to equalize an image.</li>
+<li>And last but not the least, histogram has wide use in thresholding. <ul>
+<li>This is mostly used in computer vision.</li>
 </ul>
 </li>
 </ul>
@@ -132,7 +127,103 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/21/Brightness and Contrast/" data-id="ck5mhvjox00cj4qqx2rwhml4c" data-title="Brightness and Contrast" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/21/Histograms Introduction/" data-id="ck5qcsvc000cwy96wpzjgbdr6" data-title="Histograms Introduction" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Histogram Stretching" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/21/Histogram Stretching/" class="article-date">
+  <time class="dt-published" datetime="2018-05-20T15:00:00.000Z" itemprop="datePublished">2018-05-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/dip/">DIP</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/21/Histogram Stretching/">Histogram Stretching</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>There are two methods of enhancing contrast. </p>
+<ul>
+<li>The first one is called Histogram stretching that increase contrast. </li>
+<li>The second one is called Histogram equalization that enhance contrast.</li>
+</ul>
+<h2 id="Contrast"><a href="#Contrast" class="headerlink" title="Contrast"></a>Contrast</h2><ul>
+<li><p>Contrast is the difference between maximum and minimum pixel intensity.</p>
+<p><img src="/image/hisStretch01.png" alt></p>
+</li>
+<li><p>Contrast = 225.</p>
+</li>
+<li><p>Now we will increase the contrast of the image.</p>
+</li>
+</ul>
+<h2 id="Increasing-the-contrast-of-the-image"><a href="#Increasing-the-contrast-of-the-image" class="headerlink" title="Increasing the contrast of the image"></a>Increasing the contrast of the image</h2><ul>
+<li><p>The formula for stretching the histogram of the image to increase the contrast is</p>
+<p><img src="/image/hisStretch02.png" alt></p>
+</li>
+<li><p>The formula requires finding the minimum and maximum pixel intensity multiply by levels of gray. </p>
+</li>
+<li><p>In our case the image is 8bpp, so levels of gray are 256.</p>
+</li>
+<li><p>The minimum value is 0 and the maximum value is 225. So the formula in our case is</p>
+<p><img src="/image/hisStretch03.png" alt></p>
+</li>
+<li><p>where f(x,y) denotes the value of each pixel intensity. For each f(x,y) in an image , we will calculate this formula.</p>
+</li>
+<li><p>Note the shape and symmetry of histogram. The histogram is now stretched or in other means expand. Have a look at it.</p>
+<p><img src="/image/hisStretch04.png" alt></p>
+</li>
+<li><p>In this case the contrast of the image can be calculated as Contrast = 240</p>
+</li>
+<li><p>Hence we can say that the contrast of the image is increased.</p>
+</li>
+</ul>
+<h2 id="Failing-of-histogram-stretching"><a href="#Failing-of-histogram-stretching" class="headerlink" title="Failing of histogram stretching"></a>Failing of histogram stretching</h2><ul>
+<li><p>the algorithm fails on some cases. </p>
+</li>
+<li><p>Those cases include images with when there is pixel intensity 0 and 255 are present in the image</p>
+</li>
+<li><p>Original Formula</p>
+<p><img src="/image/hisStretch05.png" alt></p>
+</li>
+<li><p>Putting fail case values in the formula</p>
+<p><img src="/image/hisStretch06.png" alt></p>
+</li>
+<li><p>Simplify that expression gives</p>
+<p><img src="/image/hisStretch07.png" alt></p>
+</li>
+<li><p>That means the output image is equal to the processed image. </p>
+</li>
+<li><p>That means there is no effect of histogram stretching has been done at this image.</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/21/Histogram Stretching/" data-id="ck5qcsvbz00cuy96w92x9z08g" data-title="Histogram Stretching" class="article-share-link">Share</a>
       
       
       
@@ -225,76 +316,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/21/Histogram Equalization/" data-id="ck5mhvjp000cs4qqx9vtnq5b4" data-title="Histogram Equalization" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Histogram Sliding" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/21/Histogram Sliding/" class="article-date">
-  <time class="dt-published" datetime="2018-05-20T15:00:00.000Z" itemprop="datePublished">2018-05-21</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/dip/">DIP</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/21/Histogram Sliding/">Histogram Sliding</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Histogram-sliding"><a href="#Histogram-sliding" class="headerlink" title="Histogram sliding"></a>Histogram sliding</h2><ul>
-<li>In histogram sliding, we just simply shift a complete histogram rightwards or leftwards. </li>
-<li>Due to shifting or sliding of histogram towards right or left, </li>
-<li>a clear change can be seen in the image.</li>
-</ul>
-<h2 id="Increasing-brightness-using-histogram-sliding"><a href="#Increasing-brightness-using-histogram-sliding" class="headerlink" title="Increasing brightness using histogram sliding"></a>Increasing brightness using histogram sliding</h2><p><img src="/image/hisSl01.png" alt></p>
-<p><img src="/image/hisSl02.png" alt></p>
-<ul>
-<li>On the y axis of this histogram are the frequency or count. </li>
-<li>And on the x axis, we have gray level values. </li>
-<li>As you can see from the above histogram, that those gray level intensities whose count is more then 700, lies in the first half portion, means towards blacker portion. </li>
-<li>Thats why we got an image that is a bit darker.</li>
-<li>In order to bright it, we will slide its histogram towards right, or towards whiter portion. </li>
-<li>In order to do we need to add atleast a value of 50 to this image. </li>
-<li>Because we can see from the histogram above, that this image also has 0 pixel intensities, that are pure black. </li>
-<li>So if we add 0 to 50, we will shift all the values lies at 0 intensity to 50 intensity and all the rest of the values will be shifted accordingly.</li>
-</ul>
-<p><img src="/image/hisSl03.png" alt></p>
-<p><img src="/image/hisSl04.png" alt></p>
-<p><img src="/image/hisSl05.png" alt></p>
-<h2 id="Decreasing-brightness-using-histogram-sliding"><a href="#Decreasing-brightness-using-histogram-sliding" class="headerlink" title="Decreasing brightness using histogram sliding"></a>Decreasing brightness using histogram sliding</h2><ul>
-<li>Now if we were to decrease brightness of this new image to such an extent that the old image look brighter, </li>
-<li>we got to subtract some value from all the matrix of the new image. </li>
-<li>The value which we are going to subtract is 80. </li>
-<li>Because we already add 50 to the original image and we got a new brighter image, </li>
-<li>now if we want to make it darker, we have to subtract at least more than 50 from it.</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/21/Histogram Sliding/" data-id="ck5mhvjoz00cq4qqxicwuwfyn" data-title="Histogram Sliding" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/21/Histogram Equalization/" data-id="ck5qcsvbx00cqy96wnur27mte" data-title="Histogram Equalization" class="article-share-link">Share</a>
       
       
       
@@ -404,7 +426,80 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/21/Convolution/" data-id="ck5mhvjoy00cn4qqxk6yao2qx" data-title="Convolution" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/21/Convolution/" data-id="ck5qcsvbx00coy96way9yefwr" data-title="Convolution" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Brightness and Contrast" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/21/Brightness and Contrast/" class="article-date">
+  <time class="dt-published" datetime="2018-05-20T15:00:00.000Z" itemprop="datePublished">2018-05-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/dip/">DIP</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/21/Brightness and Contrast/">Brightness and Contrast</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="Brightness"><a href="#Brightness" class="headerlink" title="Brightness"></a>Brightness</h2><ul>
+<li><p>Brightness is a relative term. </p>
+</li>
+<li><p>It depends on your visual perception. </p>
+</li>
+<li><p>Since brightness is a relative term, so brightness can be defined as the amount of energy output by a source of light relative to the source we are comparing it to. </p>
+</li>
+<li><p>In some cases we can easily say that the image is bright, and in some cases, its not easy to perceive.</p>
+</li>
+<li><p>Consider this black image of 5 rows and 5 columns</p>
+<p><img src="/image/bri01.png" alt></p>
+<p><img src="/image/bri02.png" alt></p>
+<p><img src="/image/bri03.png" alt></p>
+<p><img src="/image/bri04.png" alt></p>
+</li>
+</ul>
+<h2 id="Contrast"><a href="#Contrast" class="headerlink" title="Contrast"></a>Contrast</h2><ul>
+<li><p>Contrast can be simply explained as the difference between maximum and minimum pixel intensity in an image.</p>
+<p><img src="/image/bri05.png" alt></p>
+<ul>
+<li><p>The maximum value in this matrix is 100.</p>
+</li>
+<li><p>The minimum value in this matrix is 100.</p>
+</li>
+<li><p>Contrast = maximum pixel intensity(subtracted by) minimum pixel intensity</p>
+<p>= 100 (subtracted by) 100</p>
+<p>= 0</p>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/21/Brightness and Contrast/" data-id="ck5qcsvbw00cmy96wwq9g76n1" data-title="Brightness and Contrast" class="article-share-link">Share</a>
       
       
       
@@ -482,7 +577,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/21/Bits Per Pixel/" data-id="ck5mhvjoy00cl4qqxqw0ui7ow" data-title="Bits Per Pixel" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/21/Bits Per Pixel/" data-id="ck5qcsvbw00cjy96wukij5lmh" data-title="Bits Per Pixel" class="article-share-link">Share</a>
       
       
       
@@ -533,7 +628,87 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/15/안전영역/" data-id="ck5mhvjp200cv4qqxxol61q54" data-title="안전영역" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/15/안전영역/" data-id="ck5qcsvbv00chy96w2s0wfk1w" data-title="안전영역" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Sampling, Quantization" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/15/Sampling, Quantization/" class="article-date">
+  <time class="dt-published" datetime="2018-05-14T15:00:00.000Z" itemprop="datePublished">2018-05-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/dip/">DIP</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/15/Sampling, Quantization/">Sampling, Quantization</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <ul>
+<li><p>Conversion of analog signal to digital signal</p>
+<p><img src="/image/sampling.png" alt></p>
+<ul>
+<li>The output of most of the image sensors is an analog signal, </li>
+<li>and we can not apply digital processing on it </li>
+<li>because we can not store it. </li>
+<li>We can not store it because it requires infinite memory </li>
+<li>to store a signal that can have infinite values.</li>
+<li>So we have to convert an analog signal into a digital signal.</li>
+<li>To create an image which is digital, </li>
+<li>we need to covert continuous data into digital form. </li>
+<li>There are two steps in which it is done.<ul>
+<li>Sampling</li>
+<li>Quantization</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Sampling</p>
+<ul>
+<li><p>It is done on X axis.</p>
+</li>
+<li><p>It is the conversion of x axis (infinite values) to digital values.</p>
+</li>
+</ul>
+</li>
+<li><p>Quantization</p>
+<p><img src="/image/quantization.png" alt></p>
+<ul>
+<li>It is done on Y axis.</li>
+<li>digitizing the amplitudes is known as Quantization</li>
+<li>In the figure shown above, </li>
+<li>these vertically ranging values have been quantized into 5 different levels or partitions. </li>
+<li>Ranging from 0 black to 4 white. </li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/15/Sampling, Quantization/" data-id="ck5qcsvbv00cfy96wcstw4r9e" data-title="Sampling, Quantization" class="article-share-link">Share</a>
       
       
       
@@ -620,7 +795,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/15/Pixel/" data-id="ck5mhvjox00cg4qqxjmoswd18" data-title="Pixel" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/15/Pixel/" data-id="ck5qcsvbu00cay96wefcfr3tp" data-title="Pixel" class="article-share-link">Share</a>
       
       
       
@@ -632,89 +807,9 @@
 
 
   
-    <article id="post-Sampling, Quantization" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-Simple Factory" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/05/15/Sampling, Quantization/" class="article-date">
-  <time class="dt-published" datetime="2018-05-14T15:00:00.000Z" itemprop="datePublished">2018-05-15</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/dip/">DIP</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/15/Sampling, Quantization/">Sampling, Quantization</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <ul>
-<li><p>Conversion of analog signal to digital signal</p>
-<p><img src="/image/sampling.png" alt></p>
-<ul>
-<li>The output of most of the image sensors is an analog signal, </li>
-<li>and we can not apply digital processing on it </li>
-<li>because we can not store it. </li>
-<li>We can not store it because it requires infinite memory </li>
-<li>to store a signal that can have infinite values.</li>
-<li>So we have to convert an analog signal into a digital signal.</li>
-<li>To create an image which is digital, </li>
-<li>we need to covert continuous data into digital form. </li>
-<li>There are two steps in which it is done.<ul>
-<li>Sampling</li>
-<li>Quantization</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Sampling</p>
-<ul>
-<li><p>It is done on X axis.</p>
-</li>
-<li><p>It is the conversion of x axis (infinite values) to digital values.</p>
-</li>
-</ul>
-</li>
-<li><p>Quantization</p>
-<p><img src="/image/quantization.png" alt></p>
-<ul>
-<li>It is done on Y axis.</li>
-<li>digitizing the amplitudes is known as Quantization</li>
-<li>In the figure shown above, </li>
-<li>these vertically ranging values have been quantized into 5 different levels or partitions. </li>
-<li>Ranging from 0 black to 4 white. </li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/15/Sampling, Quantization/" data-id="ck5mhvjow00ce4qqxleey9x0r" data-title="Sampling, Quantization" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Abstract Factory Pattern02" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/13/Abstract Factory Pattern02/" class="article-date">
+    <a href="/2018/05/13/Simple Factory/" class="article-date">
   <time class="dt-published" datetime="2018-05-12T15:00:00.000Z" itemprop="datePublished">2018-05-13</time>
 </a>
     
@@ -730,7 +825,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/13/Abstract Factory Pattern02/">Abstract Factory Pattern02</a>
+      <a class="p-name article-title" href="/2018/05/13/Simple Factory/">Simple Factory</a>
     </h1>
   
 
@@ -738,144 +833,23 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>관련성 있는 여러 종류의 객체를 일관성 있는 방식으로 생성할 때 유용하다.</p>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/abstractF01.png" alt></p>
-<ul>
-<li>Abstarct Factory<ul>
-<li>실제 팩토리 클래스의 공통 인터페이스</li>
-<li>각 제품의 부품을 생성하는 기능을 추사 메서드로 정의</li>
-</ul>
-</li>
-<li>ConcreteFactory<ul>
-<li>구체적인 팩토리 클래스</li>
-<li>AbstractFactory 클래스의 추상 메서드를 오버라이드함으로써 구체적인 제품을 생성</li>
-</ul>
-</li>
-<li>AbstractProduct<ul>
-<li>제품의 공통 인터페이스</li>
-</ul>
-</li>
-<li>ConcreteProduct<ul>
-<li>구체적인 팩토리 클래스에서 생성되는 구체적인 제품</li>
-</ul>
-</li>
-</ul>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/abstractF02.png" alt></p>
-<ul>
-<li>ElevatorFactory<ul>
-<li>AbstractFactory</li>
-</ul>
-</li>
-<li>LGElevatorFactory, HyundaiElevatorFactory<ul>
-<li>ConcreteFactory</li>
-</ul>
-</li>
-<li>Motor<ul>
-<li>AbstractProductA</li>
-</ul>
-</li>
-<li>LGMotor, HyundaiMotor<ul>
-<li>ConcreteProductA</li>
-</ul>
-</li>
-<li>Door<ul>
-<li>AbstractProductB</li>
-</ul>
-</li>
-<li>LGDoor, HyundaiDoor<ul>
-<li>ConcreteProductB</li>
-</ul>
-</li>
-</ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Java 객체 지향 디자인 패턴 &lt;정인상, 채흥석 지음&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/13/Abstract Factory Pattern02/" data-id="ck5mhvjou00c64qqx8we04ikf" data-title="Abstract Factory Pattern02" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Abstract Factory Pattern01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/13/Abstract Factory Pattern01/" class="article-date">
-  <time class="dt-published" datetime="2018-05-12T15:00:00.000Z" itemprop="datePublished">2018-05-13</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/13/Abstract Factory Pattern01/">Abstract Factory Pattern01</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>The Abstract Factory Pattern provides an interface for creating families of related or dependent objects without specifying their concrete classes. </p>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/abstractFactoryPattern.png" alt></p>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/abstarct001.png" alt></p>
-<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><img src="/image/afp01.png" alt></p>
-<p><img src="/image/afp02.png" alt></p>
-<p><img src="/image/afp03.png" alt></p>
-<p><img src="/image/afp04.png" alt></p>
-<p><img src="/image/afp05.png" alt></p>
-<p><img src="/image/afp06.png" alt></p>
-<p><img src="/image/afp07.png" alt></p>
-<p><img src="/image/afp08.png" alt></p>
-<p><img src="/image/afp09.png" alt></p>
-<p><img src="/image/afp10.png" alt></p>
-<p><img src="/image/afp11.png" alt></p>
-<p><img src="/image/afp12.png" alt></p>
-<p><img src="/image/afp13.png" alt></p>
-<p><img src="/image/afp14.png" alt></p>
-<p><img src="/image/afp15.png" alt></p>
-<p><img src="/image/afp16.png" alt></p>
-<p><img src="/image/afp17.png" alt></p>
-<p><img src="/image/afp18.png" alt></p>
-<p><img src="/image/afp19.png" alt></p>
-<p><img src="/image/afp20.png" alt></p>
-<p><img src="/image/afp21.png" alt></p>
-<p><img src="/image/afp22.png" alt></p>
-<p><img src="/image/afp23.png" alt></p>
-<p><img src="/image/afp24.png" alt></p>
-<p><img src="/image/afp25.png" alt></p>
-<p><img src="/image/afp26.png" alt></p>
-<p><img src="/image/afp27.png" alt></p>
-<p><img src="/image/afp28.png" alt></p>
-<p><img src="/image/afp29.png" alt></p>
-<p><img src="/image/afp30.png" alt></p>
-<p><img src="/image/afp31.png" alt></p>
-<p><img src="/image/afp32.png" alt></p>
-<p><img src="/image/afp33.png" alt></p>
-<p><img src="/image/afp34.png" alt></p>
-<p><img src="/image/afp35.png" alt></p>
-<p><img src="/image/afp36.png" alt></p>
-<p><img src="/image/afp37.png" alt></p>
+        <p>The Simple Factory isn’t actually a Design Pattern; it’s more of a programming idiom. </p>
+<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/simpleFactoryUML.png" alt></p>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><img src="/image/pizza01.png" alt></p>
+<p><img src="/image/pizza02.png" alt></p>
+<p><img src="/image/pizza03.png" alt></p>
+<p><img src="/image/pizza08.png" alt></p>
+<p><img src="/image/pizza04.png" alt></p>
+<p><img src="/image/pizza05.png" alt></p>
+<p><img src="/image/pizza06.png" alt></p>
+<p><img src="/image/pizza07.png" alt></p>
+<h2 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h2><p><img src="/image/pizza09.png" alt></p>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Head First Design Pattern</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/13/Abstract Factory Pattern01/" data-id="ck5mhvjot00c04qqxut39xwtg" data-title="Abstract Factory Pattern01" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/13/Simple Factory/" data-id="ck5qcsvby00csy96wn4wb4jew" data-title="Simple Factory" class="article-share-link">Share</a>
       
       
       

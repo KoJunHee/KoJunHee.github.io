@@ -71,6 +71,94 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-collections" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/06/19/collections/" class="article-date">
+  <time class="dt-published" datetime="2019-06-18T15:00:00.000Z" itemprop="datePublished">2019-06-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/jpa/">JPA</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/06/19/collections/">[자바 ORM 표준 JPA 프로그래밍] 14장_컬렉션과 부가 기능</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>이 장에서 다루는 내용입니다.</p>
+<ul>
+<li>컬렉션</li>
+<li>컨버터<ul>
+<li>엔티티의 데이터를 변환해서 데이터베이스에 저장</li>
+</ul>
+</li>
+<li>리스너<ul>
+<li>엔티티에서 발생한 이벤트 처리</li>
+</ul>
+</li>
+<li>엔티티 그래프<ul>
+<li>엔티티를 조회할 때 연관된 엔티티를 선택해서 같이 조회</li>
+</ul>
+</li>
+</ul>
+<h4 id="14-1-컬렉션"><a href="#14-1-컬렉션" class="headerlink" title="14.1 컬렉션"></a>14.1 컬렉션</h4><p>JPA 는 자바에서 기본으로 제공하는 Collection / List / Set / Map 컬렉션을 지원합니다. </p>
+<h5 id="14-1-1-JPA-와-컬렉션"><a href="#14-1-1-JPA-와-컬렉션" class="headerlink" title="14.1.1 JPA 와 컬렉션"></a>14.1.1 JPA 와 컬렉션</h5><p>하이버네이트는 엔티티를 영속 상태로 만들 때 컬렉션 필드를 하이버네이트에서 준비한 컬렉션으로 감싸서 사용합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Team</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Id</span></span><br><span class="line">  <span class="keyword">private</span> String id;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@OneToMany</span></span><br><span class="line">  <span class="meta">@JoinColumn</span></span><br><span class="line">  <span class="keyword">private</span> Collection&lt;Member&gt; members = <span class="keyword">new</span> ArrayList&lt;Member&gt;();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Team team = <span class="keyword">new</span> Team();</span><br><span class="line">System.out.println(<span class="string">"before Persist = "</span> + team.getMembers().getClass());</span><br><span class="line">em.persist(parent);</span><br><span class="line">System.out.println(<span class="string">"after Persist = "</span> + team.getMembers().getClass());</span><br></pre></td></tr></table></figure>
+
+<p>출력 결과는 </p>
+<p>before Persist = class java.util.ArrayList</p>
+<p>after Persist = class org.hibernate.collection.internal.PersistentBag</p>
+<p>하이버네이트는 컬렉션을 효율적으로 관리하기 위해, 엔티티를 영속 상태로 만들 때 원본 컬렉션을 감싸고 있는 내장 컬렉션을 생성해서 이 내장 컬렉션을 사용하도록 참조를 변경합니다. 하이버네이트가 제공하는 내장 컬렉션은 원본 컬렉션을 감싸고 있어서 래퍼 컬렉션이라고 부릅니다.</p>
+<h5 id="14-1-2-Collection-List"><a href="#14-1-2-Collection-List" class="headerlink" title="14.1.2 Collection, List"></a>14.1.2 Collection, List</h5><p>중복을 허용하는 컬렉션이고 PersistentBag 을 래퍼 컬렉션으로 사용합니다. 이 인터페이스는 ArrayList 로 초기화하면 됩니다.</p>
+<h5 id="14-1-3-Set"><a href="#14-1-3-Set" class="headerlink" title="14.1.3 Set"></a>14.1.3 Set</h5><p>중복을 허용하지 않는 컬렉션입니다. 하이버네이트는 PersistentSet 을 컬렉션 래퍼로 사용합니다. HashSet 으로 초기화하면 됩니다.</p>
+<h5 id="14-1-4-List-OrderColumn"><a href="#14-1-4-List-OrderColumn" class="headerlink" title="14.1.4 List + @OrderColumn"></a>14.1.4 List + @OrderColumn</h5><p>List 인터페이스에 @OrderColumn 을 추가하면 순서가 있는 특수한 컬렉션으로 인식합니다. 순서가 있다는 의미는 데이터베이스에 순서 값을 저장해서 조회할 때 사용한다는 의미입니다. 하이버네이트는 내부 컬렉션인 PersistentList 를 사용합니다. </p>
+<h5 id="14-1-5-OrderBy"><a href="#14-1-5-OrderBy" class="headerlink" title="14.1.5 @OrderBy"></a>14.1.5 @OrderBy</h5><p>데이터베이스의 ORDER BY 절을 사용해서 컬렉션을 정렬합니다. 따라서, 순서용 칼럼을 매핑하지 않아도 됩니다. 그리고 @OrderBy 는 모든 컬렉션에서 사용할 수 있습니다. </p>
+<h4 id="14-2-Converter"><a href="#14-2-Converter" class="headerlink" title="14.2 @Converter"></a>14.2 @Converter</h4><p>엔티티의 데이터를 변환해서 데이터베이스에 저장합니다. </p>
+<h4 id="14-3-리스너"><a href="#14-3-리스너" class="headerlink" title="14.3 리스너"></a>14.3 리스너</h4><p>엔티티의 생명주기에 따른 이벤트를 처리할 수 있습니다.</p>
+<h5 id="14-3-2-이벤트-적용-위치"><a href="#14-3-2-이벤트-적용-위치" class="headerlink" title="14.3.2 이벤트 적용 위치"></a>14.3.2 이벤트 적용 위치</h5><ul>
+<li>엔티티에 직접 적용<ul>
+<li>엔티티에 이벤트가 발생할 때마다 어노테이션으로 지정한 메소드가 실행됩니다.</li>
+</ul>
+</li>
+<li>별도의 리스너 등록<ul>
+<li>대상 엔티티를 파라미터로 받을 수 있습니다. </li>
+</ul>
+</li>
+<li>기본 리스너 사용 <ul>
+<li>모든 엔티티의 이벤트를 처리하려면 META-INF/orm.xml 에 default 리스너로 등록하면 됩니다. </li>
+</ul>
+</li>
+</ul>
+<h4 id="14-4-엔티티-그래프"><a href="#14-4-엔티티-그래프" class="headerlink" title="14.4 엔티티 그래프"></a>14.4 엔티티 그래프</h4><p>엔티티를 조회할 때 연관된 엔티티를 함께 조회하려면 글로벌 fetch 옵션을 FetchType.EAGER 로 설정하거나 JPQL 엣 ㅓ페치 조인을 사용합니다. </p>
+<p>엔티티 그래프 기능은 엔티티 조회 시점에 연관된 엔티티를 함께 조회하는 기능입니다. 엔티티 그래프는 정적으로 정의하는 Named 엔티티 그래프와 동적으로 정의하는 엔티티 그래프가 있습니다.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2019/06/19/collections/" data-id="ck5qcsveo00may96wuenvr894" data-title="[자바 ORM 표준 JPA 프로그래밍] 14장_컬렉션과 부가 기능" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-web-application-persistencen-context" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2019/06/12/web-application-persistencen-context/" class="article-date">
@@ -190,7 +278,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/06/12/web-application-persistencen-context/" data-id="ck5mhvjsx00np4qqxvvgf2122" data-title="[자바 ORM 표준 JPA 프로그래밍] 13장_웹 어플리케이션과 영속성 관리" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/06/12/web-application-persistencen-context/" data-id="ck5qcsvfx00noy96wuo6la8gh" data-title="[자바 ORM 표준 JPA 프로그래밍] 13장_웹 어플리케이션과 영속성 관리" class="article-share-link">Share</a>
       
       
       
@@ -347,7 +435,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/06/05/web-application/" data-id="ck5mhvjro00m24qqxvds3mv8j" data-title="[자바 ORM 표준 JPA 프로그래밍] 11장_웹 어플리케이션 제작" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/06/05/web-application/" data-id="ck5qcsvem00m3y96wufmxb00g" data-title="[자바 ORM 표준 JPA 프로그래밍] 11장_웹 어플리케이션 제작" class="article-share-link">Share</a>
       
       
       
@@ -470,7 +558,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/04/21/spring-data-jpa/" data-id="ck5mhvjsw00nl4qqxsaj5cop9" data-title="[자바 ORM 표준 JPA 프로그래밍] 12장_스프링 데이터 JPA" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/04/21/spring-data-jpa/" data-id="ck5qcsvfy00nqy96wtnahblkn" data-title="[자바 ORM 표준 JPA 프로그래밍] 12장_스프링 데이터 JPA" class="article-share-link">Share</a>
       
       
       
@@ -759,7 +847,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/04/17/jpql/" data-id="ck5mhvjsw00nn4qqxwsxu5650" data-title="[자바 ORM 표준 JPA 프로그래밍] 10장_객체지향 쿼리 언어" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/04/17/jpql/" data-id="ck5qcsvfw00nmy96wr1x16uwn" data-title="[자바 ORM 표준 JPA 프로그래밍] 10장_객체지향 쿼리 언어" class="article-share-link">Share</a>
       
       
       
@@ -857,7 +945,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/04/11/value-type/" data-id="ck5mhvjro00m04qqxuuajw5wk" data-title="[자바 ORM 표준 JPA 프로그래밍] 9장_값 타입" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/04/11/value-type/" data-id="ck5qcsvel00m1y96w0t3rz906" data-title="[자바 ORM 표준 JPA 프로그래밍] 9장_값 타입" class="article-share-link">Share</a>
       
       
       
@@ -991,7 +1079,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/04/09/proxy-relation-mapping/" data-id="ck5mhvjrs00md4qqxi20yhk3i" data-title="[자바 ORM 표준 JPA 프로그래밍] 8장_프록시와 연관관계 정리" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/04/09/proxy-relation-mapping/" data-id="ck5qcsvek00lzy96wf0f19lag" data-title="[자바 ORM 표준 JPA 프로그래밍] 8장_프록시와 연관관계 정리" class="article-share-link">Share</a>
       
       
       
@@ -1212,7 +1300,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/04/06/advanced-mappings/" data-id="ck5mhvjtu00oq4qqxzrszw1pp" data-title="[자바 ORM 표준 JPA 프로그래밍] 7장_고급 매핑" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/04/06/advanced-mappings/" data-id="ck5qcsvgw00ory96w4mxg7cod" data-title="[자바 ORM 표준 JPA 프로그래밍] 7장_고급 매핑" class="article-share-link">Share</a>
       
       
       
@@ -1389,7 +1477,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/03/27/relation-mappings/" data-id="ck5mhvjsv00nj4qqxrdfpzx9x" data-title="[자바 ORM 표준 JPA 프로그래밍] 6장_다양한 연관관계 매핑" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/03/27/relation-mappings/" data-id="ck5qcsvfu00niy96wp41m8hxg" data-title="[자바 ORM 표준 JPA 프로그래밍] 6장_다양한 연관관계 매핑" class="article-share-link">Share</a>
       
       
       
@@ -1516,101 +1604,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/03/26/basic-relation-mapping/" data-id="ck5mhvjsu00nh4qqxetfoe4k3" data-title="[자바 ORM 표준 JPA 프로그래밍] 5장_연관관계 매핑 기초" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-persistence context" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/03/20/persistence context/" class="article-date">
-  <time class="dt-published" datetime="2019-03-19T15:00:00.000Z" itemprop="datePublished">2019-03-20</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/jpa/">JPA</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/03/20/persistence context/">[자바 ORM 표준 JPA 프로그래밍] 3장_영속성 관리</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>이번 포스팅에서는 Mapping 한 Entity 를 Entity Manager 를 통해 어떻게 사용하는지 정리합니다.</p>
-<h4 id="Entity-Manager-Factory-Entity-Manager"><a href="#Entity-Manager-Factory-Entity-Manager" class="headerlink" title="Entity Manager Factory, Entity Manager"></a>Entity Manager Factory, Entity Manager</h4><p>엔티티 메니저 펙토리는 한 개만 만들어서 애플리케이션 전체에서 공유합니다. 엔티티 메니저 펙토리는 서도 다른 스레드 간에 공유해도 되지만, 엔티티 메니저는 여러 스레드가 동시에 접근하면 동시성 문제가 발생하므로 스레드 간에 절대 공유하면 안됩니다.</p>
-<h4 id="Persistence-Context"><a href="#Persistence-Context" class="headerlink" title="Persistence Context"></a>Persistence Context</h4><p>엔티티를 여구 저장하는 환경입니다. 엔티티 메니저로 엔티티를 저장하거나 조회하면 엔티티 메니저는 영속성 컨텍스트에 엔티티를 보관하고 관리합니다.</p>
-<h4 id="엔티티의-생명주기"><a href="#엔티티의-생명주기" class="headerlink" title="엔티티의 생명주기"></a>엔티티의 생명주기</h4><p>4가지 상태가 있습니다.</p>
-<ul>
-<li>비영속<ul>
-<li>영속성 컨텍스트와 관계 없는 상태 </li>
-</ul>
-</li>
-<li>영속<ul>
-<li>영속성 컨텍스트에 저장된 상태</li>
-</ul>
-</li>
-<li>준영속<ul>
-<li>영속성 컨텍스트에 저장되었다가 분리된 상태</li>
-</ul>
-</li>
-<li>삭제<ul>
-<li>삭제된 상태</li>
-</ul>
-</li>
-</ul>
-<h4 id="영속성-컨텍스트의-특징"><a href="#영속성-컨텍스트의-특징" class="headerlink" title="영속성 컨텍스트의 특징"></a>영속성 컨텍스트의 특징</h4><ul>
-<li>영속 상태는 식별자 값이 반드시 있어야합니다.</li>
-<li>보통 Transaction 을 Commit 하는 순간 영속성 컨텍스트에 저장된 엔티티를 데이터베이스에 반영합니다. (Flush)</li>
-<li>1차 캐쉬 / 동일성 보장 / 쓰기 지연 / 변경 감지 / 지연 로딩</li>
-</ul>
-<h4 id="엔티티-조회"><a href="#엔티티-조회" class="headerlink" title="엔티티 조회"></a>엔티티 조회</h4><p>영속성 컨텍스트는 내부에 1차 캐시를 가지고 있습니다. 쉽게 이야기해, Map 처럼 키는 @Id로 매핑한 식별자이고 값은 엔티티 인스턴스입니다. 1차 캐시에 저장된 엔티티를 조회할 때 , 1차 캐시에 엔티티가 있으면 데이터베이스를 조회하지 않고 메모리에 있는 1차 캐시에서 엔티티를 조회합니다. 만약, 1차 캐시에 없으면 엔티티 메니저는 데이터베이스를 조회해서 엔티티를 생성하고 1차 캐시에 저장한 후에 영속 상태의 엔티티를 반환합니다. </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">entityManger.find(Member.class, <span class="string">"member1"</span>);</span><br></pre></td></tr></table></figure>
-
-<h4 id="영속-엔티티의-동일성-보장"><a href="#영속-엔티티의-동일성-보장" class="headerlink" title="영속 엔티티의 동일성 보장"></a>영속 엔티티의 동일성 보장</h4><p>영속성 컨텍스트는 성능상 이점과 엔티티의 동일성을 보장합니다. 따라서, 다음 코드의 결과는 참입니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Member a = em.find(Member.class, <span class="string">"member1"</span>);</span><br><span class="line">Member b = em.find(Member.class, <span class="string">"member1"</span>);</span><br><span class="line"></span><br><span class="line">System.out.println(a==b);</span><br></pre></td></tr></table></figure>
-
-<h4 id="엔티티-등록"><a href="#엔티티-등록" class="headerlink" title="엔티티 등록"></a>엔티티 등록</h4><p>엔티티 메니저는 트랜잭션을 커밋하기 직전까지 데이터베이스에 엔티티를 저장하지 않고 내부 쿼리 저장소에 INSERT SQL을 모아둡니다. 그리고 커밋할 때 모아둔 쿼리를 데이터베이스에 보냅니다. 이것을 Transactional Write Behind (쓰기 지연) 라고 합니다.</p>
-<h4 id="엔티티-수정"><a href="#엔티티-수정" class="headerlink" title="엔티티 수정"></a>엔티티 수정</h4><p>엔티티의 변경사항을 데이터베이스에 자동으로 반영하는 기능을 Dirty Checking (변경 감지) 이라고 합니다. 순서는 다음과 같습니다.</p>
-<ol>
-<li>커밋하면 엔티티 메니저 내부에서 flush() 가 호출됩니다.</li>
-<li>엔티티와 스냅샷 (JPA는 엔티티를 영속성 컨텐스트에 보관할 때, 최초 상태를 복사해서 저장합니다 )을 비교해서 변경된 엔티티를 찾습니다.</li>
-<li>변경된 엔티티가 있으면 수정 쿼리를 생성해서 쓰기 지연 SQL 저장소에 보냅니다.</li>
-<li>데이터베이스 트랜잭션을 커밋합니다.</li>
-</ol>
-<p>그리고 UPDATE SQL 을 생성할 때, 변경된 부분만 사용해서 동적으로 생성되는 것이 아니라, 엔티티의 모든 필드를 업데이트 합니다.</p>
-<h4 id="엔티티-삭제"><a href="#엔티티-삭제" class="headerlink" title="엔티티 삭제"></a>엔티티 삭제</h4><p>엔티티 등록과 비슷하게 삭제 쿼리를 쓰기 지연 SQL 저장소에 등록하고 트랜잭션을 커밋해서 flush()를 호출하면 데이터베이스에 삭제 쿼리를 전달합니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Member a = em.find(Member.class, <span class="string">"member1"</span>);</span><br><span class="line">em.remove(a);</span><br></pre></td></tr></table></figure>
-
-<h4 id="플러쉬"><a href="#플러쉬" class="headerlink" title="플러쉬"></a>플러쉬</h4><p>영속성 컨테르를 플러쉬하는 방법은 3가지입니다.</p>
-<ul>
-<li>em.flush() 직접 호출</li>
-<li>트랜잭션 커밋 시 플러쉬 자동 호출</li>
-<li>JPQL 쿼리 실행시 플러쉬 자동 호출</li>
-</ul>
-<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><p>자바 ORM 표준 프로그래밍 &lt;김영한&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/03/20/persistence context/" data-id="ck5mhvjrn00ly4qqxyol8amgq" data-title="[자바 ORM 표준 JPA 프로그래밍] 3장_영속성 관리" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/03/26/basic-relation-mapping/" data-id="ck5qcsvfv00nky96weacuhun5" data-title="[자바 ORM 표준 JPA 프로그래밍] 5장_연관관계 매핑 기초" class="article-share-link">Share</a>
       
       
       

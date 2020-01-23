@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  
+  <title>[카프카] 7장_데이터 파이프라인 구축 | junhee.ko</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="데이터 파이프라인을 직접 구성해본다. 다음 애플리케이션을 사용한다.  아파치 나이파이 엘라스틱 파일비트 엘라스틱 엘라스틱서치 엘라스틱 키바나  1. 카프카를 활용한 데이터 흐름도 카프카에서 발생하는 로그를 이용해 데이터 흐름도를 구성해본다. 아파치 나이파이는 데이터 처리 흐름을 정의하고, 정의된 흐름대로 자동으로 실행해주는 애플리케이션이다.  데이터 흐름을">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[카프카] 7장_데이터 파이프라인 구축">
+<meta property="og:url" content="https://kojunhee.github.io/2019/12/26/kafka-chapter7/index.html">
+<meta property="og:site_name" content="junhee.ko">
+<meta property="og:description" content="데이터 파이프라인을 직접 구성해본다. 다음 애플리케이션을 사용한다.  아파치 나이파이 엘라스틱 파일비트 엘라스틱 엘라스틱서치 엘라스틱 키바나  1. 카프카를 활용한 데이터 흐름도 카프카에서 발생하는 로그를 이용해 데이터 흐름도를 구성해본다. 아파치 나이파이는 데이터 처리 흐름을 정의하고, 정의된 흐름대로 자동으로 실행해주는 애플리케이션이다.  데이터 흐름을">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://kojunhee.github.io/image/kafka_chapter07_01.png">
+<meta property="og:image" content="https://kojunhee.github.io/image/kafka_chapter07_02.png">
+<meta property="og:image" content="https://kojunhee.github.io/image/kafka_chapter07_03.png">
+<meta property="og:image" content="https://kojunhee.github.io/image/kafka_chapter07_04.png">
+<meta property="og:image" content="https://kojunhee.github.io/image/kafka_chapter07_05.png">
+<meta property="og:image" content="https://kojunhee.github.io/image/kafka_chapter07_06.png">
+<meta property="og:updated_time" content="2020-01-23T06:25:25.091Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[카프카] 7장_데이터 파이프라인 구축">
+<meta name="twitter:description" content="데이터 파이프라인을 직접 구성해본다. 다음 애플리케이션을 사용한다.  아파치 나이파이 엘라스틱 파일비트 엘라스틱 엘라스틱서치 엘라스틱 키바나  1. 카프카를 활용한 데이터 흐름도 카프카에서 발생하는 로그를 이용해 데이터 흐름도를 구성해본다. 아파치 나이파이는 데이터 처리 흐름을 정의하고, 정의된 흐름대로 자동으로 실행해주는 애플리케이션이다.  데이터 흐름을">
+<meta name="twitter:image" content="https://kojunhee.github.io/image/kafka_chapter07_01.png">
+  
+    <link rel="alternate" href="/atom.xml" title="junhee.ko" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">junhee.ko</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">always learning</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://kojunhee.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-kafka-chapter7" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/12/26/kafka-chapter7/" class="article-date">
+  <time class="dt-published" datetime="2019-12-25T15:00:00.000Z" itemprop="datePublished">2019-12-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/kafka/">Kafka</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      [카프카] 7장_데이터 파이프라인 구축
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>데이터 파이프라인을 직접 구성해본다. 다음 애플리케이션을 사용한다.</p>
+<ol>
+<li>아파치 나이파이</li>
+<li>엘라스틱 파일비트</li>
+<li>엘라스틱 엘라스틱서치</li>
+<li>엘라스틱 키바나</li>
+</ol>
+<h2 id="1-카프카를-활용한-데이터-흐름도"><a href="#1-카프카를-활용한-데이터-흐름도" class="headerlink" title="1. 카프카를 활용한 데이터 흐름도"></a>1. 카프카를 활용한 데이터 흐름도</h2><p><img src="/image/kafka_chapter07_01.png" alt></p>
+<p>카프카에서 발생하는 로그를 이용해 데이터 흐름도를 구성해본다.</p>
+<p>아파치 나이파이는 데이터 처리 흐름을 정의하고, 정의된 흐름대로 자동으로 실행해주는 애플리케이션이다.</p>
+<ol>
+<li>데이터 흐름을 처리하기 위한 워크플로우</li>
+<li>데이터 처리</li>
+</ol>
+<h2 id="2-파일-비트를-이용한-메세지-전송"><a href="#2-파일-비트를-이용한-메세지-전송" class="headerlink" title="2. 파일 비트를 이용한 메세지 전송"></a>2. 파일 비트를 이용한 메세지 전송</h2><p>카프카의 로그를 카프카의 토픽으로 전송하려면 프로듀서가 필요하다. 프로듀서는,</p>
+<ol>
+<li>카프카 클라이언트 라이브러리를 이용해 프로그램으로 직접 구현</li>
+<li>오픈소스 애플리케이션 이용. 여기서는 파일 비트.</li>
+</ol>
+<h2 id="3-나이파이를-이용해-메세지-가져오기"><a href="#3-나이파이를-이용해-메세지-가져오기" class="headerlink" title="3. 나이파이를 이용해 메세지 가져오기"></a>3. 나이파이를 이용해 메세지 가져오기</h2><p>이제 컨슈머를 이용해 카프카 토픽으로부터 메세지를 가져와와야한다. 컨슈머는,</p>
+<ol>
+<li>프로그래밍 언어로 직접 구현</li>
+<li>오픈소스 애플리케이션 이용. 여기서는 나이파이.</li>
+</ol>
+<h4 id="3-1-나이파이를-이용한-컨슈머-설정"><a href="#3-1-나이파이를-이용한-컨슈머-설정" class="headerlink" title="3.1 나이파이를 이용한 컨슈머 설정"></a>3.1 나이파이를 이용한 컨슈머 설정</h4><p><img src="/image/kafka_chapter07_02.png" alt></p>
+<p>프로세서를 추가하는 화면이다.</p>
+<p>프로세서는 나이파이에서 데이터 처리를 위한 각각의 컴포넌트이다. AMQP 컨슘, 파일로 저장, 전송하기 등 여러가지 작업이 가능하다.</p>
+<p>ConsumeKafka 프로세서를 추가하고 재생 버튼을 누르면, 설정한 브로커의 토픽에서 메세지를 가져오기 시작한다.</p>
+<p>컨슈머가 잘 동작하는지 확인하는 방법은,</p>
+<ol>
+<li><p>나이파이에서 컨슈머 프로세서를 실행 시킨 후,</p>
+</li>
+<li><p>카프카 컨슈머 그룹 리스트에서, 등록한 컨슈머 그룹이 잘 등록되었는지 확인한다.</p>
+<p>등록한 컨슈머 그룹 : ConsumeKafka 프로세서의 Properties 를 정의할 때 그룹 ID 를 기입했음.</p>
+</li>
+</ol>
+<h2 id="4-실시간-분석을-위해-엘라스틱서치에-메세지-저장"><a href="#4-실시간-분석을-위해-엘라스틱서치에-메세지-저장" class="headerlink" title="4. 실시간 분석을 위해 엘라스틱서치에 메세지 저장"></a>4. 실시간 분석을 위해 엘라스틱서치에 메세지 저장</h2><p>이제, 가져온 메세지들을 나이파이의 또 다른 프로세서를 이용해 엘라스틱서치에 저장하겠다.</p>
+<p>엘라스틱서치는 엘라스틱 사의 분산형 RESTFul 검색 및 분석 엔진이다. 전문 검색 질의를 이용해 원하는 데이터 분석을 빠르게 할 수 있는 애플리케이션이다.</p>
+<h4 id="4-1-나이파이를-이용해-엘라스틱서치로-데이터-전송"><a href="#4-1-나이파이를-이용해-엘라스틱서치로-데이터-전송" class="headerlink" title="4.1 나이파이를 이용해 엘라스틱서치로 데이터 전송"></a>4.1 나이파이를 이용해 엘라스틱서치로 데이터 전송</h4><p>PutElasticsearchHttp 프로세서를 추가한다. 데이터를 엘라스틱서치로 넣어주는 역할을 한다.</p>
+<p>그리고 다음 화면처럼, ConsumeKafka 와 연결한다.</p>
+<p><img src="/image/kafka_chapter07_03.png" alt></p>
+<p>데이터 흐름 중에 뒤에 있는 프로세서에서 처리 속도가 느려 바로 처리하지 못하거나 프로세서에 문제가 발생한 경우, 두 프로세스를 연결하는 큐에 레코드가 쌓인다.</p>
+<h2 id="5-키바나를-이용해-엘라스틱서치에-저장된-데이터-확인"><a href="#5-키바나를-이용해-엘라스틱서치에-저장된-데이터-확인" class="headerlink" title="5. 키바나를 이용해 엘라스틱서치에 저장된 데이터 확인"></a>5. 키바나를 이용해 엘라스틱서치에 저장된 데이터 확인</h2><p>웹브라우저를 이용해 원하는 시간대에 발생한 로그들을 확인할 수 있고, 필터 기능으로 원하는 패턴의 로그만 빠르게 검색 가능하다.</p>
+<p>각 브로커에서 수집되는 로그가 카프카의 토픽에 있기 때문에, 엘라스틱 서치에 전송하는 것 외에 추가로 하둡이나 로컬에 저장하길 원하면, 다음 화면처럼 나이파이의 PutHDFS 프로세서를 추가해 쉽게 하둡 등의 저장소에 저장할 수 있다.</p>
+<p><img src="/image/kafka_chapter07_04.png" alt></p>
+<h2 id="6-현재의-토픽을-이용해-새로운-토픽으로-메세지-재생산"><a href="#6-현재의-토픽을-이용해-새로운-토픽으로-메세지-재생산" class="headerlink" title="6. 현재의 토픽을 이용해 새로운 토픽으로 메세지 재생산"></a>6. 현재의 토픽을 이용해 새로운 토픽으로 메세지 재생산</h2><p><img src="/image/kafka_chapter07_05.png" alt></p>
+<p>이번에는, 메세지의 양이 굉장히 많은 토픽의 내용 중 필요한 메세지만 꺼내서 다시 새로운 토픽으로 메세지를 보내는 방법을 정리한다.</p>
+<p>전체적인 데이터 흐름은,</p>
+<ol>
+<li>나이파이 컨슈머가 peter-log 로부터 로그 메세지를 가져오면서 호스트 이름을 확인한다.</li>
+<li>peter-log 토픽으로 로그 메세지를 보내는 서버는 peter-kafka001,peter-kafka002, peter-kafka003 모두 3대이다.</li>
+<li>각각의 메세지마다 호스트 이름이 peter-kafka001,ppeter-kafka002, ppeter-kafka003 이 기록되어 있다.</li>
+<li>전체 메세지 중에 호스트 이름이 peter-kafka001메세지만 peter-kafka001토픽으로 다시 전송하고,</li>
+<li>나머지 메세지는 peter-failure 토픽으로 전송한다.</li>
+</ol>
+<h4 id="6-1-나이파이를-이용한-토픽별-라우팅"><a href="#6-1-나이파이를-이용한-토픽별-라우팅" class="headerlink" title="6.1 나이파이를 이용한 토픽별 라우팅"></a>6.1 나이파이를 이용한 토픽별 라우팅</h4><p>나이파이에서 토픽의 메세지를 가져와서 peter-kafka001 에서 온 메세지인지 확인한 후에 peter-kafka001 토픽으로 전송해야한다. </p>
+<p>이를 위해, 나이파이의 EvaluateJsonPath, RouteOnAttribute 프로세서를 추가해서 라우팅 작업을 한다.</p>
+<ol>
+<li><p>EvaluateJsonPath 프로서는, 토픽으로 전송된 JSON 의 beat.hostname 을 읽어 호스트 이름을 구분한다.</p>
+</li>
+<li><p>RouteOnAttribute 프로세서는, attrubute 를 이용해 라우팅을 한다.</p>
+</li>
+</ol>
+<p>마지막으로, 카프카 프로듀서 2개를 추가한다.</p>
+<ol>
+<li>호스트명이 peter-kafka001 인 메세지를  peter-kafka001 토픽으로 전송할 프로듀서</li>
+<li>그 외 메세지를  peter-failure 토픽으로 전송할 프로듀서</li>
+</ol>
+<p>최종 플로우는 다음과 같다.</p>
+<p><img src="/image/kafka_chapter07_06.png" alt></p>
+<hr>
+<p>카프카, 데이터 플랫폼의 최강자 &lt;고승범, 공용준&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2019/12/26/kafka-chapter7/" data-id="ck5qcsveu00mwy96wf6kwwbl4" data-title="[카프카] 7장_데이터 파이프라인 구축" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/12/26/kafka-chapter4/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          [카프카] 4장_카프카 프로듀서
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/12/26/kafka-chapter1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">[카프카] 1장_카프카란 무엇인가</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/big-data/">Big Data</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boost-course/">Boost Course</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/dip/">DIP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/data-structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/design-pattern/">Design Pattern</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jpa/">JPA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">Kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/network/">Network</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/os/">OS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/object/">Object</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/software-engineering/">Software Engineering</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/spark/">Spark</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/etc/">etc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ios/">iOS</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/01/20/object-chapter14/">[오브젝트] 14장_일관성 있는 협력</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/13/object-chapter13/">[오브젝트] 13장_서브클래싱과 서브타이핑</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/12/review-2019/">2019년 회고</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/06/object-chapter12/">[오브젝트] 12장_다형성</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/05/big-data-chapter5/">[빅데이터를 지탱하는 기술] 5장_빅데이터 파이프라인</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 junhee.ko<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+  <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
