@@ -71,9 +71,9 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-State Pattern02" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-Template Method Pattern01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/05/31/State Pattern02/" class="article-date">
+    <a href="/2018/05/31/Template Method Pattern01/" class="article-date">
   <time class="dt-published" datetime="2018-05-30T15:00:00.000Z" itemprop="datePublished">2018-05-31</time>
 </a>
     
@@ -89,7 +89,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/31/State Pattern02/">State Pattern02</a>
+      <a class="p-name article-title" href="/2018/05/31/Template Method Pattern01/">Template Method Pattern01</a>
     </h1>
   
 
@@ -97,48 +97,28 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>상태에 따라 동일한 작업이 다른 방식으로 실행될 때 해당 상태가 작업을 수행하도록 위임하는 디자인 패턴이다. </p>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/sp031.png" alt></p>
+        <h2 id="Intent"><a href="#Intent" class="headerlink" title="Intent"></a>Intent</h2><ul>
+<li>Define the skeleton of an algorithm in an operation, deferring some steps to subclasses. </li>
+<li>Template Method lets subclasses redefine certain steps of an algorithm without letting them to change the algorithm’s structure.</li>
+</ul>
+<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/tmplate01.png" alt></p>
 <ul>
-<li>State<ul>
-<li>시스템의 모든 상태에 공통의 인터페이스를 제공</li>
-<li>이 인터페이스를 실체화한 어떤 상태 클래스도 기존 상태 클래스를 대신해 고체해서 사용할 수 있다.</li>
+<li>AbstractClass <ul>
+<li>defines abstract primitive operations that concrete subclasses define to implement steps of an algorithm. </li>
+<li>implements a template method which defines the skeleton of an algorithm. The template method calls primitive operations as well as operations defined in AbstractClass or those of other objects.</li>
 </ul>
 </li>
-<li>State1, State2, State3<ul>
-<li>Context 객체가 요청한 작업을 자신의 방식으로 실제 실행</li>
-<li>대부분의 경우 다음 상태를 결정해 상태 변경을 Context 객체에 요청하는 역할도 수행 </li>
-</ul>
-</li>
-<li>Context<ul>
-<li>State를 이용하는 역할 수행</li>
-<li>현재 시스템의 상태를 나타내는 상태 변수(state) , 실제 시스템의 상태를 구현하는 여러가지 변수가 있다</li>
-<li>각 상태 클래스에서 상태 변경을 요청해 상태를 바꿀수 있도록 하는 method (setState) 가 제공된다.</li>
-<li>Context 요소를 구현한 클래스의 request method는 실제 행위를 실행하는 대신 해당 상태 객체에 행위 실행을 위임</li>
+<li>ConcreteClass <ul>
+<li>implements the primitive operations to carry out subclass-specific steps of the algorithm. When a concrete class is called the template method code will be executed from the base class while for each method used inside the template method will be called the implementation from the derived class.</li>
 </ul>
 </li>
 </ul>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/sp032.png" alt></p>
-<ul>
-<li>Light <ul>
-<li>Context</li>
-</ul>
-</li>
-<li>State inteface<ul>
-<li>State</li>
-</ul>
-</li>
-<li>ON, OFF<ul>
-<li>State1, State2</li>
-</ul>
-</li>
-</ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Java 객체지향 디자인 패턴 &lt;정인상, 채흥석 지음&gt;</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.oodesign.com/template-method-pattern.html" target="_blank" rel="noopener">https://www.oodesign.com/template-method-pattern.html</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/31/State Pattern02/" data-id="ck5qih39y00e2s16wzeek80ng" data-title="State Pattern02" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/31/Template Method Pattern01/" data-id="ck5w16awm00e1myqxqg450jsd" data-title="Template Method Pattern01" class="article-share-link">Share</a>
       
       
       
@@ -202,60 +182,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/31/State Pattern01/" data-id="ck5qih39y00e0s16w0v44xm69" data-title="State Pattern01" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-촌수 계산" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/28/촌수 계산/" class="article-date">
-  <time class="dt-published" datetime="2018-05-27T15:00:00.000Z" itemprop="datePublished">2018-05-28</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/28/촌수 계산/">촌수 계산</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
-<li><p>결국 최단 거리 문제. 따라서 BFS</p>
-</li>
-<li><p>테스트 케이스 대로 그래프를 그리면 다음과 같다</p>
-<ul>
-<li>7에서 3까지의 최단 거리를 구하면 된다. </li>
-<li>이는 곧 7에서 3까지의 depth를 구하는 것이다.</li>
-</ul>
-<p><img src="/image/family04.png" alt></p>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/28/촌수 계산/" data-id="ck5qih39x00dys16w7bg0kpdc" data-title="촌수 계산" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/31/State Pattern01/" data-id="ck5w16awm00dzmyqxt9phxsvo" data-title="State Pattern01" class="article-share-link">Share</a>
       
       
       
@@ -314,7 +241,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/28/Prototype Pattern02/" data-id="ck5qih39x00dws16w2xgblnk8" data-title="Prototype Pattern02" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/28/Prototype Pattern02/" data-id="ck5w16awl00dvmyqxn4bjp35w" data-title="Prototype Pattern02" class="article-share-link">Share</a>
       
       
       
@@ -326,14 +253,14 @@
 
 
   
-    <article id="post-Prototype Pattern01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-촌수 계산" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/05/28/Prototype Pattern01/" class="article-date">
+    <a href="/2018/05/28/촌수 계산/" class="article-date">
   <time class="dt-published" datetime="2018-05-27T15:00:00.000Z" itemprop="datePublished">2018-05-28</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
   </div>
 
   </div>
@@ -344,7 +271,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/28/Prototype Pattern01/">Prototype Pattern01</a>
+      <a class="p-name article-title" href="/2018/05/28/촌수 계산/">촌수 계산</a>
     </h1>
   
 
@@ -352,108 +279,22 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h2 id="Intent"><a href="#Intent" class="headerlink" title="Intent"></a>Intent</h2><ul>
-<li>specifying the kind of objects to create using a prototypical instance</li>
-<li>creating new objects by copying this prototype</li>
-</ul>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/proto11.png" alt></p>
+        <h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
+<li><p>결국 최단 거리 문제. 따라서 BFS</p>
+</li>
+<li><p>테스트 케이스 대로 그래프를 그리면 다음과 같다</p>
 <ul>
-<li>Client<ul>
-<li>creates a new object by asking a prototype to clone itself.</li>
+<li>7에서 3까지의 최단 거리를 구하면 된다. </li>
+<li>이는 곧 7에서 3까지의 depth를 구하는 것이다.</li>
 </ul>
-</li>
-<li>Prototype <ul>
-<li>declares an interface for cloning itself.</li>
-</ul>
-</li>
-<li>ConcretePrototype<ul>
-<li>implements the operation for cloning itself.</li>
-</ul>
+<p><img src="/image/family04.png" alt></p>
 </li>
 </ul>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/proto011.png" alt></p>
-<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p>Create an abstract class implementing <em>Clonable</em> interface.</p>
-<p><img src="/image/proto02.png" alt></p>
-<p>Create concrete classes extending the above class. </p>
-<p><img src="/image/proto03.png" alt></p>
-<p><img src="/image/proto04.png" alt></p>
-<p><img src="/image/proto05.png" alt></p>
-<p>Create a class to get concrete classes from database and store them in a <em>Hashtable</em>.</p>
-<p><img src="/image/proto06.png" alt></p>
-<p>PrototypePatternDemo uses ShapeCache class to get clones of shapes stored in a <em>Hashtable</em>.</p>
-<p><img src="/image/proto07.png" alt></p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.tutorialspoint.com/design_pattern/prototype_pattern.htm" target="_blank" rel="noopener">https://www.tutorialspoint.com/design_pattern/prototype_pattern.htm</a></p>
-<p><a href="https://www.oodesign.com/prototype-pattern.html" target="_blank" rel="noopener">https://www.oodesign.com/prototype-pattern.html</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/28/Prototype Pattern01/" data-id="ck5qih39w00dus16w59f8s9mv" data-title="Prototype Pattern01" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Memento Pattern02" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/28/Memento Pattern02/" class="article-date">
-  <time class="dt-published" datetime="2018-05-27T15:00:00.000Z" itemprop="datePublished">2018-05-28</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/28/Memento Pattern02/">Memento Pattern02</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>Use the Memento Pattern when you need to be able to return an object to one of its previous states; </p>
-<p>for instance, if your user requests an “undo.” </p>
-<h2 id="Scenario"><a href="#Scenario" class="headerlink" title="Scenario"></a>Scenario</h2><p>Your interactive role playing game is hugely successful, and has created a legion of addicts, all trying to get<br> to the fabled “level 13.” </p>
-<p>As users progress to more challenging game levels, the odds of encountering a game-ending situation increase. </p>
-<p>Fans who have spent days progressing to an advanced level are understandably miffed when their character gets snuffed, and they have to start all over. </p>
-<p>The cry goes out for a “save progress” command, so that players can store their game progress and at least recover most of their efforts when their character is unfairly extinguished. </p>
-<p>The “save progress” function needs to be designed to return a resurrected player to the last level she completed successfully. </p>
-<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><p>The Memento has two goals:</p>
-<ul>
-<li>Saving the important state of a system’s key object. </li>
-<li>Maintaining the key object’s encapsulation. </li>
-</ul>
-<p>Keeping the single responsibility principle in mind, </p>
-<p>it’s also a good idea to keep the state that you’re saving separate from the key object. </p>
-<p>This separate object that holds the state is known as the Memento object. </p>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/mementoo01.png" alt></p>
-<p><img src="/image/mementoo02.png" alt></p>
-<h2 id="Benefits"><a href="#Benefits" class="headerlink" title="Benefits"></a>Benefits</h2><ul>
-<li>Keeping the saved state external from the key object helps to maintain cohesion. </li>
-<li>Keeps the key object’s data encapsulated.</li>
-<li>Provides easy-to-implement recovery capability. </li>
-</ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Head First Design Pattern</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/28/Memento Pattern02/" data-id="ck5qih39w00dss16w7ajsmmd4" data-title="Memento Pattern02" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/28/촌수 계산/" data-id="ck5w16awl00dxmyqxsg8v7ac0" data-title="촌수 계산" class="article-share-link">Share</a>
       
       
       
@@ -528,7 +369,146 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/28/Memento Pattern01/" data-id="ck5qih39v00dos16wkz3df4tj" data-title="Memento Pattern01" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/28/Memento Pattern01/" data-id="ck5w16awj00dpmyqx5k7y7upr" data-title="Memento Pattern01" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Prototype Pattern01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/28/Prototype Pattern01/" class="article-date">
+  <time class="dt-published" datetime="2018-05-27T15:00:00.000Z" itemprop="datePublished">2018-05-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/28/Prototype Pattern01/">Prototype Pattern01</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="Intent"><a href="#Intent" class="headerlink" title="Intent"></a>Intent</h2><ul>
+<li>specifying the kind of objects to create using a prototypical instance</li>
+<li>creating new objects by copying this prototype</li>
+</ul>
+<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/proto11.png" alt></p>
+<ul>
+<li>Client<ul>
+<li>creates a new object by asking a prototype to clone itself.</li>
+</ul>
+</li>
+<li>Prototype <ul>
+<li>declares an interface for cloning itself.</li>
+</ul>
+</li>
+<li>ConcretePrototype<ul>
+<li>implements the operation for cloning itself.</li>
+</ul>
+</li>
+</ul>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/proto011.png" alt></p>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p>Create an abstract class implementing <em>Clonable</em> interface.</p>
+<p><img src="/image/proto02.png" alt></p>
+<p>Create concrete classes extending the above class. </p>
+<p><img src="/image/proto03.png" alt></p>
+<p><img src="/image/proto04.png" alt></p>
+<p><img src="/image/proto05.png" alt></p>
+<p>Create a class to get concrete classes from database and store them in a <em>Hashtable</em>.</p>
+<p><img src="/image/proto06.png" alt></p>
+<p>PrototypePatternDemo uses ShapeCache class to get clones of shapes stored in a <em>Hashtable</em>.</p>
+<p><img src="/image/proto07.png" alt></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.tutorialspoint.com/design_pattern/prototype_pattern.htm" target="_blank" rel="noopener">https://www.tutorialspoint.com/design_pattern/prototype_pattern.htm</a></p>
+<p><a href="https://www.oodesign.com/prototype-pattern.html" target="_blank" rel="noopener">https://www.oodesign.com/prototype-pattern.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/28/Prototype Pattern01/" data-id="ck5w16awk00dtmyqx4wczwk1g" data-title="Prototype Pattern01" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Memento Pattern02" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/28/Memento Pattern02/" class="article-date">
+  <time class="dt-published" datetime="2018-05-27T15:00:00.000Z" itemprop="datePublished">2018-05-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/28/Memento Pattern02/">Memento Pattern02</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>Use the Memento Pattern when you need to be able to return an object to one of its previous states; </p>
+<p>for instance, if your user requests an “undo.” </p>
+<h2 id="Scenario"><a href="#Scenario" class="headerlink" title="Scenario"></a>Scenario</h2><p>Your interactive role playing game is hugely successful, and has created a legion of addicts, all trying to get<br> to the fabled “level 13.” </p>
+<p>As users progress to more challenging game levels, the odds of encountering a game-ending situation increase. </p>
+<p>Fans who have spent days progressing to an advanced level are understandably miffed when their character gets snuffed, and they have to start all over. </p>
+<p>The cry goes out for a “save progress” command, so that players can store their game progress and at least recover most of their efforts when their character is unfairly extinguished. </p>
+<p>The “save progress” function needs to be designed to return a resurrected player to the last level she completed successfully. </p>
+<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><p>The Memento has two goals:</p>
+<ul>
+<li>Saving the important state of a system’s key object. </li>
+<li>Maintaining the key object’s encapsulation. </li>
+</ul>
+<p>Keeping the single responsibility principle in mind, </p>
+<p>it’s also a good idea to keep the state that you’re saving separate from the key object. </p>
+<p>This separate object that holds the state is known as the Memento object. </p>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/mementoo01.png" alt></p>
+<p><img src="/image/mementoo02.png" alt></p>
+<h2 id="Benefits"><a href="#Benefits" class="headerlink" title="Benefits"></a>Benefits</h2><ul>
+<li>Keeping the saved state external from the key object helps to maintain cohesion. </li>
+<li>Keeps the key object’s data encapsulated.</li>
+<li>Provides easy-to-implement recovery capability. </li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Head First Design Pattern</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/28/Memento Pattern02/" data-id="ck5w16awj00drmyqxecjpygzf" data-title="Memento Pattern02" class="article-share-link">Share</a>
       
       
       
@@ -581,7 +561,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/27/나이트의 이동/" data-id="ck5qih39v00dqs16werxt4zcz" data-title="나이트의 이동" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/27/나이트의 이동/" data-id="ck5w16awi00dnmyqx5w6wlhn7" data-title="나이트의 이동" class="article-share-link">Share</a>
       
       
       
@@ -593,9 +573,9 @@
 
 
   
-    <article id="post-Prewitt Operator" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-Krisch Compass Mask" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/05/22/Prewitt Operator/" class="article-date">
+    <a href="/2018/05/22/Krisch Compass Mask/" class="article-date">
   <time class="dt-published" datetime="2018-05-21T15:00:00.000Z" itemprop="datePublished">2018-05-22</time>
 </a>
     
@@ -611,7 +591,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/22/Prewitt Operator/">Prewitt Operator</a>
+      <a class="p-name article-title" href="/2018/05/22/Krisch Compass Mask/">Krisch Compass Mask</a>
     </h1>
   
 
@@ -619,45 +599,36 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>Prewitt operator is used for edge detection in an image. It detects two types of edges</p>
+        <p>Kirsch Compass Mask is also a derivative mask which is used for finding edges. </p>
+<p>This is also like Robinson compass find edges in all the eight directions of a compass. </p>
+<p>The only difference between Robinson and kirsch compass masks is that in Kirsch we have a standard mask but in Kirsch we change the mask according to our own requirements.</p>
+<p>With the help of Kirsch Compass Masks we can find edges in the following eight directions.</p>
 <ul>
-<li>Horizontal edges</li>
-<li>Vertical Edges</li>
+<li>North</li>
+<li>North West</li>
+<li>West</li>
+<li>South West</li>
+<li>South</li>
+<li>South East</li>
+<li>East</li>
+<li>North East</li>
 </ul>
-<p>Edges are calculated by using difference between corresponding pixel intensities of an image. </p>
-<p>All the masks that are used for edge detection are also known as derivative masks. </p>
-<p>Because image is also a signal so changes in a signal can only be calculated using differentiation. </p>
-<p>So that’s why these operators are also called as derivative operators or derivative masks.</p>
-<p>All the derivative masks should have the following properties:</p>
-<ul>
-<li>Opposite sign should be present in the mask.</li>
-<li>Sum of mask should be equal to zero.</li>
-<li>More weight means more edge detection.</li>
-</ul>
-<p>Prewitt operator provides us two masks one for detecting edges in horizontal direction and another for detecting edges in an vertical direction.</p>
-<h2 id="Vertical-direction"><a href="#Vertical-direction" class="headerlink" title="Vertical direction"></a>Vertical direction</h2><p><img src="/image/prewitt01.png" alt></p>
-<p>Above mask will find the edges in vertical direction and it is because the zeros column in the vertical direction. When you will convolve this mask on an image, it will give you the vertical edges in an image.</p>
-<h2 id="How-it-works"><a href="#How-it-works" class="headerlink" title="How it works"></a>How it works</h2><p>When we apply this mask on the image it prominent vertical edges. </p>
-<p>It simply works like as first order derivate and calculates the difference of pixel intensities in a edge region. As the center column is of zero so it does not include the original values of an image but rather it calculates the difference of right and left pixel values around that edge. </p>
-<p>This increase the edge intensity and it become enhanced comparatively to the original image.</p>
-<h2 id="Horizontal-Direction"><a href="#Horizontal-Direction" class="headerlink" title="Horizontal Direction"></a>Horizontal Direction</h2><p><img src="/image/prewitt02.png" alt></p>
-<p>Above mask will find edges in horizontal direction and it is because that zeros column is in horizontal direction. When you will convolve this mask onto an image it would prominent horizontal edges in the image.</p>
-<h2 id="How-it-works-1"><a href="#How-it-works-1" class="headerlink" title="How it works"></a>How it works</h2><p>This mask will prominent the horizontal edges in an image. </p>
-<p>It also works on the principle of above mask and calculates difference among the pixel intensities of a particular edge. </p>
-<p>As the center row of mask is consist of zeros so it does not include the original values of edge in the image but rather it calculate the difference of above and below pixel intensities of the particular edge. </p>
-<p>Thus increasing the sudden change of intensities and making the edge more visible. </p>
-<p>Both the above masks follow the principle of derivate mask. </p>
-<p>Both masks have opposite sign in them and both masks sum equals to zero. </p>
-<p>The third condition will not be applicable in this operator as both the above masks are standardize and we can’t change the value in them.</p>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/prewitt03.png" alt></p>
-<p>As you can see that in the first picture on which we apply vertical mask, all the vertical edges are more visible than the original image. </p>
-<p>Similarly in the second picture we have applied the horizontal mask and in result all the horizontal edges are visible. </p>
-<p>So in this way you can see that we can detect both horizontal and vertical edges from an image.</p>
+<p>We take a standard mask which follows all the properties of a derivative mask and then rotate it to find the edges.</p>
+<p>For example let’s see the following mask which is in North Direction and then rotate it to make all the direction masks.</p>
+<p><img src="/image/krisch01.png" alt></p>
+<p><img src="/image/krisch02.png" alt></p>
+<p>As you can see that all the directions are covered and each mask will give you the edges of its own direction. </p>
+<p>Now to help you better understand the concept of these masks we will apply it on a real image. </p>
+<p>Suppose we have a sample picture from which we have to find all the edges. Here is our sample picture:</p>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/krisch04.png" alt></p>
+<p>As you can see that by applying all the above masks you will get edges in all the direction. </p>
+<p>Result is also depends on the image. </p>
+<p>Suppose there is an image, which do not have any North East direction edges so then that mask will be ineffective.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/22/Prewitt Operator/" data-id="ck5qih39u00dks16wpo1whtez" data-title="Prewitt Operator" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/22/Krisch Compass Mask/" data-id="ck5w16awf00ddmyqx0mb6bgx9" data-title="Krisch Compass Mask" class="article-share-link">Share</a>
       
       
       
@@ -725,7 +696,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/22/Robinson Compass Mask/" data-id="ck5qih39t00dis16w4ke5qf7l" data-title="Robinson Compass Mask" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/22/Robinson Compass Mask/" data-id="ck5w16awh00djmyqx6mct0t1p" data-title="Robinson Compass Mask" class="article-share-link">Share</a>
       
       
       
