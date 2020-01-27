@@ -71,6 +71,155 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-object-chapter7" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/12/02/object-chapter7/" class="article-date">
+  <time class="dt-published" datetime="2019-12-01T15:00:00.000Z" itemprop="datePublished">2019-12-02</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/object/">Object</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/12/02/object-chapter7/">[오브젝트] 7장_객체 분해</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>하향식 기능 분해 -&gt; 모듈 -&gt; 추상 데이터 타입 -&gt; 클래스</p>
+<h2 id="01-프로시저-추상화와-데이터-추상화"><a href="#01-프로시저-추상화와-데이터-추상화" class="headerlink" title="01 프로시저 추상화와 데이터 추상화"></a>01 프로시저 추상화와 데이터 추상화</h2><ul>
+<li>데이터 추상화<ul>
+<li>추상 데이터 타입 : 데이터 중심으로 타입을 추상화</li>
+<li>객체지향 : 데이터 중심으로 프로시저를 추상화</li>
+</ul>
+</li>
+</ul>
+<h2 id="02-프로시저-추상화와-기능-분해"><a href="#02-프로시저-추상화와-기능-분해" class="headerlink" title="02 프로시저 추상화와 기능 분해"></a>02 프로시저 추상화와 기능 분해</h2><h5 id="메인-함수로서의-시스템"><a href="#메인-함수로서의-시스템" class="headerlink" title="메인 함수로서의 시스템"></a>메인 함수로서의 시스템</h5><p>전통적인 기능 분해방법은 하향식 접근법이다. 즉, 최상위 기능을 좀 더 작은 단계의 하위 기능으로 분해해 나가는 방법이다.</p>
+<h5 id="급여-관리-시스템"><a href="#급여-관리-시스템" class="headerlink" title="급여 관리 시스템"></a>급여 관리 시스템</h5><p>모든 문장이 정제 과정을 거치면서 하나 이상의 좀 더 단순하고 구체적인 문장들의 조합으로 분해된다.</p>
+<ul>
+<li>직원의 급여를 계산한다<ul>
+<li>사용자에게 소득세율을 입력 받는다<ul>
+<li>“세율을 입력하세요 : “ 라는 문장을 화면에 출력한다</li>
+<li>…</li>
+</ul>
+</li>
+<li>직원의 급여를 계산한다<ul>
+<li>전역 변수에 저장된 직원의 기본접 정보를 얻는다</li>
+<li>…</li>
+</ul>
+</li>
+<li>양식에 맞게 출력한다<ul>
+<li>…</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="급여-관리-시스템-구현"><a href="#급여-관리-시스템-구현" class="headerlink" title="급여 관리 시스템 구현"></a>급여 관리 시스템 구현</h5><p>하향식 기능 분해로, 시스템을 최상위의 가장 추상적인 메인함수로 정의하고 메인함수를 구현 가능한 수준까지 세부적인 단계로 분해한다. 메인함수를 루트로 하는 ‘트리’ 로 표현할 수 있다.</p>
+<h5 id="하향식-기능-분해의-문제점"><a href="#하향식-기능-분해의-문제점" class="headerlink" title="하향식 기능 분해의 문제점"></a>하향식 기능 분해의 문제점</h5><ul>
+<li>하나의 메인 함수라는 비현실적 아이디어<ul>
+<li>새로운 요구사항이 나오면 지속적으로 새로운 기능을 추가한다. 이것은 시스템이 오직 하나의 메인 함수로 구현된다는 개념과 모순된다.</li>
+</ul>
+</li>
+<li>메인 함수의 빈번한 재설계<ul>
+<li>새로운 기능을 추가할 때마다 매번 메인 함수를 수정해야한다.</li>
+</ul>
+</li>
+<li>비즈니스 로직과 사용자 인터페이스 결합<ul>
+<li>사용자 인터페이스는 시스템에서 자주 변경되는 부분이다. 비즈니스 로직은 변경이 적게 발생한다. 하향식 접근 방법은 인터페이스와 비즈니스 로직을 섞기 때문에 사용자 인터페이스를 변경하는 경우 비즈니스 로직까지 변경에 영향을 받는다.</li>
+</ul>
+</li>
+<li>성급하게 결정된 실행 순서<ul>
+<li>함수들의 실행순서를 정의하는 시간 제약을 강조한다. 메인 함수가 작은 함수들로 분해되기 위해서는 우선 함수들의 순서를 결정해야한다. 문제는, 함수의 제어 구조가 빈번한 변경의 대상이라는 점이다. </li>
+</ul>
+</li>
+<li>분해된 함수들은 재사용이 어렵다<ul>
+<li>모든 함수는 상위 함수를 분해하는 과정에서 필요에 따라 식별되며, 그에 따라 상위 함수가 강요하는 문맥 안에서만 의미를 가지기 때문이다</li>
+</ul>
+</li>
+<li>데이터 변경으로 인한 파급 효과<ul>
+<li>어떤 데이터를 어떤 함수가 사용하고 있는지 추적이 어렵다. 그래서, 데이터 변경으로 인해 어떤 함수가 영향 받을지 예상이 어렵다</li>
+</ul>
+</li>
+</ul>
+<h5 id="언제-하향식-분해가-유용한가"><a href="#언제-하향식-분해가-유용한가" class="headerlink" title="언제 하향식 분해가 유용한가 ?"></a>언제 하향식 분해가 유용한가 ?</h5><p>이미 해결된 알고리즘을 문서화하고 서술하는데 훌륭한 기법이다. </p>
+<h2 id="03-모듈"><a href="#03-모듈" class="headerlink" title="03 모듈"></a>03 모듈</h2><h5 id="정보-은닉과-모듈"><a href="#정보-은닉과-모듈" class="headerlink" title="정보 은닉과 모듈"></a>정보 은닉과 모듈</h5><p>변경을 관리하는 기본 적략은, 함꼐 변경되는 부분을 하나의 구현 단위로 묶고 퍼블릭 인터페이스를 통해서만 접근하도록 만드는 것이다. </p>
+<p>정보 은닉은, 시스템에서 자주 변경되는 부분을 덜 변경되는 안정적인 인터페이스 뒤로 감춰야한다는 것이 핵심이다.</p>
+<p>모듈은 다음 두가지를 감춰야한다.</p>
+<ol>
+<li><p>복잡성</p>
+<p>외부에 모듈을 추상화 할 수 있는 간단한 인터페이스를 제공해서 모듈의 복잡도를 낮춘다.</p>
+</li>
+<li><p>변경 가능성</p>
+<p>변경 발생히, 하나의 모듈만 수정하면 되도록 변경 가능한 설계 과정을 모듈 내부로 감추고 외부에는 쉽게 견경되지 않을 인터페이스를 제공한다.</p>
+</li>
+</ol>
+<h5 id="모듈의-장점과-한계"><a href="#모듈의-장점과-한계" class="headerlink" title="모듈의 장점과 한계"></a>모듈의 장점과 한계</h5><p>모듈은 외부에 감춰야 하는 비밀과 관련성 높은 데이터와 함수의 집합이다. 따라서, 모듈 내부는 높은 응집도를 유지한다.</p>
+<p>모듈과 모듈 사이에는 퍼블릭 인터페이스를 통해서만 통신한다. 따라서, 낮은 결합도를 유지한다.</p>
+<p>모듈의 장점은,</p>
+<ol>
+<li>모듈 내부의 변수가 변경되더라도 모듈 내부에만 영향을 받는다</li>
+<li>비즈니스 로직과 사용자 인터페이스에 대한 관심사를 분리한다</li>
+<li>전역변수와 전역 함수를 제거해서, 네임스페이스 오염을 방지하고 이름 충돌의 위험을 완화한다.</li>
+</ol>
+<p>모듈의 단점은,</p>
+<ol>
+<li>인스턴스 개념을 제공하지 않는다. 높은 수준의 추상화를 위해서는 직원 전체가 아니라 개별 직원을 독립적인 단위로 다룰 수 있어야 한다. 이것이 추상 데이터 타입이다.</li>
+</ol>
+<h2 id="04-데이터-추상화와-추상-데이터-타입"><a href="#04-데이터-추상화와-추상-데이터-타입" class="headerlink" title="04 데이터 추상화와 추상 데이터 타입"></a>04 데이터 추상화와 추상 데이터 타입</h2><h5 id="추상-데이터-타입"><a href="#추상-데이터-타입" class="headerlink" title="추상 데이터 타입"></a>추상 데이터 타입</h5><p>개별 직원의 인스턴스를 생성할 수 있는 Employee 추상 데이터 타입은, 전체 직원을 캡슐화하는 Employees 모듈 보다 더 개념적으로 사람들의 사고방식의 가깝다.</p>
+<p>추상 데이터 타입을 구현하기 위해, 프로그래밍 언어는 다음 지원이 필요하다.</p>
+<ol>
+<li>타입 정의 선언 가능해야함</li>
+<li>타입의 인스턴스를 다루기 위해, 오퍼레이션의 집합을 정의할 수 있어야함</li>
+<li>제공된 오퍼레이션을 통해서만 조작할 수 있도록 데이터를 외부로부터 보호 할 수 있어야함</li>
+<li>타입에 대해 여러개의 인스턴스를 생성할 수 있어야함</li>
+</ol>
+<h2 id="05-클래스"><a href="#05-클래스" class="headerlink" title="05 클래스"></a>05 클래스</h2><h5 id="클래스는-추상-데이터-타입인가"><a href="#클래스는-추상-데이터-타입인가" class="headerlink" title="클래스는 추상 데이터 타입인가 ?"></a>클래스는 추상 데이터 타입인가 ?</h5><p>동일하지 않다. 클래스는 상속과 다형성을 지원하는데, 추상데이터타입은 그렇지 않다.</p>
+<p>추상 데이터 타입으로 구현된 Employee 타입을 보면, 하나의 타입처럼 보이는 Employee 내부에는 정규 직원과 아르바이트 직원이라는 두개의 타입이 공존한다. 하나의 대표적인 타입이 다수의 세부적인 타입을 감추기 때문에 이를, 타입 추상화 라고한다.</p>
+<p>추상 데이터타입이 오퍼레이션을 기준으로 타입을 묶는 방법이라면, 객체지향은 타입을 기준으로 오퍼레이션을 묶는다. 객체지향은 정규 직원과 아르바이트 직원 각각에 대한 클래스를 정의하고 각 클래스들이 calculatePay 와 monthlyBasePay 오퍼레이션을 적절하게 구현한다.</p>
+<p>정규 직원과 아르바이트 직원 두 가지 클래스로 분리하면, 공통 로직은 어디에 둘것인가 ? 공통 로직을 포함할 부모 클래스를 정의하고 두 직원 유형의 클래스가 부모 클래스를 상속 받으면 된다</p>
+<h5 id="추상-데이터-타입에서-클래스로-변경하기"><a href="#추상-데이터-타입에서-클래스로-변경하기" class="headerlink" title="추상 데이터 타입에서 클래스로 변경하기"></a>추상 데이터 타입에서 클래스로 변경하기</h5><p>객체지향에서는, 각 직원의 타입을 독립적인 클래스로 구현한다. </p>
+<h5 id="변경을-기준으로-선택하라"><a href="#변경을-기준으로-선택하라" class="headerlink" title="변경을 기준으로 선택하라"></a>변경을 기준으로 선택하라</h5><p>인스턴스 변수에 저장된 값을 기준으로 메서드 내에서 타입을 명시적으로 구분하는 방식은 객체지향을 위반한 것이다. 클래스가 추상 데이터 타입의 개념을 따른 것이다.</p>
+<p>언제 추상 데이터 타입이, 객체 지향이 낫나 ?</p>
+<ol>
+<li><p>타입 추가라는 변경의 압력이 강하면, 객체 지향이 낫다. </p>
+<p>추상 데이터 타입의 경우, 새로운 타입을 추가하면 타입 체크하는 클라이언트 코드를 모두 찾아 수정해야한다.</p>
+</li>
+<li><p>오퍼레이션 추가라는 변경의 압력이 강하면, 추상 데이터 타입이 낫다. </p>
+<p>추상 데이터 타입은 전체 타입에 대한 구현 코드가 하나의 구현체 내에 포함돼서 새로운 오퍼레이션 추가가 간단한다.</p>
+</li>
+</ol>
+<h5 id="협력이-중요하다"><a href="#협력이-중요하다" class="headerlink" title="협력이 중요하다"></a>협력이 중요하다</h5><p>객체지향의 핵심 : 역함, 책임, 협력</p>
+<p>“객체가 참여할 협력을 결정하고, 협력에 필요한 책임을 수행하기 위해, 어떤 객체가 필요한지 고민하라”</p>
+<hr>
+<p>오브젝트 &lt;조영호&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2019/12/02/object-chapter7/" data-id="ck5w5fcz000mgc5qxhpb41fhi" data-title="[오브젝트] 7장_객체 분해" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-object-chapter6" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2019/11/24/object-chapter6/" class="article-date">
@@ -207,7 +356,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/11/24/object-chapter6/" data-id="ck5w16b0n00o5myqxbdidzthe" data-title="[오브젝트] 6장_메세지와 인터페이스" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/11/24/object-chapter6/" data-id="ck5w5fd0q00o7c5qxixc0szrt" data-title="[오브젝트] 6장_메세지와 인터페이스" class="article-share-link">Share</a>
       
       
       
@@ -311,7 +460,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/11/18/object-chapter4/" data-id="ck5w16b0l00o1myqxdmoapj5c" data-title="[오브젝트] 4장_설계 품질과 트레이드오프" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/11/18/object-chapter4/" data-id="ck5w5fd0p00o3c5qxoy46xfef" data-title="[오브젝트] 4장_설계 품질과 트레이드오프" class="article-share-link">Share</a>
       
       
       
@@ -486,7 +635,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/11/18/object-chapter5/" data-id="ck5w16b0m00o3myqxlb9os28j" data-title="[오브젝트] 5장_책임 할당하기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/11/18/object-chapter5/" data-id="ck5w5fd0p00o5c5qxrw9ki57q" data-title="[오브젝트] 5장_책임 할당하기" class="article-share-link">Share</a>
       
       
       
@@ -606,7 +755,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/11/12/object-chapter3/" data-id="ck5w16az900mdmyqxo8slwmd3" data-title="[오브젝트] 3장_역할,책임,협력" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/11/12/object-chapter3/" data-id="ck5w5fcyz00mbc5qx8f1w1obd" data-title="[오브젝트] 3장_역할,책임,협력" class="article-share-link">Share</a>
       
       
       
@@ -723,7 +872,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/11/06/object-chapter2/" data-id="ck5w16b0l00nzmyqxq0e8kfif" data-title="[오브젝트] 2장_객체지향 프로그래밍" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/11/06/object-chapter2/" data-id="ck5w5fd0o00o1c5qx17vfupii" data-title="[오브젝트] 2장_객체지향 프로그래밍" class="article-share-link">Share</a>
       
       
       
@@ -800,7 +949,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/11/04/object-chapter1/" data-id="ck5w16az800mamyqxplvmbm23" data-title="[오브젝트] 1장_객체, 설계" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/11/04/object-chapter1/" data-id="ck5w5fcz000mec5qxisievws6" data-title="[오브젝트] 1장_객체, 설계" class="article-share-link">Share</a>
       
       
       
@@ -1066,7 +1215,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/08/07/spark-sql/" data-id="ck5w16b1u00owmyqxbua8ryu2" data-title="[스파크2 프로그래밍] 5장_스파크SQL 과 데이터프레임,데이터셋" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/08/07/spark-sql/" data-id="ck5w5fd2c00p0c5qx6ew21p2f" data-title="[스파크2 프로그래밍] 5장_스파크SQL 과 데이터프레임,데이터셋" class="article-share-link">Share</a>
       
       
       
@@ -1258,7 +1407,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/07/16/rdd/" data-id="ck5w16b0k00nxmyqxxuq869u8" data-title="[스파크2 프로그래밍] 2장_RDD" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/07/16/rdd/" data-id="ck5w5fd0n00nzc5qx48cyrb3u" data-title="[스파크2 프로그래밍] 2장_RDD" class="article-share-link">Share</a>
       
       
       
@@ -1388,106 +1537,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/07/01/spark-cluster/" data-id="ck5w16b1e00otmyqxmm60c8xs" data-title="[스파크2 프로그래밍] 3장_클러스터 환경" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-spark-config" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/07/01/spark-config/" class="article-date">
-  <time class="dt-published" datetime="2019-06-30T15:00:00.000Z" itemprop="datePublished">2019-07-01</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/spark/">Spark</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/07/01/spark-config/">[스파크2 프로그래밍] 4장_스파크 설정</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <ul>
-<li>애플리캐이션 단위로 설정<ul>
-<li>Spark Properties 사용</li>
-</ul>
-</li>
-<li>각 서버 단위로 설정<ul>
-<li>서버의 환경 변수를 이용해 등록</li>
-</ul>
-</li>
-</ul>
-<h3 id="4-1-스파크-프로퍼티"><a href="#4-1-스파크-프로퍼티" class="headerlink" title="4.1 스파크 프로퍼티"></a>4.1 스파크 프로퍼티</h3><p>스파크 프로퍼티는 개별 애플리캐이션 실행관 관련된 설정값을 정의하는 곳입니다. 스파크 컨텍스트를 생성할 때 사용했던 SparkConf 인스턴스나 자바 시스템 프로퍼티를 이용해 등록 가능합니다.</p>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> sparkConf = <span class="keyword">new</span> <span class="type">SparkCont</span>().setAppName(<span class="string">"myApp"</span>)</span><br><span class="line"><span class="keyword">val</span> sc = <span class="keyword">new</span> <span class="type">SparkContext</span>(sparkConf)</span><br></pre></td></tr></table></figure>
-
-<p>SparkConf 클래스는 스파크 애플리캐이션 실행관 관련된 다양한 설정 정보를 키와 값 형태로 등록할수 있는 함수(set / get) 을 제공합니다. 애플리캐이션 이름과 같이 반드시 지정해야 하는 주요 속성에 대해서는 setMaster, setAppName 과 같은 별도의 메서드를 제공합니다.</p>
-<p>SparkConf 를 이용하는 것의 문제점은 애플리캐이션의 비즈니스 로직과는 직접 관련이 없는 익스큐터의 메모리 설정이나 코어 수 할당관 관련된 부분이 항상 프로그램 코드에 포함돼 있어야 한다는 것입니다. 그래서, 프로그램이 실행되는 시점에 동적으로 필요한 설정값을 설정할수 있는 두 가지 방법이 있습니다.</p>
-<ol>
-<li><p>spark-shell / spar-submit</p>
-<p>스크립트 실행시 사전에 지정된 형식에 따라 명령행 옵션을 이용해 원하는 설정값을 지정합니다.</p>
-</li>
-<li><p>설정 정보가 담긴 파일 사용</p>
-<p>스파크 홈의 conf 디렉터리 아래에 spark-defaults.conf 파일을 만들고 이 파일에 설정 정보를 등록해 두면 스파크 쉘이나 sprak-submit 스크립트가 해당 파일의 내용을 읽습니다. </p>
-</li>
-</ol>
-<h3 id="4-2-환경변수"><a href="#4-2-환경변수" class="headerlink" title="4.2 환경변수"></a>4.2 환경변수</h3><p>각 서버 단위로 적용돼야 하는 환경 정보는 각 서버의 환경 변수를 이용해 등록할 수 있습니다. 예를 들어, 자바의 설치 경로와 같은 정보가 서버별로 다르게 설정돼 있다면 환경변수를 이용해 해당 서버의정보를 변경할 수 있습니다. 환경 변수 ex )</p>
-<ul>
-<li>JAVA_HOME : 자바 설치 경로</li>
-<li>SPARK_LOCAL_IP : 사용할 IP</li>
-<li>SPARK_PUBLIC_DNS : 애플리케이션 호스트명</li>
-<li>SPARK_CONF_DIR : spar-defaults.conf / spark-env.sh / log4j.properties 파일 등 설정 파일이 놓인 디렉토리 위치</li>
-</ul>
-<p>일부 환경 변수는 사용하는 클러스터 매니저의 종류에 따라 설정 방법이 다릅니다.</p>
-<h3 id="4-3-로깅-설정"><a href="#4-3-로깅-설정" class="headerlink" title="4.3 로깅 설정"></a>4.3 로깅 설정</h3><p>스파크는 로깅 프레임워크로 log4j 를 사용합니다. 로깅 레벨을 변경하고 싶으면 스파크 홈의 conf 디렉토리 아래에 log4j.properties 파일을 생성하고 원하는 레벨로 설정하면 됩니다.</p>
-<h3 id="4-4-스케쥴링"><a href="#4-4-스케쥴링" class="headerlink" title="4.4 스케쥴링"></a>4.4 스케쥴링</h3><p>하나의 애플리캐이션에 무조건 많은 CPU 와 대량의 메모리를 할당한다고 해서 원하는 속도가 나온다는 보장이 없습니다. 오히려, GC 발생과 과도한 IO, 네트워크, 프로세스 경항 등으로 인해 처리 속도가 더 나빠질 수 있습니다.</p>
-<p>이번 절에서는 스파크 애플리캐이션을 수행할 때 클러스터 자원을 각 자원에 적절히 분배해서 사용하는 방법을 정리합니다.</p>
-<p>하나의 클러스터에서 여러 작업이 실행되는 경우는 두 가지 입니다.</p>
-<ol>
-<li>서로 다른 애플리캐이션이 동일한 클러스터에서 동시에 실행</li>
-<li>하나의 애플리캐이션에서 여러 스레드를 이용해 다수의 잡을 동시에 실행</li>
-</ol>
-<h4 id="4-4-1-애플리캐이션-간의-자원-스케쥴링"><a href="#4-4-1-애플리캐이션-간의-자원-스케쥴링" class="headerlink" title="4.4.1 애플리캐이션 간의 자원 스케쥴링"></a>4.4.1 애플리캐이션 간의 자원 스케쥴링</h4><ol>
-<li><p>애플리캐이션 단위로 고정된 자원을 할당해주는 고정 자원 할당 방식</p>
-<p>각 애플리케이션별마다 할당된 자원을 미리 결정한뒤 애플리케이션이 실행되는 시점부터 종료되는 시점까지 해당 자원을 계속 점유하는 사용방식입니다. </p>
-<p>스파크셸 이나 spark-submit 을 이용해 애플리케이션을 실행할 때 사용할 자원 정보를 지정할 수 있습니다.</p>
-<p>만약, 실행되는 애플리케이션이 짧은 시간에 집중적으로 처리를 수행하는 애플리케이션이 아닌, 스파크 셸이나 웹 기반의 애플리케이션 처럼 장시간 동작하면서 사람 혹은 외부 프로스세가 제공하는 이벤트가 있을 때만 작업을 처리하는 형태로 동작하는 애플리케이션이라면 외부로부터의 명령을 대기하는 시간 동안 자원의 낭비가 발생합니다.</p>
-<p>따라서, 작업을 수행하지 않고 외부의 작업 요청을 대기하는 동안에는 해당 자원을 회수해서 자원이 부족한 다른 애플리케이션에 추가로 할당하는 것이 합리적입니다.</p>
-</li>
-<li><p>애플리캐이션의 실행 상황에 따라 수시로 할당량을 조정해 주는 동적 자원 할당 방식</p>
-<p>스탠드얼론 모드를 제외하고는 모두 별도의 셔플 서비스를 구동시킵니다. 왜냐하면, 동적 자원 할당 모드에서는 애플리케이션이 실행되고 있는 도중에 익스큐터가 스케쥴러에 의해 삭제될 수 있기 떄문입니다.</p>
-<p>아직 리듀서가 읽어가지 않은 데이터를 갖고 있던 익스큐터가 스케쥴러에 의해 삭제되면 셔플 데이터가 유실되기 때문에 익스큐터가 삭제되더라도 해당 데이터를 유지하고 처리될 수 있게 별도의 셔플 프로세스를 설정하는 것입니다.</p>
-</li>
-</ol>
-<h4 id="4-4-2-단일-애플리캐이션-내부에서의-자원-스케쥴링"><a href="#4-4-2-단일-애플리캐이션-내부에서의-자원-스케쥴링" class="headerlink" title="4.4.2 단일 애플리캐이션 내부에서의 자원 스케쥴링"></a>4.4.2 단일 애플리캐이션 내부에서의 자원 스케쥴링</h4><p>스파크컨텍스트는 기본적으로 멀티스레드 방식을 지원합니다. 하나의 스파크컨텍스트에서 다수의 액션 연산을 동시에 실행하더라도 문제가 없습니다. 하지만, 별도의 설정이 없다면 잡의 실행은 기본적으로 FIFO 방식입니다. 문제점은 먼저 시작되는 작업이 우선권을 얻어 자원을 모두 점유한 채 실핼됭 경우, 후속 작업은 이전 작업이 모두 완료되지 전까지 대기하고 있어야한다는 점입니다.</p>
-<p>스파크는 그래서 FIFO 스케쥴러와 fail-scheduler 를 선택할 수 있는 옵션을 제공합니다. </p>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conf.set(<span class="string">"spark.scheduler.mode"</span>, <span class="string">"FAIR"</span>)</span><br></pre></td></tr></table></figure>
-
-<p>페어 스케쥴링 방식을 사용하면, 모듭 잡은 동일한 자원을 번갈아가며 할당받습니다. 크기가 작은 잡과 수행 시간이 오래 걸리는 잡이 섞여 있을 때 크기가 작은 잡이 크기가 큰 잡을 기다리지 않고 빠른 처리가 가능합니다. 하지만 경우에 따라서는 중요한 작업과 덜 중요한 적업을 구분해서 자원 할당의 우선순위를 조정해야 하는 경우도 있습니다.</p>
-<p>그래서, Pool 이라는 개념을 도입해 풀마다 스케쥴링 방식과 우선순위, 사용 가능한 자원 할당 수준을 다르게 설정한 뒤 각 잡을 특정 풀에 할당해 풀 단위로 작업을 관리할 수 있습니다.</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/07/01/spark-config/" data-id="ck5w16az800m8myqxatfacilk" data-title="[스파크2 프로그래밍] 4장_스파크 설정" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/07/01/spark-cluster/" data-id="ck5w5fd1u00oxc5qxfde8l7dh" data-title="[스파크2 프로그래밍] 3장_클러스터 환경" class="article-share-link">Share</a>
       
       
       
@@ -1542,6 +1592,10 @@
       <ul>
         
           <li>
+            <a href="/2020/01/27/object-chapter15/">[오브젝트] 15장_디자인 패턴과 프레임워크</a>
+          </li>
+        
+          <li>
             <a href="/2020/01/26/kafka-chapter8/">[카프카] 8장_카프카 스트림즈 API</a>
           </li>
         
@@ -1555,10 +1609,6 @@
         
           <li>
             <a href="/2020/01/13/object-chapter13/">[오브젝트] 13장_서브클래싱과 서브타이핑</a>
-          </li>
-        
-          <li>
-            <a href="/2020/01/12/review-2019/">2019년 회고</a>
           </li>
         
       </ul>

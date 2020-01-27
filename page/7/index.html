@@ -71,14 +71,14 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-TDD" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-MVC" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/12/07/TDD/" class="article-date">
+    <a href="/2018/12/07/MVC/" class="article-date">
   <time class="dt-published" datetime="2018-12-06T15:00:00.000Z" itemprop="datePublished">2018-12-07</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/software-engineering/">Software Engineering</a>
+    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
   </div>
 
   </div>
@@ -89,7 +89,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/07/TDD/">TDD</a>
+      <a class="p-name article-title" href="/2018/12/07/MVC/">MVC</a>
     </h1>
   
 
@@ -97,35 +97,109 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h5 id="TDD-란"><a href="#TDD-란" class="headerlink" title="TDD 란 ?"></a>TDD 란 ?</h5><p>Test Driven Development</p>
-<p>테스트가 개발을 이끌어 나갑니다. 테스트를 먼저 만들고 테스트를 통과하기 위한 것을 짜는 것입니다. 즉, 만드는 과정에서 우선 테스트를 작성하고 그걸 통과하는 코드를 만들고를 반복하면서 제대로 동작하는지에 대한 피드백을 적극적으로 받는 것입니다.</p>
-<h5 id="TDD를-왜-해야-하나요"><a href="#TDD를-왜-해야-하나요" class="headerlink" title="TDD를 왜 해야 하나요 ?"></a>TDD를 왜 해야 하나요 ?</h5><p>피드백과 협력을 증진시키기 때문에, 불확실성이 높을 때 도움이 됩니다.</p>
-<h5 id="TDD의-장점은"><a href="#TDD의-장점은" class="headerlink" title="TDD의 장점은 ?"></a>TDD의 장점은 ?</h5><ol>
-<li><p>보다 튼튼한 객체지적인 코드 생상이 가능합니다.</p>
-<p>TDD는 모든 코드가 재사용성 기반으로 작성되어야 하기 때문에 보다 튼튼한 코드 생산이 이루어집니다.</p>
-</li>
-<li><p>재설계 시간이 단축됩니다.</p>
-</li>
-<li><p>디버깅 시간이 단축됩니다.</p>
-<p>우리는 각각의 모듈 별로 테스트를 자동화할 수 있는 코드가 없다면, 특정 버그를 찾기 위해서 모든 레벨(레이어)의 코드들을 살펴봐야 합니다. 예를 들어 사용자의 데이터가 잘못 나온다면 DB의 문제인지, 비즈니스 레이어의 문제인지 UI 단의 문제인지 실제 모든 레이어들을 전부다 디버깅할 필요 없이 자동화 된 유닛테스팅 결과로 우리는 손 쉽게 찾아 낼 수 있습니다.</p>
-</li>
-<li><p>Behavior-Driven Development를 적용하는데 있어서 큰 시너지 효과가 있습니다.</p>
-<p>BDD는 행위(동작) 중심적인 방법으로 개발을 진행하는 방법론인데 개발자 디자이너 그리고 기획자 모두 사용자 입장으로 같은 목표로 가지기 위함입니다. TDD를 진행하면 항상 그 테스트 요소들이 사용자 관점으로 정의되고 진행되기 때문에 보다 튼튼한 개발 프로세스를 만들게 됩니다.</p>
-</li>
-<li><p>테스트 문서를 대체 할 수 있습니다.</p>
-<p>TDD를 하게 될 경우에 테스팅을 자동화 시킴과 동시에 보다 정확한 테스트 근거를 산출할 수 있다.</p>
-</li>
-<li><p>추가 구현이 용이합니다.</p>
-<p>유닛 테스트로 자동화 될 경우에 수동으로 모든 테스트를 다시 진행해야 되는 시간적인 낭비를 줄일 수 있습니다.</p>
-</li>
-</ol>
-<h5 id="TDD의-단점은"><a href="#TDD의-단점은" class="headerlink" title="TDD의 단점은 ?"></a>TDD의 단점은 ?</h5><p>코드 퀄리티 보다는 빠른 결과물을 원하는 환경이라면 쉽게 도입이 어려울 수 있습니다. TDD 를 공부해야 하고 추가적으로 테스트 코드를 작성해야 하기 때문입니다.</p>
-<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://lalwr.blogspot.com/2016/02/tddtest-driven-development.html" target="_blank" rel="noopener">https://lalwr.blogspot.com/2016/02/tddtest-driven-development.html</a></p>
+        <p>하나의 애플리케이션, 프로젝트를 구성할 때 그 구성요소를 Model, View, Controller로 구분한 패턴입니다. </p>
+<p>사용자가 Controller를 조작하면, Controller는 Model을 통해서 데이터를 가져오고, 그 정보를 바탕으로 시각적인 표현을 담당하는 View를 제어해서 사용자에게 전달합니다.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/07/TDD/" data-id="ck5w16ayv00l0myqxbyjarj0c" data-title="TDD" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/07/MVC/" data-id="ck5w5fcyd00kqc5qxrlgclu9w" data-title="MVC" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Web Socket" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/07/Web Socket/" class="article-date">
+  <time class="dt-published" datetime="2018-12-06T15:00:00.000Z" itemprop="datePublished">2018-12-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/network/">Network</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/07/Web Socket/">Web Socket</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="Web-Socket이란"><a href="#Web-Socket이란" class="headerlink" title="Web Socket이란?"></a>Web Socket이란?</h5><p>WebSocket은 Web server 와 Web browser 간의 쌍방향 통신을 위한 통신 규약입니다.</p>
+<h5 id="Web-Socket-전에는"><a href="#Web-Socket-전에는" class="headerlink" title="Web Socket 전에는?"></a>Web Socket 전에는?</h5><p>polling, long polling, stream이 있습니다.</p>
+<h5 id="Web-Socket이-기존-통신-방법과-차이는"><a href="#Web-Socket이-기존-통신-방법과-차이는" class="headerlink" title="Web Socket이 기존 통신 방법과 차이는?"></a>Web Socket이 기존 통신 방법과 차이는?</h5><p>WebSocket 프로토콜은 접속 확립에 HTTP를 사용하지만, 그 후의 통신은 WebSocket 독자의 프로토콜로 이루어집니다. 또한, header가 상당히 작아 overhead가 적은 특징이 있습니다. 장시간 접속을 전제로 하기 때문에, 접속한 상태라면 클라이언트나 서버로부터 데이터 송신이 가능합니다. 더불어 데이터의 송신과 수신에 각각 커넥션을 맺을 필요가 없어, 하나의 커넥션으로 데이터를 송수신 할 수 있습니다. 통신시에 지정되는 URL은 <a href="http://www.sample.com/과" target="_blank" rel="noopener">http://www.sample.com/과</a> 같은 형식이 아니라 <strong>ws://</strong><a href="http://www.sample.com/과" target="_blank" rel="noopener">www.sample.com/과</a> 같은 형식이 됩니다.</p>
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="http://duckdevelope.tistory.com/19" target="_blank" rel="noopener">http://duckdevelope.tistory.com/19</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/07/Web Socket/" data-id="ck5w5fcyi00l0c5qxd6mvv9yg" data-title="Web Socket" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Generator" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/07/Generator/" class="article-date">
+  <time class="dt-published" datetime="2018-12-06T15:00:00.000Z" itemprop="datePublished">2018-12-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/node-js/">Node.js</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/07/Generator/">Generator</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="geneator가-뭐죠"><a href="#geneator가-뭐죠" class="headerlink" title="geneator가 뭐죠?"></a>geneator가 뭐죠?</h5><p>함수 처리 중 임의의 장소에서 처리를 중단 및 재개할 수 있는 방법입니다.</p>
+<p><img src="/image/generator01.png" alt> </p>
+<p>함수 선언시 function* 표시는이 함수가 제네레이터 함수로 선언된 것을 의미합니다. 실행하는 도중 중단 지점을 설정하는 방법이 yield 키워드입니다. 함수가 실행되는 도중 yield 함수를 만나면 이 제너레이터 함수를 호출한 caller 에서 다시 이벤트를 주기 전까지 대기합니다.</p>
+<p><img src="/image/generator02.png" alt></p>
+<p>이제 이 quipsObj 객체는 제너레이터 객체가 되었습니다.</p>
+<p><img src="/image/generator03.png" alt></p>
+<p>모두 실행되면 done 플래그값이 true로 바뀌는 것을 확인할 수 있습니다. 작업을 반복하는 사이에 어떤 액션이 취해져도, 상관이 없습니다. 이 제너레이터 객체는, 이번에 실행한 yield 에 멈춰서, 이벤트를 계속 기다리기 떄문입니다.</p>
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://joshua1988.github.io/web-development/javascript/promise-for-beginners/" target="_blank" rel="noopener">https://joshua1988.github.io/web-development/javascript/promise-for-beginners/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/07/Generator/" data-id="ck5w5fcyc00kmc5qx5id6zht3" data-title="Generator" class="article-share-link">Share</a>
       
       
       
@@ -186,57 +260,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/07/Devops/" data-id="ck5w16ayp00kimyqxl8zscmwv" data-title="Devops" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Generator" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/12/07/Generator/" class="article-date">
-  <time class="dt-published" datetime="2018-12-06T15:00:00.000Z" itemprop="datePublished">2018-12-07</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/node-js/">Node.js</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/07/Generator/">Generator</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h5 id="geneator가-뭐죠"><a href="#geneator가-뭐죠" class="headerlink" title="geneator가 뭐죠?"></a>geneator가 뭐죠?</h5><p>함수 처리 중 임의의 장소에서 처리를 중단 및 재개할 수 있는 방법입니다.</p>
-<p><img src="/image/generator01.png" alt> </p>
-<p>함수 선언시 function* 표시는이 함수가 제네레이터 함수로 선언된 것을 의미합니다. 실행하는 도중 중단 지점을 설정하는 방법이 yield 키워드입니다. 함수가 실행되는 도중 yield 함수를 만나면 이 제너레이터 함수를 호출한 caller 에서 다시 이벤트를 주기 전까지 대기합니다.</p>
-<p><img src="/image/generator02.png" alt></p>
-<p>이제 이 quipsObj 객체는 제너레이터 객체가 되었습니다.</p>
-<p><img src="/image/generator03.png" alt></p>
-<p>모두 실행되면 done 플래그값이 true로 바뀌는 것을 확인할 수 있습니다. 작업을 반복하는 사이에 어떤 액션이 취해져도, 상관이 없습니다. 이 제너레이터 객체는, 이번에 실행한 yield 에 멈춰서, 이벤트를 계속 기다리기 떄문입니다.</p>
-<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://joshua1988.github.io/web-development/javascript/promise-for-beginners/" target="_blank" rel="noopener">https://joshua1988.github.io/web-development/javascript/promise-for-beginners/</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/07/Generator/" data-id="ck5w16ayq00kmmyqx9eo9skh9" data-title="Generator" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/07/Devops/" data-id="ck5w5fcyb00kkc5qxj6a8zuet" data-title="Devops" class="article-share-link">Share</a>
       
       
       
@@ -285,7 +309,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/07/Call back/" data-id="ck5w16ayq00kkmyqxkuccrkil" data-title="Call back" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/07/Call back/" data-id="ck5w5fcyb00kic5qx4mgno231" data-title="Call back" class="article-share-link">Share</a>
       
       
       
@@ -297,14 +321,14 @@
 
 
   
-    <article id="post-Web Socket" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-TDD" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/12/07/Web Socket/" class="article-date">
+    <a href="/2018/12/07/TDD/" class="article-date">
   <time class="dt-published" datetime="2018-12-06T15:00:00.000Z" itemprop="datePublished">2018-12-07</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/network/">Network</a>
+    <a class="article-category-link" href="/categories/software-engineering/">Software Engineering</a>
   </div>
 
   </div>
@@ -315,7 +339,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/07/Web Socket/">Web Socket</a>
+      <a class="p-name article-title" href="/2018/12/07/TDD/">TDD</a>
     </h1>
   
 
@@ -323,15 +347,35 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h5 id="Web-Socket이란"><a href="#Web-Socket이란" class="headerlink" title="Web Socket이란?"></a>Web Socket이란?</h5><p>WebSocket은 Web server 와 Web browser 간의 쌍방향 통신을 위한 통신 규약입니다.</p>
-<h5 id="Web-Socket-전에는"><a href="#Web-Socket-전에는" class="headerlink" title="Web Socket 전에는?"></a>Web Socket 전에는?</h5><p>polling, long polling, stream이 있습니다.</p>
-<h5 id="Web-Socket이-기존-통신-방법과-차이는"><a href="#Web-Socket이-기존-통신-방법과-차이는" class="headerlink" title="Web Socket이 기존 통신 방법과 차이는?"></a>Web Socket이 기존 통신 방법과 차이는?</h5><p>WebSocket 프로토콜은 접속 확립에 HTTP를 사용하지만, 그 후의 통신은 WebSocket 독자의 프로토콜로 이루어집니다. 또한, header가 상당히 작아 overhead가 적은 특징이 있습니다. 장시간 접속을 전제로 하기 때문에, 접속한 상태라면 클라이언트나 서버로부터 데이터 송신이 가능합니다. 더불어 데이터의 송신과 수신에 각각 커넥션을 맺을 필요가 없어, 하나의 커넥션으로 데이터를 송수신 할 수 있습니다. 통신시에 지정되는 URL은 <a href="http://www.sample.com/과" target="_blank" rel="noopener">http://www.sample.com/과</a> 같은 형식이 아니라 <strong>ws://</strong><a href="http://www.sample.com/과" target="_blank" rel="noopener">www.sample.com/과</a> 같은 형식이 됩니다.</p>
-<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="http://duckdevelope.tistory.com/19" target="_blank" rel="noopener">http://duckdevelope.tistory.com/19</a></p>
+        <h5 id="TDD-란"><a href="#TDD-란" class="headerlink" title="TDD 란 ?"></a>TDD 란 ?</h5><p>Test Driven Development</p>
+<p>테스트가 개발을 이끌어 나갑니다. 테스트를 먼저 만들고 테스트를 통과하기 위한 것을 짜는 것입니다. 즉, 만드는 과정에서 우선 테스트를 작성하고 그걸 통과하는 코드를 만들고를 반복하면서 제대로 동작하는지에 대한 피드백을 적극적으로 받는 것입니다.</p>
+<h5 id="TDD를-왜-해야-하나요"><a href="#TDD를-왜-해야-하나요" class="headerlink" title="TDD를 왜 해야 하나요 ?"></a>TDD를 왜 해야 하나요 ?</h5><p>피드백과 협력을 증진시키기 때문에, 불확실성이 높을 때 도움이 됩니다.</p>
+<h5 id="TDD의-장점은"><a href="#TDD의-장점은" class="headerlink" title="TDD의 장점은 ?"></a>TDD의 장점은 ?</h5><ol>
+<li><p>보다 튼튼한 객체지적인 코드 생상이 가능합니다.</p>
+<p>TDD는 모든 코드가 재사용성 기반으로 작성되어야 하기 때문에 보다 튼튼한 코드 생산이 이루어집니다.</p>
+</li>
+<li><p>재설계 시간이 단축됩니다.</p>
+</li>
+<li><p>디버깅 시간이 단축됩니다.</p>
+<p>우리는 각각의 모듈 별로 테스트를 자동화할 수 있는 코드가 없다면, 특정 버그를 찾기 위해서 모든 레벨(레이어)의 코드들을 살펴봐야 합니다. 예를 들어 사용자의 데이터가 잘못 나온다면 DB의 문제인지, 비즈니스 레이어의 문제인지 UI 단의 문제인지 실제 모든 레이어들을 전부다 디버깅할 필요 없이 자동화 된 유닛테스팅 결과로 우리는 손 쉽게 찾아 낼 수 있습니다.</p>
+</li>
+<li><p>Behavior-Driven Development를 적용하는데 있어서 큰 시너지 효과가 있습니다.</p>
+<p>BDD는 행위(동작) 중심적인 방법으로 개발을 진행하는 방법론인데 개발자 디자이너 그리고 기획자 모두 사용자 입장으로 같은 목표로 가지기 위함입니다. TDD를 진행하면 항상 그 테스트 요소들이 사용자 관점으로 정의되고 진행되기 때문에 보다 튼튼한 개발 프로세스를 만들게 됩니다.</p>
+</li>
+<li><p>테스트 문서를 대체 할 수 있습니다.</p>
+<p>TDD를 하게 될 경우에 테스팅을 자동화 시킴과 동시에 보다 정확한 테스트 근거를 산출할 수 있다.</p>
+</li>
+<li><p>추가 구현이 용이합니다.</p>
+<p>유닛 테스트로 자동화 될 경우에 수동으로 모든 테스트를 다시 진행해야 되는 시간적인 낭비를 줄일 수 있습니다.</p>
+</li>
+</ol>
+<h5 id="TDD의-단점은"><a href="#TDD의-단점은" class="headerlink" title="TDD의 단점은 ?"></a>TDD의 단점은 ?</h5><p>코드 퀄리티 보다는 빠른 결과물을 원하는 환경이라면 쉽게 도입이 어려울 수 있습니다. TDD 를 공부해야 하고 추가적으로 테스트 코드를 작성해야 하기 때문입니다.</p>
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://lalwr.blogspot.com/2016/02/tddtest-driven-development.html" target="_blank" rel="noopener">https://lalwr.blogspot.com/2016/02/tddtest-driven-development.html</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/07/Web Socket/" data-id="ck5w16ayv00l2myqxqgh0pkgs" data-title="Web Socket" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/07/TDD/" data-id="ck5w5fcyi00l2c5qxb1vypewu" data-title="TDD" class="article-share-link">Share</a>
       
       
       
@@ -394,7 +438,51 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/06/concurrency/" data-id="ck5w16ayr00komyqxxor1iu0b" data-title="동시성, 병렬성" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/06/concurrency/" data-id="ck5w5fcy900kec5qxw3e0y1s1" data-title="동시성, 병렬성" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-keep alive" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/05/keep alive/" class="article-date">
+  <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/network/">Network</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/05/keep alive/">keep alive</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="keep-alive-방식이란"><a href="#keep-alive-방식이란" class="headerlink" title="keep-alive 방식이란?"></a>keep-alive 방식이란?</h5><p>Keep Alive Time Out 이내에 Client 에서 Request를 재 요청하면 Socket을 새로 여는 것이아니라, 이미 열려 있는 Socket(port)에 전송하는 구조입니다.</p>
+<h5 id="http-connectionless-방식과-keep-alive-방식의-차이는"><a href="#http-connectionless-방식과-keep-alive-방식의-차이는" class="headerlink" title="http connectionless 방식과 keep-alive 방식의 차이는 ?"></a>http connectionless 방식과 keep-alive 방식의 차이는 ?</h5><p>connection Less 방식은 매번 Socket(port)를 열어야 하기때문에 비용적인 측면에서 비효율적이며, keep-alive 방식은 port Conenction에 소요되는 시간을 절약할 수 있습니다.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/05/keep alive/" data-id="ck5w5fcya00kgc5qxu1iqjaye" data-title="keep alive" class="article-share-link">Share</a>
       
       
       
@@ -445,7 +533,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/static/" data-id="ck5w16ayo00kgmyqx8ft6eni0" data-title="static" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/static/" data-id="ck5w5fcye00ksc5qx1hwkknoo" data-title="static" class="article-share-link">Share</a>
       
       
       
@@ -496,131 +584,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/overloading, overriding/" data-id="ck5w16ayo00kemyqxxj7bm0a8" data-title="overloading, overriding" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-keep alive" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/12/05/keep alive/" class="article-date">
-  <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/network/">Network</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/05/keep alive/">keep alive</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h5 id="keep-alive-방식이란"><a href="#keep-alive-방식이란" class="headerlink" title="keep-alive 방식이란?"></a>keep-alive 방식이란?</h5><p>Keep Alive Time Out 이내에 Client 에서 Request를 재 요청하면 Socket을 새로 여는 것이아니라, 이미 열려 있는 Socket(port)에 전송하는 구조입니다.</p>
-<h5 id="http-connectionless-방식과-keep-alive-방식의-차이는"><a href="#http-connectionless-방식과-keep-alive-방식의-차이는" class="headerlink" title="http connectionless 방식과 keep-alive 방식의 차이는 ?"></a>http connectionless 방식과 keep-alive 방식의 차이는 ?</h5><p>connection Less 방식은 매번 Socket(port)를 열어야 하기때문에 비용적인 측면에서 비효율적이며, keep-alive 방식은 port Conenction에 소요되는 시간을 절약할 수 있습니다.</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/keep alive/" data-id="ck5w16ayn00kcmyqxzinetqpm" data-title="keep alive" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-isolation level" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/12/05/isolation level/" class="article-date">
-  <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/database/">Database</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/05/isolation level/">isolation level</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h5 id="Isolation-level이-무엇인가요"><a href="#Isolation-level이-무엇인가요" class="headerlink" title="Isolation level이 무엇인가요 ?"></a>Isolation level이 무엇인가요 ?</h5><p>트랜잭션에서 일관성이 없는 데이터를 허용하는 수준입니다.</p>
-<h5 id="고립화-수준을-높이는-것이-좋을-까요-낮추는-것이-좋을까요"><a href="#고립화-수준을-높이는-것이-좋을-까요-낮추는-것이-좋을까요" class="headerlink" title="고립화 수준을 높이는 것이 좋을 까요, 낮추는 것이 좋을까요 ?"></a>고립화 수준을 높이는 것이 좋을 까요, 낮추는 것이 좋을까요 ?</h5><p>트랜잭션 고립화 수준을 높이면 일관성은 향상 되지만, 더 넓은 범위의 Lock을 더 오랫동안 유지하는 방식으로 동시성을 저하시킵니다.</p>
-<h5 id="낮은-단계의-고립화-수준에서-발생하는-에러는-뭐가-있나요"><a href="#낮은-단계의-고립화-수준에서-발생하는-에러는-뭐가-있나요" class="headerlink" title="낮은 단계의 고립화 수준에서 발생하는 에러는 뭐가 있나요?"></a>낮은 단계의 고립화 수준에서 발생하는 에러는 뭐가 있나요?</h5><p>Dirty Read, Non Repeatable Read, Phantom Read가 있습니다.</p>
-<ol>
-<li><p>Dirty Read</p>
-<p>데이터 캐시에는 변경이 되었지만, 아직 디스크에는 변경되지 않은 데이터(페이지)를 읽는 행위 입니다.</p>
-</li>
-<li><p>Non Repeatable Read</p>
-<p>트랜잭션 내에서 한 번 읽은 데이터가 트랜잭션이 끝나기 전에 변경되었다면, 다시 읽었을 때 새로운 값이 읽히는 것입니다.</p>
-</li>
-<li><p>Phantom Read</p>
-<p>트랜잭션 중에 없던 행이 추가되어 새로 입력된 데이터를 읽는 것입니다.</p>
-</li>
-</ol>
-<h5 id="isolation-level-에는-뭐가-있나요"><a href="#isolation-level-에는-뭐가-있나요" class="headerlink" title="isolation level 에는 뭐가 있나요?"></a>isolation level 에는 뭐가 있나요?</h5><p>read uncommitted, read committed, repeatable read, serializable 이 있습니다.</p>
-<ol>
-<li><p>read uncommitted</p>
-<p>고립화 수준에서 가장 낮은 수준입니다. 아직 커밋되지 않은 데이터를 다른 트랜잭션이 읽는 것을 허용합니다.세션 1)에서 price * 10을 처리하고 있으므로 price에 10 이 곱해진 결과가 세션 2)에서 보이게 됩니다. 만일 세션 1)에서 ROLLBACK 시켜버리면 세션 2)는 잘못된 결과를 보게 됩니다. 이러한 것을 Dirty Page를 읽었다고 합니다 (Dirty Read). </p>
-<p><img src="/image/isolationLevel01.png" alt></p>
-</li>
-<li><p>read committed</p>
-<p>DIrty Read를 방지합니다. COMMIT 하지 않은 트랜잭션이 이용한 자원에 대해 트랜잭션이 완료되어야 (= 잠금이 해제되어야) 데이터를 읽을 수 있습니다.</p>
-</li>
-<li><p>repeatable read</p>
-<p>트랜잭션이 완료될 때까지 공유 잠금을 유지하여 여러번 같은 데이터를 읽어도 항상 같은 값이 얻어지도록 합니다.</p>
-<p>주의해야할 사항은 REPEATABLE READ가 설정되면 원래 읽었던 데이터에 대하여서는 항상 같은 값이 유지 되지만 새로 추가되는 데이터를 막을 수는 없습니다. </p>
-<p>예를 들어 특정 조건에 만족한 레코드가 5개였으면 이 5개의 레코드는 언제든 같은 값을 보이게 되지만 다른 트랜잭션에 의해 이 조건을 만족하는 새로운 레코드가 추가되면 원래 없었던 새로운 레코드가 보이게 됩니다. 이러한 것을 Pantom Read라고 합니다.</p>
-<p>세션 1) 에서 Test 테이블을 만들어서 3개의 레코드를 추가하였습니다. 트랜잭션에서 검색의 범위가 1부터 4이므로 INSERT한 3개의 레코드가 위 빨간색 박스안의 내용처럼 표시됩니다.</p>
-<p>REPEATABLE READ 가 설정되었으므로 이 3개의 레코드는 트랜잭션이 끝날 때 까지 아무도 변경 할 수 없습니다. 예를 들어 세션 2)에서 col1 컬럼이 1인 레코드의 col2를 ‘AAAAA’ 에서 ‘BBBBB’로 바꾸려고 하면 잠금으로 인하여 처리되지 못합니다.</p>
-<p>하지만 세션 2)에서는 검색 범위안에는 들어가지만 아직 존재하지 않는 레코드를 추가할 때 아무 문제 없이 처리가 됩니다. 세션 2)의 수행 결과를 보면 (1개 행 적용됨) 이 표시된 것을 볼 수 있습니다.</p>
-<p>이 상태에서 세션 1)에서 똑같은 검색을 수행하면 새로운 레코드가 하나 추가되어 이전의 결과와 다르게 됩니다. 이것이 Pantom Read 입니다.</p>
-<p><img src="/image/isolationLevel02.png" alt></p>
-</li>
-<li><p>serializble</p>
-<p>가장 높은 고립화 수준으로 REPEATABLE READ 고립화 수준이 막지 못하는 Pantom Read까지 방지해줍니다. 완벽한 데이터베이스의 일관성은 유지해 주지만 잠금을 유지하기 위하여 오버헤드는 증가하게 됩니다.바로 위의 그림에서, 만일 세션 1) 에서 SERIALIZABLE 고립화 수준이 설정되었다면 세션 2)에서의 INSERT 는 불가능하게 됩니다.</p>
-</li>
-</ol>
-<h5 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h5><p><a href="http://goforaurora.tistory.com/entry/SQL-%ED%8A%B8%EB%9E%9C%EC%9E%AD%EC%85%98%EC%9D%98-%EA%B3%A0%EB%A6%BD%ED%99%94-%EC%88%98%EC%A4%80Isolation-Level" target="_blank" rel="noopener">http://goforaurora.tistory.com/entry/SQL-%ED%8A%B8%EB%9E%9C%EC%9E%AD%EC%85%98%EC%9D%98-%EA%B3%A0%EB%A6%BD%ED%99%94-%EC%88%98%EC%A4%80Isolation-Level</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/isolation level/" data-id="ck5w16aym00kamyqxleub8r28" data-title="isolation level" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/overloading, overriding/" data-id="ck5w5fcy900kcc5qxppo1ewyt" data-title="overloading, overriding" class="article-share-link">Share</a>
       
       
       
@@ -675,6 +639,10 @@
       <ul>
         
           <li>
+            <a href="/2020/01/27/object-chapter15/">[오브젝트] 15장_디자인 패턴과 프레임워크</a>
+          </li>
+        
+          <li>
             <a href="/2020/01/26/kafka-chapter8/">[카프카] 8장_카프카 스트림즈 API</a>
           </li>
         
@@ -688,10 +656,6 @@
         
           <li>
             <a href="/2020/01/13/object-chapter13/">[오브젝트] 13장_서브클래싱과 서브타이핑</a>
-          </li>
-        
-          <li>
-            <a href="/2020/01/12/review-2019/">2019년 회고</a>
           </li>
         
       </ul>

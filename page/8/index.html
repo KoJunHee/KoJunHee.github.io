@@ -71,6 +71,86 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-isolation level" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/05/isolation level/" class="article-date">
+  <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/database/">Database</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/05/isolation level/">isolation level</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="Isolation-level이-무엇인가요"><a href="#Isolation-level이-무엇인가요" class="headerlink" title="Isolation level이 무엇인가요 ?"></a>Isolation level이 무엇인가요 ?</h5><p>트랜잭션에서 일관성이 없는 데이터를 허용하는 수준입니다.</p>
+<h5 id="고립화-수준을-높이는-것이-좋을-까요-낮추는-것이-좋을까요"><a href="#고립화-수준을-높이는-것이-좋을-까요-낮추는-것이-좋을까요" class="headerlink" title="고립화 수준을 높이는 것이 좋을 까요, 낮추는 것이 좋을까요 ?"></a>고립화 수준을 높이는 것이 좋을 까요, 낮추는 것이 좋을까요 ?</h5><p>트랜잭션 고립화 수준을 높이면 일관성은 향상 되지만, 더 넓은 범위의 Lock을 더 오랫동안 유지하는 방식으로 동시성을 저하시킵니다.</p>
+<h5 id="낮은-단계의-고립화-수준에서-발생하는-에러는-뭐가-있나요"><a href="#낮은-단계의-고립화-수준에서-발생하는-에러는-뭐가-있나요" class="headerlink" title="낮은 단계의 고립화 수준에서 발생하는 에러는 뭐가 있나요?"></a>낮은 단계의 고립화 수준에서 발생하는 에러는 뭐가 있나요?</h5><p>Dirty Read, Non Repeatable Read, Phantom Read가 있습니다.</p>
+<ol>
+<li><p>Dirty Read</p>
+<p>데이터 캐시에는 변경이 되었지만, 아직 디스크에는 변경되지 않은 데이터(페이지)를 읽는 행위 입니다.</p>
+</li>
+<li><p>Non Repeatable Read</p>
+<p>트랜잭션 내에서 한 번 읽은 데이터가 트랜잭션이 끝나기 전에 변경되었다면, 다시 읽었을 때 새로운 값이 읽히는 것입니다.</p>
+</li>
+<li><p>Phantom Read</p>
+<p>트랜잭션 중에 없던 행이 추가되어 새로 입력된 데이터를 읽는 것입니다.</p>
+</li>
+</ol>
+<h5 id="isolation-level-에는-뭐가-있나요"><a href="#isolation-level-에는-뭐가-있나요" class="headerlink" title="isolation level 에는 뭐가 있나요?"></a>isolation level 에는 뭐가 있나요?</h5><p>read uncommitted, read committed, repeatable read, serializable 이 있습니다.</p>
+<ol>
+<li><p>read uncommitted</p>
+<p>고립화 수준에서 가장 낮은 수준입니다. 아직 커밋되지 않은 데이터를 다른 트랜잭션이 읽는 것을 허용합니다.세션 1)에서 price * 10을 처리하고 있으므로 price에 10 이 곱해진 결과가 세션 2)에서 보이게 됩니다. 만일 세션 1)에서 ROLLBACK 시켜버리면 세션 2)는 잘못된 결과를 보게 됩니다. 이러한 것을 Dirty Page를 읽었다고 합니다 (Dirty Read). </p>
+<p><img src="/image/isolationLevel01.png" alt></p>
+</li>
+<li><p>read committed</p>
+<p>DIrty Read를 방지합니다. COMMIT 하지 않은 트랜잭션이 이용한 자원에 대해 트랜잭션이 완료되어야 (= 잠금이 해제되어야) 데이터를 읽을 수 있습니다.</p>
+</li>
+<li><p>repeatable read</p>
+<p>트랜잭션이 완료될 때까지 공유 잠금을 유지하여 여러번 같은 데이터를 읽어도 항상 같은 값이 얻어지도록 합니다.</p>
+<p>주의해야할 사항은 REPEATABLE READ가 설정되면 원래 읽었던 데이터에 대하여서는 항상 같은 값이 유지 되지만 새로 추가되는 데이터를 막을 수는 없습니다. </p>
+<p>예를 들어 특정 조건에 만족한 레코드가 5개였으면 이 5개의 레코드는 언제든 같은 값을 보이게 되지만 다른 트랜잭션에 의해 이 조건을 만족하는 새로운 레코드가 추가되면 원래 없었던 새로운 레코드가 보이게 됩니다. 이러한 것을 Pantom Read라고 합니다.</p>
+<p>세션 1) 에서 Test 테이블을 만들어서 3개의 레코드를 추가하였습니다. 트랜잭션에서 검색의 범위가 1부터 4이므로 INSERT한 3개의 레코드가 위 빨간색 박스안의 내용처럼 표시됩니다.</p>
+<p>REPEATABLE READ 가 설정되었으므로 이 3개의 레코드는 트랜잭션이 끝날 때 까지 아무도 변경 할 수 없습니다. 예를 들어 세션 2)에서 col1 컬럼이 1인 레코드의 col2를 ‘AAAAA’ 에서 ‘BBBBB’로 바꾸려고 하면 잠금으로 인하여 처리되지 못합니다.</p>
+<p>하지만 세션 2)에서는 검색 범위안에는 들어가지만 아직 존재하지 않는 레코드를 추가할 때 아무 문제 없이 처리가 됩니다. 세션 2)의 수행 결과를 보면 (1개 행 적용됨) 이 표시된 것을 볼 수 있습니다.</p>
+<p>이 상태에서 세션 1)에서 똑같은 검색을 수행하면 새로운 레코드가 하나 추가되어 이전의 결과와 다르게 됩니다. 이것이 Pantom Read 입니다.</p>
+<p><img src="/image/isolationLevel02.png" alt></p>
+</li>
+<li><p>serializble</p>
+<p>가장 높은 고립화 수준으로 REPEATABLE READ 고립화 수준이 막지 못하는 Pantom Read까지 방지해줍니다. 완벽한 데이터베이스의 일관성은 유지해 주지만 잠금을 유지하기 위하여 오버헤드는 증가하게 됩니다.바로 위의 그림에서, 만일 세션 1) 에서 SERIALIZABLE 고립화 수준이 설정되었다면 세션 2)에서의 INSERT 는 불가능하게 됩니다.</p>
+</li>
+</ol>
+<h5 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h5><p><a href="http://goforaurora.tistory.com/entry/SQL-%ED%8A%B8%EB%9E%9C%EC%9E%AD%EC%85%98%EC%9D%98-%EA%B3%A0%EB%A6%BD%ED%99%94-%EC%88%98%EC%A4%80Isolation-Level" target="_blank" rel="noopener">http://goforaurora.tistory.com/entry/SQL-%ED%8A%B8%EB%9E%9C%EC%9E%AD%EC%85%98%EC%9D%98-%EA%B3%A0%EB%A6%BD%ED%99%94-%EC%88%98%EC%A4%80Isolation-Level</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/05/isolation level/" data-id="ck5w5fcy800kac5qxsxmkshdy" data-title="isolation level" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-infix" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2018/12/05/infix/" class="article-date">
@@ -112,7 +192,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/infix/" data-id="ck5w16aym00k8myqx6yqncg1c" data-title="순회" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/infix/" data-id="ck5w5fcy700k8c5qx5zjdk5kj" data-title="순회" class="article-share-link">Share</a>
       
       
       
@@ -194,7 +274,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/http method/" data-id="ck5w16ayl00k6myqxernq8f9l" data-title="http method" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/http method/" data-id="ck5w5fcy600k6c5qxp3w22dk1" data-title="http method" class="article-share-link">Share</a>
       
       
       
@@ -257,7 +337,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/graph/" data-id="ck5w16ayl00k4myqx9kyvqvva" data-title="그래프" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/graph/" data-id="ck5w5fcy600k4c5qxbkax2gpy" data-title="그래프" class="article-share-link">Share</a>
       
       
       
@@ -304,7 +384,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/coupling/" data-id="ck5w16ayk00k2myqxgzsvayim" data-title="coupling" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/coupling/" data-id="ck5w5fcy500k2c5qxkqnxdbzh" data-title="coupling" class="article-share-link">Share</a>
       
       
       
@@ -353,7 +433,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/abstract class, interface/" data-id="ck5w16ayk00k0myqxhr2lfrq7" data-title="abstract class, interface" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/abstract class, interface/" data-id="ck5w5fcy400k0c5qx1xslc0v9" data-title="abstract class, interface" class="article-share-link">Share</a>
       
       
       
@@ -404,7 +484,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/Redis/" data-id="ck5w16ayj00jymyqxyiqw9kni" data-title="Redis" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/Redis/" data-id="ck5w5fcy400jyc5qx2era85u9" data-title="Redis" class="article-share-link">Share</a>
       
       
       
@@ -456,7 +536,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/OOP/" data-id="ck5w16ayi00jwmyqxa3u45mue" data-title="OOP" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/OOP/" data-id="ck5w5fcy300jwc5qx3urqxhz4" data-title="OOP" class="article-share-link">Share</a>
       
       
       
@@ -502,7 +582,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/Java Feature/" data-id="ck5w16ayi00jumyqxyb4lqqc2" data-title="Java 특징" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/Java Feature/" data-id="ck5w5fcy200juc5qx2pmdpy5a" data-title="Java 특징" class="article-share-link">Share</a>
       
       
       
@@ -559,89 +639,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/Java 8/" data-id="ck5w16ayh00jsmyqx0wlodq4u" data-title="Java 8" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-High Availability" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/12/05/High Availability/" class="article-date">
-  <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/database/">Database</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/05/High Availability/">High Availability</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h5 id="고가용성-HA-High-Availability-이-뭔가요"><a href="#고가용성-HA-High-Availability-이-뭔가요" class="headerlink" title="고가용성(HA, High Availability)이 뭔가요?"></a>고가용성(HA, High Availability)이 뭔가요?</h5><p>서버가 오랜 시간 동안 지속적으로 정상 운영이 가능한 성질을 말합니다.</p>
-<h5 id="HA를-이루기-위한-방법이-뭐가-있나요"><a href="#HA를-이루기-위한-방법이-뭐가-있나요" class="headerlink" title="HA를 이루기 위한 방법이 뭐가 있나요?"></a>HA를 이루기 위한 방법이 뭐가 있나요?</h5><p>클러스터링, 이중화, RAID가 있습니다.</p>
-<h5 id="클러스터링이-뭔가요"><a href="#클러스터링이-뭔가요" class="headerlink" title="클러스터링이 뭔가요?"></a>클러스터링이 뭔가요?</h5><p>마치 하나의 컴퓨터처럼 사용하기 위해, 여러 컴퓨터를 연결한 병렬 시스템입니다. 클러스터링 환경에서는 특정 장비에 문제가 생기거나 특정 장비에서 실행중인 애플리케이션에서 문제가 발생더라도 전체 서비스에 영향을 미치지 않도록 제어가 가능합니다. </p>
-<h5 id="클러스터링의-장점은"><a href="#클러스터링의-장점은" class="headerlink" title="클러스터링의 장점은?"></a>클러스터링의 장점은?</h5><ol>
-<li>저렴한 비용으로 다수의 서버를 증설 할 수 있습니다.</li>
-<li>1대의 서버 장애가 발생하여도 서비스 중단없이 다른 서버로 적절히 자동 분배되어 서비스를 계속 운용할 수 있습니다.</li>
-<li>서버를 확장할 때도 서비스 중단 없이 증설이 가능합니다.</li>
-</ol>
-<h5 id="이중화-replication-는-무엇인가요"><a href="#이중화-replication-는-무엇인가요" class="headerlink" title="이중화(replication) 는 무엇인가요?"></a>이중화(replication) 는 무엇인가요?</h5><p>replication은 물리적으로 다른 서버의 저장 공간에 동일한 데이터를 복사하는 기술입니다.</p>
-<h5 id="master-와-slave가-뭔가요"><a href="#master-와-slave가-뭔가요" class="headerlink" title="master 와 slave가 뭔가요?"></a>master 와 slave가 뭔가요?</h5><p>원본 데이터가 위치하는 서버를 master 라고 하고 그 원본을 복제한 서버를 slave 라고 합니다. master에 쓰기 작업을 하고, 그 서버의 데이터를 복제해서 여러 대의 slave 서버를 만든 후에 slave 에서는 읽기 작업만을 수행합니다.</p>
-<h5 id="replication은-어떤-용도로-사용하나요"><a href="#replication은-어떤-용도로-사용하나요" class="headerlink" title="replication은 어떤 용도로 사용하나요?"></a>replication은 어떤 용도로 사용하나요?</h5><ol>
-<li><p>백업용으로 사용할 수 있습니다.</p>
-<p>master의 database와, 그로부터 복사된 slave의 database는 identical하기 때문에, master에 문제가 생겼을 경우에, slave가 하던 일을 떠맡도록 하면 다시 시스템을 정상적으로 가동하는 데 드는 시간을 절약할 수 있습니다.</p>
-</li>
-<li><p>역할을 분산할 수 있습니다.</p>
-<p>data를 직접 변경하는 처리는 master가 하도록 하고, 변경하지 않는 SELECT 같은 처리는 slave가 맡는 형식입니다.</p>
-</li>
-</ol>
-<h5 id="mysql-에서-replication은-어떤-방식으로-하나요"><a href="#mysql-에서-replication은-어떤-방식으로-하나요" class="headerlink" title="mysql 에서 replication은 어떤 방식으로 하나요?"></a>mysql 에서 replication은 어떤 방식으로 하나요?</h5><ol>
-<li>Master에서 데이터 변경이 일어나면 자신의 데이터베이스에 반영합니다.</li>
-<li>Master에서 변경된 이력을 Binary Log에 기록 후 관련 이벤트를 날립니다.</li>
-<li>Slave IO_THREAD에서 Master 이벤트를 감지하고, Master Binary Log를 자신의 Relay Log라는 곳에 기록을 합니다.</li>
-<li>Slave SQL_THREAD는 Relay Log를 읽고 자신의 데이터베이스에 기록을 합니다.</li>
-</ol>
-<h5 id="RAID가-무엇인가요"><a href="#RAID가-무엇인가요" class="headerlink" title="RAID가 무엇인가요?"></a>RAID가 무엇인가요?</h5><p>한 개의 디스크에 데이터를 저장하는 방식이 아닌, 데이터 저장의 성능 및 안정성 확보를 위해 복수의 디스크를 구성하는 방식입니다.</p>
-<h5 id="샤딩이-무엇인가요"><a href="#샤딩이-무엇인가요" class="headerlink" title="샤딩이 무엇인가요?"></a>샤딩이 무엇인가요?</h5><p>Horizontal Partitioning입니다. 같은 테이블 스키마를 가진 데이터를 다수의 데이터베이스에 분산하여 저장하는 방법입니다.</p>
-<h5 id="샤딩이-항상-필요하나요"><a href="#샤딩이-항상-필요하나요" class="headerlink" title="샤딩이 항상 필요하나요?"></a>샤딩이 항상 필요하나요?</h5><p>가능하면 Sharding을 피하거나 지연시킬 수 있는 방법을 찾는 것이 우선되어야 합니다. </p>
-<h5 id="샤딩-이외의-방법은-뭐가-있을까요"><a href="#샤딩-이외의-방법은-뭐가-있을까요" class="headerlink" title="샤딩 이외의 방법은 뭐가 있을까요?"></a>샤딩 이외의 방법은 뭐가 있을까요?</h5><ol>
-<li><p>Scale in 방식</p>
-<p>Hardware Spec이 더 좋은 컴퓨터를 사용할 수 있습니다. </p>
-</li>
-<li><p>Cache, Repliction</p>
-<p>read 부하가 크다면 </p>
-</li>
-<li><p>Vertically Partition</p>
-<p>Table의 일부 컬럼만 자주 사용한다면</p>
-</li>
-</ol>
-<h5 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h5><p><a href="http://snthewhitehacker.tistory.com/4" target="_blank" rel="noopener">http://snthewhitehacker.tistory.com/4</a></p>
-<p><a href="http://gywn.net/2011/12/mysql-replication-1/" target="_blank" rel="noopener">http://gywn.net/2011/12/mysql-replication-1/</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/High Availability/" data-id="ck5w16ayh00jqmyqxul2g8e9i" data-title="High Availability" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/Java 8/" data-id="ck5w5fcy200jsc5qxmjsjppva" data-title="Java 8" class="article-share-link">Share</a>
       
       
       
@@ -696,6 +694,10 @@
       <ul>
         
           <li>
+            <a href="/2020/01/27/object-chapter15/">[오브젝트] 15장_디자인 패턴과 프레임워크</a>
+          </li>
+        
+          <li>
             <a href="/2020/01/26/kafka-chapter8/">[카프카] 8장_카프카 스트림즈 API</a>
           </li>
         
@@ -709,10 +711,6 @@
         
           <li>
             <a href="/2020/01/13/object-chapter13/">[오브젝트] 13장_서브클래싱과 서브타이핑</a>
-          </li>
-        
-          <li>
-            <a href="/2020/01/12/review-2019/">2019년 회고</a>
           </li>
         
       </ul>
