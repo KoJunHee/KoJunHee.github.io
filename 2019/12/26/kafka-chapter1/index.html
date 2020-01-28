@@ -6,19 +6,19 @@
   
   <title>[카프카] 1장_카프카란 무엇인가 | junhee.ko</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="대용량, 대규모 메세지 데이터를 빠르게 처리하도록 개발된 메시징 플랫폼이다. 1. 탄생 배경 위 그림 처럼 end-to-end 아키텍쳐의 문제점은,  실시간     트랜잭션 (OLTP) 처리와 비동기 처리가 동시에 이뤄지지만, 통합된 전송 영여이 없어서 복잡도 증가 데이터 파이프라인의 관리가 어려움   위 그림처럼 카프카는,  모든 시스템으로 데이터 전송">
+  <meta name="description" content="카프카 : 대용량, 대규모 메세지 데이터를 빠르게 처리하도록 개발된 메시징 플랫폼 1. 탄생 배경 위 그림 처럼 end-to-end 아키텍쳐의 문제점은,  실시간 트랜잭션 (OLTP) 처리와 비동기 처리가 동시에 이뤄지지만, 통합된 전송 영역이 없어서 복잡도 증가 데이터 파이프라인의 관리가 어려움   위 그림처럼 카프카는,  모든 시스템으로 데이터 전송 가">
 <meta property="og:type" content="article">
 <meta property="og:title" content="[카프카] 1장_카프카란 무엇인가">
 <meta property="og:url" content="https://kojunhee.github.io/2019/12/26/kafka-chapter1/index.html">
 <meta property="og:site_name" content="junhee.ko">
-<meta property="og:description" content="대용량, 대규모 메세지 데이터를 빠르게 처리하도록 개발된 메시징 플랫폼이다. 1. 탄생 배경 위 그림 처럼 end-to-end 아키텍쳐의 문제점은,  실시간     트랜잭션 (OLTP) 처리와 비동기 처리가 동시에 이뤄지지만, 통합된 전송 영여이 없어서 복잡도 증가 데이터 파이프라인의 관리가 어려움   위 그림처럼 카프카는,  모든 시스템으로 데이터 전송">
+<meta property="og:description" content="카프카 : 대용량, 대규모 메세지 데이터를 빠르게 처리하도록 개발된 메시징 플랫폼 1. 탄생 배경 위 그림 처럼 end-to-end 아키텍쳐의 문제점은,  실시간 트랜잭션 (OLTP) 처리와 비동기 처리가 동시에 이뤄지지만, 통합된 전송 영역이 없어서 복잡도 증가 데이터 파이프라인의 관리가 어려움   위 그림처럼 카프카는,  모든 시스템으로 데이터 전송 가">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://kojunhee.github.io/image/kafka_end_to_end.png">
 <meta property="og:image" content="https://kojunhee.github.io/image/kafka_architecture.png">
-<meta property="og:updated_time" content="2019-12-26T07:52:17.598Z">
+<meta property="og:updated_time" content="2020-01-27T11:44:22.183Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="[카프카] 1장_카프카란 무엇인가">
-<meta name="twitter:description" content="대용량, 대규모 메세지 데이터를 빠르게 처리하도록 개발된 메시징 플랫폼이다. 1. 탄생 배경 위 그림 처럼 end-to-end 아키텍쳐의 문제점은,  실시간     트랜잭션 (OLTP) 처리와 비동기 처리가 동시에 이뤄지지만, 통합된 전송 영여이 없어서 복잡도 증가 데이터 파이프라인의 관리가 어려움   위 그림처럼 카프카는,  모든 시스템으로 데이터 전송">
+<meta name="twitter:description" content="카프카 : 대용량, 대규모 메세지 데이터를 빠르게 처리하도록 개발된 메시징 플랫폼 1. 탄생 배경 위 그림 처럼 end-to-end 아키텍쳐의 문제점은,  실시간 트랜잭션 (OLTP) 처리와 비동기 처리가 동시에 이뤄지지만, 통합된 전송 영역이 없어서 복잡도 증가 데이터 파이프라인의 관리가 어려움   위 그림처럼 카프카는,  모든 시스템으로 데이터 전송 가">
 <meta name="twitter:image" content="https://kojunhee.github.io/image/kafka_end_to_end.png">
   
     <link rel="alternate" href="/atom.xml" title="junhee.ko" type="application/atom+xml">
@@ -99,11 +99,11 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>대용량, 대규모 메세지 데이터를 빠르게 처리하도록 개발된 메시징 플랫폼이다.</p>
+        <p>카프카 : 대용량, 대규모 메세지 데이터를 빠르게 처리하도록 개발된 메시징 플랫폼</p>
 <h3 id="1-탄생-배경"><a href="#1-탄생-배경" class="headerlink" title="1. 탄생 배경"></a>1. 탄생 배경</h3><p><img src="/image/kafka_end_to_end.png" alt></p>
 <p>위 그림 처럼 end-to-end 아키텍쳐의 문제점은,</p>
 <ol>
-<li>실시간     트랜잭션 (OLTP) 처리와 비동기 처리가 동시에 이뤄지지만, 통합된 전송 영여이 없어서 복잡도 증가</li>
+<li>실시간 트랜잭션 (OLTP) 처리와 비동기 처리가 동시에 이뤄지지만, 통합된 전송 영역이 없어서 복잡도 증가</li>
 <li>데이터 파이프라인의 관리가 어려움</li>
 </ol>
 <p><img src="/image/kafka_architecture.png" alt></p>
@@ -113,9 +113,7 @@
 <li>실시간 처리 가능</li>
 <li>확장이 용이</li>
 </ol>
-<h3 id="2-동작-방식과-원리"><a href="#2-동작-방식과-원리" class="headerlink" title="2. 동작 방식과 원리"></a>2. 동작 방식과 원리</h3><p>메시징 시스템을 먼저 살펴보자.</p>
-<p>중앙에 메시징 시스템 서버를 두고 메시지를 Publish 하고 Subscribe 하는 형태의 통신을 Pub/Sub 모델이라고 한다.</p>
-<p>프로듀서가 메시지를 컨슈머에게 직접 전달하는 것이 아니라, 중간의 메시징 시스템으로 전달한다. 그래서,</p>
+<h3 id="2-동작-방식과-원리"><a href="#2-동작-방식과-원리" class="headerlink" title="2. 동작 방식과 원리"></a>2. 동작 방식과 원리</h3><p>메시징 시스템을 먼저 살펴보자.<br>중앙에 메시징 시스템 서버를 두고 메시지를 Publish 하고 Subscribe 하는 형태의 통신을 Pub/Sub 모델이라고 한다.<br>프로듀서가 메시지를 컨슈머에게 직접 전달하는 것이 아니라, 중간의 메시징 시스템으로 전달한다. 그래서,</p>
 <ol>
 <li>프로듀서가 수신 불능 상태가 되어도 메세징 시스템이 살아있으면 메세지가 유실이 되지 않는다.</li>
 <li>메세징 시스템을 중심으로 연결되기 때문에, 확장성이 용이하다.</li>
@@ -127,19 +125,13 @@
 <li>컨슈머는 카프카 서버에 접속해 메세지를 가져간다. </li>
 </ol>
 <h3 id="3-특징"><a href="#3-특징" class="headerlink" title="3. 특징"></a>3. 특징</h3><ol>
-<li><p>프로듀서와 컨슈머의 분리</p>
-<p>어느 한쪽 시스템에서 문제가 발생해도 연쇄 작용이 발생할 확률이 낮다.</p>
-<p>서버 추가에 대한 부담이 준다.</p>
+<li><p>프로듀서와 컨슈머의 분리<br>어느 한쪽 시스템에서 문제가 발생해도 연쇄 작용이 발생할 확률이 낮다.<br>서버 추가에 대한 부담이 준다.</p>
 </li>
-<li><p>멀티 프로듀서, 멀티 컨슈머</p>
-<p>데이터 분석 및 처리 프로세스에서 하나의 데이터를 다양한 용도로 사용하는 요구 사항을 충족할 수 있다.</p>
+<li><p>멀티 프로듀서, 멀티 컨슈머<br>데이터 분석 및 처리 프로세스에서 하나의 데이터를 다양한 용도로 사용하는 요구 사항을 충족할 수 있다.</p>
 </li>
-<li><p>디스크에 메세지 저장</p>
-<p>컨슈머가 메세지를 읽어가도 보관 주기 동안 디스크에 메세지를 저장한다.</p>
-<p>( 일반적인 메세지 시스템은 컨슈머가 메세지를 읽어가면 큐에서 바로 메세지 삭제 )</p>
+<li><p>디스크에 메세지 저장<br>컨슈머가 메세지를 읽어가도 보관 주기 동안 디스크에 메세지를 저장한다.<br>( 일반적인 메세지 시스템은 컨슈머가 메세지를 읽어가면 큐에서 바로 메세지 삭제 )</p>
 </li>
-<li><p>확장성</p>
-<p>온라인 상태에서 확장 작업 가능</p>
+<li><p>확장성<br>온라인 상태에서 확장 작업 가능</p>
 </li>
 <li><p>높은 성능</p>
 </li>
@@ -150,7 +142,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/12/26/kafka-chapter1/" data-id="ck5w5fcz200mnc5qxotkowjr4" data-title="[카프카] 1장_카프카란 무엇인가" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/12/26/kafka-chapter1/" data-id="ck5xxm2ag00mgvmqxxwk4fbmt" data-title="[카프카] 1장_카프카란 무엇인가" class="article-share-link">Share</a>
       
       
       
@@ -160,19 +152,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2019/12/26/kafka-chapter4/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/12/27/object-chapter11/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          [카프카] 4장_카프카 프로듀서
+          [오브젝트] 11장_합성과 유연한 설계
         
       </div>
     </a>
   
   
-    <a href="/2019/12/26/kafka-chapter5/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2019/12/26/kafka-chapter3/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">[카프카] 5장_카프카 컨슈머</div>
+      <div class="article-nav-title">[카프카] 3장_카프카 디자인</div>
     </a>
   
 </nav>

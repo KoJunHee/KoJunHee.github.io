@@ -6,12 +6,12 @@
   
   <title>[카프카] 7장_데이터 파이프라인 구축 | junhee.ko</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="데이터 파이프라인을 직접 구성해본다. 다음 애플리케이션을 사용한다.  아파치 나이파이 엘라스틱 파일비트 엘라스틱 엘라스틱서치 엘라스틱 키바나  1. 카프카를 활용한 데이터 흐름도 카프카에서 발생하는 로그를 이용해 데이터 흐름도를 구성해본다. 아파치 나이파이는 데이터 처리 흐름을 정의하고, 정의된 흐름대로 자동으로 실행해주는 애플리케이션이다.  데이터 흐름을">
+  <meta name="description" content="데이터 파이프라인을 직접 구성해본다. 다음 애플리케이션을 사용한다.  아파치 나이파이 엘라스틱 파일비트 엘라스틱 엘라스틱서치 엘라스틱 키바나  1. 카프카를 활용한 데이터 흐름도 카프카에서 발생하는 로그를 이용해 데이터 흐름도를 구성해본다.아파치 나이파이는 데이터 처리 흐름을 정의하고, 정의된 흐름대로 자동으로 실행해주는 애플리케이션이다.  데이터 흐름을">
 <meta property="og:type" content="article">
 <meta property="og:title" content="[카프카] 7장_데이터 파이프라인 구축">
 <meta property="og:url" content="https://kojunhee.github.io/2020/01/26/kafka-chapter7/index.html">
 <meta property="og:site_name" content="junhee.ko">
-<meta property="og:description" content="데이터 파이프라인을 직접 구성해본다. 다음 애플리케이션을 사용한다.  아파치 나이파이 엘라스틱 파일비트 엘라스틱 엘라스틱서치 엘라스틱 키바나  1. 카프카를 활용한 데이터 흐름도 카프카에서 발생하는 로그를 이용해 데이터 흐름도를 구성해본다. 아파치 나이파이는 데이터 처리 흐름을 정의하고, 정의된 흐름대로 자동으로 실행해주는 애플리케이션이다.  데이터 흐름을">
+<meta property="og:description" content="데이터 파이프라인을 직접 구성해본다. 다음 애플리케이션을 사용한다.  아파치 나이파이 엘라스틱 파일비트 엘라스틱 엘라스틱서치 엘라스틱 키바나  1. 카프카를 활용한 데이터 흐름도 카프카에서 발생하는 로그를 이용해 데이터 흐름도를 구성해본다.아파치 나이파이는 데이터 처리 흐름을 정의하고, 정의된 흐름대로 자동으로 실행해주는 애플리케이션이다.  데이터 흐름을">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="https://kojunhee.github.io/image/kafka_chapter07_01.png">
 <meta property="og:image" content="https://kojunhee.github.io/image/kafka_chapter07_02.png">
@@ -19,10 +19,10 @@
 <meta property="og:image" content="https://kojunhee.github.io/image/kafka_chapter07_04.png">
 <meta property="og:image" content="https://kojunhee.github.io/image/kafka_chapter07_05.png">
 <meta property="og:image" content="https://kojunhee.github.io/image/kafka_chapter07_06.png">
-<meta property="og:updated_time" content="2020-01-23T06:31:13.095Z">
+<meta property="og:updated_time" content="2020-01-27T11:44:05.686Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="[카프카] 7장_데이터 파이프라인 구축">
-<meta name="twitter:description" content="데이터 파이프라인을 직접 구성해본다. 다음 애플리케이션을 사용한다.  아파치 나이파이 엘라스틱 파일비트 엘라스틱 엘라스틱서치 엘라스틱 키바나  1. 카프카를 활용한 데이터 흐름도 카프카에서 발생하는 로그를 이용해 데이터 흐름도를 구성해본다. 아파치 나이파이는 데이터 처리 흐름을 정의하고, 정의된 흐름대로 자동으로 실행해주는 애플리케이션이다.  데이터 흐름을">
+<meta name="twitter:description" content="데이터 파이프라인을 직접 구성해본다. 다음 애플리케이션을 사용한다.  아파치 나이파이 엘라스틱 파일비트 엘라스틱 엘라스틱서치 엘라스틱 키바나  1. 카프카를 활용한 데이터 흐름도 카프카에서 발생하는 로그를 이용해 데이터 흐름도를 구성해본다.아파치 나이파이는 데이터 처리 흐름을 정의하고, 정의된 흐름대로 자동으로 실행해주는 애플리케이션이다.  데이터 흐름을">
 <meta name="twitter:image" content="https://kojunhee.github.io/image/kafka_chapter07_01.png">
   
     <link rel="alternate" href="/atom.xml" title="junhee.ko" type="application/atom+xml">
@@ -111,8 +111,7 @@
 <li>엘라스틱 키바나</li>
 </ol>
 <h2 id="1-카프카를-활용한-데이터-흐름도"><a href="#1-카프카를-활용한-데이터-흐름도" class="headerlink" title="1. 카프카를 활용한 데이터 흐름도"></a>1. 카프카를 활용한 데이터 흐름도</h2><p><img src="/image/kafka_chapter07_01.png" alt></p>
-<p>카프카에서 발생하는 로그를 이용해 데이터 흐름도를 구성해본다.</p>
-<p>아파치 나이파이는 데이터 처리 흐름을 정의하고, 정의된 흐름대로 자동으로 실행해주는 애플리케이션이다.</p>
+<p>카프카에서 발생하는 로그를 이용해 데이터 흐름도를 구성해본다.<br>아파치 나이파이는 데이터 처리 흐름을 정의하고, 정의된 흐름대로 자동으로 실행해주는 애플리케이션이다.</p>
 <ol>
 <li>데이터 흐름을 처리하기 위한 워크플로우</li>
 <li>데이터 처리</li>
@@ -128,25 +127,18 @@
 <li>오픈소스 애플리케이션 이용. 여기서는 나이파이.</li>
 </ol>
 <h4 id="3-1-나이파이를-이용한-컨슈머-설정"><a href="#3-1-나이파이를-이용한-컨슈머-설정" class="headerlink" title="3.1 나이파이를 이용한 컨슈머 설정"></a>3.1 나이파이를 이용한 컨슈머 설정</h4><p><img src="/image/kafka_chapter07_02.png" alt></p>
-<p>프로세서를 추가하는 화면이다.</p>
-<p>프로세서는 나이파이에서 데이터 처리를 위한 각각의 컴포넌트이다. AMQP 컨슘, 파일로 저장, 전송하기 등 여러가지 작업이 가능하다.</p>
-<p>ConsumeKafka 프로세서를 추가하고 재생 버튼을 누르면, 설정한 브로커의 토픽에서 메세지를 가져오기 시작한다.</p>
-<p>컨슈머가 잘 동작하는지 확인하는 방법은,</p>
+<p>프로세서를 추가하는 화면이다.<br>프로세서는 나이파이에서 데이터 처리를 위한 각각의 컴포넌트이다. AMQP 컨슘, 파일로 저장, 전송하기 등 여러가지 작업이 가능하다.<br>ConsumeKafka 프로세서를 추가하고 재생 버튼을 누르면, 설정한 브로커의 토픽에서 메세지를 가져오기 시작한다.<br>컨슈머가 잘 동작하는지 확인하는 방법은,</p>
 <ol>
 <li><p>나이파이에서 컨슈머 프로세서를 실행 시킨 후,</p>
 </li>
-<li><p>카프카 컨슈머 그룹 리스트에서, 등록한 컨슈머 그룹이 잘 등록되었는지 확인한다.</p>
-<p>등록한 컨슈머 그룹 : ConsumeKafka 프로세서의 Properties 를 정의할 때 그룹 ID 를 기입했음.</p>
+<li><p>카프카 컨슈머 그룹 리스트에서, 등록한 컨슈머 그룹이 잘 등록되었는지 확인한다.<br>등록한 컨슈머 그룹 : ConsumeKafka 프로세서의 Properties 를 정의할 때 그룹 ID 를 기입했음.</p>
 </li>
 </ol>
-<h2 id="4-실시간-분석을-위해-엘라스틱서치에-메세지-저장"><a href="#4-실시간-분석을-위해-엘라스틱서치에-메세지-저장" class="headerlink" title="4. 실시간 분석을 위해 엘라스틱서치에 메세지 저장"></a>4. 실시간 분석을 위해 엘라스틱서치에 메세지 저장</h2><p>이제, 가져온 메세지들을 나이파이의 또 다른 프로세서를 이용해 엘라스틱서치에 저장하겠다.</p>
-<p>엘라스틱서치는 엘라스틱 사의 분산형 RESTFul 검색 및 분석 엔진이다. 전문 검색 질의를 이용해 원하는 데이터 분석을 빠르게 할 수 있는 애플리케이션이다.</p>
-<h4 id="4-1-나이파이를-이용해-엘라스틱서치로-데이터-전송"><a href="#4-1-나이파이를-이용해-엘라스틱서치로-데이터-전송" class="headerlink" title="4.1 나이파이를 이용해 엘라스틱서치로 데이터 전송"></a>4.1 나이파이를 이용해 엘라스틱서치로 데이터 전송</h4><p>PutElasticsearchHttp 프로세서를 추가한다. 데이터를 엘라스틱서치로 넣어주는 역할을 한다.</p>
-<p>그리고 다음 화면처럼, ConsumeKafka 와 연결한다.</p>
+<h2 id="4-실시간-분석을-위해-엘라스틱서치에-메세지-저장"><a href="#4-실시간-분석을-위해-엘라스틱서치에-메세지-저장" class="headerlink" title="4. 실시간 분석을 위해 엘라스틱서치에 메세지 저장"></a>4. 실시간 분석을 위해 엘라스틱서치에 메세지 저장</h2><p>이제, 가져온 메세지들을 나이파이의 또 다른 프로세서를 이용해 엘라스틱서치에 저장하겠다.<br>엘라스틱서치는 엘라스틱 사의 분산형 RESTFul 검색 및 분석 엔진이다. 전문 검색 질의를 이용해 원하는 데이터 분석을 빠르게 할 수 있는 애플리케이션이다.</p>
+<h4 id="4-1-나이파이를-이용해-엘라스틱서치로-데이터-전송"><a href="#4-1-나이파이를-이용해-엘라스틱서치로-데이터-전송" class="headerlink" title="4.1 나이파이를 이용해 엘라스틱서치로 데이터 전송"></a>4.1 나이파이를 이용해 엘라스틱서치로 데이터 전송</h4><p>PutElasticsearchHttp 프로세서를 추가한다. 데이터를 엘라스틱서치로 넣어주는 역할을 한다.<br>그리고 다음 화면처럼, ConsumeKafka 와 연결한다.</p>
 <p><img src="/image/kafka_chapter07_03.png" alt></p>
 <p>데이터 흐름 중에 뒤에 있는 프로세서에서 처리 속도가 느려 바로 처리하지 못하거나 프로세서에 문제가 발생한 경우, 두 프로세스를 연결하는 큐에 레코드가 쌓인다.</p>
-<h2 id="5-키바나를-이용해-엘라스틱서치에-저장된-데이터-확인"><a href="#5-키바나를-이용해-엘라스틱서치에-저장된-데이터-확인" class="headerlink" title="5. 키바나를 이용해 엘라스틱서치에 저장된 데이터 확인"></a>5. 키바나를 이용해 엘라스틱서치에 저장된 데이터 확인</h2><p>웹브라우저를 이용해 원하는 시간대에 발생한 로그들을 확인할 수 있고, 필터 기능으로 원하는 패턴의 로그만 빠르게 검색 가능하다.</p>
-<p>각 브로커에서 수집되는 로그가 카프카의 토픽에 있기 때문에, 엘라스틱 서치에 전송하는 것 외에 추가로 하둡이나 로컬에 저장하길 원하면, 다음 화면처럼 나이파이의 PutHDFS 프로세서를 추가해 쉽게 하둡 등의 저장소에 저장할 수 있다.</p>
+<h2 id="5-키바나를-이용해-엘라스틱서치에-저장된-데이터-확인"><a href="#5-키바나를-이용해-엘라스틱서치에-저장된-데이터-확인" class="headerlink" title="5. 키바나를 이용해 엘라스틱서치에 저장된 데이터 확인"></a>5. 키바나를 이용해 엘라스틱서치에 저장된 데이터 확인</h2><p>웹브라우저를 이용해 원하는 시간대에 발생한 로그들을 확인할 수 있고, 필터 기능으로 원하는 패턴의 로그만 빠르게 검색 가능하다.<br>각 브로커에서 수집되는 로그가 카프카의 토픽에 있기 때문에, 엘라스틱 서치에 전송하는 것 외에 추가로 하둡이나 로컬에 저장하길 원하면, 다음 화면처럼 나이파이의 PutHDFS 프로세서를 추가해 쉽게 하둡 등의 저장소에 저장할 수 있다.</p>
 <p><img src="/image/kafka_chapter07_04.png" alt></p>
 <h2 id="6-현재의-토픽을-이용해-새로운-토픽으로-메세지-재생산"><a href="#6-현재의-토픽을-이용해-새로운-토픽으로-메세지-재생산" class="headerlink" title="6. 현재의 토픽을 이용해 새로운 토픽으로 메세지 재생산"></a>6. 현재의 토픽을 이용해 새로운 토픽으로 메세지 재생산</h2><p><img src="/image/kafka_chapter07_05.png" alt></p>
 <p>이번에는, 메세지의 양이 굉장히 많은 토픽의 내용 중 필요한 메세지만 꺼내서 다시 새로운 토픽으로 메세지를 보내는 방법을 정리한다.</p>
@@ -158,13 +150,10 @@
 <li>전체 메세지 중에 호스트 이름이 peter-kafka001메세지만 peter-kafka001토픽으로 다시 전송하고,</li>
 <li>나머지 메세지는 peter-failure 토픽으로 전송한다.</li>
 </ol>
-<h4 id="6-1-나이파이를-이용한-토픽별-라우팅"><a href="#6-1-나이파이를-이용한-토픽별-라우팅" class="headerlink" title="6.1 나이파이를 이용한 토픽별 라우팅"></a>6.1 나이파이를 이용한 토픽별 라우팅</h4><p>나이파이에서 토픽의 메세지를 가져와서 peter-kafka001 에서 온 메세지인지 확인한 후에 peter-kafka001 토픽으로 전송해야한다. </p>
-<p>이를 위해, 나이파이의 EvaluateJsonPath, RouteOnAttribute 프로세서를 추가해서 라우팅 작업을 한다.</p>
+<h4 id="6-1-나이파이를-이용한-토픽별-라우팅"><a href="#6-1-나이파이를-이용한-토픽별-라우팅" class="headerlink" title="6.1 나이파이를 이용한 토픽별 라우팅"></a>6.1 나이파이를 이용한 토픽별 라우팅</h4><p>나이파이에서 토픽의 메세지를 가져와서 peter-kafka001 에서 온 메세지인지 확인한 후에 peter-kafka001 토픽으로 전송해야한다.<br>이를 위해, 나이파이의 EvaluateJsonPath, RouteOnAttribute 프로세서를 추가해서 라우팅 작업을 한다.</p>
 <ol>
-<li><p>EvaluateJsonPath 프로서는, 토픽으로 전송된 JSON 의 beat.hostname 을 읽어 호스트 이름을 구분한다.</p>
-</li>
-<li><p>RouteOnAttribute 프로세서는, attrubute 를 이용해 라우팅을 한다.</p>
-</li>
+<li>EvaluateJsonPath 프로서는, 토픽으로 전송된 JSON 의 beat.hostname 을 읽어 호스트 이름을 구분한다.</li>
+<li>RouteOnAttribute 프로세서는, attrubute 를 이용해 라우팅을 한다.</li>
 </ol>
 <p>마지막으로, 카프카 프로듀서 2개를 추가한다.</p>
 <ol>
@@ -179,7 +168,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/01/26/kafka-chapter7/" data-id="ck5w5fcz700myc5qxo7h8l34s" data-title="[카프카] 7장_데이터 파이프라인 구축" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/01/26/kafka-chapter7/" data-id="ck5xxm2ak00mwvmqx7bglfmnb" data-title="[카프카] 7장_데이터 파이프라인 구축" class="article-share-link">Share</a>
       
       
       
