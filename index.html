@@ -71,6 +71,95 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-object-chapter-appendix-a" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/02/03/object-chapter-appendix-a/" class="article-date">
+  <time class="dt-published" datetime="2020-02-02T15:00:00.000Z" itemprop="datePublished">2020-02-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/object/">Object</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/02/03/object-chapter-appendix-a/">[오브젝트] 부록 A 계약에 의한 설계</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>인터페이스만으로 객체의 행동에 관한 다양한 관점을 전달하기 어렵다.<br>명령의 부수효과를 쉽고 명확하게 표현할 수 있는 커뮤니케이션 수단이, 계약에 의한 설계이다.<br>여기서 중요한 것은 코드가 아니라, 개념이다.</p>
+<h2 id="01-협력과-계약"><a href="#01-협력과-계약" class="headerlink" title="01 협력과 계약"></a>01 협력과 계약</h2><h5 id="부수-효과를-명시적으로"><a href="#부수-효과를-명시적으로" class="headerlink" title="부수 효과를 명시적으로"></a>부수 효과를 명시적으로</h5><p>일반적인 정합성 체크 로직은 코드의 구현 내부에 숨겨져있어 실제로 코드를 분석하지 않는 한 정확하게 파악하기 어렵다.</p>
+<p>하지만, Code Contracts 와 같이 계약에 의한 설계를 지원하는 라이브러리나 언어들은 일반 로직과 구분할 수 있도록 제약 조건을 명시적으로 표현하는 것이 가능하다.</p>
+<h2 id="02-계약에-의한-설계"><a href="#02-계약에-의한-설계" class="headerlink" title="02 계약에 의한 설계"></a>02 계약에 의한 설계</h2><p>버트란드 마이어가 제시한 계약은, 사람들 사이의 계약과 유사하다. 계약은 협력에 참여하는 두 객체 사이의 의무와 이익을 문서화한 것이다.</p>
+<ol>
+<li>협력에 참여하는 객체는 계약으로부터 이익을 기대하고 이익을 얻기위해 의무를 이행한다.</li>
+<li>협력에 참여하는 객체의 이익과 의무는 객체의 인터페이스 상에 문서화된다.</li>
+</ol>
+<p>의도를 드러내는 인터페이스는 오퍼레이션의 시그니처만으로 어느 정도 클라이언트와 서버가 협력을 위해 수행해야하는 제약 조건을 명시한다.</p>
+<p>계약은 여기서 한 걸음 더 나아간다. 서버는 자신이 처리할 수 있는 범위의 값들을 클라이언트가 전달할 것으로 기대한다. 클아이언트는 자신이 원하는 값을 서버가 반환할 것이라고 예상한다. 클아이언트는 메세지 전송 전과 후의 서버 상태가 정상일 것이라고 기대한다.</p>
+<ol>
+<li><p>사전 조건<br>메서드가 호출되기 위해 만족되어야하는 조건. 클라이언트의 의무</p>
+</li>
+<li><p>사후 조건<br>메서드가 실행된 후에 클라이언트에게 보장해야하는 조건. 서버의 의무</p>
+</li>
+<li><p>불변식<br>항상 참이라고 보장되는 서버의 조건</p>
+</li>
+</ol>
+<h5 id="사전-조건"><a href="#사전-조건" class="headerlink" title="사전 조건"></a>사전 조건</h5><p>클라이언트가 사전 조건을 만족시키지 못하면, 메서드는 최대한 빨리 실패해서 클라이언트에게 버그가 있다는 사실을 알린다.</p>
+<h5 id="사후-조건"><a href="#사후-조건" class="headerlink" title="사후 조건"></a>사후 조건</h5><p>다음 세 용도로 사용된다.</p>
+<ol>
+<li>인스턴스 변수의 상태가 올바른지 서술하기 위해</li>
+<li>메스드에 전달된 파라미터의 값이 올바르게 변경됐는지를 서술하기 위해</li>
+<li>반환값이 올바른지를 서술하기 위해</li>
+</ol>
+<h5 id="불변식"><a href="#불변식" class="headerlink" title="불변식"></a>불변식</h5><p>객체의 내부 상태와 관련이 있다.</p>
+<p>메서드 실행 중에는 객체의 상태가 불안정한 상태로 빠질 수 있기 때문에 불변식을 만족시킬 필요가 없지만, 메서드 실행 전과 종료 후에는 항상 불변식을 만족해야한다.</p>
+<h2 id="03-계약에-의한-설계와-서브타이핑"><a href="#03-계약에-의한-설계와-서브타이핑" class="headerlink" title="03 계약에 의한 설계와 서브타이핑"></a>03 계약에 의한 설계와 서브타이핑</h2><p>리스코프 치환 원칙은, 슈퍼타입의 인스턴스와 협력하는 클라이언트의 관점에서 서브타입의 인스턴스가 슈퍼타입을 대체하더라도 협력에 지장이 없어야 한다는 것을 의미한다.</p>
+<p>따라서 서브타입이 리스코프 치환 원칙을 만족하기 위해서는, 클라이언트와 슈퍼타입 간에 체결된 계약을 준수해야한다.</p>
+<h5 id="계약-규칙"><a href="#계약-규칙" class="headerlink" title="계약 규칙"></a>계약 규칙</h5><ol>
+<li><p>서브타입에 더 강력한 사전 조건을 정의할 수 없다.<br>계약서에 명시된 의무보다 더 많은 의무를 짊어져야한다는 사실을 납득하는 클라이언트는 없다.</p>
+</li>
+<li><p>서브타입에 더 완화된 사후 조건을 정의할 수 없다.<br>계약서에 명시된 이익보다 더 적은 이익을 받게 되는 사실을 납득하는 클라이언트는 없다.</p>
+</li>
+<li><p>슈퍼타입의 불변식은 서브타입에서도 유지되어야 한다.<br>메서드 실행 중에는 불변식을 만족시키지 않아도 되지만, 메서드 실행 전과 후에는 만족해야한다.</p>
+</li>
+</ol>
+<h5 id="가변성-규칙"><a href="#가변성-규칙" class="headerlink" title="가변성 규칙"></a>가변성 규칙</h5><ol>
+<li><p>서브타입은 슈퍼타입이 발생시키는 예외와 다른 타입의 예외를 발생시켜서는 안된다.<br>클라이언트는 Bird 의 인스턴스에 fly 메세지를 전송했을 때, UnsupportedOperationException 예외를 기대하지 않는다.</p>
+</li>
+<li><p>서브타입의 리턴타입은 공변성을 가져야한다.<br>리턴 타입 공변성 : 부모 클래스에서 구현된 메서드를 자식 클래스에서 오버라이딩할 때 부모 클래스에서 선언한 반환 타입의 서브타입으로 지정할 수 있는 특성</p>
+</li>
+<li><p>서브타입의 메서드 파라미터는 반공변성을 가져야 한다.<br>파라미터 타입 반공병성 : 부모 클래스에서 구현된 메서드를 자식 클래스에서 오버라이딩할 때 파라미터 타입을 부모 클래스에서 사용한 파라미터의 슈퍼타입으로 지정할 우 있는 특성</p>
+</li>
+</ol>
+<hr>
+<p>오브젝트 &lt;조영호&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2020/02/03/object-chapter-appendix-a/" data-id="ck66bi5r200my2j6wieo32z43" data-title="[오브젝트] 부록 A 계약에 의한 설계" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-object-chapter15" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2020/01/27/object-chapter15/" class="article-date">
@@ -169,7 +258,110 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/01/27/object-chapter15/" data-id="ck5xxm2c100oovmqxupj22vdc" data-title="[오브젝트] 15장_디자인 패턴과 프레임워크" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/01/27/object-chapter15/" data-id="ck66bi5sg00oo2j6wl2w32u1y" data-title="[오브젝트] 15장_디자인 패턴과 프레임워크" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-kafka-chapter7" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/01/26/kafka-chapter7/" class="article-date">
+  <time class="dt-published" datetime="2020-01-25T15:00:00.000Z" itemprop="datePublished">2020-01-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/kafka/">Kafka</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/01/26/kafka-chapter7/">[카프카] 7장_데이터 파이프라인 구축</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>데이터 파이프라인을 직접 구성해본다. 다음 애플리케이션을 사용한다.</p>
+<ol>
+<li>아파치 나이파이</li>
+<li>엘라스틱 파일비트</li>
+<li>엘라스틱 엘라스틱서치</li>
+<li>엘라스틱 키바나</li>
+</ol>
+<h2 id="1-카프카를-활용한-데이터-흐름도"><a href="#1-카프카를-활용한-데이터-흐름도" class="headerlink" title="1. 카프카를 활용한 데이터 흐름도"></a>1. 카프카를 활용한 데이터 흐름도</h2><p><img src="/image/kafka_chapter07_01.png" alt></p>
+<p>카프카에서 발생하는 로그를 이용해 데이터 흐름도를 구성해본다.<br>아파치 나이파이는 데이터 처리 흐름을 정의하고, 정의된 흐름대로 자동으로 실행해주는 애플리케이션이다.</p>
+<ol>
+<li>데이터 흐름을 처리하기 위한 워크플로우</li>
+<li>데이터 처리</li>
+</ol>
+<h2 id="2-파일-비트를-이용한-메세지-전송"><a href="#2-파일-비트를-이용한-메세지-전송" class="headerlink" title="2. 파일 비트를 이용한 메세지 전송"></a>2. 파일 비트를 이용한 메세지 전송</h2><p>카프카의 로그를 카프카의 토픽으로 전송하려면 프로듀서가 필요하다. 프로듀서는,</p>
+<ol>
+<li>카프카 클라이언트 라이브러리를 이용해 프로그램으로 직접 구현</li>
+<li>오픈소스 애플리케이션 이용. 여기서는 파일 비트.</li>
+</ol>
+<h2 id="3-나이파이를-이용해-메세지-가져오기"><a href="#3-나이파이를-이용해-메세지-가져오기" class="headerlink" title="3. 나이파이를 이용해 메세지 가져오기"></a>3. 나이파이를 이용해 메세지 가져오기</h2><p>이제 컨슈머를 이용해 카프카 토픽으로부터 메세지를 가져와와야한다. 컨슈머는,</p>
+<ol>
+<li>프로그래밍 언어로 직접 구현</li>
+<li>오픈소스 애플리케이션 이용. 여기서는 나이파이.</li>
+</ol>
+<h4 id="3-1-나이파이를-이용한-컨슈머-설정"><a href="#3-1-나이파이를-이용한-컨슈머-설정" class="headerlink" title="3.1 나이파이를 이용한 컨슈머 설정"></a>3.1 나이파이를 이용한 컨슈머 설정</h4><p><img src="/image/kafka_chapter07_02.png" alt></p>
+<p>프로세서를 추가하는 화면이다.<br>프로세서는 나이파이에서 데이터 처리를 위한 각각의 컴포넌트이다. AMQP 컨슘, 파일로 저장, 전송하기 등 여러가지 작업이 가능하다.<br>ConsumeKafka 프로세서를 추가하고 재생 버튼을 누르면, 설정한 브로커의 토픽에서 메세지를 가져오기 시작한다.<br>컨슈머가 잘 동작하는지 확인하는 방법은,</p>
+<ol>
+<li><p>나이파이에서 컨슈머 프로세서를 실행 시킨 후,</p>
+</li>
+<li><p>카프카 컨슈머 그룹 리스트에서, 등록한 컨슈머 그룹이 잘 등록되었는지 확인한다.<br>등록한 컨슈머 그룹 : ConsumeKafka 프로세서의 Properties 를 정의할 때 그룹 ID 를 기입했음.</p>
+</li>
+</ol>
+<h2 id="4-실시간-분석을-위해-엘라스틱서치에-메세지-저장"><a href="#4-실시간-분석을-위해-엘라스틱서치에-메세지-저장" class="headerlink" title="4. 실시간 분석을 위해 엘라스틱서치에 메세지 저장"></a>4. 실시간 분석을 위해 엘라스틱서치에 메세지 저장</h2><p>이제, 가져온 메세지들을 나이파이의 또 다른 프로세서를 이용해 엘라스틱서치에 저장하겠다.<br>엘라스틱서치는 엘라스틱 사의 분산형 RESTFul 검색 및 분석 엔진이다. 전문 검색 질의를 이용해 원하는 데이터 분석을 빠르게 할 수 있는 애플리케이션이다.</p>
+<h4 id="4-1-나이파이를-이용해-엘라스틱서치로-데이터-전송"><a href="#4-1-나이파이를-이용해-엘라스틱서치로-데이터-전송" class="headerlink" title="4.1 나이파이를 이용해 엘라스틱서치로 데이터 전송"></a>4.1 나이파이를 이용해 엘라스틱서치로 데이터 전송</h4><p>PutElasticsearchHttp 프로세서를 추가한다. 데이터를 엘라스틱서치로 넣어주는 역할을 한다.<br>그리고 다음 화면처럼, ConsumeKafka 와 연결한다.</p>
+<p><img src="/image/kafka_chapter07_03.png" alt></p>
+<p>데이터 흐름 중에 뒤에 있는 프로세서에서 처리 속도가 느려 바로 처리하지 못하거나 프로세서에 문제가 발생한 경우, 두 프로세스를 연결하는 큐에 레코드가 쌓인다.</p>
+<h2 id="5-키바나를-이용해-엘라스틱서치에-저장된-데이터-확인"><a href="#5-키바나를-이용해-엘라스틱서치에-저장된-데이터-확인" class="headerlink" title="5. 키바나를 이용해 엘라스틱서치에 저장된 데이터 확인"></a>5. 키바나를 이용해 엘라스틱서치에 저장된 데이터 확인</h2><p>웹브라우저를 이용해 원하는 시간대에 발생한 로그들을 확인할 수 있고, 필터 기능으로 원하는 패턴의 로그만 빠르게 검색 가능하다.<br>각 브로커에서 수집되는 로그가 카프카의 토픽에 있기 때문에, 엘라스틱 서치에 전송하는 것 외에 추가로 하둡이나 로컬에 저장하길 원하면, 다음 화면처럼 나이파이의 PutHDFS 프로세서를 추가해 쉽게 하둡 등의 저장소에 저장할 수 있다.</p>
+<p><img src="/image/kafka_chapter07_04.png" alt></p>
+<h2 id="6-현재의-토픽을-이용해-새로운-토픽으로-메세지-재생산"><a href="#6-현재의-토픽을-이용해-새로운-토픽으로-메세지-재생산" class="headerlink" title="6. 현재의 토픽을 이용해 새로운 토픽으로 메세지 재생산"></a>6. 현재의 토픽을 이용해 새로운 토픽으로 메세지 재생산</h2><p><img src="/image/kafka_chapter07_05.png" alt></p>
+<p>이번에는, 메세지의 양이 굉장히 많은 토픽의 내용 중 필요한 메세지만 꺼내서 다시 새로운 토픽으로 메세지를 보내는 방법을 정리한다.</p>
+<p>전체적인 데이터 흐름은,</p>
+<ol>
+<li>나이파이 컨슈머가 peter-log 로부터 로그 메세지를 가져오면서 호스트 이름을 확인한다.</li>
+<li>peter-log 토픽으로 로그 메세지를 보내는 서버는 peter-kafka001,peter-kafka002, peter-kafka003 모두 3대이다.</li>
+<li>각각의 메세지마다 호스트 이름이 peter-kafka001,ppeter-kafka002, ppeter-kafka003 이 기록되어 있다.</li>
+<li>전체 메세지 중에 호스트 이름이 peter-kafka001메세지만 peter-kafka001토픽으로 다시 전송하고,</li>
+<li>나머지 메세지는 peter-failure 토픽으로 전송한다.</li>
+</ol>
+<h4 id="6-1-나이파이를-이용한-토픽별-라우팅"><a href="#6-1-나이파이를-이용한-토픽별-라우팅" class="headerlink" title="6.1 나이파이를 이용한 토픽별 라우팅"></a>6.1 나이파이를 이용한 토픽별 라우팅</h4><p>나이파이에서 토픽의 메세지를 가져와서 peter-kafka001 에서 온 메세지인지 확인한 후에 peter-kafka001 토픽으로 전송해야한다.<br>이를 위해, 나이파이의 EvaluateJsonPath, RouteOnAttribute 프로세서를 추가해서 라우팅 작업을 한다.</p>
+<ol>
+<li>EvaluateJsonPath 프로서는, 토픽으로 전송된 JSON 의 beat.hostname 을 읽어 호스트 이름을 구분한다.</li>
+<li>RouteOnAttribute 프로세서는, attrubute 를 이용해 라우팅을 한다.</li>
+</ol>
+<p>마지막으로, 카프카 프로듀서 2개를 추가한다.</p>
+<ol>
+<li>호스트명이 peter-kafka001 인 메세지를  peter-kafka001 토픽으로 전송할 프로듀서</li>
+<li>그 외 메세지를  peter-failure 토픽으로 전송할 프로듀서</li>
+</ol>
+<p>최종 플로우는 다음과 같다.</p>
+<p><img src="/image/kafka_chapter07_06.png" alt></p>
+<hr>
+<p>카프카, 데이터 플랫폼의 최강자 &lt;고승범, 공용준&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2020/01/26/kafka-chapter7/" data-id="ck66bi5r000mu2j6wmdiusy4i" data-title="[카프카] 7장_데이터 파이프라인 구축" class="article-share-link">Share</a>
       
       
       
@@ -274,110 +466,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/01/26/kafka-chapter8/" data-id="ck5xxm2al00mxvmqxeues6h6d" data-title="[카프카] 8장_카프카 스트림즈 API" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-kafka-chapter7" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/01/26/kafka-chapter7/" class="article-date">
-  <time class="dt-published" datetime="2020-01-25T15:00:00.000Z" itemprop="datePublished">2020-01-26</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/kafka/">Kafka</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/01/26/kafka-chapter7/">[카프카] 7장_데이터 파이프라인 구축</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>데이터 파이프라인을 직접 구성해본다. 다음 애플리케이션을 사용한다.</p>
-<ol>
-<li>아파치 나이파이</li>
-<li>엘라스틱 파일비트</li>
-<li>엘라스틱 엘라스틱서치</li>
-<li>엘라스틱 키바나</li>
-</ol>
-<h2 id="1-카프카를-활용한-데이터-흐름도"><a href="#1-카프카를-활용한-데이터-흐름도" class="headerlink" title="1. 카프카를 활용한 데이터 흐름도"></a>1. 카프카를 활용한 데이터 흐름도</h2><p><img src="/image/kafka_chapter07_01.png" alt></p>
-<p>카프카에서 발생하는 로그를 이용해 데이터 흐름도를 구성해본다.<br>아파치 나이파이는 데이터 처리 흐름을 정의하고, 정의된 흐름대로 자동으로 실행해주는 애플리케이션이다.</p>
-<ol>
-<li>데이터 흐름을 처리하기 위한 워크플로우</li>
-<li>데이터 처리</li>
-</ol>
-<h2 id="2-파일-비트를-이용한-메세지-전송"><a href="#2-파일-비트를-이용한-메세지-전송" class="headerlink" title="2. 파일 비트를 이용한 메세지 전송"></a>2. 파일 비트를 이용한 메세지 전송</h2><p>카프카의 로그를 카프카의 토픽으로 전송하려면 프로듀서가 필요하다. 프로듀서는,</p>
-<ol>
-<li>카프카 클라이언트 라이브러리를 이용해 프로그램으로 직접 구현</li>
-<li>오픈소스 애플리케이션 이용. 여기서는 파일 비트.</li>
-</ol>
-<h2 id="3-나이파이를-이용해-메세지-가져오기"><a href="#3-나이파이를-이용해-메세지-가져오기" class="headerlink" title="3. 나이파이를 이용해 메세지 가져오기"></a>3. 나이파이를 이용해 메세지 가져오기</h2><p>이제 컨슈머를 이용해 카프카 토픽으로부터 메세지를 가져와와야한다. 컨슈머는,</p>
-<ol>
-<li>프로그래밍 언어로 직접 구현</li>
-<li>오픈소스 애플리케이션 이용. 여기서는 나이파이.</li>
-</ol>
-<h4 id="3-1-나이파이를-이용한-컨슈머-설정"><a href="#3-1-나이파이를-이용한-컨슈머-설정" class="headerlink" title="3.1 나이파이를 이용한 컨슈머 설정"></a>3.1 나이파이를 이용한 컨슈머 설정</h4><p><img src="/image/kafka_chapter07_02.png" alt></p>
-<p>프로세서를 추가하는 화면이다.<br>프로세서는 나이파이에서 데이터 처리를 위한 각각의 컴포넌트이다. AMQP 컨슘, 파일로 저장, 전송하기 등 여러가지 작업이 가능하다.<br>ConsumeKafka 프로세서를 추가하고 재생 버튼을 누르면, 설정한 브로커의 토픽에서 메세지를 가져오기 시작한다.<br>컨슈머가 잘 동작하는지 확인하는 방법은,</p>
-<ol>
-<li><p>나이파이에서 컨슈머 프로세서를 실행 시킨 후,</p>
-</li>
-<li><p>카프카 컨슈머 그룹 리스트에서, 등록한 컨슈머 그룹이 잘 등록되었는지 확인한다.<br>등록한 컨슈머 그룹 : ConsumeKafka 프로세서의 Properties 를 정의할 때 그룹 ID 를 기입했음.</p>
-</li>
-</ol>
-<h2 id="4-실시간-분석을-위해-엘라스틱서치에-메세지-저장"><a href="#4-실시간-분석을-위해-엘라스틱서치에-메세지-저장" class="headerlink" title="4. 실시간 분석을 위해 엘라스틱서치에 메세지 저장"></a>4. 실시간 분석을 위해 엘라스틱서치에 메세지 저장</h2><p>이제, 가져온 메세지들을 나이파이의 또 다른 프로세서를 이용해 엘라스틱서치에 저장하겠다.<br>엘라스틱서치는 엘라스틱 사의 분산형 RESTFul 검색 및 분석 엔진이다. 전문 검색 질의를 이용해 원하는 데이터 분석을 빠르게 할 수 있는 애플리케이션이다.</p>
-<h4 id="4-1-나이파이를-이용해-엘라스틱서치로-데이터-전송"><a href="#4-1-나이파이를-이용해-엘라스틱서치로-데이터-전송" class="headerlink" title="4.1 나이파이를 이용해 엘라스틱서치로 데이터 전송"></a>4.1 나이파이를 이용해 엘라스틱서치로 데이터 전송</h4><p>PutElasticsearchHttp 프로세서를 추가한다. 데이터를 엘라스틱서치로 넣어주는 역할을 한다.<br>그리고 다음 화면처럼, ConsumeKafka 와 연결한다.</p>
-<p><img src="/image/kafka_chapter07_03.png" alt></p>
-<p>데이터 흐름 중에 뒤에 있는 프로세서에서 처리 속도가 느려 바로 처리하지 못하거나 프로세서에 문제가 발생한 경우, 두 프로세스를 연결하는 큐에 레코드가 쌓인다.</p>
-<h2 id="5-키바나를-이용해-엘라스틱서치에-저장된-데이터-확인"><a href="#5-키바나를-이용해-엘라스틱서치에-저장된-데이터-확인" class="headerlink" title="5. 키바나를 이용해 엘라스틱서치에 저장된 데이터 확인"></a>5. 키바나를 이용해 엘라스틱서치에 저장된 데이터 확인</h2><p>웹브라우저를 이용해 원하는 시간대에 발생한 로그들을 확인할 수 있고, 필터 기능으로 원하는 패턴의 로그만 빠르게 검색 가능하다.<br>각 브로커에서 수집되는 로그가 카프카의 토픽에 있기 때문에, 엘라스틱 서치에 전송하는 것 외에 추가로 하둡이나 로컬에 저장하길 원하면, 다음 화면처럼 나이파이의 PutHDFS 프로세서를 추가해 쉽게 하둡 등의 저장소에 저장할 수 있다.</p>
-<p><img src="/image/kafka_chapter07_04.png" alt></p>
-<h2 id="6-현재의-토픽을-이용해-새로운-토픽으로-메세지-재생산"><a href="#6-현재의-토픽을-이용해-새로운-토픽으로-메세지-재생산" class="headerlink" title="6. 현재의 토픽을 이용해 새로운 토픽으로 메세지 재생산"></a>6. 현재의 토픽을 이용해 새로운 토픽으로 메세지 재생산</h2><p><img src="/image/kafka_chapter07_05.png" alt></p>
-<p>이번에는, 메세지의 양이 굉장히 많은 토픽의 내용 중 필요한 메세지만 꺼내서 다시 새로운 토픽으로 메세지를 보내는 방법을 정리한다.</p>
-<p>전체적인 데이터 흐름은,</p>
-<ol>
-<li>나이파이 컨슈머가 peter-log 로부터 로그 메세지를 가져오면서 호스트 이름을 확인한다.</li>
-<li>peter-log 토픽으로 로그 메세지를 보내는 서버는 peter-kafka001,peter-kafka002, peter-kafka003 모두 3대이다.</li>
-<li>각각의 메세지마다 호스트 이름이 peter-kafka001,ppeter-kafka002, ppeter-kafka003 이 기록되어 있다.</li>
-<li>전체 메세지 중에 호스트 이름이 peter-kafka001메세지만 peter-kafka001토픽으로 다시 전송하고,</li>
-<li>나머지 메세지는 peter-failure 토픽으로 전송한다.</li>
-</ol>
-<h4 id="6-1-나이파이를-이용한-토픽별-라우팅"><a href="#6-1-나이파이를-이용한-토픽별-라우팅" class="headerlink" title="6.1 나이파이를 이용한 토픽별 라우팅"></a>6.1 나이파이를 이용한 토픽별 라우팅</h4><p>나이파이에서 토픽의 메세지를 가져와서 peter-kafka001 에서 온 메세지인지 확인한 후에 peter-kafka001 토픽으로 전송해야한다.<br>이를 위해, 나이파이의 EvaluateJsonPath, RouteOnAttribute 프로세서를 추가해서 라우팅 작업을 한다.</p>
-<ol>
-<li>EvaluateJsonPath 프로서는, 토픽으로 전송된 JSON 의 beat.hostname 을 읽어 호스트 이름을 구분한다.</li>
-<li>RouteOnAttribute 프로세서는, attrubute 를 이용해 라우팅을 한다.</li>
-</ol>
-<p>마지막으로, 카프카 프로듀서 2개를 추가한다.</p>
-<ol>
-<li>호스트명이 peter-kafka001 인 메세지를  peter-kafka001 토픽으로 전송할 프로듀서</li>
-<li>그 외 메세지를  peter-failure 토픽으로 전송할 프로듀서</li>
-</ol>
-<p>최종 플로우는 다음과 같다.</p>
-<p><img src="/image/kafka_chapter07_06.png" alt></p>
-<hr>
-<p>카프카, 데이터 플랫폼의 최강자 &lt;고승범, 공용준&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/01/26/kafka-chapter7/" data-id="ck5xxm2ak00mwvmqx7bglfmnb" data-title="[카프카] 7장_데이터 파이프라인 구축" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/01/26/kafka-chapter8/" data-id="ck66bi5r100mv2j6waoj2q8wc" data-title="[카프카] 8장_카프카 스트림즈 API" class="article-share-link">Share</a>
       
       
       
@@ -528,7 +617,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/01/20/object-chapter14/" data-id="ck5xxm2c100omvmqx04uv2koj" data-title="[오브젝트] 14장_일관성 있는 협력" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/01/20/object-chapter14/" data-id="ck66bi5sg00om2j6wtmwxyafa" data-title="[오브젝트] 14장_일관성 있는 협력" class="article-share-link">Share</a>
       
       
       
@@ -729,7 +818,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/01/13/object-chapter13/" data-id="ck5xxm2c000okvmqxivbepotm" data-title="[오브젝트] 13장_서브클래싱과 서브타이핑" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/01/13/object-chapter13/" data-id="ck66bi5sf00ok2j6w0r5sum5x" data-title="[오브젝트] 13장_서브클래싱과 서브타이핑" class="article-share-link">Share</a>
       
       
       
@@ -820,7 +909,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/01/12/review-2019/" data-id="ck5xxm2ak00mtvmqxlvvc3si4" data-title="2019년 회고" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/01/12/review-2019/" data-id="ck66bi5qz00mr2j6wxvoebasg" data-title="2019년 회고" class="article-share-link">Share</a>
       
       
       
@@ -1045,7 +1134,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/01/06/object-chapter12/" data-id="ck5xxm2bz00ogvmqx714xljdh" data-title="[오브젝트] 12장_다형성" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/01/06/object-chapter12/" data-id="ck66bi5se00oi2j6weqvymu1p" data-title="[오브젝트] 12장_다형성" class="article-share-link">Share</a>
       
       
       
@@ -1290,7 +1379,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/01/05/big-data-chapter5/" data-id="ck5xxm2bz00oivmqx6wmcnvk0" data-title="[빅데이터를 지탱하는 기술] 5장_빅데이터 파이프라인" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/01/05/big-data-chapter5/" data-id="ck66bi5se00og2j6wj81b64qk" data-title="[빅데이터를 지탱하는 기술] 5장_빅데이터 파이프라인" class="article-share-link">Share</a>
       
       
       
@@ -1510,160 +1599,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/01/02/big-data-chapter4/" data-id="ck5xxm2d300oyvmqxw6tx2a8u" data-title="[빅데이터를 지탱하는 기술] 4장_빅데이터 축적" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-big-data-chapter1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/12/30/big-data-chapter1/" class="article-date">
-  <time class="dt-published" datetime="2019-12-29T15:00:00.000Z" itemprop="datePublished">2019-12-30</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/big-data/">Big Data</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/12/30/big-data-chapter1/">[빅데이터를 지탱하는 기술] 1장_빅데이터 기초 지식</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="1-빅데이터의-정착"><a href="#1-빅데이터의-정착" class="headerlink" title="1.빅데이터의 정착"></a>1.빅데이터의 정착</h2><h5 id="빅데이터-기술의-요구-Hadoop-과-NoSQL-의-대두"><a href="#빅데이터-기술의-요구-Hadoop-과-NoSQL-의-대두" class="headerlink" title="빅데이터 기술의 요구 : Hadoop 과 NoSQL 의 대두"></a>빅데이터 기술의 요구 : Hadoop 과 NoSQL 의 대두</h5><p>세계 곳곳에서 엑세스 되는 시스템 증가로, 전통적인 관계형 데이터베이스로는 취급 할 수 없는 데이터가 쌓이게 되었다.</p>
-<p>그래서 다른 구조가 필요했다.</p>
-<ol>
-<li><p>Hadoop </p>
-<p>다수의 컴퓨터에서 대량의 데이터 처리</p>
-</li>
-<li><p>NoSQL Database </p>
-<p>빈번한 읽기/ 쓰기 및 분산처리가 강점</p>
-</li>
-</ol>
-<h5 id="분산-시스템의-비즈니스-이용-개척-데이터-웨어하우스와의-공존"><a href="#분산-시스템의-비즈니스-이용-개척-데이터-웨어하우스와의-공존" class="headerlink" title="분산 시스템의 비즈니스 이용 개척 : 데이터 웨어하우스와의 공존"></a>분산 시스템의 비즈니스 이용 개척 : 데이터 웨어하우스와의 공존</h5><p><img src="/image/bigdata_datawarehouse.png" alt></p>
-<p>위 그림처럼, 확장성이 뛰어난 Hadoop 에 데이터 처리를 맡겨 데이터 웨어하우스의 부하를 줄이고 있다.</p>
-<h5 id="직접-할-수-있는-데이터-분석-폭-확대"><a href="#직접-할-수-있는-데이터-분석-폭-확대" class="headerlink" title="직접 할 수 있는 데이터 분석 폭 확대"></a>직접 할 수 있는 데이터 분석 폭 확대</h5><p>‘여러 컴퓨터에서 분산 처리한다’ 는 빅데이터의 특징으로 하드웨어를 준비하고 관리하는게 어려웠다. </p>
-<p>하지만, 클라우드 시대에서는 필요한 자원 확보가 쉬워서 얼마든지 빅데이터를 이용할 수 있다.</p>
-<h5 id="데이터-디스커버리의-기초-지식"><a href="#데이터-디스커버리의-기초-지식" class="headerlink" title="데이터 디스커버리의 기초 지식"></a>데이터 디스커버리의 기초 지식</h5><ol>
-<li><p>데이터 디스커버리</p>
-<p>대화형으로 데이터를 시각화하여 가치있는 정보를 찾으려고하는 프로세스</p>
-</li>
-<li><p>BI 도구</p>
-<p>데이터 디스커버리를 위한 셀프 서비스용 시각화 시스템</p>
-</li>
-</ol>
-<h2 id="2-빅데이터-시대의-데이터-분석-기반"><a href="#2-빅데이터-시대의-데이터-분석-기반" class="headerlink" title="2. 빅데이터 시대의 데이터 분석 기반"></a>2. 빅데이터 시대의 데이터 분석 기반</h2><p>빅데이터 기술이 기존 데이터 웨어하우스와 다른 점은,</p>
-<p>다수의 분산 시스템을 조합하여 확장성이 뛰어난 데이터 처리 구조를 만든다는 것이다.</p>
-<h5 id="데이터-파이프라인"><a href="#데이터-파이프라인" class="headerlink" title="데이터 파이프라인"></a>데이터 파이프라인</h5><p><img src="/image/bigdata_data_pipeline.png" alt></p>
-<p>차례대로 전달해다가는 데이터로 구성된 시스템이다. 데이터 파이프라인의 기본적인 흐름은,</p>
-<ol>
-<li>데이터를 모아서 축적</li>
-<li>데이터 마트 구성</li>
-<li>시각화 도구</li>
-</ol>
-<h5 id="데이터-수집"><a href="#데이터-수집" class="headerlink" title="데이터 수집"></a>데이터 수집</h5><p>데이터 파이프라인은 데이터를 모으는 부분부터 시작한다. 수집 방법은,</p>
-<ol>
-<li><p>벌크형</p>
-<p>이미 어딘가에 있는 데이터를 정리해서 추출</p>
-<p>ex ) 데이터베이스와 파일 서버 등에서 정기적으로 데이터 수집</p>
-</li>
-<li><p>스트리밍형</p>
-<p>차례대로 생성되는 데이터를 끊임없이 보냄</p>
-<p>ex) 모바일 어플리케이션, 임베디드 장비</p>
-</li>
-</ol>
-<h5 id="스트림-처리와-배치처리"><a href="#스트림-처리와-배치처리" class="headerlink" title="스트림 처리와 배치처리"></a>스트림 처리와 배치처리</h5><ol>
-<li><p>스트림 처리</p>
-<p>스트리밍 형 방법으로 받은 데이터를 실시간으로 처리.</p>
-<p>장기적인 데이터 분석에는 적합하지 않음.</p>
-</li>
-<li><p>배치 처리</p>
-<p>정리된 데이터를 효율적으로 가공하기 위한 처리.</p>
-<p>장기적인 데이터 분석을 위해 대량의 데이터를 저장하고 처리하는데 적합한 분산 시스템이 필요.</p>
-</li>
-</ol>
-<h5 id="분산-스토리지"><a href="#분산-스토리지" class="headerlink" title="분산 스토리지"></a>분산 스토리지</h5><p>여러 컴퓨터와 디스크로 구성된 스토리지 시스템이다. 데이터 저장 방법으로,</p>
-<ol>
-<li><p>객체 스토리지</p>
-<p>한 덩어리로 모인 데이터에 이름을 부여해서 파일로 저장.</p>
-<p>ex ) Amazon S3</p>
-</li>
-<li><p>NoSQL 데이터베이스</p>
-<p>많은 데이터를 읽고 쓰기에 유리.</p>
-</li>
-</ol>
-<h5 id="분산-데이터-처리"><a href="#분산-데이터-처리" class="headerlink" title="분산 데이터 처리"></a>분산 데이터 처리</h5><p>분산 스토리지에 저장된 데이터를 처리하기 위해, 분산 데이터 처리 프레임워크가 필요하다. ex) MapReduce</p>
-<p>주 역할은, 나중에 분석하기 쉽도록 데이터를 가공해서 그 결과를 외부 데이터베이스에 저장하는 것이다.</p>
-<p>빅데이터를 SQL 로 집계하는 방법으로,</p>
-<ol>
-<li><p>쿼리 엔진</p>
-<p>Hive, 대화형 쿼리엔진</p>
-</li>
-<li><p>데이터 웨어하우스 제품</p>
-<p>ETL. </p>
-<p>데이터를 추출하고 가공한후, 데이터 웨어하우스에 로드한다.</p>
-</li>
-</ol>
-<h5 id="워크플로우-관리"><a href="#워크플로우-관리" class="headerlink" title="워크플로우 관리"></a>워크플로우 관리</h5><p>데이터파이프라인이 복잡해지면, 한곳에서 제어하지 않으면 전체 움직임 파악이 어렵다.</p>
-<h5 id="데이터-웨어하우스와-데이터-마트"><a href="#데이터-웨어하우스와-데이터-마트" class="headerlink" title="데이터 웨어하우스와 데이터 마트"></a>데이터 웨어하우스와 데이터 마트</h5><p><img src="/image/bigdata_data_pipeline_warehouse.png" alt></p>
-<ol>
-<li><p>데이터 소스</p>
-<p>RDB 나 로그 등을 저장하는 파일 서버</p>
-</li>
-<li><p>ETL 플로세스</p>
-<p>데이터 소스에 보존된 raw data 를 추출하고 필요에 따라 가공한 후 데이터 웨어하우스에 저장하기까지의 흐름</p>
-</li>
-<li><p>데이터 마트</p>
-<p>데이터웨어 하우스에서 필요한 데이터만을 추출하여 데이터마트를 구축</p>
-</li>
-</ol>
-<h5 id="데이터-레이크"><a href="#데이터-레이크" class="headerlink" title="데이터 레이크"></a>데이터 레이크</h5><p><img src="/image/bigdata_data_pipeline_lake.png" alt></p>
-<p>모든 데이터를 원래의 형태로 추적해두고 나중에 필요에 따라 가공하는 구조가 필요하다.</p>
-<p>이 데이터 축적 장소가 데이터 레이크이다. 분산 스토리지가 데이터 레이크로 이용된다. </p>
-<p>데이터 레이크의 데이터를 가공하기 위해 MapReduce 같은 분산 데이터 처리 기술이 필요하다.</p>
-<h5 id="데이터-분석-기반을-단계적으로-발전시키기"><a href="#데이터-분석-기반을-단계적으로-발전시키기" class="headerlink" title="데이터 분석 기반을 단계적으로 발전시키기"></a>데이터 분석 기반을 단계적으로 발전시키기</h5><ol>
-<li><p>데이터 엔지니어</p>
-<p>시스템의 구축 및 운용, 자동화</p>
-</li>
-<li><p>데이터 분석가</p>
-<p>데이터에서 가치있는 정보 추출</p>
-</li>
-</ol>
-<h5 id="확증적-데이터-분석과-탐색적-데이터-분석"><a href="#확증적-데이터-분석과-탐색적-데이터-분석" class="headerlink" title="확증적 데이터 분석과 탐색적 데이터 분석"></a>확증적 데이터 분석과 탐색적 데이터 분석</h5><ol>
-<li><p>확증적 데이터 분석</p>
-<p>가설을 세우고 검증.</p>
-<p>통계학적 모델링에 의한 데이터 분석.</p>
-</li>
-<li><p>탐색적 데이터 분석</p>
-<p>데이터를 보며 의미를 읽어냄.</p>
-<p>데이터를 시각화하여 사람의 힘으로 의미를 읽어냄</p>
-</li>
-</ol>
-<hr>
-<p>빅데이터를 지탱하는 기술 &lt;니시다 케이스케&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/12/30/big-data-chapter1/" data-id="ck5xxm2ai00mpvmqx0tujg1sz" data-title="[빅데이터를 지탱하는 기술] 1장_빅데이터 기초 지식" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/01/02/big-data-chapter4/" data-id="ck66bi5tf00oy2j6w2a1ujiq7" data-title="[빅데이터를 지탱하는 기술] 4장_빅데이터 축적" class="article-share-link">Share</a>
       
       
       
@@ -1705,7 +1641,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
     </div>
   </div>
 
@@ -1718,11 +1654,11 @@
       <ul>
         
           <li>
-            <a href="/2020/01/27/object-chapter15/">[오브젝트] 15장_디자인 패턴과 프레임워크</a>
+            <a href="/2020/02/03/object-chapter-appendix-a/">[오브젝트] 부록 A 계약에 의한 설계</a>
           </li>
         
           <li>
-            <a href="/2020/01/26/kafka-chapter8/">[카프카] 8장_카프카 스트림즈 API</a>
+            <a href="/2020/01/27/object-chapter15/">[오브젝트] 15장_디자인 패턴과 프레임워크</a>
           </li>
         
           <li>
@@ -1730,11 +1666,11 @@
           </li>
         
           <li>
-            <a href="/2020/01/20/object-chapter14/">[오브젝트] 14장_일관성 있는 협력</a>
+            <a href="/2020/01/26/kafka-chapter8/">[카프카] 8장_카프카 스트림즈 API</a>
           </li>
         
           <li>
-            <a href="/2020/01/13/object-chapter13/">[오브젝트] 13장_서브클래싱과 서브타이핑</a>
+            <a href="/2020/01/20/object-chapter14/">[오브젝트] 14장_일관성 있는 협력</a>
           </li>
         
       </ul>
