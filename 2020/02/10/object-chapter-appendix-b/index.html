@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  
+  <title>[오브젝트] 부록 B 타입 계층의 구현 | junhee.ko</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="타입과 타입 계층을 구현할 수 있는 방법들을 정리하자. 클래스를 이용한 타입 계층 구현타입은 객체의 퍼블릭 인터페이스이다. 클래스는 객체의 타입과 구현을 동시에 정의한 것이다. Phone 클래스가 있다. Phone 의 인스턴스는 calculateFee 메시지를 수신할 수 있는 퍼블릭 메서드를 구현한다. 타입은 퍼블릭 인터페이스이기 때문에, Phone 클래스">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[오브젝트] 부록 B 타입 계층의 구현">
+<meta property="og:url" content="https://kojunhee.github.io/2020/02/10/object-chapter-appendix-b/index.html">
+<meta property="og:site_name" content="junhee.ko">
+<meta property="og:description" content="타입과 타입 계층을 구현할 수 있는 방법들을 정리하자. 클래스를 이용한 타입 계층 구현타입은 객체의 퍼블릭 인터페이스이다. 클래스는 객체의 타입과 구현을 동시에 정의한 것이다. Phone 클래스가 있다. Phone 의 인스턴스는 calculateFee 메시지를 수신할 수 있는 퍼블릭 메서드를 구현한다. 타입은 퍼블릭 인터페이스이기 때문에, Phone 클래스">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-02-10T12:48:28.763Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[오브젝트] 부록 B 타입 계층의 구현">
+<meta name="twitter:description" content="타입과 타입 계층을 구현할 수 있는 방법들을 정리하자. 클래스를 이용한 타입 계층 구현타입은 객체의 퍼블릭 인터페이스이다. 클래스는 객체의 타입과 구현을 동시에 정의한 것이다. Phone 클래스가 있다. Phone 의 인스턴스는 calculateFee 메시지를 수신할 수 있는 퍼블릭 메서드를 구현한다. 타입은 퍼블릭 인터페이스이기 때문에, Phone 클래스">
+  
+    <link rel="alternate" href="/atom.xml" title="junhee.ko" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">junhee.ko</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">always learning</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://kojunhee.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-object-chapter-appendix-b" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/02/10/object-chapter-appendix-b/" class="article-date">
+  <time class="dt-published" datetime="2020-02-09T15:00:00.000Z" itemprop="datePublished">2020-02-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/object/">Object</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      [오브젝트] 부록 B 타입 계층의 구현
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>타입과 타입 계층을 구현할 수 있는 방법들을 정리하자.</p>
+<h5 id="클래스를-이용한-타입-계층-구현"><a href="#클래스를-이용한-타입-계층-구현" class="headerlink" title="클래스를 이용한 타입 계층 구현"></a>클래스를 이용한 타입 계층 구현</h5><p>타입은 객체의 퍼블릭 인터페이스이다. 클래스는 객체의 타입과 구현을 동시에 정의한 것이다.</p>
+<p>Phone 클래스가 있다. Phone 의 인스턴스는 calculateFee 메시지를 수신할 수 있는 퍼블릭 메서드를 구현한다. 타입은 퍼블릭 인터페이스이기 때문에, Phone 클래스는 calculateFee 메세지에 응답할 수 있는 타입을 선언한 동시에 객체 구현을 정의한 것이다.</p>
+<p>상속은, 퍼블릭 인터페이스는 유지하면서 새로운 구현을 가진 객체를 추가할 수 있는 간단한 방법이다. 하지만, 상속은 자식 클래스를 부모 클래스의 구현에 강하게 결합시킨다.</p>
+<h5 id="인터페이스를-이용한-타입-계층-구현"><a href="#인터페이스를-이용한-타입-계층-구현" class="headerlink" title="인터페이스를 이용한 타입 계층 구현"></a>인터페이스를 이용한 타입 계층 구현</h5><p>인터페이스는, 상속으로 인한 결합도 문제를 피하고 다중 상속이라는 구현 제약을 해결할 수 있는 방법이다. </p>
+<h5 id="추상-클래스를-이용한-타입-계층-구현"><a href="#추상-클래스를-이용한-타입-계층-구현" class="headerlink" title="추상 클래스를 이용한 타입 계층 구현"></a>추상 클래스를 이용한 타입 계층 구현</h5><p>추상 클래스는, 클래스 상속을 이용해 구현을 공유하면서도 결합도로 인한 부작용을 피하는 방법이다.</p>
+<h5 id="추상-클래스와-인터페이스-결합하기"><a href="#추상-클래스와-인터페이스-결합하기" class="headerlink" title="추상 클래스와 인터페이스 결합하기"></a>추상 클래스와 인터페이스 결합하기</h5><p>인터페이스를 이용해 타입을 정의하고 특정 상속 계층에 국한된 코드를 공유할 필요가 있으면 추상 클래스를 이용해 코드 중복을 방지 할 수 있다. 이것이 골격 구현 추상 클래스이다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">DiscountPolicy</span> </span>&#123;</span><br><span class="line">  <span class="function">Money <span class="title">calculateDiscountAmount</span><span class="params">(Screening screeing)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">DefaultDiscountPolicy</span> <span class="keyword">implements</span> <span class="title">DiscountPolicy</span> </span>&#123;</span><br><span class="line">  ...</span><br><span class="line">   </span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> Money <span class="title">calculateDiscountAmount</span><span class="params">(Screening screeing)</span></span>&#123;</span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">abstract</span> <span class="keyword">protected</span> Money <span class="title">getDiscountAmount</span><span class="params">(Screeing screening)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="덕-타이핑-사용하기"><a href="#덕-타이핑-사용하기" class="headerlink" title="덕 타이핑 사용하기"></a>덕 타이핑 사용하기</h5><p>덕 테스트는 어떤 대상의 행동이 오리와 같다면 그것을 오리라는 타입으로 취급해도 무방하다는 것이다. 즉, 객체가 어떤 인터페이스에 정의된 행동을 수행할 수 있다면 그 객체를 해당 타입으로 분류해도 문제가 없다.</p>
+<p>자바 같은 대부분의 정적 타입 언어에서는 두 클래스를 동일한 타입으로 취급하기 위해서는, 코드 상의 타입이 동일하게 선언되어 있어야한다. </p>
+<p>반면, 런타입에 타입을 결정하는 동적 타입 언어에서는 특정한 클래스를 상속받거나 인터페이스를 구현하지 않고도 객체가 수신할 수 있는 메세지의 지합으로 객체의 타입을 결정할 수 있다.</p>
+<h5 id="믹스인과-타입-계층"><a href="#믹스인과-타입-계층" class="headerlink" title="믹스인과 타입 계층"></a>믹스인과 타입 계층</h5><p>믹스인은, 객체를 생성할 때 코드 일부를 섞어 넣을 수 있도록 만들어진 일종의 추상 서브클래스이다. 사용하는 목적은, 다양한 객체의 구현 안에서 동일한 행동을 중복 코드 없이 재사용할 수 있게 만드는 것이다. 즉, 공통의 행동이 믹스인된 객체들은 동일한 메세지를 수신할 수 있는 퍼블릭 인터페이스를 공유하는 것이다. 예를 들어, 스칼라의 trait 로 구현할 수 있다.</p>
+<p>스칼라의 trait 와 유사하게, 자바 8에 추가된 default method 는 인터페스에 메서드의 기본 구현을 추가하는 것을 허용한다. 디폴트 메서드가 제공하는 혜택을 누리기 위해서는 한계를 명확히 인식해야한다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">DiscountPolicy</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">default</span> Money <span class="title">calculateDiscountAmount</span><span class="params">(Screening screeing)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(DiscountCondition each : getConditions())&#123;</span><br><span class="line">      <span class="keyword">if</span>(each.isSatisfiedBy(screeing))&#123;</span><br><span class="line">        <span class="keyword">return</span> getDiscountAmount(screening);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> screening.getMovieFee();</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function">List&lt;DiscountCondition&gt; <span class="title">getConditions</span><span class="params">()</span></span>;</span><br><span class="line">  <span class="function">Money <span class="title">getDiscountAmount</span><span class="params">(Screeing screening)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>calculateDiscountAmount 가 내부적으로 두개의 메서드를 사용한다. 그래서 이 인터페이스를 구현하는 모든 클래스들은 해당 메서드의 구현을 제공해야한다는 것을 명시한 것이다.</p>
+<p>추상 클래스를 사용했을 경우에는, getDiscountAmount 메서드의 가시성이 protected 였다. 하지만 이제 디폴트 메서드안에서 사용된다는 이유만으로 public 메서드가 되어야한다. 이것은 외부에 노출할 필요가 없는 메서드를 불필요하게 퍼블릭 인터페이스에 추가한 결과를 낳는다.</p>
+<p>디폴트 메서드가 추가된 이유는, 인터페이스에 새로운 오퍼레이션을 추가할 경우에 발생하는 하위 호환성 문제를 해결하기 위해서이다. 추상 클래스를 제거하기 위해서가 아니다.</p>
+<hr>
+<p>오브젝트 &lt;조영호&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2020/02/10/object-chapter-appendix-b/" data-id="ck6ggdr8100mxagqxcxqdu5zz" data-title="[오브젝트] 부록 B 타입 계층의 구현" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/02/10/object-chapter-appendix-c/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          [오브젝트] 부록 C 동적인 협력, 정적인 코드
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/02/03/object-chapter-appendix-a/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">[오브젝트] 부록 A 계약에 의한 설계</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/big-data/">Big Data</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boost-course/">Boost Course</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/dip/">DIP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/data-structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/design-pattern/">Design Pattern</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jpa/">JPA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">Kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/network/">Network</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/os/">OS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/object/">Object</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/software-engineering/">Software Engineering</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/spark/">Spark</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/etc/">etc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ios/">iOS</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/02/10/object-chapter-appendix-c/">[오브젝트] 부록 C 동적인 협력, 정적인 코드</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/10/object-chapter-appendix-b/">[오브젝트] 부록 B 타입 계층의 구현</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/03/object-chapter-appendix-a/">[오브젝트] 부록 A 계약에 의한 설계</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/27/object-chapter15/">[오브젝트] 15장_디자인 패턴과 프레임워크</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/26/kafka-chapter7/">[카프카] 7장_데이터 파이프라인 구축</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 junhee.ko<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+  <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
