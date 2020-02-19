@@ -20,7 +20,7 @@
     <link rel="alternate" href="/atom.xml" title="junhee.ko" type="application/atom+xml">
   
   
-    <link rel="icon" href="/favicon.png">
+    <link rel="icon" href="css/images/favicon.ico">
   
   
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
@@ -71,9 +71,9 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-Memento Pattern01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-Prototype Pattern02" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/05/28/Memento Pattern01/" class="article-date">
+    <a href="/2018/05/28/Prototype Pattern02/" class="article-date">
   <time class="dt-published" datetime="2018-05-27T15:00:00.000Z" itemprop="datePublished">2018-05-28</time>
 </a>
     
@@ -89,7 +89,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/28/Memento Pattern01/">Memento Pattern01</a>
+      <a class="p-name article-title" href="/2018/05/28/Prototype Pattern02/">Prototype Pattern02</a>
     </h1>
   
 
@@ -97,44 +97,28 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h2 id="Intent"><a href="#Intent" class="headerlink" title="Intent"></a>Intent</h2><p>The intent of this pattern is to capture the internal state of an object without violating encapsulation and thus providing a mean for restoring the object into initial state when needed.</p>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/memento01.png" alt></p>
-<ul>
-<li>Memento<ul>
-<li>Stores internal state of the Originator object. The state can include any number of state variables.</li>
-<li>The Memento must have two interfaces.<ul>
-<li>an interface to the caretaker. This interface must not allow any operations or any access to internal state stored by the memento and thus honors encapsulation. </li>
-<li>The other interface is to the originator and allows the originator to access any state variables necessary to for the originator to restore previous state.</li>
+        <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>Use the Prototype Pattern when creating an instance of a given class is either expensive or complicated. </p>
+<h2 id="Scenario"><a href="#Scenario" class="headerlink" title="Scenario"></a>Scenario</h2><p>Your interactive role playing game has an insatiable appetite for monsters. </p>
+<p>As your heros make their journey through a dynamically created landscape, they encounter an endless chain of foes that must be subdued. </p>
+<p>You’d like the monster’s characteristics to evolve with the changing landscape. </p>
+<p>It doesn’t make a lot of sense for bird-like monsters to follow your characters into underseas realms. </p>
+<p>Finally, you’d like to allow advanced players to create their own custom monsters. </p>
+<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><p>The Prototype Pattern allows you to make new instances by copying existing instances. </p>
+<p>(In Java this typically means using the clone() method, or de-serialization when you need deep copies.) </p>
+<p>A key aspect of this pattern is that the client code can make new instances without knowing which specific class is being instantiated. </p>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/protoMons02.png" alt></p>
+<p><img src="/image/protoMons01.png" alt></p>
+<h2 id="Benefits"><a href="#Benefits" class="headerlink" title="Benefits"></a>Benefits</h2><ul>
+<li>Hides the complexities of making new instances from the client. </li>
+<li>Provides the option for the client to generate objects whose type is not known. </li>
+<li>In some circumstances, copying an object can be more efficient than creating a new object. </li>
 </ul>
-</li>
-</ul>
-</li>
-<li>Originator<ul>
-<li>Creates a memento object capturing the originators internal state.</li>
-<li>Use the memento object to restore its previous state.</li>
-</ul>
-</li>
-<li>Caretaker<ul>
-<li>Responsible for keeping the memento.</li>
-<li>The memento is opaque to the caretaker, and the caretaker must not operate on it.</li>
-</ul>
-</li>
-</ul>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/mementoPattern011.png" alt></p>
-<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><img src="/image/memento02.png" alt></p>
-<p><img src="/image/memento03.png" alt></p>
-<p><img src="/image/memento04.png" alt></p>
-<p><img src="/image/memento05.png" alt></p>
-<p><img src="/image/memento06.png" alt></p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
-<li><a href="https://www.tutorialspoint.com/design_pattern/memento_pattern.htm" target="_blank" rel="noopener">https://www.tutorialspoint.com/design_pattern/memento_pattern.htm</a></li>
-<li><a href="https://www.oodesign.com/memento-pattern.html" target="_blank" rel="noopener">https://www.oodesign.com/memento-pattern.html</a></li>
-</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Head First Design Pattern</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/28/Memento Pattern01/" data-id="ck6ggdr5c00dnagqxcj9zeoqs" data-title="Memento Pattern01" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/28/Prototype Pattern02/" data-id="ck6t1cab800dl256w4bcf0vo7" data-title="Prototype Pattern02" class="article-share-link">Share</a>
       
       
       
@@ -187,7 +171,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/27/나이트의 이동/" data-id="ck6ggdr5b00dlagqxuu9jexzr" data-title="나이트의 이동" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/27/나이트의 이동/" data-id="ck6t1cab600dd256w41thkept" data-title="나이트의 이동" class="article-share-link">Share</a>
       
       
       
@@ -199,9 +183,9 @@
 
 
   
-    <article id="post-Laplacian Operator" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-High Pass, Low Pass Filters" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/05/22/Laplacian Operator/" class="article-date">
+    <a href="/2018/05/22/High Pass, Low Pass Filters/" class="article-date">
   <time class="dt-published" datetime="2018-05-21T15:00:00.000Z" itemprop="datePublished">2018-05-22</time>
 </a>
     
@@ -217,7 +201,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/22/Laplacian Operator/">Laplacian Operator</a>
+      <a class="p-name article-title" href="/2018/05/22/High Pass, Low Pass Filters/">High Pass, Low Pass Filters</a>
     </h1>
   
 
@@ -225,176 +209,30 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>Laplacian Operator is also a derivative operator which is used to find edges in an image. </p>
-<p>The major difference between Laplacian and other operators like Prewitt, Sobel, Robinson and Kirsch is that these all are first order derivative masks but Laplacian is a second order derivative mask. </p>
-<p>In this mask we have two further classifications one is Positive Laplacian Operator and other is Negative Laplacian Operator.</p>
-<p>Another difference between Laplacian and other operators is that unlike other operators Laplacian didn’t take out edges in any particular direction but it take out edges in following classification.</p>
+        <h2 id="Blurring-masks"><a href="#Blurring-masks" class="headerlink" title="Blurring masks"></a>Blurring masks</h2><p>A blurring mask has the following properties.</p>
 <ul>
-<li>Inward Edges</li>
-<li>Outward Edges</li>
+<li>All the values in blurring masks are positive</li>
+<li>The sum of all the values is equal to 1</li>
+<li>The edge content is reduced by using a blurring mask</li>
+<li>As the size of the mask grow, more smoothing effect will take place</li>
 </ul>
-<p>Let’s see that how Laplacian operator works.</p>
-<h2 id="Positive-Laplacian-Operator"><a href="#Positive-Laplacian-Operator" class="headerlink" title="Positive Laplacian Operator"></a>Positive Laplacian Operator</h2><p>In Positive Laplacian we have standard mask in which center element of the mask should be negative </p>
-<p>and corner elements of mask should be zero.</p>
-<p>Positive Laplacian Operator is use to take out outward edges in an image.</p>
-<p><img src="/image/laplacian01.png" alt> </p>
-<h2 id="Negative-Laplacian-Operator"><a href="#Negative-Laplacian-Operator" class="headerlink" title="Negative Laplacian Operator"></a>Negative Laplacian Operator</h2><p>In negative Laplacian operator we also have a standard mask, in which center element should be positive. All the elements in the corner should be zero and rest of all the elements in the mask should be -1.</p>
-<p>Negative Laplacian operator is use to take out inward edges in an image</p>
-<p><img src="/image/laplacian02.png" alt> </p>
-<h2 id="How-it-works"><a href="#How-it-works" class="headerlink" title="How it works"></a>How it works</h2><p>Laplacian is a derivative operator; its uses highlight gray level discontinuities in an image and try to deemphasize regions with slowly varying gray levels. </p>
-<p>This operation in result produces such images which have grayish edge lines and other discontinuities on a dark background. T</p>
-<p>his produces inward and outward edges in an image</p>
-<p>The important thing is how to apply these filters onto image. </p>
-<p>Remember we can’t apply both the positive and negative Laplacian operator on the same image. </p>
-<p>We have to apply just one but the thing to remember is that if we apply positive Laplacian operator on the image then we subtract the resultant image from the original image to get the sharpened image. </p>
-<p>Similarly if we apply negative Laplacian operator then we have to add the resultant image onto original image to get the sharpened image.</p>
-<p>Let’s apply these filters onto an image and see how it will get us inward and outward edges from an image. </p>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/laplacian03.png" alt> </p>
+<h2 id="Derivative-masks"><a href="#Derivative-masks" class="headerlink" title="Derivative masks"></a>Derivative masks</h2><p>A derivative mask has the following properties.</p>
+<ul>
+<li>A derivative mask have positive and as well as negative values</li>
+<li>The sum of all the values in a derivative mask is equal to zero</li>
+<li>The edge content is increased by a derivative mask</li>
+<li>As the size of the mask grows , more edge content is increased</li>
+</ul>
+<h2 id="Relationship-between-blurring-mask-and-derivative-mask-with-high-pass-filters-and-low-pass-filters"><a href="#Relationship-between-blurring-mask-and-derivative-mask-with-high-pass-filters-and-low-pass-filters" class="headerlink" title="Relationship between blurring mask and derivative mask with high pass filters and low pass filters."></a>Relationship between blurring mask and derivative mask with high pass filters and low pass filters.</h2><ul>
+<li>Blurring masks are also called as low pass filter</li>
+<li>Derivative masks are also called as high pass filter</li>
+</ul>
+<h2 id="High-pass-frequency-components-and-Low-pass-frequency-components"><a href="#High-pass-frequency-components-and-Low-pass-frequency-components" class="headerlink" title="High pass frequency components and Low pass frequency components"></a>High pass frequency components and Low pass frequency components</h2><p>The high pass frequency components denotes edges whereas the low pass frequency components denotes smooth regions.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/22/Laplacian Operator/" data-id="ck6ggdr5a00dhagqxfi9uo7hi" data-title="Laplacian Operator" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Prewitt Operator" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/22/Prewitt Operator/" class="article-date">
-  <time class="dt-published" datetime="2018-05-21T15:00:00.000Z" itemprop="datePublished">2018-05-22</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/dip/">DIP</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/22/Prewitt Operator/">Prewitt Operator</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>Prewitt operator is used for edge detection in an image. It detects two types of edges</p>
-<ul>
-<li>Horizontal edges</li>
-<li>Vertical Edges</li>
-</ul>
-<p>Edges are calculated by using difference between corresponding pixel intensities of an image. </p>
-<p>All the masks that are used for edge detection are also known as derivative masks. </p>
-<p>Because image is also a signal so changes in a signal can only be calculated using differentiation. </p>
-<p>So that’s why these operators are also called as derivative operators or derivative masks.</p>
-<p>All the derivative masks should have the following properties:</p>
-<ul>
-<li>Opposite sign should be present in the mask.</li>
-<li>Sum of mask should be equal to zero.</li>
-<li>More weight means more edge detection.</li>
-</ul>
-<p>Prewitt operator provides us two masks one for detecting edges in horizontal direction and another for detecting edges in an vertical direction.</p>
-<h2 id="Vertical-direction"><a href="#Vertical-direction" class="headerlink" title="Vertical direction"></a>Vertical direction</h2><p><img src="/image/prewitt01.png" alt></p>
-<p>Above mask will find the edges in vertical direction and it is because the zeros column in the vertical direction. When you will convolve this mask on an image, it will give you the vertical edges in an image.</p>
-<h2 id="How-it-works"><a href="#How-it-works" class="headerlink" title="How it works"></a>How it works</h2><p>When we apply this mask on the image it prominent vertical edges. </p>
-<p>It simply works like as first order derivate and calculates the difference of pixel intensities in a edge region. As the center column is of zero so it does not include the original values of an image but rather it calculates the difference of right and left pixel values around that edge. </p>
-<p>This increase the edge intensity and it become enhanced comparatively to the original image.</p>
-<h2 id="Horizontal-Direction"><a href="#Horizontal-Direction" class="headerlink" title="Horizontal Direction"></a>Horizontal Direction</h2><p><img src="/image/prewitt02.png" alt></p>
-<p>Above mask will find edges in horizontal direction and it is because that zeros column is in horizontal direction. When you will convolve this mask onto an image it would prominent horizontal edges in the image.</p>
-<h2 id="How-it-works-1"><a href="#How-it-works-1" class="headerlink" title="How it works"></a>How it works</h2><p>This mask will prominent the horizontal edges in an image. </p>
-<p>It also works on the principle of above mask and calculates difference among the pixel intensities of a particular edge. </p>
-<p>As the center row of mask is consist of zeros so it does not include the original values of edge in the image but rather it calculate the difference of above and below pixel intensities of the particular edge. </p>
-<p>Thus increasing the sudden change of intensities and making the edge more visible. </p>
-<p>Both the above masks follow the principle of derivate mask. </p>
-<p>Both masks have opposite sign in them and both masks sum equals to zero. </p>
-<p>The third condition will not be applicable in this operator as both the above masks are standardize and we can’t change the value in them.</p>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/prewitt03.png" alt></p>
-<p>As you can see that in the first picture on which we apply vertical mask, all the vertical edges are more visible than the original image. </p>
-<p>Similarly in the second picture we have applied the horizontal mask and in result all the horizontal edges are visible. </p>
-<p>So in this way you can see that we can detect both horizontal and vertical edges from an image.</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/22/Prewitt Operator/" data-id="ck6ggdr5a00dfagqxd7oecl3v" data-title="Prewitt Operator" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Frequency domain" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/22/Frequency domain/" class="article-date">
-  <time class="dt-published" datetime="2018-05-21T15:00:00.000Z" itemprop="datePublished">2018-05-22</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/dip/">DIP</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/22/Frequency domain/">Frequency domain</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Frequency-domain-analysis"><a href="#Frequency-domain-analysis" class="headerlink" title="Frequency domain analysis"></a>Frequency domain analysis</h2><p>Till now, all the domains in which we have analyzed a signal , we analyze it with respect to time. </p>
-<p>But in frequency domain we don’t analyze signal with respect to time, but with respect of frequency.</p>
-<h2 id="Difference-between-spatial-domain-and-frequency-domain"><a href="#Difference-between-spatial-domain-and-frequency-domain" class="headerlink" title="Difference between spatial domain and frequency domain"></a>Difference between spatial domain and frequency domain</h2><p>In spatial domain, we deal with images as it is. The value of the pixels of the image change with respect to scene. </p>
-<p>Whereas in frequency domain, we deal with the rate at which the pixel values are changing in spatial domain.</p>
-<h2 id="Spatial-Domain"><a href="#Spatial-Domain" class="headerlink" title="Spatial Domain"></a>Spatial Domain</h2><p>In simple spatial domain, we directly deal with the image matrix</p>
-<p><img src="/image/frequencyD01.png" alt></p>
-<h2 id="Frequency-Domain"><a href="#Frequency-Domain" class="headerlink" title="Frequency Domain"></a>Frequency Domain</h2><p>We first transform the image to its frequency distribution. </p>
-<p>Then our black box system perform what ever processing it has to performed, </p>
-<p>and the output of the black box in this case is not an image, but a transformation. </p>
-<p>After performing inverse transformation, it is converted into an image which is then viewed in spatial domain.</p>
-<p><img src="/image/frequencyD02.png" alt></p>
-<h2 id="Transformation"><a href="#Transformation" class="headerlink" title="Transformation"></a>Transformation</h2><p>A signal can be converted from time domain into frequency domain using mathematical operators called transforms. There are many kind of transformation that does this. Some of them are given below.</p>
-<ul>
-<li>Fourier Series</li>
-<li>Fourier transformation</li>
-<li>Laplace transform</li>
-<li>Z transform</li>
-</ul>
-<h2 id="Frequency-components"><a href="#Frequency-components" class="headerlink" title="Frequency components"></a>Frequency components</h2><p>Any image in spatial domain can be represented in a frequency domain. </p>
-<p>We will divide frequency components into two major components.</p>
-<h2 id="Low-frequency-components"><a href="#Low-frequency-components" class="headerlink" title="Low frequency components"></a>Low frequency components</h2><p>Low frequency components in an image correspond to smooth regions.</p>
-<h2 id="High-frequency-components"><a href="#High-frequency-components" class="headerlink" title="High frequency components"></a>High frequency components</h2><p>High frequency components correspond to edges in an image.</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/22/Frequency domain/" data-id="ck6ggdr5900ddagqxlsjjpx0y" data-title="Frequency domain" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/22/High Pass, Low Pass Filters/" data-id="ck6t1cab800dj256wzn0auxlt" data-title="High Pass, Low Pass Filters" class="article-share-link">Share</a>
       
       
       
@@ -462,7 +300,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/22/Robinson Compass Mask/" data-id="ck6ggdr5900dbagqxx5jdygll" data-title="Robinson Compass Mask" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/22/Robinson Compass Mask/" data-id="ck6t1cab600df256wx761khw6" data-title="Robinson Compass Mask" class="article-share-link">Share</a>
       
       
       
@@ -529,68 +367,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/22/Krisch Compass Mask/" data-id="ck6ggdr5800d7agqxlh3vab0j" data-title="Krisch Compass Mask" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-High Pass, Low Pass Filters" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/22/High Pass, Low Pass Filters/" class="article-date">
-  <time class="dt-published" datetime="2018-05-21T15:00:00.000Z" itemprop="datePublished">2018-05-22</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/dip/">DIP</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/22/High Pass, Low Pass Filters/">High Pass, Low Pass Filters</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Blurring-masks"><a href="#Blurring-masks" class="headerlink" title="Blurring masks"></a>Blurring masks</h2><p>A blurring mask has the following properties.</p>
-<ul>
-<li>All the values in blurring masks are positive</li>
-<li>The sum of all the values is equal to 1</li>
-<li>The edge content is reduced by using a blurring mask</li>
-<li>As the size of the mask grow, more smoothing effect will take place</li>
-</ul>
-<h2 id="Derivative-masks"><a href="#Derivative-masks" class="headerlink" title="Derivative masks"></a>Derivative masks</h2><p>A derivative mask has the following properties.</p>
-<ul>
-<li>A derivative mask have positive and as well as negative values</li>
-<li>The sum of all the values in a derivative mask is equal to zero</li>
-<li>The edge content is increased by a derivative mask</li>
-<li>As the size of the mask grows , more edge content is increased</li>
-</ul>
-<h2 id="Relationship-between-blurring-mask-and-derivative-mask-with-high-pass-filters-and-low-pass-filters"><a href="#Relationship-between-blurring-mask-and-derivative-mask-with-high-pass-filters-and-low-pass-filters" class="headerlink" title="Relationship between blurring mask and derivative mask with high pass filters and low pass filters."></a>Relationship between blurring mask and derivative mask with high pass filters and low pass filters.</h2><ul>
-<li>Blurring masks are also called as low pass filter</li>
-<li>Derivative masks are also called as high pass filter</li>
-</ul>
-<h2 id="High-pass-frequency-components-and-Low-pass-frequency-components"><a href="#High-pass-frequency-components-and-Low-pass-frequency-components" class="headerlink" title="High pass frequency components and Low pass frequency components"></a>High pass frequency components and Low pass frequency components</h2><p>The high pass frequency components denotes edges whereas the low pass frequency components denotes smooth regions.</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/22/High Pass, Low Pass Filters/" data-id="ck6ggdr5700d5agqxybmsuv37" data-title="High Pass, Low Pass Filters" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/22/Krisch Compass Mask/" data-id="ck6t1cab500db256wt3xs2h39" data-title="Krisch Compass Mask" class="article-share-link">Share</a>
       
       
       
@@ -701,7 +478,214 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/22/Blurring/" data-id="ck6ggdr5600d3agqxpajcw33r" data-title="Blurring" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/22/Blurring/" data-id="ck6t1cab500d9256w7gyziie0" data-title="Blurring" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Prewitt Operator" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/22/Prewitt Operator/" class="article-date">
+  <time class="dt-published" datetime="2018-05-21T15:00:00.000Z" itemprop="datePublished">2018-05-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/dip/">DIP</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/22/Prewitt Operator/">Prewitt Operator</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Prewitt operator is used for edge detection in an image. It detects two types of edges</p>
+<ul>
+<li>Horizontal edges</li>
+<li>Vertical Edges</li>
+</ul>
+<p>Edges are calculated by using difference between corresponding pixel intensities of an image. </p>
+<p>All the masks that are used for edge detection are also known as derivative masks. </p>
+<p>Because image is also a signal so changes in a signal can only be calculated using differentiation. </p>
+<p>So that’s why these operators are also called as derivative operators or derivative masks.</p>
+<p>All the derivative masks should have the following properties:</p>
+<ul>
+<li>Opposite sign should be present in the mask.</li>
+<li>Sum of mask should be equal to zero.</li>
+<li>More weight means more edge detection.</li>
+</ul>
+<p>Prewitt operator provides us two masks one for detecting edges in horizontal direction and another for detecting edges in an vertical direction.</p>
+<h2 id="Vertical-direction"><a href="#Vertical-direction" class="headerlink" title="Vertical direction"></a>Vertical direction</h2><p><img src="/image/prewitt01.png" alt></p>
+<p>Above mask will find the edges in vertical direction and it is because the zeros column in the vertical direction. When you will convolve this mask on an image, it will give you the vertical edges in an image.</p>
+<h2 id="How-it-works"><a href="#How-it-works" class="headerlink" title="How it works"></a>How it works</h2><p>When we apply this mask on the image it prominent vertical edges. </p>
+<p>It simply works like as first order derivate and calculates the difference of pixel intensities in a edge region. As the center column is of zero so it does not include the original values of an image but rather it calculates the difference of right and left pixel values around that edge. </p>
+<p>This increase the edge intensity and it become enhanced comparatively to the original image.</p>
+<h2 id="Horizontal-Direction"><a href="#Horizontal-Direction" class="headerlink" title="Horizontal Direction"></a>Horizontal Direction</h2><p><img src="/image/prewitt02.png" alt></p>
+<p>Above mask will find edges in horizontal direction and it is because that zeros column is in horizontal direction. When you will convolve this mask onto an image it would prominent horizontal edges in the image.</p>
+<h2 id="How-it-works-1"><a href="#How-it-works-1" class="headerlink" title="How it works"></a>How it works</h2><p>This mask will prominent the horizontal edges in an image. </p>
+<p>It also works on the principle of above mask and calculates difference among the pixel intensities of a particular edge. </p>
+<p>As the center row of mask is consist of zeros so it does not include the original values of edge in the image but rather it calculate the difference of above and below pixel intensities of the particular edge. </p>
+<p>Thus increasing the sudden change of intensities and making the edge more visible. </p>
+<p>Both the above masks follow the principle of derivate mask. </p>
+<p>Both masks have opposite sign in them and both masks sum equals to zero. </p>
+<p>The third condition will not be applicable in this operator as both the above masks are standardize and we can’t change the value in them.</p>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/prewitt03.png" alt></p>
+<p>As you can see that in the first picture on which we apply vertical mask, all the vertical edges are more visible than the original image. </p>
+<p>Similarly in the second picture we have applied the horizontal mask and in result all the horizontal edges are visible. </p>
+<p>So in this way you can see that we can detect both horizontal and vertical edges from an image.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/22/Prewitt Operator/" data-id="ck6t1cab300d7256wlyhh8qrr" data-title="Prewitt Operator" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Frequency domain" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/22/Frequency domain/" class="article-date">
+  <time class="dt-published" datetime="2018-05-21T15:00:00.000Z" itemprop="datePublished">2018-05-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/dip/">DIP</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/22/Frequency domain/">Frequency domain</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="Frequency-domain-analysis"><a href="#Frequency-domain-analysis" class="headerlink" title="Frequency domain analysis"></a>Frequency domain analysis</h2><p>Till now, all the domains in which we have analyzed a signal , we analyze it with respect to time. </p>
+<p>But in frequency domain we don’t analyze signal with respect to time, but with respect of frequency.</p>
+<h2 id="Difference-between-spatial-domain-and-frequency-domain"><a href="#Difference-between-spatial-domain-and-frequency-domain" class="headerlink" title="Difference between spatial domain and frequency domain"></a>Difference between spatial domain and frequency domain</h2><p>In spatial domain, we deal with images as it is. The value of the pixels of the image change with respect to scene. </p>
+<p>Whereas in frequency domain, we deal with the rate at which the pixel values are changing in spatial domain.</p>
+<h2 id="Spatial-Domain"><a href="#Spatial-Domain" class="headerlink" title="Spatial Domain"></a>Spatial Domain</h2><p>In simple spatial domain, we directly deal with the image matrix</p>
+<p><img src="/image/frequencyD01.png" alt></p>
+<h2 id="Frequency-Domain"><a href="#Frequency-Domain" class="headerlink" title="Frequency Domain"></a>Frequency Domain</h2><p>We first transform the image to its frequency distribution. </p>
+<p>Then our black box system perform what ever processing it has to performed, </p>
+<p>and the output of the black box in this case is not an image, but a transformation. </p>
+<p>After performing inverse transformation, it is converted into an image which is then viewed in spatial domain.</p>
+<p><img src="/image/frequencyD02.png" alt></p>
+<h2 id="Transformation"><a href="#Transformation" class="headerlink" title="Transformation"></a>Transformation</h2><p>A signal can be converted from time domain into frequency domain using mathematical operators called transforms. There are many kind of transformation that does this. Some of them are given below.</p>
+<ul>
+<li>Fourier Series</li>
+<li>Fourier transformation</li>
+<li>Laplace transform</li>
+<li>Z transform</li>
+</ul>
+<h2 id="Frequency-components"><a href="#Frequency-components" class="headerlink" title="Frequency components"></a>Frequency components</h2><p>Any image in spatial domain can be represented in a frequency domain. </p>
+<p>We will divide frequency components into two major components.</p>
+<h2 id="Low-frequency-components"><a href="#Low-frequency-components" class="headerlink" title="Low frequency components"></a>Low frequency components</h2><p>Low frequency components in an image correspond to smooth regions.</p>
+<h2 id="High-frequency-components"><a href="#High-frequency-components" class="headerlink" title="High frequency components"></a>High frequency components</h2><p>High frequency components correspond to edges in an image.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/22/Frequency domain/" data-id="ck6t1cab200d5256wl5ah52zt" data-title="Frequency domain" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Laplacian Operator" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/22/Laplacian Operator/" class="article-date">
+  <time class="dt-published" datetime="2018-05-21T15:00:00.000Z" itemprop="datePublished">2018-05-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/dip/">DIP</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/22/Laplacian Operator/">Laplacian Operator</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Laplacian Operator is also a derivative operator which is used to find edges in an image. </p>
+<p>The major difference between Laplacian and other operators like Prewitt, Sobel, Robinson and Kirsch is that these all are first order derivative masks but Laplacian is a second order derivative mask. </p>
+<p>In this mask we have two further classifications one is Positive Laplacian Operator and other is Negative Laplacian Operator.</p>
+<p>Another difference between Laplacian and other operators is that unlike other operators Laplacian didn’t take out edges in any particular direction but it take out edges in following classification.</p>
+<ul>
+<li>Inward Edges</li>
+<li>Outward Edges</li>
+</ul>
+<p>Let’s see that how Laplacian operator works.</p>
+<h2 id="Positive-Laplacian-Operator"><a href="#Positive-Laplacian-Operator" class="headerlink" title="Positive Laplacian Operator"></a>Positive Laplacian Operator</h2><p>In Positive Laplacian we have standard mask in which center element of the mask should be negative </p>
+<p>and corner elements of mask should be zero.</p>
+<p>Positive Laplacian Operator is use to take out outward edges in an image.</p>
+<p><img src="/image/laplacian01.png" alt> </p>
+<h2 id="Negative-Laplacian-Operator"><a href="#Negative-Laplacian-Operator" class="headerlink" title="Negative Laplacian Operator"></a>Negative Laplacian Operator</h2><p>In negative Laplacian operator we also have a standard mask, in which center element should be positive. All the elements in the corner should be zero and rest of all the elements in the mask should be -1.</p>
+<p>Negative Laplacian operator is use to take out inward edges in an image</p>
+<p><img src="/image/laplacian02.png" alt> </p>
+<h2 id="How-it-works"><a href="#How-it-works" class="headerlink" title="How it works"></a>How it works</h2><p>Laplacian is a derivative operator; its uses highlight gray level discontinuities in an image and try to deemphasize regions with slowly varying gray levels. </p>
+<p>This operation in result produces such images which have grayish edge lines and other discontinuities on a dark background. T</p>
+<p>his produces inward and outward edges in an image</p>
+<p>The important thing is how to apply these filters onto image. </p>
+<p>Remember we can’t apply both the positive and negative Laplacian operator on the same image. </p>
+<p>We have to apply just one but the thing to remember is that if we apply positive Laplacian operator on the image then we subtract the resultant image from the original image to get the sharpened image. </p>
+<p>Similarly if we apply negative Laplacian operator then we have to add the resultant image onto original image to get the sharpened image.</p>
+<p>Let’s apply these filters onto an image and see how it will get us inward and outward edges from an image. </p>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/laplacian03.png" alt> </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/22/Laplacian Operator/" data-id="ck6t1cab100d3256wt2bopyqg" data-title="Laplacian Operator" class="article-share-link">Share</a>
       
       
       
@@ -774,7 +758,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/22/Edge Detection/" data-id="ck6ggdr5600d1agqx03e45bae" data-title="Edge Detection" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/22/Edge Detection/" data-id="ck6t1cab000d1256wak34r3q9" data-title="Edge Detection" class="article-share-link">Share</a>
       
       
       

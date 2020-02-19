@@ -20,7 +20,7 @@
     <link rel="alternate" href="/atom.xml" title="junhee.ko" type="application/atom+xml">
   
   
-    <link rel="icon" href="/favicon.png">
+    <link rel="icon" href="css/images/favicon.ico">
   
   
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
@@ -146,215 +146,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/29/swift/" data-id="ck6ggdr3h007aagqx92p3s628" data-title="swift" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Centralized Workflow " class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/01/29/Centralized Workflow /" class="article-date">
-  <time class="dt-published" datetime="2018-01-28T15:00:00.000Z" itemprop="datePublished">2018-01-29</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/git/">Git</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/01/29/Centralized Workflow /">Centralized Workflow</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="concept"><a href="#concept" class="headerlink" title="concept"></a>concept</h2><ul>
-<li><p>Clone the central repository</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone ssh://user@host/path/to/repo.git</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Make changes and commit</p>
-</li>
-</ul>
-<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git status # View the state of the repo</span><br><span class="line">git add &lt;some-file&gt; # Stage a file</span><br><span class="line">git commit # Commit a file&lt;/some-file&gt;</span><br></pre></td></tr></table></figure></code></pre><ul>
-<li><p>Push new commits to central repository</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
-
-
-</li>
-</ul>
-<ul>
-<li>Managing conflicts</li>
-</ul>
-<h2 id="example"><a href="#example" class="headerlink" title="example"></a>example</h2><ul>
-<li><p>John works on his feature</p>
-<ul>
-<li>edit, stage, and commit.</li>
-</ul>
-</li>
-<li><p>Mary works on her feature</p>
-<ul>
-<li>edit, stage, and commit.</li>
-</ul>
-</li>
-<li><p>John publishes his feature</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
-
-
-</li>
-</ul>
-<ul>
-<li><p>Mary tries to publish her feature</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
-
-
-</li>
-</ul>
-<pre><code>- error
-- Mary needs to pull John’s updates into her repository</code></pre><ul>
-<li>Mary rebases on top of John’s commit(s)</li>
-</ul>
-<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull --rebase origin master</span><br></pre></td></tr></table></figure></code></pre><ul>
-<li><p>Mary resolves a merge conflict</p>
-<ul>
-<li><p>충돌이 발생하면 다음과 같은 에러</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CONFLICT (content): Merge conflict in &lt;some-file&gt;</span><br></pre></td></tr></table></figure>
-
-
-</li>
-</ul>
-</li>
-</ul>
-<pre><code>- Unmerged paths section에서 conflict file이 무엇인지 확인 가능
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git status</span><br></pre></td></tr></table></figure>
-
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># Unmerged paths:</span><br><span class="line"># (use &quot;git reset HEAD &lt;some-file&gt;...&quot; to unstage)</span><br><span class="line"># (use &quot;git add/rm &lt;some-file&gt;...&quot; as appropriate to mark resolution)</span><br><span class="line">#</span><br><span class="line"># both modified: &lt;some-file&gt;</span><br></pre></td></tr></table></figure>
-
-
-- 파일 수정 후
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git add &lt;some-file&gt;</span><br><span class="line">git rebase --continue</span><br><span class="line">git rebase --abort</span><br><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
-
-
-
-​    </code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/29/Centralized Workflow /" data-id="ck6ggdr3g0077agqxwdyqbg5a" data-title="Centralized Workflow" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-swift 처음 시작하기" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/01/29/swift 처음 시작하기/" class="article-date">
-  <time class="dt-published" datetime="2018-01-28T15:00:00.000Z" itemprop="datePublished">2018-01-29</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/ios/">iOS</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/01/29/swift 처음 시작하기/">swift 처음 시작하기</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><a href="https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/TheBasics.html#//apple_ref/doc/uid/TP40014097-CH5-ID309" target="_blank" rel="noopener">https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/TheBasics.html#//apple_ref/doc/uid/TP40014097-CH5-ID309</a></p>
-<h2 id="Naming-Constants-and-Variables"><a href="#Naming-Constants-and-Variables" class="headerlink" title="Naming Constants and Variables"></a>Naming Constants and Variables</h2><ul>
-<li><p>can contain almost any character, including Unicode characters</p>
-</li>
-<li><p>can’t contain </p>
-<ul>
-<li>whitespace characters, </li>
-<li>mathematical symbols, </li>
-<li>arrows, </li>
-<li>private-use (or invalid) Unicode code points,</li>
-<li>or line- and box-drawing characters.</li>
-</ul>
-</li>
-<li><p>can’t begin with a number</p>
-</li>
-<li><p>Once you’ve declared a constant or variable of a certain type, </p>
-<ul>
-<li>you can’t declare it again with the same name, </li>
-<li>or change it to store values of a different type. </li>
-<li>can’t change a constant into a variable or a variable into a constant.</li>
-</ul>
-</li>
-<li><p>can change the value of an existing variable to another value of a compatible type</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var friendlyWelcome = &quot;Hello!&quot;</span><br><span class="line">friendlyWelcome = &quot;Bonjour!&quot;</span><br></pre></td></tr></table></figure>
-
-
-</li>
-</ul>
-<ul>
-<li><p>the value of a constant can’t be changed after it’s set.</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">let languageName = &quot;Swift&quot;</span><br><span class="line">languageName = &quot;Swift++&quot;</span><br><span class="line">// This is a compile-time error: languageName cannot be changed.</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<h2 id="Printing-Constants-and-Variables"><a href="#Printing-Constants-and-Variables" class="headerlink" title="Printing Constants and Variables"></a>Printing Constants and Variables</h2><ul>
-<li><p>print(_:separator:terminator:) </p>
-<ul>
-<li>The separator and terminator parameter have default values,</li>
-<li>so you can omit them when you call this function</li>
-</ul>
-</li>
-<li><p>string interpolation</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(&quot;The current value of friendlyWelcome is \(friendlyWelcome)&quot;)</span><br></pre></td></tr></table></figure>
-
-
-</li>
-</ul>
-<pre><code>- result =&gt; The current value of friendlyWelcome is Bonjour!</code></pre><h2 id="Comments"><a href="#Comments" class="headerlink" title="Comments"></a>Comments</h2><ul>
-<li>// this is comment</li>
-<li>/* this is comment */</li>
-</ul>
-<h2 id="Semicolons"><a href="#Semicolons" class="headerlink" title="Semicolons"></a>Semicolons</h2><ul>
-<li>doesn’t require you to write a semicolon (;) </li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/29/swift 처음 시작하기/" data-id="ck6ggdr3g0075agqxy0u9o7mv" data-title="swift 처음 시작하기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/29/swift/" data-id="ck6t1ca8w0079256w135say09" data-title="swift" class="article-share-link">Share</a>
       
       
       
@@ -471,7 +263,215 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/29/데이터 타입 기본/" data-id="ck6ggdr3i007eagqxctr60fws" data-title="데이터 타입 기본" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/29/데이터 타입 기본/" data-id="ck6t1ca8x007d256whebk5kuu" data-title="데이터 타입 기본" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Centralized Workflow " class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/01/29/Centralized Workflow /" class="article-date">
+  <time class="dt-published" datetime="2018-01-28T15:00:00.000Z" itemprop="datePublished">2018-01-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/git/">Git</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/01/29/Centralized Workflow /">Centralized Workflow</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="concept"><a href="#concept" class="headerlink" title="concept"></a>concept</h2><ul>
+<li><p>Clone the central repository</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone ssh://user@host/path/to/repo.git</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Make changes and commit</p>
+</li>
+</ul>
+<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git status # View the state of the repo</span><br><span class="line">git add &lt;some-file&gt; # Stage a file</span><br><span class="line">git commit # Commit a file&lt;/some-file&gt;</span><br></pre></td></tr></table></figure></code></pre><ul>
+<li><p>Push new commits to central repository</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<ul>
+<li>Managing conflicts</li>
+</ul>
+<h2 id="example"><a href="#example" class="headerlink" title="example"></a>example</h2><ul>
+<li><p>John works on his feature</p>
+<ul>
+<li>edit, stage, and commit.</li>
+</ul>
+</li>
+<li><p>Mary works on her feature</p>
+<ul>
+<li>edit, stage, and commit.</li>
+</ul>
+</li>
+<li><p>John publishes his feature</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<ul>
+<li><p>Mary tries to publish her feature</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<pre><code>- error
+- Mary needs to pull John’s updates into her repository</code></pre><ul>
+<li>Mary rebases on top of John’s commit(s)</li>
+</ul>
+<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull --rebase origin master</span><br></pre></td></tr></table></figure></code></pre><ul>
+<li><p>Mary resolves a merge conflict</p>
+<ul>
+<li><p>충돌이 발생하면 다음과 같은 에러</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CONFLICT (content): Merge conflict in &lt;some-file&gt;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>- Unmerged paths section에서 conflict file이 무엇인지 확인 가능
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git status</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># Unmerged paths:</span><br><span class="line"># (use &quot;git reset HEAD &lt;some-file&gt;...&quot; to unstage)</span><br><span class="line"># (use &quot;git add/rm &lt;some-file&gt;...&quot; as appropriate to mark resolution)</span><br><span class="line">#</span><br><span class="line"># both modified: &lt;some-file&gt;</span><br></pre></td></tr></table></figure>
+
+
+- 파일 수정 후
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git add &lt;some-file&gt;</span><br><span class="line">git rebase --continue</span><br><span class="line">git rebase --abort</span><br><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
+
+
+
+​    </code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/01/29/Centralized Workflow /" data-id="ck6t1ca8v0074256wiep45rel" data-title="Centralized Workflow" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-swift 처음 시작하기" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/01/29/swift 처음 시작하기/" class="article-date">
+  <time class="dt-published" datetime="2018-01-28T15:00:00.000Z" itemprop="datePublished">2018-01-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/ios/">iOS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/01/29/swift 처음 시작하기/">swift 처음 시작하기</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/TheBasics.html#//apple_ref/doc/uid/TP40014097-CH5-ID309" target="_blank" rel="noopener">https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/TheBasics.html#//apple_ref/doc/uid/TP40014097-CH5-ID309</a></p>
+<h2 id="Naming-Constants-and-Variables"><a href="#Naming-Constants-and-Variables" class="headerlink" title="Naming Constants and Variables"></a>Naming Constants and Variables</h2><ul>
+<li><p>can contain almost any character, including Unicode characters</p>
+</li>
+<li><p>can’t contain </p>
+<ul>
+<li>whitespace characters, </li>
+<li>mathematical symbols, </li>
+<li>arrows, </li>
+<li>private-use (or invalid) Unicode code points,</li>
+<li>or line- and box-drawing characters.</li>
+</ul>
+</li>
+<li><p>can’t begin with a number</p>
+</li>
+<li><p>Once you’ve declared a constant or variable of a certain type, </p>
+<ul>
+<li>you can’t declare it again with the same name, </li>
+<li>or change it to store values of a different type. </li>
+<li>can’t change a constant into a variable or a variable into a constant.</li>
+</ul>
+</li>
+<li><p>can change the value of an existing variable to another value of a compatible type</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var friendlyWelcome = &quot;Hello!&quot;</span><br><span class="line">friendlyWelcome = &quot;Bonjour!&quot;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<ul>
+<li><p>the value of a constant can’t be changed after it’s set.</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">let languageName = &quot;Swift&quot;</span><br><span class="line">languageName = &quot;Swift++&quot;</span><br><span class="line">// This is a compile-time error: languageName cannot be changed.</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="Printing-Constants-and-Variables"><a href="#Printing-Constants-and-Variables" class="headerlink" title="Printing Constants and Variables"></a>Printing Constants and Variables</h2><ul>
+<li><p>print(_:separator:terminator:) </p>
+<ul>
+<li>The separator and terminator parameter have default values,</li>
+<li>so you can omit them when you call this function</li>
+</ul>
+</li>
+<li><p>string interpolation</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(&quot;The current value of friendlyWelcome is \(friendlyWelcome)&quot;)</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<pre><code>- result =&gt; The current value of friendlyWelcome is Bonjour!</code></pre><h2 id="Comments"><a href="#Comments" class="headerlink" title="Comments"></a>Comments</h2><ul>
+<li>// this is comment</li>
+<li>/* this is comment */</li>
+</ul>
+<h2 id="Semicolons"><a href="#Semicolons" class="headerlink" title="Semicolons"></a>Semicolons</h2><ul>
+<li>doesn’t require you to write a semicolon (;) </li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/01/29/swift 처음 시작하기/" data-id="ck6t1ca8u0072256wfl4i6jr4" data-title="swift 처음 시작하기" class="article-share-link">Share</a>
       
       
       
@@ -688,7 +688,7 @@ case west</code></pre><p>}</p>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/29/데이터 타입 고급/" data-id="ck6ggdr8u00ngagqxmw9pe0fe" data-title="데이터 타입 고급" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/29/데이터 타입 고급/" data-id="ck6t1caf800nd256wdmj0r62t" data-title="데이터 타입 고급" class="article-share-link">Share</a>
       
       
       
@@ -734,7 +734,7 @@ case west</code></pre><p>}</p>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/26/수이어쓰기/" data-id="ck6ggdr3f0073agqxfxus1cgs" data-title="수이어쓰기1" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/26/수이어쓰기/" data-id="ck6t1ca8v0077256ww2gqb0fq" data-title="수이어쓰기1" class="article-share-link">Share</a>
       
       
       
@@ -829,7 +829,7 @@ case west</code></pre><p>}</p>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/24/타일/" data-id="ck6ggdr3f0071agqxh0fb7d4b" data-title="타일" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/24/타일/" data-id="ck6t1ca8u0070256wquzcdtz1" data-title="타일" class="article-share-link">Share</a>
       
       
       
@@ -889,7 +889,7 @@ case west</code></pre><p>}</p>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/20/슈퍼마리오/" data-id="ck6ggdr3e006zagqxxccv3bc6" data-title="슈퍼마리오" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/20/슈퍼마리오/" data-id="ck6t1ca8s006w256w35heukvg" data-title="슈퍼마리오" class="article-share-link">Share</a>
       
       
       
@@ -941,7 +941,7 @@ case west</code></pre><p>}</p>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/19/벽장문의 이동/" data-id="ck6ggdr3e006xagqxj5k0xn9h" data-title="벽장문의 이동" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/19/벽장문의 이동/" data-id="ck6t1ca8t006y256wfur1442c" data-title="벽장문의 이동" class="article-share-link">Share</a>
       
       
       
@@ -988,7 +988,7 @@ case west</code></pre><p>}</p>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/18/올림픽/" data-id="ck6ggdr3e006vagqxr69a6h2f" data-title="올림픽" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/18/올림픽/" data-id="ck6t1ca8s006u256w9fhin89k" data-title="올림픽" class="article-share-link">Share</a>
       
       
       

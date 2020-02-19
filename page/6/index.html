@@ -20,7 +20,7 @@
     <link rel="alternate" href="/atom.xml" title="junhee.ko" type="application/atom+xml">
   
   
-    <link rel="icon" href="/favicon.png">
+    <link rel="icon" href="css/images/favicon.ico">
   
   
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
@@ -186,7 +186,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/01/21/git note/" data-id="ck6ggdr7o00lqagqx5r4y6p6u" data-title="Git 정리" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/01/21/git note/" data-id="ck6t1cadx00lq256w5c30i7hs" data-title="Git 정리" class="article-share-link">Share</a>
       
       
       
@@ -198,9 +198,9 @@
 
 
   
-    <article id="post-joi" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-exports" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/12/09/joi/" class="article-date">
+    <a href="/2018/12/09/exports/" class="article-date">
   <time class="dt-published" datetime="2018-12-08T15:00:00.000Z" itemprop="datePublished">2018-12-09</time>
 </a>
     
@@ -216,7 +216,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/09/joi/">Joi</a>
+      <a class="p-name article-title" href="/2018/12/09/exports/">exports</a>
     </h1>
   
 
@@ -224,16 +224,115 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h5 id="Joi-가-뭡니까"><a href="#Joi-가-뭡니까" class="headerlink" title="Joi 가 뭡니까 ?"></a>Joi 가 뭡니까 ?</h5><p>Hapi.js에서 사용하는 parameter 검증 모듈입니다.</p>
-<h5 id="Joi-를-사용하지-않으면"><a href="#Joi-를-사용하지-않으면" class="headerlink" title="Joi 를 사용하지 않으면 ?"></a>Joi 를 사용하지 않으면 ?</h5><p>routing 의 handler 에서 parameter 를 검증하는 로직과 서버 자원을 조회하는 로직이 섞여있습니다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> users = [<span class="string">'Chris'</span>, <span class="string">'Mod'</span>, <span class="string">'Daniel'</span>, <span class="string">'JT'</span>, <span class="string">'Justin'</span>];</span><br><span class="line"></span><br><span class="line">server.route(&#123;</span><br><span class="line">    method: <span class="string">'GET'</span>,</span><br><span class="line">    path:<span class="string">'/users/&#123;id&#125;'</span>,</span><br><span class="line">    handler: <span class="function"><span class="keyword">function</span> (<span class="params">req, reply</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 파라메터 검증 </span></span><br><span class="line">      <span class="keyword">if</span> (req.params.id &amp;lt; users.length) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 검증을 통과하면 로직 수행</span></span><br><span class="line">        reply(&#123;<span class="attr">user</span>: users[req.params.id]&#125;);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 검증 미통과시 404 에러코드 반환 </span></span><br><span class="line">        reply(<span class="string">'No user'</span>).code(<span class="number">404</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+        <h5 id="전역-객체인-exports가-뭔가요"><a href="#전역-객체인-exports가-뭔가요" class="headerlink" title="전역 객체인 exports가 뭔가요?"></a>전역 객체인 exports가 뭔가요?</h5><p>만들고자 하는 모듈을 파일로 만들고, exports 객체의 속성이나 메소드를 정의해주면 모듈을 만들어 낼 수 있습니다. 그리고 만들어진 모듈을 전역 함수 require()를 이용하여 추출합니다.</p>
+<h5 id="여러-속성과-메소드를-모듈로-만들고-이를-사용한-exports-예시는"><a href="#여러-속성과-메소드를-모듈로-만들고-이를-사용한-exports-예시는" class="headerlink" title="여러 속성과 메소드를 모듈로 만들고 이를 사용한 exports 예시는?"></a>여러 속성과 메소드를 모듈로 만들고 이를 사용한 exports 예시는?</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// cicle.js</span></span><br><span class="line"><span class="keyword">var</span> PI = <span class="built_in">Math</span>.PI;</span><br><span class="line"> </span><br><span class="line">exports.area = <span class="function"><span class="keyword">function</span> (<span class="params">r</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> PI * r * r;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line">exports.circumference = <span class="function"><span class="keyword">function</span> (<span class="params">r</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">2</span> * PI * r;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// foo.js</span></span><br><span class="line"><span class="keyword">var</span> circle = <span class="built_in">require</span>(<span class="string">'./circle.js'</span>);</span><br><span class="line"><span class="built_in">console</span>.log( <span class="string">'The area of a circle of radius 4 is '</span></span><br><span class="line">    + circle.area(<span class="number">4</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// result</span></span><br><span class="line">$ node foo.js</span><br><span class="line">The area <span class="keyword">of</span> a circle <span class="keyword">of</span> radius <span class="number">4</span> is <span class="number">50.26548245743669</span></span><br></pre></td></tr></table></figure>
 
-<h5 id="Joi-를-사용하면"><a href="#Joi-를-사용하면" class="headerlink" title="Joi 를 사용하면 ?"></a>Joi 를 사용하면 ?</h5><p>config 속성을 통해 parameter 를 검증할 수 있습니다. config.validate 속성에 자바스크립트 객체를 설정했습니다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Joi = <span class="built_in">require</span>(<span class="string">'joi'</span>);</span><br><span class="line"></span><br><span class="line">server.route(&#123;</span><br><span class="line">  method: <span class="string">'GET'</span>,</span><br><span class="line">  path:<span class="string">'/users/&#123;id&#125;'</span>,</span><br><span class="line">  handler: <span class="function"><span class="keyword">function</span> (<span class="params">req, reply</span>) </span>&#123;</span><br><span class="line">    reply(&#123;<span class="attr">user</span>: users[req.params.id]&#125;);</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// config.validate 속성에 검증 로직을 추가한다. 일종의 스키마 형태 </span></span><br><span class="line">  config: &#123;</span><br><span class="line">    validate: &#123;</span><br><span class="line">      params: &#123;</span><br><span class="line">        id: Joi.number().integer().min(<span class="number">0</span>).max(users.length)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h5 id="exports와-module-exports-차이는"><a href="#exports와-module-exports-차이는" class="headerlink" title="exports와 module.exports 차이는?"></a>exports와 module.exports 차이는?</h5><p>exports는 속성이나 메소드를 여러 개 정의할 수 있지만, module.exports는 하나만 정의할 수 있습니다. 파일 자체를 속성이나 메소드로 사용하는 방식입니다.</p>
+<h5 id="module-exports의-예시는"><a href="#module-exports의-예시는" class="headerlink" title="module.exports의 예시는?"></a>module.exports의 예시는?</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// square.js</span></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">width</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        area: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> width * width;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// bar.js</span></span><br><span class="line"><span class="keyword">var</span> square = <span class="built_in">require</span>(<span class="string">'./square.js'</span>);</span><br><span class="line"><span class="keyword">var</span> mySquare = square(<span class="number">2</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'The area of my square is '</span> + mySquare.area());</span><br><span class="line"></span><br><span class="line"><span class="comment">// result</span></span><br><span class="line">$ node bar.js</span><br><span class="line">The area <span class="keyword">of</span> my square is <span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://opentutorials.org/module/938/7190" target="_blank" rel="noopener">https://opentutorials.org/module/938/7190</a></p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/09/joi/" data-id="ck6ggdr7m00lfagqxe9vbucls" data-title="Joi" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/09/exports/" data-id="ck6t1cadt00lc256wgd7tmy5j" data-title="exports" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Docker" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/09/Docker/" class="article-date">
+  <time class="dt-published" datetime="2018-12-08T15:00:00.000Z" itemprop="datePublished">2018-12-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/etc/">etc</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/09/Docker/">Docker</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="도커가-뭔가요"><a href="#도커가-뭔가요" class="headerlink" title="도커가 뭔가요?"></a>도커가 뭔가요?</h5><p>컨테이너 기반의 가상화 플랫폼입니다.</p>
+<h5 id="컨테이너가-뭔가요"><a href="#컨테이너가-뭔가요" class="headerlink" title="컨테이너가 뭔가요?"></a>컨테이너가 뭔가요?</h5><p>격리된 공간에서 프로세스가 동작하는 기술입니다. 추가되거나 변하는 값은 변하는 값은 컨테이너에 저장됩니다.</p>
+<h5 id="이미지가-뭔가요"><a href="#이미지가-뭔가요" class="headerlink" title="이미지가 뭔가요?"></a>이미지가 뭔가요?</h5><p>컨테이너 실행에 필요한 파일과 설정값등을 포함하고 있는 것 입니다. 상태값을 가지지 않고 변하지 않습니다(Immutable).</p>
+<h5 id="이미지와-컨테이너의-관계는"><a href="#이미지와-컨테이너의-관계는" class="headerlink" title="이미지와 컨테이너의 관계는?"></a>이미지와 컨테이너의 관계는?</h5><p>컨테이너는 이미지가 실행된 상태입니다. 같은 이미지에서 여러개의 컨테이너를 생성할 수 있고 컨테이너의 상태가 바뀌거나 컨테이너가 삭제되더라도 이미지는 변하지 않고 그대로 남아있습니다.</p>
+<h5 id="예를-들면"><a href="#예를-들면" class="headerlink" title="예를 들면?"></a>예를 들면?</h5><p>ubuntu이미지는 ubuntu를 실행하기 위한 모든 파일을 가지고 있습니다. MySQL이미지는 debian을 기반으로 MySQL을 실행하는데 필요한 파일과 실행 명령어, 포트 정보등을 가지고 있습니다.</p>
+<h5 id="이미지는-어떻게-관리하나요"><a href="#이미지는-어떻게-관리하나요" class="headerlink" title="이미지는 어떻게 관리하나요?"></a>이미지는 어떻게 관리하나요?</h5><p>도커 이미지는 Docker hub 에 등록하거나 Docker Registry 저장소를 직접 만들어 관리할 수 있습니다</p>
+<h5 id="기존의-가상화-기술이랑-차이점은"><a href="#기존의-가상화-기술이랑-차이점은" class="headerlink" title="기존의 가상화 기술이랑 차이점은?"></a>기존의 가상화 기술이랑 차이점은?</h5><p>VMware나 VirtualBox같은 가상머신은 호스트 OS위에 게스트 OS 전체를 가상화하여 사용하는 방식입니다. 이 방식은 여러가지 OS를 가상화(리눅스에서 윈도우를 돌린다던가) 할 수 있고 비교적 사용법이 간단하지만 무겁고 느려서 운영환경에선 사용할 수 없었습니다.</p>
+<p>이러한 상황을 개선하기 위해, CPU의 가상화 기술을 이용한 반 가상화 기술이 등장했습니다. 게스트 OS가 필요하긴 하지만 전체OS를 가상화하는 방식이 아니였기 때문에 호스트형 가상화 방식에 비해 성능이 향상되었습니다.</p>
+<p>전가상화든 반가상화든 추가적인 OS를 설치하여 가상화하는 방법은 어쨋든 성능문제가 있었고 이를 개선하기 위해 <strong>프로세스를 격리</strong> 하는 방식이 등장합니다.</p>
+<h5 id="도커의-장점은"><a href="#도커의-장점은" class="headerlink" title="도커의 장점은?"></a>도커의 장점은?</h5><p>더 이상 의존성 파일을 컴파일하고 이것저것 설치할 필요가 없습니다. 말그대로 이미지는 컨테이너를 실행하기 위한 모든 정보를 가지고 있기 때문입니다. 이제 새로운 서버가 추가되면 미리 만들어 놓은 이미지를 다운받고 컨테이너를 생성만 하면 됩니다. 한 서버에 여러개의 컨테이너를 실행할 수 있고, 수십, 수백, 수천대의 서버도 문제없습니다.</p>
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://subicura.com/2017/01/19/docker-guide-for-beginners-1.html" target="_blank" rel="noopener">https://subicura.com/2017/01/19/docker-guide-for-beginners-1.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/09/Docker/" data-id="ck6t1cadr00l7256w7oj0x844" data-title="Docker" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-REPL" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/09/REPL/" class="article-date">
+  <time class="dt-published" datetime="2018-12-08T15:00:00.000Z" itemprop="datePublished">2018-12-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/node-js/">Node.js</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/09/REPL/">REPL</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="REPL-Read-Eval-Print-Loop-은"><a href="#REPL-Read-Eval-Print-Loop-은" class="headerlink" title="REPL (Read Eval Print Loop)은?"></a>REPL (Read Eval Print Loop)은?</h5><p>node.js 코드를 입력할 수 있는 대화형 인터프리터입니다. 터미널에서 node 명령어를 실행하면 실행됩니다.</p>
+<h5 id="cf-event-loop-thread-란"><a href="#cf-event-loop-thread-란" class="headerlink" title="(cf) event loop thread 란 ?"></a>(cf) event loop thread 란 ?</h5><p>node.js는 io 작업시 기다리지 않습니다. 즉, block 되지 않습니다. 따라서 하나의 thread가 다른 요청을 받아서 작업을 처리할수 있습니다. 이 요청을 받아서 처리하는 Thread를 ELP(Event Loop Thread) 라고 합니다.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/09/REPL/" data-id="ck6t1cadr00l5256wztu2lbf2" data-title="REPL" class="article-share-link">Share</a>
       
       
       
@@ -311,56 +410,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/09/React.js/" data-id="ck6ggdr7k00laagqxictefers" data-title="React.js" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-exports" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/12/09/exports/" class="article-date">
-  <time class="dt-published" datetime="2018-12-08T15:00:00.000Z" itemprop="datePublished">2018-12-09</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/node-js/">Node.js</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/09/exports/">exports</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h5 id="전역-객체인-exports가-뭔가요"><a href="#전역-객체인-exports가-뭔가요" class="headerlink" title="전역 객체인 exports가 뭔가요?"></a>전역 객체인 exports가 뭔가요?</h5><p>만들고자 하는 모듈을 파일로 만들고, exports 객체의 속성이나 메소드를 정의해주면 모듈을 만들어 낼 수 있습니다. 그리고 만들어진 모듈을 전역 함수 require()를 이용하여 추출합니다.</p>
-<h5 id="여러-속성과-메소드를-모듈로-만들고-이를-사용한-exports-예시는"><a href="#여러-속성과-메소드를-모듈로-만들고-이를-사용한-exports-예시는" class="headerlink" title="여러 속성과 메소드를 모듈로 만들고 이를 사용한 exports 예시는?"></a>여러 속성과 메소드를 모듈로 만들고 이를 사용한 exports 예시는?</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// cicle.js</span></span><br><span class="line"><span class="keyword">var</span> PI = <span class="built_in">Math</span>.PI;</span><br><span class="line"> </span><br><span class="line">exports.area = <span class="function"><span class="keyword">function</span> (<span class="params">r</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> PI * r * r;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line">exports.circumference = <span class="function"><span class="keyword">function</span> (<span class="params">r</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">2</span> * PI * r;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// foo.js</span></span><br><span class="line"><span class="keyword">var</span> circle = <span class="built_in">require</span>(<span class="string">'./circle.js'</span>);</span><br><span class="line"><span class="built_in">console</span>.log( <span class="string">'The area of a circle of radius 4 is '</span></span><br><span class="line">    + circle.area(<span class="number">4</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// result</span></span><br><span class="line">$ node foo.js</span><br><span class="line">The area <span class="keyword">of</span> a circle <span class="keyword">of</span> radius <span class="number">4</span> is <span class="number">50.26548245743669</span></span><br></pre></td></tr></table></figure>
-
-<h5 id="exports와-module-exports-차이는"><a href="#exports와-module-exports-차이는" class="headerlink" title="exports와 module.exports 차이는?"></a>exports와 module.exports 차이는?</h5><p>exports는 속성이나 메소드를 여러 개 정의할 수 있지만, module.exports는 하나만 정의할 수 있습니다. 파일 자체를 속성이나 메소드로 사용하는 방식입니다.</p>
-<h5 id="module-exports의-예시는"><a href="#module-exports의-예시는" class="headerlink" title="module.exports의 예시는?"></a>module.exports의 예시는?</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// square.js</span></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">width</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        area: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> width * width;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// bar.js</span></span><br><span class="line"><span class="keyword">var</span> square = <span class="built_in">require</span>(<span class="string">'./square.js'</span>);</span><br><span class="line"><span class="keyword">var</span> mySquare = square(<span class="number">2</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'The area of my square is '</span> + mySquare.area());</span><br><span class="line"></span><br><span class="line"><span class="comment">// result</span></span><br><span class="line">$ node bar.js</span><br><span class="line">The area <span class="keyword">of</span> my square is <span class="number">4</span></span><br></pre></td></tr></table></figure>
-
-<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://opentutorials.org/module/938/7190" target="_blank" rel="noopener">https://opentutorials.org/module/938/7190</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/09/exports/" data-id="ck6ggdr7l00ldagqxgzrjy07i" data-title="exports" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/09/React.js/" data-id="ck6t1cadq00l2256wc3vou0op" data-title="React.js" class="article-share-link">Share</a>
       
       
       
@@ -418,7 +468,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/09/RabbitMQ/" data-id="ck6ggdr7j00l6agqxt6wp41d1" data-title="RabbitMQ" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/09/RabbitMQ/" data-id="ck6t1cadq00l0256w718issbv" data-title="RabbitMQ" class="article-share-link">Share</a>
       
       
       
@@ -430,9 +480,9 @@
 
 
   
-    <article id="post-REPL" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-joi" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/12/09/REPL/" class="article-date">
+    <a href="/2018/12/09/joi/" class="article-date">
   <time class="dt-published" datetime="2018-12-08T15:00:00.000Z" itemprop="datePublished">2018-12-09</time>
 </a>
     
@@ -448,7 +498,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/09/REPL/">REPL</a>
+      <a class="p-name article-title" href="/2018/12/09/joi/">Joi</a>
     </h1>
   
 
@@ -456,66 +506,16 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h5 id="REPL-Read-Eval-Print-Loop-은"><a href="#REPL-Read-Eval-Print-Loop-은" class="headerlink" title="REPL (Read Eval Print Loop)은?"></a>REPL (Read Eval Print Loop)은?</h5><p>node.js 코드를 입력할 수 있는 대화형 인터프리터입니다. 터미널에서 node 명령어를 실행하면 실행됩니다.</p>
-<h5 id="cf-event-loop-thread-란"><a href="#cf-event-loop-thread-란" class="headerlink" title="(cf) event loop thread 란 ?"></a>(cf) event loop thread 란 ?</h5><p>node.js는 io 작업시 기다리지 않습니다. 즉, block 되지 않습니다. 따라서 하나의 thread가 다른 요청을 받아서 작업을 처리할수 있습니다. 이 요청을 받아서 처리하는 Thread를 ELP(Event Loop Thread) 라고 합니다.</p>
+        <h5 id="Joi-가-뭡니까"><a href="#Joi-가-뭡니까" class="headerlink" title="Joi 가 뭡니까 ?"></a>Joi 가 뭡니까 ?</h5><p>Hapi.js에서 사용하는 parameter 검증 모듈입니다.</p>
+<h5 id="Joi-를-사용하지-않으면"><a href="#Joi-를-사용하지-않으면" class="headerlink" title="Joi 를 사용하지 않으면 ?"></a>Joi 를 사용하지 않으면 ?</h5><p>routing 의 handler 에서 parameter 를 검증하는 로직과 서버 자원을 조회하는 로직이 섞여있습니다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> users = [<span class="string">'Chris'</span>, <span class="string">'Mod'</span>, <span class="string">'Daniel'</span>, <span class="string">'JT'</span>, <span class="string">'Justin'</span>];</span><br><span class="line"></span><br><span class="line">server.route(&#123;</span><br><span class="line">    method: <span class="string">'GET'</span>,</span><br><span class="line">    path:<span class="string">'/users/&#123;id&#125;'</span>,</span><br><span class="line">    handler: <span class="function"><span class="keyword">function</span> (<span class="params">req, reply</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 파라메터 검증 </span></span><br><span class="line">      <span class="keyword">if</span> (req.params.id &amp;lt; users.length) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 검증을 통과하면 로직 수행</span></span><br><span class="line">        reply(&#123;<span class="attr">user</span>: users[req.params.id]&#125;);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 검증 미통과시 404 에러코드 반환 </span></span><br><span class="line">        reply(<span class="string">'No user'</span>).code(<span class="number">404</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 
+<h5 id="Joi-를-사용하면"><a href="#Joi-를-사용하면" class="headerlink" title="Joi 를 사용하면 ?"></a>Joi 를 사용하면 ?</h5><p>config 속성을 통해 parameter 를 검증할 수 있습니다. config.validate 속성에 자바스크립트 객체를 설정했습니다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Joi = <span class="built_in">require</span>(<span class="string">'joi'</span>);</span><br><span class="line"></span><br><span class="line">server.route(&#123;</span><br><span class="line">  method: <span class="string">'GET'</span>,</span><br><span class="line">  path:<span class="string">'/users/&#123;id&#125;'</span>,</span><br><span class="line">  handler: <span class="function"><span class="keyword">function</span> (<span class="params">req, reply</span>) </span>&#123;</span><br><span class="line">    reply(&#123;<span class="attr">user</span>: users[req.params.id]&#125;);</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// config.validate 속성에 검증 로직을 추가한다. 일종의 스키마 형태 </span></span><br><span class="line">  config: &#123;</span><br><span class="line">    validate: &#123;</span><br><span class="line">      params: &#123;</span><br><span class="line">        id: Joi.number().integer().min(<span class="number">0</span>).max(users.length)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/09/REPL/" data-id="ck6ggdr7j00l3agqx7la9mq8h" data-title="REPL" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Docker" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/12/09/Docker/" class="article-date">
-  <time class="dt-published" datetime="2018-12-08T15:00:00.000Z" itemprop="datePublished">2018-12-09</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/etc/">etc</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/09/Docker/">Docker</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h5 id="도커가-뭔가요"><a href="#도커가-뭔가요" class="headerlink" title="도커가 뭔가요?"></a>도커가 뭔가요?</h5><p>컨테이너 기반의 가상화 플랫폼입니다.</p>
-<h5 id="컨테이너가-뭔가요"><a href="#컨테이너가-뭔가요" class="headerlink" title="컨테이너가 뭔가요?"></a>컨테이너가 뭔가요?</h5><p>격리된 공간에서 프로세스가 동작하는 기술입니다. 추가되거나 변하는 값은 변하는 값은 컨테이너에 저장됩니다.</p>
-<h5 id="이미지가-뭔가요"><a href="#이미지가-뭔가요" class="headerlink" title="이미지가 뭔가요?"></a>이미지가 뭔가요?</h5><p>컨테이너 실행에 필요한 파일과 설정값등을 포함하고 있는 것 입니다. 상태값을 가지지 않고 변하지 않습니다(Immutable).</p>
-<h5 id="이미지와-컨테이너의-관계는"><a href="#이미지와-컨테이너의-관계는" class="headerlink" title="이미지와 컨테이너의 관계는?"></a>이미지와 컨테이너의 관계는?</h5><p>컨테이너는 이미지가 실행된 상태입니다. 같은 이미지에서 여러개의 컨테이너를 생성할 수 있고 컨테이너의 상태가 바뀌거나 컨테이너가 삭제되더라도 이미지는 변하지 않고 그대로 남아있습니다.</p>
-<h5 id="예를-들면"><a href="#예를-들면" class="headerlink" title="예를 들면?"></a>예를 들면?</h5><p>ubuntu이미지는 ubuntu를 실행하기 위한 모든 파일을 가지고 있습니다. MySQL이미지는 debian을 기반으로 MySQL을 실행하는데 필요한 파일과 실행 명령어, 포트 정보등을 가지고 있습니다.</p>
-<h5 id="이미지는-어떻게-관리하나요"><a href="#이미지는-어떻게-관리하나요" class="headerlink" title="이미지는 어떻게 관리하나요?"></a>이미지는 어떻게 관리하나요?</h5><p>도커 이미지는 Docker hub 에 등록하거나 Docker Registry 저장소를 직접 만들어 관리할 수 있습니다</p>
-<h5 id="기존의-가상화-기술이랑-차이점은"><a href="#기존의-가상화-기술이랑-차이점은" class="headerlink" title="기존의 가상화 기술이랑 차이점은?"></a>기존의 가상화 기술이랑 차이점은?</h5><p>VMware나 VirtualBox같은 가상머신은 호스트 OS위에 게스트 OS 전체를 가상화하여 사용하는 방식입니다. 이 방식은 여러가지 OS를 가상화(리눅스에서 윈도우를 돌린다던가) 할 수 있고 비교적 사용법이 간단하지만 무겁고 느려서 운영환경에선 사용할 수 없었습니다.</p>
-<p>이러한 상황을 개선하기 위해, CPU의 가상화 기술을 이용한 반 가상화 기술이 등장했습니다. 게스트 OS가 필요하긴 하지만 전체OS를 가상화하는 방식이 아니였기 때문에 호스트형 가상화 방식에 비해 성능이 향상되었습니다.</p>
-<p>전가상화든 반가상화든 추가적인 OS를 설치하여 가상화하는 방법은 어쨋든 성능문제가 있었고 이를 개선하기 위해 <strong>프로세스를 격리</strong> 하는 방식이 등장합니다.</p>
-<h5 id="도커의-장점은"><a href="#도커의-장점은" class="headerlink" title="도커의 장점은?"></a>도커의 장점은?</h5><p>더 이상 의존성 파일을 컴파일하고 이것저것 설치할 필요가 없습니다. 말그대로 이미지는 컨테이너를 실행하기 위한 모든 정보를 가지고 있기 때문입니다. 이제 새로운 서버가 추가되면 미리 만들어 놓은 이미지를 다운받고 컨테이너를 생성만 하면 됩니다. 한 서버에 여러개의 컨테이너를 실행할 수 있고, 수십, 수백, 수천대의 서버도 문제없습니다.</p>
-<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://subicura.com/2017/01/19/docker-guide-for-beginners-1.html" target="_blank" rel="noopener">https://subicura.com/2017/01/19/docker-guide-for-beginners-1.html</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/09/Docker/" data-id="ck6ggdr7i00l1agqxauixi7jy" data-title="Docker" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/09/joi/" data-id="ck6t1cads00l9256wx52a5nj4" data-title="Joi" class="article-share-link">Share</a>
       
       
       
@@ -583,7 +583,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/09/MongoDB Replication/" data-id="ck6ggdr7h00kzagqxtiyifrf3" data-title="MongoDB Replication" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/09/MongoDB Replication/" data-id="ck6t1cado00kw256wthe1lwp0" data-title="MongoDB Replication" class="article-share-link">Share</a>
       
       
       
@@ -656,7 +656,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/07/JUnit/" data-id="ck6ggdr7c00klagqxf6j7dp0y" data-title="JUnit" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/07/JUnit/" data-id="ck6t1cadk00ki256ws5x2vnq2" data-title="JUnit" class="article-share-link">Share</a>
       
       
       
@@ -714,7 +714,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/07/jenkins/" data-id="ck6ggdr7h00kxagqxnixgn0oy" data-title="jenkins" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/07/jenkins/" data-id="ck6t1cadn00ku256whp8ly5e8" data-title="jenkins" class="article-share-link">Share</a>
       
       
       

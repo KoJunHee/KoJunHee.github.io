@@ -20,7 +20,7 @@
     <link rel="alternate" href="/atom.xml" title="junhee.ko" type="application/atom+xml">
   
   
-    <link rel="icon" href="/favicon.png">
+    <link rel="icon" href="css/images/favicon.ico">
   
   
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
@@ -71,9 +71,9 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-Bits Per Pixel" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-PMF, CDF" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/05/21/Bits Per Pixel/" class="article-date">
+    <a href="/2018/05/21/PMF, CDF/" class="article-date">
   <time class="dt-published" datetime="2018-05-20T15:00:00.000Z" itemprop="datePublished">2018-05-21</time>
 </a>
     
@@ -89,7 +89,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/21/Bits Per Pixel/">Bits Per Pixel</a>
+      <a class="p-name article-title" href="/2018/05/21/PMF, CDF/">PMF, CDF</a>
     </h1>
   
 
@@ -97,47 +97,55 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>Bpp or bits per pixel denotes the number of bits per pixel.</p>
-<h4 id="Number-of-different-colors"><a href="#Number-of-different-colors" class="headerlink" title="Number of different colors"></a>Number of different colors</h4><ul>
-<li><p>the number of different colors depend on the number of bits per pixel.</p>
-<p><img src="https://github.com/KoJunHee/kojunhee.github.io/raw/master/img/bppTable.png" alt="img"></p>
+        <p>In the histogram equalization, the first and the second step are PMF and CDF. </p>
+<h2 id="What-is-PMF"><a href="#What-is-PMF" class="headerlink" title="What is PMF?"></a>What is PMF?</h2><ul>
+<li>probability mass function</li>
+<li>it gives the probability of each number in the data set or </li>
+<li>you can say that it basically gives the count or frequency of each element.</li>
+</ul>
+<h2 id="How-PMF-is-calculated"><a href="#How-PMF-is-calculated" class="headerlink" title="How PMF is calculated"></a>How PMF is calculated</h2><ul>
+<li><p>Consider this matrix.</p>
+<p><img src="/image/pmf01.png" alt></p>
+</li>
+<li><p>Now if we were to calculate the PMF of this matrix, </p>
+</li>
+<li><p>here how we are going to do it.</p>
+</li>
+<li><p>At first, we will take the first value in the matrix , and then we will count, how much time this value appears in the whole matrix. </p>
+</li>
+<li><p>After count they can either be represented in a histogram, or in a table like this below.</p>
+<p><img src="/image/pmf02.png" alt></p>
 </li>
 </ul>
-<h4 id="Shades"><a href="#Shades" class="headerlink" title="Shades"></a>Shades</h4><ul>
-<li>Shades = number of colors = (2)<sup>bpp<sup></sup></sup></li>
-<li>black color<ul>
-<li>0 pixel value always denotes black color. </li>
+<h2 id="Calculating-PMF-from-histogram"><a href="#Calculating-PMF-from-histogram" class="headerlink" title="Calculating PMF from histogram"></a>Calculating PMF from histogram</h2><p><img src="/image/pmf03.png" alt></p>
+<ul>
+<li>The above histogram shows frequency of gray level values for an 8 bits per pixel image.</li>
+<li>Now if we have to calculate its PMF, </li>
+<li>we will simple look at the count of each bar from vertical axis and then divide it by total count.</li>
+<li>So the PMF of the above histogram is this.</li>
 </ul>
+<p><img src="/image/pmf04.png" alt></p>
+<h2 id="What-is-CDF"><a href="#What-is-CDF" class="headerlink" title="What is CDF?"></a>What is CDF?</h2><ul>
+<li>cumulative distributive function</li>
+<li>it is a function that calculates the cumulative sum of all the values that are calculated by PMF. </li>
+<li>It basically sums the previous one.</li>
+</ul>
+<h2 id="How-CDF-is-calculated"><a href="#How-CDF-is-calculated" class="headerlink" title="How CDF is calculated"></a>How CDF is calculated</h2><ul>
+<li><p>Since this histogram is not increasing monotonically, so will make it grow monotonically.</p>
 </li>
-<li>white color<ul>
-<li>(2)<sup>bpp<sup> -1</sup></sup></li>
-<li>In case of 1 bpp, 0 denotes black, and 1 denotes white.</li>
-<li>In case 8 bpp, 0 denotes black, and 255 denotes white.</li>
-</ul>
+<li><p>the first value of PMF remain as it is. </p>
 </li>
-<li>gray color<ul>
-<li>Gray color is actually the mid point of black and white.</li>
-<li>In case of 8bpp, the pixel value that denotes gray color is 127 or 128bpp (if you count from 1, not from 0).</li>
-</ul>
+<li><p>The second value of PMF is added in the first value and placed over 128. </p>
 </li>
-</ul>
-<h4 id="Image-Size"><a href="#Image-Size" class="headerlink" title="Image Size"></a>Image Size</h4><ul>
-<li>Size of an image = rows * cols * bpp</li>
-<li>Assuming it has 1024 rows and it has 1024 columns. </li>
-<li>And since it is a gray scale image, it has 256 different shades of gray or it has bits per pixel</li>
-<li>rows * cols * bpp = 1024 * 1024 * 8 = 8388608 bits.</li>
-<li>Converting it into bytes = 8388608 / 8 = 1048576 bytes.</li>
-<li>Converting into kilo bytes = 1048576 / 1024 = 1024kb.</li>
-<li>Converting into Mega bytes = 1024 / 1024 = 1 Mb.</li>
-</ul>
-<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><ul>
-<li><a href="https://www.tutorialspoint.com/dip/concept_of_bits_per_pixel.htm" target="_blank" rel="noopener">https://www.tutorialspoint.com/dip/concept_of_bits_per_pixel.htm</a></li>
+<li><p>The third value of PMF is added in the second value of CDF , that gives 110/110 which is equal to 1.</p>
+<p><img src="/image/pmf05.png" alt></p>
+</li>
 </ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/21/Bits Per Pixel/" data-id="ck6ggdr4z00cfagqx47gvjr5l" data-title="Bits Per Pixel" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/21/PMF, CDF/" data-id="ck6t1caaz00cx256ww2gnuhso" data-title="PMF, CDF" class="article-share-link">Share</a>
       
       
       
@@ -149,14 +157,14 @@
 
 
   
-    <article id="post-Sampling, Quantization" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-안전영역" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/05/15/Sampling, Quantization/" class="article-date">
+    <a href="/2018/05/15/안전영역/" class="article-date">
   <time class="dt-published" datetime="2018-05-14T15:00:00.000Z" itemprop="datePublished">2018-05-15</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/dip/">DIP</a>
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
   </div>
 
   </div>
@@ -167,7 +175,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/15/Sampling, Quantization/">Sampling, Quantization</a>
+      <a class="p-name article-title" href="/2018/05/15/안전영역/">안전영역</a>
     </h1>
   
 
@@ -175,49 +183,20 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <ul>
-<li><p>Conversion of analog signal to digital signal</p>
-<p><img src="/image/sampling.png" alt></p>
-<ul>
-<li>The output of most of the image sensors is an analog signal, </li>
-<li>and we can not apply digital processing on it </li>
-<li>because we can not store it. </li>
-<li>We can not store it because it requires infinite memory </li>
-<li>to store a signal that can have infinite values.</li>
-<li>So we have to convert an analog signal into a digital signal.</li>
-<li>To create an image which is digital, </li>
-<li>we need to covert continuous data into digital form. </li>
-<li>There are two steps in which it is done.<ul>
-<li>Sampling</li>
-<li>Quantization</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Sampling</p>
-<ul>
-<li><p>It is done on X axis.</p>
-</li>
-<li><p>It is the conversion of x axis (infinite values) to digital values.</p>
-</li>
-</ul>
-</li>
-<li><p>Quantization</p>
-<p><img src="/image/quantization.png" alt></p>
-<ul>
-<li>It is done on Y axis.</li>
-<li>digitizing the amplitudes is known as Quantization</li>
-<li>In the figure shown above, </li>
-<li>these vertically ranging values have been quantized into 5 different levels or partitions. </li>
-<li>Ranging from 0 black to 4 white. </li>
-</ul>
-</li>
-</ul>
+        <p><a href="https://www.acmicpc.net/problem/2468" target="_blank" rel="noopener">https://www.acmicpc.net/problem/2468</a></p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p>비의 높이(지역 높이 최소~최대) 로 다음을 반복</p>
+<ol>
+<li>물에 잠긴 영역 체크</li>
+<li>BFS로 안정 영역 개수 체크</li>
+</ol>
+<h2 id="오답-원인"><a href="#오답-원인" class="headerlink" title="오답 원인"></a>오답 원인</h2><p>최소 답을 0으로 설정하였기 때문에 계속 틀렸었다.</p>
+<h2 id="해결"><a href="#해결" class="headerlink" title="해결"></a>해결</h2><p>최소 답은 1이다. </p>
+<p>왜냐하면, 아무 것도 잠기지 않는다면 하나의 영역이기 때문이다.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/15/Sampling, Quantization/" data-id="ck6ggdr4y00ccagqxak5zh3uz" data-title="Sampling, Quantization" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/15/안전영역/" data-id="ck6t1caap00cb256wg5ilymiq" data-title="안전영역" class="article-share-link">Share</a>
       
       
       
@@ -304,7 +283,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/15/Pixel/" data-id="ck6ggdr4x00caagqxkin0j8jr" data-title="Pixel" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/15/Pixel/" data-id="ck6t1caan00c6256wtb5fdin5" data-title="Pixel" class="article-share-link">Share</a>
       
       
       
@@ -316,14 +295,14 @@
 
 
   
-    <article id="post-안전영역" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-Sampling, Quantization" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/05/15/안전영역/" class="article-date">
+    <a href="/2018/05/15/Sampling, Quantization/" class="article-date">
   <time class="dt-published" datetime="2018-05-14T15:00:00.000Z" itemprop="datePublished">2018-05-15</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+    <a class="article-category-link" href="/categories/dip/">DIP</a>
   </div>
 
   </div>
@@ -334,7 +313,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/15/안전영역/">안전영역</a>
+      <a class="p-name article-title" href="/2018/05/15/Sampling, Quantization/">Sampling, Quantization</a>
     </h1>
   
 
@@ -342,130 +321,41 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p><a href="https://www.acmicpc.net/problem/2468" target="_blank" rel="noopener">https://www.acmicpc.net/problem/2468</a></p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p>비의 높이(지역 높이 최소~최대) 로 다음을 반복</p>
-<ol>
-<li>물에 잠긴 영역 체크</li>
-<li>BFS로 안정 영역 개수 체크</li>
-</ol>
-<h2 id="오답-원인"><a href="#오답-원인" class="headerlink" title="오답 원인"></a>오답 원인</h2><p>최소 답을 0으로 설정하였기 때문에 계속 틀렸었다.</p>
-<h2 id="해결"><a href="#해결" class="headerlink" title="해결"></a>해결</h2><p>최소 답은 1이다. </p>
-<p>왜냐하면, 아무 것도 잠기지 않는다면 하나의 영역이기 때문이다.</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/15/안전영역/" data-id="ck6ggdr4z00chagqx9qerrjhl" data-title="안전영역" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Simple Factory" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/13/Simple Factory/" class="article-date">
-  <time class="dt-published" datetime="2018-05-12T15:00:00.000Z" itemprop="datePublished">2018-05-13</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/13/Simple Factory/">Simple Factory</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>The Simple Factory isn’t actually a Design Pattern; it’s more of a programming idiom. </p>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/simpleFactoryUML.png" alt></p>
-<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><img src="/image/pizza01.png" alt></p>
-<p><img src="/image/pizza02.png" alt></p>
-<p><img src="/image/pizza03.png" alt></p>
-<p><img src="/image/pizza08.png" alt></p>
-<p><img src="/image/pizza04.png" alt></p>
-<p><img src="/image/pizza05.png" alt></p>
-<p><img src="/image/pizza06.png" alt></p>
-<p><img src="/image/pizza07.png" alt></p>
-<h2 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h2><p><img src="/image/pizza09.png" alt></p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Head First Design Pattern</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/13/Simple Factory/" data-id="ck6ggdr4w00c6agqxjvjql9ix" data-title="Simple Factory" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-숨바꼭질" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/13/숨바꼭질/" class="article-date">
-  <time class="dt-published" datetime="2018-05-12T15:00:00.000Z" itemprop="datePublished">2018-05-13</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/13/숨바꼭질/">숨바꼭질</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p><a href="https://www.acmicpc.net/problem/1697" target="_blank" rel="noopener">https://www.acmicpc.net/problem/1697</a></p>
+        <ul>
+<li><p>Conversion of analog signal to digital signal</p>
+<p><img src="/image/sampling.png" alt></p>
 <ul>
-<li>현재 위치에서 이동 가능한 곳 체크<ul>
-<li>X - 1</li>
-<li>X + 1</li>
-<li>X * 2</li>
+<li>The output of most of the image sensors is an analog signal, </li>
+<li>and we can not apply digital processing on it </li>
+<li>because we can not store it. </li>
+<li>We can not store it because it requires infinite memory </li>
+<li>to store a signal that can have infinite values.</li>
+<li>So we have to convert an analog signal into a digital signal.</li>
+<li>To create an image which is digital, </li>
+<li>we need to covert continuous data into digital form. </li>
+<li>There are two steps in which it is done.<ul>
+<li>Sampling</li>
+<li>Quantization</li>
 </ul>
 </li>
-<li>체크 조건<ul>
-<li>이동 가능한 곳이 범위 안에 있나?</li>
-<li>아직 방문하지 않은 곳인가?</li>
 </ul>
 </li>
-<li>Queue에서 이동 가능한 곳을 뽑아냄<ul>
-<li>동생의 위치이면 그래프의 Depth를 출력</li>
+<li><p>Sampling</p>
+<ul>
+<li><p>It is done on X axis.</p>
+</li>
+<li><p>It is the conversion of x axis (infinite values) to digital values.</p>
+</li>
 </ul>
 </li>
-<li>그래프의 Depth를 표현하기 위해 <ul>
-<li>Class는 위치와 depth로 구성</li>
+<li><p>Quantization</p>
+<p><img src="/image/quantization.png" alt></p>
+<ul>
+<li>It is done on Y axis.</li>
+<li>digitizing the amplitudes is known as Quantization</li>
+<li>In the figure shown above, </li>
+<li>these vertically ranging values have been quantized into 5 different levels or partitions. </li>
+<li>Ranging from 0 black to 4 white. </li>
 </ul>
 </li>
 </ul>
@@ -473,7 +363,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/13/숨바꼭질/" data-id="ck6ggdr4x00c8agqxntc9cfcc" data-title="숨바꼭질" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/15/Sampling, Quantization/" data-id="ck6t1caar00cl256wy94bpqdl" data-title="Sampling, Quantization" class="article-share-link">Share</a>
       
       
       
@@ -485,9 +375,9 @@
 
 
   
-    <article id="post-Abstract Factory Pattern01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-Factory Method Pattern01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/05/13/Abstract Factory Pattern01/" class="article-date">
+    <a href="/2018/05/13/Factory Method Pattern01/" class="article-date">
   <time class="dt-published" datetime="2018-05-12T15:00:00.000Z" itemprop="datePublished">2018-05-13</time>
 </a>
     
@@ -503,7 +393,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/13/Abstract Factory Pattern01/">Abstract Factory Pattern01</a>
+      <a class="p-name article-title" href="/2018/05/13/Factory Method Pattern01/">Factory Method Pattern01</a>
     </h1>
   
 
@@ -511,52 +401,101 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>The Abstract Factory Pattern provides an interface for creating families of related or dependent objects without specifying their concrete classes. </p>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/abstractFactoryPattern.png" alt></p>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/abstarct001.png" alt></p>
-<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><img src="/image/afp01.png" alt></p>
-<p><img src="/image/afp02.png" alt></p>
-<p><img src="/image/afp03.png" alt></p>
-<p><img src="/image/afp04.png" alt></p>
-<p><img src="/image/afp05.png" alt></p>
-<p><img src="/image/afp06.png" alt></p>
-<p><img src="/image/afp07.png" alt></p>
-<p><img src="/image/afp08.png" alt></p>
-<p><img src="/image/afp09.png" alt></p>
-<p><img src="/image/afp10.png" alt></p>
-<p><img src="/image/afp11.png" alt></p>
-<p><img src="/image/afp12.png" alt></p>
-<p><img src="/image/afp13.png" alt></p>
-<p><img src="/image/afp14.png" alt></p>
-<p><img src="/image/afp15.png" alt></p>
-<p><img src="/image/afp16.png" alt></p>
-<p><img src="/image/afp17.png" alt></p>
-<p><img src="/image/afp18.png" alt></p>
-<p><img src="/image/afp19.png" alt></p>
-<p><img src="/image/afp20.png" alt></p>
-<p><img src="/image/afp21.png" alt></p>
-<p><img src="/image/afp22.png" alt></p>
-<p><img src="/image/afp23.png" alt></p>
-<p><img src="/image/afp24.png" alt></p>
-<p><img src="/image/afp25.png" alt></p>
-<p><img src="/image/afp26.png" alt></p>
-<p><img src="/image/afp27.png" alt></p>
-<p><img src="/image/afp28.png" alt></p>
-<p><img src="/image/afp29.png" alt></p>
-<p><img src="/image/afp30.png" alt></p>
-<p><img src="/image/afp31.png" alt></p>
-<p><img src="/image/afp32.png" alt></p>
-<p><img src="/image/afp33.png" alt></p>
-<p><img src="/image/afp34.png" alt></p>
-<p><img src="/image/afp35.png" alt></p>
-<p><img src="/image/afp36.png" alt></p>
-<p><img src="/image/afp37.png" alt></p>
+        <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>The Factory Method Pattern defines an interface for creating an object, </p>
+<p>but lets subclasses decide which class to instantiate. </p>
+<p>Factory Method lets a class defer instantiation to subclasses. </p>
+<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/factoryMethod01.png" alt> </p>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/factoryMethod02.png" alt> </p>
+<h2 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h2><p><img src="/image/fm15.png" alt> </p>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Head First Design Pattern</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/13/Abstract Factory Pattern01/" data-id="ck6ggdr4u00byagqx7jekrnkv" data-title="Abstract Factory Pattern01" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/13/Factory Method Pattern01/" data-id="ck6t1caau00cr256w12rsjps9" data-title="Factory Method Pattern01" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Factory Method Pattern02" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/13/Factory Method Pattern02/" class="article-date">
+  <time class="dt-published" datetime="2018-05-12T15:00:00.000Z" itemprop="datePublished">2018-05-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/13/Factory Method Pattern02/">Factory Method Pattern02</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>객체를 생성하는 코드를 별도의 클래스/메소드로 분리함으로써 객체 생성 방식의 변화에 대비하는데 유용하다.</p>
+<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/factorymethodpa01.png" alt></p>
+<ul>
+<li>Product <ul>
+<li>펙토리 메서드로 생설될 객체의 공통 인터페이스</li>
+</ul>
+</li>
+<li>ConcreteProduct<ul>
+<li>구체적으로 객체가 생성되는 클래스</li>
+</ul>
+</li>
+<li>Creator<ul>
+<li>팩토리 메서드를 갖는 클래스</li>
+</ul>
+</li>
+<li>ConcreteCreator<ul>
+<li>팩토리 매서드를 구현하는 클래스</li>
+<li>ConcreteProduct 객체를 생성 </li>
+</ul>
+</li>
+</ul>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/factorymethodpa02.png" alt></p>
+<ul>
+<li>ElevatorScheduler interface<ul>
+<li>Prudct</li>
+</ul>
+</li>
+<li>ResponseTimeScheduler, ThroughputScheduler<ul>
+<li>ConcretePrudct</li>
+</ul>
+</li>
+<li>ElevatorManger<ul>
+<li>Creator</li>
+</ul>
+</li>
+<li>ElevatorMangerWithThroughputScheduling, ElevatorMangerWithDynamicScheduling, ElevatorManagerWithResponseTimeScheduling<ul>
+<li>ConcreteCreator</li>
+</ul>
+</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Java 객체 지향 디자인 패턴 &lt;정인상, 채흥석 지음&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/13/Factory Method Pattern02/" data-id="ck6t1caao00c8256w9cvkpqwq" data-title="Factory Method Pattern02" class="article-share-link">Share</a>
       
       
       
@@ -648,7 +587,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/13/Abstract Factory Pattern02/" data-id="ck6ggdr4v00c0agqxysevtbj9" data-title="Abstract Factory Pattern02" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/13/Abstract Factory Pattern02/" data-id="ck6t1caal00by256w9nczjvme" data-title="Abstract Factory Pattern02" class="article-share-link">Share</a>
       
       
       
@@ -660,9 +599,9 @@
 
 
   
-    <article id="post-Factory Method Pattern02" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-Abstract Factory Pattern01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/05/13/Factory Method Pattern02/" class="article-date">
+    <a href="/2018/05/13/Abstract Factory Pattern01/" class="article-date">
   <time class="dt-published" datetime="2018-05-12T15:00:00.000Z" itemprop="datePublished">2018-05-13</time>
 </a>
     
@@ -678,7 +617,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/13/Factory Method Pattern02/">Factory Method Pattern02</a>
+      <a class="p-name article-title" href="/2018/05/13/Abstract Factory Pattern01/">Abstract Factory Pattern01</a>
     </h1>
   
 
@@ -686,101 +625,170 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>객체를 생성하는 코드를 별도의 클래스/메소드로 분리함으로써 객체 생성 방식의 변화에 대비하는데 유용하다.</p>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/factorymethodpa01.png" alt></p>
-<ul>
-<li>Product <ul>
-<li>펙토리 메서드로 생설될 객체의 공통 인터페이스</li>
-</ul>
-</li>
-<li>ConcreteProduct<ul>
-<li>구체적으로 객체가 생성되는 클래스</li>
-</ul>
-</li>
-<li>Creator<ul>
-<li>팩토리 메서드를 갖는 클래스</li>
-</ul>
-</li>
-<li>ConcreteCreator<ul>
-<li>팩토리 매서드를 구현하는 클래스</li>
-<li>ConcreteProduct 객체를 생성 </li>
-</ul>
-</li>
-</ul>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/factorymethodpa02.png" alt></p>
-<ul>
-<li>ElevatorScheduler interface<ul>
-<li>Prudct</li>
-</ul>
-</li>
-<li>ResponseTimeScheduler, ThroughputScheduler<ul>
-<li>ConcretePrudct</li>
-</ul>
-</li>
-<li>ElevatorManger<ul>
-<li>Creator</li>
-</ul>
-</li>
-<li>ElevatorMangerWithThroughputScheduling, ElevatorMangerWithDynamicScheduling, ElevatorManagerWithResponseTimeScheduling<ul>
-<li>ConcreteCreator</li>
-</ul>
-</li>
-</ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Java 객체 지향 디자인 패턴 &lt;정인상, 채흥석 지음&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/13/Factory Method Pattern02/" data-id="ck6ggdr4v00c2agqxefc60r4c" data-title="Factory Method Pattern02" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Factory Method Pattern01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/13/Factory Method Pattern01/" class="article-date">
-  <time class="dt-published" datetime="2018-05-12T15:00:00.000Z" itemprop="datePublished">2018-05-13</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/13/Factory Method Pattern01/">Factory Method Pattern01</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>The Factory Method Pattern defines an interface for creating an object, </p>
-<p>but lets subclasses decide which class to instantiate. </p>
-<p>Factory Method lets a class defer instantiation to subclasses. </p>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/factoryMethod01.png" alt> </p>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/factoryMethod02.png" alt> </p>
-<h2 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h2><p><img src="/image/fm15.png" alt> </p>
+        <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>The Abstract Factory Pattern provides an interface for creating families of related or dependent objects without specifying their concrete classes. </p>
+<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/abstractFactoryPattern.png" alt></p>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/abstarct001.png" alt></p>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><img src="/image/afp01.png" alt></p>
+<p><img src="/image/afp02.png" alt></p>
+<p><img src="/image/afp03.png" alt></p>
+<p><img src="/image/afp04.png" alt></p>
+<p><img src="/image/afp05.png" alt></p>
+<p><img src="/image/afp06.png" alt></p>
+<p><img src="/image/afp07.png" alt></p>
+<p><img src="/image/afp08.png" alt></p>
+<p><img src="/image/afp09.png" alt></p>
+<p><img src="/image/afp10.png" alt></p>
+<p><img src="/image/afp11.png" alt></p>
+<p><img src="/image/afp12.png" alt></p>
+<p><img src="/image/afp13.png" alt></p>
+<p><img src="/image/afp14.png" alt></p>
+<p><img src="/image/afp15.png" alt></p>
+<p><img src="/image/afp16.png" alt></p>
+<p><img src="/image/afp17.png" alt></p>
+<p><img src="/image/afp18.png" alt></p>
+<p><img src="/image/afp19.png" alt></p>
+<p><img src="/image/afp20.png" alt></p>
+<p><img src="/image/afp21.png" alt></p>
+<p><img src="/image/afp22.png" alt></p>
+<p><img src="/image/afp23.png" alt></p>
+<p><img src="/image/afp24.png" alt></p>
+<p><img src="/image/afp25.png" alt></p>
+<p><img src="/image/afp26.png" alt></p>
+<p><img src="/image/afp27.png" alt></p>
+<p><img src="/image/afp28.png" alt></p>
+<p><img src="/image/afp29.png" alt></p>
+<p><img src="/image/afp30.png" alt></p>
+<p><img src="/image/afp31.png" alt></p>
+<p><img src="/image/afp32.png" alt></p>
+<p><img src="/image/afp33.png" alt></p>
+<p><img src="/image/afp34.png" alt></p>
+<p><img src="/image/afp35.png" alt></p>
+<p><img src="/image/afp36.png" alt></p>
+<p><img src="/image/afp37.png" alt></p>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Head First Design Pattern</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/13/Factory Method Pattern01/" data-id="ck6ggdr4w00c4agqxu3pq409r" data-title="Factory Method Pattern01" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/13/Abstract Factory Pattern01/" data-id="ck6t1caam00c0256wzhi6m0ho" data-title="Abstract Factory Pattern01" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Simple Factory" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/13/Simple Factory/" class="article-date">
+  <time class="dt-published" datetime="2018-05-12T15:00:00.000Z" itemprop="datePublished">2018-05-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/13/Simple Factory/">Simple Factory</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>The Simple Factory isn’t actually a Design Pattern; it’s more of a programming idiom. </p>
+<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/simpleFactoryUML.png" alt></p>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><img src="/image/pizza01.png" alt></p>
+<p><img src="/image/pizza02.png" alt></p>
+<p><img src="/image/pizza03.png" alt></p>
+<p><img src="/image/pizza08.png" alt></p>
+<p><img src="/image/pizza04.png" alt></p>
+<p><img src="/image/pizza05.png" alt></p>
+<p><img src="/image/pizza06.png" alt></p>
+<p><img src="/image/pizza07.png" alt></p>
+<h2 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h2><p><img src="/image/pizza09.png" alt></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Head First Design Pattern</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/13/Simple Factory/" data-id="ck6t1caam00c2256wpn9mdc3m" data-title="Simple Factory" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-숨바꼭질" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/13/숨바꼭질/" class="article-date">
+  <time class="dt-published" datetime="2018-05-12T15:00:00.000Z" itemprop="datePublished">2018-05-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/13/숨바꼭질/">숨바꼭질</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p><a href="https://www.acmicpc.net/problem/1697" target="_blank" rel="noopener">https://www.acmicpc.net/problem/1697</a></p>
+<ul>
+<li>현재 위치에서 이동 가능한 곳 체크<ul>
+<li>X - 1</li>
+<li>X + 1</li>
+<li>X * 2</li>
+</ul>
+</li>
+<li>체크 조건<ul>
+<li>이동 가능한 곳이 범위 안에 있나?</li>
+<li>아직 방문하지 않은 곳인가?</li>
+</ul>
+</li>
+<li>Queue에서 이동 가능한 곳을 뽑아냄<ul>
+<li>동생의 위치이면 그래프의 Depth를 출력</li>
+</ul>
+</li>
+<li>그래프의 Depth를 표현하기 위해 <ul>
+<li>Class는 위치와 depth로 구성</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/13/숨바꼭질/" data-id="ck6t1caan00c4256wo53pbxwd" data-title="숨바꼭질" class="article-share-link">Share</a>
       
       
       
