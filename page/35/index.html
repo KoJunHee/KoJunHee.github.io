@@ -71,6 +71,211 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-선물전달" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/12/25/선물전달/" class="article-date">
+  <time class="dt-published" datetime="2017-12-24T15:00:00.000Z" itemprop="datePublished">2017-12-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/12/25/선물전달/">선물전달</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.acmicpc.net/problem/1947" target="_blank" rel="noopener">https://www.acmicpc.net/problem/1947</a></p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
+<li><p>완전 순열의 개념을 알아야함</p>
+<pre><code>완전 순열 : n명의 사람이 자신의 모자를 벗어두었다가, </code></pre><p>  ​    다시 쓰는데 모든 사람이 자기의 것이 아닌 모자를 쓰는 경우의 수</p>
+</li>
+<li><p>d[i]</p>
+<pre><code>i 명이 선물을 나누는 경우의 수</code></pre></li>
+<li><p>a1 a2 a4 a4 …. aj … ai</p>
+</li>
+<li><p>aj가 i 선물을, ai가 j 선물을 가지는 경우</p>
+<pre><code>나머지 i-2 명이 선물을 나눠 가지면 된다 =&gt; d[i-2]</code></pre><p>  ​    그리고 aj는 ai를 제외한 명 수중 한 명 이므로 i-1</p>
+</li>
+<li><p>aj가 i 선물을 가지고, ai가 j 선물으 가지지 않는 경우</p>
+<pre><code>aj를 제외한 나머지 i-1명이 선물을 나눠 가지면 된다. =&gt; d[i-1]</code></pre><p>  ​    그리고 aj는 ai를 제외한 명 수중 한 명 이므로 i-1</p>
+</li>
+<li><p>그런데, 계속해서 런타임 에러가 발생했음</p>
+<ul>
+<li><p>문제 </p>
+<pre><code>d[2]를 초기화할 때, 반복문 안에서 조건을 걸어서 하지 않고,</code></pre><p>  ​    반복문 밖에서 초기화하면 런타임 에러가 뜸.</p>
+</li>
+<li><p>해결 </p>
+<pre><code>반복문 안에서 초기화</code></pre></li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2017/12/25/선물전달/" data-id="ck70j2muq005bfxqxpyheh410" data-title="선물전달" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-유전자" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/12/23/유전자/" class="article-date">
+  <time class="dt-published" datetime="2017-12-22T15:00:00.000Z" itemprop="datePublished">2017-12-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/12/23/유전자/">유전자</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.acmicpc.net/problem/2306" target="_blank" rel="noopener">https://www.acmicpc.net/problem/2306</a></p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
+<li><p>풀어본 DP 문제 중 제일 어려움</p>
+</li>
+<li><p>d[i, j] </p>
+<pre><code>a[i..j] 의 부분 KOI 유전자 들 중 가장 긴 것의 길이</code></pre><p>  ​    </p>
+</li>
+</ul>
+<ol>
+<li><p>d[i, j] = 2</p>
+<ul>
+<li><p>a[i..j] == “at”</p>
+</li>
+<li><p>a[i..j] == “gc”</p>
+</li>
+</ul>
+</li>
+<li><p>d[i, j] = d[i+1, j-1] + 2</p>
+<ul>
+<li><p>a[i]==”a” , a[j]=”t”</p>
+</li>
+<li><p>a[i]==”g” , a[j]=”c”</p>
+</li>
+</ul>
+</li>
+<li><p>d[i, j] = d[i, k] + d[k+1, j]</p>
+</li>
+</ol>
+<pre><code>- a[i...k] 의 부분 KOI 유전자 들 중 가장 긴 것의 길이 =&gt; d[i, k]
+
+- a[k+1...j] 의 부분 KOI 유전자 들 중 가장 긴 것의 길이 =&gt; d[i, k]</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2017/12/23/유전자/" data-id="ck70j2mup0057fxqxpnpevtja" data-title="유전자" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-수열정렬" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/12/22/수열정렬/" class="article-date">
+  <time class="dt-published" datetime="2017-12-21T15:00:00.000Z" itemprop="datePublished">2017-12-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/12/22/수열정렬/">수열정렬</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.acmicpc.net/problem/1015" target="_blank" rel="noopener">https://www.acmicpc.net/problem/1015</a></p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
+<li><p>어려웠음</p>
+</li>
+<li><p>i 번째 값과 </p>
+</li>
+<li><p>j 번쨰 (0번째 ~ i-1번째) 값을 비교하여</p>
+</li>
+<li><p>큰 값의 index (i or j) 에 해당하는 위치의 배열 값을 ++</p>
+</li>
+<li><p>쉽게 생각해서,</p>
+</li>
+<li><p>a배열의 값들이 동일선상에 위치하는데,</p>
+</li>
+<li><p>비내림차순으로 정렬하기 위해 몇 번씩 뒤로 이동시켜야 하는지 카운트 </p>
+</li>
+<li><p>ex)</p>
+<pre><code>B[p[0]] = A[0] = 7 &lt;-</code></pre><p>  ​    B[p[1]] = A[1] = 4 &lt;-<br>  ​    B[p[2]] = A[2] = 2 &lt;-<br>  ​    B[p[3]] = A[3] = 3 &lt;- 기준<br>  ​    B[p[4]] = A[4] = 9<br>  ​    B[p[5]] = A[5] = 10<br>  ​<br>  ​    </p>
+<pre><code>3을 기준으로 7, 4, 2 와 비교
+
+3과 7 =&gt; 7이 더 크다 =&gt; 7은 한 번뒤로 가야함 =&gt; B의 index 값 증가
+3과 4 =&gt; 4가 더 큼 =&gt; 4는 한 번뒤로 가야함 =&gt; B의 index 값 증가
+3과 2 =&gt; 3이 더 큼 =&gt; 3은 한 번뒤로 가야함 =&gt; B의 index 값 증가</code></pre></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2017/12/22/수열정렬/" data-id="ck70j2muq0059fxqxwf164ul2" data-title="수열정렬" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-인접한 비트의 개수" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2017/12/21/인접한 비트의 개수/" class="article-date">
@@ -121,7 +326,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/12/21/인접한 비트의 개수/" data-id="ck6t1ca850053256wno4lwl71" data-title="인접한 비트의 개수" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/12/21/인접한 비트의 개수/" data-id="ck70j2mum0053fxqxbll13ltz" data-title="인접한 비트의 개수" class="article-share-link">Share</a>
       
       
       
@@ -170,7 +375,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/12/20/보물/" data-id="ck6t1ca84004z256wjwf3c3lh" data-title="보물" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/12/20/보물/" data-id="ck70j2mun0055fxqxei74w0x4" data-title="보물" class="article-share-link">Share</a>
       
       
       
@@ -214,7 +419,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/12/19/유기농배추/" data-id="ck6t1ca870057256wy44ailkv" data-title="유기농배추" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/12/19/유기농배추/" data-id="ck70j2mul004zfxqxjz47cz76" data-title="유기농배추" class="article-share-link">Share</a>
       
       
       
@@ -262,7 +467,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/12/18/줄세우기/" data-id="ck6t1ca82004t256w6vmsawl3" data-title="줄세우기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/12/18/줄세우기/" data-id="ck70j2muk004xfxqx5ppmnmyo" data-title="줄세우기" class="article-share-link">Share</a>
       
       
       
@@ -320,7 +525,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/12/16/나누기/" data-id="ck6t1ca83004x256wlh3p2u5z" data-title="나누기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/12/16/나누기/" data-id="ck70j2mum0051fxqx4pq6c52l" data-title="나누기" class="article-share-link">Share</a>
       
       
       
@@ -390,7 +595,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/12/15/동물원/" data-id="ck6t1ca81004p256wr849poiw" data-title="동물원" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/12/15/동물원/" data-id="ck70j2muj004tfxqxv603yilm" data-title="동물원" class="article-share-link">Share</a>
       
       
       
@@ -439,162 +644,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/12/14/동전 1/" data-id="ck6t1ca82004r256w1gplj9zf" data-title="동전1" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-에이한수" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2017/12/13/에이한수/" class="article-date">
-  <time class="dt-published" datetime="2017-12-12T15:00:00.000Z" itemprop="datePublished">2017-12-13</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2017/12/13/에이한수/">에이한수</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><a href="https://www.acmicpc.net/problem/1066" target="_blank" rel="noopener">https://www.acmicpc.net/problem/1066</a></p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
-<li>단순 수학 문제</li>
-<li>문제에 주어진 대로 따라가면 쉬운 문제</li>
-<li>계속 틀렸다고 나옴 </li>
-<li>다시 풀어봐야 함</li>
-</ul>
-<p>​    </p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/12/13/에이한수/" data-id="ck6t1ca83004v256wsu46zm9g" data-title="에이한수" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-상자넣기" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2017/12/11/상자넣기/" class="article-date">
-  <time class="dt-published" datetime="2017-12-10T15:00:00.000Z" itemprop="datePublished">2017-12-11</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2017/12/11/상자넣기/">상자 넣기</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><a href="https://www.acmicpc.net/problem/1965" target="_blank" rel="noopener">https://www.acmicpc.net/problem/1965</a></p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
-<li><p>dp</p>
-</li>
-<li><p>가장 긴 증가하는 수열과 같은 문제 </p>
-</li>
-<li><p>d[i] : i 를 마지막으로 하는 가장 긴 증가하는 수열</p>
-</li>
-<li><p>d[i]</p>
-<pre><code>0 번째 ~ i-1 번째까지 조사.</code></pre><p>  ​    k번째에서 i번째 수보다 작고, 더 긴 증가하는 부분수열이 된다면<br>  ​    d[i] = d[k] + 1</p>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/12/11/상자넣기/" data-id="ck6t1ca80004n256wcamocbgq" data-title="상자 넣기" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Generations of Tribbles" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2017/12/09/Generations of Tribbles/" class="article-date">
-  <time class="dt-published" datetime="2017-12-08T15:00:00.000Z" itemprop="datePublished">2017-12-09</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2017/12/09/Generations of Tribbles/">Generations of Tribbles</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><a href="https://www.acmicpc.net/problem/9507" target="_blank" rel="noopener">https://www.acmicpc.net/problem/9507</a></p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
-<li><p>dp</p>
-</li>
-<li><p>쉬운 문제</p>
-</li>
-<li><p>d[i]</p>
-<pre><code>d[i-2] + d[i-3] + d[i-4] + d[i-1]</code></pre></li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/12/09/Generations of Tribbles/" data-id="ck6t1ca7z004j256w5b9789m2" data-title="Generations of Tribbles" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/12/14/동전 1/" data-id="ck70j2mui004rfxqxkvhqe96o" data-title="동전1" class="article-share-link">Share</a>
       
       
       
@@ -621,7 +671,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/big-data/">Big Data</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boost-course/">Boost Course</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/dip/">DIP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/data-structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/design-pattern/">Design Pattern</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jpa/">JPA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">Kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/network/">Network</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/os/">OS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/object/">Object</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/software-engineering/">Software Engineering</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/spark/">Spark</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/etc/">etc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ios/">iOS</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/big-data/">Big Data</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boost-course/">Boost Course</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/dip/">DIP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/data-structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/design-pattern/">Design Pattern</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jpa/">JPA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">Kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/network/">Network</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/os/">OS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/object/">Object</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/software-engineering/">Software Engineering</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/spark/">Spark</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tdd/">TDD</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/etc/">etc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ios/">iOS</a></li></ul>
     </div>
   </div>
 
@@ -649,23 +699,23 @@
       <ul>
         
           <li>
+            <a href="/2020/02/24/tdd-chapter-03/">[테스트 주도 개발] 3장_모두를 위한 평등</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/24/tdd-chapter-02/">[테스트 주도 개발] 2장_타락한 객체</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/24/tdd-chapter-01/">[테스트 주도 개발] 1장_다중 통화를 지원하는 Money 객체</a>
+          </li>
+        
+          <li>
             <a href="/2020/02/10/object-chapter-appendix-c/">[오브젝트] 부록 C 동적인 협력, 정적인 코드</a>
           </li>
         
           <li>
             <a href="/2020/02/10/object-chapter-appendix-b/">[오브젝트] 부록 B 타입 계층의 구현</a>
-          </li>
-        
-          <li>
-            <a href="/2020/02/03/object-chapter-appendix-a/">[오브젝트] 부록 A 계약에 의한 설계</a>
-          </li>
-        
-          <li>
-            <a href="/2020/01/27/object-chapter15/">[오브젝트] 15장_디자인 패턴과 프레임워크</a>
-          </li>
-        
-          <li>
-            <a href="/2020/01/26/kafka-chapter7/">[카프카] 7장_데이터 파이프라인 구축</a>
           </li>
         
       </ul>
