@@ -71,14 +71,14 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-tdd-chapter-03" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-bigdata-chapter-01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2020/02/24/tdd-chapter-03/" class="article-date">
-  <time class="dt-published" datetime="2020-02-23T15:00:00.000Z" itemprop="datePublished">2020-02-24</time>
+    <a href="/2020/02/25/bigdata-chapter-01/" class="article-date">
+  <time class="dt-published" datetime="2020-02-24T15:00:00.000Z" itemprop="datePublished">2020-02-25</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/tdd/">TDD</a>
+    <a class="article-category-link" href="/categories/big-data/">Big Data</a>
   </div>
 
   </div>
@@ -89,7 +89,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/02/24/tdd-chapter-03/">[테스트 주도 개발] 3장_모두를 위한 평등</a>
+      <a class="p-name article-title" href="/2020/02/25/bigdata-chapter-01/">[빅데이터] 1장_빅데이터를 위한 새로운 패러다임</a>
     </h1>
   
 
@@ -97,32 +97,66 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>Dollar 객체같이 객체를 값처럼 쓸 수 있는 것을 객체 Value Object Pattern 이라고 한다. 값 객체에 대한 제약사항 중 하나는 객체의 인스턴스 변수가 생성자를 통해서 일단 설정된 후에는 변하지 않는다는 것이다.</p>
-<p>값 객체가 암시하는 것은,</p>
+        <p>이 장에서 다루는 내용,</p>
 <ol>
-<li>모든 연산은 새 객체를 반환해야한다.</li>
-<li>값 객체는 equals() 를 구현해야한다.</li>
+<li>전통적인 데이터베이스를 확장할 때 생기는 문제</li>
+<li>NoSQL 이 만병통치약이 아닌 이유</li>
+<li>빅데이터 시스템의 기본 원칙</li>
+<li>빅데이터 처리 도구의 분야</li>
+<li>SuperWebAnalytics.com 소개</li>
 </ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testEquality</span><span class="params">()</span></span>&#123;</span><br><span class="line">	assertTrue(<span class="keyword">new</span> Dollar(<span class="number">5</span>).equals(<span class="keyword">new</span> Dollar(<span class="number">5</span>)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="1-1-이-책의-구성"><a href="#1-1-이-책의-구성" class="headerlink" title="1.1 이 책의 구성"></a>1.1 이 책의 구성</h4><p>이론을 다루는 장과 사례를 다루는 장으로 나뉜다. 이론을 다루는 장은 빅데이터 시스템을 구축하는 방법을 다루고, 사례를 다루는 장에서는 이론을 구체적인 도구에 연관시킨다.</p>
+<h4 id="1-2-전통적인-데이터베이스를-사용해-확장하기"><a href="#1-2-전통적인-데이터베이스를-사용해-확장하기" class="headerlink" title="1.2 전통적인 데이터베이스를 사용해 확장하기"></a>1.2 전통적인 데이터베이스를 사용해 확장하기</h4><p>간단한 웹 분석 어플리케이션을 개발한다고 하자. 고객의 웹 페이지는 페이지뷰가 발생할 때마다 애플리케이션의 웹서버에 URL 정보를 보내야한다. 웹 서버는 데이터베이스에 페이지뷰에 해당하는 row 의 값을 증가시킨다. 이제 애플리케이션에 개선되며 어떤 문제가 생기는지 살펴본다.</p>
+<h5 id="1-2-1-큐를-사용해-확장하기"><a href="#1-2-1-큐를-사용해-확장하기" class="headerlink" title="1.2.1 큐를 사용해 확장하기"></a>1.2.1 큐를 사용해 확장하기</h5><p>백엔드의 데이터베이스가 부하를 견디지 못해 페이지 뷰를 증가시키는 쓰기 요청을 신속히 처리하지 못해 타임 아웃이 나고 있다고 하자. </p>
+<p>웹 서버가 데이터베이스에 직접 접근하도록 하는 대신, 웹 서버와 데이터베이스 사이에 큐를 넣는다. 그래서, 페이지뷰 이벤트를 받을 때마다 이벤트는 큐에 추가된다. 그리고, 큐에서 한 번에 100개씩 이벤트를 꺼내 하나의 데이터베이스 갱신 요청으로 일괄 처리하는 작업자 프로세스를 추가한다.</p>
+<h5 id="1-2-2-데이터베이스를-샤딩하여-확장하기"><a href="#1-2-2-데이터베이스를-샤딩하여-확장하기" class="headerlink" title="1.2.2 데이터베이스를 샤딩하여 확장하기"></a>1.2.2 데이터베이스를 샤딩하여 확장하기</h5><p>이 웹 분석 애플리케이션이 계속 인기가 높아져, 데이터베이스에 과부하가 다시 걸렸다고 하자. 기존의 작업자 프로세스로는 쓰기 요청을 감당할 수 없어 갱신을 병렬 처리 하기 위해 작업자 프로세스의 수를 늘렸보았지만 도움이 되지 않았다.</p>
+<p>그래서, 데이터베이스 서버를 여러 대 사용하고 테이블을 여러 서버에 분산시키는 수평 분할, 또는 샤딩이라고 불리는 방법을 사용한다. 즉, 각 서버는 전체 테이블의 일부를 가지는 것이다. 쓰기 부하를 여러 서버, 즉 샤드로 분산 시키게 되는 것이다.</p>
+<p>이 애플리케이션의 인기가 높어져, 데이터베이스를 더 많은 샤드로 나누었다고 하자. 샤드 개수가 변경되어서 기존의 애플리케이션 코드에도 반영을 해야하고 이것을 깜빡하면 의도하지 않은 샤드에 기록된다. </p>
+<h5 id="1-2-3-내결함성-문제-발생-시작"><a href="#1-2-3-내결함성-문제-발생-시작" class="headerlink" title="1.2.3 내결함성 문제 발생 시작"></a>1.2.3 내결함성 문제 발생 시작</h5><p>어쨌든 샤드를 늘렸는데, 이제 데이터베이스 장비에서 디스크 장애가 발생하는 상황이 왔다. 디스크 장애가 발생한 장비가 다운된 동안엔 그 디스크에 저장된 데이터를 사용할 수 없다. 해결책으로는,</p>
+<ol>
+<li><p>큐 / 작업자 시스템을 수정해서, 사용 불능 상태의 샤드로 들어오는 증가 이벤트는 별도의 대기 큐에 넣고 이를테면 5분 마다 한 번씩 큐의 쌓여 있는 이벤트를 일괄 처리한다.</p>
+</li>
+<li><p>데이터베이스의 자체 복제 기능을 사용해 마스터가 다운됐을 때 백업으로 사용할 수 있는 슬레이브를 각 샤드에 추가한다. 슬레이브는 쓰기가 불가능하지만, 적어도 고객이 애플리케이션 상태를 조회할 수 있도록은 한다.</p>
+</li>
+</ol>
+<h5 id="1-2-4-데이터-오염-문제"><a href="#1-2-4-데이터-오염-문제" class="headerlink" title="1.2.4 데이터 오염 문제"></a>1.2.4 데이터 오염 문제</h5><p>큐 / 작업자 코드를 수정하는 도중, 실수로 모든 URL 에 대한 페이지 뷰를 1이 아니라 2씩 증가 시키는 버그를 만들었다고 하자. 데이터가 오염된다.</p>
+<h5 id="1-2-5-어디서부터-잘못된-건가"><a href="#1-2-5-어디서부터-잘못된-건가" class="headerlink" title="1.2.5 어디서부터 잘못된 건가 ?"></a>1.2.5 어디서부터 잘못된 건가 ?</h5><p>여러분이 사용하는 데이터베이스는 스스로 데이터가 어떻게 분산되어 있는지 모른다. 이런 복잡함이 모두 데이터베이스 운영 작업과, 애플리케이션 코드 개발 작업에 더해진다. </p>
+<p>시스템이 복잡해질수록 실수할 가능성은 커진다. 인적 내결함성 (human fault-tolerance) 는 필수 사항이다.</p>
+<h5 id="1-2-6-빅데이터-기술이-어떻게-되움이-되는가"><a href="#1-2-6-빅데이터-기술이-어떻게-되움이-되는가" class="headerlink" title="1.2.6 빅데이터 기술이 어떻게 되움이 되는가 ?"></a>1.2.6 빅데이터 기술이 어떻게 되움이 되는가 ?</h5><p>빅데이터용 데이터베이스 및 계산 시스템은 데이터 어떤 식으로 분산되어 있는지를 자체적으로 알고 있다. 그래서, 샤딩이나 복제본 생성 작업을 알아서 처리한다.</p>
+<p>또 다른 핵심 기술은, 데이터를 변경 불가 형태로 만든다는 것이다. 정상 데이터를 파괴하지 않아, 전통적인 데이터베이스보다 강력한 human fault-tolerance 을 제공한다.</p>
+<h4 id="1-3-NoSQL-은-만병-통치약이-아니다"><a href="#1-3-NoSQL-은-만병-통치약이-아니다" class="headerlink" title="1.3 NoSQL 은 만병 통치약이 아니다"></a>1.3 NoSQL 은 만병 통치약이 아니다</h4><p>하둡과 같은 대용량 계산 시스템은, 대용량 일괄 처리식 계산은 병렬로 처리할 수 있지만 계산의 latency 가 오래 걸린다.</p>
+<p>카산드라 같은 NoSQL 데이터베이스는 SQL 보다 훨씬 제한된 모델을 제공해서 확작성을 얻는다. 하지만, 이러한 제한된 데이터모델에 애플리케이션을 끼워 넣는 것은 매우 복잡할 수 있다. 그리고 가변성을 전제로 하기 때문에 인적 내겸함성을 갖추지 못하고 있다.</p>
+<p>이 도구들을 현명하게 잘 결합하면 인적 내결함성을 갖추고 복잡성을 최소하해 확장성 있는 시스템을 만들 수 있다.</p>
+<h4 id="1-4-기본-원칙"><a href="#1-4-기본-원칙" class="headerlink" title="1.4 기본 원칙"></a>1.4 기본 원칙</h4><p>데이터 시스템은 여러 조각 정보들을 조합해서 응답을 만든다. 예를 들어, 은행 계좌 잔고는 그 계좌에서 발생한 모든 거래에 대한 정보를 바탕으로 만들어진다. 더 중요한 것은, 모든 정보의 조각들이 동등한 성격이 아니라는 것이다. 어떤 정보는 다른 정보로부터 유래된다. 은행 계좌 잔고는 거래 내력을 가지고 만들어진다.</p>
+<p>정보가 만들어진 재료가 되는 원래의 정보를 거꾸로 추적해가면 결국 다른 어떤 정보로부터도 파생되지 않은 정보에 다다른다. 이 정보를 데이터라고 한다. 데이터 시스템을 정의하면 다음과 같다. 데이터로 할 수 있는 모든 일은 현재 갖고 있는 모든 데이터를 입력으로 받는 함수로 표현할 수 있다.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">query = function(all data)</span><br></pre></td></tr></table></figure>
 
-<p>빨간 막대다. 가짜로 구현하는 방법은 단순히 true 를 반환하도록 하는 것이다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object object)</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>(삼각측량) 예제가 두 개 이상 있으면 코드를 일반화 할 수 있다.  다음과 같이 5!=6 을 해보자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testEquality</span><span class="params">()</span></span>&#123;</span><br><span class="line">	assertTrue(<span class="keyword">new</span> Dollar(<span class="number">5</span>).equals(<span class="keyword">new</span> Dollar(<span class="number">5</span>)));</span><br><span class="line">  assertFalse(<span class="keyword">new</span> Dollar(<span class="number">5</span>).equals(<span class="keyword">new</span> Dollar(<span class="number">6</span>)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>이제 equlity 를 일반화하자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object object)</span></span>&#123;</span><br><span class="line">	Dollar dollar = (Dollar) object;</span><br><span class="line">	<span class="keyword">return</span> amount == dollar.amount;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>이렇게 어떻게 리팩토링해야하는지 감이 안오면 삼각측량을 사용하자. 코드와 테스트 사이의 중복을 제거하고 일반적인 해법을 구할 방법이 보이면 그냥 그 방법대로 구현하면 된다.</p>
-<p>자, 동일성 문제는 일시적으로 해결했다. 널 값이나 다른 객체들과 비교하는 상황은 일반적이진 않지만 당장은 필요하지 않다. 할일 목록에 적어 두기만 하자.</p>
+<h4 id="1-5-빅데이터-시스템에-요구되는-속성"><a href="#1-5-빅데이터-시스템에-요구되는-속성" class="headerlink" title="1.5 빅데이터 시스템에 요구되는 속성"></a>1.5 빅데이터 시스템에 요구되는 속성</h4><ol>
+<li><p>견고성과 내결함성</p>
+<p>복잡성을 회피해서 시스템에 대해 쉽게 생각할 수 있도록 하는 것도 빅데이터 시스템을 견고하게 만다는 작업이다. 그리고 빅데이터 시스템의 핵심에 불변성과 재계산 체계를 구축해놓으면, 복구 매커니즘이 쉽고 간결해져 사람의 실수에 대한 회복력을 지니게 된다.</p>
+</li>
+<li><p>짧은 읽기 / 갱신 지연 시간<br>시스템의 견고성을 해치지 않고 짧은 읽기 / 갱신 지연 시간을 얻을 수 있어야한다.</p>
+</li>
+<li><p>확장성<br>데이터나 부하가 늘어났을 때 시스템에 자원을 더 투입하는 것만으로 원래의 성능을 유지할수 있는 능력이다.</p>
+</li>
+<li><p>일반성<br>일반적인 시스템은 폭넓은 분야의 애플리케이션에 쓰일 수 있다.</p>
+</li>
+<li><p>유연성<br>대규모 데이터 이전을 용이하게 만다는 것은 시스템에 유연성을 부여하는 방법 중 하나이다.</p>
+</li>
+<li><p>ad hoc query<br>데이터에 대해 즉석 질의를 수행하는 것은 중요하다. </p>
+</li>
+<li><p>최소한의 유지 보수<br>유지보수를 최소화하기 위해, 가능하면 구현 복잡도를 낮게 만들어주는 구성 요소가 필요하다.</p>
+</li>
+<li><p>디버깅 가능성<br>빅데이터 시스템은 뭔가 잘못되었을 때 디버깅하는 데 필요한 정보를 제공해야한다. </p>
+</li>
+</ol>
 <hr>
-<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
+<p>빅데이터, 람다 아키텍처로 알아보는 실시간 빅데이터 구축의 핵심 원리와 기법 &lt;네이선 마츠, 제임스 워렌&gt;</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/02/24/tdd-chapter-03/" data-id="ck70j2n0g00n8fxqxwg5uj9jj" data-title="[테스트 주도 개발] 3장_모두를 위한 평등" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/02/25/bigdata-chapter-01/" data-id="ck71wqzho00nfgq6wmn143gon" data-title="[빅데이터] 1장_빅데이터를 위한 새로운 패러다임" class="article-share-link">Share</a>
       
       
       
@@ -197,7 +231,70 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/02/24/tdd-chapter-02/" data-id="ck70j2n0f00n5fxqxeub5kryy" data-title="[테스트 주도 개발] 2장_타락한 객체" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/02/24/tdd-chapter-02/" data-id="ck71wqzhl00n7gq6wexvw1wzw" data-title="[테스트 주도 개발] 2장_타락한 객체" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-tdd-chapter-03" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/02/24/tdd-chapter-03/" class="article-date">
+  <time class="dt-published" datetime="2020-02-23T15:00:00.000Z" itemprop="datePublished">2020-02-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tdd/">TDD</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/02/24/tdd-chapter-03/">[테스트 주도 개발] 3장_모두를 위한 평등</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Dollar 객체같이 객체를 값처럼 쓸 수 있는 것을 객체 Value Object Pattern 이라고 한다. 값 객체에 대한 제약사항 중 하나는 객체의 인스턴스 변수가 생성자를 통해서 일단 설정된 후에는 변하지 않는다는 것이다.</p>
+<p>값 객체가 암시하는 것은,</p>
+<ol>
+<li>모든 연산은 새 객체를 반환해야한다.</li>
+<li>값 객체는 equals() 를 구현해야한다.</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testEquality</span><span class="params">()</span></span>&#123;</span><br><span class="line">	assertTrue(<span class="keyword">new</span> Dollar(<span class="number">5</span>).equals(<span class="keyword">new</span> Dollar(<span class="number">5</span>)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>빨간 막대다. 가짜로 구현하는 방법은 단순히 true 를 반환하도록 하는 것이다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object object)</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>(삼각측량) 예제가 두 개 이상 있으면 코드를 일반화 할 수 있다.  다음과 같이 5!=6 을 해보자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testEquality</span><span class="params">()</span></span>&#123;</span><br><span class="line">	assertTrue(<span class="keyword">new</span> Dollar(<span class="number">5</span>).equals(<span class="keyword">new</span> Dollar(<span class="number">5</span>)));</span><br><span class="line">  assertFalse(<span class="keyword">new</span> Dollar(<span class="number">5</span>).equals(<span class="keyword">new</span> Dollar(<span class="number">6</span>)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이제 equlity 를 일반화하자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object object)</span></span>&#123;</span><br><span class="line">	Dollar dollar = (Dollar) object;</span><br><span class="line">	<span class="keyword">return</span> amount == dollar.amount;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이렇게 어떻게 리팩토링해야하는지 감이 안오면 삼각측량을 사용하자. 코드와 테스트 사이의 중복을 제거하고 일반적인 해법을 구할 방법이 보이면 그냥 그 방법대로 구현하면 된다.</p>
+<p>자, 동일성 문제는 일시적으로 해결했다. 널 값이나 다른 객체들과 비교하는 상황은 일반적이진 않지만 당장은 필요하지 않다. 할일 목록에 적어 두기만 하자.</p>
+<hr>
+<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2020/02/24/tdd-chapter-03/" data-id="ck71wqzhm00nagq6wfaeroedi" data-title="[테스트 주도 개발] 3장_모두를 위한 평등" class="article-share-link">Share</a>
       
       
       
@@ -285,7 +382,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/02/24/tdd-chapter-01/" data-id="ck70j2n0d00n0fxqxhncngqi1" data-title="[테스트 주도 개발] 1장_다중 통화를 지원하는 Money 객체" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/02/24/tdd-chapter-01/" data-id="ck71wqzhj00n5gq6wl6xqr1pv" data-title="[테스트 주도 개발] 1장_다중 통화를 지원하는 Money 객체" class="article-share-link">Share</a>
       
       
       
@@ -348,7 +445,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/02/10/object-chapter-appendix-c/" data-id="ck70j2n0b00mvfxqxf1dsuzzz" data-title="[오브젝트] 부록 C 동적인 협력, 정적인 코드" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/02/10/object-chapter-appendix-c/" data-id="ck71wqzhn00ncgq6ws5p2486x" data-title="[오브젝트] 부록 C 동적인 협력, 정적인 코드" class="article-share-link">Share</a>
       
       
       
@@ -411,7 +508,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/02/10/object-chapter-appendix-b/" data-id="ck70j2n0h00nafxqx2abxn9jp" data-title="[오브젝트] 부록 B 타입 계층의 구현" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/02/10/object-chapter-appendix-b/" data-id="ck71wqzhi00n2gq6wwcd0e9bl" data-title="[오브젝트] 부록 B 타입 계층의 구현" class="article-share-link">Share</a>
       
       
       
@@ -500,7 +597,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/02/03/object-chapter-appendix-a/" data-id="ck70j2n0c00myfxqxwtt8upql" data-title="[오브젝트] 부록 A 계약에 의한 설계" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/02/03/object-chapter-appendix-a/" data-id="ck71wqzhi00n0gq6wldr4u6uj" data-title="[오브젝트] 부록 A 계약에 의한 설계" class="article-share-link">Share</a>
       
       
       
@@ -610,110 +707,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/01/27/object-chapter15/" data-id="ck70j2n2300oyfxqxlfagb562" data-title="[오브젝트] 15장_디자인 패턴과 프레임워크" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-kafka-chapter7" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/01/26/kafka-chapter7/" class="article-date">
-  <time class="dt-published" datetime="2020-01-25T15:00:00.000Z" itemprop="datePublished">2020-01-26</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/kafka/">Kafka</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/01/26/kafka-chapter7/">[카프카] 7장_데이터 파이프라인 구축</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>데이터 파이프라인을 직접 구성해본다. 다음 애플리케이션을 사용한다.</p>
-<ol>
-<li>아파치 나이파이</li>
-<li>엘라스틱 파일비트</li>
-<li>엘라스틱 엘라스틱서치</li>
-<li>엘라스틱 키바나</li>
-</ol>
-<h2 id="1-카프카를-활용한-데이터-흐름도"><a href="#1-카프카를-활용한-데이터-흐름도" class="headerlink" title="1. 카프카를 활용한 데이터 흐름도"></a>1. 카프카를 활용한 데이터 흐름도</h2><p><img src="/image/kafka_chapter07_01.png" alt></p>
-<p>카프카에서 발생하는 로그를 이용해 데이터 흐름도를 구성해본다.<br>아파치 나이파이는 데이터 처리 흐름을 정의하고, 정의된 흐름대로 자동으로 실행해주는 애플리케이션이다.</p>
-<ol>
-<li>데이터 흐름을 처리하기 위한 워크플로우</li>
-<li>데이터 처리</li>
-</ol>
-<h2 id="2-파일-비트를-이용한-메세지-전송"><a href="#2-파일-비트를-이용한-메세지-전송" class="headerlink" title="2. 파일 비트를 이용한 메세지 전송"></a>2. 파일 비트를 이용한 메세지 전송</h2><p>카프카의 로그를 카프카의 토픽으로 전송하려면 프로듀서가 필요하다. 프로듀서는,</p>
-<ol>
-<li>카프카 클라이언트 라이브러리를 이용해 프로그램으로 직접 구현</li>
-<li>오픈소스 애플리케이션 이용. 여기서는 파일 비트.</li>
-</ol>
-<h2 id="3-나이파이를-이용해-메세지-가져오기"><a href="#3-나이파이를-이용해-메세지-가져오기" class="headerlink" title="3. 나이파이를 이용해 메세지 가져오기"></a>3. 나이파이를 이용해 메세지 가져오기</h2><p>이제 컨슈머를 이용해 카프카 토픽으로부터 메세지를 가져와와야한다. 컨슈머는,</p>
-<ol>
-<li>프로그래밍 언어로 직접 구현</li>
-<li>오픈소스 애플리케이션 이용. 여기서는 나이파이.</li>
-</ol>
-<h4 id="3-1-나이파이를-이용한-컨슈머-설정"><a href="#3-1-나이파이를-이용한-컨슈머-설정" class="headerlink" title="3.1 나이파이를 이용한 컨슈머 설정"></a>3.1 나이파이를 이용한 컨슈머 설정</h4><p><img src="/image/kafka_chapter07_02.png" alt></p>
-<p>프로세서를 추가하는 화면이다.<br>프로세서는 나이파이에서 데이터 처리를 위한 각각의 컴포넌트이다. AMQP 컨슘, 파일로 저장, 전송하기 등 여러가지 작업이 가능하다.<br>ConsumeKafka 프로세서를 추가하고 재생 버튼을 누르면, 설정한 브로커의 토픽에서 메세지를 가져오기 시작한다.<br>컨슈머가 잘 동작하는지 확인하는 방법은,</p>
-<ol>
-<li><p>나이파이에서 컨슈머 프로세서를 실행 시킨 후,</p>
-</li>
-<li><p>카프카 컨슈머 그룹 리스트에서, 등록한 컨슈머 그룹이 잘 등록되었는지 확인한다.<br>등록한 컨슈머 그룹 : ConsumeKafka 프로세서의 Properties 를 정의할 때 그룹 ID 를 기입했음.</p>
-</li>
-</ol>
-<h2 id="4-실시간-분석을-위해-엘라스틱서치에-메세지-저장"><a href="#4-실시간-분석을-위해-엘라스틱서치에-메세지-저장" class="headerlink" title="4. 실시간 분석을 위해 엘라스틱서치에 메세지 저장"></a>4. 실시간 분석을 위해 엘라스틱서치에 메세지 저장</h2><p>이제, 가져온 메세지들을 나이파이의 또 다른 프로세서를 이용해 엘라스틱서치에 저장하겠다.<br>엘라스틱서치는 엘라스틱 사의 분산형 RESTFul 검색 및 분석 엔진이다. 전문 검색 질의를 이용해 원하는 데이터 분석을 빠르게 할 수 있는 애플리케이션이다.</p>
-<h4 id="4-1-나이파이를-이용해-엘라스틱서치로-데이터-전송"><a href="#4-1-나이파이를-이용해-엘라스틱서치로-데이터-전송" class="headerlink" title="4.1 나이파이를 이용해 엘라스틱서치로 데이터 전송"></a>4.1 나이파이를 이용해 엘라스틱서치로 데이터 전송</h4><p>PutElasticsearchHttp 프로세서를 추가한다. 데이터를 엘라스틱서치로 넣어주는 역할을 한다.<br>그리고 다음 화면처럼, ConsumeKafka 와 연결한다.</p>
-<p><img src="/image/kafka_chapter07_03.png" alt></p>
-<p>데이터 흐름 중에 뒤에 있는 프로세서에서 처리 속도가 느려 바로 처리하지 못하거나 프로세서에 문제가 발생한 경우, 두 프로세스를 연결하는 큐에 레코드가 쌓인다.</p>
-<h2 id="5-키바나를-이용해-엘라스틱서치에-저장된-데이터-확인"><a href="#5-키바나를-이용해-엘라스틱서치에-저장된-데이터-확인" class="headerlink" title="5. 키바나를 이용해 엘라스틱서치에 저장된 데이터 확인"></a>5. 키바나를 이용해 엘라스틱서치에 저장된 데이터 확인</h2><p>웹브라우저를 이용해 원하는 시간대에 발생한 로그들을 확인할 수 있고, 필터 기능으로 원하는 패턴의 로그만 빠르게 검색 가능하다.<br>각 브로커에서 수집되는 로그가 카프카의 토픽에 있기 때문에, 엘라스틱 서치에 전송하는 것 외에 추가로 하둡이나 로컬에 저장하길 원하면, 다음 화면처럼 나이파이의 PutHDFS 프로세서를 추가해 쉽게 하둡 등의 저장소에 저장할 수 있다.</p>
-<p><img src="/image/kafka_chapter07_04.png" alt></p>
-<h2 id="6-현재의-토픽을-이용해-새로운-토픽으로-메세지-재생산"><a href="#6-현재의-토픽을-이용해-새로운-토픽으로-메세지-재생산" class="headerlink" title="6. 현재의 토픽을 이용해 새로운 토픽으로 메세지 재생산"></a>6. 현재의 토픽을 이용해 새로운 토픽으로 메세지 재생산</h2><p><img src="/image/kafka_chapter07_05.png" alt></p>
-<p>이번에는, 메세지의 양이 굉장히 많은 토픽의 내용 중 필요한 메세지만 꺼내서 다시 새로운 토픽으로 메세지를 보내는 방법을 정리한다.</p>
-<p>전체적인 데이터 흐름은,</p>
-<ol>
-<li>나이파이 컨슈머가 peter-log 로부터 로그 메세지를 가져오면서 호스트 이름을 확인한다.</li>
-<li>peter-log 토픽으로 로그 메세지를 보내는 서버는 peter-kafka001,peter-kafka002, peter-kafka003 모두 3대이다.</li>
-<li>각각의 메세지마다 호스트 이름이 peter-kafka001,ppeter-kafka002, ppeter-kafka003 이 기록되어 있다.</li>
-<li>전체 메세지 중에 호스트 이름이 peter-kafka001메세지만 peter-kafka001토픽으로 다시 전송하고,</li>
-<li>나머지 메세지는 peter-failure 토픽으로 전송한다.</li>
-</ol>
-<h4 id="6-1-나이파이를-이용한-토픽별-라우팅"><a href="#6-1-나이파이를-이용한-토픽별-라우팅" class="headerlink" title="6.1 나이파이를 이용한 토픽별 라우팅"></a>6.1 나이파이를 이용한 토픽별 라우팅</h4><p>나이파이에서 토픽의 메세지를 가져와서 peter-kafka001 에서 온 메세지인지 확인한 후에 peter-kafka001 토픽으로 전송해야한다.<br>이를 위해, 나이파이의 EvaluateJsonPath, RouteOnAttribute 프로세서를 추가해서 라우팅 작업을 한다.</p>
-<ol>
-<li>EvaluateJsonPath 프로서는, 토픽으로 전송된 JSON 의 beat.hostname 을 읽어 호스트 이름을 구분한다.</li>
-<li>RouteOnAttribute 프로세서는, attrubute 를 이용해 라우팅을 한다.</li>
-</ol>
-<p>마지막으로, 카프카 프로듀서 2개를 추가한다.</p>
-<ol>
-<li>호스트명이 peter-kafka001 인 메세지를  peter-kafka001 토픽으로 전송할 프로듀서</li>
-<li>그 외 메세지를  peter-failure 토픽으로 전송할 프로듀서</li>
-</ol>
-<p>최종 플로우는 다음과 같다.</p>
-<p><img src="/image/kafka_chapter07_06.png" alt></p>
-<hr>
-<p>카프카, 데이터 플랫폼의 최강자 &lt;고승범, 공용준&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/01/26/kafka-chapter7/" data-id="ck70j2n0b00mufxqx6toww9aj" data-title="[카프카] 7장_데이터 파이프라인 구축" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/01/27/object-chapter15/" data-id="ck71wqzjm00p0gq6wgz95w0si" data-title="[오브젝트] 15장_디자인 패턴과 프레임워크" class="article-share-link">Share</a>
       
       
       
@@ -818,7 +812,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/01/26/kafka-chapter8/" data-id="ck70j2n0e00n3fxqxg6gi5soq" data-title="[카프카] 8장_카프카 스트림즈 API" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/01/26/kafka-chapter8/" data-id="ck71wqzhh00mxgq6w42x6685h" data-title="[카프카] 8장_카프카 스트림즈 API" class="article-share-link">Share</a>
       
       
       
@@ -830,14 +824,14 @@
 
 
   
-    <article id="post-object-chapter14" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-kafka-chapter7" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2020/01/20/object-chapter14/" class="article-date">
-  <time class="dt-published" datetime="2020-01-19T15:00:00.000Z" itemprop="datePublished">2020-01-20</time>
+    <a href="/2020/01/26/kafka-chapter7/" class="article-date">
+  <time class="dt-published" datetime="2020-01-25T15:00:00.000Z" itemprop="datePublished">2020-01-26</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/object/">Object</a>
+    <a class="article-category-link" href="/categories/kafka/">Kafka</a>
   </div>
 
   </div>
@@ -848,7 +842,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/01/20/object-chapter14/">[오브젝트] 14장_일관성 있는 협력</a>
+      <a class="p-name article-title" href="/2020/01/26/kafka-chapter7/">[카프카] 7장_데이터 파이프라인 구축</a>
     </h1>
   
 
@@ -856,120 +850,72 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h2 id="01-핸드폰-과금-시스템-변경하기"><a href="#01-핸드폰-과금-시스템-변경하기" class="headerlink" title="01 핸드폰 과금 시스템 변경하기"></a>01 핸드폰 과금 시스템 변경하기</h2><p><img src="/image/object_cowork_chapter14.png" alt></p>
-<h5 id="기본-정책-확장"><a href="#기본-정책-확장" class="headerlink" title="기본 정책 확장"></a>기본 정책 확장</h5><ol>
-<li><p>고정 요금 방식</p>
-<p>ex ) 10초당 18원</p>
-</li>
-<li><p>시간대별 방식</p>
-<p>ex ) 00시-19시 : 10초당 19월, 19시-24시 : 10초당 15원</p>
-</li>
-<li><p>요일별 방식</p>
-<p>ex ) 평일 : 10초당 38원, 공휴일 : 10초당 19원</p>
-</li>
-<li><p>구간별 방식</p>
-<p>ex) 초기 1분 : 10초당 50원, 초기 1분 이후 : 10초당 20원</p>
-</li>
-</ol>
-<h5 id="고정-요금-방식-구현하기"><a href="#고정-요금-방식-구현하기" class="headerlink" title="고정 요금 방식 구현하기"></a>고정 요금 방식 구현하기</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FixedFeePolicy</span> <span class="keyword">extends</span> <span class="title">BasicRatePolicy</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Money amount;</span><br><span class="line">    <span class="keyword">private</span> Duration duration;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">FixedFeePolicy</span><span class="params">(Money amount, Duration duration)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.amount = amount;</span><br><span class="line">        <span class="keyword">this</span>.duration = duration;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Money <span class="title">calculateCallFee</span><span class="params">(Call call)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> amount.times(call.getDuration().getSeconds() / seconds.getSeconds());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h5 id="시간대별-방식-구현하기"><a href="#시간대별-방식-구현하기" class="headerlink" title="시간대별 방식 구현하기"></a>시간대별 방식 구현하기</h5><p>TimeOfDayDiscountPolicy 클래스에서 가장 중요한 것은, 시간에 따라 서로 다른 요금 규칙을 정의하는 방법을 결정하는 것이다. </p>
-<p>이를 위해 서로 다른 List 를 가질 수 있다. 같은 규칙에 포함된 요소들은 List 의 동일한 인덱스에 위치한다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TimeOfDayDiscountPolicy</span> <span class="keyword">extends</span> <span class="title">BasicRatePolicy</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;LocalTime&gt; starts = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="keyword">private</span> List&lt;LocalTime&gt; ends = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="keyword">private</span> List&lt;LocalTime&gt; duration = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="keyword">private</span> List&lt;Money&gt; amounts = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Money <span class="title">calculateCallFee</span><span class="params">(Call call)</span> </span>&#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h5 id="요일별-방식-구현하기"><a href="#요일별-방식-구현하기" class="headerlink" title="요일별 방식 구현하기"></a>요일별 방식 구현하기</h5><p>시간대별 방식의 4개 List 와 다르게, 규칙을 DayOfWeekDiscountRule 이라는 하나의 클래스로 구현해보자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DayOfWeekDiscountRule</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;DayOfWeek&gt; dayOfWeeks = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="keyword">private</span> Duration duration = Duration.ZERO;</span><br><span class="line">    <span class="keyword">private</span> Money amount = Money.ZERO;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DayOfDiscountRule</span><span class="params">(List&lt;DayOfWeek&gt; dayOfWeeks, Duration duration, Money amount)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.dayOfWeeks = dayOfWeeks;</span><br><span class="line">        <span class="keyword">this</span>.duration = duration;</span><br><span class="line">        <span class="keyword">this</span>.amount = amount;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">caculate</span><span class="params">(DateTimeInterval interval)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(dayOfWeeks.contains(interval.getFrom().getDayOfWeek()))&#123;</span><br><span class="line">            <span class="keyword">return</span> ...</span><br><span class="line">        &#125;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DayOfWeekDiscountPolicy</span> <span class="keyword">extends</span> <span class="title">BasicRatePolicy</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;DayOfWeekDiscountRule&gt; rules = <span class="keyword">new</span> ArrayList&lt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DayOfWeekDiscountPolicy</span><span class="params">(List&lt;DayOfWeekDiscountPolicy&gt; rules)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.rules = rules;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Money <span class="title">calculateCallFee</span><span class="params">(Call call)</span> </span>&#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h5 id="구간별-방식-구현하기"><a href="#구간별-방식-구현하기" class="headerlink" title="구간별 방식 구현하기"></a>구간별 방식 구현하기</h5><p>(구간별 방식 구현 코드는 생략)</p>
-<p>지금까지의 구현의 가장 큰 문제는, 이 클래스들이 <code>유사한 문제를 해결하고 있음에도 불구하고 설계에 일관성이 없다</code>는 것이다.</p>
-<h2 id="02-설계에-일관성-부여하기"><a href="#02-설계에-일관성-부여하기" class="headerlink" title="02 설계에 일관성 부여하기"></a>02 설계에 일관성 부여하기</h2><p><code>협력을 일관성 있게</code> 만들기 위해서는,</p>
+        <p>데이터 파이프라인을 직접 구성해본다. 다음 애플리케이션을 사용한다.</p>
 <ol>
-<li>변하는 개념을 변하지 않는 개념으로 분리하라.</li>
-<li>변하는 개념을 캡슐하하라.</li>
+<li>아파치 나이파이</li>
+<li>엘라스틱 파일비트</li>
+<li>엘라스틱 엘라스틱서치</li>
+<li>엘라스틱 키바나</li>
 </ol>
-<h5 id="조건-로직-객체-탐색"><a href="#조건-로직-객체-탐색" class="headerlink" title="조건 로직 객체 탐색"></a>조건 로직 객체 탐색</h5><p>4장의 절차적인 방식으로 구현했던 ReservationAgency 코드를 보자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReservationAgency</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Reservation <span class="title">reservation</span><span class="params">(Screening screening, Customer customer, <span class="keyword">int</span> audienceCount)</span></span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(DiscountCondition condition : movie.getDiscountConditions()&#123;</span><br><span class="line">            <span class="keyword">if</span>(condition.getType() == DiscountCondition.PERIOD)&#123;</span><br><span class="line">                <span class="comment">//기간조건</span></span><br><span class="line">            &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">//회차 조건</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">if</span>(discountable)&#123;</span><br><span class="line">            <span class="keyword">switch</span> (movie.getMovieType())&#123;</span><br><span class="line">                <span class="keyword">case</span> AMOUNT_DISCOUNT:</span><br><span class="line">                    <span class="comment">//금액할인 정책</span></span><br><span class="line">                <span class="keyword">case</span> PERCENT_DISCOUNT:</span><br><span class="line">                    <span class="comment">// 비율 할인 정책</span></span><br><span class="line">                ...</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span>&#123;</span><br><span class="line">            ...</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>객체지향에서는, 변경을 다루는 전통적인 방법은 조건 로직을 객체 사이의 이동으로 바꾸는 것이다.</p>
-<p><img src="/image/object_movie_chapter14.png" alt></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Movie</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> DiscountPolicy discountPolicy;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">calculateMovieFee</span><span class="params">(Screening screening)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> fee.minus(discountPolicy.calculateDiscountAmount(screening));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">DiscountPolicy</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;DiscountCondition&gt; conditions = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">calculateDiscountAmount</span><span class="params">(Screening screening)</span></span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(DiscountCondition each : conditions)&#123;</span><br><span class="line">            <span class="keyword">if</span>(each.isSatisfiedBy(screening))&#123;</span><br><span class="line">                <span class="keyword">return</span> getDiscountAmount(screening);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> screening.getMovieFee();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>객체지향적인 코드는 조건을 판단하지 않는다. 단지 다음 객체로 이동할 뿐이다.</p>
+<h2 id="1-카프카를-활용한-데이터-흐름도"><a href="#1-카프카를-활용한-데이터-흐름도" class="headerlink" title="1. 카프카를 활용한 데이터 흐름도"></a>1. 카프카를 활용한 데이터 흐름도</h2><p><img src="/image/kafka_chapter07_01.png" alt></p>
+<p>카프카에서 발생하는 로그를 이용해 데이터 흐름도를 구성해본다.<br>아파치 나이파이는 데이터 처리 흐름을 정의하고, 정의된 흐름대로 자동으로 실행해주는 애플리케이션이다.</p>
 <ol>
-<li><p>Movie 는 현재의 할인 정책이 어떤 종류인지 판단하지 않는다. 단지 DiscountPolicy 로 향하는 참조를 통해 메세지를 전달할 뿐이다. </p>
-</li>
-<li><p>DiscountPolicy 역시 할인 조건의 종류를 판단하지 않는다. 단지 DiscountCondition 으로 향하는 참조를 통해 메세지를 전단할 뿐이다.</p>
-</li>
+<li>데이터 흐름을 처리하기 위한 워크플로우</li>
+<li>데이터 처리</li>
 </ol>
-<p><code>협력을 일관성 있게</code> 만들기 위한 방법을 다시 정리하면,</p>
+<h2 id="2-파일-비트를-이용한-메세지-전송"><a href="#2-파일-비트를-이용한-메세지-전송" class="headerlink" title="2. 파일 비트를 이용한 메세지 전송"></a>2. 파일 비트를 이용한 메세지 전송</h2><p>카프카의 로그를 카프카의 토픽으로 전송하려면 프로듀서가 필요하다. 프로듀서는,</p>
 <ol>
-<li><p>변하는 개념을 변하지 않는 개념으로 분리하라.</p>
-<p>각 조건문을 개별적인 객체로 분리했고 이 객체들을 일관성 있게 협력하기 위해 타입 계층을 구성했다.</p>
-</li>
-<li><p>변하는 개념을 캡슐하하라.</p>
-<p>Movie 가 알고 있는 사실은 협력하는 객체가 단지 DiscountPolicy 클래스의 인터페이스에 정의된 calculateDiscountAmount 메세지를 이해할 수 있다는 것 뿐이다. </p>
-<p>메세지 수신자 타입은 Movie 에 대해 완벽히 캡슐화되었다.</p>
-</li>
+<li>카프카 클라이언트 라이브러리를 이용해 프로그램으로 직접 구현</li>
+<li>오픈소스 애플리케이션 이용. 여기서는 파일 비트.</li>
 </ol>
-<h5 id="캡슐화-다시-살펴보기"><a href="#캡슐화-다시-살펴보기" class="headerlink" title="캡슐화 다시 살펴보기"></a>캡슐화 다시 살펴보기</h5><p>캡슐화란 변하는 어떤 것이든 감추는 것이다.</p>
-<p>다음 그림에는 다양한 종류의 캡슐화가 공존한다.</p>
-<p><img src="/image/object_encapsulation_chapter14.png" alt></p>
+<h2 id="3-나이파이를-이용해-메세지-가져오기"><a href="#3-나이파이를-이용해-메세지-가져오기" class="headerlink" title="3. 나이파이를 이용해 메세지 가져오기"></a>3. 나이파이를 이용해 메세지 가져오기</h2><p>이제 컨슈머를 이용해 카프카 토픽으로부터 메세지를 가져와와야한다. 컨슈머는,</p>
 <ol>
-<li><p>데이터 캡슐화</p>
-<p>클래스는 내부에 관리하는 데이터를 캡슐화한다.</p>
-</li>
-<li><p>메서드 캡슐화</p>
-<p>DiscountPolicy 클래스에 정의된 getDiscountAmount 메서드의 가시성은 protected 이다.</p>
-<p>즉, 클래스의 외부에서는 이 메서드에 접근하지 못하고 클래스 내부와 서브 클래스에서만 접근이 가능하다.</p>
-</li>
-<li><p>객체 캡슐화</p>
-<p>Movie 클래스는 DiscountPolicy 타입의 인스턴스 변수를 포함한다. </p>
-<p>이 인스턴스 변수는 private 가시성을 가지므로 Movie 와 DiscountPolicy 사이의 관계를 변경해도 외부에는 영향을 미치지 않는다.</p>
-<p>즉, 합성이다.</p>
-</li>
-<li><p>서브타입 캡슐화</p>
-<p>Movie 는 DiscountPolicy 에 대해서 알고 있지만, AmountDiscountPolicy 에 대해서는 모른다. </p>
-<p>그러나 실행 시점에 협력할 수 있다.</p>
-<p>서트타입의 종류를 캡슐화하고 있기 때문에, 다형성의 기반이 된다.</p>
-</li>
+<li>프로그래밍 언어로 직접 구현</li>
+<li>오픈소스 애플리케이션 이용. 여기서는 나이파이.</li>
 </ol>
-<h2 id="3-일관성-있는-기본-정책-구현하기"><a href="#3-일관성-있는-기본-정책-구현하기" class="headerlink" title="3 일관성 있는 기본 정책 구현하기"></a>3 일관성 있는 기본 정책 구현하기</h2><p>전체 설계는 다음과 같다.</p>
-<p><img src="/image/object_all_chapter14.png" alt></p>
-<h5 id="변경-분리하기"><a href="#변경-분리하기" class="headerlink" title="변경 분리하기"></a>변경 분리하기</h5><p>시간대별, 요일별, 구간별 방식의 공통점은 각 기본 정책을 구성하는 방식이 유사하는 것이다.</p>
+<h4 id="3-1-나이파이를-이용한-컨슈머-설정"><a href="#3-1-나이파이를-이용한-컨슈머-설정" class="headerlink" title="3.1 나이파이를 이용한 컨슈머 설정"></a>3.1 나이파이를 이용한 컨슈머 설정</h4><p><img src="/image/kafka_chapter07_02.png" alt></p>
+<p>프로세서를 추가하는 화면이다.<br>프로세서는 나이파이에서 데이터 처리를 위한 각각의 컴포넌트이다. AMQP 컨슘, 파일로 저장, 전송하기 등 여러가지 작업이 가능하다.<br>ConsumeKafka 프로세서를 추가하고 재생 버튼을 누르면, 설정한 브로커의 토픽에서 메세지를 가져오기 시작한다.<br>컨슈머가 잘 동작하는지 확인하는 방법은,</p>
 <ol>
-<li>기본 정책은 한 개 이상의 규칙으로 구성된다.</li>
-<li>하나의 규칙은 적용 조건과 단위요금을 조합이다.</li>
+<li><p>나이파이에서 컨슈머 프로세서를 실행 시킨 후,</p>
+</li>
+<li><p>카프카 컨슈머 그룹 리스트에서, 등록한 컨슈머 그룹이 잘 등록되었는지 확인한다.<br>등록한 컨슈머 그룹 : ConsumeKafka 프로세서의 Properties 를 정의할 때 그룹 ID 를 기입했음.</p>
+</li>
 </ol>
-<p><img src="/image/object_rule_chapter14.png" alt></p>
-<p>모든 규칙에 적용 조건이 포함된다는 사실은 변하지 않지만 실제 조건의 세부 내용은 다르다. </p>
-<p>즉, 조건의 세부 내용이 바로 변화에 해당하는 것이다. </p>
-<p>변하지 않는 ‘규칙’ 으로부터 변하는 ‘적용 조건’ 을 분리해야한다.</p>
-<h5 id="변경-캡슐화하기"><a href="#변경-캡슐화하기" class="headerlink" title="변경 캡슐화하기"></a>변경 캡슐화하기</h5><p><img src="/image/object_fee_chapter14.png" alt></p>
-<p>변하는 FeeCondition 의 서브 타입은 변하지 않는 FeeRule 로부터 캡슐화된다. </p>
-<h5 id="협력-패턴-설계하기"><a href="#협력-패턴-설계하기" class="headerlink" title="협력 패턴 설계하기"></a>협력 패턴 설계하기</h5><p><img src="/image/object_basic_chapter14.png" alt></p>
+<h2 id="4-실시간-분석을-위해-엘라스틱서치에-메세지-저장"><a href="#4-실시간-분석을-위해-엘라스틱서치에-메세지-저장" class="headerlink" title="4. 실시간 분석을 위해 엘라스틱서치에 메세지 저장"></a>4. 실시간 분석을 위해 엘라스틱서치에 메세지 저장</h2><p>이제, 가져온 메세지들을 나이파이의 또 다른 프로세서를 이용해 엘라스틱서치에 저장하겠다.<br>엘라스틱서치는 엘라스틱 사의 분산형 RESTFul 검색 및 분석 엔진이다. 전문 검색 질의를 이용해 원하는 데이터 분석을 빠르게 할 수 있는 애플리케이션이다.</p>
+<h4 id="4-1-나이파이를-이용해-엘라스틱서치로-데이터-전송"><a href="#4-1-나이파이를-이용해-엘라스틱서치로-데이터-전송" class="headerlink" title="4.1 나이파이를 이용해 엘라스틱서치로 데이터 전송"></a>4.1 나이파이를 이용해 엘라스틱서치로 데이터 전송</h4><p>PutElasticsearchHttp 프로세서를 추가한다. 데이터를 엘라스틱서치로 넣어주는 역할을 한다.<br>그리고 다음 화면처럼, ConsumeKafka 와 연결한다.</p>
+<p><img src="/image/kafka_chapter07_03.png" alt></p>
+<p>데이터 흐름 중에 뒤에 있는 프로세서에서 처리 속도가 느려 바로 처리하지 못하거나 프로세서에 문제가 발생한 경우, 두 프로세스를 연결하는 큐에 레코드가 쌓인다.</p>
+<h2 id="5-키바나를-이용해-엘라스틱서치에-저장된-데이터-확인"><a href="#5-키바나를-이용해-엘라스틱서치에-저장된-데이터-확인" class="headerlink" title="5. 키바나를 이용해 엘라스틱서치에 저장된 데이터 확인"></a>5. 키바나를 이용해 엘라스틱서치에 저장된 데이터 확인</h2><p>웹브라우저를 이용해 원하는 시간대에 발생한 로그들을 확인할 수 있고, 필터 기능으로 원하는 패턴의 로그만 빠르게 검색 가능하다.<br>각 브로커에서 수집되는 로그가 카프카의 토픽에 있기 때문에, 엘라스틱 서치에 전송하는 것 외에 추가로 하둡이나 로컬에 저장하길 원하면, 다음 화면처럼 나이파이의 PutHDFS 프로세서를 추가해 쉽게 하둡 등의 저장소에 저장할 수 있다.</p>
+<p><img src="/image/kafka_chapter07_04.png" alt></p>
+<h2 id="6-현재의-토픽을-이용해-새로운-토픽으로-메세지-재생산"><a href="#6-현재의-토픽을-이용해-새로운-토픽으로-메세지-재생산" class="headerlink" title="6. 현재의 토픽을 이용해 새로운 토픽으로 메세지 재생산"></a>6. 현재의 토픽을 이용해 새로운 토픽으로 메세지 재생산</h2><p><img src="/image/kafka_chapter07_05.png" alt></p>
+<p>이번에는, 메세지의 양이 굉장히 많은 토픽의 내용 중 필요한 메세지만 꺼내서 다시 새로운 토픽으로 메세지를 보내는 방법을 정리한다.</p>
+<p>전체적인 데이터 흐름은,</p>
 <ol>
-<li><p>BasicRatePolicy 의 calculateFee 메서드는 인자로 전달받은 통화 목록의 전체 요금을 계산한다.</p>
-</li>
-<li><p>BasicRatePolicy 는 목록에 포함된 각 Call 별로 FeeRule 의 calculateFee 메서드를 실행한다.</p>
-</li>
-<li><p>하나의 BasicRatePolicy 는 하나 이상의 FeeRule 로 구성되어서, Call 하나당 FeeRule 에 다수의 calculateFee 메세지가 전송된다.</p>
-</li>
+<li>나이파이 컨슈머가 peter-log 로부터 로그 메세지를 가져오면서 호스트 이름을 확인한다.</li>
+<li>peter-log 토픽으로 로그 메세지를 보내는 서버는 peter-kafka001,peter-kafka002, peter-kafka003 모두 3대이다.</li>
+<li>각각의 메세지마다 호스트 이름이 peter-kafka001,ppeter-kafka002, ppeter-kafka003 이 기록되어 있다.</li>
+<li>전체 메세지 중에 호스트 이름이 peter-kafka001메세지만 peter-kafka001토픽으로 다시 전송하고,</li>
+<li>나머지 메세지는 peter-failure 토픽으로 전송한다.</li>
 </ol>
-<h5 id="추상화-수준에서-협력-패턴-구현하기"><a href="#추상화-수준에서-협력-패턴-구현하기" class="headerlink" title="추상화 수준에서 협력 패턴 구현하기"></a>추상화 수준에서 협력 패턴 구현하기</h5><p>변하지 않는 요소와 추상적인 요소만으로 요금 계산에 필요한 전체적인 협력 구조를 설명할 수 있다.</p>
-<h5 id="구체적인-협력-구현하기"><a href="#구체적인-협력-구현하기" class="headerlink" title="구체적인 협력 구현하기"></a>구체적인 협력 구현하기</h5><p>code : 505 Page</p>
-<p>유사한 기능에 대해 유사한 협력 패턴을 적용하는 것은 객체지향 시스템에서 개념적 무결성을 유지할 수 있는 방법이다. </p>
-<p>개념적 무결성이란, 일관성이다.</p>
+<h4 id="6-1-나이파이를-이용한-토픽별-라우팅"><a href="#6-1-나이파이를-이용한-토픽별-라우팅" class="headerlink" title="6.1 나이파이를 이용한 토픽별 라우팅"></a>6.1 나이파이를 이용한 토픽별 라우팅</h4><p>나이파이에서 토픽의 메세지를 가져와서 peter-kafka001 에서 온 메세지인지 확인한 후에 peter-kafka001 토픽으로 전송해야한다.<br>이를 위해, 나이파이의 EvaluateJsonPath, RouteOnAttribute 프로세서를 추가해서 라우팅 작업을 한다.</p>
+<ol>
+<li>EvaluateJsonPath 프로서는, 토픽으로 전송된 JSON 의 beat.hostname 을 읽어 호스트 이름을 구분한다.</li>
+<li>RouteOnAttribute 프로세서는, attrubute 를 이용해 라우팅을 한다.</li>
+</ol>
+<p>마지막으로, 카프카 프로듀서 2개를 추가한다.</p>
+<ol>
+<li>호스트명이 peter-kafka001 인 메세지를  peter-kafka001 토픽으로 전송할 프로듀서</li>
+<li>그 외 메세지를  peter-failure 토픽으로 전송할 프로듀서</li>
+</ol>
+<p>최종 플로우는 다음과 같다.</p>
+<p><img src="/image/kafka_chapter07_06.png" alt></p>
 <hr>
-<p>오브젝트 &lt;조영호&gt;</p>
+<p>카프카, 데이터 플랫폼의 최강자 &lt;고승범, 공용준&gt;</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/01/20/object-chapter14/" data-id="ck70j2n2100oufxqxrah6lcc3" data-title="[오브젝트] 14장_일관성 있는 협력" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/01/26/kafka-chapter7/" data-id="ck71wqzhg00mwgq6w1sagjicp" data-title="[카프카] 7장_데이터 파이프라인 구축" class="article-share-link">Share</a>
       
       
       
@@ -1024,11 +970,15 @@
       <ul>
         
           <li>
-            <a href="/2020/02/24/tdd-chapter-03/">[테스트 주도 개발] 3장_모두를 위한 평등</a>
+            <a href="/2020/02/25/bigdata-chapter-01/">[빅데이터] 1장_빅데이터를 위한 새로운 패러다임</a>
           </li>
         
           <li>
             <a href="/2020/02/24/tdd-chapter-02/">[테스트 주도 개발] 2장_타락한 객체</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/24/tdd-chapter-03/">[테스트 주도 개발] 3장_모두를 위한 평등</a>
           </li>
         
           <li>
@@ -1037,10 +987,6 @@
         
           <li>
             <a href="/2020/02/10/object-chapter-appendix-c/">[오브젝트] 부록 C 동적인 협력, 정적인 코드</a>
-          </li>
-        
-          <li>
-            <a href="/2020/02/10/object-chapter-appendix-b/">[오브젝트] 부록 B 타입 계층의 구현</a>
           </li>
         
       </ul>
