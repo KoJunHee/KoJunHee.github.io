@@ -132,8 +132,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">query = function(all data)</span><br></pre></td></tr></table></figure>
 
 <h4 id="1-5-빅데이터-시스템에-요구되는-속성"><a href="#1-5-빅데이터-시스템에-요구되는-속성" class="headerlink" title="1.5 빅데이터 시스템에 요구되는 속성"></a>1.5 빅데이터 시스템에 요구되는 속성</h4><ol>
-<li><p>견고성과 내결함성</p>
-<p>복잡성을 회피해서 시스템에 대해 쉽게 생각할 수 있도록 하는 것도 빅데이터 시스템을 견고하게 만다는 작업이다. 그리고 빅데이터 시스템의 핵심에 불변성과 재계산 체계를 구축해놓으면, 복구 매커니즘이 쉽고 간결해져 사람의 실수에 대한 회복력을 지니게 된다.</p>
+<li><p>견고성과 내결함성<br>복잡성을 회피해서 시스템에 대해 쉽게 생각할 수 있도록 하는 것도 빅데이터 시스템을 견고하게 만다는 작업이다. 그리고 빅데이터 시스템의 핵심에 불변성과 재계산 체계를 구축해놓으면, 복구 매커니즘이 쉽고 간결해져 사람의 실수에 대한 회복력을 지니게 된다.</p>
 </li>
 <li><p>짧은 읽기 / 갱신 지연 시간<br>시스템의 견고성을 해치지 않고 짧은 읽기 / 갱신 지연 시간을 얻을 수 있어야한다.</p>
 </li>
@@ -156,7 +155,70 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/02/25/bigdata-chapter-01/" data-id="ck71wqzho00nfgq6wmn143gon" data-title="[빅데이터] 1장_빅데이터를 위한 새로운 패러다임" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/02/25/bigdata-chapter-01/" data-id="ck71wv6u200nf0b6wx7nrv4v6" data-title="[빅데이터] 1장_빅데이터를 위한 새로운 패러다임" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-tdd-chapter-03" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/02/24/tdd-chapter-03/" class="article-date">
+  <time class="dt-published" datetime="2020-02-23T15:00:00.000Z" itemprop="datePublished">2020-02-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tdd/">TDD</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/02/24/tdd-chapter-03/">[테스트 주도 개발] 3장_모두를 위한 평등</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Dollar 객체같이 객체를 값처럼 쓸 수 있는 것을 객체 Value Object Pattern 이라고 한다. 값 객체에 대한 제약사항 중 하나는 객체의 인스턴스 변수가 생성자를 통해서 일단 설정된 후에는 변하지 않는다는 것이다.</p>
+<p>값 객체가 암시하는 것은,</p>
+<ol>
+<li>모든 연산은 새 객체를 반환해야한다.</li>
+<li>값 객체는 equals() 를 구현해야한다.</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testEquality</span><span class="params">()</span></span>&#123;</span><br><span class="line">	assertTrue(<span class="keyword">new</span> Dollar(<span class="number">5</span>).equals(<span class="keyword">new</span> Dollar(<span class="number">5</span>)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>빨간 막대다. 가짜로 구현하는 방법은 단순히 true 를 반환하도록 하는 것이다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object object)</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>(삼각측량) 예제가 두 개 이상 있으면 코드를 일반화 할 수 있다.  다음과 같이 5!=6 을 해보자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testEquality</span><span class="params">()</span></span>&#123;</span><br><span class="line">	assertTrue(<span class="keyword">new</span> Dollar(<span class="number">5</span>).equals(<span class="keyword">new</span> Dollar(<span class="number">5</span>)));</span><br><span class="line">  assertFalse(<span class="keyword">new</span> Dollar(<span class="number">5</span>).equals(<span class="keyword">new</span> Dollar(<span class="number">6</span>)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이제 equlity 를 일반화하자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object object)</span></span>&#123;</span><br><span class="line">	Dollar dollar = (Dollar) object;</span><br><span class="line">	<span class="keyword">return</span> amount == dollar.amount;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이렇게 어떻게 리팩토링해야하는지 감이 안오면 삼각측량을 사용하자. 코드와 테스트 사이의 중복을 제거하고 일반적인 해법을 구할 방법이 보이면 그냥 그 방법대로 구현하면 된다.</p>
+<p>자, 동일성 문제는 일시적으로 해결했다. 널 값이나 다른 객체들과 비교하는 상황은 일반적이진 않지만 당장은 필요하지 않다. 할일 목록에 적어 두기만 하자.</p>
+<hr>
+<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2020/02/24/tdd-chapter-03/" data-id="ck71wv6u300ni0b6wur108qqp" data-title="[테스트 주도 개발] 3장_모두를 위한 평등" class="article-share-link">Share</a>
       
       
       
@@ -231,70 +293,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/02/24/tdd-chapter-02/" data-id="ck71wqzhl00n7gq6wexvw1wzw" data-title="[테스트 주도 개발] 2장_타락한 객체" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-tdd-chapter-03" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/02/24/tdd-chapter-03/" class="article-date">
-  <time class="dt-published" datetime="2020-02-23T15:00:00.000Z" itemprop="datePublished">2020-02-24</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/tdd/">TDD</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/02/24/tdd-chapter-03/">[테스트 주도 개발] 3장_모두를 위한 평등</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>Dollar 객체같이 객체를 값처럼 쓸 수 있는 것을 객체 Value Object Pattern 이라고 한다. 값 객체에 대한 제약사항 중 하나는 객체의 인스턴스 변수가 생성자를 통해서 일단 설정된 후에는 변하지 않는다는 것이다.</p>
-<p>값 객체가 암시하는 것은,</p>
-<ol>
-<li>모든 연산은 새 객체를 반환해야한다.</li>
-<li>값 객체는 equals() 를 구현해야한다.</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testEquality</span><span class="params">()</span></span>&#123;</span><br><span class="line">	assertTrue(<span class="keyword">new</span> Dollar(<span class="number">5</span>).equals(<span class="keyword">new</span> Dollar(<span class="number">5</span>)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>빨간 막대다. 가짜로 구현하는 방법은 단순히 true 를 반환하도록 하는 것이다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object object)</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>(삼각측량) 예제가 두 개 이상 있으면 코드를 일반화 할 수 있다.  다음과 같이 5!=6 을 해보자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testEquality</span><span class="params">()</span></span>&#123;</span><br><span class="line">	assertTrue(<span class="keyword">new</span> Dollar(<span class="number">5</span>).equals(<span class="keyword">new</span> Dollar(<span class="number">5</span>)));</span><br><span class="line">  assertFalse(<span class="keyword">new</span> Dollar(<span class="number">5</span>).equals(<span class="keyword">new</span> Dollar(<span class="number">6</span>)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>이제 equlity 를 일반화하자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object object)</span></span>&#123;</span><br><span class="line">	Dollar dollar = (Dollar) object;</span><br><span class="line">	<span class="keyword">return</span> amount == dollar.amount;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>이렇게 어떻게 리팩토링해야하는지 감이 안오면 삼각측량을 사용하자. 코드와 테스트 사이의 중복을 제거하고 일반적인 해법을 구할 방법이 보이면 그냥 그 방법대로 구현하면 된다.</p>
-<p>자, 동일성 문제는 일시적으로 해결했다. 널 값이나 다른 객체들과 비교하는 상황은 일반적이진 않지만 당장은 필요하지 않다. 할일 목록에 적어 두기만 하자.</p>
-<hr>
-<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/02/24/tdd-chapter-03/" data-id="ck71wqzhm00nagq6wfaeroedi" data-title="[테스트 주도 개발] 3장_모두를 위한 평등" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/02/24/tdd-chapter-02/" data-id="ck71wv6u200nd0b6wbnks60pf" data-title="[테스트 주도 개발] 2장_타락한 객체" class="article-share-link">Share</a>
       
       
       
@@ -382,7 +381,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/02/24/tdd-chapter-01/" data-id="ck71wqzhj00n5gq6wl6xqr1pv" data-title="[테스트 주도 개발] 1장_다중 통화를 지원하는 Money 객체" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/02/24/tdd-chapter-01/" data-id="ck71wv6u000n80b6wbnq22q1n" data-title="[테스트 주도 개발] 1장_다중 통화를 지원하는 Money 객체" class="article-share-link">Share</a>
       
       
       
@@ -445,7 +444,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/02/10/object-chapter-appendix-c/" data-id="ck71wqzhn00ncgq6ws5p2486x" data-title="[오브젝트] 부록 C 동적인 협력, 정적인 코드" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/02/10/object-chapter-appendix-c/" data-id="ck71wv6u100na0b6w20h38ued" data-title="[오브젝트] 부록 C 동적인 협력, 정적인 코드" class="article-share-link">Share</a>
       
       
       
@@ -508,7 +507,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/02/10/object-chapter-appendix-b/" data-id="ck71wqzhi00n2gq6wwcd0e9bl" data-title="[오브젝트] 부록 B 타입 계층의 구현" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/02/10/object-chapter-appendix-b/" data-id="ck71wv6ty00n50b6wodtaq8dk" data-title="[오브젝트] 부록 B 타입 계층의 구현" class="article-share-link">Share</a>
       
       
       
@@ -597,7 +596,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/02/03/object-chapter-appendix-a/" data-id="ck71wqzhi00n0gq6wldr4u6uj" data-title="[오브젝트] 부록 A 계약에 의한 설계" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/02/03/object-chapter-appendix-a/" data-id="ck71wv6ty00n30b6w1g44x69w" data-title="[오브젝트] 부록 A 계약에 의한 설계" class="article-share-link">Share</a>
       
       
       
@@ -707,7 +706,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/01/27/object-chapter15/" data-id="ck71wqzjm00p0gq6wgz95w0si" data-title="[오브젝트] 15장_디자인 패턴과 프레임워크" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/01/27/object-chapter15/" data-id="ck71wv6vm00p70b6wp92y1wxm" data-title="[오브젝트] 15장_디자인 패턴과 프레임워크" class="article-share-link">Share</a>
       
       
       
@@ -812,7 +811,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/01/26/kafka-chapter8/" data-id="ck71wqzhh00mxgq6w42x6685h" data-title="[카프카] 8장_카프카 스트림즈 API" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/01/26/kafka-chapter8/" data-id="ck71wv6tx00n00b6wr2hwu0wq" data-title="[카프카] 8장_카프카 스트림즈 API" class="article-share-link">Share</a>
       
       
       
@@ -915,7 +914,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/01/26/kafka-chapter7/" data-id="ck71wqzhg00mwgq6w1sagjicp" data-title="[카프카] 7장_데이터 파이프라인 구축" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/01/26/kafka-chapter7/" data-id="ck71wv6tw00mz0b6wa22r81xe" data-title="[카프카] 7장_데이터 파이프라인 구축" class="article-share-link">Share</a>
       
       
       
@@ -974,11 +973,11 @@
           </li>
         
           <li>
-            <a href="/2020/02/24/tdd-chapter-02/">[테스트 주도 개발] 2장_타락한 객체</a>
+            <a href="/2020/02/24/tdd-chapter-03/">[테스트 주도 개발] 3장_모두를 위한 평등</a>
           </li>
         
           <li>
-            <a href="/2020/02/24/tdd-chapter-03/">[테스트 주도 개발] 3장_모두를 위한 평등</a>
+            <a href="/2020/02/24/tdd-chapter-02/">[테스트 주도 개발] 2장_타락한 객체</a>
           </li>
         
           <li>
