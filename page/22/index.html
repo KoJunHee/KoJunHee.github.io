@@ -71,6 +71,102 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Histogram Stretching" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/21/Histogram Stretching/" class="article-date">
+  <time class="dt-published" datetime="2018-05-20T15:00:00.000Z" itemprop="datePublished">2018-05-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/dip/">DIP</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/21/Histogram Stretching/">Histogram Stretching</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>There are two methods of enhancing contrast. </p>
+<ul>
+<li>The first one is called Histogram stretching that increase contrast. </li>
+<li>The second one is called Histogram equalization that enhance contrast.</li>
+</ul>
+<h2 id="Contrast"><a href="#Contrast" class="headerlink" title="Contrast"></a>Contrast</h2><ul>
+<li><p>Contrast is the difference between maximum and minimum pixel intensity.</p>
+<p><img src="/image/hisStretch01.png" alt></p>
+</li>
+<li><p>Contrast = 225.</p>
+</li>
+<li><p>Now we will increase the contrast of the image.</p>
+</li>
+</ul>
+<h2 id="Increasing-the-contrast-of-the-image"><a href="#Increasing-the-contrast-of-the-image" class="headerlink" title="Increasing the contrast of the image"></a>Increasing the contrast of the image</h2><ul>
+<li><p>The formula for stretching the histogram of the image to increase the contrast is</p>
+<p><img src="/image/hisStretch02.png" alt></p>
+</li>
+<li><p>The formula requires finding the minimum and maximum pixel intensity multiply by levels of gray. </p>
+</li>
+<li><p>In our case the image is 8bpp, so levels of gray are 256.</p>
+</li>
+<li><p>The minimum value is 0 and the maximum value is 225. So the formula in our case is</p>
+<p><img src="/image/hisStretch03.png" alt></p>
+</li>
+<li><p>where f(x,y) denotes the value of each pixel intensity. For each f(x,y) in an image , we will calculate this formula.</p>
+</li>
+<li><p>Note the shape and symmetry of histogram. The histogram is now stretched or in other means expand. Have a look at it.</p>
+<p><img src="/image/hisStretch04.png" alt></p>
+</li>
+<li><p>In this case the contrast of the image can be calculated as Contrast = 240</p>
+</li>
+<li><p>Hence we can say that the contrast of the image is increased.</p>
+</li>
+</ul>
+<h2 id="Failing-of-histogram-stretching"><a href="#Failing-of-histogram-stretching" class="headerlink" title="Failing of histogram stretching"></a>Failing of histogram stretching</h2><ul>
+<li><p>the algorithm fails on some cases. </p>
+</li>
+<li><p>Those cases include images with when there is pixel intensity 0 and 255 are present in the image</p>
+</li>
+<li><p>Original Formula</p>
+<p><img src="/image/hisStretch05.png" alt></p>
+</li>
+<li><p>Putting fail case values in the formula</p>
+<p><img src="/image/hisStretch06.png" alt></p>
+</li>
+<li><p>Simplify that expression gives</p>
+<p><img src="/image/hisStretch07.png" alt></p>
+</li>
+<li><p>That means the output image is equal to the processed image. </p>
+</li>
+<li><p>That means there is no effect of histogram stretching has been done at this image.</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/21/Histogram Stretching/" data-id="ck78pn08e00cvilqxxg0oo7yy" data-title="Histogram Stretching" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-Histogram Sliding" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2018/05/21/Histogram Sliding/" class="article-date">
@@ -128,100 +224,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/21/Histogram Sliding/" data-id="ck71wv6qp00cw0b6wq78zg2er" data-title="Histogram Sliding" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Histogram Equalization" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/21/Histogram Equalization/" class="article-date">
-  <time class="dt-published" datetime="2018-05-20T15:00:00.000Z" itemprop="datePublished">2018-05-21</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/dip/">DIP</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/21/Histogram Equalization/">Histogram Equalization</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Histogram-Equalization"><a href="#Histogram-Equalization" class="headerlink" title="Histogram Equalization"></a>Histogram Equalization</h2><ul>
-<li><p>Histogram equalization is used to enhance contrast.</p>
-</li>
-<li><p>Lets start histogram equalization by taking this image below as a simple image.</p>
-</li>
-<li><p>The histogram of this image has been shown below.</p>
-<p><img src="/image/hisE01.png" alt></p>
-<p><img src="/image/hisE02.png" alt></p>
-</li>
-<li><p>Now we will perform histogram equalization to it.</p>
-</li>
-<li><p>First we have to calculate the PMF (probability mass function) of all the pixels in this image.</p>
-</li>
-<li><p>Our next step involves calculation of CDF (cumulative distributive function).  </p>
-</li>
-</ul>
-<h2 id="Calculate-CDF-according-to-gray-levels"><a href="#Calculate-CDF-according-to-gray-levels" class="headerlink" title="Calculate CDF according to gray levels"></a>Calculate CDF according to gray levels</h2><p><img src="/image/hisE03.png" alt></p>
-<ul>
-<li><p>Then in this step you will multiply the CDF value with (Gray levels (minus) 1) .</p>
-</li>
-<li><p>Considering we have an 3 bpp image. </p>
-</li>
-<li><p>Then number of levels we have are 8.</p>
-</li>
-<li><p>And 1 subtracts 8 is 7. So we multiply CDF by 7. Here what we got after multiplying.</p>
-<p><img src="/image/hisE04.png" alt></p>
-</li>
-<li><p>we have to map the new gray level values into number of pixels.</p>
-</li>
-<li><p>Lets assume our old gray levels values has these number of pixels.</p>
-</li>
-</ul>
-<p><img src="/image/hisE05.png" alt></p>
-<ul>
-<li><p>Now if we map our new values to , then this is what we got.</p>
-<p><img src="/image/hisE06.png" alt></p>
-</li>
-<li><p>Now map these new values you are onto histogram, and you are done.</p>
-</li>
-<li><p>Lets apply this technique to our original image. </p>
-</li>
-<li><p>After applying we got the following image and its following histogram.</p>
-</li>
-</ul>
-<h2 id="Cumulative-Distributive-function-of-this-image"><a href="#Cumulative-Distributive-function-of-this-image" class="headerlink" title="Cumulative Distributive function of this image"></a>Cumulative Distributive function of this image</h2><p><img src="/image/hisE07.png" alt></p>
-<h2 id="Histogram-Equalization-histogram"><a href="#Histogram-Equalization-histogram" class="headerlink" title="Histogram Equalization histogram"></a>Histogram Equalization histogram</h2><p><img src="/image/hisE08.png" alt></p>
-<h2 id="Comparing-both-the-histograms-and-images"><a href="#Comparing-both-the-histograms-and-images" class="headerlink" title="Comparing both the histograms and images"></a>Comparing both the histograms and images</h2><p><img src="/image/hisE09.png" alt></p>
-<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li>during histogram equalization the overall shape of the histogram changes, </li>
-<li>where as in histogram stretching the overall shape of histogram remains same.</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/21/Histogram Equalization/" data-id="ck71wv6qo00cu0b6wqqduvksw" data-title="Histogram Equalization" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/21/Histogram Sliding/" data-id="ck78pn08d00ctilqx0abe4t25" data-title="Histogram Sliding" class="article-share-link">Share</a>
       
       
       
@@ -331,7 +334,100 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/21/Convolution/" data-id="ck71wv6qn00cs0b6wosafnmcs" data-title="Convolution" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/21/Convolution/" data-id="ck78pn08c00cqilqxdmvrv9az" data-title="Convolution" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Histogram Equalization" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/21/Histogram Equalization/" class="article-date">
+  <time class="dt-published" datetime="2018-05-20T15:00:00.000Z" itemprop="datePublished">2018-05-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/dip/">DIP</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/21/Histogram Equalization/">Histogram Equalization</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="Histogram-Equalization"><a href="#Histogram-Equalization" class="headerlink" title="Histogram Equalization"></a>Histogram Equalization</h2><ul>
+<li><p>Histogram equalization is used to enhance contrast.</p>
+</li>
+<li><p>Lets start histogram equalization by taking this image below as a simple image.</p>
+</li>
+<li><p>The histogram of this image has been shown below.</p>
+<p><img src="/image/hisE01.png" alt></p>
+<p><img src="/image/hisE02.png" alt></p>
+</li>
+<li><p>Now we will perform histogram equalization to it.</p>
+</li>
+<li><p>First we have to calculate the PMF (probability mass function) of all the pixels in this image.</p>
+</li>
+<li><p>Our next step involves calculation of CDF (cumulative distributive function).  </p>
+</li>
+</ul>
+<h2 id="Calculate-CDF-according-to-gray-levels"><a href="#Calculate-CDF-according-to-gray-levels" class="headerlink" title="Calculate CDF according to gray levels"></a>Calculate CDF according to gray levels</h2><p><img src="/image/hisE03.png" alt></p>
+<ul>
+<li><p>Then in this step you will multiply the CDF value with (Gray levels (minus) 1) .</p>
+</li>
+<li><p>Considering we have an 3 bpp image. </p>
+</li>
+<li><p>Then number of levels we have are 8.</p>
+</li>
+<li><p>And 1 subtracts 8 is 7. So we multiply CDF by 7. Here what we got after multiplying.</p>
+<p><img src="/image/hisE04.png" alt></p>
+</li>
+<li><p>we have to map the new gray level values into number of pixels.</p>
+</li>
+<li><p>Lets assume our old gray levels values has these number of pixels.</p>
+</li>
+</ul>
+<p><img src="/image/hisE05.png" alt></p>
+<ul>
+<li><p>Now if we map our new values to , then this is what we got.</p>
+<p><img src="/image/hisE06.png" alt></p>
+</li>
+<li><p>Now map these new values you are onto histogram, and you are done.</p>
+</li>
+<li><p>Lets apply this technique to our original image. </p>
+</li>
+<li><p>After applying we got the following image and its following histogram.</p>
+</li>
+</ul>
+<h2 id="Cumulative-Distributive-function-of-this-image"><a href="#Cumulative-Distributive-function-of-this-image" class="headerlink" title="Cumulative Distributive function of this image"></a>Cumulative Distributive function of this image</h2><p><img src="/image/hisE07.png" alt></p>
+<h2 id="Histogram-Equalization-histogram"><a href="#Histogram-Equalization-histogram" class="headerlink" title="Histogram Equalization histogram"></a>Histogram Equalization histogram</h2><p><img src="/image/hisE08.png" alt></p>
+<h2 id="Comparing-both-the-histograms-and-images"><a href="#Comparing-both-the-histograms-and-images" class="headerlink" title="Comparing both the histograms and images"></a>Comparing both the histograms and images</h2><p><img src="/image/hisE09.png" alt></p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
+<li>during histogram equalization the overall shape of the histogram changes, </li>
+<li>where as in histogram stretching the overall shape of histogram remains same.</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/21/Histogram Equalization/" data-id="ck78pn08b00coilqxvcy3tvxc" data-title="Histogram Equalization" class="article-share-link">Share</a>
       
       
       
@@ -404,165 +500,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/21/Brightness and Contrast/" data-id="ck71wv6qn00cp0b6wgw5qxlie" data-title="Brightness and Contrast" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Bits Per Pixel" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/21/Bits Per Pixel/" class="article-date">
-  <time class="dt-published" datetime="2018-05-20T15:00:00.000Z" itemprop="datePublished">2018-05-21</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/dip/">DIP</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/21/Bits Per Pixel/">Bits Per Pixel</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>Bpp or bits per pixel denotes the number of bits per pixel.</p>
-<h4 id="Number-of-different-colors"><a href="#Number-of-different-colors" class="headerlink" title="Number of different colors"></a>Number of different colors</h4><ul>
-<li><p>the number of different colors depend on the number of bits per pixel.</p>
-<p><img src="https://github.com/KoJunHee/kojunhee.github.io/raw/master/img/bppTable.png" alt="img"></p>
-</li>
-</ul>
-<h4 id="Shades"><a href="#Shades" class="headerlink" title="Shades"></a>Shades</h4><ul>
-<li>Shades = number of colors = (2)<sup>bpp<sup></sup></sup></li>
-<li>black color<ul>
-<li>0 pixel value always denotes black color. </li>
-</ul>
-</li>
-<li>white color<ul>
-<li>(2)<sup>bpp<sup> -1</sup></sup></li>
-<li>In case of 1 bpp, 0 denotes black, and 1 denotes white.</li>
-<li>In case 8 bpp, 0 denotes black, and 255 denotes white.</li>
-</ul>
-</li>
-<li>gray color<ul>
-<li>Gray color is actually the mid point of black and white.</li>
-<li>In case of 8bpp, the pixel value that denotes gray color is 127 or 128bpp (if you count from 1, not from 0).</li>
-</ul>
-</li>
-</ul>
-<h4 id="Image-Size"><a href="#Image-Size" class="headerlink" title="Image Size"></a>Image Size</h4><ul>
-<li>Size of an image = rows * cols * bpp</li>
-<li>Assuming it has 1024 rows and it has 1024 columns. </li>
-<li>And since it is a gray scale image, it has 256 different shades of gray or it has bits per pixel</li>
-<li>rows * cols * bpp = 1024 * 1024 * 8 = 8388608 bits.</li>
-<li>Converting it into bytes = 8388608 / 8 = 1048576 bytes.</li>
-<li>Converting into kilo bytes = 1048576 / 1024 = 1024kb.</li>
-<li>Converting into Mega bytes = 1024 / 1024 = 1 Mb.</li>
-</ul>
-<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><ul>
-<li><a href="https://www.tutorialspoint.com/dip/concept_of_bits_per_pixel.htm" target="_blank" rel="noopener">https://www.tutorialspoint.com/dip/concept_of_bits_per_pixel.htm</a></li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/21/Bits Per Pixel/" data-id="ck71wv6qm00cn0b6wgaqzp9m0" data-title="Bits Per Pixel" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Sampling, Quantization" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/15/Sampling, Quantization/" class="article-date">
-  <time class="dt-published" datetime="2018-05-14T15:00:00.000Z" itemprop="datePublished">2018-05-15</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/dip/">DIP</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/15/Sampling, Quantization/">Sampling, Quantization</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <ul>
-<li><p>Conversion of analog signal to digital signal</p>
-<p><img src="/image/sampling.png" alt></p>
-<ul>
-<li>The output of most of the image sensors is an analog signal, </li>
-<li>and we can not apply digital processing on it </li>
-<li>because we can not store it. </li>
-<li>We can not store it because it requires infinite memory </li>
-<li>to store a signal that can have infinite values.</li>
-<li>So we have to convert an analog signal into a digital signal.</li>
-<li>To create an image which is digital, </li>
-<li>we need to covert continuous data into digital form. </li>
-<li>There are two steps in which it is done.<ul>
-<li>Sampling</li>
-<li>Quantization</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Sampling</p>
-<ul>
-<li><p>It is done on X axis.</p>
-</li>
-<li><p>It is the conversion of x axis (infinite values) to digital values.</p>
-</li>
-</ul>
-</li>
-<li><p>Quantization</p>
-<p><img src="/image/quantization.png" alt></p>
-<ul>
-<li>It is done on Y axis.</li>
-<li>digitizing the amplitudes is known as Quantization</li>
-<li>In the figure shown above, </li>
-<li>these vertically ranging values have been quantized into 5 different levels or partitions. </li>
-<li>Ranging from 0 black to 4 white. </li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/15/Sampling, Quantization/" data-id="ck71wv6ql00ci0b6wzpoowzyr" data-title="Sampling, Quantization" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/21/Brightness and Contrast/" data-id="ck78pn08b00clilqx5kqwz089" data-title="Brightness and Contrast" class="article-share-link">Share</a>
       
       
       
@@ -649,7 +587,87 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/15/Pixel/" data-id="ck71wv6ql00cg0b6wkc6ywlgq" data-title="Pixel" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/15/Pixel/" data-id="ck78pn08900ccilqxu4v4v4du" data-title="Pixel" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Sampling, Quantization" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/15/Sampling, Quantization/" class="article-date">
+  <time class="dt-published" datetime="2018-05-14T15:00:00.000Z" itemprop="datePublished">2018-05-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/dip/">DIP</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/15/Sampling, Quantization/">Sampling, Quantization</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <ul>
+<li><p>Conversion of analog signal to digital signal</p>
+<p><img src="/image/sampling.png" alt></p>
+<ul>
+<li>The output of most of the image sensors is an analog signal, </li>
+<li>and we can not apply digital processing on it </li>
+<li>because we can not store it. </li>
+<li>We can not store it because it requires infinite memory </li>
+<li>to store a signal that can have infinite values.</li>
+<li>So we have to convert an analog signal into a digital signal.</li>
+<li>To create an image which is digital, </li>
+<li>we need to covert continuous data into digital form. </li>
+<li>There are two steps in which it is done.<ul>
+<li>Sampling</li>
+<li>Quantization</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Sampling</p>
+<ul>
+<li><p>It is done on X axis.</p>
+</li>
+<li><p>It is the conversion of x axis (infinite values) to digital values.</p>
+</li>
+</ul>
+</li>
+<li><p>Quantization</p>
+<p><img src="/image/quantization.png" alt></p>
+<ul>
+<li>It is done on Y axis.</li>
+<li>digitizing the amplitudes is known as Quantization</li>
+<li>In the figure shown above, </li>
+<li>these vertically ranging values have been quantized into 5 different levels or partitions. </li>
+<li>Ranging from 0 black to 4 white. </li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/15/Sampling, Quantization/" data-id="ck78pn08900ceilqxtabmq48b" data-title="Sampling, Quantization" class="article-share-link">Share</a>
       
       
       
@@ -700,7 +718,71 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/15/안전영역/" data-id="ck71wv6qm00cl0b6w64dzcm9o" data-title="안전영역" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/15/안전영역/" data-id="ck78pn08a00cjilqxdsq5zlwa" data-title="안전영역" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-숨바꼭질" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/13/숨바꼭질/" class="article-date">
+  <time class="dt-published" datetime="2018-05-12T15:00:00.000Z" itemprop="datePublished">2018-05-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/13/숨바꼭질/">숨바꼭질</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p><a href="https://www.acmicpc.net/problem/1697" target="_blank" rel="noopener">https://www.acmicpc.net/problem/1697</a></p>
+<ul>
+<li>현재 위치에서 이동 가능한 곳 체크<ul>
+<li>X - 1</li>
+<li>X + 1</li>
+<li>X * 2</li>
+</ul>
+</li>
+<li>체크 조건<ul>
+<li>이동 가능한 곳이 범위 안에 있나?</li>
+<li>아직 방문하지 않은 곳인가?</li>
+</ul>
+</li>
+<li>Queue에서 이동 가능한 곳을 뽑아냄<ul>
+<li>동생의 위치이면 그래프의 Depth를 출력</li>
+</ul>
+</li>
+<li>그래프의 Depth를 표현하기 위해 <ul>
+<li>Class는 위치와 depth로 구성</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/13/숨바꼭질/" data-id="ck78pn08800cailqxo9057hc5" data-title="숨바꼭질" class="article-share-link">Share</a>
       
       
       
@@ -754,90 +836,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/13/Simple Factory/" data-id="ck71wv6qj00cc0b6w6ax19p1t" data-title="Simple Factory" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Factory Method Pattern02" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/13/Factory Method Pattern02/" class="article-date">
-  <time class="dt-published" datetime="2018-05-12T15:00:00.000Z" itemprop="datePublished">2018-05-13</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/13/Factory Method Pattern02/">Factory Method Pattern02</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>객체를 생성하는 코드를 별도의 클래스/메소드로 분리함으로써 객체 생성 방식의 변화에 대비하는데 유용하다.</p>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/factorymethodpa01.png" alt></p>
-<ul>
-<li>Product <ul>
-<li>펙토리 메서드로 생설될 객체의 공통 인터페이스</li>
-</ul>
-</li>
-<li>ConcreteProduct<ul>
-<li>구체적으로 객체가 생성되는 클래스</li>
-</ul>
-</li>
-<li>Creator<ul>
-<li>팩토리 메서드를 갖는 클래스</li>
-</ul>
-</li>
-<li>ConcreteCreator<ul>
-<li>팩토리 매서드를 구현하는 클래스</li>
-<li>ConcreteProduct 객체를 생성 </li>
-</ul>
-</li>
-</ul>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/factorymethodpa02.png" alt></p>
-<ul>
-<li>ElevatorScheduler interface<ul>
-<li>Prudct</li>
-</ul>
-</li>
-<li>ResponseTimeScheduler, ThroughputScheduler<ul>
-<li>ConcretePrudct</li>
-</ul>
-</li>
-<li>ElevatorManger<ul>
-<li>Creator</li>
-</ul>
-</li>
-<li>ElevatorMangerWithThroughputScheduling, ElevatorMangerWithDynamicScheduling, ElevatorManagerWithResponseTimeScheduling<ul>
-<li>ConcreteCreator</li>
-</ul>
-</li>
-</ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Java 객체 지향 디자인 패턴 &lt;정인상, 채흥석 지음&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/13/Factory Method Pattern02/" data-id="ck71wv6qj00ca0b6wcye2640u" data-title="Factory Method Pattern02" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/13/Simple Factory/" data-id="ck78pn08800c8ilqxe4c0ncpw" data-title="Simple Factory" class="article-share-link">Share</a>
       
       
       
@@ -896,11 +895,11 @@
           </li>
         
           <li>
-            <a href="/2020/02/24/tdd-chapter-03/">[테스트 주도 개발] 3장_모두를 위한 평등</a>
+            <a href="/2020/02/24/tdd-chapter-02/">[테스트 주도 개발] 2장_타락한 객체</a>
           </li>
         
           <li>
-            <a href="/2020/02/24/tdd-chapter-02/">[테스트 주도 개발] 2장_타락한 객체</a>
+            <a href="/2020/02/24/tdd-chapter-03/">[테스트 주도 개발] 3장_모두를 위한 평등</a>
           </li>
         
           <li>

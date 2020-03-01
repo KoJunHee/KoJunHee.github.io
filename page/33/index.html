@@ -107,7 +107,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/10/TV크기/" data-id="ck71wv6ov006e0b6w4pbiv0z7" data-title="TV크기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/10/TV크기/" data-id="ck78pn06n006filqxemg4cxk9" data-title="TV크기" class="article-share-link">Share</a>
       
       
       
@@ -162,7 +162,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/09/컵홀더/" data-id="ck71wv6oy006j0b6wprf8akf6" data-title="컵홀더" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/09/컵홀더/" data-id="ck78pn06m006cilqxuc0u40rd" data-title="컵홀더" class="article-share-link">Share</a>
       
       
       
@@ -214,203 +214,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/08/조짜기/" data-id="ck71wv6ov006c0b6wn9gmus9e" data-title="조짜기" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-ViewPager" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/01/07/ViewPager/" class="article-date">
-  <time class="dt-published" datetime="2018-01-06T15:00:00.000Z" itemprop="datePublished">2018-01-07</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/android/">Android</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/01/07/ViewPager/">ViewPager</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><a href="https://developer.android.com/training/animation/screen-slide.html" target="_blank" rel="noopener">https://developer.android.com/training/animation/screen-slide.html</a></p>
-<h2 id="Create-the-Views"><a href="#Create-the-Views" class="headerlink" title="Create the Views"></a>Create the Views</h2><ul>
-<li>프레그먼트의 내용물로서 사용될 레이아웃</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- fragment_screen_slide_page.xml --&gt;</span><br><span class="line">&lt;ScrollView xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</span><br><span class="line">    android:id=&quot;@+id/content&quot;</span><br><span class="line">    android:layout_width=&quot;match_parent&quot;</span><br><span class="line">    android:layout_height=&quot;match_parent&quot; &gt;</span><br><span class="line"></span><br><span class="line">    &lt;TextView style=&quot;?android:textAppearanceMedium&quot;</span><br><span class="line">        android:padding=&quot;16dp&quot;</span><br><span class="line">        android:lineSpacingMultiplier=&quot;1.2&quot;</span><br><span class="line">        android:layout_width=&quot;match_parent&quot;</span><br><span class="line">        android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">        android:text=&quot;@string/lorem_ipsum&quot; /&gt;</span><br><span class="line">&lt;/ScrollView&gt;</span><br></pre></td></tr></table></figure>
-
-<h2 id="Create-the-Fragment"><a href="#Create-the-Fragment" class="headerlink" title="Create the Fragment"></a>Create the Fragment</h2><ul>
-<li>부모 엑티비티에서 사용자에게 보여줄 새로운 페이지가 필요할 때마다, 이 프레그먼트의 인스턴스를  생성 할 수 있다. </li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import android.support.v4.app.Fragment;</span><br><span class="line">...</span><br><span class="line">public class ScreenSlidePageFragment extends Fragment &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public View onCreateView(LayoutInflater inflater, ViewGroup container,</span><br><span class="line">            Bundle savedInstanceState) &#123;</span><br><span class="line">        ViewGroup rootView = (ViewGroup) inflater.inflate(</span><br><span class="line">                R.layout.fragment_screen_slide_page, container, false);</span><br><span class="line"></span><br><span class="line">        return rootView;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="Add-a-ViewPager"><a href="#Add-a-ViewPager" class="headerlink" title="Add a ViewPager"></a>Add a ViewPager</h2><ul>
-<li>ViewPager는 새로운 페이지를 보여주기 위해 PagerAdapters를 사용한다. </li>
-<li>PagerAdapter 는 앞서 만든 프레그먼트 클래스를 사용한다.</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- activity_screen_slide.xml --&gt;</span><br><span class="line">&lt;android.support.v4.view.ViewPager</span><br><span class="line">    xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</span><br><span class="line">    android:id=&quot;@+id/pager&quot;</span><br><span class="line">    android:layout_width=&quot;match_parent&quot;</span><br><span class="line">    android:layout_height=&quot;match_parent&quot; /&gt;</span><br></pre></td></tr></table></figure>
-
-<h2 id="Create-an-Activity"><a href="#Create-an-Activity" class="headerlink" title="Create an Activity"></a>Create an Activity</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">import android.support.v4.app.Fragment;</span><br><span class="line">import android.support.v4.app.FragmentManager;</span><br><span class="line">...</span><br><span class="line">public class ScreenSlidePagerActivity extends FragmentActivity &#123;</span><br><span class="line">    /**</span><br><span class="line">     * The number of pages (wizard steps) to show in this demo.</span><br><span class="line">     */</span><br><span class="line">    private static final int NUM_PAGES = 5;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * The pager widget, which handles animation and allows swiping horizontally to access previous</span><br><span class="line">     * and next wizard steps.</span><br><span class="line">     */</span><br><span class="line">    private ViewPager mPager;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * The pager adapter, which provides the pages to the view pager widget.</span><br><span class="line">     */</span><br><span class="line">    private PagerAdapter mPagerAdapter;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_screen_slide);</span><br><span class="line"></span><br><span class="line">        // Instantiate a ViewPager and a PagerAdapter.</span><br><span class="line">        mPager = (ViewPager) findViewById(R.id.pager);</span><br><span class="line">        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());</span><br><span class="line">        mPager.setAdapter(mPagerAdapter);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void onBackPressed() &#123;</span><br><span class="line">        if (mPager.getCurrentItem() == 0) &#123;</span><br><span class="line">            // If the user is currently looking at the first step, allow the system to handle the</span><br><span class="line">            // Back button. This calls finish() on this activity and pops the back stack.</span><br><span class="line">            super.onBackPressed();</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            // Otherwise, select the previous step.</span><br><span class="line">            mPager.setCurrentItem(mPager.getCurrentItem() - 1);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in</span><br><span class="line">     * sequence.</span><br><span class="line">     */</span><br><span class="line">    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter &#123;</span><br><span class="line">        public ScreenSlidePagerAdapter(FragmentManager fm) &#123;</span><br><span class="line">            super(fm);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public Fragment getItem(int position) &#123;</span><br><span class="line">            return new ScreenSlidePageFragment();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public int getCount() &#123;</span><br><span class="line">            return NUM_PAGES;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/07/ViewPager/" data-id="ck71wv6ot00670b6wbw63fbj2" data-title="ViewPager" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-RecyclerView" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/01/07/RecyclerView/" class="article-date">
-  <time class="dt-published" datetime="2018-01-06T15:00:00.000Z" itemprop="datePublished">2018-01-07</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/android/">Android</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/01/07/RecyclerView/">RecyclerView</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><a href="https://developer.android.com/training/material/lists-cards.html" target="_blank" rel="noopener">https://developer.android.com/training/material/lists-cards.html</a></p>
-<h2 id="RecyclerView"><a href="#RecyclerView" class="headerlink" title="RecyclerView"></a>RecyclerView</h2><ul>
-<li>ListView의 더욱 향상되고 유연해진 버전</li>
-<li>한정된 수의 뷰를 유지함으로써 매우 효율적으로 스크롤할 수 있는 큰 데이터 집합을 표시하기 위한 컨테이너</li>
-</ul>
-<p><img src="https://github.com/KoJunHee/kojunhee.github.io/raw/master/img/rc.png" alt="img">    </p>
-<h2 id="LayoutManager"><a href="#LayoutManager" class="headerlink" title="LayoutManager"></a>LayoutManager</h2><ul>
-<li><p>항목 뷰를 RecyclerView 내에 배치</p>
-</li>
-<li><p>사용자에게 더 이상 보이지 않는 항목 뷰를 언제 재사용할지 결정</p>
-</li>
-<li><p>뷰를 재사용 (또는 재활용)하기 위해, Adapter에게 뷰의 콘텐츠를 데이터 집합의 다른 요소로 교체하도록 요청</p>
-</li>
-<li><p>이런 방식으로 뷰를 재활용하면 불필요한 뷰 생성이나 리소스를 많이 소모하는 findViewById()를 수행하지 않아도 되므로 성능이 개선</p>
-<ul>
-<li>LinearLayoutManager : 항목을 가로 또는 세로 스크롤 목록으로 표시</li>
-<li>GridLayoutManager : 그리드 형식으로 항목을 표시</li>
-<li>StaggeredGridLayoutManager : 지그재그형의 그리드 형식으로 항목을 표시</li>
-</ul>
-</li>
-</ul>
-<h2 id="사용방법"><a href="#사용방법" class="headerlink" title="사용방법"></a>사용방법</h2><ul>
-<li>RecyclerView 위젯을 레이아웃에 추가</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- A RecyclerView with some commonly used attributes --&gt;</span><br><span class="line">&lt;android.support.v7.widget.RecyclerView</span><br><span class="line">    android:id=&quot;@+id/my_recycler_view&quot;</span><br><span class="line">    android:scrollbars=&quot;vertical&quot;</span><br><span class="line">    android:layout_width=&quot;match_parent&quot;</span><br><span class="line">    android:layout_height=&quot;match_parent&quot;/&gt;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>객체 핸들을 얻어 LayoutManager에 연결</li>
-<li>표시할 데이터의 어댑터를 첨부</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line">public class MyActivity extends Activity &#123;</span><br><span class="line">    private RecyclerView mRecyclerView;</span><br><span class="line">    private RecyclerView.Adapter mAdapter;</span><br><span class="line">    private RecyclerView.LayoutManager mLayoutManager;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.my_activity);</span><br><span class="line">        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);</span><br><span class="line"></span><br><span class="line">        // use this setting to improve performance if you know that changes</span><br><span class="line">        // in content do not change the layout size of the RecyclerView</span><br><span class="line">        mRecyclerView.setHasFixedSize(true);</span><br><span class="line"></span><br><span class="line">        // use a linear layout manager</span><br><span class="line">        //객체 핸들을 얻어 LayoutManager에 연결</span><br><span class="line">        mLayoutManager = new LinearLayoutManager(this);</span><br><span class="line">        mRecyclerView.setLayoutManager(mLayoutManager);</span><br><span class="line"></span><br><span class="line">        // specify an adapter (see also next example)</span><br><span class="line">        // 표시할 데이터의 어댑터를 첨부</span><br><span class="line">        mAdapter = new MyAdapter(myDataset);</span><br><span class="line">        mRecyclerView.setAdapter(mAdapter);</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line">​```</span><br><span class="line"></span><br><span class="line">## Adapter</span><br><span class="line"></span><br><span class="line">- 데이터 집합의 항목에 액세스할 수 있게 해주고,</span><br><span class="line">- 항목 뷰를 생성하고, </span><br><span class="line">- 원래의 항목이 더 이상 보이지 않을 경우 일부 뷰의 콘텐츠를 새 데이터 항목으로 교체</span><br><span class="line"></span><br><span class="line">​```</span><br><span class="line">public class MyAdapter extends RecyclerView.Adapter&lt;MyAdapter.ViewHolder&gt; &#123;</span><br><span class="line">    private String[] mDataset;</span><br><span class="line"></span><br><span class="line">    // Provide a reference to the views for each data item</span><br><span class="line">    // Complex data items may need more than one view per item, and</span><br><span class="line">    // you provide access to all the views for a data item in a view holder</span><br><span class="line">    public static class ViewHolder extends RecyclerView.ViewHolder &#123;</span><br><span class="line">        // each data item is just a string in this case</span><br><span class="line">        public TextView mTextView;</span><br><span class="line">        public ViewHolder(TextView v) &#123;</span><br><span class="line">            super(v);</span><br><span class="line">            mTextView = v;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // Provide a suitable constructor (depends on the kind of dataset)</span><br><span class="line">    public MyAdapter(String[] myDataset) &#123;</span><br><span class="line">        mDataset = myDataset;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // Create new views (invoked by the layout manager)</span><br><span class="line">    @Override</span><br><span class="line">    public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,</span><br><span class="line">                                                   int viewType) &#123;</span><br><span class="line">        // create a new view</span><br><span class="line">        View v = LayoutInflater.from(parent.getContext())</span><br><span class="line">                               .inflate(R.layout.my_text_view, parent, false);</span><br><span class="line">        // set the view&apos;s size, margins, paddings and layout parameters</span><br><span class="line">        ...</span><br><span class="line">        ViewHolder vh = new ViewHolder(v);</span><br><span class="line">        return vh;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // Replace the contents of a view (invoked by the layout manager)</span><br><span class="line">    @Override</span><br><span class="line">    public void onBindViewHolder(ViewHolder holder, int position) &#123;</span><br><span class="line">        // - get element from your dataset at this position</span><br><span class="line">        // - replace the contents of the view with that element</span><br><span class="line">        holder.mTextView.setText(mDataset[position]);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // Return the size of your dataset (invoked by the layout manager)</span><br><span class="line">    @Override</span><br><span class="line">    public int getItemCount() &#123;</span><br><span class="line">        return mDataset.length;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">​```</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/07/RecyclerView/" data-id="ck71wv6ot00650b6wghprqhul" data-title="RecyclerView" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-retrofit" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/01/07/retrofit/" class="article-date">
-  <time class="dt-published" datetime="2018-01-06T15:00:00.000Z" itemprop="datePublished">2018-01-07</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/android/">Android</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/01/07/retrofit/">Retrofit</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h5 id="Retrofit이란"><a href="#Retrofit이란" class="headerlink" title="Retrofit이란?"></a>Retrofit이란?</h5><p>HTTP API를 자바 인터페이스 형태로 사용할 수 있도록 만들어 놓은 라이브러리입니다.</p>
-<h5 id="retrofit의-특징은"><a href="#retrofit의-특징은" class="headerlink" title="retrofit의 특징은?"></a>retrofit의 특징은?</h5><ol>
-<li><p>Rest API에서 사용하는 CURD 기능을 모두 제공합니다. </p>
-<p>POST (create) , PUT (update), GET (read), DELETE (delete)</p>
-</li>
-<li><p>annotation(@) 을 활용하여 손쉽게 통신 코드를 작성할 수 있습니다.</p>
-</li>
-</ol>
-<h5 id="어떻게-사용하나요"><a href="#어떻게-사용하나요" class="headerlink" title="어떻게 사용하나요 ?"></a>어떻게 사용하나요 ?</h5><ol>
-<li><p>build.gradle 에 추가합니다</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">compile <span class="string">'com.squareup.retrofit2:retrofit:(insert latest version)'</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>interface를 정의합니다</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">GitHubService</span> </span>&#123;</span><br><span class="line">	<span class="meta">@GET</span>(<span class="string">"/users/&#123;user&#125;/repos"</span>)</span><br><span class="line">	Call&lt;List&lt;Repo&gt;&gt; listRepos(<span class="meta">@Path</span>(<span class="string">"user"</span>) String user);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>이 interface class를 retrofit에 초기화합니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Retrofit retrofit = <span class="keyword">new</span> Retrofit.Builder()</span><br><span class="line">  .baseUrl(<span class="string">"https://api.github.com"</span>)</span><br><span class="line">  .build();</span><br><span class="line"></span><br><span class="line">GitHubService service = retrofit.create(GitHubService.class);</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="http://devflow.github.io/retrofit-kr/" target="_blank" rel="noopener">http://devflow.github.io/retrofit-kr/</a>    </p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/07/retrofit/" data-id="ck71wv6ow006h0b6wve5be632" data-title="Retrofit" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/08/조짜기/" data-id="ck78pn06m006ailqxb8dyd600" data-title="조짜기" class="article-share-link">Share</a>
       
       
       
@@ -506,7 +310,203 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/07/activity life cycle/" data-id="ck71wv6ou006a0b6wvij3zjls" data-title="activity life cycle" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/07/activity life cycle/" data-id="ck78pn07z00b8ilqx657hopjm" data-title="activity life cycle" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-retrofit" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/01/07/retrofit/" class="article-date">
+  <time class="dt-published" datetime="2018-01-06T15:00:00.000Z" itemprop="datePublished">2018-01-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/android/">Android</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/01/07/retrofit/">Retrofit</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="Retrofit이란"><a href="#Retrofit이란" class="headerlink" title="Retrofit이란?"></a>Retrofit이란?</h5><p>HTTP API를 자바 인터페이스 형태로 사용할 수 있도록 만들어 놓은 라이브러리입니다.</p>
+<h5 id="retrofit의-특징은"><a href="#retrofit의-특징은" class="headerlink" title="retrofit의 특징은?"></a>retrofit의 특징은?</h5><ol>
+<li><p>Rest API에서 사용하는 CURD 기능을 모두 제공합니다. </p>
+<p>POST (create) , PUT (update), GET (read), DELETE (delete)</p>
+</li>
+<li><p>annotation(@) 을 활용하여 손쉽게 통신 코드를 작성할 수 있습니다.</p>
+</li>
+</ol>
+<h5 id="어떻게-사용하나요"><a href="#어떻게-사용하나요" class="headerlink" title="어떻게 사용하나요 ?"></a>어떻게 사용하나요 ?</h5><ol>
+<li><p>build.gradle 에 추가합니다</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">compile <span class="string">'com.squareup.retrofit2:retrofit:(insert latest version)'</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>interface를 정의합니다</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">GitHubService</span> </span>&#123;</span><br><span class="line">	<span class="meta">@GET</span>(<span class="string">"/users/&#123;user&#125;/repos"</span>)</span><br><span class="line">	Call&lt;List&lt;Repo&gt;&gt; listRepos(<span class="meta">@Path</span>(<span class="string">"user"</span>) String user);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>이 interface class를 retrofit에 초기화합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Retrofit retrofit = <span class="keyword">new</span> Retrofit.Builder()</span><br><span class="line">  .baseUrl(<span class="string">"https://api.github.com"</span>)</span><br><span class="line">  .build();</span><br><span class="line"></span><br><span class="line">GitHubService service = retrofit.create(GitHubService.class);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="http://devflow.github.io/retrofit-kr/" target="_blank" rel="noopener">http://devflow.github.io/retrofit-kr/</a>    </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/01/07/retrofit/" data-id="ck78pn06l0068ilqxfclbmbgj" data-title="Retrofit" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-RecyclerView" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/01/07/RecyclerView/" class="article-date">
+  <time class="dt-published" datetime="2018-01-06T15:00:00.000Z" itemprop="datePublished">2018-01-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/android/">Android</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/01/07/RecyclerView/">RecyclerView</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://developer.android.com/training/material/lists-cards.html" target="_blank" rel="noopener">https://developer.android.com/training/material/lists-cards.html</a></p>
+<h2 id="RecyclerView"><a href="#RecyclerView" class="headerlink" title="RecyclerView"></a>RecyclerView</h2><ul>
+<li>ListView의 더욱 향상되고 유연해진 버전</li>
+<li>한정된 수의 뷰를 유지함으로써 매우 효율적으로 스크롤할 수 있는 큰 데이터 집합을 표시하기 위한 컨테이너</li>
+</ul>
+<p><img src="https://github.com/KoJunHee/kojunhee.github.io/raw/master/img/rc.png" alt="img">    </p>
+<h2 id="LayoutManager"><a href="#LayoutManager" class="headerlink" title="LayoutManager"></a>LayoutManager</h2><ul>
+<li><p>항목 뷰를 RecyclerView 내에 배치</p>
+</li>
+<li><p>사용자에게 더 이상 보이지 않는 항목 뷰를 언제 재사용할지 결정</p>
+</li>
+<li><p>뷰를 재사용 (또는 재활용)하기 위해, Adapter에게 뷰의 콘텐츠를 데이터 집합의 다른 요소로 교체하도록 요청</p>
+</li>
+<li><p>이런 방식으로 뷰를 재활용하면 불필요한 뷰 생성이나 리소스를 많이 소모하는 findViewById()를 수행하지 않아도 되므로 성능이 개선</p>
+<ul>
+<li>LinearLayoutManager : 항목을 가로 또는 세로 스크롤 목록으로 표시</li>
+<li>GridLayoutManager : 그리드 형식으로 항목을 표시</li>
+<li>StaggeredGridLayoutManager : 지그재그형의 그리드 형식으로 항목을 표시</li>
+</ul>
+</li>
+</ul>
+<h2 id="사용방법"><a href="#사용방법" class="headerlink" title="사용방법"></a>사용방법</h2><ul>
+<li>RecyclerView 위젯을 레이아웃에 추가</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- A RecyclerView with some commonly used attributes --&gt;</span><br><span class="line">&lt;android.support.v7.widget.RecyclerView</span><br><span class="line">    android:id=&quot;@+id/my_recycler_view&quot;</span><br><span class="line">    android:scrollbars=&quot;vertical&quot;</span><br><span class="line">    android:layout_width=&quot;match_parent&quot;</span><br><span class="line">    android:layout_height=&quot;match_parent&quot;/&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>객체 핸들을 얻어 LayoutManager에 연결</li>
+<li>표시할 데이터의 어댑터를 첨부</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line">public class MyActivity extends Activity &#123;</span><br><span class="line">    private RecyclerView mRecyclerView;</span><br><span class="line">    private RecyclerView.Adapter mAdapter;</span><br><span class="line">    private RecyclerView.LayoutManager mLayoutManager;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.my_activity);</span><br><span class="line">        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);</span><br><span class="line"></span><br><span class="line">        // use this setting to improve performance if you know that changes</span><br><span class="line">        // in content do not change the layout size of the RecyclerView</span><br><span class="line">        mRecyclerView.setHasFixedSize(true);</span><br><span class="line"></span><br><span class="line">        // use a linear layout manager</span><br><span class="line">        //객체 핸들을 얻어 LayoutManager에 연결</span><br><span class="line">        mLayoutManager = new LinearLayoutManager(this);</span><br><span class="line">        mRecyclerView.setLayoutManager(mLayoutManager);</span><br><span class="line"></span><br><span class="line">        // specify an adapter (see also next example)</span><br><span class="line">        // 표시할 데이터의 어댑터를 첨부</span><br><span class="line">        mAdapter = new MyAdapter(myDataset);</span><br><span class="line">        mRecyclerView.setAdapter(mAdapter);</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line">​```</span><br><span class="line"></span><br><span class="line">## Adapter</span><br><span class="line"></span><br><span class="line">- 데이터 집합의 항목에 액세스할 수 있게 해주고,</span><br><span class="line">- 항목 뷰를 생성하고, </span><br><span class="line">- 원래의 항목이 더 이상 보이지 않을 경우 일부 뷰의 콘텐츠를 새 데이터 항목으로 교체</span><br><span class="line"></span><br><span class="line">​```</span><br><span class="line">public class MyAdapter extends RecyclerView.Adapter&lt;MyAdapter.ViewHolder&gt; &#123;</span><br><span class="line">    private String[] mDataset;</span><br><span class="line"></span><br><span class="line">    // Provide a reference to the views for each data item</span><br><span class="line">    // Complex data items may need more than one view per item, and</span><br><span class="line">    // you provide access to all the views for a data item in a view holder</span><br><span class="line">    public static class ViewHolder extends RecyclerView.ViewHolder &#123;</span><br><span class="line">        // each data item is just a string in this case</span><br><span class="line">        public TextView mTextView;</span><br><span class="line">        public ViewHolder(TextView v) &#123;</span><br><span class="line">            super(v);</span><br><span class="line">            mTextView = v;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // Provide a suitable constructor (depends on the kind of dataset)</span><br><span class="line">    public MyAdapter(String[] myDataset) &#123;</span><br><span class="line">        mDataset = myDataset;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // Create new views (invoked by the layout manager)</span><br><span class="line">    @Override</span><br><span class="line">    public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,</span><br><span class="line">                                                   int viewType) &#123;</span><br><span class="line">        // create a new view</span><br><span class="line">        View v = LayoutInflater.from(parent.getContext())</span><br><span class="line">                               .inflate(R.layout.my_text_view, parent, false);</span><br><span class="line">        // set the view&apos;s size, margins, paddings and layout parameters</span><br><span class="line">        ...</span><br><span class="line">        ViewHolder vh = new ViewHolder(v);</span><br><span class="line">        return vh;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // Replace the contents of a view (invoked by the layout manager)</span><br><span class="line">    @Override</span><br><span class="line">    public void onBindViewHolder(ViewHolder holder, int position) &#123;</span><br><span class="line">        // - get element from your dataset at this position</span><br><span class="line">        // - replace the contents of the view with that element</span><br><span class="line">        holder.mTextView.setText(mDataset[position]);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // Return the size of your dataset (invoked by the layout manager)</span><br><span class="line">    @Override</span><br><span class="line">    public int getItemCount() &#123;</span><br><span class="line">        return mDataset.length;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">​```</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/01/07/RecyclerView/" data-id="ck78pn07y00b4ilqx563lgsm4" data-title="RecyclerView" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-ViewPager" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/01/07/ViewPager/" class="article-date">
+  <time class="dt-published" datetime="2018-01-06T15:00:00.000Z" itemprop="datePublished">2018-01-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/android/">Android</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/01/07/ViewPager/">ViewPager</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://developer.android.com/training/animation/screen-slide.html" target="_blank" rel="noopener">https://developer.android.com/training/animation/screen-slide.html</a></p>
+<h2 id="Create-the-Views"><a href="#Create-the-Views" class="headerlink" title="Create the Views"></a>Create the Views</h2><ul>
+<li>프레그먼트의 내용물로서 사용될 레이아웃</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- fragment_screen_slide_page.xml --&gt;</span><br><span class="line">&lt;ScrollView xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</span><br><span class="line">    android:id=&quot;@+id/content&quot;</span><br><span class="line">    android:layout_width=&quot;match_parent&quot;</span><br><span class="line">    android:layout_height=&quot;match_parent&quot; &gt;</span><br><span class="line"></span><br><span class="line">    &lt;TextView style=&quot;?android:textAppearanceMedium&quot;</span><br><span class="line">        android:padding=&quot;16dp&quot;</span><br><span class="line">        android:lineSpacingMultiplier=&quot;1.2&quot;</span><br><span class="line">        android:layout_width=&quot;match_parent&quot;</span><br><span class="line">        android:layout_height=&quot;wrap_content&quot;</span><br><span class="line">        android:text=&quot;@string/lorem_ipsum&quot; /&gt;</span><br><span class="line">&lt;/ScrollView&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Create-the-Fragment"><a href="#Create-the-Fragment" class="headerlink" title="Create the Fragment"></a>Create the Fragment</h2><ul>
+<li>부모 엑티비티에서 사용자에게 보여줄 새로운 페이지가 필요할 때마다, 이 프레그먼트의 인스턴스를  생성 할 수 있다. </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import android.support.v4.app.Fragment;</span><br><span class="line">...</span><br><span class="line">public class ScreenSlidePageFragment extends Fragment &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public View onCreateView(LayoutInflater inflater, ViewGroup container,</span><br><span class="line">            Bundle savedInstanceState) &#123;</span><br><span class="line">        ViewGroup rootView = (ViewGroup) inflater.inflate(</span><br><span class="line">                R.layout.fragment_screen_slide_page, container, false);</span><br><span class="line"></span><br><span class="line">        return rootView;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Add-a-ViewPager"><a href="#Add-a-ViewPager" class="headerlink" title="Add a ViewPager"></a>Add a ViewPager</h2><ul>
+<li>ViewPager는 새로운 페이지를 보여주기 위해 PagerAdapters를 사용한다. </li>
+<li>PagerAdapter 는 앞서 만든 프레그먼트 클래스를 사용한다.</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- activity_screen_slide.xml --&gt;</span><br><span class="line">&lt;android.support.v4.view.ViewPager</span><br><span class="line">    xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</span><br><span class="line">    android:id=&quot;@+id/pager&quot;</span><br><span class="line">    android:layout_width=&quot;match_parent&quot;</span><br><span class="line">    android:layout_height=&quot;match_parent&quot; /&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Create-an-Activity"><a href="#Create-an-Activity" class="headerlink" title="Create an Activity"></a>Create an Activity</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">import android.support.v4.app.Fragment;</span><br><span class="line">import android.support.v4.app.FragmentManager;</span><br><span class="line">...</span><br><span class="line">public class ScreenSlidePagerActivity extends FragmentActivity &#123;</span><br><span class="line">    /**</span><br><span class="line">     * The number of pages (wizard steps) to show in this demo.</span><br><span class="line">     */</span><br><span class="line">    private static final int NUM_PAGES = 5;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * The pager widget, which handles animation and allows swiping horizontally to access previous</span><br><span class="line">     * and next wizard steps.</span><br><span class="line">     */</span><br><span class="line">    private ViewPager mPager;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * The pager adapter, which provides the pages to the view pager widget.</span><br><span class="line">     */</span><br><span class="line">    private PagerAdapter mPagerAdapter;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">        super.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_screen_slide);</span><br><span class="line"></span><br><span class="line">        // Instantiate a ViewPager and a PagerAdapter.</span><br><span class="line">        mPager = (ViewPager) findViewById(R.id.pager);</span><br><span class="line">        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());</span><br><span class="line">        mPager.setAdapter(mPagerAdapter);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void onBackPressed() &#123;</span><br><span class="line">        if (mPager.getCurrentItem() == 0) &#123;</span><br><span class="line">            // If the user is currently looking at the first step, allow the system to handle the</span><br><span class="line">            // Back button. This calls finish() on this activity and pops the back stack.</span><br><span class="line">            super.onBackPressed();</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            // Otherwise, select the previous step.</span><br><span class="line">            mPager.setCurrentItem(mPager.getCurrentItem() - 1);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in</span><br><span class="line">     * sequence.</span><br><span class="line">     */</span><br><span class="line">    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter &#123;</span><br><span class="line">        public ScreenSlidePagerAdapter(FragmentManager fm) &#123;</span><br><span class="line">            super(fm);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public Fragment getItem(int position) &#123;</span><br><span class="line">            return new ScreenSlidePageFragment();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public int getCount() &#123;</span><br><span class="line">            return NUM_PAGES;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/01/07/ViewPager/" data-id="ck78pn06k0063ilqxorq05zor" data-title="ViewPager" class="article-share-link">Share</a>
       
       
       
@@ -621,7 +621,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/06/functional programming/" data-id="ck71wv6os00610b6wnyphn6hz" data-title="functional programming" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/06/functional programming/" data-id="ck78pn06j0061ilqx19igj90w" data-title="functional programming" class="article-share-link">Share</a>
       
       
       
@@ -691,7 +691,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/06/개근상/" data-id="ck71wv6os00630b6wkzla2f8h" data-title="개근상" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/06/개근상/" data-id="ck78pn06j005zilqxfunv4psx" data-title="개근상" class="article-share-link">Share</a>
       
       
       
@@ -739,7 +739,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/05/파일합치기/" data-id="ck71wv6or005z0b6wnrlvtgfb" data-title="파일합치기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/05/파일합치기/" data-id="ck78pn06l0065ilqx073wx4d0" data-title="파일합치기" class="article-share-link">Share</a>
       
       
       
@@ -798,11 +798,11 @@
           </li>
         
           <li>
-            <a href="/2020/02/24/tdd-chapter-03/">[테스트 주도 개발] 3장_모두를 위한 평등</a>
+            <a href="/2020/02/24/tdd-chapter-02/">[테스트 주도 개발] 2장_타락한 객체</a>
           </li>
         
           <li>
-            <a href="/2020/02/24/tdd-chapter-02/">[테스트 주도 개발] 2장_타락한 객체</a>
+            <a href="/2020/02/24/tdd-chapter-03/">[테스트 주도 개발] 3장_모두를 위한 평등</a>
           </li>
         
           <li>

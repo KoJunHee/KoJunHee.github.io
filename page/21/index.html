@@ -126,7 +126,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/22/Krisch Compass Mask/" data-id="ck71wv6qv00dg0b6wlq681pii" data-title="Krisch Compass Mask" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/22/Krisch Compass Mask/" data-id="ck78pn08k00dfilqx26djeqls" data-title="Krisch Compass Mask" class="article-share-link">Share</a>
       
       
       
@@ -187,7 +187,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/22/High Pass, Low Pass Filters/" data-id="ck71wv6qu00de0b6wp2jxbx9v" data-title="High Pass, Low Pass Filters" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/22/High Pass, Low Pass Filters/" data-id="ck78pn08k00ddilqxej12k9k5" data-title="High Pass, Low Pass Filters" class="article-share-link">Share</a>
       
       
       
@@ -199,9 +199,9 @@
 
 
   
-    <article id="post-Sobel Operator" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-Frequency domain" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/05/22/Sobel Operator/" class="article-date">
+    <a href="/2018/05/22/Frequency domain/" class="article-date">
   <time class="dt-published" datetime="2018-05-21T15:00:00.000Z" itemprop="datePublished">2018-05-22</time>
 </a>
     
@@ -217,7 +217,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/22/Sobel Operator/">Sobel Operator</a>
+      <a class="p-name article-title" href="/2018/05/22/Frequency domain/">Frequency domain</a>
     </h1>
   
 
@@ -225,47 +225,33 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>The sobel operator is very similar to Prewitt operator. </p>
-<p>It is also a derivate mask and is used for edge detection. Like Prewitt operator sobel operator is also used to detect two kinds of edges in an image:</p>
+        <h2 id="Frequency-domain-analysis"><a href="#Frequency-domain-analysis" class="headerlink" title="Frequency domain analysis"></a>Frequency domain analysis</h2><p>Till now, all the domains in which we have analyzed a signal , we analyze it with respect to time. </p>
+<p>But in frequency domain we don’t analyze signal with respect to time, but with respect of frequency.</p>
+<h2 id="Difference-between-spatial-domain-and-frequency-domain"><a href="#Difference-between-spatial-domain-and-frequency-domain" class="headerlink" title="Difference between spatial domain and frequency domain"></a>Difference between spatial domain and frequency domain</h2><p>In spatial domain, we deal with images as it is. The value of the pixels of the image change with respect to scene. </p>
+<p>Whereas in frequency domain, we deal with the rate at which the pixel values are changing in spatial domain.</p>
+<h2 id="Spatial-Domain"><a href="#Spatial-Domain" class="headerlink" title="Spatial Domain"></a>Spatial Domain</h2><p>In simple spatial domain, we directly deal with the image matrix</p>
+<p><img src="/image/frequencyD01.png" alt></p>
+<h2 id="Frequency-Domain"><a href="#Frequency-Domain" class="headerlink" title="Frequency Domain"></a>Frequency Domain</h2><p>We first transform the image to its frequency distribution. </p>
+<p>Then our black box system perform what ever processing it has to performed, </p>
+<p>and the output of the black box in this case is not an image, but a transformation. </p>
+<p>After performing inverse transformation, it is converted into an image which is then viewed in spatial domain.</p>
+<p><img src="/image/frequencyD02.png" alt></p>
+<h2 id="Transformation"><a href="#Transformation" class="headerlink" title="Transformation"></a>Transformation</h2><p>A signal can be converted from time domain into frequency domain using mathematical operators called transforms. There are many kind of transformation that does this. Some of them are given below.</p>
 <ul>
-<li>Vertical direction</li>
-<li>Horizontal direction</li>
+<li>Fourier Series</li>
+<li>Fourier transformation</li>
+<li>Laplace transform</li>
+<li>Z transform</li>
 </ul>
-<h2 id="Difference-with-Prewitt-Operator"><a href="#Difference-with-Prewitt-Operator" class="headerlink" title="Difference with Prewitt Operator"></a>Difference with Prewitt Operator</h2><p>The major difference is that in sobel operator the coefficients of masks are not fixed and they can be adjusted according to our requirement unless they do not violate any property of derivative masks.</p>
-<h2 id="Vertical-Mask-of-Sobel-Operator"><a href="#Vertical-Mask-of-Sobel-Operator" class="headerlink" title="Vertical Mask of Sobel Operator"></a>Vertical Mask of Sobel Operator</h2><p><img src="/image/sobel01.png" alt></p>
-<p>This mask works exactly same as the Prewitt operator vertical mask. </p>
-<p>There is only one difference that is it has “2” and “-2” values in center of first and third column. </p>
-<p>When applied on an image this mask will highlight the vertical edges.</p>
-<h2 id="How-it-works"><a href="#How-it-works" class="headerlink" title="How it works"></a>How it works</h2><p>When we apply this mask on the image it prominent vertical edges. </p>
-<p>It simply works like as first order derivate and calculates the difference of pixel intensities in a edge region.</p>
-<p>As the center column is of zero so it does not include the original values of an image but rather it calculates the difference of right and left pixel values around that edge. </p>
-<p>Also the center values of both the first and third column is 2 and -2 respectively.</p>
-<p>This give more weight age to the pixel values around the edge region. </p>
-<p>This increase the edge intensity and it become enhanced comparatively to the original image.</p>
-<h2 id="Horizontal-Mask-of-Sobel-Operator"><a href="#Horizontal-Mask-of-Sobel-Operator" class="headerlink" title="Horizontal Mask of Sobel Operator"></a>Horizontal Mask of Sobel Operator</h2><p><img src="/image/sobel02.png" alt></p>
-<p>Above mask will find edges in horizontal direction and it is because that zeros column is in horizontal direction. </p>
-<p>When you will convolve this mask onto an image it would prominent horizontal edges in the image. </p>
-<p>The only difference between it is that it have 2 and -2 as a center element of first and third row.</p>
-<h2 id="How-it-works-1"><a href="#How-it-works-1" class="headerlink" title="How it works"></a>How it works</h2><p>This mask will prominent the horizontal edges in an image. </p>
-<p>It also works on the principle of above mask and calculates difference among the pixel intensities of a particular edge. </p>
-<p>As the center row of mask is consist of zeros so it does not include the original values of edge in the image but rather it calculate the difference of above and below pixel intensities of the particular edge. </p>
-<p>Thus increasing the sudden change of intensities and making the edge more visible.</p>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/sobel03.png" alt></p>
-<h2 id="Comparison"><a href="#Comparison" class="headerlink" title="Comparison"></a>Comparison</h2><p>As you can see that in the first picture on which we apply vertical mask, all the vertical edges are more visible than the original image. </p>
-<p>Similarly in the second picture we have applied the horizontal mask and in result all the horizontal edges are visible.</p>
-<p>So in this way you can see that we can detect both horizontal and vertical edges from an image. </p>
-<p>Also if you compare the result of sobel operator with Prewitt operator, you will find that sobel operator finds more edges or make edges more visible as compared to Prewitt Operator.</p>
-<p>This is because in sobel operator we have allotted more weight to the pixel intensities around the edges.</p>
-<h2 id="Applying-more-weight-to-mask"><a href="#Applying-more-weight-to-mask" class="headerlink" title="Applying more weight to mask"></a>Applying more weight to mask</h2><p>Now we can also see that if we apply more weight to the mask, the more edges it will get for us. </p>
-<p>There is no fixed coefficients in sobel operator, so here is another weighted operator</p>
-<p><img src="/image/sobel04.png" alt></p>
-<p>If you can compare the result of this mask with of the Prewitt vertical mask, </p>
-<p>it is clear that this mask will give out more edges as compared to Prewitt one just because we have allotted more weight in the mask.</p>
+<h2 id="Frequency-components"><a href="#Frequency-components" class="headerlink" title="Frequency components"></a>Frequency components</h2><p>Any image in spatial domain can be represented in a frequency domain. </p>
+<p>We will divide frequency components into two major components.</p>
+<h2 id="Low-frequency-components"><a href="#Low-frequency-components" class="headerlink" title="Low frequency components"></a>Low frequency components</h2><p>Low frequency components in an image correspond to smooth regions.</p>
+<h2 id="High-frequency-components"><a href="#High-frequency-components" class="headerlink" title="High frequency components"></a>High frequency components</h2><p>High frequency components correspond to edges in an image.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/22/Sobel Operator/" data-id="ck71wv6qz00dq0b6w1dqaf2qz" data-title="Sobel Operator" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/22/Frequency domain/" data-id="ck78pn08j00dbilqx4a0ssu8j" data-title="Frequency domain" class="article-share-link">Share</a>
       
       
       
@@ -338,7 +324,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/22/Edge Detection/" data-id="ck71wv6qt00da0b6wms8i9qzr" data-title="Edge Detection" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/22/Edge Detection/" data-id="ck78pn08j00d9ilqx9c5nhs8v" data-title="Edge Detection" class="article-share-link">Share</a>
       
       
       
@@ -350,9 +336,9 @@
 
 
   
-    <article id="post-Blurring" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-Robinson Compass Mask" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/05/22/Blurring/" class="article-date">
+    <a href="/2018/05/22/Robinson Compass Mask/" class="article-date">
   <time class="dt-published" datetime="2018-05-21T15:00:00.000Z" itemprop="datePublished">2018-05-22</time>
 </a>
     
@@ -368,7 +354,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/22/Blurring/">Blurring</a>
+      <a class="p-name article-title" href="/2018/05/22/Robinson Compass Mask/">Robinson Compass Mask</a>
     </h1>
   
 
@@ -376,80 +362,115 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h2 id="Blurring"><a href="#Blurring" class="headerlink" title="Blurring"></a>Blurring</h2><ul>
-<li>In blurring, we simple blur an image. </li>
-<li>An image looks more sharp or more detailed if we are able to perceive all the objects and their shapes correctly in it. </li>
-<li>For example. An image with a face, looks clear when we are able to identify eyes, ears, nose, lips, forehead e.t.c very clear. </li>
-<li>This shape of an object is due to its edges. </li>
-<li>So in blurring, we simple reduce the edge content and makes the transition form one color to the other very smooth.</li>
-</ul>
-<h2 id="Blurring-vs-zooming"><a href="#Blurring-vs-zooming" class="headerlink" title="Blurring vs zooming"></a>Blurring vs zooming</h2><ul>
-<li>You might have seen a blurred image when you zoom an image. <ul>
-<li>When you zoom an image using pixel replication, and zooming factor is increased, you saw a blurred image. This image also has less details, but it is not true blurring.</li>
-</ul>
-</li>
-<li>In zooming, you add new pixels to an image, that increase the overall number of pixels in an image, </li>
-<li>In blurring, the number of pixels of a normal image and a blurred image remains the same.</li>
-</ul>
-<h2 id="Common-example-of-a-blurred-image"><a href="#Common-example-of-a-blurred-image" class="headerlink" title="Common example of a blurred image"></a>Common example of a blurred image</h2><p><img src="/image/blur01.png" alt></p>
-<h2 id="Types-of-filters"><a href="#Types-of-filters" class="headerlink" title="Types of filters"></a>Types of filters</h2><ul>
-<li>Blurring can be achieved by many ways. </li>
-<li>The common type of filters that are used to perform blurring are.<ul>
-<li>Mean filter</li>
-<li>Weighted average filter</li>
-<li>Gaussian filter</li>
-</ul>
-</li>
-</ul>
-<h2 id="Mean-filter"><a href="#Mean-filter" class="headerlink" title="Mean filter"></a>Mean filter</h2><ul>
-<li>Mean filter is also known as Box filter and average filter. </li>
-<li>A mean filter has the following properties.<ul>
-<li>It must be odd ordered</li>
-<li>The sum of all the elements should be 1</li>
-<li>All the elements should be same</li>
-</ul>
-</li>
-<li>If we follow this rule, then for a mask of 3x3. We get the following result.</li>
-</ul>
-<p><img src="/image/blur02.png" alt></p>
+        <p>Robinson compass masks are another type of derrivate mask which is used for edge detection. </p>
+<p>This operator is also known as direction mask. In this operator we take one mask and rotate it in all the 8 compass major directions that are following:</p>
 <ul>
-<li>The blurring can be increased by increasing the size of the mask. </li>
-<li>The more is the size of the mask, the more is the blurring. </li>
-<li>Because with greater mask, greater number of pixels are catered and one smooth transition is defined.</li>
+<li>North</li>
+<li>North West</li>
+<li>West</li>
+<li>South West</li>
+<li>South</li>
+<li>South East</li>
+<li>East</li>
+<li>North East</li>
 </ul>
-<p><img src="/image/blur03.png" alt></p>
-<h2 id="Weighted-average-filter"><a href="#Weighted-average-filter" class="headerlink" title="Weighted average filter"></a>Weighted average filter</h2><ul>
-<li><p>In weighted average filter, </p>
+<p>There is no fixed mask. </p>
+<p>You can take any mask and you have to rotate it to find edges in all the above mentioned directions. </p>
+<p>All the masks are rotated on the bases of direction of zero columns.</p>
+<p>For example let’s see the following mask which is in North Direction and then rotate it to make all the direction masks.</p>
+<p><img src="/image/robinson01.png" alt></p>
+<p><img src="/image/robinson02.png" alt></p>
+<p>As you can see that all the directions are covered on the basis of zeros direction. </p>
+<p>Each mask will give you the edges on its direction. </p>
+<p>Now let’s see the result of the entire above masks. </p>
+<p>Suppose we have a sample picture from which we have to find all the edges. </p>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/robinson03.png" alt></p>
+<p>As you can see that by applying all the above masks you will get edges in all the direction. </p>
+<p>Result is also depends on the image. </p>
+<p>Suppose there is an image, which do not have any North East direction edges so then that mask will be ineffective.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/22/Robinson Compass Mask/" data-id="ck78pn08o00dtilqxlp0jwkso" data-title="Robinson Compass Mask" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Bits Per Pixel" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/21/Bits Per Pixel/" class="article-date">
+  <time class="dt-published" datetime="2018-05-20T15:00:00.000Z" itemprop="datePublished">2018-05-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/dip/">DIP</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/21/Bits Per Pixel/">Bits Per Pixel</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Bpp or bits per pixel denotes the number of bits per pixel.</p>
+<h4 id="Number-of-different-colors"><a href="#Number-of-different-colors" class="headerlink" title="Number of different colors"></a>Number of different colors</h4><ul>
+<li><p>the number of different colors depend on the number of bits per pixel.</p>
+<p><img src="https://github.com/KoJunHee/kojunhee.github.io/raw/master/img/bppTable.png" alt="img"></p>
 </li>
-<li><p>we gave more weight to the center value. </p>
-</li>
-<li><p>Due to which the contribution of center becomes more then the rest of the values. Due to weighted average filtering, we can actually control the blurring.</p>
-</li>
-<li><p>Properties of the weighted average filter are.</p>
-<ul>
-<li>It must be odd ordered</li>
-<li>The sum of all the elements should be 1</li>
-<li>The weight of center element should be more then all of the other elements</li>
+</ul>
+<h4 id="Shades"><a href="#Shades" class="headerlink" title="Shades"></a>Shades</h4><ul>
+<li>Shades = number of colors = (2)<sup>bpp<sup></sup></sup></li>
+<li>black color<ul>
+<li>0 pixel value always denotes black color. </li>
 </ul>
 </li>
-<li><p>Filter01</p>
-<p><img src="/image/blur04.png" alt></p>
-<ul>
-<li>The two properties are satisfied which are (1 and 3). But the property 2 is not satisfied. So in order to satisfy that we will simple divide the whole filter by 10, or multiply it with 1/10.</li>
+<li>white color<ul>
+<li>(2)<sup>bpp<sup> -1</sup></sup></li>
+<li>In case of 1 bpp, 0 denotes black, and 1 denotes white.</li>
+<li>In case 8 bpp, 0 denotes black, and 255 denotes white.</li>
 </ul>
 </li>
-<li><p>Filter02</p>
-<p><img src="/image/blur05.png" alt></p>
-<ul>
-<li>Dividing factor = 18.</li>
+<li>gray color<ul>
+<li>Gray color is actually the mid point of black and white.</li>
+<li>In case of 8bpp, the pixel value that denotes gray color is 127 or 128bpp (if you count from 1, not from 0).</li>
 </ul>
 </li>
+</ul>
+<h4 id="Image-Size"><a href="#Image-Size" class="headerlink" title="Image Size"></a>Image Size</h4><ul>
+<li>Size of an image = rows * cols * bpp</li>
+<li>Assuming it has 1024 rows and it has 1024 columns. </li>
+<li>And since it is a gray scale image, it has 256 different shades of gray or it has bits per pixel</li>
+<li>rows * cols * bpp = 1024 * 1024 * 8 = 8388608 bits.</li>
+<li>Converting it into bytes = 8388608 / 8 = 1048576 bytes.</li>
+<li>Converting into kilo bytes = 1048576 / 1024 = 1024kb.</li>
+<li>Converting into Mega bytes = 1024 / 1024 = 1 Mb.</li>
+</ul>
+<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><ul>
+<li><a href="https://www.tutorialspoint.com/dip/concept_of_bits_per_pixel.htm" target="_blank" rel="noopener">https://www.tutorialspoint.com/dip/concept_of_bits_per_pixel.htm</a></li>
 </ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/22/Blurring/" data-id="ck71wv6qt00d80b6wpp45uzwh" data-title="Blurring" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/21/Bits Per Pixel/" data-id="ck78pn08a00chilqx4y7760l0" data-title="Bits Per Pixel" class="article-share-link">Share</a>
       
       
       
@@ -513,7 +534,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/21/Types of Images/" data-id="ck71wv6qs00d60b6w665v82st" data-title="Types of Images" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/21/Types of Images/" data-id="ck78pn08h00d5ilqx7zin9jiq" data-title="Types of Images" class="article-share-link">Share</a>
       
       
       
@@ -599,75 +620,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/21/PMF, CDF/" data-id="ck71wv6qs00d40b6wf50i6e6u" data-title="PMF, CDF" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Histograms Introduction" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/21/Histograms Introduction/" class="article-date">
-  <time class="dt-published" datetime="2018-05-20T15:00:00.000Z" itemprop="datePublished">2018-05-21</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/dip/">DIP</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/21/Histograms Introduction/">Histograms Introduction</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Histogram-of-an-image"><a href="#Histogram-of-an-image" class="headerlink" title="Histogram of an image"></a>Histogram of an image</h2><p><img src="/image/histogram.png" alt></p>
-<ul>
-<li>The x axis of the histogram shows the range of pixel values. </li>
-<li>Since its an 8 bpp image, that means it has 256 levels of gray or shades of gray in it. </li>
-<li>Thats why the range of x axis starts from 0 and end at 255 with a gap of 50. </li>
-<li>Whereas on the y axis, is the count of these intensities.</li>
-<li>that most of the bars that have high frequency lies in the first half portion which is the darker portion. </li>
-<li>That means that the image we have got is darker. </li>
-</ul>
-<h2 id="Applications-of-Histograms"><a href="#Applications-of-Histograms" class="headerlink" title="Applications of Histograms"></a>Applications of Histograms</h2><ul>
-<li>The first use as it has also been discussed above is the analysis of the image. <ul>
-<li>We can predict about an image by just looking at its histogram. </li>
-<li>Its like looking an x ray of a bone of a body.</li>
-</ul>
-</li>
-<li>The second use of histogram is for brightness purposes. <ul>
-<li>The histograms has wide application in image brightness. </li>
-<li>Not only in brightness, but histograms are also used in adjusting contrast of an image.</li>
-</ul>
-</li>
-<li>Another important use of histogram is to equalize an image.</li>
-<li>And last but not the least, histogram has wide use in thresholding. <ul>
-<li>This is mostly used in computer vision.</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/21/Histograms Introduction/" data-id="ck71wv6qr00d20b6wjuad1qy4" data-title="Histograms Introduction" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/21/PMF, CDF/" data-id="ck78pn08h00d3ilqxai9u2hbp" data-title="PMF, CDF" class="article-share-link">Share</a>
       
       
       
@@ -759,7 +712,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/21/Mask/" data-id="ck71wv6qr00d00b6w0y8llpv8" data-title="Mask" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/21/Mask/" data-id="ck78pn08g00d1ilqxb0qxfbl2" data-title="Mask" class="article-share-link">Share</a>
       
       
       
@@ -771,9 +724,9 @@
 
 
   
-    <article id="post-Histogram Stretching" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-Histograms Introduction" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/05/21/Histogram Stretching/" class="article-date">
+    <a href="/2018/05/21/Histograms Introduction/" class="article-date">
   <time class="dt-published" datetime="2018-05-20T15:00:00.000Z" itemprop="datePublished">2018-05-21</time>
 </a>
     
@@ -789,7 +742,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/21/Histogram Stretching/">Histogram Stretching</a>
+      <a class="p-name article-title" href="/2018/05/21/Histograms Introduction/">Histograms Introduction</a>
     </h1>
   
 
@@ -797,65 +750,37 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>There are two methods of enhancing contrast. </p>
+        <h2 id="Histogram-of-an-image"><a href="#Histogram-of-an-image" class="headerlink" title="Histogram of an image"></a>Histogram of an image</h2><p><img src="/image/histogram.png" alt></p>
 <ul>
-<li>The first one is called Histogram stretching that increase contrast. </li>
-<li>The second one is called Histogram equalization that enhance contrast.</li>
+<li>The x axis of the histogram shows the range of pixel values. </li>
+<li>Since its an 8 bpp image, that means it has 256 levels of gray or shades of gray in it. </li>
+<li>Thats why the range of x axis starts from 0 and end at 255 with a gap of 50. </li>
+<li>Whereas on the y axis, is the count of these intensities.</li>
+<li>that most of the bars that have high frequency lies in the first half portion which is the darker portion. </li>
+<li>That means that the image we have got is darker. </li>
 </ul>
-<h2 id="Contrast"><a href="#Contrast" class="headerlink" title="Contrast"></a>Contrast</h2><ul>
-<li><p>Contrast is the difference between maximum and minimum pixel intensity.</p>
-<p><img src="/image/hisStretch01.png" alt></p>
-</li>
-<li><p>Contrast = 225.</p>
-</li>
-<li><p>Now we will increase the contrast of the image.</p>
-</li>
+<h2 id="Applications-of-Histograms"><a href="#Applications-of-Histograms" class="headerlink" title="Applications of Histograms"></a>Applications of Histograms</h2><ul>
+<li>The first use as it has also been discussed above is the analysis of the image. <ul>
+<li>We can predict about an image by just looking at its histogram. </li>
+<li>Its like looking an x ray of a bone of a body.</li>
 </ul>
-<h2 id="Increasing-the-contrast-of-the-image"><a href="#Increasing-the-contrast-of-the-image" class="headerlink" title="Increasing the contrast of the image"></a>Increasing the contrast of the image</h2><ul>
-<li><p>The formula for stretching the histogram of the image to increase the contrast is</p>
-<p><img src="/image/hisStretch02.png" alt></p>
 </li>
-<li><p>The formula requires finding the minimum and maximum pixel intensity multiply by levels of gray. </p>
-</li>
-<li><p>In our case the image is 8bpp, so levels of gray are 256.</p>
-</li>
-<li><p>The minimum value is 0 and the maximum value is 225. So the formula in our case is</p>
-<p><img src="/image/hisStretch03.png" alt></p>
-</li>
-<li><p>where f(x,y) denotes the value of each pixel intensity. For each f(x,y) in an image , we will calculate this formula.</p>
-</li>
-<li><p>Note the shape and symmetry of histogram. The histogram is now stretched or in other means expand. Have a look at it.</p>
-<p><img src="/image/hisStretch04.png" alt></p>
-</li>
-<li><p>In this case the contrast of the image can be calculated as Contrast = 240</p>
-</li>
-<li><p>Hence we can say that the contrast of the image is increased.</p>
-</li>
+<li>The second use of histogram is for brightness purposes. <ul>
+<li>The histograms has wide application in image brightness. </li>
+<li>Not only in brightness, but histograms are also used in adjusting contrast of an image.</li>
 </ul>
-<h2 id="Failing-of-histogram-stretching"><a href="#Failing-of-histogram-stretching" class="headerlink" title="Failing of histogram stretching"></a>Failing of histogram stretching</h2><ul>
-<li><p>the algorithm fails on some cases. </p>
 </li>
-<li><p>Those cases include images with when there is pixel intensity 0 and 255 are present in the image</p>
-</li>
-<li><p>Original Formula</p>
-<p><img src="/image/hisStretch05.png" alt></p>
-</li>
-<li><p>Putting fail case values in the formula</p>
-<p><img src="/image/hisStretch06.png" alt></p>
-</li>
-<li><p>Simplify that expression gives</p>
-<p><img src="/image/hisStretch07.png" alt></p>
-</li>
-<li><p>That means the output image is equal to the processed image. </p>
-</li>
-<li><p>That means there is no effect of histogram stretching has been done at this image.</p>
+<li>Another important use of histogram is to equalize an image.</li>
+<li>And last but not the least, histogram has wide use in thresholding. <ul>
+<li>This is mostly used in computer vision.</li>
+</ul>
 </li>
 </ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/21/Histogram Stretching/" data-id="ck71wv6qq00cy0b6wb4qlhtrp" data-title="Histogram Stretching" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/21/Histograms Introduction/" data-id="ck78pn08g00czilqxdbdpy7nz" data-title="Histograms Introduction" class="article-share-link">Share</a>
       
       
       
@@ -914,11 +839,11 @@
           </li>
         
           <li>
-            <a href="/2020/02/24/tdd-chapter-03/">[테스트 주도 개발] 3장_모두를 위한 평등</a>
+            <a href="/2020/02/24/tdd-chapter-02/">[테스트 주도 개발] 2장_타락한 객체</a>
           </li>
         
           <li>
-            <a href="/2020/02/24/tdd-chapter-02/">[테스트 주도 개발] 2장_타락한 객체</a>
+            <a href="/2020/02/24/tdd-chapter-03/">[테스트 주도 개발] 3장_모두를 위한 평등</a>
           </li>
         
           <li>
