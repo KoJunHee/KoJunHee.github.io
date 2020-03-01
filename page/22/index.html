@@ -155,7 +155,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/21/Histogram Stretching/" data-id="ck78pn08e00cvilqxxg0oo7yy" data-title="Histogram Stretching" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/21/Histogram Stretching/" data-id="ck78w112b00cu8vqxiys56yan" data-title="Histogram Stretching" class="article-share-link">Share</a>
       
       
       
@@ -224,7 +224,100 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/21/Histogram Sliding/" data-id="ck78pn08d00ctilqx0abe4t25" data-title="Histogram Sliding" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/21/Histogram Sliding/" data-id="ck78w112a00cs8vqxwl279b37" data-title="Histogram Sliding" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Histogram Equalization" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/21/Histogram Equalization/" class="article-date">
+  <time class="dt-published" datetime="2018-05-20T15:00:00.000Z" itemprop="datePublished">2018-05-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/dip/">DIP</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/21/Histogram Equalization/">Histogram Equalization</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="Histogram-Equalization"><a href="#Histogram-Equalization" class="headerlink" title="Histogram Equalization"></a>Histogram Equalization</h2><ul>
+<li><p>Histogram equalization is used to enhance contrast.</p>
+</li>
+<li><p>Lets start histogram equalization by taking this image below as a simple image.</p>
+</li>
+<li><p>The histogram of this image has been shown below.</p>
+<p><img src="/image/hisE01.png" alt></p>
+<p><img src="/image/hisE02.png" alt></p>
+</li>
+<li><p>Now we will perform histogram equalization to it.</p>
+</li>
+<li><p>First we have to calculate the PMF (probability mass function) of all the pixels in this image.</p>
+</li>
+<li><p>Our next step involves calculation of CDF (cumulative distributive function).  </p>
+</li>
+</ul>
+<h2 id="Calculate-CDF-according-to-gray-levels"><a href="#Calculate-CDF-according-to-gray-levels" class="headerlink" title="Calculate CDF according to gray levels"></a>Calculate CDF according to gray levels</h2><p><img src="/image/hisE03.png" alt></p>
+<ul>
+<li><p>Then in this step you will multiply the CDF value with (Gray levels (minus) 1) .</p>
+</li>
+<li><p>Considering we have an 3 bpp image. </p>
+</li>
+<li><p>Then number of levels we have are 8.</p>
+</li>
+<li><p>And 1 subtracts 8 is 7. So we multiply CDF by 7. Here what we got after multiplying.</p>
+<p><img src="/image/hisE04.png" alt></p>
+</li>
+<li><p>we have to map the new gray level values into number of pixels.</p>
+</li>
+<li><p>Lets assume our old gray levels values has these number of pixels.</p>
+</li>
+</ul>
+<p><img src="/image/hisE05.png" alt></p>
+<ul>
+<li><p>Now if we map our new values to , then this is what we got.</p>
+<p><img src="/image/hisE06.png" alt></p>
+</li>
+<li><p>Now map these new values you are onto histogram, and you are done.</p>
+</li>
+<li><p>Lets apply this technique to our original image. </p>
+</li>
+<li><p>After applying we got the following image and its following histogram.</p>
+</li>
+</ul>
+<h2 id="Cumulative-Distributive-function-of-this-image"><a href="#Cumulative-Distributive-function-of-this-image" class="headerlink" title="Cumulative Distributive function of this image"></a>Cumulative Distributive function of this image</h2><p><img src="/image/hisE07.png" alt></p>
+<h2 id="Histogram-Equalization-histogram"><a href="#Histogram-Equalization-histogram" class="headerlink" title="Histogram Equalization histogram"></a>Histogram Equalization histogram</h2><p><img src="/image/hisE08.png" alt></p>
+<h2 id="Comparing-both-the-histograms-and-images"><a href="#Comparing-both-the-histograms-and-images" class="headerlink" title="Comparing both the histograms and images"></a>Comparing both the histograms and images</h2><p><img src="/image/hisE09.png" alt></p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
+<li>during histogram equalization the overall shape of the histogram changes, </li>
+<li>where as in histogram stretching the overall shape of histogram remains same.</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/21/Histogram Equalization/" data-id="ck78w112900cq8vqxnrkm3r6i" data-title="Histogram Equalization" class="article-share-link">Share</a>
       
       
       
@@ -334,100 +427,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/21/Convolution/" data-id="ck78pn08c00cqilqxdmvrv9az" data-title="Convolution" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Histogram Equalization" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/21/Histogram Equalization/" class="article-date">
-  <time class="dt-published" datetime="2018-05-20T15:00:00.000Z" itemprop="datePublished">2018-05-21</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/dip/">DIP</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/21/Histogram Equalization/">Histogram Equalization</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Histogram-Equalization"><a href="#Histogram-Equalization" class="headerlink" title="Histogram Equalization"></a>Histogram Equalization</h2><ul>
-<li><p>Histogram equalization is used to enhance contrast.</p>
-</li>
-<li><p>Lets start histogram equalization by taking this image below as a simple image.</p>
-</li>
-<li><p>The histogram of this image has been shown below.</p>
-<p><img src="/image/hisE01.png" alt></p>
-<p><img src="/image/hisE02.png" alt></p>
-</li>
-<li><p>Now we will perform histogram equalization to it.</p>
-</li>
-<li><p>First we have to calculate the PMF (probability mass function) of all the pixels in this image.</p>
-</li>
-<li><p>Our next step involves calculation of CDF (cumulative distributive function).  </p>
-</li>
-</ul>
-<h2 id="Calculate-CDF-according-to-gray-levels"><a href="#Calculate-CDF-according-to-gray-levels" class="headerlink" title="Calculate CDF according to gray levels"></a>Calculate CDF according to gray levels</h2><p><img src="/image/hisE03.png" alt></p>
-<ul>
-<li><p>Then in this step you will multiply the CDF value with (Gray levels (minus) 1) .</p>
-</li>
-<li><p>Considering we have an 3 bpp image. </p>
-</li>
-<li><p>Then number of levels we have are 8.</p>
-</li>
-<li><p>And 1 subtracts 8 is 7. So we multiply CDF by 7. Here what we got after multiplying.</p>
-<p><img src="/image/hisE04.png" alt></p>
-</li>
-<li><p>we have to map the new gray level values into number of pixels.</p>
-</li>
-<li><p>Lets assume our old gray levels values has these number of pixels.</p>
-</li>
-</ul>
-<p><img src="/image/hisE05.png" alt></p>
-<ul>
-<li><p>Now if we map our new values to , then this is what we got.</p>
-<p><img src="/image/hisE06.png" alt></p>
-</li>
-<li><p>Now map these new values you are onto histogram, and you are done.</p>
-</li>
-<li><p>Lets apply this technique to our original image. </p>
-</li>
-<li><p>After applying we got the following image and its following histogram.</p>
-</li>
-</ul>
-<h2 id="Cumulative-Distributive-function-of-this-image"><a href="#Cumulative-Distributive-function-of-this-image" class="headerlink" title="Cumulative Distributive function of this image"></a>Cumulative Distributive function of this image</h2><p><img src="/image/hisE07.png" alt></p>
-<h2 id="Histogram-Equalization-histogram"><a href="#Histogram-Equalization-histogram" class="headerlink" title="Histogram Equalization histogram"></a>Histogram Equalization histogram</h2><p><img src="/image/hisE08.png" alt></p>
-<h2 id="Comparing-both-the-histograms-and-images"><a href="#Comparing-both-the-histograms-and-images" class="headerlink" title="Comparing both the histograms and images"></a>Comparing both the histograms and images</h2><p><img src="/image/hisE09.png" alt></p>
-<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li>during histogram equalization the overall shape of the histogram changes, </li>
-<li>where as in histogram stretching the overall shape of histogram remains same.</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/21/Histogram Equalization/" data-id="ck78pn08b00coilqxvcy3tvxc" data-title="Histogram Equalization" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/21/Convolution/" data-id="ck78w112900co8vqxmqlpvpy5" data-title="Convolution" class="article-share-link">Share</a>
       
       
       
@@ -500,7 +500,71 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/21/Brightness and Contrast/" data-id="ck78pn08b00clilqx5kqwz089" data-title="Brightness and Contrast" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/21/Brightness and Contrast/" data-id="ck78w112800cl8vqxzqm4b0ug" data-title="Brightness and Contrast" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Types of Images" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/21/Types of Images/" class="article-date">
+  <time class="dt-published" datetime="2018-05-20T15:00:00.000Z" itemprop="datePublished">2018-05-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/dip/">DIP</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/21/Types of Images/">Types of Images</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h4 id="8-bit-color-format"><a href="#8-bit-color-format" class="headerlink" title="8 bit color format"></a>8 bit color format</h4><ul>
+<li>8 bit color format is one of the most famous image format. </li>
+<li>It has 256 different shades of colors in it. </li>
+<li>It is commonly known as Grayscale image.</li>
+<li>The range of the colors in 8 bit vary from 0-255.</li>
+</ul>
+<h4 id="16-bit-color-format"><a href="#16-bit-color-format" class="headerlink" title="16 bit color format"></a>16 bit color format</h4><ul>
+<li><p>A 16 bit format is actually divided into three further formats which are Red , Green and Blue. The famous (RGB) format.</p>
+<p><img src="/image/16bit.png" alt></p>
+</li>
+<li><p>5 bits for R, 6 bits for G, 5 bits for B.</p>
+</li>
+<li><p>The additional bit that was left behind is added into the green bit. </p>
+</li>
+<li><p>Because green is the color which is most soothing to eyes in all of these three colors.</p>
+</li>
+</ul>
+<h4 id="24-bit-color-format"><a href="#24-bit-color-format" class="headerlink" title="24 bit color format"></a>24 bit color format</h4><p><img src="/image/24bit.png" alt></p>
+<ul>
+<li>8 bits for R, 8 bits for G, 8 bits for B.</li>
+<li>a 24 bit image has three different matrices of R, G, B.</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/21/Types of Images/" data-id="ck78w112e00d28vqxbzti27qb" data-title="Types of Images" class="article-share-link">Share</a>
       
       
       
@@ -587,7 +651,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/15/Pixel/" data-id="ck78pn08900ccilqxu4v4v4du" data-title="Pixel" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/15/Pixel/" data-id="ck78w112600cc8vqx0a6t59ge" data-title="Pixel" class="article-share-link">Share</a>
       
       
       
@@ -667,7 +731,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/15/Sampling, Quantization/" data-id="ck78pn08900ceilqxtabmq48b" data-title="Sampling, Quantization" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/15/Sampling, Quantization/" data-id="ck78w112700ce8vqxiy141pei" data-title="Sampling, Quantization" class="article-share-link">Share</a>
       
       
       
@@ -718,71 +782,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/15/안전영역/" data-id="ck78pn08a00cjilqxdsq5zlwa" data-title="안전영역" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-숨바꼭질" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/13/숨바꼭질/" class="article-date">
-  <time class="dt-published" datetime="2018-05-12T15:00:00.000Z" itemprop="datePublished">2018-05-13</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/13/숨바꼭질/">숨바꼭질</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p><a href="https://www.acmicpc.net/problem/1697" target="_blank" rel="noopener">https://www.acmicpc.net/problem/1697</a></p>
-<ul>
-<li>현재 위치에서 이동 가능한 곳 체크<ul>
-<li>X - 1</li>
-<li>X + 1</li>
-<li>X * 2</li>
-</ul>
-</li>
-<li>체크 조건<ul>
-<li>이동 가능한 곳이 범위 안에 있나?</li>
-<li>아직 방문하지 않은 곳인가?</li>
-</ul>
-</li>
-<li>Queue에서 이동 가능한 곳을 뽑아냄<ul>
-<li>동생의 위치이면 그래프의 Depth를 출력</li>
-</ul>
-</li>
-<li>그래프의 Depth를 표현하기 위해 <ul>
-<li>Class는 위치와 depth로 구성</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/13/숨바꼭질/" data-id="ck78pn08800cailqxo9057hc5" data-title="숨바꼭질" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/15/안전영역/" data-id="ck78w112700ch8vqxs1s2im2z" data-title="안전영역" class="article-share-link">Share</a>
       
       
       
@@ -836,7 +836,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/13/Simple Factory/" data-id="ck78pn08800c8ilqxe4c0ncpw" data-title="Simple Factory" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/13/Simple Factory/" data-id="ck78w112500c88vqxeyx0mp0s" data-title="Simple Factory" class="article-share-link">Share</a>
       
       
       
@@ -895,7 +895,7 @@
           </li>
         
           <li>
-            <a href="/2020/02/24/tdd-chapter-02/">[테스트 주도 개발] 2장_타락한 객체</a>
+            <a href="/2020/02/25/bigdata-chapter-02/">[빅데이터] 2장_빅데이터를 위한 데이터 모델</a>
           </li>
         
           <li>
@@ -903,11 +903,11 @@
           </li>
         
           <li>
-            <a href="/2020/02/24/tdd-chapter-01/">[테스트 주도 개발] 1장_다중 통화를 지원하는 Money 객체</a>
+            <a href="/2020/02/24/tdd-chapter-02/">[테스트 주도 개발] 2장_타락한 객체</a>
           </li>
         
           <li>
-            <a href="/2020/02/10/object-chapter-appendix-c/">[오브젝트] 부록 C 동적인 협력, 정적인 코드</a>
+            <a href="/2020/02/24/tdd-chapter-01/">[테스트 주도 개발] 1장_다중 통화를 지원하는 Money 객체</a>
           </li>
         
       </ul>

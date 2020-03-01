@@ -71,6 +71,109 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-kafka-chapter7" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/01/26/kafka-chapter7/" class="article-date">
+  <time class="dt-published" datetime="2020-01-25T15:00:00.000Z" itemprop="datePublished">2020-01-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/kafka/">Kafka</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/01/26/kafka-chapter7/">[카프카] 7장_데이터 파이프라인 구축</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>데이터 파이프라인을 직접 구성해본다. 다음 애플리케이션을 사용한다.</p>
+<ol>
+<li>아파치 나이파이</li>
+<li>엘라스틱 파일비트</li>
+<li>엘라스틱 엘라스틱서치</li>
+<li>엘라스틱 키바나</li>
+</ol>
+<h2 id="1-카프카를-활용한-데이터-흐름도"><a href="#1-카프카를-활용한-데이터-흐름도" class="headerlink" title="1. 카프카를 활용한 데이터 흐름도"></a>1. 카프카를 활용한 데이터 흐름도</h2><p><img src="/image/kafka_chapter07_01.png" alt></p>
+<p>카프카에서 발생하는 로그를 이용해 데이터 흐름도를 구성해본다.<br>아파치 나이파이는 데이터 처리 흐름을 정의하고, 정의된 흐름대로 자동으로 실행해주는 애플리케이션이다.</p>
+<ol>
+<li>데이터 흐름을 처리하기 위한 워크플로우</li>
+<li>데이터 처리</li>
+</ol>
+<h2 id="2-파일-비트를-이용한-메세지-전송"><a href="#2-파일-비트를-이용한-메세지-전송" class="headerlink" title="2. 파일 비트를 이용한 메세지 전송"></a>2. 파일 비트를 이용한 메세지 전송</h2><p>카프카의 로그를 카프카의 토픽으로 전송하려면 프로듀서가 필요하다. 프로듀서는,</p>
+<ol>
+<li>카프카 클라이언트 라이브러리를 이용해 프로그램으로 직접 구현</li>
+<li>오픈소스 애플리케이션 이용. 여기서는 파일 비트.</li>
+</ol>
+<h2 id="3-나이파이를-이용해-메세지-가져오기"><a href="#3-나이파이를-이용해-메세지-가져오기" class="headerlink" title="3. 나이파이를 이용해 메세지 가져오기"></a>3. 나이파이를 이용해 메세지 가져오기</h2><p>이제 컨슈머를 이용해 카프카 토픽으로부터 메세지를 가져와와야한다. 컨슈머는,</p>
+<ol>
+<li>프로그래밍 언어로 직접 구현</li>
+<li>오픈소스 애플리케이션 이용. 여기서는 나이파이.</li>
+</ol>
+<h4 id="3-1-나이파이를-이용한-컨슈머-설정"><a href="#3-1-나이파이를-이용한-컨슈머-설정" class="headerlink" title="3.1 나이파이를 이용한 컨슈머 설정"></a>3.1 나이파이를 이용한 컨슈머 설정</h4><p><img src="/image/kafka_chapter07_02.png" alt></p>
+<p>프로세서를 추가하는 화면이다.<br>프로세서는 나이파이에서 데이터 처리를 위한 각각의 컴포넌트이다. AMQP 컨슘, 파일로 저장, 전송하기 등 여러가지 작업이 가능하다.<br>ConsumeKafka 프로세서를 추가하고 재생 버튼을 누르면, 설정한 브로커의 토픽에서 메세지를 가져오기 시작한다.<br>컨슈머가 잘 동작하는지 확인하는 방법은,</p>
+<ol>
+<li><p>나이파이에서 컨슈머 프로세서를 실행 시킨 후,</p>
+</li>
+<li><p>카프카 컨슈머 그룹 리스트에서, 등록한 컨슈머 그룹이 잘 등록되었는지 확인한다.<br>등록한 컨슈머 그룹 : ConsumeKafka 프로세서의 Properties 를 정의할 때 그룹 ID 를 기입했음.</p>
+</li>
+</ol>
+<h2 id="4-실시간-분석을-위해-엘라스틱서치에-메세지-저장"><a href="#4-실시간-분석을-위해-엘라스틱서치에-메세지-저장" class="headerlink" title="4. 실시간 분석을 위해 엘라스틱서치에 메세지 저장"></a>4. 실시간 분석을 위해 엘라스틱서치에 메세지 저장</h2><p>이제, 가져온 메세지들을 나이파이의 또 다른 프로세서를 이용해 엘라스틱서치에 저장하겠다.<br>엘라스틱서치는 엘라스틱 사의 분산형 RESTFul 검색 및 분석 엔진이다. 전문 검색 질의를 이용해 원하는 데이터 분석을 빠르게 할 수 있는 애플리케이션이다.</p>
+<h4 id="4-1-나이파이를-이용해-엘라스틱서치로-데이터-전송"><a href="#4-1-나이파이를-이용해-엘라스틱서치로-데이터-전송" class="headerlink" title="4.1 나이파이를 이용해 엘라스틱서치로 데이터 전송"></a>4.1 나이파이를 이용해 엘라스틱서치로 데이터 전송</h4><p>PutElasticsearchHttp 프로세서를 추가한다. 데이터를 엘라스틱서치로 넣어주는 역할을 한다.<br>그리고 다음 화면처럼, ConsumeKafka 와 연결한다.</p>
+<p><img src="/image/kafka_chapter07_03.png" alt></p>
+<p>데이터 흐름 중에 뒤에 있는 프로세서에서 처리 속도가 느려 바로 처리하지 못하거나 프로세서에 문제가 발생한 경우, 두 프로세스를 연결하는 큐에 레코드가 쌓인다.</p>
+<h2 id="5-키바나를-이용해-엘라스틱서치에-저장된-데이터-확인"><a href="#5-키바나를-이용해-엘라스틱서치에-저장된-데이터-확인" class="headerlink" title="5. 키바나를 이용해 엘라스틱서치에 저장된 데이터 확인"></a>5. 키바나를 이용해 엘라스틱서치에 저장된 데이터 확인</h2><p>웹브라우저를 이용해 원하는 시간대에 발생한 로그들을 확인할 수 있고, 필터 기능으로 원하는 패턴의 로그만 빠르게 검색 가능하다.<br>각 브로커에서 수집되는 로그가 카프카의 토픽에 있기 때문에, 엘라스틱 서치에 전송하는 것 외에 추가로 하둡이나 로컬에 저장하길 원하면, 다음 화면처럼 나이파이의 PutHDFS 프로세서를 추가해 쉽게 하둡 등의 저장소에 저장할 수 있다.</p>
+<p><img src="/image/kafka_chapter07_04.png" alt></p>
+<h2 id="6-현재의-토픽을-이용해-새로운-토픽으로-메세지-재생산"><a href="#6-현재의-토픽을-이용해-새로운-토픽으로-메세지-재생산" class="headerlink" title="6. 현재의 토픽을 이용해 새로운 토픽으로 메세지 재생산"></a>6. 현재의 토픽을 이용해 새로운 토픽으로 메세지 재생산</h2><p><img src="/image/kafka_chapter07_05.png" alt></p>
+<p>이번에는, 메세지의 양이 굉장히 많은 토픽의 내용 중 필요한 메세지만 꺼내서 다시 새로운 토픽으로 메세지를 보내는 방법을 정리한다.</p>
+<p>전체적인 데이터 흐름은,</p>
+<ol>
+<li>나이파이 컨슈머가 peter-log 로부터 로그 메세지를 가져오면서 호스트 이름을 확인한다.</li>
+<li>peter-log 토픽으로 로그 메세지를 보내는 서버는 peter-kafka001,peter-kafka002, peter-kafka003 모두 3대이다.</li>
+<li>각각의 메세지마다 호스트 이름이 peter-kafka001,ppeter-kafka002, ppeter-kafka003 이 기록되어 있다.</li>
+<li>전체 메세지 중에 호스트 이름이 peter-kafka001메세지만 peter-kafka001토픽으로 다시 전송하고,</li>
+<li>나머지 메세지는 peter-failure 토픽으로 전송한다.</li>
+</ol>
+<h4 id="6-1-나이파이를-이용한-토픽별-라우팅"><a href="#6-1-나이파이를-이용한-토픽별-라우팅" class="headerlink" title="6.1 나이파이를 이용한 토픽별 라우팅"></a>6.1 나이파이를 이용한 토픽별 라우팅</h4><p>나이파이에서 토픽의 메세지를 가져와서 peter-kafka001 에서 온 메세지인지 확인한 후에 peter-kafka001 토픽으로 전송해야한다.<br>이를 위해, 나이파이의 EvaluateJsonPath, RouteOnAttribute 프로세서를 추가해서 라우팅 작업을 한다.</p>
+<ol>
+<li>EvaluateJsonPath 프로서는, 토픽으로 전송된 JSON 의 beat.hostname 을 읽어 호스트 이름을 구분한다.</li>
+<li>RouteOnAttribute 프로세서는, attrubute 를 이용해 라우팅을 한다.</li>
+</ol>
+<p>마지막으로, 카프카 프로듀서 2개를 추가한다.</p>
+<ol>
+<li>호스트명이 peter-kafka001 인 메세지를  peter-kafka001 토픽으로 전송할 프로듀서</li>
+<li>그 외 메세지를  peter-failure 토픽으로 전송할 프로듀서</li>
+</ol>
+<p>최종 플로우는 다음과 같다.</p>
+<p><img src="/image/kafka_chapter07_06.png" alt></p>
+<hr>
+<p>카프카, 데이터 플랫폼의 최강자 &lt;고승범, 공용준&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2020/01/26/kafka-chapter7/" data-id="ck78w115400mu8vqxz3k3cdv2" data-title="[카프카] 7장_데이터 파이프라인 구축" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-object-chapter14" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2020/01/20/object-chapter14/" class="article-date">
@@ -210,7 +313,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/01/20/object-chapter14/" data-id="ck78pn0cq00owilqxniwi4u50" data-title="[오브젝트] 14장_일관성 있는 협력" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/01/20/object-chapter14/" data-id="ck78w116p00p08vqxtyaac23n" data-title="[오브젝트] 14장_일관성 있는 협력" class="article-share-link">Share</a>
       
       
       
@@ -411,7 +514,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/01/13/object-chapter13/" data-id="ck78pn0cr00p0ilqxn7c0sll7" data-title="[오브젝트] 13장_서브클래싱과 서브타이핑" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/01/13/object-chapter13/" data-id="ck78w116o00oy8vqxihrasi1u" data-title="[오브젝트] 13장_서브클래싱과 서브타이핑" class="article-share-link">Share</a>
       
       
       
@@ -502,7 +605,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/01/12/review-2019/" data-id="ck78pn0b900mvilqxarajikyi" data-title="2019년 회고" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/01/12/review-2019/" data-id="ck78w115400mr8vqxxyjn4lge" data-title="2019년 회고" class="article-share-link">Share</a>
       
       
       
@@ -727,7 +830,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/01/06/object-chapter12/" data-id="ck78pn0cr00oyilqx0fs82n23" data-title="[오브젝트] 12장_다형성" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/01/06/object-chapter12/" data-id="ck78w116n00ow8vqxjjl2qifl" data-title="[오브젝트] 12장_다형성" class="article-share-link">Share</a>
       
       
       
@@ -972,7 +1075,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/01/05/big-data-chapter5/" data-id="ck78pn0cp00ouilqxbsx6lk9c" data-title="[빅데이터를 지탱하는 기술] 5장_빅데이터 파이프라인" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/01/05/big-data-chapter5/" data-id="ck78w116n00ou8vqxrssqkyql" data-title="[빅데이터를 지탱하는 기술] 5장_빅데이터 파이프라인" class="article-share-link">Share</a>
       
       
       
@@ -1192,160 +1295,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/01/02/big-data-chapter4/" data-id="ck78pn0dt00peilqxeshpw9xr" data-title="[빅데이터를 지탱하는 기술] 4장_빅데이터 축적" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-big-data-chapter1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/12/30/big-data-chapter1/" class="article-date">
-  <time class="dt-published" datetime="2019-12-29T15:00:00.000Z" itemprop="datePublished">2019-12-30</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/big-data/">Big Data</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/12/30/big-data-chapter1/">[빅데이터를 지탱하는 기술] 1장_빅데이터 기초 지식</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="1-빅데이터의-정착"><a href="#1-빅데이터의-정착" class="headerlink" title="1.빅데이터의 정착"></a>1.빅데이터의 정착</h2><h5 id="빅데이터-기술의-요구-Hadoop-과-NoSQL-의-대두"><a href="#빅데이터-기술의-요구-Hadoop-과-NoSQL-의-대두" class="headerlink" title="빅데이터 기술의 요구 : Hadoop 과 NoSQL 의 대두"></a>빅데이터 기술의 요구 : Hadoop 과 NoSQL 의 대두</h5><p>세계 곳곳에서 엑세스 되는 시스템 증가로, 전통적인 관계형 데이터베이스로는 취급 할 수 없는 데이터가 쌓이게 되었다.</p>
-<p>그래서 다른 구조가 필요했다.</p>
-<ol>
-<li><p>Hadoop </p>
-<p>다수의 컴퓨터에서 대량의 데이터 처리</p>
-</li>
-<li><p>NoSQL Database </p>
-<p>빈번한 읽기/ 쓰기 및 분산처리가 강점</p>
-</li>
-</ol>
-<h5 id="분산-시스템의-비즈니스-이용-개척-데이터-웨어하우스와의-공존"><a href="#분산-시스템의-비즈니스-이용-개척-데이터-웨어하우스와의-공존" class="headerlink" title="분산 시스템의 비즈니스 이용 개척 : 데이터 웨어하우스와의 공존"></a>분산 시스템의 비즈니스 이용 개척 : 데이터 웨어하우스와의 공존</h5><p><img src="/image/bigdata_datawarehouse.png" alt></p>
-<p>위 그림처럼, 확장성이 뛰어난 Hadoop 에 데이터 처리를 맡겨 데이터 웨어하우스의 부하를 줄이고 있다.</p>
-<h5 id="직접-할-수-있는-데이터-분석-폭-확대"><a href="#직접-할-수-있는-데이터-분석-폭-확대" class="headerlink" title="직접 할 수 있는 데이터 분석 폭 확대"></a>직접 할 수 있는 데이터 분석 폭 확대</h5><p>‘여러 컴퓨터에서 분산 처리한다’ 는 빅데이터의 특징으로 하드웨어를 준비하고 관리하는게 어려웠다. </p>
-<p>하지만, 클라우드 시대에서는 필요한 자원 확보가 쉬워서 얼마든지 빅데이터를 이용할 수 있다.</p>
-<h5 id="데이터-디스커버리의-기초-지식"><a href="#데이터-디스커버리의-기초-지식" class="headerlink" title="데이터 디스커버리의 기초 지식"></a>데이터 디스커버리의 기초 지식</h5><ol>
-<li><p>데이터 디스커버리</p>
-<p>대화형으로 데이터를 시각화하여 가치있는 정보를 찾으려고하는 프로세스</p>
-</li>
-<li><p>BI 도구</p>
-<p>데이터 디스커버리를 위한 셀프 서비스용 시각화 시스템</p>
-</li>
-</ol>
-<h2 id="2-빅데이터-시대의-데이터-분석-기반"><a href="#2-빅데이터-시대의-데이터-분석-기반" class="headerlink" title="2. 빅데이터 시대의 데이터 분석 기반"></a>2. 빅데이터 시대의 데이터 분석 기반</h2><p>빅데이터 기술이 기존 데이터 웨어하우스와 다른 점은,</p>
-<p>다수의 분산 시스템을 조합하여 확장성이 뛰어난 데이터 처리 구조를 만든다는 것이다.</p>
-<h5 id="데이터-파이프라인"><a href="#데이터-파이프라인" class="headerlink" title="데이터 파이프라인"></a>데이터 파이프라인</h5><p><img src="/image/bigdata_data_pipeline.png" alt></p>
-<p>차례대로 전달해다가는 데이터로 구성된 시스템이다. 데이터 파이프라인의 기본적인 흐름은,</p>
-<ol>
-<li>데이터를 모아서 축적</li>
-<li>데이터 마트 구성</li>
-<li>시각화 도구</li>
-</ol>
-<h5 id="데이터-수집"><a href="#데이터-수집" class="headerlink" title="데이터 수집"></a>데이터 수집</h5><p>데이터 파이프라인은 데이터를 모으는 부분부터 시작한다. 수집 방법은,</p>
-<ol>
-<li><p>벌크형</p>
-<p>이미 어딘가에 있는 데이터를 정리해서 추출</p>
-<p>ex ) 데이터베이스와 파일 서버 등에서 정기적으로 데이터 수집</p>
-</li>
-<li><p>스트리밍형</p>
-<p>차례대로 생성되는 데이터를 끊임없이 보냄</p>
-<p>ex) 모바일 어플리케이션, 임베디드 장비</p>
-</li>
-</ol>
-<h5 id="스트림-처리와-배치처리"><a href="#스트림-처리와-배치처리" class="headerlink" title="스트림 처리와 배치처리"></a>스트림 처리와 배치처리</h5><ol>
-<li><p>스트림 처리</p>
-<p>스트리밍 형 방법으로 받은 데이터를 실시간으로 처리.</p>
-<p>장기적인 데이터 분석에는 적합하지 않음.</p>
-</li>
-<li><p>배치 처리</p>
-<p>정리된 데이터를 효율적으로 가공하기 위한 처리.</p>
-<p>장기적인 데이터 분석을 위해 대량의 데이터를 저장하고 처리하는데 적합한 분산 시스템이 필요.</p>
-</li>
-</ol>
-<h5 id="분산-스토리지"><a href="#분산-스토리지" class="headerlink" title="분산 스토리지"></a>분산 스토리지</h5><p>여러 컴퓨터와 디스크로 구성된 스토리지 시스템이다. 데이터 저장 방법으로,</p>
-<ol>
-<li><p>객체 스토리지</p>
-<p>한 덩어리로 모인 데이터에 이름을 부여해서 파일로 저장.</p>
-<p>ex ) Amazon S3</p>
-</li>
-<li><p>NoSQL 데이터베이스</p>
-<p>많은 데이터를 읽고 쓰기에 유리.</p>
-</li>
-</ol>
-<h5 id="분산-데이터-처리"><a href="#분산-데이터-처리" class="headerlink" title="분산 데이터 처리"></a>분산 데이터 처리</h5><p>분산 스토리지에 저장된 데이터를 처리하기 위해, 분산 데이터 처리 프레임워크가 필요하다. ex) MapReduce</p>
-<p>주 역할은, 나중에 분석하기 쉽도록 데이터를 가공해서 그 결과를 외부 데이터베이스에 저장하는 것이다.</p>
-<p>빅데이터를 SQL 로 집계하는 방법으로,</p>
-<ol>
-<li><p>쿼리 엔진</p>
-<p>Hive, 대화형 쿼리엔진</p>
-</li>
-<li><p>데이터 웨어하우스 제품</p>
-<p>ETL. </p>
-<p>데이터를 추출하고 가공한후, 데이터 웨어하우스에 로드한다.</p>
-</li>
-</ol>
-<h5 id="워크플로우-관리"><a href="#워크플로우-관리" class="headerlink" title="워크플로우 관리"></a>워크플로우 관리</h5><p>데이터파이프라인이 복잡해지면, 한곳에서 제어하지 않으면 전체 움직임 파악이 어렵다.</p>
-<h5 id="데이터-웨어하우스와-데이터-마트"><a href="#데이터-웨어하우스와-데이터-마트" class="headerlink" title="데이터 웨어하우스와 데이터 마트"></a>데이터 웨어하우스와 데이터 마트</h5><p><img src="/image/bigdata_data_pipeline_warehouse.png" alt></p>
-<ol>
-<li><p>데이터 소스</p>
-<p>RDB 나 로그 등을 저장하는 파일 서버</p>
-</li>
-<li><p>ETL 플로세스</p>
-<p>데이터 소스에 보존된 raw data 를 추출하고 필요에 따라 가공한 후 데이터 웨어하우스에 저장하기까지의 흐름</p>
-</li>
-<li><p>데이터 마트</p>
-<p>데이터웨어 하우스에서 필요한 데이터만을 추출하여 데이터마트를 구축</p>
-</li>
-</ol>
-<h5 id="데이터-레이크"><a href="#데이터-레이크" class="headerlink" title="데이터 레이크"></a>데이터 레이크</h5><p><img src="/image/bigdata_data_pipeline_lake.png" alt></p>
-<p>모든 데이터를 원래의 형태로 추적해두고 나중에 필요에 따라 가공하는 구조가 필요하다.</p>
-<p>이 데이터 축적 장소가 데이터 레이크이다. 분산 스토리지가 데이터 레이크로 이용된다. </p>
-<p>데이터 레이크의 데이터를 가공하기 위해 MapReduce 같은 분산 데이터 처리 기술이 필요하다.</p>
-<h5 id="데이터-분석-기반을-단계적으로-발전시키기"><a href="#데이터-분석-기반을-단계적으로-발전시키기" class="headerlink" title="데이터 분석 기반을 단계적으로 발전시키기"></a>데이터 분석 기반을 단계적으로 발전시키기</h5><ol>
-<li><p>데이터 엔지니어</p>
-<p>시스템의 구축 및 운용, 자동화</p>
-</li>
-<li><p>데이터 분석가</p>
-<p>데이터에서 가치있는 정보 추출</p>
-</li>
-</ol>
-<h5 id="확증적-데이터-분석과-탐색적-데이터-분석"><a href="#확증적-데이터-분석과-탐색적-데이터-분석" class="headerlink" title="확증적 데이터 분석과 탐색적 데이터 분석"></a>확증적 데이터 분석과 탐색적 데이터 분석</h5><ol>
-<li><p>확증적 데이터 분석</p>
-<p>가설을 세우고 검증.</p>
-<p>통계학적 모델링에 의한 데이터 분석.</p>
-</li>
-<li><p>탐색적 데이터 분석</p>
-<p>데이터를 보며 의미를 읽어냄.</p>
-<p>데이터를 시각화하여 사람의 힘으로 의미를 읽어냄</p>
-</li>
-</ol>
-<hr>
-<p>빅데이터를 지탱하는 기술 &lt;니시다 케이스케&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/12/30/big-data-chapter1/" data-id="ck78pn0b700moilqxdlqo6vz5" data-title="[빅데이터를 지탱하는 기술] 1장_빅데이터 기초 지식" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/01/02/big-data-chapter4/" data-id="ck78w118000pg8vqx7cmtfemk" data-title="[빅데이터를 지탱하는 기술] 4장_빅데이터 축적" class="article-share-link">Share</a>
       
       
       
@@ -1537,7 +1487,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/12/30/big-data-chapter3/" data-id="ck78pn0cp00osilqx12r5xrop" data-title="[빅데이터를 지탱하는 기술] 3장_빅데이터 분산처리" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/12/30/big-data-chapter3/" data-id="ck78w116m00os8vqx7deh4xiq" data-title="[빅데이터를 지탱하는 기술] 3장_빅데이터 분산처리" class="article-share-link">Share</a>
       
       
       
@@ -1722,7 +1672,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/12/30/big-data-chapter2/" data-id="ck78pn0b800mrilqxv19ssnbz" data-title="[빅데이터를 지탱하는 기술] 2장_빅데이터 탐색" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/12/30/big-data-chapter2/" data-id="ck78w115300mq8vqxjsqz6l6i" data-title="[빅데이터를 지탱하는 기술] 2장_빅데이터 탐색" class="article-share-link">Share</a>
       
       
       
@@ -1734,14 +1684,14 @@
 
 
   
-    <article id="post-object-chapter11" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-big-data-chapter1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2019/12/27/object-chapter11/" class="article-date">
-  <time class="dt-published" datetime="2019-12-26T15:00:00.000Z" itemprop="datePublished">2019-12-27</time>
+    <a href="/2019/12/30/big-data-chapter1/" class="article-date">
+  <time class="dt-published" datetime="2019-12-29T15:00:00.000Z" itemprop="datePublished">2019-12-30</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/object/">Object</a>
+    <a class="article-category-link" href="/categories/big-data/">Big Data</a>
   </div>
 
   </div>
@@ -1752,7 +1702,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/12/27/object-chapter11/">[오브젝트] 11장_합성과 유연한 설계</a>
+      <a class="p-name article-title" href="/2019/12/30/big-data-chapter1/">[빅데이터를 지탱하는 기술] 1장_빅데이터 기초 지식</a>
     </h1>
   
 
@@ -1760,87 +1710,122 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>코드 재사용 기법으로는,</p>
+        <h2 id="1-빅데이터의-정착"><a href="#1-빅데이터의-정착" class="headerlink" title="1.빅데이터의 정착"></a>1.빅데이터의 정착</h2><h5 id="빅데이터-기술의-요구-Hadoop-과-NoSQL-의-대두"><a href="#빅데이터-기술의-요구-Hadoop-과-NoSQL-의-대두" class="headerlink" title="빅데이터 기술의 요구 : Hadoop 과 NoSQL 의 대두"></a>빅데이터 기술의 요구 : Hadoop 과 NoSQL 의 대두</h5><p>세계 곳곳에서 엑세스 되는 시스템 증가로, 전통적인 관계형 데이터베이스로는 취급 할 수 없는 데이터가 쌓이게 되었다.</p>
+<p>그래서 다른 구조가 필요했다.</p>
 <ol>
-<li><p>상속</p>
-<p>부모클래스와 자식클래스를 연결해서, 부모클래스의 코드 재사용</p>
+<li><p>Hadoop </p>
+<p>다수의 컴퓨터에서 대량의 데이터 처리</p>
 </li>
-<li><p>합성</p>
-<p>전체를 표현하는 객체가 부분을 표현하는 객체를 포함해서 객체의 코드 재사용</p>
-<p>내부에 포함되는 객체의 구현이 아니라 <code>퍼블릭 인터페이스</code>에 의존</p>
+<li><p>NoSQL Database </p>
+<p>빈번한 읽기/ 쓰기 및 분산처리가 강점</p>
 </li>
 </ol>
-<h2 id="01-상속을-합성으로-변경하기"><a href="#01-상속을-합성으로-변경하기" class="headerlink" title="01 상속을 합성으로 변경하기"></a>01 상속을 합성으로 변경하기</h2><p>상속의 문제는,</p>
+<h5 id="분산-시스템의-비즈니스-이용-개척-데이터-웨어하우스와의-공존"><a href="#분산-시스템의-비즈니스-이용-개척-데이터-웨어하우스와의-공존" class="headerlink" title="분산 시스템의 비즈니스 이용 개척 : 데이터 웨어하우스와의 공존"></a>분산 시스템의 비즈니스 이용 개척 : 데이터 웨어하우스와의 공존</h5><p><img src="/image/bigdata_datawarehouse.png" alt></p>
+<p>위 그림처럼, 확장성이 뛰어난 Hadoop 에 데이터 처리를 맡겨 데이터 웨어하우스의 부하를 줄이고 있다.</p>
+<h5 id="직접-할-수-있는-데이터-분석-폭-확대"><a href="#직접-할-수-있는-데이터-분석-폭-확대" class="headerlink" title="직접 할 수 있는 데이터 분석 폭 확대"></a>직접 할 수 있는 데이터 분석 폭 확대</h5><p>‘여러 컴퓨터에서 분산 처리한다’ 는 빅데이터의 특징으로 하드웨어를 준비하고 관리하는게 어려웠다. </p>
+<p>하지만, 클라우드 시대에서는 필요한 자원 확보가 쉬워서 얼마든지 빅데이터를 이용할 수 있다.</p>
+<h5 id="데이터-디스커버리의-기초-지식"><a href="#데이터-디스커버리의-기초-지식" class="headerlink" title="데이터 디스커버리의 기초 지식"></a>데이터 디스커버리의 기초 지식</h5><ol>
+<li><p>데이터 디스커버리</p>
+<p>대화형으로 데이터를 시각화하여 가치있는 정보를 찾으려고하는 프로세스</p>
+</li>
+<li><p>BI 도구</p>
+<p>데이터 디스커버리를 위한 셀프 서비스용 시각화 시스템</p>
+</li>
+</ol>
+<h2 id="2-빅데이터-시대의-데이터-분석-기반"><a href="#2-빅데이터-시대의-데이터-분석-기반" class="headerlink" title="2. 빅데이터 시대의 데이터 분석 기반"></a>2. 빅데이터 시대의 데이터 분석 기반</h2><p>빅데이터 기술이 기존 데이터 웨어하우스와 다른 점은,</p>
+<p>다수의 분산 시스템을 조합하여 확장성이 뛰어난 데이터 처리 구조를 만든다는 것이다.</p>
+<h5 id="데이터-파이프라인"><a href="#데이터-파이프라인" class="headerlink" title="데이터 파이프라인"></a>데이터 파이프라인</h5><p><img src="/image/bigdata_data_pipeline.png" alt></p>
+<p>차례대로 전달해다가는 데이터로 구성된 시스템이다. 데이터 파이프라인의 기본적인 흐름은,</p>
 <ol>
-<li>불필요한 인터페이스 상속</li>
-<li>메서드 오버라이딩 오작용</li>
-<li>부모 클래스와 자식 클래스 동시 수정</li>
+<li>데이터를 모아서 축적</li>
+<li>데이터 마트 구성</li>
+<li>시각화 도구</li>
 </ol>
-<p>이 문제들을 합성으로 해결해보자.</p>
-<h5 id="불필요한-인터페이스-상속-java-utils-Properties-java-utils-Stack"><a href="#불필요한-인터페이스-상속-java-utils-Properties-java-utils-Stack" class="headerlink" title="불필요한 인터페이스 상속 : java.utils.Properties, java.utils.Stack"></a>불필요한 인터페이스 상속 : java.utils.Properties, java.utils.Stack</h5><ol>
-<li>불필요한 Hasbtable 의 오퍼레이션들이 Properties 클래스의 퍼블릭 인터페이스를 오염시키지 않는다.</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Properties</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Hashtable&lt;String, String&gt; properties = <span class="keyword">new</span> Hashtable&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">setProperty</span><span class="params">(String key, String value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> properties.put(key, value);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getProperty</span><span class="params">(String key)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> properties.get(key);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>불필요한 Vector 의 오퍼레이션들이 Stack 클래스의 퍼블릭 인터페이스를 오염시키지 않는다.</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Stack</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Vector&lt;E&gt; elements = <span class="keyword">new</span> Vector&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> E <span class="title">push</span><span class="params">(E item)</span> </span>&#123;</span><br><span class="line">        elements.addElement(item);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> item;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> E <span class="title">Pop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (elements.isEmpty()) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> EmptyStackException();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> elements.remove(elements.size() - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h5 id="메서드-오버라이딩-오작용-InstrumentedHashSet"><a href="#메서드-오버라이딩-오작용-InstrumentedHashSet" class="headerlink" title="메서드 오버라이딩 오작용 : InstrumentedHashSet"></a>메서드 오버라이딩 오작용 : InstrumentedHashSet</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InstrumentedHashSet</span>&lt;<span class="title">E</span>&gt; <span class="keyword">implements</span> <span class="title">Set</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Set&lt;E&gt; set;</span><br><span class="line">   	...   </span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span> ..</span><br><span class="line">    <span class="meta">@Override</span> ..      </span><br><span class="line">		<span class="meta">@Override</span> ..</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h5 id="부모-클래스와-자식-클래스의-동시-수정-PersonalPlaylist"><a href="#부모-클래스와-자식-클래스의-동시-수정-PersonalPlaylist" class="headerlink" title="부모 클래스와 자식 클래스의 동시 수정 : PersonalPlaylist"></a>부모 클래스와 자식 클래스의 동시 수정 : PersonalPlaylist</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PersonalPlaylis</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Playlist playlist = <span class="keyword">new</span> Playlist();</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">append</span><span class="params">(Song song)</span></span>&#123;</span><br><span class="line">        playlis.append(song);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(Song song)</span></span>&#123;</span><br><span class="line">        playlist.getTracks().remove(song);</span><br><span class="line">        playlist.getSingers().remove(song.getSinger());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="02-상속으로-인한-조합의-폭발적인-증가"><a href="#02-상속으로-인한-조합의-폭발적인-증가" class="headerlink" title="02 상속으로 인한 조합의 폭발적인 증가"></a>02 상속으로 인한 조합의 폭발적인 증가</h2><p>상속으로 작은 기능들을 조합해 더 큰 기능을 수행하는 객체를 만들 때의 문제는,</p>
+<h5 id="데이터-수집"><a href="#데이터-수집" class="headerlink" title="데이터 수집"></a>데이터 수집</h5><p>데이터 파이프라인은 데이터를 모으는 부분부터 시작한다. 수집 방법은,</p>
 <ol>
-<li>하나의 기능을 추가하거나 수정을 위해 <code>불필요하게 많은 수의 클래스를 추가하거나 수정</code>해야한다.</li>
-<li>단일 상속만 지원하는 언어에서는 상속으로 <code>중복 코드</code>가 중가한다.</li>
-</ol>
-<h5 id="기본-정책과-부가-정책-조합하기"><a href="#기본-정책과-부가-정책-조합하기" class="headerlink" title="기본 정책과 부가 정책 조합하기"></a>기본 정책과 부가 정책 조합하기</h5><ol>
-<li><p>기본 정책 : 일반 요금제 / 심야 할인 요금제</p>
+<li><p>벌크형</p>
+<p>이미 어딘가에 있는 데이터를 정리해서 추출</p>
+<p>ex ) 데이터베이스와 파일 서버 등에서 정기적으로 데이터 수집</p>
 </li>
-<li><p>부가 정책 : 세금 정책 / 기본 요금 할인 정책</p>
-<p>기본 정책의 계산 결과에 적용, 선택적으로 적용 가능, 조합 가능, 임의의 순서로 적용 가능</p>
-</li>
-</ol>
-<h5 id="상속을-이용해서-기본-정책-구현하기"><a href="#상속을-이용해서-기본-정책-구현하기" class="headerlink" title="상속을 이용해서 기본 정책 구현하기"></a>상속을 이용해서 기본 정책 구현하기</h5><h5 id="기본-정책에-세금-정책-조합하기"><a href="#기본-정책에-세금-정책-조합하기" class="headerlink" title="기본 정책에 세금 정책 조합하기"></a>기본 정책에 세금 정책 조합하기</h5><h5 id="기본-정책에-기본-요금-할인-정책-조합하기"><a href="#기본-정책에-기본-요금-할인-정책-조합하기" class="headerlink" title="기본 정책에 기본 요금 할인 정책 조합하기"></a>기본 정책에 기본 요금 할인 정책 조합하기</h5><h5 id="중복-코드의-덫에-걸리다"><a href="#중복-코드의-덫에-걸리다" class="headerlink" title="중복 코드의 덫에 걸리다"></a>중복 코드의 덫에 걸리다</h5><p><img src="/image/object_inheritance_problem.png" alt></p>
-<p>상속의 남용으로 하나의 기능을 추가하기 위해 필요 이상으로 많은 수의 클래스를 추가해야하는 경우를 <code>클래스 폭발 문제</code>,  <code>조합의 폭발 문제</code> 라고 한다.</p>
-<p>이 문제는, 자식 클래스가 부모 클래스의 구현에 강하게 결합되도록 강요하는 상속의 한계 때문에 발생하는 문제이다.</p>
-<h2 id="03-합성-관계로-변경하기"><a href="#03-합성-관계로-변경하기" class="headerlink" title="03 합성 관계로 변경하기"></a>03 합성 관계로 변경하기</h2><ol>
-<li><p>상속</p>
-<p>조합의 결과를 개별 클래스 안으로 밀어 넣는 방법</p>
-</li>
-<li><p>합성</p>
-<p>합성은 조합을 구성하는 요소들을 개별 클래스로 구현한 후 실행 시점에 인스턴스를 조립하는 방법</p>
+<li><p>스트리밍형</p>
+<p>차례대로 생성되는 데이터를 끊임없이 보냄</p>
+<p>ex) 모바일 어플리케이션, 임베디드 장비</p>
 </li>
 </ol>
-<h5 id="기본-정책-합성하기"><a href="#기본-정책-합성하기" class="headerlink" title="기본 정책 합성하기"></a>기본 정책 합성하기</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">RatePolicy</span> </span>&#123;</span><br><span class="line">    <span class="function">Money <span class="title">calculateFee</span><span class="params">(Phone phone)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BasicRatePolicy</span> <span class="keyword">implements</span> <span class="title">RatePolicy</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">calculateFee</span><span class="params">(Phone phone)</span> </span>&#123;</span><br><span class="line">        Money result = Money.ZERO;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(Call call phone.getCalls()&#123;</span><br><span class="line">            result.plus(calculateCallFee(call));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> Money <span class="title">calculateCallFee</span><span class="params">(Call call)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RegularPolicy</span> <span class="keyword">extends</span> <span class="title">BasicRatePolicy</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Money amnount;</span><br><span class="line">    <span class="keyword">private</span> Duration seconds;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">RegularPolicy</span><span class="params">(Money amnount, Duration seconds)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.amnount = amnount;</span><br><span class="line">        <span class="keyword">this</span>.seconds = seconds;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Money <span class="title">calculateCallFee</span><span class="params">(Call call)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> amnount.times(call.getDuration().getSeconds() / seconds.getSeconds());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;            </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NightlyDiscountPolicy</span> <span class="keyword">extends</span> <span class="title">BasicRatePolicy</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> LATE_NIGHT_HOUR = <span class="number">22</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Money nightlyAmnount;</span><br><span class="line">    <span class="keyword">private</span> Money regularAmnount;</span><br><span class="line">    <span class="keyword">private</span> Duration seconds;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">NightlyDiscountPolicy</span><span class="params">(Money nightlyAmnount, Money regularAmnount, Duration seconds)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.nightlyAmnount = nightlyAmnount;</span><br><span class="line">        <span class="keyword">this</span>.regularAmnount = regularAmnount;</span><br><span class="line">        <span class="keyword">this</span>.seconds = seconds;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Money <span class="title">calculateCallFee</span><span class="params">(Call call)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (call.getFrom.getHour() &gt;= LATE_NIGHT_HOUR) &#123;</span><br><span class="line">            <span class="keyword">return</span> nightlyAmnount.times(call.getDuration().getSeconds() / seconds.getSeconds());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> regularAmnount.times(call.getDuration().getSeconds() / seconds.getSeconds());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">            </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Phone</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> RatePolicy ratePolicy; <span class="comment">// Phone 이 다양한 요금 정책과 협력할수 있어야 하므로 인터페이스</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;Call&gt; calls = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Phone</span><span class="params">(RatePolicy ratePolicy)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.ratePolicy = ratePolicy;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Call&gt; <span class="title">getCalls</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Collections.unmodifiableList(calls);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">calculateFee</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> ratePolicy.calculateFee(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 일반 요금제</span></span><br><span class="line">Phone phone = <span class="keyword">new</span> Phone(<span class="keyword">new</span> RegularPolicy(Money.wons(<span class="number">10</span>), Duration.ofSeconds(<span class="number">10</span>)));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 심야 할인 요금제</span></span><br><span class="line">Phone phone = <span class="keyword">new</span> Phone(<span class="keyword">new</span> NightlyDiscountPolicy(Money.wons(<span class="number">5</span>), Money.wons(<span class="number">10</span>), Duration.ofSeconds(<span class="number">10</span>)));</span><br></pre></td></tr></table></figure>
-
-<h5 id="부가-정책-적용하기"><a href="#부가-정책-적용하기" class="headerlink" title="부가 정책 적용하기"></a>부가 정책 적용하기</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AdditionalRatePolicy</span> <span class="keyword">implements</span> <span class="title">RatePolicy</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> RatePolicy next;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AdditionalRatePolicy</span><span class="params">(RatePolicy next)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.next = next;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">calculateFee</span><span class="params">(Phone phone)</span> </span>&#123;</span><br><span class="line">        Money fee = next.calculateFee(phone);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> afterCalculated(fee);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">abstract</span> <span class="keyword">protected</span> Money <span class="title">afterCalculated</span><span class="params">(Money fee)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TaxablePolicy</span> <span class="keyword">extends</span> <span class="title">AdditionalRatePolicy</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">double</span> taxRatio;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TaxablePolicy</span><span class="params">(RatePolicy next, <span class="keyword">double</span> taxRatio)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(next);</span><br><span class="line">        <span class="keyword">this</span>.taxRatio = taxRatio;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Money <span class="title">afterCalculated</span><span class="params">(Money fee)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> fee.plus(fee.times(taxRatio));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RateDiscountPolicy</span> <span class="keyword">extends</span> <span class="title">AdditionalRatePolicy</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Money disoucntAmount;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">RateDiscountPolicy</span><span class="params">(RatePolicy next, Money disoucntAmount)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(next);</span><br><span class="line">        <span class="keyword">this</span>.disoucntAmount = disoucntAmount;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Money <span class="title">afterCalculated</span><span class="params">(Money fee)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> fee.minus(disoucntAmount);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h5 id="기본-정책과-부가-정책-합성하기"><a href="#기본-정책과-부가-정책-합성하기" class="headerlink" title="기본 정책과 부가 정책 합성하기"></a>기본 정책과 부가 정책 합성하기</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 일반 요금제에 세금 정책 조합</span></span><br><span class="line">Phone phone = <span class="keyword">new</span> Phone(</span><br><span class="line">    <span class="keyword">new</span> TaxablePolicy(<span class="number">0.05</span>, </span><br><span class="line">        <span class="keyword">new</span> RegularPolicy(...)));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 일반 요금제에 기본 요금 할인 정책을 조합한 결과에 세금 정책 조합</span></span><br><span class="line">Phone phone = <span class="keyword">new</span> Phone(</span><br><span class="line">    <span class="keyword">new</span> TaxablePolicy(<span class="number">0.05</span>, </span><br><span class="line">        <span class="keyword">new</span> RateDiscountablePolicy(Money.wons(<span class="number">1000</span>),</span><br><span class="line">            <span class="keyword">new</span> RegularPolicy(...))));</span><br></pre></td></tr></table></figure>
-
-<h5 id="새로운-정책-추가하기"><a href="#새로운-정책-추가하기" class="headerlink" title="새로운 정책 추가하기"></a>새로운 정책 추가하기</h5><p><img src="/image/object_composition.png" alt></p>
-<p>요구사항이 변경되면 오직 하나의 클래스만 수정하면 된다.</p>
-<p>세금 정책을 변경한다고 할 때,</p>
+<h5 id="스트림-처리와-배치처리"><a href="#스트림-처리와-배치처리" class="headerlink" title="스트림 처리와 배치처리"></a>스트림 처리와 배치처리</h5><ol>
+<li><p>스트림 처리</p>
+<p>스트리밍 형 방법으로 받은 데이터를 실시간으로 처리.</p>
+<p>장기적인 데이터 분석에는 적합하지 않음.</p>
+</li>
+<li><p>배치 처리</p>
+<p>정리된 데이터를 효율적으로 가공하기 위한 처리.</p>
+<p>장기적인 데이터 분석을 위해 대량의 데이터를 저장하고 처리하는데 적합한 분산 시스템이 필요.</p>
+</li>
+</ol>
+<h5 id="분산-스토리지"><a href="#분산-스토리지" class="headerlink" title="분산 스토리지"></a>분산 스토리지</h5><p>여러 컴퓨터와 디스크로 구성된 스토리지 시스템이다. 데이터 저장 방법으로,</p>
 <ol>
-<li><p>상속</p>
-<p>여러 클래스를 수정</p>
+<li><p>객체 스토리지</p>
+<p>한 덩어리로 모인 데이터에 이름을 부여해서 파일로 저장.</p>
+<p>ex ) Amazon S3</p>
 </li>
-<li><p>합성</p>
-<p>오직 TaxablePolicy 클래스 하나만 변경</p>
+<li><p>NoSQL 데이터베이스</p>
+<p>많은 데이터를 읽고 쓰기에 유리.</p>
 </li>
 </ol>
-<h2 id="04-믹스인"><a href="#04-믹스인" class="headerlink" title="04 믹스인"></a>04 믹스인</h2><p>객체를 생성할 때 코드 일부를 클래스 안에 섞어 넣어 재사용하는 기법이다.</p>
-<p>합성처럼 유연하며 상속처럼 쉽게 코드 재사용할 수 있다.</p>
-<p>스칼라의 trait 를 이용하면 믹스인 구현이 가능하다.</p>
+<h5 id="분산-데이터-처리"><a href="#분산-데이터-처리" class="headerlink" title="분산 데이터 처리"></a>분산 데이터 처리</h5><p>분산 스토리지에 저장된 데이터를 처리하기 위해, 분산 데이터 처리 프레임워크가 필요하다. ex) MapReduce</p>
+<p>주 역할은, 나중에 분석하기 쉽도록 데이터를 가공해서 그 결과를 외부 데이터베이스에 저장하는 것이다.</p>
+<p>빅데이터를 SQL 로 집계하는 방법으로,</p>
+<ol>
+<li><p>쿼리 엔진</p>
+<p>Hive, 대화형 쿼리엔진</p>
+</li>
+<li><p>데이터 웨어하우스 제품</p>
+<p>ETL. </p>
+<p>데이터를 추출하고 가공한후, 데이터 웨어하우스에 로드한다.</p>
+</li>
+</ol>
+<h5 id="워크플로우-관리"><a href="#워크플로우-관리" class="headerlink" title="워크플로우 관리"></a>워크플로우 관리</h5><p>데이터파이프라인이 복잡해지면, 한곳에서 제어하지 않으면 전체 움직임 파악이 어렵다.</p>
+<h5 id="데이터-웨어하우스와-데이터-마트"><a href="#데이터-웨어하우스와-데이터-마트" class="headerlink" title="데이터 웨어하우스와 데이터 마트"></a>데이터 웨어하우스와 데이터 마트</h5><p><img src="/image/bigdata_data_pipeline_warehouse.png" alt></p>
+<ol>
+<li><p>데이터 소스</p>
+<p>RDB 나 로그 등을 저장하는 파일 서버</p>
+</li>
+<li><p>ETL 플로세스</p>
+<p>데이터 소스에 보존된 raw data 를 추출하고 필요에 따라 가공한 후 데이터 웨어하우스에 저장하기까지의 흐름</p>
+</li>
+<li><p>데이터 마트</p>
+<p>데이터웨어 하우스에서 필요한 데이터만을 추출하여 데이터마트를 구축</p>
+</li>
+</ol>
+<h5 id="데이터-레이크"><a href="#데이터-레이크" class="headerlink" title="데이터 레이크"></a>데이터 레이크</h5><p><img src="/image/bigdata_data_pipeline_lake.png" alt></p>
+<p>모든 데이터를 원래의 형태로 추적해두고 나중에 필요에 따라 가공하는 구조가 필요하다.</p>
+<p>이 데이터 축적 장소가 데이터 레이크이다. 분산 스토리지가 데이터 레이크로 이용된다. </p>
+<p>데이터 레이크의 데이터를 가공하기 위해 MapReduce 같은 분산 데이터 처리 기술이 필요하다.</p>
+<h5 id="데이터-분석-기반을-단계적으로-발전시키기"><a href="#데이터-분석-기반을-단계적으로-발전시키기" class="headerlink" title="데이터 분석 기반을 단계적으로 발전시키기"></a>데이터 분석 기반을 단계적으로 발전시키기</h5><ol>
+<li><p>데이터 엔지니어</p>
+<p>시스템의 구축 및 운용, 자동화</p>
+</li>
+<li><p>데이터 분석가</p>
+<p>데이터에서 가치있는 정보 추출</p>
+</li>
+</ol>
+<h5 id="확증적-데이터-분석과-탐색적-데이터-분석"><a href="#확증적-데이터-분석과-탐색적-데이터-분석" class="headerlink" title="확증적 데이터 분석과 탐색적 데이터 분석"></a>확증적 데이터 분석과 탐색적 데이터 분석</h5><ol>
+<li><p>확증적 데이터 분석</p>
+<p>가설을 세우고 검증.</p>
+<p>통계학적 모델링에 의한 데이터 분석.</p>
+</li>
+<li><p>탐색적 데이터 분석</p>
+<p>데이터를 보며 의미를 읽어냄.</p>
+<p>데이터를 시각화하여 사람의 힘으로 의미를 읽어냄</p>
+</li>
+</ol>
+<hr>
+<p>빅데이터를 지탱하는 기술 &lt;니시다 케이스케&gt;</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/12/27/object-chapter11/" data-id="ck78pn0co00oqilqxcz4gd6n1" data-title="[오브젝트] 11장_합성과 유연한 설계" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/12/30/big-data-chapter1/" data-id="ck78w115200mn8vqx97gyfi2j" data-title="[빅데이터를 지탱하는 기술] 1장_빅데이터 기초 지식" class="article-share-link">Share</a>
       
       
       
@@ -1899,7 +1884,7 @@
           </li>
         
           <li>
-            <a href="/2020/02/24/tdd-chapter-02/">[테스트 주도 개발] 2장_타락한 객체</a>
+            <a href="/2020/02/25/bigdata-chapter-02/">[빅데이터] 2장_빅데이터를 위한 데이터 모델</a>
           </li>
         
           <li>
@@ -1907,11 +1892,11 @@
           </li>
         
           <li>
-            <a href="/2020/02/24/tdd-chapter-01/">[테스트 주도 개발] 1장_다중 통화를 지원하는 Money 객체</a>
+            <a href="/2020/02/24/tdd-chapter-02/">[테스트 주도 개발] 2장_타락한 객체</a>
           </li>
         
           <li>
-            <a href="/2020/02/10/object-chapter-appendix-c/">[오브젝트] 부록 C 동적인 협력, 정적인 코드</a>
+            <a href="/2020/02/24/tdd-chapter-01/">[테스트 주도 개발] 1장_다중 통화를 지원하는 Money 객체</a>
           </li>
         
       </ul>
