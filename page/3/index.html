@@ -71,6 +71,536 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-big-data-chapter2" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/12/30/big-data-chapter2/" class="article-date">
+  <time class="dt-published" datetime="2019-12-29T15:00:00.000Z" itemprop="datePublished">2019-12-30</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/big-data/">Big Data</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/12/30/big-data-chapter2/">[빅데이터를 지탱하는 기술] 2장_빅데이터 탐색</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="1-크로스-집계"><a href="#1-크로스-집계" class="headerlink" title="1. 크로스 집계"></a>1. 크로스 집계</h2><h5 id="크로스-집계"><a href="#크로스-집계" class="headerlink" title="크로스 집계"></a>크로스 집계</h5><p><img src="/image/bigdata_cross_table.png" alt></p>
+<ol>
+<li><p>크로스 테이블</p>
+<p>행과 열이 교차하는 부분에 숫자 데이터가 들어감</p>
+</li>
+<li><p>트랜젝션 테이블</p>
+<p>행방향으로만 증가하고, 열방향으로는 데이터가 증가하지 않음</p>
+</li>
+<li><p>크로스 집계</p>
+<p>트레젝션 테이블에서 크로스 테이블로 변환하는 과정. </p>
+<p>피봇 테이블을 이용해서 할 수 있다.</p>
+</li>
+</ol>
+<h5 id="룩업-테이블"><a href="#룩업-테이블" class="headerlink" title="룩업 테이블"></a>룩업 테이블</h5><p>트랜젝션 테이블의 ‘상품 ID’ 를 사용해서 ‘상품명’ 과 ‘상품 카테고리’ 참고할 때 사용되는 것이, 룩업 테이블이다.</p>
+<p>상품 정보를 하나의 테이블로 정리해두면 나중에 속성을 추가하거나 변경하는 것도 간단하다.</p>
+<h2 id="2-열-지향-스토리지"><a href="#2-열-지향-스토리지" class="headerlink" title="2. 열 지향 스토리지"></a>2. 열 지향 스토리지</h2><h5 id="처리량과-지연-시간"><a href="#처리량과-지연-시간" class="headerlink" title="처리량과 지연 시간"></a>처리량과 지연 시간</h5><ol>
+<li><p>처리량 ( throughput )</p>
+<p>일정 시간에 처리할 수 있는 데이터의 양.</p>
+<p>배치 처리 등 대규모 데이터 처리에서 중요시.</p>
+</li>
+<li><p>지연 ( latency )</p>
+<p>데이터 처리가 끝날 때 까지의 대기 시간.</p>
+<p>애드 혹 데이터 분석에서 중요시.</p>
+</li>
+</ol>
+<h5 id="데이터-처리의-지연"><a href="#데이터-처리의-지연" class="headerlink" title="데이터 처리의 지연"></a>데이터 처리의 지연</h5><p>데이터 처리의 응답이 빠르면, ‘지연이 적다’ 라고 한다. </p>
+<ol>
+<li><p>메모리</p>
+<p>모든 데이터를 메모리에 올리는 것이다.</p>
+</li>
+<li><p>RDB</p>
+<p>만일, 한 레코드의 크기가 500 바이트라고 하면, 천만 레코드의 경우 5 GB 가 된다. </p>
+<p>이 정도면, MySQL 이나 PostgreSQL 같은 일반적인 RDB 가 데이터 마트로 적합하다. </p>
+<p>RDB는 원래 지연이 적고 많은 클라이언트가 접속해도 성능이 나빠지지 않으므로 많은 사용자가 사용하는 실제 운영 환경의 데이터 마트로 적합하다.</p>
+<p>하지만, RDB 는 메모리가 부족하면 급격히 성능이 저하된다.</p>
+</li>
+</ol>
+<h5 id="‘압축’-‘분산’-에-의해-지연-줄이기"><a href="#‘압축’-‘분산’-에-의해-지연-줄이기" class="headerlink" title="‘압축’, ‘분산’ 에 의해 지연 줄이기"></a>‘압축’, ‘분산’ 에 의해 지연 줄이기</h5><p>데이터를 가능한 작게 ‘압축’ 하고 여러 디스크에 ‘분산’ 함으로써 데이터 로드에 따른 지연을 줄일 수 있다. </p>
+<p>분산된 데이터를 읽기 위해서는 멀티 코어를 활용해 디스크 I/O 를 병렬 처리하는 것이 효과적이다. </p>
+<p>이런 아키텍쳐를 MPP (Massive Parallel Processing) 라고 한다. </p>
+<p>대량 데이터를 분석하기 위해 데이터베이스에 널리 사용되고 있다. </p>
+<p>ex ) Amazon Redshift, Google BigQuery</p>
+<h5 id="행-지향-열-지향-데이터베이스"><a href="#행-지향-열-지향-데이터베이스" class="headerlink" title="행 지향, 열 지향 데이터베이스"></a>행 지향, 열 지향 데이터베이스</h5><ol>
+<li><p>행 지향 데이터베이스</p>
+<p>레코드 단위로 읽고 쓰기에 최적화.</p>
+<p>테이블의 각 행을 하나의 덩어리로 디스크에 저장.</p>
+<p>새 레코드 추가할 때마다 파일의 끝에 데이터를 쓸 뿐이여서 빠르게 추가 가능.</p>
+<p>데이터 검색을 고속화하기 위해 인덱스 사용.</p>
+<p>데이터 분석에서는 어떤 칼럼 사용될지 미리 알 수 없으므로, 인덱스를 작성해도 도움이 되지 않음.</p>
+<p>ex ) Oracble, MySQL</p>
+</li>
+<li><p>열 지향 데이터베이스</p>
+<p>칼럼 단위의 집계에 최적화.</p>
+<p>데이터를 미리 칼럼 단위로 정리해서 필요한 칼럼만을 로드하여 디스크 I/O 를 줄임.</p>
+<p>같은 칼럼에는 종종 유사한 데이터가 나열되어서 데이터 압축 효율도 우수.</p>
+<p>ex ) Teradata, Amazon Redshift</p>
+</li>
+</ol>
+<h5 id="MPP-데이터베이스"><a href="#MPP-데이터베이스" class="headerlink" title="MPP 데이터베이스"></a>MPP 데이터베이스</h5><ol>
+<li><p>행 지향 데이터베이스</p>
+<p>하나의 쿼리는 하나의 스레드에서 실행.</p>
+<p>하나의 쿼리가 충분히 짧은 시간에 끝나는 것으로 가정하므로 하나의 쿼리를 분산 처리하는 상황은 가정하지 않음.</p>
+</li>
+<li><p>열 지향 데이터베이스</p>
+<p>디스크에서 대량의 데이터를 읽기 때문에 한 번의 쿼리 실행 시간이 길다.</p>
+<p>멀티 코어를 활용해서 고속화 하는것이 좋음.</p>
+</li>
+</ol>
+<p>MPP 에서는 하나의 쿼리를 다수의 태스크로 분해하고, 이를 가능한 한 병렬로 수행한다.</p>
+<p>예를 들어,</p>
+<ol>
+<li>1억 래코드로 이루어진 테이블의 합계를 계산하기 위해</li>
+<li>10만 레코드로 구분하여 1000 개의 테스크로 나눈다.</li>
+<li>각 테스크는 각각 독립적으로 10 만 레코드의 합계를 집계해서 </li>
+<li>마지막 모든 결과를 모아 총 합계를 계산한다.</li>
+</ol>
+<p>MPP 를 사용한 데이터 집계는 CPU 코어수에 비례해서 고속화된다.</p>
+<p>단, 디스크로부터의 로드가 병목 현상이 발생하지 않도록 데이터가 고르게 분산되어 있어야한다. </p>
+<h2 id="3-애드-혹-분석과-시각화-도구"><a href="#3-애드-혹-분석과-시각화-도구" class="headerlink" title="3. 애드 혹 분석과 시각화 도구"></a>3. 애드 혹 분석과 시각화 도구</h2><ol>
+<li>Jupyter Notebook</li>
+<li>Redash</li>
+<li>Superset</li>
+<li>Kibana</li>
+</ol>
+<h2 id="4-데이터-마트의-기본-구조"><a href="#4-데이터-마트의-기본-구조" class="headerlink" title="4. 데이터 마트의 기본 구조"></a>4. 데이터 마트의 기본 구조</h2><h5 id="다차원-모델과-OLAP-큐브"><a href="#다차원-모델과-OLAP-큐브" class="headerlink" title="다차원 모델과 OLAP 큐브"></a>다차원 모델과 OLAP 큐브</h5><ol>
+<li><p>RDB</p>
+<p>표 형식으로 모델링된 데이터를 SQL 로 집계한다.</p>
+</li>
+<li><p>OLAP</p>
+<p>다차원 모델의 데이터 구조를, MDX (Multidimensional Exrepssions) 등의 쿼리 언어로 집계한다.</p>
+</li>
+</ol>
+<p>데이터 분석을 위해 만들어진 다차원의 데이터를 OLAP 큐브라고 한다. OLAP 큐브를 크로스 집계하는 구조가 OALP 이다.</p>
+<p>컴퓨터 성능이 높지 않을 때는, 크로스 집계의 모든 조합을 데이터 베이스 안에 캐쉬해두고, 쿼리가 실행되면 이미 집계된 결과를 반환하는 구조였다.</p>
+<p>최근에는 MPP 데이터베이스와 인 메모리 데이터베이스로, 사전에 계산해 둘 필요가 없다. MPP 데이터베이스에 다차원 모델의 개념이 없기 때문에, 이를 대신해 ‘비정규화 테이블’ 을 준비한다. 비정규화 테이블을 BI 도구에서 열어서 기존의 OLAP 과 동등한 시각화를 실현할 수 있다.</p>
+<h5 id="트렌젝션-마스터-테이블"><a href="#트렌젝션-마스터-테이블" class="headerlink" title="트렌젝션, 마스터 테이블"></a>트렌젝션, 마스터 테이블</h5><p><img src="/image/bigdata_rdb_table.png" alt></p>
+<ol>
+<li><p>트랜젝션 테이블</p>
+<p>시간과 함께 생성되는 데이터들을 기록</p>
+</li>
+<li><p>마스터 테이블</p>
+<p>트랜젝션에서 참고되는 각종 정보를 기록</p>
+</li>
+</ol>
+<h5 id="팩트-디맨젼-테이블"><a href="#팩트-디맨젼-테이블" class="headerlink" title="팩트, 디맨젼 테이블"></a>팩트, 디맨젼 테이블</h5><ol>
+<li><p>팩트 테이블</p>
+<p>트랜젝션 테이블 처럼, 사실이 기록된 것.</p>
+<p>집계의 기반이 되는 숫자 데이터 등.</p>
+</li>
+<li><p>디멘젼 테이블</p>
+<p>마스터 테이블 처럼, 참고되는 마스터 데이터.</p>
+<p>데이터를 분류하기 위한 속성 값.</p>
+</li>
+</ol>
+<h5 id="스타-스키마"><a href="#스타-스키마" class="headerlink" title="스타 스키마"></a>스타 스키마</h5><p><img src="/image/bigdata_star_scheme.png" alt></p>
+<p>데이터 마트를 만들때는, 팩트 테이블을 중심으로 여러 디멘젼 테이블을 결합하는 것이 좋다.</p>
+<p>스타 스키마를 사용하는 이유는,</p>
+<ol>
+<li><p>단순하고 이해하기 쉬워 데이터 분석이 쉽다.</p>
+</li>
+<li><p>성능 상의 이유</p>
+<p>데이터 양이 증가하면 팩트 테이블은 디멘젼 테이블보다 훨씬 커져, 팩트 테이브이 메모리 용량을 초과한 시점에 디스크 I/O 가 발생하고 그 대기 시간으로 쿼리의 지연으로 이어진다. </p>
+<p>그래서, 팩트 테이블에는 id 와 같은 키만을 남겨두고 그 이외의 나머지는 디멘젼 테이블로 옮긴다.</p>
+</li>
+</ol>
+<h5 id="비정규화-테이블"><a href="#비정규화-테이블" class="headerlink" title="비정규화 테이블"></a>비정규화 테이블</h5><p>스타 스키마는 과거의 이야기이다. 성능 상의 문제는 열 지향 스토리지에 의해 해결된다.</p>
+<p>MPP 데이터베이스와 같은 열 지향 스토리지의 보급으로, 칼럼의 수가 아무리 늘어나도 성능에 영향이 없다. </p>
+<p>그래서, 처음부터 팩트 테이블에 모든 칼럼을 포함하고 쿼리의 실행 시에는 테이블 결합을 하지 않는 것이 간단하다. </p>
+<p>스타 스키마에 비정규화를 진행해 모든 테이블을 결합한 팩트 테이블을 비정규화 테이블이라고 한다.</p>
+<h5 id="테이블-추상화"><a href="#테이블-추상화" class="headerlink" title="테이블 추상화"></a>테이블 추상화</h5><p><img src="/image/bigdata_dimension.png" alt></p>
+<p>비정규화 테이블을 준비했으면, 다차원 모델에 의해 추상화한다.</p>
+<p>다차원 모델은 칼럼을 디멘젼과 측정값으로 분류한다. </p>
+<ol>
+<li><p>디멘젼</p>
+<p>주로 날짜 및 문자열. </p>
+<p>크로스 집계의 행이나 열로 사용</p>
+</li>
+<li><p>측정값</p>
+<p>주로 숫자값.</p>
+</li>
+</ol>
+<hr>
+<p>빅데이터를 지탱하는 기술 &lt;니시다 케이스케&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2019/12/30/big-data-chapter2/" data-id="ck7agiz1900msiv6wsozcy6x6" data-title="[빅데이터를 지탱하는 기술] 2장_빅데이터 탐색" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-big-data-chapter1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/12/30/big-data-chapter1/" class="article-date">
+  <time class="dt-published" datetime="2019-12-29T15:00:00.000Z" itemprop="datePublished">2019-12-30</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/big-data/">Big Data</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/12/30/big-data-chapter1/">[빅데이터를 지탱하는 기술] 1장_빅데이터 기초 지식</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="1-빅데이터의-정착"><a href="#1-빅데이터의-정착" class="headerlink" title="1.빅데이터의 정착"></a>1.빅데이터의 정착</h2><h5 id="빅데이터-기술의-요구-Hadoop-과-NoSQL-의-대두"><a href="#빅데이터-기술의-요구-Hadoop-과-NoSQL-의-대두" class="headerlink" title="빅데이터 기술의 요구 : Hadoop 과 NoSQL 의 대두"></a>빅데이터 기술의 요구 : Hadoop 과 NoSQL 의 대두</h5><p>세계 곳곳에서 엑세스 되는 시스템 증가로, 전통적인 관계형 데이터베이스로는 취급 할 수 없는 데이터가 쌓이게 되었다.</p>
+<p>그래서 다른 구조가 필요했다.</p>
+<ol>
+<li><p>Hadoop </p>
+<p>다수의 컴퓨터에서 대량의 데이터 처리</p>
+</li>
+<li><p>NoSQL Database </p>
+<p>빈번한 읽기/ 쓰기 및 분산처리가 강점</p>
+</li>
+</ol>
+<h5 id="분산-시스템의-비즈니스-이용-개척-데이터-웨어하우스와의-공존"><a href="#분산-시스템의-비즈니스-이용-개척-데이터-웨어하우스와의-공존" class="headerlink" title="분산 시스템의 비즈니스 이용 개척 : 데이터 웨어하우스와의 공존"></a>분산 시스템의 비즈니스 이용 개척 : 데이터 웨어하우스와의 공존</h5><p><img src="/image/bigdata_datawarehouse.png" alt></p>
+<p>위 그림처럼, 확장성이 뛰어난 Hadoop 에 데이터 처리를 맡겨 데이터 웨어하우스의 부하를 줄이고 있다.</p>
+<h5 id="직접-할-수-있는-데이터-분석-폭-확대"><a href="#직접-할-수-있는-데이터-분석-폭-확대" class="headerlink" title="직접 할 수 있는 데이터 분석 폭 확대"></a>직접 할 수 있는 데이터 분석 폭 확대</h5><p>‘여러 컴퓨터에서 분산 처리한다’ 는 빅데이터의 특징으로 하드웨어를 준비하고 관리하는게 어려웠다. </p>
+<p>하지만, 클라우드 시대에서는 필요한 자원 확보가 쉬워서 얼마든지 빅데이터를 이용할 수 있다.</p>
+<h5 id="데이터-디스커버리의-기초-지식"><a href="#데이터-디스커버리의-기초-지식" class="headerlink" title="데이터 디스커버리의 기초 지식"></a>데이터 디스커버리의 기초 지식</h5><ol>
+<li><p>데이터 디스커버리</p>
+<p>대화형으로 데이터를 시각화하여 가치있는 정보를 찾으려고하는 프로세스</p>
+</li>
+<li><p>BI 도구</p>
+<p>데이터 디스커버리를 위한 셀프 서비스용 시각화 시스템</p>
+</li>
+</ol>
+<h2 id="2-빅데이터-시대의-데이터-분석-기반"><a href="#2-빅데이터-시대의-데이터-분석-기반" class="headerlink" title="2. 빅데이터 시대의 데이터 분석 기반"></a>2. 빅데이터 시대의 데이터 분석 기반</h2><p>빅데이터 기술이 기존 데이터 웨어하우스와 다른 점은,</p>
+<p>다수의 분산 시스템을 조합하여 확장성이 뛰어난 데이터 처리 구조를 만든다는 것이다.</p>
+<h5 id="데이터-파이프라인"><a href="#데이터-파이프라인" class="headerlink" title="데이터 파이프라인"></a>데이터 파이프라인</h5><p><img src="/image/bigdata_data_pipeline.png" alt></p>
+<p>차례대로 전달해다가는 데이터로 구성된 시스템이다. 데이터 파이프라인의 기본적인 흐름은,</p>
+<ol>
+<li>데이터를 모아서 축적</li>
+<li>데이터 마트 구성</li>
+<li>시각화 도구</li>
+</ol>
+<h5 id="데이터-수집"><a href="#데이터-수집" class="headerlink" title="데이터 수집"></a>데이터 수집</h5><p>데이터 파이프라인은 데이터를 모으는 부분부터 시작한다. 수집 방법은,</p>
+<ol>
+<li><p>벌크형</p>
+<p>이미 어딘가에 있는 데이터를 정리해서 추출</p>
+<p>ex ) 데이터베이스와 파일 서버 등에서 정기적으로 데이터 수집</p>
+</li>
+<li><p>스트리밍형</p>
+<p>차례대로 생성되는 데이터를 끊임없이 보냄</p>
+<p>ex) 모바일 어플리케이션, 임베디드 장비</p>
+</li>
+</ol>
+<h5 id="스트림-처리와-배치처리"><a href="#스트림-처리와-배치처리" class="headerlink" title="스트림 처리와 배치처리"></a>스트림 처리와 배치처리</h5><ol>
+<li><p>스트림 처리</p>
+<p>스트리밍 형 방법으로 받은 데이터를 실시간으로 처리.</p>
+<p>장기적인 데이터 분석에는 적합하지 않음.</p>
+</li>
+<li><p>배치 처리</p>
+<p>정리된 데이터를 효율적으로 가공하기 위한 처리.</p>
+<p>장기적인 데이터 분석을 위해 대량의 데이터를 저장하고 처리하는데 적합한 분산 시스템이 필요.</p>
+</li>
+</ol>
+<h5 id="분산-스토리지"><a href="#분산-스토리지" class="headerlink" title="분산 스토리지"></a>분산 스토리지</h5><p>여러 컴퓨터와 디스크로 구성된 스토리지 시스템이다. 데이터 저장 방법으로,</p>
+<ol>
+<li><p>객체 스토리지</p>
+<p>한 덩어리로 모인 데이터에 이름을 부여해서 파일로 저장.</p>
+<p>ex ) Amazon S3</p>
+</li>
+<li><p>NoSQL 데이터베이스</p>
+<p>많은 데이터를 읽고 쓰기에 유리.</p>
+</li>
+</ol>
+<h5 id="분산-데이터-처리"><a href="#분산-데이터-처리" class="headerlink" title="분산 데이터 처리"></a>분산 데이터 처리</h5><p>분산 스토리지에 저장된 데이터를 처리하기 위해, 분산 데이터 처리 프레임워크가 필요하다. ex) MapReduce</p>
+<p>주 역할은, 나중에 분석하기 쉽도록 데이터를 가공해서 그 결과를 외부 데이터베이스에 저장하는 것이다.</p>
+<p>빅데이터를 SQL 로 집계하는 방법으로,</p>
+<ol>
+<li><p>쿼리 엔진</p>
+<p>Hive, 대화형 쿼리엔진</p>
+</li>
+<li><p>데이터 웨어하우스 제품</p>
+<p>ETL. </p>
+<p>데이터를 추출하고 가공한후, 데이터 웨어하우스에 로드한다.</p>
+</li>
+</ol>
+<h5 id="워크플로우-관리"><a href="#워크플로우-관리" class="headerlink" title="워크플로우 관리"></a>워크플로우 관리</h5><p>데이터파이프라인이 복잡해지면, 한곳에서 제어하지 않으면 전체 움직임 파악이 어렵다.</p>
+<h5 id="데이터-웨어하우스와-데이터-마트"><a href="#데이터-웨어하우스와-데이터-마트" class="headerlink" title="데이터 웨어하우스와 데이터 마트"></a>데이터 웨어하우스와 데이터 마트</h5><p><img src="/image/bigdata_data_pipeline_warehouse.png" alt></p>
+<ol>
+<li><p>데이터 소스</p>
+<p>RDB 나 로그 등을 저장하는 파일 서버</p>
+</li>
+<li><p>ETL 플로세스</p>
+<p>데이터 소스에 보존된 raw data 를 추출하고 필요에 따라 가공한 후 데이터 웨어하우스에 저장하기까지의 흐름</p>
+</li>
+<li><p>데이터 마트</p>
+<p>데이터웨어 하우스에서 필요한 데이터만을 추출하여 데이터마트를 구축</p>
+</li>
+</ol>
+<h5 id="데이터-레이크"><a href="#데이터-레이크" class="headerlink" title="데이터 레이크"></a>데이터 레이크</h5><p><img src="/image/bigdata_data_pipeline_lake.png" alt></p>
+<p>모든 데이터를 원래의 형태로 추적해두고 나중에 필요에 따라 가공하는 구조가 필요하다.</p>
+<p>이 데이터 축적 장소가 데이터 레이크이다. 분산 스토리지가 데이터 레이크로 이용된다. </p>
+<p>데이터 레이크의 데이터를 가공하기 위해 MapReduce 같은 분산 데이터 처리 기술이 필요하다.</p>
+<h5 id="데이터-분석-기반을-단계적으로-발전시키기"><a href="#데이터-분석-기반을-단계적으로-발전시키기" class="headerlink" title="데이터 분석 기반을 단계적으로 발전시키기"></a>데이터 분석 기반을 단계적으로 발전시키기</h5><ol>
+<li><p>데이터 엔지니어</p>
+<p>시스템의 구축 및 운용, 자동화</p>
+</li>
+<li><p>데이터 분석가</p>
+<p>데이터에서 가치있는 정보 추출</p>
+</li>
+</ol>
+<h5 id="확증적-데이터-분석과-탐색적-데이터-분석"><a href="#확증적-데이터-분석과-탐색적-데이터-분석" class="headerlink" title="확증적 데이터 분석과 탐색적 데이터 분석"></a>확증적 데이터 분석과 탐색적 데이터 분석</h5><ol>
+<li><p>확증적 데이터 분석</p>
+<p>가설을 세우고 검증.</p>
+<p>통계학적 모델링에 의한 데이터 분석.</p>
+</li>
+<li><p>탐색적 데이터 분석</p>
+<p>데이터를 보며 의미를 읽어냄.</p>
+<p>데이터를 시각화하여 사람의 힘으로 의미를 읽어냄</p>
+</li>
+</ol>
+<hr>
+<p>빅데이터를 지탱하는 기술 &lt;니시다 케이스케&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2019/12/30/big-data-chapter1/" data-id="ck7agiz1700mkiv6wotxwicnc" data-title="[빅데이터를 지탱하는 기술] 1장_빅데이터 기초 지식" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-big-data-chapter3" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/12/30/big-data-chapter3/" class="article-date">
+  <time class="dt-published" datetime="2019-12-29T15:00:00.000Z" itemprop="datePublished">2019-12-30</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/big-data/">Big Data</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/12/30/big-data-chapter3/">[빅데이터를 지탱하는 기술] 3장_빅데이터 분산처리</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="1-대규모-분산-처리의-프레임워크"><a href="#1-대규모-분산-처리의-프레임워크" class="headerlink" title="1. 대규모 분산 처리의 프레임워크"></a>1. 대규모 분산 처리의 프레임워크</h2><p>비구조화 데이터를 읽어 들여 열 지향 스토리지로 변환하는 과정에서, 데이터의 가공 및 압축을 위해 많은 컴퓨터 리소스가 소비된다. </p>
+<p>그래서 사용하는 것이 Hadoop, Spark 같은 분산 처리 프레임워크다.</p>
+<h5 id="구조화-데이터-비구조화-데이터-스키마리스-데이터"><a href="#구조화-데이터-비구조화-데이터-스키마리스-데이터" class="headerlink" title="구조화 데이터, 비구조화 데이터, 스키마리스 데이터"></a>구조화 데이터, 비구조화 데이터, 스키마리스 데이터</h5><ol>
+<li><p>구조화 데이터</p>
+<p>스키마가 명확하게 정의된 데이터.</p>
+<p>기존의 데이터 웨어하우스에서는 항상 구조화 데이터로 축적하는 것이 일반적이었다.</p>
+</li>
+<li><p>비구조화 데이터</p>
+<p>스키마가 없는 데이터.</p>
+<p>이 상태로는 SQL 로 제대로 집계할 수 없다.</p>
+</li>
+<li><p>스키마리스 데이터</p>
+<p>CSV, JSON, XML 등의 데이터는 서식은 정해져 있지만, 칼럼 수나 데이터 형은 명확하지 않다.</p>
+</li>
+</ol>
+<h5 id="데이터-구조화의-파이프라인"><a href="#데이터-구조화의-파이프라인" class="headerlink" title="데이터 구조화의 파이프라인"></a>데이터 구조화의 파이프라인</h5><p><img src="/image/structured_data.png" alt></p>
+<p>분산 스토리지에 수집된 데이터는 명확한 스키마를 갖지 않아 그대로는 SQL 로 집계할 수 없다. </p>
+<p>그래서, 먼저 스키마를 명확하게 한 테이블 형식으로 변환해야한다.</p>
+<p>구조화된 데이터는 데이터 압축률을 높이기 위해 열 지향 스토리지에 저장한다. </p>
+<h5 id="열-지향-스토리지의-작성"><a href="#열-지향-스토리지의-작성" class="headerlink" title="열 지향 스토리지의 작성"></a>열 지향 스토리지의 작성</h5><p>Hadoop 의 열 지향 스토리지는,</p>
+<ol>
+<li><p>Apache ORC</p>
+<p>처음에 스키마를 정한 후 데이터를 저장</p>
+</li>
+<li><p>Apache Parquet</p>
+<p>스키마리스에 가까운 데이터 구조로 되어 있어서 JSON 같은 데이터도 그대로 저장</p>
+</li>
+</ol>
+<h5 id="Hadoop"><a href="#Hadoop" class="headerlink" title="Hadoop"></a>Hadoop</h5><p><img src="/image/big_data_hadoop.png" alt></p>
+<p>단일 소프트웨어가 아니라 분산 시스템을 구성하는 다수의 소프트웨어로 이루어진 집합체이다.</p>
+<p>기본 구성 요소는,</p>
+<ol>
+<li><p>분산 파일 시스템</p>
+<p>HDFS.</p>
+<p>다수의 컴퓨터에 파일을 복사하여 중복성을 높이는 특징이 있다.</p>
+</li>
+<li><p>리소스 관리자</p>
+<p>YARN, Mesos.</p>
+<p>YARN 은 애플리케이션이 사용하는 CPU 코어와 메모리를 컨테이너라는 단위로 관리한다.</p>
+<p>Hadoop 에서 분산 애플리케이션을 실행하면 YARN 이 클러스터 전체의 부하를 보고 비어 있는 호스트부터 컨테이너를 할당한다.</p>
+<p>어느 애플리케이션에 얼마만큼의 리소스를 할당할 지 관리해서 모든 애플리케이션이 실행되도록 제어한다.</p>
+</li>
+<li><p>분산 데이터 처리</p>
+<p>MapReduce, Tez.</p>
+<p>MapReduce 도 YARN 위에서 동작하는 분산 애플리케이션 중 하나이다.</p>
+</li>
+</ol>
+<h5 id="쿼리-엔진"><a href="#쿼리-엔진" class="headerlink" title="쿼리 엔진"></a>쿼리 엔진</h5><p><img src="/image/big_data_hive_mr.png" alt></p>
+<p>하둡에서는 다수의 쿼리 엔진이 개발되었다. 총칭해서 SQL-on-Hadoop 이라고 한다.</p>
+<p>SQL 등의 쿼리 언어에 의한 데이터 집계가 목적이면, 이를 위해 설계된 쿼리 엔진을 사용한다.</p>
+<p>Apache Hive 가 대표적이다. 쿼리를 자동으로 MapReduce 프로그램으로 변환하는 소프트웨어이다.</p>
+<p>시간이 걸리는 배치 처리에는 적합하나, 애드 혹 쿼리를 여러 번 실행하는데는 부적합하다. </p>
+<p>왜냐하면 위 그림처럼, 스테이지가 바뀔 때 대기 시간이 있기 때문이다.</p>
+<p><img src="/image/big_data_hive_tez.png" alt></p>
+<p>Apache Tez 는 Hive 를 가속화하기 위해 개발되었다. 기존의 MapReduce 를 대체할 목적이다.</p>
+<p>Hive on MR 은, 1회의 MapReduce 스테이지가 끝날 때까지 다음의 처리를 진행할 수 없다.</p>
+<p>Hive on Tez 는, 위 그림처럼 스테이지의 종료를 기다리지 않고 데이터를 차례대로 후속 처리에 전달하여 쿼리 전체 실행 시간을 단축한다.</p>
+<h5 id="대화형-쿼리엔진"><a href="#대화형-쿼리엔진" class="headerlink" title="대화형 쿼리엔진"></a>대화형 쿼리엔진</h5><p><img src="/image/big_data_presto.png" alt></p>
+<p>Apache Impala 와 Presto 가 대표적이다.</p>
+<p>YARN 과 같은 리소스 관리자를 사용하지 않고, SQL 의 실행만으로 분산처리를 구현한다.</p>
+<p>순간 최대 속도를 높이기 위해 모든 오버 헤드가 제거되어, 사용할 수 있는 리소스를 최대한 활용하여 쿼리를 실행한다.</p>
+<h5 id="Spark"><a href="#Spark" class="headerlink" title="Spark"></a>Spark</h5><p><img src="/image/big_data_spark.png" alt></p>
+<p>MapReduce, Tez 모두 데이터 처리 과정에서 만들어진 중간 데이터를 디스크에 기록한다.</p>
+<p>Spark 는 대량의 메모리를 활용하여 고속화를 실현한다.</p>
+<p>Hadoop 을 대체하는 것이 아니라, MapReduce 를 대체하는 존재다.</p>
+<h2 id="2-쿼리-엔진"><a href="#2-쿼리-엔진" class="headerlink" title="2. 쿼리 엔진"></a>2. 쿼리 엔진</h2><p><img src="/image/big_data_hive_presto.png" alt></p>
+<h5 id="데이터-마트-구축의-파이프라인"><a href="#데이터-마트-구축의-파이프라인" class="headerlink" title="데이터 마트 구축의 파이프라인"></a>데이터 마트 구축의 파이프라인</h5><ol>
+<li><p>Hive</p>
+<p>분산 스토리지에 저장된 데이터를 구조화하고 열 지향 스토리지 형식으로 저장</p>
+</li>
+<li><p>Presto</p>
+<p>완성한 구조화 데이터를 결합, 집계하고 비정규화 테이블로 만든 데이터 마트에 써서 보냄</p>
+</li>
+</ol>
+<h5 id="Hive-에-의한-구조화-데이터-작성"><a href="#Hive-에-의한-구조화-데이터-작성" class="headerlink" title="Hive 에 의한 구조화 데이터 작성"></a>Hive 에 의한 구조화 데이터 작성</h5><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hive&gt; CREATE EXTERNAL TABLE access_log_csv (...)</span><br></pre></td></tr></table></figure>
+
+<p>CSV 파일을 읽어들여 외부 테이블을 정의한다.</p>
+<p>외부테이블이란, Hive 의 외부에 있는 특정 파일을 참고해 마치 거기에 테이블이 존재하는 것처럼 읽어 들이기 위해 지정한다.</p>
+<p>쿼리를 실행할 때마다 매번 텍스트를 읽어들이기 때문에 느리다. 그래서 열 지향 스토리지로 변환해야한다.</p>
+<h5 id="열-지향-스토리지로의-변환"><a href="#열-지향-스토리지로의-변환" class="headerlink" title="열 지향 스토리지로의 변환"></a>열 지향 스토리지로의 변환</h5><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hive&gt; CREATE TABLE access_log_orc STROED as ORC as SELECT ..</span><br></pre></td></tr></table></figure>
+
+<p>텍스트 데이터를 열 지향 스토리지로 변환함으로써 데이터의 집계가 크게 고속화된다.</p>
+<h5 id="Hive-로-비정규화-테이블-작성하기"><a href="#Hive-로-비정규화-테이블-작성하기" class="headerlink" title="Hive 로 비정규화 테이블 작성하기"></a>Hive 로 비정규화 테이블 작성하기</h5><p>데이터 구조화가 완료되면 데이터 마트를 구축해야한다. 즉, 테이블을 결합 및 집약해서 ‘비정규화 테이블’ 을 만든다.</p>
+<p>Preso 와 같은 대화형 쿼리 엔진, Hive 같은 배치형 쿼리 엔진을 사용할 수 있다. 시간이 걸리는 배치 처리는 Hive 를 사용해야한다.</p>
+<p>비정규화 테이블을 만드는 데 오랜 시간이 걸리므로, 가능한 효율적인 쿼리를 작성해야한다. </p>
+<ol>
+<li><p>서브 쿼리 안에서 레코드 수 줄이기</p>
+<p>서브 쿼리 안에서 팩트 테이블을 작게 해야한다.</p>
+<p>데이터의 양의 감소 시킨 후에 테이블을 결합하는 것이 쿼리 실행 시간을 단축시킨다.</p>
+</li>
+<li><p>데이터 편향 피하기</p>
+<p>분산 시스템의 성능을 발휘하기 위해서, 모든 노드에 데이터가 균등하게 분산되도록 해야한다.</p>
+</li>
+</ol>
+<h5 id="대화형-쿼리-엔진-Presto-구조"><a href="#대화형-쿼리-엔진-Presto-구조" class="headerlink" title="대화형 쿼리 엔진 Presto 구조"></a>대화형 쿼리 엔진 Presto 구조</h5><p>쿼리 실행의 지연을 감소시키는 목적으로 개발된 것이 대화형 쿼리 엔진이다.</p>
+<p>Presto 의 특징은,</p>
+<ol>
+<li><p>플러그인 가능한 스토리지</p>
+<p>다양한 데이터 소스를 테이블로 참고할 수 있다.</p>
+<p>ex) 하나의 쿼리 안에서 분산 스토리지 상의 팩트 테이블과 MySQL 의 마스터 테이블을 조인할 있다.</p>
+</li>
+<li><p>CPU 처리의 최적화</p>
+<p>코드의 실행을 멀티 스레드화되어 단일 머신에서 수백 태스크나 병렬로 실행된다.</p>
+<p>그래서, CPU 이용 효율이 높다.</p>
+</li>
+<li><p>인 메모리 처리에 의한 고속화</p>
+<p>모든 데이터 처리는 메모리 상에서 실시하고 메모리가 부족하면 여유가 생길 때까지 기다리거나 오류로 실패한다.</p>
+</li>
+</ol>
+<h5 id="데이터-분석의-프레임워크-선택하기"><a href="#데이터-분석의-프레임워크-선택하기" class="headerlink" title="데이터 분석의 프레임워크 선택하기"></a>데이터 분석의 프레임워크 선택하기</h5><ol>
+<li><p>MPP Database</p>
+<p>비정규화 테이블을 고속으로 집계하는 데에 최적</p>
+</li>
+<li><p>Hive</p>
+<p>데이터 양에 좌우되지 않는 쿼리 엔진</p>
+</li>
+<li><p>Presto</p>
+<p>속도 중시, 대화식으로 특화된 쿼리 엔진</p>
+</li>
+<li><p>Spark</p>
+<p>분산 시스템을 사용한 프로그래밍 환경.</p>
+<p>ETL 프로세스에서 SQL 에 이르기 까지의 일련의 흐름을 하나의 데이터 파이프라인으로 기술 가능.</p>
+</li>
+</ol>
+<h2 id="3-데이터-마트의-구축"><a href="#3-데이터-마트의-구축" class="headerlink" title="3. 데이터 마트의 구축"></a>3. 데이터 마트의 구축</h2><p>분산 시스템이 준비되면 시각화를 위해 데이터 마트를 만든다.</p>
+<h5 id="팩트-테이블"><a href="#팩트-테이블" class="headerlink" title="팩트 테이블"></a>팩트 테이블</h5><p>팩트 테이블 작성 방법으로,</p>
+<ol>
+<li><p>추가</p>
+<p>새로 도착한 데이터만을 증분으로 추가</p>
+</li>
+<li><p>치환</p>
+<p>과거 데이터를 포함하여 테이블 전체 치환</p>
+</li>
+</ol>
+<h5 id="테이블-파티셔닝"><a href="#테이블-파티셔닝" class="headerlink" title="테이블 파티셔닝"></a>테이블 파티셔닝</h5><p>위의 ‘추가’ 방법은 다음 문제가 있다.</p>
+<ol>
+<li>추가에 실패한것을 알아채지 못하면, 팩트 테이블의 일부에 결손</li>
+<li>추가를 잘못해서 여러번 실행하면, 일부 중복</li>
+<li>나중에 팩트 테이블 다시 만들고 싶으면, 관리 복잡</li>
+</ol>
+<p>그래서 파티셔닝이 필요하다.</p>
+<p>하나의 테이블을 여러 물리적인 파티션으로 나눠서 파티션 단위로 정리하여 데이터를 쓰거나 삭제하는 것이다.</p>
+<h5 id="집계-테이블"><a href="#집계-테이블" class="headerlink" title="집계 테이블"></a>집계 테이블</h5><p>팩트 테이블을 어느 정도 모아서 집계하면 데이터의 양이 줄어든다. 이것은 집계 테이블이라고 한다.</p>
+<p>각 칼럼이 취하는 값의 범위란, 카디널리티이다. ‘성별’ 과 같이 취할 수 있는 값이 적은 것은 카디널리티가 작은 것이다.</p>
+<p>집계 테이블을 작게 하려면 모든 칼럼의 카디널리티를 줄여야한다.</p>
+<h5 id="스냅샷-테이블-이력-테이블"><a href="#스냅샷-테이블-이력-테이블" class="headerlink" title="스냅샷 테이블, 이력 테이블"></a>스냅샷 테이블, 이력 테이블</h5><p>마스터 데이터처럼 업데이트 될 가능성이 있는 테이블은,</p>
+<p>정기적으로 테이블을 통째로 저장하는 스탭샷 테이블, 또는 변경 내용만을 저장하는 이력 테이블로 관리할 수 있다.</p>
+<h5 id="디멘전을-추가하여-비정규화-테이블-완성시키기"><a href="#디멘전을-추가하여-비정규화-테이블-완성시키기" class="headerlink" title="디멘전을 추가하여 비정규화 테이블 완성시키기"></a>디멘전을 추가하여 비정규화 테이블 완성시키기</h5><p>팩트 테이블과 디멘젼 테이블을 결합하여 비정규화 테이블을 만든다.</p>
+<hr>
+<p>빅데이터를 지탱하는 기술 &lt;니시다 케이스케&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2019/12/30/big-data-chapter3/" data-id="ck7agiz2z00p0iv6wis102dsb" data-title="[빅데이터를 지탱하는 기술] 3장_빅데이터 분산처리" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-object-chapter11" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2019/12/27/object-chapter11/" class="article-date">
@@ -177,7 +707,181 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/12/27/object-chapter11/" data-id="ck78w116l00oq8vqxbzh1cnc3" data-title="[오브젝트] 11장_합성과 유연한 설계" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/12/27/object-chapter11/" data-id="ck7agiz2x00owiv6wcbqrinh2" data-title="[오브젝트] 11장_합성과 유연한 설계" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-kafka-chapter4" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/12/26/kafka-chapter4/" class="article-date">
+  <time class="dt-published" datetime="2019-12-25T15:00:00.000Z" itemprop="datePublished">2019-12-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/kafka/">Kafka</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/12/26/kafka-chapter4/">[카프카] 4장_카프카 프로듀서</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>프로듀서란, 메세지를 생산해서 카프카의 토픽으로 보내는 역할을 하는 애플리케이션, 서버이다.<br>주요 기능은, 각각의 메세지를 토픽 파티션에 매핑하고 파티션의 리더에 요청을 보내는 것이다.</p>
+<h3 id="1-콘솔-프로듀서로-메세지-보내기"><a href="#1-콘솔-프로듀서로-메세지-보내기" class="headerlink" title="1. 콘솔 프로듀서로 메세지 보내기"></a>1. 콘솔 프로듀서로 메세지 보내기</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">auto.create.topics.enable = <span class="keyword">true</span></span><br></pre></td></tr></table></figure>
+
+<p>위 처럼 설정되어 있으면,<br>프로듀서가 카프카에 존재하지 않는 토픽으로 메세지를 보낼 때 자동으로 토픽이 생성된다.</p>
+<h3 id="2-자바와-파이썬을-이용한-프로듀서"><a href="#2-자바와-파이썬을-이용한-프로듀서" class="headerlink" title="2. 자바와 파이썬을 이용한 프로듀서"></a>2. 자바와 파이썬을 이용한 프로듀서</h3><p>프로듀서에서 send() 로 메세지를 보내는 방식은 세 가지이다.</p>
+<ol>
+<li><p>메세지 보내고 확인하지 않기<br>메세지 손실 가능성이 있다.</p>
+</li>
+<li><p>동기 전송<br>카프카의 응답을 기다린다.</p>
+</li>
+<li><p>비동기 전송<br>응답을 기다리지 않기 때문에 빠른 전송이 가능하다.</p>
+</li>
+</ol>
+<h3 id="5-메세지-전송-방법"><a href="#5-메세지-전송-방법" class="headerlink" title="5. 메세지 전송 방법"></a>5. 메세지 전송 방법</h3><p>프로듀서 옵셩 중에 acks 옵션 설정에 따라, 카프카로 메세지를 전송할 때 메세지 손실 여부와 메세지 전송 속도 및 처리량이 달라진다.</p>
+<h4 id="5-1-메세지-손실-가능성-높음-빠른-전송-속도"><a href="#5-1-메세지-손실-가능성-높음-빠른-전송-속도" class="headerlink" title="5.1 메세지 손실 가능성 높음, 빠른 전송 속도"></a>5.1 메세지 손실 가능성 높음, 빠른 전송 속도</h4><p>acks = 0, 카프카 서버의 응답을 기다리지 않고 메세지 보낼 준비가 되면 즉시 다음 요청을 보낸다.</p>
+<h4 id="5-2-메세지-손실-가능성-낮음-적당한-전송-속도"><a href="#5-2-메세지-손실-가능성-낮음-적당한-전송-속도" class="headerlink" title="5.2 메세지 손실 가능성 낮음, 적당한 전송 속도"></a>5.2 메세지 손실 가능성 낮음, 적당한 전송 속도</h4><p><img src="/image/kafka_ack_1.png" alt></p>
+<p>asks = 1, 메세지를 보내고 잘 받았는지 확인한다.<br>위 그림 처럼, 팔로워들이 주기적으로 리더를 확인하고 새로운 메세지가 확인되면 팔로워들에도 저장한다.<br>메세지 손실이 발생하는 경우는 리더에 장애가 발생하는 경우이다.<br>즉, 프로듀서가 리더에게 메세지를 보내고 리더는 메시지를 저장한 후에 바로 장애가 발생하는 경우이다.</p>
+<h4 id="5-3-메세지-손실-없음-느린-전송-속도"><a href="#5-3-메세지-손실-없음-느린-전송-속도" class="headerlink" title="5.3 메세지 손실 없음, 느린 전송 속도"></a>5.3 메세지 손실 없음, 느린 전송 속도</h4><p>acks = all, 메세지를 보내고 잘 받았는지 확인하고 추가적으로 팔로워들까지 메세지를 잘 받았는지 확인한다.<br>프로듀서 설정 뿐만 아니라, 브로커 설정도 같이 해줘야한다.</p>
+<blockquote>
+<p>프로듀서 acks = all, 브로커 min.insync.replicas = 1 </p>
+</blockquote>
+<p>min.insync.replicas 는 최소 리플리케이션 팩터를 지정하는 옵션이다.</p>
+<ol>
+<li>프로듀서는 토픽의 리더에게 메세지를 보내고, </li>
+<li>리더는 메세지를 저장한다. </li>
+<li>최소 하나의 리플리케이션 조건을 갖췄기 때문에 acks 를 보낸다.</li>
+</ol>
+<blockquote>
+<p>프로듀서 acks = all, 브로커 min.insync.replicas = 2</p>
+</blockquote>
+<ol>
+<li>프로듀서는 토픽의 리더에게 메세지를 보내고, </li>
+<li>리더는 메세지를 저장한다. </li>
+<li>팔로워가 2 개가 있다고 할 때, 첫번째 팔로워는 리더로부터 주기적으로 새로운 메세지를 확인하며 새로운 메세지가 확인되면 자신도 리더의 메세지를 가져와 저장한다.</li>
+<li>최소 두 개의 리플리케이션 조건을 갖췄기 때문에 acks 를 보낸다.</li>
+</ol>
+<p>“손실 없는 메세지 전송을 위해서는,  프로듀서 acks = all, 브로커 min.insync.replicas = 2, 리플레케이션 팩터 = 3”</p>
+<blockquote>
+<p>프로듀서 acks = all, 브로커 min.insync.replicas = 3</p>
+</blockquote>
+<p>왜 카프카는 손실 없는 메세지 전송을 위해, min.insync.replicas = 3 이 아니라, min.insync.replicas = 2 를 추천할까 ?</p>
+<ol>
+<li>프로듀서는 토픽의 리더에게 메세지를 보낸다.</li>
+<li>팔로워가 2 개가 있다고 할 때, 팔로워가 위치한 브로커 하나를 강제 종료한다.</li>
+<li>에러가 발생한다.</li>
+<li>min.insync.replicas = 3 이기 때문에, 리더, 팔로워, 팔로워 이렇게 3 곳에서 모두 메세지를 받아야만 리더는 프로듀서에게 메세지를 잘 받았다는 acks 를 받을 수 있다. </li>
+<li>하지만, 팔로워 한 개를 강제 종료하였기 때문에 ISR 에는 리더와 팔로워 각각 하나만 남아 있는 상태다.</li>
+<li>결국 옵션의 조건을 충족시킬 수 없는 상황이기 때문에 에러가 발생한다.</li>
+</ol>
+<hr>
+<p>카프카, 데이터 플랫폼의 최강자 &lt;고승범, 공용준&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2019/12/26/kafka-chapter4/" data-id="ck7agiz1800mniv6w2z3pqxts" data-title="[카프카] 4장_카프카 프로듀서" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-kafka-chapter1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/12/26/kafka-chapter1/" class="article-date">
+  <time class="dt-published" datetime="2019-12-25T15:00:00.000Z" itemprop="datePublished">2019-12-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/kafka/">Kafka</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/12/26/kafka-chapter1/">[카프카] 1장_카프카란 무엇인가</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>카프카 : 대용량, 대규모 메세지 데이터를 빠르게 처리하도록 개발된 메시징 플랫폼</p>
+<h3 id="1-탄생-배경"><a href="#1-탄생-배경" class="headerlink" title="1. 탄생 배경"></a>1. 탄생 배경</h3><p><img src="/image/kafka_end_to_end.png" alt></p>
+<p>위 그림 처럼 end-to-end 아키텍쳐의 문제점은,</p>
+<ol>
+<li>실시간 트랜잭션 (OLTP) 처리와 비동기 처리가 동시에 이뤄지지만, 통합된 전송 영역이 없어서 복잡도 증가</li>
+<li>데이터 파이프라인의 관리가 어려움</li>
+</ol>
+<p><img src="/image/kafka_architecture.png" alt></p>
+<p>위 그림처럼 카프카는,</p>
+<ol>
+<li>모든 시스템으로 데이터 전송 가능 </li>
+<li>실시간 처리 가능</li>
+<li>확장이 용이</li>
+</ol>
+<h3 id="2-동작-방식과-원리"><a href="#2-동작-방식과-원리" class="headerlink" title="2. 동작 방식과 원리"></a>2. 동작 방식과 원리</h3><p>메시징 시스템을 먼저 살펴보자.<br>중앙에 메시징 시스템 서버를 두고 메시지를 Publish 하고 Subscribe 하는 형태의 통신을 Pub/Sub 모델이라고 한다.<br>프로듀서가 메시지를 컨슈머에게 직접 전달하는 것이 아니라, 중간의 메시징 시스템으로 전달한다. 그래서,</p>
+<ol>
+<li>프로듀서가 수신 불능 상태가 되어도 메세징 시스템이 살아있으면 메세지가 유실이 되지 않는다.</li>
+<li>메세징 시스템을 중심으로 연결되기 때문에, 확장성이 용이하다.</li>
+</ol>
+<p>카프카의 메세지 전달 순서는,</p>
+<ol>
+<li>프로듀서가 메세지를 카프카에게 보낸다.</li>
+<li>메세지가 Topic 에 도착해 저장된다.</li>
+<li>컨슈머는 카프카 서버에 접속해 메세지를 가져간다. </li>
+</ol>
+<h3 id="3-특징"><a href="#3-특징" class="headerlink" title="3. 특징"></a>3. 특징</h3><ol>
+<li><p>프로듀서와 컨슈머의 분리<br>어느 한쪽 시스템에서 문제가 발생해도 연쇄 작용이 발생할 확률이 낮다.<br>서버 추가에 대한 부담이 준다.</p>
+</li>
+<li><p>멀티 프로듀서, 멀티 컨슈머<br>데이터 분석 및 처리 프로세스에서 하나의 데이터를 다양한 용도로 사용하는 요구 사항을 충족할 수 있다.</p>
+</li>
+<li><p>디스크에 메세지 저장<br>컨슈머가 메세지를 읽어가도 보관 주기 동안 디스크에 메세지를 저장한다.<br>( 일반적인 메세지 시스템은 컨슈머가 메세지를 읽어가면 큐에서 바로 메세지 삭제 )</p>
+</li>
+<li><p>확장성<br>온라인 상태에서 확장 작업 가능</p>
+</li>
+<li><p>높은 성능</p>
+</li>
+</ol>
+<hr>
+<p>카프카, 데이터 플랫폼의 최강자 &lt;고승범, 공용준&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2019/12/26/kafka-chapter1/" data-id="ck7agiz1500mdiv6wku0ae5id" data-title="[카프카] 1장_카프카란 무엇인가" class="article-share-link">Share</a>
       
       
       
@@ -287,7 +991,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/12/26/kafka-chapter3/" data-id="ck78w115000me8vqxc1qgblp4" data-title="[카프카] 3장_카프카 디자인" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/12/26/kafka-chapter3/" data-id="ck7agiz1600miiv6wilw0sehn" data-title="[카프카] 3장_카프카 디자인" class="article-share-link">Share</a>
       
       
       
@@ -403,181 +1107,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/12/26/kafka-chapter5/" data-id="ck78w115100mj8vqxm4vjzuuy" data-title="[카프카] 5장_카프카 컨슈머" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-kafka-chapter4" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/12/26/kafka-chapter4/" class="article-date">
-  <time class="dt-published" datetime="2019-12-25T15:00:00.000Z" itemprop="datePublished">2019-12-26</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/kafka/">Kafka</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/12/26/kafka-chapter4/">[카프카] 4장_카프카 프로듀서</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>프로듀서란, 메세지를 생산해서 카프카의 토픽으로 보내는 역할을 하는 애플리케이션, 서버이다.<br>주요 기능은, 각각의 메세지를 토픽 파티션에 매핑하고 파티션의 리더에 요청을 보내는 것이다.</p>
-<h3 id="1-콘솔-프로듀서로-메세지-보내기"><a href="#1-콘솔-프로듀서로-메세지-보내기" class="headerlink" title="1. 콘솔 프로듀서로 메세지 보내기"></a>1. 콘솔 프로듀서로 메세지 보내기</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">auto.create.topics.enable = <span class="keyword">true</span></span><br></pre></td></tr></table></figure>
-
-<p>위 처럼 설정되어 있으면,<br>프로듀서가 카프카에 존재하지 않는 토픽으로 메세지를 보낼 때 자동으로 토픽이 생성된다.</p>
-<h3 id="2-자바와-파이썬을-이용한-프로듀서"><a href="#2-자바와-파이썬을-이용한-프로듀서" class="headerlink" title="2. 자바와 파이썬을 이용한 프로듀서"></a>2. 자바와 파이썬을 이용한 프로듀서</h3><p>프로듀서에서 send() 로 메세지를 보내는 방식은 세 가지이다.</p>
-<ol>
-<li><p>메세지 보내고 확인하지 않기<br>메세지 손실 가능성이 있다.</p>
-</li>
-<li><p>동기 전송<br>카프카의 응답을 기다린다.</p>
-</li>
-<li><p>비동기 전송<br>응답을 기다리지 않기 때문에 빠른 전송이 가능하다.</p>
-</li>
-</ol>
-<h3 id="5-메세지-전송-방법"><a href="#5-메세지-전송-방법" class="headerlink" title="5. 메세지 전송 방법"></a>5. 메세지 전송 방법</h3><p>프로듀서 옵셩 중에 acks 옵션 설정에 따라, 카프카로 메세지를 전송할 때 메세지 손실 여부와 메세지 전송 속도 및 처리량이 달라진다.</p>
-<h4 id="5-1-메세지-손실-가능성-높음-빠른-전송-속도"><a href="#5-1-메세지-손실-가능성-높음-빠른-전송-속도" class="headerlink" title="5.1 메세지 손실 가능성 높음, 빠른 전송 속도"></a>5.1 메세지 손실 가능성 높음, 빠른 전송 속도</h4><p>acks = 0, 카프카 서버의 응답을 기다리지 않고 메세지 보낼 준비가 되면 즉시 다음 요청을 보낸다.</p>
-<h4 id="5-2-메세지-손실-가능성-낮음-적당한-전송-속도"><a href="#5-2-메세지-손실-가능성-낮음-적당한-전송-속도" class="headerlink" title="5.2 메세지 손실 가능성 낮음, 적당한 전송 속도"></a>5.2 메세지 손실 가능성 낮음, 적당한 전송 속도</h4><p><img src="/image/kafka_ack_1.png" alt></p>
-<p>asks = 1, 메세지를 보내고 잘 받았는지 확인한다.<br>위 그림 처럼, 팔로워들이 주기적으로 리더를 확인하고 새로운 메세지가 확인되면 팔로워들에도 저장한다.<br>메세지 손실이 발생하는 경우는 리더에 장애가 발생하는 경우이다.<br>즉, 프로듀서가 리더에게 메세지를 보내고 리더는 메시지를 저장한 후에 바로 장애가 발생하는 경우이다.</p>
-<h4 id="5-3-메세지-손실-없음-느린-전송-속도"><a href="#5-3-메세지-손실-없음-느린-전송-속도" class="headerlink" title="5.3 메세지 손실 없음, 느린 전송 속도"></a>5.3 메세지 손실 없음, 느린 전송 속도</h4><p>acks = all, 메세지를 보내고 잘 받았는지 확인하고 추가적으로 팔로워들까지 메세지를 잘 받았는지 확인한다.<br>프로듀서 설정 뿐만 아니라, 브로커 설정도 같이 해줘야한다.</p>
-<blockquote>
-<p>프로듀서 acks = all, 브로커 min.insync.replicas = 1 </p>
-</blockquote>
-<p>min.insync.replicas 는 최소 리플리케이션 팩터를 지정하는 옵션이다.</p>
-<ol>
-<li>프로듀서는 토픽의 리더에게 메세지를 보내고, </li>
-<li>리더는 메세지를 저장한다. </li>
-<li>최소 하나의 리플리케이션 조건을 갖췄기 때문에 acks 를 보낸다.</li>
-</ol>
-<blockquote>
-<p>프로듀서 acks = all, 브로커 min.insync.replicas = 2</p>
-</blockquote>
-<ol>
-<li>프로듀서는 토픽의 리더에게 메세지를 보내고, </li>
-<li>리더는 메세지를 저장한다. </li>
-<li>팔로워가 2 개가 있다고 할 때, 첫번째 팔로워는 리더로부터 주기적으로 새로운 메세지를 확인하며 새로운 메세지가 확인되면 자신도 리더의 메세지를 가져와 저장한다.</li>
-<li>최소 두 개의 리플리케이션 조건을 갖췄기 때문에 acks 를 보낸다.</li>
-</ol>
-<p>“손실 없는 메세지 전송을 위해서는,  프로듀서 acks = all, 브로커 min.insync.replicas = 2, 리플레케이션 팩터 = 3”</p>
-<blockquote>
-<p>프로듀서 acks = all, 브로커 min.insync.replicas = 3</p>
-</blockquote>
-<p>왜 카프카는 손실 없는 메세지 전송을 위해, min.insync.replicas = 3 이 아니라, min.insync.replicas = 2 를 추천할까 ?</p>
-<ol>
-<li>프로듀서는 토픽의 리더에게 메세지를 보낸다.</li>
-<li>팔로워가 2 개가 있다고 할 때, 팔로워가 위치한 브로커 하나를 강제 종료한다.</li>
-<li>에러가 발생한다.</li>
-<li>min.insync.replicas = 3 이기 때문에, 리더, 팔로워, 팔로워 이렇게 3 곳에서 모두 메세지를 받아야만 리더는 프로듀서에게 메세지를 잘 받았다는 acks 를 받을 수 있다. </li>
-<li>하지만, 팔로워 한 개를 강제 종료하였기 때문에 ISR 에는 리더와 팔로워 각각 하나만 남아 있는 상태다.</li>
-<li>결국 옵션의 조건을 충족시킬 수 없는 상황이기 때문에 에러가 발생한다.</li>
-</ol>
-<hr>
-<p>카프카, 데이터 플랫폼의 최강자 &lt;고승범, 공용준&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/12/26/kafka-chapter4/" data-id="ck78w115200mm8vqxq21frlk8" data-title="[카프카] 4장_카프카 프로듀서" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-kafka-chapter1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/12/26/kafka-chapter1/" class="article-date">
-  <time class="dt-published" datetime="2019-12-25T15:00:00.000Z" itemprop="datePublished">2019-12-26</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/kafka/">Kafka</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/12/26/kafka-chapter1/">[카프카] 1장_카프카란 무엇인가</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>카프카 : 대용량, 대규모 메세지 데이터를 빠르게 처리하도록 개발된 메시징 플랫폼</p>
-<h3 id="1-탄생-배경"><a href="#1-탄생-배경" class="headerlink" title="1. 탄생 배경"></a>1. 탄생 배경</h3><p><img src="/image/kafka_end_to_end.png" alt></p>
-<p>위 그림 처럼 end-to-end 아키텍쳐의 문제점은,</p>
-<ol>
-<li>실시간 트랜잭션 (OLTP) 처리와 비동기 처리가 동시에 이뤄지지만, 통합된 전송 영역이 없어서 복잡도 증가</li>
-<li>데이터 파이프라인의 관리가 어려움</li>
-</ol>
-<p><img src="/image/kafka_architecture.png" alt></p>
-<p>위 그림처럼 카프카는,</p>
-<ol>
-<li>모든 시스템으로 데이터 전송 가능 </li>
-<li>실시간 처리 가능</li>
-<li>확장이 용이</li>
-</ol>
-<h3 id="2-동작-방식과-원리"><a href="#2-동작-방식과-원리" class="headerlink" title="2. 동작 방식과 원리"></a>2. 동작 방식과 원리</h3><p>메시징 시스템을 먼저 살펴보자.<br>중앙에 메시징 시스템 서버를 두고 메시지를 Publish 하고 Subscribe 하는 형태의 통신을 Pub/Sub 모델이라고 한다.<br>프로듀서가 메시지를 컨슈머에게 직접 전달하는 것이 아니라, 중간의 메시징 시스템으로 전달한다. 그래서,</p>
-<ol>
-<li>프로듀서가 수신 불능 상태가 되어도 메세징 시스템이 살아있으면 메세지가 유실이 되지 않는다.</li>
-<li>메세징 시스템을 중심으로 연결되기 때문에, 확장성이 용이하다.</li>
-</ol>
-<p>카프카의 메세지 전달 순서는,</p>
-<ol>
-<li>프로듀서가 메세지를 카프카에게 보낸다.</li>
-<li>메세지가 Topic 에 도착해 저장된다.</li>
-<li>컨슈머는 카프카 서버에 접속해 메세지를 가져간다. </li>
-</ol>
-<h3 id="3-특징"><a href="#3-특징" class="headerlink" title="3. 특징"></a>3. 특징</h3><ol>
-<li><p>프로듀서와 컨슈머의 분리<br>어느 한쪽 시스템에서 문제가 발생해도 연쇄 작용이 발생할 확률이 낮다.<br>서버 추가에 대한 부담이 준다.</p>
-</li>
-<li><p>멀티 프로듀서, 멀티 컨슈머<br>데이터 분석 및 처리 프로세스에서 하나의 데이터를 다양한 용도로 사용하는 요구 사항을 충족할 수 있다.</p>
-</li>
-<li><p>디스크에 메세지 저장<br>컨슈머가 메세지를 읽어가도 보관 주기 동안 디스크에 메세지를 저장한다.<br>( 일반적인 메세지 시스템은 컨슈머가 메세지를 읽어가면 큐에서 바로 메세지 삭제 )</p>
-</li>
-<li><p>확장성<br>온라인 상태에서 확장 작업 가능</p>
-</li>
-<li><p>높은 성능</p>
-</li>
-</ol>
-<hr>
-<p>카프카, 데이터 플랫폼의 최강자 &lt;고승범, 공용준&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/12/26/kafka-chapter1/" data-id="ck78w115100mh8vqxl9klzsuq" data-title="[카프카] 1장_카프카란 무엇인가" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/12/26/kafka-chapter5/" data-id="ck7agiz1800mpiv6wtbxh8noi" data-title="[카프카] 5장_카프카 컨슈머" class="article-share-link">Share</a>
       
       
       
@@ -711,7 +1241,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/12/22/object-chapter10/" data-id="ck78w116l00oo8vqxh9k0ap7o" data-title="[오브젝트] 10장_상속과 코드 재사용" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/12/22/object-chapter10/" data-id="ck7agiz2w00ouiv6wqfp5jr4b" data-title="[오브젝트] 10장_상속과 코드 재사용" class="article-share-link">Share</a>
       
       
       
@@ -845,478 +1375,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/12/15/object-chapter9/" data-id="ck78w116k00om8vqxnkgr0fiu" data-title="[오브젝트] 9장_유연한 설계" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-object-chapter8" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/12/10/object-chapter8/" class="article-date">
-  <time class="dt-published" datetime="2019-12-09T15:00:00.000Z" itemprop="datePublished">2019-12-10</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/object/">Object</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/12/10/object-chapter8/">[오브젝트] 8장_의존성 관리하기</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>이번장에서는 충분히 협력적이고 유연한 객체를 만들기 위해, 의존성을 관리하는 방법을 정리한다.</p>
-<h2 id="01-의존성-이해하기"><a href="#01-의존성-이해하기" class="headerlink" title="01 의존성 이해하기"></a>01 의존성 이해하기</h2><h5 id="변경과-의존성"><a href="#변경과-의존성" class="headerlink" title="변경과 의존성"></a>변경과 의존성</h5><p>어떤 객체가 협력을 위해 다른 객체가 필요할 때, 두 객체 사이의 의존성이 존재한다. </p>
-<p>아래 코드에서, 어떤 형태로든 DayOfWeek, LocalTime, Screening, DiscountCondition 이 변경되면 PeriodCondition 도 함께 변경될 수 있다. </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PeriodCondition</span> <span class="keyword">implements</span> <span class="title">DiscountCondition</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> DayOfWeek dayOfWeek;</span><br><span class="line">  <span class="keyword">private</span> LocalTime startTime;</span><br><span class="line">  <span class="keyword">private</span> LocalTime endTime;</span><br><span class="line">  ...</span><br><span class="line">    </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isSatisfiedBy</span><span class="params">(Screening screening)</span></span>&#123;</span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h5 id="의존성-전이"><a href="#의존성-전이" class="headerlink" title="의존성 전이"></a>의존성 전이</h5><p><img src="/image/object_dependency.png" alt></p>
-<p>PeriodCondition 이 Screening 에 의존하면, PeriodCondition 은 Screening 이 의존하는 대상에 대해서도 의존하게 된다는 것이다.</p>
-<p>의존성이 실제로 전이 될지 여부는 변경의 방향과 캡슐화의 정도에 따라 다르다. Screening 이 내부 구현을 효과적으로 캡슐화하면 Screening 에 의존하고 있는 PeriodCondition 까지는 변경이 전파되지 않는다.</p>
-<p>의존성의 종류는,</p>
-<ol>
-<li><p>직접 의존성</p>
-<p>한 요소가 다른 요소에 직접 의존하는 경우. PeriodCondition 이 Screening 에 의존</p>
-</li>
-<li><p>간접 의존성</p>
-<p>의존성 전이에 의해 영향이 전파되는 경우</p>
-</li>
-</ol>
-<h5 id="런타임-의존성과-컴파일타임-의존성"><a href="#런타임-의존성과-컴파일타임-의존성" class="headerlink" title="런타임 의존성과 컴파일타임 의존성"></a>런타임 의존성과 컴파일타임 의존성</h5><ol>
-<li><p>런타임</p>
-<p>애플리케이션이 실행되는 시점</p>
-</li>
-<li><p>컴파일 타임</p>
-<p>작성된 코드를 컴파일 하는 시점. 문맥에 따라서는, 코드 그 자체</p>
-</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Movie</span> </span>&#123;</span><br><span class="line">  ...</span><br><span class="line">    <span class="keyword">private</span> DiscountPolicy discountPolicy;</span><br><span class="line">  	</span><br><span class="line">  	<span class="function"><span class="keyword">public</span> <span class="title">Movie</span><span class="params">(String title, ... , DiscountPolicy discountPolicy)</span></span>&#123;</span><br><span class="line">      ...</span><br><span class="line">      <span class="keyword">this</span>.discountPolicy = discountPolicy;</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">  	<span class="function"><span class="keyword">public</span> Money <span class="title">calcuateMovieFee</span><span class="params">(Screening screening)</span></span>&#123;</span><br><span class="line">      <span class="keyword">return</span> fee.minus(discountPolicy.caculateDiscountAmount(screening));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>코드를 작성하는 시점에서 Movie 클래스는 AmountDiscountPolicy 클래스와 PercentDiscountPolicy 의 존재를 모르지만, 실행 시점의 Movie 인스턴스는  AmountDiscountPolicy 인스턴스와 PercentDiscountPolicy 인스턴스와 협력할 수 있어야한다.</p>
-<p>협력할 인스턴스의 구체적인 클래스를 알면 안된다. 실제로 협력할 객체가 어떤 것인지는 런타임에 해결해야한다.</p>
-<p>핵심 : 유연하고 재사용 가능한 설계를 만들기 위해서는 동일한 소스 코드 구조로 다양한 실행 구조를 만들 수 있어야한다.</p>
-<h5 id="컨텍스트-독립성"><a href="#컨텍스트-독립성" class="headerlink" title="컨텍스트 독립성"></a>컨텍스트 독립성</h5><p>클래스가 특정 문맥에 강하게 결합되면 다른 문맥에서 사용하기 어렵다. 클래스가 사용될 특정 문맥에 대해 최소한의 가정으로만 이뤄져 있다면 다른 문맥에서 사용하기 쉽다. 이것이 컨텍스트 독립성이다.</p>
-<h5 id="의존성-해결하기"><a href="#의존성-해결하기" class="headerlink" title="의존성 해결하기"></a>의존성 해결하기</h5><p>의존성 해결이란, 컴파일 타임 의존성을 실행 컨텍스트에 맞는 적절한 런타임 의존성으로 교체하는 것이다.</p>
-<p>해결 방법으로,</p>
-<ol>
-<li><p>객체 생성 시점에, 생성자로 의존성 해결</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Movie avater = <span class="keyword">new</span> Movie(<span class="string">"아바타"</span>, <span class="keyword">new</span> AmountDiscountPolicy(...), ....);</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>객체 생성 후, setter 메서드를 통해 의존성 해결</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Movie avater = <span class="keyword">new</span> Movie(...);</span><br><span class="line">avater.setDiscountPolicy(<span class="keyword">new</span> AmountDiscountPolicy(...));</span><br></pre></td></tr></table></figure>
-
-<p>장점은, 실행 시점에 대상을 변경할수 있어서 설계가 유연하다.</p>
-<p>단점은, 객체를 생성하고 의존 대상 설정 전까지는 객체의 상태가 불완전할 수 있다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Movie avater = <span class="keyword">new</span> Movie(...);</span><br><span class="line">avatar.calculatFee(...); <span class="comment">//NPE 예외 발생</span></span><br><span class="line">avater.setDiscountPolicy(<span class="keyword">new</span> AmountDiscountPolicy(...));</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>생성자 방식과 setter 방식 혼합</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Movie avater = <span class="keyword">new</span> Movie(<span class="string">"아바타"</span>, <span class="keyword">new</span> AmountDiscountPolicy(...), ....);</span><br><span class="line">avater.setDiscountPolicy(<span class="keyword">new</span> PercentDiscountPolicy(...));</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>메서드 실행 시 인자를 이용해 의존성 해결</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Movie</span></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> Money <span class="title">calulateMovieFee</span><span class="params">(Screening screening, DiscountPolicy discoutPolicy)</span></span>&#123;</span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>협력 대상에 지속적으로 의존 관계 맺을 필요 없이, 메서드가 실행되는 동안 일시적으로 의존관계가 존재해도 되거나, 메서드 실행 시점에 매번 의존 대상이 변경되는 경우 유용하다.</p>
-</li>
-</ol>
-<h2 id="02-유연한-설계"><a href="#02-유연한-설계" class="headerlink" title="02 유연한 설계"></a>02 유연한 설계</h2><h5 id="의존성과-결합도"><a href="#의존성과-결합도" class="headerlink" title="의존성과 결합도"></a>의존성과 결합도</h5><p>바람직한 의존성이란, </p>
-<ol>
-<li>컨텍스트에 독립적이고 다양한 환경에서 재사용될 수 있는 가능성을 열어놓은 것이다.</li>
-<li>loose coupling, weak coupling</li>
-</ol>
-<h5 id="지식이-결합을-낳는다"><a href="#지식이-결합을-낳는다" class="headerlink" title="지식이 결합을 낳는다."></a>지식이 결합을 낳는다.</h5><p>한 요소가 다른 요소에 대해 많은 정보를 알면 알수록, 두 요소는 강하게 결합된다.</p>
-<ol>
-<li><p>Movie 클래스가 PercentDiscountPolicy 에 직접 의존하면, Movie 는 협력할 객체가 비율 할인 정책에 따라 할인 요금을 계산할 것이라는 걸 알아야 한다.</p>
-</li>
-<li><p>Movie 클래스가 추상 클래스인 DiscoutPolicy 에 의존하면, 구체적인 계산 방법은 알 필요 없이 할잉ㄴ 요금을 계산한다는 사실만 알면 된다.</p>
-</li>
-</ol>
-<p>결합도를 느슨하게 만들기 위해선, 협력 대상에 대해 필요한 정보 외에는 최대한 감추어야한다. 방법은 추상화이다.</p>
-<h5 id="추상화에-의존하라"><a href="#추상화에-의존하라" class="headerlink" title="추상화에 의존하라"></a>추상화에 의존하라</h5><p>의존하는 대상이 추상적일 수록, 결합도는더 낮아진다.</p>
-<p>아래로 갈수록, 클라이언트가 알아야하는 지식의 양이 적어져 결합도가 느슨해진다.</p>
-<ul>
-<li>구체 클래스 의존성</li>
-<li>추상 클래스 의존성</li>
-<li>인터페이스 의존성</li>
-</ul>
-<p>구체 클래스에 비해, 추상 클래스는 메서드의 내부 구현과 자식 클래스의 종류에 대한 지식을 클라이언트에게 숨길 수 있다.</p>
-<p>추상 클래스에 비해, 인터페이스는 상속 계층을 모르더라도 협력이 가능하다.</p>
-<h5 id="명시적인-의존성"><a href="#명시적인-의존성" class="headerlink" title="명시적인 의존성"></a>명시적인 의존성</h5><p>“숨겨진 의존성을 밝은 곳으로 드러내서 널리 알리자”</p>
-<ol>
-<li>숨겨진 의존성</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Movie</span> </span>&#123;</span><br><span class="line">  ...</span><br><span class="line">    <span class="keyword">private</span> DiscountPolicy discountPolicy;</span><br><span class="line">  	</span><br><span class="line">  	<span class="function"><span class="keyword">public</span> <span class="title">Movie</span><span class="params">(String title, ...)</span></span>&#123;</span><br><span class="line">      ...</span><br><span class="line">      <span class="keyword">this</span>.discountPolicy = <span class="keyword">new</span> AmountDiscountPolicy(...);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>위 코드는, 생성자에서 구체 클래스인 AmountDiscountPolicy 의 인스턴스를 직접 생성해서 대입하고 있다. Movie 는 추상 클래스인 DiscountPolicy 뿐만 아니라, AmountDiscountPolicy 에도 의존하고 있다. </p>
-<p>Movie 가 DiscountPolicy 에 의존하고 있다는 것을 감춘다. 이것이 숨겨진 의존성이다.</p>
-<p>의존성 파악을 위해 내부 구현을 직접 살펴봐야한다. 그리고, 의존성이 명시적이지 않으면 클래스를 다른 컨텍스트에서 재사용하기 위해 내부 구현을 직접 변경해야한다.</p>
-<ol start="2">
-<li>명시적인 의존성</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Movie</span> </span>&#123;</span><br><span class="line">  ...</span><br><span class="line">    <span class="keyword">private</span> DiscountPolicy discountPolicy;</span><br><span class="line">  	</span><br><span class="line">  	<span class="function"><span class="keyword">public</span> <span class="title">Movie</span><span class="params">(String title, ... , DiscountPolicy discountPolicy)</span></span>&#123;</span><br><span class="line">      ...</span><br><span class="line">      <span class="keyword">this</span>.discountPolicy = discountPolicy;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>위 코드는, 생성자 안에서 직접 인스턴스를 생성하지 않고 생성자의 인자로 선언한다. </p>
-<p>Movie 가 DiscountPolicy에 의존하고 있다는 것을 Movie 의 퍼블릭 인터페이스로 드러내고 있다. 이것이 명시적인 의존성이다.</p>
-<h5 id="new-는-해롭다"><a href="#new-는-해롭다" class="headerlink" title="new 는 해롭다"></a>new 는 해롭다</h5><p>결합도 측면헤서 해로운 이유는,</p>
-<ol>
-<li>new 연산자 사용 위해 구체 클래스의 이름을 직접 기술해야한다. 그래서, new 를 사용하는 클라이언트는 구체 클래스에 의존을 해서 결합도가 높아진다.</li>
-<li>구체 클래스의 어떤 인자를 사용해서 클래스의 생성자를 호출해야하는지도 알아야한다. 그래서, 클라이언트가 알아야하는 지식의 양이 늘어나 결합도가 높아진다.</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Movie</span> </span>&#123;</span><br><span class="line">  ...</span><br><span class="line">    <span class="keyword">private</span> DiscountPolicy discountPolicy;</span><br><span class="line">  	</span><br><span class="line">  	<span class="function"><span class="keyword">public</span> <span class="title">Movie</span><span class="params">(String title, ... )</span></span>&#123;</span><br><span class="line">      ...</span><br><span class="line">      <span class="keyword">this</span>.discountPolicy = <span class="keyword">new</span> AmountDiscountPolicy(....)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>AmountDiscountPolicy 인스턴스 생성을 위해, 생성자에 전달해야하는 인자를 알아야한다.</p>
-<p>해결방법은, 인스턴스 생성 로직과 사용 로직을 분리한다. 즉, Movie 는 외부로부터 이미 생성된 AmountDiscountPolicy 의 인스턴스를 전달받아야한다.</p>
-<p>외부에서 인스턴스를 전달받는 방법은,</p>
-<ol>
-<li>생성자의 인자</li>
-<li>setter 메서드</li>
-<li>메서드의 인자</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Movie</span> </span>&#123;</span><br><span class="line">  ...</span><br><span class="line">    <span class="keyword">private</span> DiscountPolicy discountPolicy;</span><br><span class="line">  	</span><br><span class="line">  	<span class="function"><span class="keyword">public</span> <span class="title">Movie</span><span class="params">(String title, ... , DiscountPolicy discountPolicy)</span></span>&#123;</span><br><span class="line">      ...</span><br><span class="line">      <span class="keyword">this</span>.discountPolicy = discountPolicy;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>AmountDiscountPolicy 생성 책임은 Movie 의 클라이언트로 옮겨지고, Movie 는 AmountDiscountPolicy 인스턴스를 사용하는 책임만 남는다.</p>
-<h5 id="가끔은-생성해도-무방하다"><a href="#가끔은-생성해도-무방하다" class="headerlink" title="가끔은 생성해도 무방하다"></a>가끔은 생성해도 무방하다</h5><p>주로 협력하는 기본 객체를 설정하고 싶으면 가끔은 생성해도 무방하다.</p>
-<p>설계는 트레이드오프다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Movie</span> </span>&#123;</span><br><span class="line">  ...</span><br><span class="line">    <span class="keyword">private</span> DiscountPolicy discountPolicy;</span><br><span class="line">  </span><br><span class="line">  	<span class="function"><span class="keyword">public</span> <span class="title">Movie</span><span class="params">(String title, ... )</span></span>&#123;</span><br><span class="line">			<span class="keyword">this</span>(title, ..., <span class="keyword">new</span> AmountDiscountPlicy(...));</span><br><span class="line">    &#125;</span><br><span class="line">  	</span><br><span class="line">  	<span class="function"><span class="keyword">public</span> <span class="title">Movie</span><span class="params">(String title, ... , DiscountPolicy discountPolicy)</span></span>&#123;</span><br><span class="line">      ...</span><br><span class="line">      <span class="keyword">this</span>.discountPolicy = discountPolicy;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h5 id="표준-클래스에-대한-의존은-해롭지-않다"><a href="#표준-클래스에-대한-의존은-해롭지-않다" class="headerlink" title="표준 클래스에 대한 의존은 해롭지 않다"></a>표준 클래스에 대한 의존은 해롭지 않다</h5><p>변경될 확률이 거의 없으면, 의존성이 문제가 되지 않는다. </p>
-<p>ex) JDK 에 포함된 표준 클래스</p>
-<h5 id="컨텍스트-확장하기"><a href="#컨텍스트-확장하기" class="headerlink" title="컨텍스트 확장하기"></a>컨텍스트 확장하기</h5><ol>
-<li><p>NoneDiscountPolicy</p>
-<p>할인 정책이 존재 하지 않는다는 사실을 할인 정책의 한 종류로 간주</p>
-</li>
-<li><p>OverlappedDiscountPolicy</p>
-<p>중복 할인 정책을 표현하기 위함</p>
-</li>
-</ol>
-<p>설계를 유연하게 할 수 있었던 이유는,</p>
-<ol>
-<li>DiscountPolicy 라는 추상화에 의존</li>
-<li>생성자를 통해 DiscountPolicy 에 대한 의존성을 명시적으로 드러냄</li>
-<li>new 와 같이 구체 클래스를 직접 다뤄야하는 책임을 Movie 외부로 옮김</li>
-</ol>
-<h5 id="조합-가능한-행동"><a href="#조합-가능한-행동" class="headerlink" title="조합 가능한 행동"></a>조합 가능한 행동</h5><p>훌륭한 객체 지향 설계는, 어떻게 하는지 표현하는 것이 아니라 객체들의 조합을 선언적으로 표현해서 객체들이 무엇을 하는지 표현하는 설계다.</p>
-<hr>
-<p>오브젝트 &lt;조영호&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/12/10/object-chapter8/" data-id="ck78w116j00oi8vqxrag2ya7f" data-title="[오브젝트] 8장_의존성 관리하기" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-object-chapter7" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/12/02/object-chapter7/" class="article-date">
-  <time class="dt-published" datetime="2019-12-01T15:00:00.000Z" itemprop="datePublished">2019-12-02</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/object/">Object</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/12/02/object-chapter7/">[오브젝트] 7장_객체 분해</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>하향식 기능 분해 -&gt; 모듈 -&gt; 추상 데이터 타입 -&gt; 클래스</p>
-<h2 id="01-프로시저-추상화와-데이터-추상화"><a href="#01-프로시저-추상화와-데이터-추상화" class="headerlink" title="01 프로시저 추상화와 데이터 추상화"></a>01 프로시저 추상화와 데이터 추상화</h2><ul>
-<li>데이터 추상화<ul>
-<li>추상 데이터 타입 : 데이터 중심으로 타입을 추상화</li>
-<li>객체지향 : 데이터 중심으로 프로시저를 추상화</li>
-</ul>
-</li>
-</ul>
-<h2 id="02-프로시저-추상화와-기능-분해"><a href="#02-프로시저-추상화와-기능-분해" class="headerlink" title="02 프로시저 추상화와 기능 분해"></a>02 프로시저 추상화와 기능 분해</h2><h5 id="메인-함수로서의-시스템"><a href="#메인-함수로서의-시스템" class="headerlink" title="메인 함수로서의 시스템"></a>메인 함수로서의 시스템</h5><p>전통적인 기능 분해방법은 하향식 접근법이다. 즉, 최상위 기능을 좀 더 작은 단계의 하위 기능으로 분해해 나가는 방법이다.</p>
-<h5 id="급여-관리-시스템"><a href="#급여-관리-시스템" class="headerlink" title="급여 관리 시스템"></a>급여 관리 시스템</h5><p>모든 문장이 정제 과정을 거치면서 하나 이상의 좀 더 단순하고 구체적인 문장들의 조합으로 분해된다.</p>
-<ul>
-<li>직원의 급여를 계산한다<ul>
-<li>사용자에게 소득세율을 입력 받는다<ul>
-<li>“세율을 입력하세요 : “ 라는 문장을 화면에 출력한다</li>
-<li>…</li>
-</ul>
-</li>
-<li>직원의 급여를 계산한다<ul>
-<li>전역 변수에 저장된 직원의 기본접 정보를 얻는다</li>
-<li>…</li>
-</ul>
-</li>
-<li>양식에 맞게 출력한다<ul>
-<li>…</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h5 id="급여-관리-시스템-구현"><a href="#급여-관리-시스템-구현" class="headerlink" title="급여 관리 시스템 구현"></a>급여 관리 시스템 구현</h5><p>하향식 기능 분해로, 시스템을 최상위의 가장 추상적인 메인함수로 정의하고 메인함수를 구현 가능한 수준까지 세부적인 단계로 분해한다. 메인함수를 루트로 하는 ‘트리’ 로 표현할 수 있다.</p>
-<h5 id="하향식-기능-분해의-문제점"><a href="#하향식-기능-분해의-문제점" class="headerlink" title="하향식 기능 분해의 문제점"></a>하향식 기능 분해의 문제점</h5><ul>
-<li>하나의 메인 함수라는 비현실적 아이디어<ul>
-<li>새로운 요구사항이 나오면 지속적으로 새로운 기능을 추가한다. 이것은 시스템이 오직 하나의 메인 함수로 구현된다는 개념과 모순된다.</li>
-</ul>
-</li>
-<li>메인 함수의 빈번한 재설계<ul>
-<li>새로운 기능을 추가할 때마다 매번 메인 함수를 수정해야한다.</li>
-</ul>
-</li>
-<li>비즈니스 로직과 사용자 인터페이스 결합<ul>
-<li>사용자 인터페이스는 시스템에서 자주 변경되는 부분이다. 비즈니스 로직은 변경이 적게 발생한다. 하향식 접근 방법은 인터페이스와 비즈니스 로직을 섞기 때문에 사용자 인터페이스를 변경하는 경우 비즈니스 로직까지 변경에 영향을 받는다.</li>
-</ul>
-</li>
-<li>성급하게 결정된 실행 순서<ul>
-<li>함수들의 실행순서를 정의하는 시간 제약을 강조한다. 메인 함수가 작은 함수들로 분해되기 위해서는 우선 함수들의 순서를 결정해야한다. 문제는, 함수의 제어 구조가 빈번한 변경의 대상이라는 점이다. </li>
-</ul>
-</li>
-<li>분해된 함수들은 재사용이 어렵다<ul>
-<li>모든 함수는 상위 함수를 분해하는 과정에서 필요에 따라 식별되며, 그에 따라 상위 함수가 강요하는 문맥 안에서만 의미를 가지기 때문이다</li>
-</ul>
-</li>
-<li>데이터 변경으로 인한 파급 효과<ul>
-<li>어떤 데이터를 어떤 함수가 사용하고 있는지 추적이 어렵다. 그래서, 데이터 변경으로 인해 어떤 함수가 영향 받을지 예상이 어렵다</li>
-</ul>
-</li>
-</ul>
-<h5 id="언제-하향식-분해가-유용한가"><a href="#언제-하향식-분해가-유용한가" class="headerlink" title="언제 하향식 분해가 유용한가 ?"></a>언제 하향식 분해가 유용한가 ?</h5><p>이미 해결된 알고리즘을 문서화하고 서술하는데 훌륭한 기법이다. </p>
-<h2 id="03-모듈"><a href="#03-모듈" class="headerlink" title="03 모듈"></a>03 모듈</h2><h5 id="정보-은닉과-모듈"><a href="#정보-은닉과-모듈" class="headerlink" title="정보 은닉과 모듈"></a>정보 은닉과 모듈</h5><p>변경을 관리하는 기본 적략은, 함꼐 변경되는 부분을 하나의 구현 단위로 묶고 퍼블릭 인터페이스를 통해서만 접근하도록 만드는 것이다. </p>
-<p>정보 은닉은, 시스템에서 자주 변경되는 부분을 덜 변경되는 안정적인 인터페이스 뒤로 감춰야한다는 것이 핵심이다.</p>
-<p>모듈은 다음 두가지를 감춰야한다.</p>
-<ol>
-<li><p>복잡성</p>
-<p>외부에 모듈을 추상화 할 수 있는 간단한 인터페이스를 제공해서 모듈의 복잡도를 낮춘다.</p>
-</li>
-<li><p>변경 가능성</p>
-<p>변경 발생히, 하나의 모듈만 수정하면 되도록 변경 가능한 설계 과정을 모듈 내부로 감추고 외부에는 쉽게 견경되지 않을 인터페이스를 제공한다.</p>
-</li>
-</ol>
-<h5 id="모듈의-장점과-한계"><a href="#모듈의-장점과-한계" class="headerlink" title="모듈의 장점과 한계"></a>모듈의 장점과 한계</h5><p>모듈은 외부에 감춰야 하는 비밀과 관련성 높은 데이터와 함수의 집합이다. 따라서, 모듈 내부는 높은 응집도를 유지한다.</p>
-<p>모듈과 모듈 사이에는 퍼블릭 인터페이스를 통해서만 통신한다. 따라서, 낮은 결합도를 유지한다.</p>
-<p>모듈의 장점은,</p>
-<ol>
-<li>모듈 내부의 변수가 변경되더라도 모듈 내부에만 영향을 받는다</li>
-<li>비즈니스 로직과 사용자 인터페이스에 대한 관심사를 분리한다</li>
-<li>전역변수와 전역 함수를 제거해서, 네임스페이스 오염을 방지하고 이름 충돌의 위험을 완화한다.</li>
-</ol>
-<p>모듈의 단점은,</p>
-<ol>
-<li>인스턴스 개념을 제공하지 않는다. 높은 수준의 추상화를 위해서는 직원 전체가 아니라 개별 직원을 독립적인 단위로 다룰 수 있어야 한다. 이것이 추상 데이터 타입이다.</li>
-</ol>
-<h2 id="04-데이터-추상화와-추상-데이터-타입"><a href="#04-데이터-추상화와-추상-데이터-타입" class="headerlink" title="04 데이터 추상화와 추상 데이터 타입"></a>04 데이터 추상화와 추상 데이터 타입</h2><h5 id="추상-데이터-타입"><a href="#추상-데이터-타입" class="headerlink" title="추상 데이터 타입"></a>추상 데이터 타입</h5><p>개별 직원의 인스턴스를 생성할 수 있는 Employee 추상 데이터 타입은, 전체 직원을 캡슐화하는 Employees 모듈 보다 더 개념적으로 사람들의 사고방식의 가깝다.</p>
-<p>추상 데이터 타입을 구현하기 위해, 프로그래밍 언어는 다음 지원이 필요하다.</p>
-<ol>
-<li>타입 정의 선언 가능해야함</li>
-<li>타입의 인스턴스를 다루기 위해, 오퍼레이션의 집합을 정의할 수 있어야함</li>
-<li>제공된 오퍼레이션을 통해서만 조작할 수 있도록 데이터를 외부로부터 보호 할 수 있어야함</li>
-<li>타입에 대해 여러개의 인스턴스를 생성할 수 있어야함</li>
-</ol>
-<h2 id="05-클래스"><a href="#05-클래스" class="headerlink" title="05 클래스"></a>05 클래스</h2><h5 id="클래스는-추상-데이터-타입인가"><a href="#클래스는-추상-데이터-타입인가" class="headerlink" title="클래스는 추상 데이터 타입인가 ?"></a>클래스는 추상 데이터 타입인가 ?</h5><p>동일하지 않다. 클래스는 상속과 다형성을 지원하는데, 추상데이터타입은 그렇지 않다.</p>
-<p>추상 데이터 타입으로 구현된 Employee 타입을 보면, 하나의 타입처럼 보이는 Employee 내부에는 정규 직원과 아르바이트 직원이라는 두개의 타입이 공존한다. 하나의 대표적인 타입이 다수의 세부적인 타입을 감추기 때문에 이를, 타입 추상화 라고한다.</p>
-<p>추상 데이터타입이 오퍼레이션을 기준으로 타입을 묶는 방법이라면, 객체지향은 타입을 기준으로 오퍼레이션을 묶는다. 객체지향은 정규 직원과 아르바이트 직원 각각에 대한 클래스를 정의하고 각 클래스들이 calculatePay 와 monthlyBasePay 오퍼레이션을 적절하게 구현한다.</p>
-<p>정규 직원과 아르바이트 직원 두 가지 클래스로 분리하면, 공통 로직은 어디에 둘것인가 ? 공통 로직을 포함할 부모 클래스를 정의하고 두 직원 유형의 클래스가 부모 클래스를 상속 받으면 된다</p>
-<h5 id="추상-데이터-타입에서-클래스로-변경하기"><a href="#추상-데이터-타입에서-클래스로-변경하기" class="headerlink" title="추상 데이터 타입에서 클래스로 변경하기"></a>추상 데이터 타입에서 클래스로 변경하기</h5><p>객체지향에서는, 각 직원의 타입을 독립적인 클래스로 구현한다. </p>
-<h5 id="변경을-기준으로-선택하라"><a href="#변경을-기준으로-선택하라" class="headerlink" title="변경을 기준으로 선택하라"></a>변경을 기준으로 선택하라</h5><p>인스턴스 변수에 저장된 값을 기준으로 메서드 내에서 타입을 명시적으로 구분하는 방식은 객체지향을 위반한 것이다. 클래스가 추상 데이터 타입의 개념을 따른 것이다.</p>
-<p>언제 추상 데이터 타입이, 객체 지향이 낫나 ?</p>
-<ol>
-<li><p>타입 추가라는 변경의 압력이 강하면, 객체 지향이 낫다. </p>
-<p>추상 데이터 타입의 경우, 새로운 타입을 추가하면 타입 체크하는 클라이언트 코드를 모두 찾아 수정해야한다.</p>
-</li>
-<li><p>오퍼레이션 추가라는 변경의 압력이 강하면, 추상 데이터 타입이 낫다. </p>
-<p>추상 데이터 타입은 전체 타입에 대한 구현 코드가 하나의 구현체 내에 포함돼서 새로운 오퍼레이션 추가가 간단한다.</p>
-</li>
-</ol>
-<h5 id="협력이-중요하다"><a href="#협력이-중요하다" class="headerlink" title="협력이 중요하다"></a>협력이 중요하다</h5><p>객체지향의 핵심 : 역함, 책임, 협력</p>
-<p>“객체가 참여할 협력을 결정하고, 협력에 필요한 책임을 수행하기 위해, 어떤 객체가 필요한지 고민하라”</p>
-<hr>
-<p>오브젝트 &lt;조영호&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/12/02/object-chapter7/" data-id="ck78w114z00mc8vqx3lksf7qm" data-title="[오브젝트] 7장_객체 분해" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-object-chapter6" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/11/24/object-chapter6/" class="article-date">
-  <time class="dt-published" datetime="2019-11-23T15:00:00.000Z" itemprop="datePublished">2019-11-24</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/object/">Object</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/11/24/object-chapter6/">[오브젝트] 6장_메세지와 인터페이스</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>이번 장에서는, 유연하고 재사용 가능한 퍼블릭 인터페이스를 만드는데 도움이 되는 설계 원칙과 기법을 익힌다.</p>
-<h2 id="01-협력과-메세지"><a href="#01-협력과-메세지" class="headerlink" title="01 협력과 메세지"></a>01 협력과 메세지</h2><h5 id="클라이언트-서버-모델"><a href="#클라이언트-서버-모델" class="headerlink" title="클라이언트-서버 모델"></a>클라이언트-서버 모델</h5><ol>
-<li>클라이언트 : 메세지를 전송하는 객체</li>
-<li>서버 : 수신하는 객체</li>
-</ol>
-<p>객체는 자신의 희망을 메세지 형태로 전송하고 메세지를 수신한 객체는 요청을 처리하고 응답한다. </p>
-<p>객체는 독립적으로 수행할 수 있는 더 큰 책임을 수행하기 위해, 다른 객체와 협력해야 한다.</p>
-<h5 id="메세지와-메세지-전송"><a href="#메세지와-메세지-전송" class="headerlink" title="메세지와 메세지 전송"></a>메세지와 메세지 전송</h5><p>메세지는 객체들이 협력하기 위해 사용하는 유일한 의사소통 수단이다. 한 객체가 다른 객체에게 도움을 요청하는 것을 메세지 전송이라고 한다.</p>
-<h5 id="메세지와-메서드"><a href="#메세지와-메서드" class="headerlink" title="메세지와 메서드"></a>메세지와 메서드</h5><p>메세지를 수신했을 때 실제로 수행되는 함수 또는 프로시저를 메서드라고 한다. </p>
-<p>메세지 전송자와 메세지 수신자는 서로에 대한 상세한 정보를 알지 못하고 메세지라는 얅고 가는 끈을 통해 연결된다.</p>
-<h5 id="퍼블릭-인터페이스와-오퍼레이션"><a href="#퍼블릭-인터페이스와-오퍼레이션" class="headerlink" title="퍼블릭 인터페이스와 오퍼레이션"></a>퍼블릭 인터페이스와 오퍼레이션</h5><p><img src="/image/object_chapter6.png" alt></p>
-<p>객체가 의사소통을 위해 외부에 공개하는 메세지의 집합을 퍼블릭 인터페이스라고 한다. </p>
-<p>오퍼레이션은 내부의 구현 코드는 제외하고 단순히 메세지와 관련된 시그니처이다.</p>
-<p>메세지를 수신했을 때 실제로 실행되는 코드는 메서드이다. </p>
-<p>객체가 다른 객체에게 메세지를 전송하면 런타임 시스템은 메세지 전송을 오퍼레이션 호출로 해석하고 메세지를 수신한 객체의 실제 타입을 기반으로 적절한 메서드를 찾아 실행한다. </p>
-<h5 id="시그니처"><a href="#시그니처" class="headerlink" title="시그니처"></a>시그니처</h5><p>오퍼레이션 관점에서 다형성이란, 동일한 오퍼레이션 호출에 대해 서로 다른 메서드들이 실행되는 것이다.</p>
-<h2 id="02-인터페이스와-설계-품질"><a href="#02-인터페이스와-설계-품질" class="headerlink" title="02 인터페이스와 설계 품질"></a>02 인터페이스와 설계 품질</h2><p>퍼블릭 인터페이스의 품질에 영향을 미치는 원칙과 기법들</p>
-<ol>
-<li>디미터 법칙</li>
-<li>묻지 말고 시켜라</li>
-<li>의도를 드러내는 인터페이스</li>
-<li>명령-쿼리 분리</li>
-</ol>
-<h5 id="디미터-법칙"><a href="#디미터-법칙" class="headerlink" title="디미터 법칙"></a>디미터 법칙</h5><p>디미터 법칙은 객체의 내부 구조에 강하게 결합되지 않도록 협력 경로를 제한하라는 것이다. dot 를 이용해 메세지 전송을 표현하는 언어에서는 “오직 하나의 도트만 사용하라” 라는 말로 요약된다.</p>
-<p>디미터 법칙을 따르면 shy code 를 작성할 수 있다. shy code 란 불필요한 다른 객체에게 어떤 것도 보여주지 않으며, 다른 객체의 구현에 의존하지 않는 코드를 말한다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 디미터 법칙 위반</span></span><br><span class="line">screening.getMovie().getDiscountCondition();</span><br></pre></td></tr></table></figure>
-
-<p>위 코드는, 메세지 전송자가 수신자의 내부 구조에 대해 물어보고 반환받은 요소에 대해 연쇄적으로 메세지를 전송한다. “기차 충돌” 이라고 한다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 디미터 법칙 준수</span></span><br><span class="line">screening.calculateFee(audienceCount);</span><br></pre></td></tr></table></figure>
-
-<p>위 코드는, 객체의 내부 구조에 대해 묻지 않고 수신자에게 무언가를 시키는 메세지를 전송한다.</p>
-<h5 id="묻지-말고-시켜라"><a href="#묻지-말고-시켜라" class="headerlink" title="묻지 말고 시켜라"></a>묻지 말고 시켜라</h5><p>이 원칙을 지키다보면, 자연스럽게 정보 전문가에게 책임을 할당하고 높은 응집도를 가진 클래스를 얻게된다.</p>
-<p>호출하는 객체는 이웃 객체가 수행하는 역할을 사용해 무언을 원하는지 서술하고 호출되는 객체가 어떻게 해야하는지를 스스로 결정하게 해야한다. 일반적으로 Tell, Don’t Ask 라고 한다. 공싱적으로는 디미터 법칙이라고 한다.</p>
-<h5 id="의도를-드러내는-인터페이스"><a href="#의도를-드러내는-인터페이스" class="headerlink" title="의도를 드러내는 인터페이스"></a>의도를 드러내는 인터페이스</h5><p>메서드 명명 방법 두가지</p>
-<ol>
-<li><p>메서드가 작업을 어떻게 수행하는지 나타낸다.</p>
-<p>Bad. 메서드의 내부 구현을 설명하게 된다. </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PeriodCondition</span></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isSatisfedByPeriod</span><span class="params">(Screening screening)</span> </span>&#123;...&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SequenceCondition</span></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isSatisfedBySequence</span><span class="params">(Screening screening)</span> </span>&#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>클라이언트는 메서드의 이름이 다르기 때문에, 내구 구현일 정확히 이해하지 못하면 두 메서드가 동일한 작업을 한다는 것을 모른다.</p>
-</li>
-<li><p>무엇을 하는지 드러낸다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PeriodCondition</span></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isSatisfied</span><span class="params">(Screening screening)</span> </span>&#123;...&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SequenceCondition</span></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isSatisfied</span><span class="params">(Screening screening)</span> </span>&#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>두 메서드가 동일한 목적을 가진다는 것을 메서드 이름 통해서 명확하게 표현된다.</p>
-</li>
-</ol>
-<p>클라이언트가 두 메서드를 가진 객체를 동일한 타입드로 간주할 수 있도록 타입 계층으로 묶어야한다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">DiscountCondition</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isSatisfied</span><span class="params">(Screening screening)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>이처럼 어떻게 하느냐가 아니라 무엇을 하느냐에 따라 메서드 이름 짓는 패턴을 “의도를 드러내는 선택자” 라고 한다. 에릭 에반스는 도메인 주도 설계에서 “의도를 드러내는 선택자” 를 인터페이스 레벨로 확장한 “의도를 드러내는 인터페이스” 를 제시했다. </p>
-<h5 id="함께-모으기"><a href="#함께-모으기" class="headerlink" title="함께 모으기"></a>함께 모으기</h5><ol>
-<li><p>디미터 법칙을 위반하는 티켓 판매 도메인</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">audience.getBag().minusAmount(ticket.getFee());</span><br></pre></td></tr></table></figure>
-
-<p>Audience 의 퍼블릭 인터페이스 뿐만 아니라, 내부 구조에 대해서도 결합된다.</p>
-</li>
-<li><p>묻지 말고 시켜라</p>
-</li>
-<li><p>인터페이스에 의도를 드러내자</p>
-<p>TicketSeller 의 setTicket(), Audience 의 setTicekt(), Bag 의 setTicket()  명확하게 클라이언트의 의도를 드러내는 메서드 명인가 ?</p>
-<p>Theater 가 TicketSeller 에게 setTicket 메서드를 전송해서 얻고 싶었던 결과는 ? Audience 에게 티켓을 판매하는 것이다. 따라서 setTicket 보다 sellTo 가 의도를 명확하게 드러내는 메세지이다.</p>
-<p>TicketSeller 가 Audience 에게 setTicekt 메세지를 전송하는 이유는 ? Audience 가 티켓을 사도록 만드는 것이 목적이다. 따라서 클라이언트가 원하는 것은 buy 라는 메세지이다.</p>
-<p>Audience 가 Bag 에게 setTicekt 메세지를 전송하는 이유는 ? 티켓을 보관하도록 하기 위함이다. 따라서, hold 메세지가 명확하다.</p>
-</li>
-</ol>
-<h2 id="03-원칙의-함정"><a href="#03-원칙의-함정" class="headerlink" title="03 원칙의 함정"></a>03 원칙의 함정</h2><h5 id="디미터-법칙은-하나의-도트를-강제하는-규칙이-아니다"><a href="#디미터-법칙은-하나의-도트를-강제하는-규칙이-아니다" class="headerlink" title="디미터 법칙은 하나의 도트를 강제하는 규칙이 아니다"></a>디미터 법칙은 하나의 도트를 강제하는 규칙이 아니다</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">IntStream.of(<span class="number">1</span>,<span class="number">15</span>,<span class="number">20</span>,<span class="number">3</span>,<span class="number">9</span>).filter(x-&gt; x&gt;<span class="number">10</span>).distinct().count();</span><br></pre></td></tr></table></figure>
-
-<p>위 코드는, 디미터 법칙을 위반하지 않는다.</p>
-<p>of, filter, distinct 메서드는 모두 IntStream 이라는 동일한 클래스 인스턴스를 반환한다. 즉, 이들은 IntStream 인스턴스를 또 다른 IntStream 의 인스턴스로 변환한다.</p>
-<p>단지 IntStream 을 다른 IntStream 변환할 뿐, 객체를 둘러싸고 있는 캡슐은 그대로 유지된다.</p>
-<p>기차 충돌처럼 보이는 코드라도 객체의 내부 구현에 대해 어떤 정보도 외부로 노출하고 있지 않으면 그것은 디미터 법칙을 준수한 것이다.</p>
-<p>객체는 내부 구조를 숨겨야 하므로 디미터 법칙을 따라야하고, 자료 구조라면 내부를 노출해야하므로 적용할 필요가 없다.</p>
-<h5 id="결합도와-응집도의-충돌"><a href="#결합도와-응집도의-충돌" class="headerlink" title="결합도와 응집도의 충돌"></a>결합도와 응집도의 충돌</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PeriodCondition</span> <span class="keyword">implements</span> <span class="title">DiscountConditiono</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isSatisfied</span><span class="params">(Screening screening)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> screening.getStartTime().getDayOfWeek().equals(dayOfWeek) &amp;&amp;</span><br><span class="line">      .... ;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>이 코드는 얼핏 보기에, Screening 의 내부 상태를 가져와 사용하기 때문에 캡슐화를 위반한 것 처럼 보인다.</p>
-<p>그래서, 할인 여부 판단 로직을 Screening 의 isDiscountable 메서드로 옮기고 PeriodCondition 이 이 메서드를 호출하도록 변경하면 묻지 말고 시켜라 스타일을 준수하는 인터페이스를 얻는다고 생각할 것이다.</p>
-<p>하지만, 이렇게 하면 Screening 이 기간에 따른 할인 조건을 판단하는 책임을 떠안게 된다. Screening 의 본직적인 책임은 영화를 예매하는 것이다. 반면, PeriodCondition 은 할인 조건을 판단하는 것이 본질적인 책임이다.</p>
-<p>따라서, Screening 의 캡슐화를 향상시키는 것보다, Screening 의 응집도를 높이고 Screening 과 PeriodCondition 사이의 결합도를 낮추는 것이 전체적인 관점에 더 좋은 방법이다.</p>
-<h2 id="04-명령-쿼리-분리-원칙"><a href="#04-명령-쿼리-분리-원칙" class="headerlink" title="04 명령-쿼리 분리 원칙"></a>04 명령-쿼리 분리 원칙</h2><ol>
-<li><p>명령 : 객체의 상태를 수정하는 오퍼레이션 == 프로시저</p>
-</li>
-<li><p>쿼리 : 객체와 관련된 정보를 반환하는 오퍼레이션  == 함수</p>
-</li>
-</ol>
-<h5 id="반복-일정의-명령과-쿼리-분리하기"><a href="#반복-일정의-명령과-쿼리-분리하기" class="headerlink" title="반복 일정의 명령과 쿼리 분리하기"></a>반복 일정의 명령과 쿼리 분리하기</h5><p>명령과 쿼리를 섞으면 실행 결과를 예측하기 힘들다. 명령과 쿼리를 명확하게 분리해야한다.</p>
-<h5 id="명령-쿼리-분리와-참조-투명성"><a href="#명령-쿼리-분리와-참조-투명성" class="headerlink" title="명령-쿼리 분리와 참조 투명성"></a>명령-쿼리 분리와 참조 투명성</h5><p>참조 투명성이란, 표현식 e를 e 의 값으로 e 의 위치 모두에 교체하더라도 결과가 달라지지 않는 특성이다.</p>
-<p>f(1) = 3 이라고 하면,</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">f(1) + f(1) = 6</span><br><span class="line">f(1) * 2 = 6</span><br><span class="line">f(1) - 1 = 2</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">3 + 3 = 6</span><br><span class="line">3 * 2 = 6</span><br><span class="line">3 - 1 = 2</span><br></pre></td></tr></table></figure>
-
-<p>f(1) 이 항상 3인 이유는, f(1) 의 값이 변하지 않기 때문이다. 어떤 값이 변하지 않는 성질을 “불변성” 이라고 한다. 어떤 값이 불변하다는 것은 부수효과가 발생하지 않는 다는 것이다.</p>
-<p>객체지향 패러다임이 객체의 상태 변경이라는 부수 효과를 기반으로 하기 때문에, 참조 투명성은 예외이다. </p>
-<p>하지만, 명령 쿼리 분리 원칙을 사용하면 균열을 줄일 수 있다. 즉, 부수 효과를 가지는 “명령” 으로부터 부수효과를 가지지 않는 “쿼리” 를 명백하게 분리함으로써 제한적으로 참조 투명성의 혜택을 얻을 수 있다.</p>
-<h5 id="책임에-초점을-맞춰라"><a href="#책임에-초점을-맞춰라" class="headerlink" title="책임에 초점을 맞춰라"></a>책임에 초점을 맞춰라</h5><ol>
-<li><p>디미터 법칙을을 준수하고, 묻지 말고 시켜라 스타일을 따르며, 의도를 드러내는 인터페이스를 설계하는 방법은</p>
-<p>메세지를 선택하고 그 후에 메세지를 처리할 객체를 선택하는 것이다. </p>
-</li>
-<li><p>명령과 쿼리를 분리하고, 계약에 의한 설계 개념을 통해 객체의 협력 방식을 명시적으로 드러내는 방법은</p>
-<p>객체 구현 이전에 객체 사이의 협력에 초점을 맞추는 것이다.</p>
-</li>
-</ol>
-<p>이 모든 방식의 중심에는 객체가 수행할 책임이 있다.</p>
-<hr>
-<p>오브젝트 &lt;조영호&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/11/24/object-chapter6/" data-id="ck78w116j00ok8vqxcisutouk" data-title="[오브젝트] 6장_메세지와 인터페이스" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/12/15/object-chapter9/" data-id="ck7agiz3100p2iv6w54ybllvj" data-title="[오브젝트] 9장_유연한 설계" class="article-share-link">Share</a>
       
       
       
@@ -1358,7 +1417,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
     </div>
   </div>
 
@@ -1371,23 +1430,23 @@
       <ul>
         
           <li>
+            <a href="/2020/03/02/tdd-chapter-05/">[테스트 주도 개발] 5장_솔직히 말하자며</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/02/tdd-chapter-04/">[테스트 주도 개발] 4장_프라이버시</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/02/tdd-chapter-06/">[테스트 주도 개발] 6장_돌아온 모두를 위한 평등</a>
+          </li>
+        
+          <li>
             <a href="/2020/02/25/bigdata-chapter-01/">[빅데이터] 1장_빅데이터를 위한 새로운 패러다임</a>
           </li>
         
           <li>
             <a href="/2020/02/25/bigdata-chapter-02/">[빅데이터] 2장_빅데이터를 위한 데이터 모델</a>
-          </li>
-        
-          <li>
-            <a href="/2020/02/24/tdd-chapter-03/">[테스트 주도 개발] 3장_모두를 위한 평등</a>
-          </li>
-        
-          <li>
-            <a href="/2020/02/24/tdd-chapter-02/">[테스트 주도 개발] 2장_타락한 객체</a>
-          </li>
-        
-          <li>
-            <a href="/2020/02/24/tdd-chapter-01/">[테스트 주도 개발] 1장_다중 통화를 지원하는 Money 객체</a>
           </li>
         
       </ul>

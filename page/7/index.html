@@ -71,6 +71,233 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-joi" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/09/joi/" class="article-date">
+  <time class="dt-published" datetime="2018-12-08T15:00:00.000Z" itemprop="datePublished">2018-12-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/node-js/">Node.js</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/09/joi/">Joi</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="Joi-가-뭡니까"><a href="#Joi-가-뭡니까" class="headerlink" title="Joi 가 뭡니까 ?"></a>Joi 가 뭡니까 ?</h5><p>Hapi.js에서 사용하는 parameter 검증 모듈입니다.</p>
+<h5 id="Joi-를-사용하지-않으면"><a href="#Joi-를-사용하지-않으면" class="headerlink" title="Joi 를 사용하지 않으면 ?"></a>Joi 를 사용하지 않으면 ?</h5><p>routing 의 handler 에서 parameter 를 검증하는 로직과 서버 자원을 조회하는 로직이 섞여있습니다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> users = [<span class="string">'Chris'</span>, <span class="string">'Mod'</span>, <span class="string">'Daniel'</span>, <span class="string">'JT'</span>, <span class="string">'Justin'</span>];</span><br><span class="line"></span><br><span class="line">server.route(&#123;</span><br><span class="line">    method: <span class="string">'GET'</span>,</span><br><span class="line">    path:<span class="string">'/users/&#123;id&#125;'</span>,</span><br><span class="line">    handler: <span class="function"><span class="keyword">function</span> (<span class="params">req, reply</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 파라메터 검증 </span></span><br><span class="line">      <span class="keyword">if</span> (req.params.id &amp;lt; users.length) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 검증을 통과하면 로직 수행</span></span><br><span class="line">        reply(&#123;<span class="attr">user</span>: users[req.params.id]&#125;);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 검증 미통과시 404 에러코드 반환 </span></span><br><span class="line">        reply(<span class="string">'No user'</span>).code(<span class="number">404</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h5 id="Joi-를-사용하면"><a href="#Joi-를-사용하면" class="headerlink" title="Joi 를 사용하면 ?"></a>Joi 를 사용하면 ?</h5><p>config 속성을 통해 parameter 를 검증할 수 있습니다. config.validate 속성에 자바스크립트 객체를 설정했습니다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Joi = <span class="built_in">require</span>(<span class="string">'joi'</span>);</span><br><span class="line"></span><br><span class="line">server.route(&#123;</span><br><span class="line">  method: <span class="string">'GET'</span>,</span><br><span class="line">  path:<span class="string">'/users/&#123;id&#125;'</span>,</span><br><span class="line">  handler: <span class="function"><span class="keyword">function</span> (<span class="params">req, reply</span>) </span>&#123;</span><br><span class="line">    reply(&#123;<span class="attr">user</span>: users[req.params.id]&#125;);</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// config.validate 속성에 검증 로직을 추가한다. 일종의 스키마 형태 </span></span><br><span class="line">  config: &#123;</span><br><span class="line">    validate: &#123;</span><br><span class="line">      params: &#123;</span><br><span class="line">        id: Joi.number().integer().min(<span class="number">0</span>).max(users.length)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/09/joi/" data-id="ck7agiz0v00leiv6w17r24ajm" data-title="Joi" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-React.js" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/09/React.js/" class="article-date">
+  <time class="dt-published" datetime="2018-12-08T15:00:00.000Z" itemprop="datePublished">2018-12-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/etc/">etc</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/09/React.js/">React.js</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="React-js가-무엇인가요"><a href="#React-js가-무엇인가요" class="headerlink" title="React.js가 무엇인가요?"></a>React.js가 무엇인가요?</h5><p>컴포넌트라는 개념에 집중이 되어있는 라이브러리입니다.</p>
+<h5 id="어떤-특징이-있나요"><a href="#어떤-특징이-있나요" class="headerlink" title="어떤 특징이 있나요?"></a>어떤 특징이 있나요?</h5><ol>
+<li><p>UI 컴포넌트만 지원합니다. </p>
+</li>
+<li><p>Virtual DOM을 가지고 있습니다.</p>
+<p>다시 그릴 때는 구조체의 전후 상태를 비교하여 변경이 필요한 최소한의 요소만 실제 DOM에 반영합니다. </p>
+<p>따라서 무작위로 다시 그려도 변경에 필요한 최소한의 DOM만 갱신되기 때문에 빠르게 처리할 수 있습니다.</p>
+</li>
+<li><p>단방향 데이터 흐름을 지향합니다.</p>
+<p>데이터를 관리하는 모델 컴포넌트가 있고, 데이터를 UI 컴포넌트에 전달하는 단순한 데이터 흐름입니다.</p>
+</li>
+<li><p>JSX 문법을 가지고 있습니다.</p>
+<p>UI를 구성할 때 사용하는 구문입니다. Javascript 의 extension입니다.</p>
+</li>
+</ol>
+<h5 id="컴포넌트가-뭔가요"><a href="#컴포넌트가-뭔가요" class="headerlink" title="컴포넌트가 뭔가요?"></a>컴포넌트가 뭔가요?</h5><p>props를 input으로 하고 UI가 어떻게 보여야 하는지 정의하는 React Element를 output으로 하는 함수입니다</p>
+<h5 id="DOM이-무엇인가요"><a href="#DOM이-무엇인가요" class="headerlink" title="DOM이 무엇인가요?"></a>DOM이 무엇인가요?</h5><p>DOM Document Object Model로,  웹 페이지의 객체 지향 표현입니다. 웹 브라우저를 통해 해석되어 화면에 나타납니다.</p>
+<h5 id="Virtual-DOM-Document-Object-Model-이-무엇인가요"><a href="#Virtual-DOM-Document-Object-Model-이-무엇인가요" class="headerlink" title="Virtual DOM(Document Object Model) 이 무엇인가요?"></a>Virtual DOM(Document Object Model) 이 무엇인가요?</h5><p>가상의 DOM 입니다. 변화가 일어나면, 실제로 브라우저의 DOM 에 새로운걸 넣는것이 아니라, 자바스크립트로 이뤄진 가상 DOM 에 한번 렌더링을 하고, 기존의 DOM 과 비교를 한 다음에 정말 변화가 필요한 곳에만 업데이트를 합니다. 이로써, 브라우저 내에서 발생하는 연산의 양을 줄이면서 성능이 개선됩니다.</p>
+<h5 id="컴포넌트는-어떻게-만드나요"><a href="#컴포넌트는-어떻게-만드나요" class="headerlink" title="컴포넌트는 어떻게 만드나요?"></a>컴포넌트는 어떻게 만드나요?</h5><p>클래스를 통해서 만드는 방법과, 함수로 만드는 방법이 있습니다. 클래스형태로 만들어진 컴포넌트에는 꼭, render 함수가 있어야 합니다. render함수 내부에서는 JSX 를 return 해주어야 합니다. </p>
+<h5 id="props와-state가-뭔가요"><a href="#props와-state가-뭔가요" class="headerlink" title="props와 state가 뭔가요?"></a>props와 state가 뭔가요?</h5><p>리액트 컴포넌트에서 다루는 데이터는 props 와 state 입니다. props 는 부모 컴포넌트가 자식 컴포넌트에게 주는 값입니다. 자식 컴포넌트에서는 props 를 받아오기만하고, 받아온 props 를 직접 수정 할 수 는 없습니다. state 는 컴포넌트 내부에서 선언하며 내부에서 값을 변경 할 수 있습니다.</p>
+<h5 id="브라우저는-어떻게-동작하나요"><a href="#브라우저는-어떻게-동작하나요" class="headerlink" title="브라우저는 어떻게 동작하나요?"></a>브라우저는 어떻게 동작하나요?</h5><p><img src="/image/browserr.png" alt></p>
+<ol>
+<li><p>DOM tree를 생성합니다.</p>
+<p>브라우저가 HTML 을 전달받으면, 브라우저의 렌더 엔진이 이를 파싱하고 DOM 노드(Node) 로 이뤄진 트리를 만듦니다. 각 노드는 각 HTML 엘리먼트들과 연관되어있습니다.</p>
+</li>
+<li><p>Render Tree를 생성합니다.</p>
+<p>그리고, 외부 CSS 파일과 각 엘리먼트의 inline 스타일을 파싱합니다. 스타일 정보를 사용하여 DOM 트리에 따라 새로운 트리, 렌더트리를 만듦니다.</p>
+</li>
+<li><p>Layout</p>
+<p>렌더 트리가 다 만들어지고 나면, 레이아웃 과정을 거칩니다. 각 노드들은 스크린의 좌표가 주어지고, 정확히 어디에 나타나야 할 지 위치가 주어집니다.</p>
+</li>
+<li><p>painting</p>
+<p>렌더링 된 요소들에 색을 입히는 과정입니다. 트리의 각 노드들을 거쳐가면서 paint() 메소드를 호출합니다. 그러고나면, 스크린에 원하는 정보가 나타납니다.</p>
+</li>
+</ol>
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://velopert.com/3612" target="_blank" rel="noopener">https://velopert.com/3612</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/09/React.js/" data-id="ck7agiz0u00lciv6wctvmb36s" data-title="React.js" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-RabbitMQ" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/09/RabbitMQ/" class="article-date">
+  <time class="dt-published" datetime="2018-12-08T15:00:00.000Z" itemprop="datePublished">2018-12-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/etc/">etc</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/09/RabbitMQ/">RabbitMQ</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="RabbitMQ가-뭔가요"><a href="#RabbitMQ가-뭔가요" class="headerlink" title="RabbitMQ가 뭔가요?"></a>RabbitMQ가 뭔가요?</h5><p>producers 로부터 메시지를 받아 consumers 에게 전달해주는 서비스입니다.</p>
+<h5 id="producing이-뭔가요"><a href="#producing이-뭔가요" class="headerlink" title="producing이 뭔가요?"></a>producing이 뭔가요?</h5><p>메시지를 전송한다는 의미입니다. 메시지들을 전송하는 프로그램을 producer 라 부릅니다.</p>
+<h5 id="consuming이-뭔가요"><a href="#consuming이-뭔가요" class="headerlink" title="consuming이 뭔가요?"></a>consuming이 뭔가요?</h5><p>Consuming은 메시지를 수신한다는 의미입니다. 메시지 수신을 기다리는 프로그램을 consumer라고 합니다. </p>
+<h5 id="메세지-큐가-왜-필요한가요"><a href="#메세지-큐가-왜-필요한가요" class="headerlink" title="메세지 큐가 왜 필요한가요?"></a>메세지 큐가 왜 필요한가요?</h5><ol>
+<li>Queue에 넣기 때문에 나중에 처리 할 수 있습니다. (비동기)</li>
+<li>애플리케이션과 분리 할 수 있습니다. </li>
+<li>다수의 프로세스들이 큐에 메시지를 보낼 수 있습니다.</li>
+</ol>
+<h5 id="다른-메세징-시스템은-뭐가-있나요"><a href="#다른-메세징-시스템은-뭐가-있나요" class="headerlink" title="다른 메세징 시스템은 뭐가 있나요?"></a>다른 메세징 시스템은 뭐가 있나요?</h5><p>activeMQ, kafka 등이 있습니다.</p>
+<h5 id="rabbitMQ와-kafka의-차이는-뭔가요"><a href="#rabbitMQ와-kafka의-차이는-뭔가요" class="headerlink" title="rabbitMQ와 kafka의 차이는 뭔가요?"></a>rabbitMQ와 kafka의 차이는 뭔가요?</h5><p>kafaka는 scale out과 high availability 를 위해, 브로커들이 클러스터로 구성되어 동작하도록 설계되었습니다.</p>
+<p>rabbitMQ는 AMQP 프로토콜을 사용하고, kafaka는 단순한 메시지 헤더를 지닌 TCP기반의 프로토콜을 사용합니다.</p>
+<p>rabbitMQ는 Producer가 broker에게 다수의 메시지를 전송할 때 각 메시지를 개별적으로 전송하고, kafka는 다수의 메시지를 batch형태로 broker에게 한 번에 전달할 수 있어 TCP/IP 라운드트립 횟수를 줄일 수 있다.</p>
+<p>rabbitMQ는 메시지를 기본적으로 메모리에 저장하고, kafka는 메시지를 파일 시스템에 저장합니다.</p>
+<p>rabbitMQ는 Consumer에 의해 처리된 메시지(acknowledged message)를 곧바로 삭제하고, kafka는 처리된 메시지를 삭제하지 않고 파일 시스템에 그대로 두었다가 설정된 수명이 지나면 삭제합니다. </p>
+<p>rabbitMQ는 broker가 consumer에게 메시지를 push해 주는 방식인데 반해, Kafka는 consumer가 broker로부터 직접 메시지를 가지고 가는 pull 방식으로 동작합니다.</p>
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="http://epicdevs.com/17" target="_blank" rel="noopener">http://epicdevs.com/17</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/09/RabbitMQ/" data-id="ck7agiz0u00laiv6w1lhebciu" data-title="RabbitMQ" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-REPL" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/09/REPL/" class="article-date">
+  <time class="dt-published" datetime="2018-12-08T15:00:00.000Z" itemprop="datePublished">2018-12-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/node-js/">Node.js</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/09/REPL/">REPL</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="REPL-Read-Eval-Print-Loop-은"><a href="#REPL-Read-Eval-Print-Loop-은" class="headerlink" title="REPL (Read Eval Print Loop)은?"></a>REPL (Read Eval Print Loop)은?</h5><p>node.js 코드를 입력할 수 있는 대화형 인터프리터입니다. 터미널에서 node 명령어를 실행하면 실행됩니다.</p>
+<h5 id="cf-event-loop-thread-란"><a href="#cf-event-loop-thread-란" class="headerlink" title="(cf) event loop thread 란 ?"></a>(cf) event loop thread 란 ?</h5><p>node.js는 io 작업시 기다리지 않습니다. 즉, block 되지 않습니다. 따라서 하나의 thread가 다른 요청을 받아서 작업을 처리할수 있습니다. 이 요청을 받아서 처리하는 Thread를 ELP(Event Loop Thread) 라고 합니다.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/09/REPL/" data-id="ck7agiz0t00l8iv6wgqe54ts2" data-title="REPL" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-MongoDB Replication" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2018/12/09/MongoDB Replication/" class="article-date">
@@ -127,7 +354,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/09/MongoDB Replication/" data-id="ck78w114m00l68vqxgraqh3mv" data-title="MongoDB Replication" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/09/MongoDB Replication/" data-id="ck7agiz0s00l5iv6wwoylx64v" data-title="MongoDB Replication" class="article-share-link">Share</a>
       
       
       
@@ -180,7 +407,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/09/Docker/" data-id="ck78w114l00l18vqxslf67hgt" data-title="Docker" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/09/Docker/" data-id="ck7agiz0s00l3iv6w8makhvjj" data-title="Docker" class="article-share-link">Share</a>
       
       
       
@@ -192,10 +419,10 @@
 
 
   
-    <article id="post-joi" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-Promise" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/12/09/joi/" class="article-date">
-  <time class="dt-published" datetime="2018-12-08T15:00:00.000Z" itemprop="datePublished">2018-12-09</time>
+    <a href="/2018/12/07/Promise/" class="article-date">
+  <time class="dt-published" datetime="2018-12-06T15:00:00.000Z" itemprop="datePublished">2018-12-07</time>
 </a>
     
   <div class="article-category">
@@ -210,7 +437,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/09/joi/">Joi</a>
+      <a class="p-name article-title" href="/2018/12/07/Promise/">Promise</a>
     </h1>
   
 
@@ -218,16 +445,30 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h5 id="Joi-가-뭡니까"><a href="#Joi-가-뭡니까" class="headerlink" title="Joi 가 뭡니까 ?"></a>Joi 가 뭡니까 ?</h5><p>Hapi.js에서 사용하는 parameter 검증 모듈입니다.</p>
-<h5 id="Joi-를-사용하지-않으면"><a href="#Joi-를-사용하지-않으면" class="headerlink" title="Joi 를 사용하지 않으면 ?"></a>Joi 를 사용하지 않으면 ?</h5><p>routing 의 handler 에서 parameter 를 검증하는 로직과 서버 자원을 조회하는 로직이 섞여있습니다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> users = [<span class="string">'Chris'</span>, <span class="string">'Mod'</span>, <span class="string">'Daniel'</span>, <span class="string">'JT'</span>, <span class="string">'Justin'</span>];</span><br><span class="line"></span><br><span class="line">server.route(&#123;</span><br><span class="line">    method: <span class="string">'GET'</span>,</span><br><span class="line">    path:<span class="string">'/users/&#123;id&#125;'</span>,</span><br><span class="line">    handler: <span class="function"><span class="keyword">function</span> (<span class="params">req, reply</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 파라메터 검증 </span></span><br><span class="line">      <span class="keyword">if</span> (req.params.id &amp;lt; users.length) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 검증을 통과하면 로직 수행</span></span><br><span class="line">        reply(&#123;<span class="attr">user</span>: users[req.params.id]&#125;);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 검증 미통과시 404 에러코드 반환 </span></span><br><span class="line">        reply(<span class="string">'No user'</span>).code(<span class="number">404</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+        <h5 id="Promise는-무엇인가요"><a href="#Promise는-무엇인가요" class="headerlink" title="Promise는 무엇인가요?"></a>Promise는 무엇인가요?</h5><p>자바스크립트 비동기 처리에 사용되는 객체입니다. </p>
+<p>아래의 promise 코드는, 서버에서 제대로 응답을 받아오면 resolve() 메서드를 호출하고, 응답이 없으면 reject() 메서드를 호출하는 예제입니다. 호출된 메서드에 따라 then()이나 catch() 로 분기하여 데이터 또는 오류를 출력합니다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getData</span>(<span class="params">callbackFunc</span>) </span>&#123;</span><br><span class="line">  $.get(<span class="string">'url 주소/products/1'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">response</span>) </span>&#123;</span><br><span class="line">    callbackFunc(response); <span class="comment">// 서버에서 받은 데이터 response를 callbackFunc() 함수에 넘겨줌</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">getData(<span class="function"><span class="keyword">function</span> (<span class="params">tableData</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(tableData); <span class="comment">// $.get()의 response 값이 tableData에 전달됨</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 
-<h5 id="Joi-를-사용하면"><a href="#Joi-를-사용하면" class="headerlink" title="Joi 를 사용하면 ?"></a>Joi 를 사용하면 ?</h5><p>config 속성을 통해 parameter 를 검증할 수 있습니다. config.validate 속성에 자바스크립트 객체를 설정했습니다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Joi = <span class="built_in">require</span>(<span class="string">'joi'</span>);</span><br><span class="line"></span><br><span class="line">server.route(&#123;</span><br><span class="line">  method: <span class="string">'GET'</span>,</span><br><span class="line">  path:<span class="string">'/users/&#123;id&#125;'</span>,</span><br><span class="line">  handler: <span class="function"><span class="keyword">function</span> (<span class="params">req, reply</span>) </span>&#123;</span><br><span class="line">    reply(&#123;<span class="attr">user</span>: users[req.params.id]&#125;);</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// config.validate 속성에 검증 로직을 추가한다. 일종의 스키마 형태 </span></span><br><span class="line">  config: &#123;</span><br><span class="line">    validate: &#123;</span><br><span class="line">      params: &#123;</span><br><span class="line">        id: Joi.number().integer().min(<span class="number">0</span>).max(users.length)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getData</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">    $.get(<span class="string">'url 주소/products/1'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">response</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (response) &#123;</span><br><span class="line">        resolve(response);</span><br><span class="line">      &#125;</span><br><span class="line">      reject(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"Request is failed"</span>));</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Fulfilled 또는 Rejected의 결과 값 출력</span></span><br><span class="line">getData().then(<span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(data); <span class="comment">// response 값 출력</span></span><br><span class="line">&#125;).catch(<span class="function"><span class="keyword">function</span> (<span class="params">err</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.error(err); <span class="comment">// Error 출력</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h5 id="Promise의-상태는-뭐가-있나요"><a href="#Promise의-상태는-뭐가-있나요" class="headerlink" title="Promise의 상태는 뭐가 있나요?"></a>Promise의 상태는 뭐가 있나요?</h5><p>new Promise()로 프로미스를 생성하고 종료될 때까지 세 가지 상태를 갖습니다.</p>
+<ol>
+<li><p>Pending(대기)</p>
+<p>비동기 처리 로직이 아직 완료되지 않은 상태</p>
+</li>
+<li><p>Fulfilled(이행) </p>
+<p>비동기 처리가 완료되어 프로미스가 결과 값을 반환해준 상태</p>
+</li>
+<li><p>Rejected(실패)</p>
+<p>비동기 처리가 실패하거나 오류가 발생한 상태</p>
+</li>
+</ol>
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://joshua1988.github.io/web-development/javascript/promise-for-beginners/" target="_blank" rel="noopener">https://joshua1988.github.io/web-development/javascript/promise-for-beginners/</a></p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/09/joi/" data-id="ck78w114o00le8vqxwbjrm6f7" data-title="Joi" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/07/Promise/" data-id="ck7agiz0o00kpiv6wqrlja1us" data-title="Promise" class="article-share-link">Share</a>
       
       
       
@@ -239,14 +480,14 @@
 
 
   
-    <article id="post-jenkins" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-MVC" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/12/07/jenkins/" class="article-date">
+    <a href="/2018/12/07/MVC/" class="article-date">
   <time class="dt-published" datetime="2018-12-06T15:00:00.000Z" itemprop="datePublished">2018-12-07</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/software-engineering/">Software Engineering</a>
+    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
   </div>
 
   </div>
@@ -257,7 +498,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/07/jenkins/">jenkins</a>
+      <a class="p-name article-title" href="/2018/12/07/MVC/">MVC</a>
     </h1>
   
 
@@ -265,27 +506,59 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h5 id="jenkins-란"><a href="#jenkins-란" class="headerlink" title="jenkins 란 ?"></a>jenkins 란 ?</h5><p>CI (Continuous Integration) 툴입니다.  지속적으로 통합 서비스를 제공하는 툴입니다.</p>
-<h5 id="jenkins-의-장점은"><a href="#jenkins-의-장점은" class="headerlink" title="jenkins 의 장점은 ?"></a>jenkins 의 장점은 ?</h5><ol>
-<li><p>각종 배치 작업의 간략화</p>
-<p>데이터베이스의 구축, 어플리케이션 서버로의 Deploy, 라이브러리 릴리즈와 같이 이전에 CLI로 실행되던 작업들이 젠킨스 덕분에 웹 인터페이스로 손쉽게 가능합니다.</p>
-</li>
-<li><p>Build 자동화의 확립</p>
-<p>Java 빌드 툴인 maven과 gradle과 연동하여 빌드 자동화를 통해 프로젝트 진행의 효율성을 높일 수 있습니다.</p>
-</li>
-<li><p>자동화 테스트</p>
-<p>Git과 같은 버전관리시스템과 연동하여 코드 변경을 감지하고 자동화 테스트를 수행하기 때문에 만약 개인이 미처 실시하지 못한 테스트가 있다 하여도 든든한 안전망이 되어준다.</p>
-</li>
-<li><p>코드 표준 준수여부 검사</p>
-<p>개인이 미처 실시하지 못한 코드 표준 준수 여부의 검사나 정적 분석을 통한 코드 품질 검사를 빌드 내부에서 수행합니다.</p>
-</li>
-</ol>
-<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="http://tora-it-kingdom.tistory.com/21" target="_blank" rel="noopener">http://tora-it-kingdom.tistory.com/21</a></p>
+        <p>하나의 애플리케이션, 프로젝트를 구성할 때 그 구성요소를 Model, View, Controller로 구분한 패턴입니다. </p>
+<p>사용자가 Controller를 조작하면, Controller는 Model을 통해서 데이터를 가져오고, 그 정보를 바탕으로 시각적인 표현을 담당하는 View를 제어해서 사용자에게 전달합니다.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/07/jenkins/" data-id="ck78w114m00l38vqxtst1chpj" data-title="jenkins" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/07/MVC/" data-id="ck7agiz0r00l1iv6wp4ql5esc" data-title="MVC" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Web Socket" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/07/Web Socket/" class="article-date">
+  <time class="dt-published" datetime="2018-12-06T15:00:00.000Z" itemprop="datePublished">2018-12-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/network/">Network</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/07/Web Socket/">Web Socket</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="Web-Socket이란"><a href="#Web-Socket이란" class="headerlink" title="Web Socket이란?"></a>Web Socket이란?</h5><p>WebSocket은 Web server 와 Web browser 간의 쌍방향 통신을 위한 통신 규약입니다.</p>
+<h5 id="Web-Socket-전에는"><a href="#Web-Socket-전에는" class="headerlink" title="Web Socket 전에는?"></a>Web Socket 전에는?</h5><p>polling, long polling, stream이 있습니다.</p>
+<h5 id="Web-Socket이-기존-통신-방법과-차이는"><a href="#Web-Socket이-기존-통신-방법과-차이는" class="headerlink" title="Web Socket이 기존 통신 방법과 차이는?"></a>Web Socket이 기존 통신 방법과 차이는?</h5><p>WebSocket 프로토콜은 접속 확립에 HTTP를 사용하지만, 그 후의 통신은 WebSocket 독자의 프로토콜로 이루어집니다. 또한, header가 상당히 작아 overhead가 적은 특징이 있습니다. 장시간 접속을 전제로 하기 때문에, 접속한 상태라면 클라이언트나 서버로부터 데이터 송신이 가능합니다. 더불어 데이터의 송신과 수신에 각각 커넥션을 맺을 필요가 없어, 하나의 커넥션으로 데이터를 송수신 할 수 있습니다. 통신시에 지정되는 URL은 <a href="http://www.sample.com/과" target="_blank" rel="noopener">http://www.sample.com/과</a> 같은 형식이 아니라 <strong>ws://</strong><a href="http://www.sample.com/과" target="_blank" rel="noopener">www.sample.com/과</a> 같은 형식이 됩니다.</p>
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="http://duckdevelope.tistory.com/19" target="_blank" rel="noopener">http://duckdevelope.tistory.com/19</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/07/Web Socket/" data-id="ck7agiz0q00kxiv6w0xz345lf" data-title="Web Socket" class="article-share-link">Share</a>
       
       
       
@@ -351,282 +624,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/07/TDD/" data-id="ck78w114k00kx8vqxjc76uaxd" data-title="TDD" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Web Socket" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/12/07/Web Socket/" class="article-date">
-  <time class="dt-published" datetime="2018-12-06T15:00:00.000Z" itemprop="datePublished">2018-12-07</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/network/">Network</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/07/Web Socket/">Web Socket</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h5 id="Web-Socket이란"><a href="#Web-Socket이란" class="headerlink" title="Web Socket이란?"></a>Web Socket이란?</h5><p>WebSocket은 Web server 와 Web browser 간의 쌍방향 통신을 위한 통신 규약입니다.</p>
-<h5 id="Web-Socket-전에는"><a href="#Web-Socket-전에는" class="headerlink" title="Web Socket 전에는?"></a>Web Socket 전에는?</h5><p>polling, long polling, stream이 있습니다.</p>
-<h5 id="Web-Socket이-기존-통신-방법과-차이는"><a href="#Web-Socket이-기존-통신-방법과-차이는" class="headerlink" title="Web Socket이 기존 통신 방법과 차이는?"></a>Web Socket이 기존 통신 방법과 차이는?</h5><p>WebSocket 프로토콜은 접속 확립에 HTTP를 사용하지만, 그 후의 통신은 WebSocket 독자의 프로토콜로 이루어집니다. 또한, header가 상당히 작아 overhead가 적은 특징이 있습니다. 장시간 접속을 전제로 하기 때문에, 접속한 상태라면 클라이언트나 서버로부터 데이터 송신이 가능합니다. 더불어 데이터의 송신과 수신에 각각 커넥션을 맺을 필요가 없어, 하나의 커넥션으로 데이터를 송수신 할 수 있습니다. 통신시에 지정되는 URL은 <a href="http://www.sample.com/과" target="_blank" rel="noopener">http://www.sample.com/과</a> 같은 형식이 아니라 <strong>ws://</strong><a href="http://www.sample.com/과" target="_blank" rel="noopener">www.sample.com/과</a> 같은 형식이 됩니다.</p>
-<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="http://duckdevelope.tistory.com/19" target="_blank" rel="noopener">http://duckdevelope.tistory.com/19</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/07/Web Socket/" data-id="ck78w114k00kz8vqxn6amg58l" data-title="Web Socket" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-JUnit" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/12/07/JUnit/" class="article-date">
-  <time class="dt-published" datetime="2018-12-06T15:00:00.000Z" itemprop="datePublished">2018-12-07</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/software-engineering/">Software Engineering</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/07/JUnit/">JUnit</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h5 id="JUnit이란"><a href="#JUnit이란" class="headerlink" title="JUnit이란?"></a>JUnit이란?</h5><p> Java의  Testing Framework입니다.</p>
-<h5 id="JUnit-환경언-어떻게-구축하나요"><a href="#JUnit-환경언-어떻게-구축하나요" class="headerlink" title="JUnit 환경언 어떻게 구축하나요?"></a>JUnit 환경언 어떻게 구축하나요?</h5><p>pom.xml에 dependency를 추가해야합니다. Maven을 통해 쉽게 추가 할 수 있습니다. </p>
-<h5 id="어떤-flow로-동작하나요"><a href="#어떤-flow로-동작하나요" class="headerlink" title="어떤 flow로 동작하나요?"></a>어떤 flow로 동작하나요?</h5><p><img src="/image/junit.png" alt></p>
-<h5 id="Annotation-뭐가-있죠"><a href="#Annotation-뭐가-있죠" class="headerlink" title="Annotation 뭐가 있죠?"></a>Annotation 뭐가 있죠?</h5><ol>
-<li><p>@Test</p>
-<p>해당 Method는 Test 대상 메소드임을 의미합니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Example</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       org.junit.Assert.assertTrue( <span class="keyword">new</span> ArrayList().isEmpty() );</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>@BeforeClass</p>
-<p>해당 테스트가 시작 전에 딱 한 번씩만 수행되도록 지정합니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Example</span> </span>&#123;</span><br><span class="line">   <span class="meta">@BeforeClass</span> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">onlyOnce</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      ...</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="meta">@Test</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">one</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      ...</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="meta">@Test</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">two</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      ...</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>@AfeterClass</p>
-<p>해당 테스트가 끝나고 딱 한 번씩만 수행되도록 지정합니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Example</span> </span>&#123;</span><br><span class="line">   DatabaseConnection database;</span><br><span class="line">   <span class="meta">@BeforeClass</span> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">login</span><span class="params">()</span> </span>&#123;</span><br><span class="line">         database= ...;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="meta">@Test</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">something</span><span class="params">()</span> </span>&#123;</span><br><span class="line">         ...</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="meta">@Test</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">somethingElse</span><span class="params">()</span> </span>&#123;</span><br><span class="line">         ...</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="meta">@AfterClass</span> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">logout</span><span class="params">()</span> </span>&#123;</span><br><span class="line">         database.logout();</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>@Before</p>
-<p>해당 테스트가 진행이 시작되기 전에 작업할 내용을 호출합니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Example</span> </span>&#123;</span><br><span class="line">   List empty;</span><br><span class="line">   <span class="meta">@Before</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">initialize</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      empty= <span class="keyword">new</span> ArrayList();</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="meta">@Test</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">size</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      ...</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="meta">@Test</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      ...</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>@After</p>
-<p>해당 테스트가 진행이 끝난 후에 작업할 내용을 호출합니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Example</span> </span>&#123;</span><br><span class="line">    File output;</span><br><span class="line">    <span class="meta">@Before</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">createOutputFile</span><span class="params">()</span> </span>&#123;</span><br><span class="line">          output= <span class="keyword">new</span> File(...);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Test</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">something</span><span class="params">()</span> </span>&#123;</span><br><span class="line">          ...</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@After</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deleteOutputFile</span><span class="params">()</span> </span>&#123;</span><br><span class="line">          output.delete();</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>@Ignore</p>
-<p>TestCase를 무시할 수 있습니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Ignore</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IgnoreMe</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Test</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test1</span><span class="params">()</span> </span>&#123; ... &#125;</span><br><span class="line">  <span class="meta">@Test</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test2</span><span class="params">()</span> </span>&#123; ... &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="http://www.nextree.co.kr/p11104/" target="_blank" rel="noopener">http://www.nextree.co.kr/p11104/</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/07/JUnit/" data-id="ck78w114j00kt8vqxt1nmxkpk" data-title="JUnit" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Push Server" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/12/07/Push Server/" class="article-date">
-  <time class="dt-published" datetime="2018-12-06T15:00:00.000Z" itemprop="datePublished">2018-12-07</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/network/">Network</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/07/Push Server/">Push Server</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h5 id="Push-Server-란"><a href="#Push-Server-란" class="headerlink" title="Push Server 란?"></a>Push Server 란?</h5><p>클라이언트의 요청이 오면 응답해주는 방식이 아닌 서버가 클라이언트에게 공지사항과 같은 무엇인가 통지해주기 위한 방법입니다. 다시 말해 클라이언트의 요청이 없이도 서버는 클라이언트에게 응답하는 방식입니다.</p>
-<p>HTTP 프로토콜의 특성때문에 실제 push server 구현은 되지 않습니다. 하지만 push server 의 효과와 비슷한 모델들이 등장합니다. 이것이 Polling, Long Polling, Stream 입니다.</p>
-<h5 id="Polling이란"><a href="#Polling이란" class="headerlink" title="Polling이란?"></a>Polling이란?</h5><p>클라이언트가 끊임없이 웹서버에게 새로운 내용이 있는지 물어보는 방식입니다.</p>
-<p><img src="/image/pushserver01.png" alt></p>
-<h5 id="Long-Polling이란"><a href="#Long-Polling이란" class="headerlink" title="Long Polling이란?"></a>Long Polling이란?</h5><p>클라이언트가 웹서버에게 새로운 내용이 있는지 물어보았을 때 웹서버에 새로운 내용이 없다면 대답해주지 않다가 새로운 내용이 생기면 이때 대답해주는 방식입니다.</p>
-<p><img src="/image/pushserver02.png" alt></p>
-<h5 id="Stream이란"><a href="#Stream이란" class="headerlink" title="Stream이란?"></a>Stream이란?</h5><p>웹서버의 응답 헤더의  content-length 를 이용한 방법입니다. 응답헤더의 content-length 가 존재하지 않는다면 클라이언트는 연결이 끊길때 까지 응답을 받아들입니다. 즉 한번의 요청에 대해 끊임없는 응답을 보내는 방식입니다. 이 방식은 한번의 요청만 있으면 되므로 효율은 좋지만 error 처리에 매우 취약합니다.</p>
-<p><img src="/image/pushserver03.png" alt></p>
-<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="http://onecellboy.tistory.com/category/%ED%95%99%EC%8A%B5%EC%9E%90%EB%A3%8C%28~2017%29/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC" target="_blank" rel="noopener">http://onecellboy.tistory.com/category/%ED%95%99%EC%8A%B5%EC%9E%90%EB%A3%8C%28~2017%29/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/07/Push Server/" data-id="ck78w114i00kr8vqxh5ordn54" data-title="Push Server" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Promise" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/12/07/Promise/" class="article-date">
-  <time class="dt-published" datetime="2018-12-06T15:00:00.000Z" itemprop="datePublished">2018-12-07</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/node-js/">Node.js</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/07/Promise/">Promise</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h5 id="Promise는-무엇인가요"><a href="#Promise는-무엇인가요" class="headerlink" title="Promise는 무엇인가요?"></a>Promise는 무엇인가요?</h5><p>자바스크립트 비동기 처리에 사용되는 객체입니다. </p>
-<p>아래의 promise 코드는, 서버에서 제대로 응답을 받아오면 resolve() 메서드를 호출하고, 응답이 없으면 reject() 메서드를 호출하는 예제입니다. 호출된 메서드에 따라 then()이나 catch() 로 분기하여 데이터 또는 오류를 출력합니다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getData</span>(<span class="params">callbackFunc</span>) </span>&#123;</span><br><span class="line">  $.get(<span class="string">'url 주소/products/1'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">response</span>) </span>&#123;</span><br><span class="line">    callbackFunc(response); <span class="comment">// 서버에서 받은 데이터 response를 callbackFunc() 함수에 넘겨줌</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">getData(<span class="function"><span class="keyword">function</span> (<span class="params">tableData</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(tableData); <span class="comment">// $.get()의 response 값이 tableData에 전달됨</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getData</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">    $.get(<span class="string">'url 주소/products/1'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">response</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (response) &#123;</span><br><span class="line">        resolve(response);</span><br><span class="line">      &#125;</span><br><span class="line">      reject(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"Request is failed"</span>));</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Fulfilled 또는 Rejected의 결과 값 출력</span></span><br><span class="line">getData().then(<span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(data); <span class="comment">// response 값 출력</span></span><br><span class="line">&#125;).catch(<span class="function"><span class="keyword">function</span> (<span class="params">err</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.error(err); <span class="comment">// Error 출력</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<h5 id="Promise의-상태는-뭐가-있나요"><a href="#Promise의-상태는-뭐가-있나요" class="headerlink" title="Promise의 상태는 뭐가 있나요?"></a>Promise의 상태는 뭐가 있나요?</h5><p>new Promise()로 프로미스를 생성하고 종료될 때까지 세 가지 상태를 갖습니다.</p>
-<ol>
-<li><p>Pending(대기)</p>
-<p>비동기 처리 로직이 아직 완료되지 않은 상태</p>
-</li>
-<li><p>Fulfilled(이행) </p>
-<p>비동기 처리가 완료되어 프로미스가 결과 값을 반환해준 상태</p>
-</li>
-<li><p>Rejected(실패)</p>
-<p>비동기 처리가 실패하거나 오류가 발생한 상태</p>
-</li>
-</ol>
-<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://joshua1988.github.io/web-development/javascript/promise-for-beginners/" target="_blank" rel="noopener">https://joshua1988.github.io/web-development/javascript/promise-for-beginners/</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/07/Promise/" data-id="ck78w114h00kp8vqxiao67u6t" data-title="Promise" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-MVC" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/12/07/MVC/" class="article-date">
-  <time class="dt-published" datetime="2018-12-06T15:00:00.000Z" itemprop="datePublished">2018-12-07</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/07/MVC/">MVC</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>하나의 애플리케이션, 프로젝트를 구성할 때 그 구성요소를 Model, View, Controller로 구분한 패턴입니다. </p>
-<p>사용자가 Controller를 조작하면, Controller는 Model을 통해서 데이터를 가져오고, 그 정보를 바탕으로 시각적인 표현을 담당하는 View를 제어해서 사용자에게 전달합니다.</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/07/MVC/" data-id="ck78w114h00kn8vqxasgxzb6i" data-title="MVC" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/07/TDD/" data-id="ck7agiz0p00kviv6wp6gty9ml" data-title="TDD" class="article-share-link">Share</a>
       
       
       
@@ -668,7 +666,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
     </div>
   </div>
 
@@ -681,23 +679,23 @@
       <ul>
         
           <li>
+            <a href="/2020/03/02/tdd-chapter-05/">[테스트 주도 개발] 5장_솔직히 말하자며</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/02/tdd-chapter-04/">[테스트 주도 개발] 4장_프라이버시</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/02/tdd-chapter-06/">[테스트 주도 개발] 6장_돌아온 모두를 위한 평등</a>
+          </li>
+        
+          <li>
             <a href="/2020/02/25/bigdata-chapter-01/">[빅데이터] 1장_빅데이터를 위한 새로운 패러다임</a>
           </li>
         
           <li>
             <a href="/2020/02/25/bigdata-chapter-02/">[빅데이터] 2장_빅데이터를 위한 데이터 모델</a>
-          </li>
-        
-          <li>
-            <a href="/2020/02/24/tdd-chapter-03/">[테스트 주도 개발] 3장_모두를 위한 평등</a>
-          </li>
-        
-          <li>
-            <a href="/2020/02/24/tdd-chapter-02/">[테스트 주도 개발] 2장_타락한 객체</a>
-          </li>
-        
-          <li>
-            <a href="/2020/02/24/tdd-chapter-01/">[테스트 주도 개발] 1장_다중 통화를 지원하는 Money 객체</a>
           </li>
         
       </ul>

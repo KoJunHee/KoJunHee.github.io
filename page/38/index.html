@@ -71,6 +71,177 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-원격저장소와 지역저장소의 동기화 " class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/11/26/원격저장소와 지역저장소의 동기화 /" class="article-date">
+  <time class="dt-published" datetime="2017-11-25T15:00:00.000Z" itemprop="datePublished">2017-11-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/git/">Git</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/11/26/원격저장소와 지역저장소의 동기화 /">원격 저장소와 지역 저장소의 동기화 </a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>##하나의 원격 저장소를 두 개의 지역 저장소가 동기화</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Git clone 주소 git_home	 	//그럼 git_home이라는 곳이 생김</span><br><span class="line">Git clone 주소 git_office	 	//그럼 git_office이라는 곳이 생김</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">- git_home 디렉토리에서</span><br><span class="line">Vim f1.txt	 				//내용   a b c</span><br><span class="line">Git commit -am 3</span><br><span class="line">Git push</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">- git_office 디렉토리에서</span><br><span class="line">Git pull </span><br><span class="line">vim f1.txt					//내용 a b c 에 d 추가</span><br><span class="line">Git commit -am ‘4’</span><br><span class="line">Git push</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">git_home 디렉토리에서</span><br><span class="line">Git pull</span><br><span class="line"></span><br><span class="line">​```</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2017/11/26/원격저장소와 지역저장소의 동기화 /" data-id="ck7agiyum003viv6wr7fyqukq" data-title="원격 저장소와 지역 저장소의 동기화 " class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-원격저장소 만들기" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/11/26/원격저장소 만들기/" class="article-date">
+  <time class="dt-published" datetime="2017-11-25T15:00:00.000Z" itemprop="datePublished">2017-11-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/git/">Git</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/11/26/원격저장소 만들기/">원격 저장소 만들기</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="작업하고-있던-것을-생성한-원격-저장소로-옮기기"><a href="#작업하고-있던-것을-생성한-원격-저장소로-옮기기" class="headerlink" title="작업하고 있던 것을 생성한 원격 저장소로 옮기기"></a>작업하고 있던 것을 생성한 원격 저장소로 옮기기</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">mkdir gitfth</span><br><span class="line">Git init</span><br><span class="line">Vim f1.txt</span><br><span class="line">Git add f1.txt</span><br><span class="line">Git commit -m ‘1’</span><br><span class="line">git remote add origin https://github.com/KoJunHee/gitfth.git</span><br><span class="line">	// 현재 우리의 로컬 저장소에  원격저장소(remote repository)를 연결 시킨다</span><br><span class="line">	// 그리고 그 원격저장소는 이 주소이다</span><br><span class="line">	// 이 주소는 너무 기니까 origin 이라는 별명을 부여하겠다</span><br><span class="line">	// 여러개의 원격저장소를 연결 시킬수 있음</span><br><span class="line">	// ~add friend ~ 이런식으로도 가능</span><br><span class="line"></span><br><span class="line">Git remote 		//잘 되었는지 확인할수 있음.</span><br><span class="line">Git remote -v 	//상세 보기 가능</span><br><span class="line">Git remote remove friend </span><br><span class="line">Git remote -v	//origin 만 남은걸 볼수 있음</span><br><span class="line">git push -u origin master	</span><br><span class="line">	// 로컬 저장소의 master와 origin 연결</span><br><span class="line">	// 유저네임 입력하고 </span><br><span class="line">	// 비밀번호 입력</span><br><span class="line">Vim f1.txt		//변경</span><br><span class="line">Git commit -am 2</span><br><span class="line">Git push  		// 이미 연결 시켰기 때문에 그 다음부터는 push만 하면 됨</span><br></pre></td></tr></table></figure>
+
+<h2 id="존재하는-원격-저장소를-내-로컬-저장소로-복제하면-다른-컴퓨터에서도-똑같이-가능"><a href="#존재하는-원격-저장소를-내-로컬-저장소로-복제하면-다른-컴퓨터에서도-똑같이-가능" class="headerlink" title="존재하는 원격 저장소를 내 로컬 저장소로 복제하면 다른 컴퓨터에서도 똑같이 가능"></a>존재하는 원격 저장소를 내 로컬 저장소로 복제하면 다른 컴퓨터에서도 똑같이 가능</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">github에서 clone or download에서 주소를 카피.</span><br><span class="line">새로운 컴퓨터라고 치고 새로운 디렉토리를 만들거임.</span><br><span class="line">cd ..</span><br><span class="line">Mkdir gitfth2</span><br><span class="line">Cd gitgth2</span><br><span class="line">Git clone https://github.com/KoJunHee/gitfth.git .     //.은 현재 디렉토리</span><br><span class="line"></span><br><span class="line">ls -al 			//하면 동기화 확인 가능하고</span><br><span class="line">Git romote -v		//하면 연결되어있다는 것을 확인</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2017/11/26/원격저장소 만들기/" data-id="ck7agiyul003tiv6wfvaj2mwu" data-title="원격 저장소 만들기" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-git 핵심 명령어" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/11/26/git 핵심 명령어/" class="article-date">
+  <time class="dt-published" datetime="2017-11-25T15:00:00.000Z" itemprop="datePublished">2017-11-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/git/">Git</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/11/26/git 핵심 명령어/">git 핵싱 명령어</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="핵심-명령어"><a href="#핵심-명령어" class="headerlink" title="핵심 명령어"></a>핵심 명령어</h1><ul>
+<li><p>git init</p>
+<ul>
+<li>여기에 git을 적용시키겠다</li>
+</ul>
+</li>
+<li><p>git status</p>
+<ul>
+<li>변경된 파일 내용 확인 </li>
+</ul>
+</li>
+<li><p>git branch</p>
+<ul>
+<li>현재 branch 확인</li>
+<li>초기 commit 실행하지 않고 하면 아무것도 안나옴</li>
+</ul>
+</li>
+<li><p>git add </p>
+<ul>
+<li>stage에 올리겠다</li>
+<li>commit 전에 add 하는 이유는 commit하고 싶은 파일만 선별하고 싶어서.</li>
+</ul>
+</li>
+<li><p>git commit -m ‘message’</p>
+<ul>
+<li>message를 남기며 commit을 하겠다</li>
+<li>새로운 version이 생김</li>
+</ul>
+</li>
+<li><p>git remote add origin ‘repository address’</p>
+<ul>
+<li>‘repository address’ 를 origin 이라는 이름으로 설정하겠다</li>
+</ul>
+</li>
+<li><p>git push origin master</p>
+<ul>
+<li>master branch를 origin 이라는 repository에 push 하겠다</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2017/11/26/git 핵심 명령어/" data-id="ck7agiyuj003oiv6w0p3s7g0r" data-title="git 핵싱 명령어" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-문자열 분석" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2017/11/25/문자열 분석/" class="article-date">
@@ -106,7 +277,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/11/25/문자열 분석/" data-id="ck78w10z8003n8vqxp8qunvmb" data-title="문자열 분석" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/11/25/문자열 분석/" data-id="ck7agiyuk003qiv6wnc78tmam" data-title="문자열 분석" class="article-share-link">Share</a>
       
       
       
@@ -161,7 +332,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/11/22/환경변수설정/" data-id="ck78w10z7003l8vqxxrnyvddh" data-title="환경변수 설정" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/11/22/환경변수설정/" data-id="ck7agiyuj003miv6wyli5nqb6" data-title="환경변수 설정" class="article-share-link">Share</a>
       
       
       
@@ -211,55 +382,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/11/22/접미사배열/" data-id="ck78w10z6003j8vqxhchx3x8y" data-title="접미사배열" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-swagger parameter 길이문제" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2017/11/21/swagger parameter 길이문제/" class="article-date">
-  <time class="dt-published" datetime="2017-11-20T15:00:00.000Z" itemprop="datePublished">2017-11-21</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/node-js/">Node.js</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2017/11/21/swagger parameter 길이문제/">Swagger parameter 길이 문제</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Swagger-parameter-많아-졌을-때"><a href="#Swagger-parameter-많아-졌을-때" class="headerlink" title="Swagger parameter 많아 졌을 때"></a>Swagger parameter 많아 졌을 때</h2><ul>
-<li>옆 부분 짤리는 문제 발생</li>
-<li>다음과 같이 object로 묶어주자</li>
-</ul>
-<p><img src="/image/39.png" alt></p>
-<p>​    </p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/11/21/swagger parameter 길이문제/" data-id="ck78w10z4003d8vqxpr0wgv66" data-title="Swagger parameter 길이 문제" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/11/22/접미사배열/" data-id="ck7agiyui003kiv6wya55689y" data-title="접미사배열" class="article-share-link">Share</a>
       
       
       
@@ -309,7 +432,55 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/11/21/다리만들기/" data-id="ck78w10z6003h8vqxvo13rgud" data-title="다리만들기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/11/21/다리만들기/" data-id="ck7agiyug003giv6wazsk9iut" data-title="다리만들기" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-swagger parameter 길이문제" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/11/21/swagger parameter 길이문제/" class="article-date">
+  <time class="dt-published" datetime="2017-11-20T15:00:00.000Z" itemprop="datePublished">2017-11-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/node-js/">Node.js</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/11/21/swagger parameter 길이문제/">Swagger parameter 길이 문제</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="Swagger-parameter-많아-졌을-때"><a href="#Swagger-parameter-많아-졌을-때" class="headerlink" title="Swagger parameter 많아 졌을 때"></a>Swagger parameter 많아 졌을 때</h2><ul>
+<li>옆 부분 짤리는 문제 발생</li>
+<li>다음과 같이 object로 묶어주자</li>
+</ul>
+<p><img src="/image/39.png" alt></p>
+<p>​    </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2017/11/21/swagger parameter 길이문제/" data-id="ck7agiyuh003iiv6wm7sq0eas" data-title="Swagger parameter 길이 문제" class="article-share-link">Share</a>
       
       
       
@@ -358,7 +529,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/11/20/팩토리얼0의개수/" data-id="ck78w10z4003b8vqxr05slp9a" data-title="팩토리얼 0의 개수" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/11/20/팩토리얼0의개수/" data-id="ck7agiyue003eiv6wo7cjo5ej" data-title="팩토리얼 0의 개수" class="article-share-link">Share</a>
       
       
       
@@ -409,180 +580,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/11/17/토마토/" data-id="ck78w10z300398vqxm6zf2geh" data-title="토마토" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-방번호" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2017/11/16/방번호/" class="article-date">
-  <time class="dt-published" datetime="2017-11-15T15:00:00.000Z" itemprop="datePublished">2017-11-16</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2017/11/16/방번호/">방번호</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><a href="https://www.acmicpc.net/problem/1475" target="_blank" rel="noopener">https://www.acmicpc.net/problem/1475</a></p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
-<li>수학문제</li>
-<li>0~9를 가지고 있는 배열 생성</li>
-<li>입력한 숫자가 없을때마다 배열에 다시 0~9 까지 추가해줌</li>
-<li>추가하는 개수가 답</li>
-<li>but, 틀렸다고 나옴.</li>
-<li>효율적인 코드일까? 왜 틀렸다고 나올까?</li>
-</ul>
-<p>​    </p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/11/16/방번호/" data-id="ck78w10z5003f8vqxebhzgsga" data-title="방번호" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-미로탐색" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2017/11/15/미로탐색/" class="article-date">
-  <time class="dt-published" datetime="2017-11-14T15:00:00.000Z" itemprop="datePublished">2017-11-15</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2017/11/15/미로탐색/">미로탐색</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><a href="https://www.acmicpc.net/problem/2178" target="_blank" rel="noopener">https://www.acmicpc.net/problem/2178</a></p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
-<li>빠른길은 BFS로 품</li>
-<li>모든 가중치가 1이면 최단 거리 알고리즘은 BFS로 품</li>
-<li>BFS는 단계별로 진행됨. 즉 거리별로 진행됨. 거리가 1인곳가고, 거리가 2인곳 가고~</li>
-</ul>
-<ol>
-<li><p>입력값대로 미로 그림</p>
-</li>
-<li><p>1,1 좌표를 큐에 넣음</p>
-</li>
-<li><p>큐에서 pop</p>
-</li>
-<li><p>점 이동</p>
-</li>
-<li><p>이동한 점 큐에 넣음 </p>
-</li>
-<li><p>거리 계산 </p>
-</li>
-<li><p>3번으로</p>
-</li>
-</ol>
-<p>​    </p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/11/15/미로탐색/" data-id="ck78w10z200378vqxhmf5dy07" data-title="미로탐색" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-ROT13" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2017/11/14/ROT13/" class="article-date">
-  <time class="dt-published" datetime="2017-11-13T15:00:00.000Z" itemprop="datePublished">2017-11-14</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2017/11/14/ROT13/">ROT13</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><a href="https://www.acmicpc.net/problem/11655" target="_blank" rel="noopener">https://www.acmicpc.net/problem/11655</a></p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
-<li>쉬운 문제 </li>
-<li>핵심 : 중간을 기준으로 +13, -13</li>
-</ul>
-<ol>
-<li><p>a-n or A-N</p>
-<p>+13 </p>
-</li>
-<li><p>m-z or M-Z</p>
-<p>-13</p>
-</li>
-</ol>
-<p>​    </p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/11/14/ROT13/" data-id="ck78w10yy00318vqx8p4ozuln" data-title="ROT13" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/11/17/토마토/" data-id="ck7agiyud003aiv6wr1oew7at" data-title="토마토" class="article-share-link">Share</a>
       
       
       
@@ -624,7 +622,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
     </div>
   </div>
 
@@ -637,23 +635,23 @@
       <ul>
         
           <li>
+            <a href="/2020/03/02/tdd-chapter-05/">[테스트 주도 개발] 5장_솔직히 말하자며</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/02/tdd-chapter-04/">[테스트 주도 개발] 4장_프라이버시</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/02/tdd-chapter-06/">[테스트 주도 개발] 6장_돌아온 모두를 위한 평등</a>
+          </li>
+        
+          <li>
             <a href="/2020/02/25/bigdata-chapter-01/">[빅데이터] 1장_빅데이터를 위한 새로운 패러다임</a>
           </li>
         
           <li>
             <a href="/2020/02/25/bigdata-chapter-02/">[빅데이터] 2장_빅데이터를 위한 데이터 모델</a>
-          </li>
-        
-          <li>
-            <a href="/2020/02/24/tdd-chapter-03/">[테스트 주도 개발] 3장_모두를 위한 평등</a>
-          </li>
-        
-          <li>
-            <a href="/2020/02/24/tdd-chapter-02/">[테스트 주도 개발] 2장_타락한 객체</a>
-          </li>
-        
-          <li>
-            <a href="/2020/02/24/tdd-chapter-01/">[테스트 주도 개발] 1장_다중 통화를 지원하는 Money 객체</a>
           </li>
         
       </ul>
