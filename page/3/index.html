@@ -244,7 +244,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/12/30/big-data-chapter2/" data-id="ck7agiz1900msiv6wsozcy6x6" data-title="[빅데이터를 지탱하는 기술] 2장_빅데이터 탐색" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/12/30/big-data-chapter2/" data-id="ck7agol4z00mq2l6wmg04oosa" data-title="[빅데이터를 지탱하는 기술] 2장_빅데이터 탐색" class="article-share-link">Share</a>
       
       
       
@@ -397,7 +397,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/12/30/big-data-chapter1/" data-id="ck7agiz1700mkiv6wotxwicnc" data-title="[빅데이터를 지탱하는 기술] 1장_빅데이터 기초 지식" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/12/30/big-data-chapter1/" data-id="ck7agol4z00mn2l6wx13cyy4f" data-title="[빅데이터를 지탱하는 기술] 1장_빅데이터 기초 지식" class="article-share-link">Share</a>
       
       
       
@@ -589,7 +589,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/12/30/big-data-chapter3/" data-id="ck7agiz2z00p0iv6wis102dsb" data-title="[빅데이터를 지탱하는 기술] 3장_빅데이터 분산처리" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/12/30/big-data-chapter3/" data-id="ck7agol6m00p12l6wz6p6k4rv" data-title="[빅데이터를 지탱하는 기술] 3장_빅데이터 분산처리" class="article-share-link">Share</a>
       
       
       
@@ -707,7 +707,88 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/12/27/object-chapter11/" data-id="ck7agiz2x00owiv6wcbqrinh2" data-title="[오브젝트] 11장_합성과 유연한 설계" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/12/27/object-chapter11/" data-id="ck7agol6l00oz2l6wovhmeb0n" data-title="[오브젝트] 11장_합성과 유연한 설계" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-kafka-chapter1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/12/26/kafka-chapter1/" class="article-date">
+  <time class="dt-published" datetime="2019-12-25T15:00:00.000Z" itemprop="datePublished">2019-12-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/kafka/">Kafka</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/12/26/kafka-chapter1/">[카프카] 1장_카프카란 무엇인가</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>카프카 : 대용량, 대규모 메세지 데이터를 빠르게 처리하도록 개발된 메시징 플랫폼</p>
+<h3 id="1-탄생-배경"><a href="#1-탄생-배경" class="headerlink" title="1. 탄생 배경"></a>1. 탄생 배경</h3><p><img src="/image/kafka_end_to_end.png" alt></p>
+<p>위 그림 처럼 end-to-end 아키텍쳐의 문제점은,</p>
+<ol>
+<li>실시간 트랜잭션 (OLTP) 처리와 비동기 처리가 동시에 이뤄지지만, 통합된 전송 영역이 없어서 복잡도 증가</li>
+<li>데이터 파이프라인의 관리가 어려움</li>
+</ol>
+<p><img src="/image/kafka_architecture.png" alt></p>
+<p>위 그림처럼 카프카는,</p>
+<ol>
+<li>모든 시스템으로 데이터 전송 가능 </li>
+<li>실시간 처리 가능</li>
+<li>확장이 용이</li>
+</ol>
+<h3 id="2-동작-방식과-원리"><a href="#2-동작-방식과-원리" class="headerlink" title="2. 동작 방식과 원리"></a>2. 동작 방식과 원리</h3><p>메시징 시스템을 먼저 살펴보자.<br>중앙에 메시징 시스템 서버를 두고 메시지를 Publish 하고 Subscribe 하는 형태의 통신을 Pub/Sub 모델이라고 한다.<br>프로듀서가 메시지를 컨슈머에게 직접 전달하는 것이 아니라, 중간의 메시징 시스템으로 전달한다. 그래서,</p>
+<ol>
+<li>프로듀서가 수신 불능 상태가 되어도 메세징 시스템이 살아있으면 메세지가 유실이 되지 않는다.</li>
+<li>메세징 시스템을 중심으로 연결되기 때문에, 확장성이 용이하다.</li>
+</ol>
+<p>카프카의 메세지 전달 순서는,</p>
+<ol>
+<li>프로듀서가 메세지를 카프카에게 보낸다.</li>
+<li>메세지가 Topic 에 도착해 저장된다.</li>
+<li>컨슈머는 카프카 서버에 접속해 메세지를 가져간다. </li>
+</ol>
+<h3 id="3-특징"><a href="#3-특징" class="headerlink" title="3. 특징"></a>3. 특징</h3><ol>
+<li><p>프로듀서와 컨슈머의 분리<br>어느 한쪽 시스템에서 문제가 발생해도 연쇄 작용이 발생할 확률이 낮다.<br>서버 추가에 대한 부담이 준다.</p>
+</li>
+<li><p>멀티 프로듀서, 멀티 컨슈머<br>데이터 분석 및 처리 프로세스에서 하나의 데이터를 다양한 용도로 사용하는 요구 사항을 충족할 수 있다.</p>
+</li>
+<li><p>디스크에 메세지 저장<br>컨슈머가 메세지를 읽어가도 보관 주기 동안 디스크에 메세지를 저장한다.<br>( 일반적인 메세지 시스템은 컨슈머가 메세지를 읽어가면 큐에서 바로 메세지 삭제 )</p>
+</li>
+<li><p>확장성<br>온라인 상태에서 확장 작업 가능</p>
+</li>
+<li><p>높은 성능</p>
+</li>
+</ol>
+<hr>
+<p>카프카, 데이터 플랫폼의 최강자 &lt;고승범, 공용준&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2019/12/26/kafka-chapter1/" data-id="ck7agol4w00me2l6wg9lbmz0i" data-title="[카프카] 1장_카프카란 무엇인가" class="article-share-link">Share</a>
       
       
       
@@ -800,88 +881,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/12/26/kafka-chapter4/" data-id="ck7agiz1800mniv6w2z3pqxts" data-title="[카프카] 4장_카프카 프로듀서" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-kafka-chapter1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/12/26/kafka-chapter1/" class="article-date">
-  <time class="dt-published" datetime="2019-12-25T15:00:00.000Z" itemprop="datePublished">2019-12-26</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/kafka/">Kafka</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/12/26/kafka-chapter1/">[카프카] 1장_카프카란 무엇인가</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>카프카 : 대용량, 대규모 메세지 데이터를 빠르게 처리하도록 개발된 메시징 플랫폼</p>
-<h3 id="1-탄생-배경"><a href="#1-탄생-배경" class="headerlink" title="1. 탄생 배경"></a>1. 탄생 배경</h3><p><img src="/image/kafka_end_to_end.png" alt></p>
-<p>위 그림 처럼 end-to-end 아키텍쳐의 문제점은,</p>
-<ol>
-<li>실시간 트랜잭션 (OLTP) 처리와 비동기 처리가 동시에 이뤄지지만, 통합된 전송 영역이 없어서 복잡도 증가</li>
-<li>데이터 파이프라인의 관리가 어려움</li>
-</ol>
-<p><img src="/image/kafka_architecture.png" alt></p>
-<p>위 그림처럼 카프카는,</p>
-<ol>
-<li>모든 시스템으로 데이터 전송 가능 </li>
-<li>실시간 처리 가능</li>
-<li>확장이 용이</li>
-</ol>
-<h3 id="2-동작-방식과-원리"><a href="#2-동작-방식과-원리" class="headerlink" title="2. 동작 방식과 원리"></a>2. 동작 방식과 원리</h3><p>메시징 시스템을 먼저 살펴보자.<br>중앙에 메시징 시스템 서버를 두고 메시지를 Publish 하고 Subscribe 하는 형태의 통신을 Pub/Sub 모델이라고 한다.<br>프로듀서가 메시지를 컨슈머에게 직접 전달하는 것이 아니라, 중간의 메시징 시스템으로 전달한다. 그래서,</p>
-<ol>
-<li>프로듀서가 수신 불능 상태가 되어도 메세징 시스템이 살아있으면 메세지가 유실이 되지 않는다.</li>
-<li>메세징 시스템을 중심으로 연결되기 때문에, 확장성이 용이하다.</li>
-</ol>
-<p>카프카의 메세지 전달 순서는,</p>
-<ol>
-<li>프로듀서가 메세지를 카프카에게 보낸다.</li>
-<li>메세지가 Topic 에 도착해 저장된다.</li>
-<li>컨슈머는 카프카 서버에 접속해 메세지를 가져간다. </li>
-</ol>
-<h3 id="3-특징"><a href="#3-특징" class="headerlink" title="3. 특징"></a>3. 특징</h3><ol>
-<li><p>프로듀서와 컨슈머의 분리<br>어느 한쪽 시스템에서 문제가 발생해도 연쇄 작용이 발생할 확률이 낮다.<br>서버 추가에 대한 부담이 준다.</p>
-</li>
-<li><p>멀티 프로듀서, 멀티 컨슈머<br>데이터 분석 및 처리 프로세스에서 하나의 데이터를 다양한 용도로 사용하는 요구 사항을 충족할 수 있다.</p>
-</li>
-<li><p>디스크에 메세지 저장<br>컨슈머가 메세지를 읽어가도 보관 주기 동안 디스크에 메세지를 저장한다.<br>( 일반적인 메세지 시스템은 컨슈머가 메세지를 읽어가면 큐에서 바로 메세지 삭제 )</p>
-</li>
-<li><p>확장성<br>온라인 상태에서 확장 작업 가능</p>
-</li>
-<li><p>높은 성능</p>
-</li>
-</ol>
-<hr>
-<p>카프카, 데이터 플랫폼의 최강자 &lt;고승범, 공용준&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/12/26/kafka-chapter1/" data-id="ck7agiz1500mdiv6wku0ae5id" data-title="[카프카] 1장_카프카란 무엇인가" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/12/26/kafka-chapter4/" data-id="ck7agol4x00mj2l6wva9wasrx" data-title="[카프카] 4장_카프카 프로듀서" class="article-share-link">Share</a>
       
       
       
@@ -991,7 +991,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/12/26/kafka-chapter3/" data-id="ck7agiz1600miiv6wilw0sehn" data-title="[카프카] 3장_카프카 디자인" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/12/26/kafka-chapter3/" data-id="ck7agol4x00mh2l6wzhfoznja" data-title="[카프카] 3장_카프카 디자인" class="article-share-link">Share</a>
       
       
       
@@ -1107,7 +1107,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/12/26/kafka-chapter5/" data-id="ck7agiz1800mpiv6wtbxh8noi" data-title="[카프카] 5장_카프카 컨슈머" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/12/26/kafka-chapter5/" data-id="ck7agol4y00mm2l6w4518ncgh" data-title="[카프카] 5장_카프카 컨슈머" class="article-share-link">Share</a>
       
       
       
@@ -1241,7 +1241,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/12/22/object-chapter10/" data-id="ck7agiz2w00ouiv6wqfp5jr4b" data-title="[오브젝트] 10장_상속과 코드 재사용" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/12/22/object-chapter10/" data-id="ck7agol6l00ox2l6we9n2c9py" data-title="[오브젝트] 10장_상속과 코드 재사용" class="article-share-link">Share</a>
       
       
       
@@ -1375,7 +1375,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/12/15/object-chapter9/" data-id="ck7agiz3100p2iv6w54ybllvj" data-title="[오브젝트] 9장_유연한 설계" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/12/15/object-chapter9/" data-id="ck7agol6k00ov2l6wdkg7mkkc" data-title="[오브젝트] 9장_유연한 설계" class="article-share-link">Share</a>
       
       
       
@@ -1430,15 +1430,15 @@
       <ul>
         
           <li>
-            <a href="/2020/03/02/tdd-chapter-05/">[테스트 주도 개발] 5장_솔직히 말하자며</a>
+            <a href="/2020/03/02/tdd-chapter-06/">[테스트 주도 개발] 6장_돌아온 모두를 위한 평등</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/02/tdd-chapter-05/">[테스트 주도 개발] 5장_솔직히 말하자면</a>
           </li>
         
           <li>
             <a href="/2020/03/02/tdd-chapter-04/">[테스트 주도 개발] 4장_프라이버시</a>
-          </li>
-        
-          <li>
-            <a href="/2020/03/02/tdd-chapter-06/">[테스트 주도 개발] 6장_돌아온 모두를 위한 평등</a>
           </li>
         
           <li>

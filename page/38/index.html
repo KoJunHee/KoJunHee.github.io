@@ -71,95 +71,6 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-원격저장소와 지역저장소의 동기화 " class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2017/11/26/원격저장소와 지역저장소의 동기화 /" class="article-date">
-  <time class="dt-published" datetime="2017-11-25T15:00:00.000Z" itemprop="datePublished">2017-11-26</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/git/">Git</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2017/11/26/원격저장소와 지역저장소의 동기화 /">원격 저장소와 지역 저장소의 동기화 </a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>##하나의 원격 저장소를 두 개의 지역 저장소가 동기화</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Git clone 주소 git_home	 	//그럼 git_home이라는 곳이 생김</span><br><span class="line">Git clone 주소 git_office	 	//그럼 git_office이라는 곳이 생김</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">- git_home 디렉토리에서</span><br><span class="line">Vim f1.txt	 				//내용   a b c</span><br><span class="line">Git commit -am 3</span><br><span class="line">Git push</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">- git_office 디렉토리에서</span><br><span class="line">Git pull </span><br><span class="line">vim f1.txt					//내용 a b c 에 d 추가</span><br><span class="line">Git commit -am ‘4’</span><br><span class="line">Git push</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">git_home 디렉토리에서</span><br><span class="line">Git pull</span><br><span class="line"></span><br><span class="line">​```</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/11/26/원격저장소와 지역저장소의 동기화 /" data-id="ck7agiyum003viv6wr7fyqukq" data-title="원격 저장소와 지역 저장소의 동기화 " class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-원격저장소 만들기" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2017/11/26/원격저장소 만들기/" class="article-date">
-  <time class="dt-published" datetime="2017-11-25T15:00:00.000Z" itemprop="datePublished">2017-11-26</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/git/">Git</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2017/11/26/원격저장소 만들기/">원격 저장소 만들기</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="작업하고-있던-것을-생성한-원격-저장소로-옮기기"><a href="#작업하고-있던-것을-생성한-원격-저장소로-옮기기" class="headerlink" title="작업하고 있던 것을 생성한 원격 저장소로 옮기기"></a>작업하고 있던 것을 생성한 원격 저장소로 옮기기</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">mkdir gitfth</span><br><span class="line">Git init</span><br><span class="line">Vim f1.txt</span><br><span class="line">Git add f1.txt</span><br><span class="line">Git commit -m ‘1’</span><br><span class="line">git remote add origin https://github.com/KoJunHee/gitfth.git</span><br><span class="line">	// 현재 우리의 로컬 저장소에  원격저장소(remote repository)를 연결 시킨다</span><br><span class="line">	// 그리고 그 원격저장소는 이 주소이다</span><br><span class="line">	// 이 주소는 너무 기니까 origin 이라는 별명을 부여하겠다</span><br><span class="line">	// 여러개의 원격저장소를 연결 시킬수 있음</span><br><span class="line">	// ~add friend ~ 이런식으로도 가능</span><br><span class="line"></span><br><span class="line">Git remote 		//잘 되었는지 확인할수 있음.</span><br><span class="line">Git remote -v 	//상세 보기 가능</span><br><span class="line">Git remote remove friend </span><br><span class="line">Git remote -v	//origin 만 남은걸 볼수 있음</span><br><span class="line">git push -u origin master	</span><br><span class="line">	// 로컬 저장소의 master와 origin 연결</span><br><span class="line">	// 유저네임 입력하고 </span><br><span class="line">	// 비밀번호 입력</span><br><span class="line">Vim f1.txt		//변경</span><br><span class="line">Git commit -am 2</span><br><span class="line">Git push  		// 이미 연결 시켰기 때문에 그 다음부터는 push만 하면 됨</span><br></pre></td></tr></table></figure>
-
-<h2 id="존재하는-원격-저장소를-내-로컬-저장소로-복제하면-다른-컴퓨터에서도-똑같이-가능"><a href="#존재하는-원격-저장소를-내-로컬-저장소로-복제하면-다른-컴퓨터에서도-똑같이-가능" class="headerlink" title="존재하는 원격 저장소를 내 로컬 저장소로 복제하면 다른 컴퓨터에서도 똑같이 가능"></a>존재하는 원격 저장소를 내 로컬 저장소로 복제하면 다른 컴퓨터에서도 똑같이 가능</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">github에서 clone or download에서 주소를 카피.</span><br><span class="line">새로운 컴퓨터라고 치고 새로운 디렉토리를 만들거임.</span><br><span class="line">cd ..</span><br><span class="line">Mkdir gitfth2</span><br><span class="line">Cd gitgth2</span><br><span class="line">Git clone https://github.com/KoJunHee/gitfth.git .     //.은 현재 디렉토리</span><br><span class="line"></span><br><span class="line">ls -al 			//하면 동기화 확인 가능하고</span><br><span class="line">Git romote -v		//하면 연결되어있다는 것을 확인</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/11/26/원격저장소 만들기/" data-id="ck7agiyul003tiv6wfvaj2mwu" data-title="원격 저장소 만들기" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
     <article id="post-git 핵심 명령어" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2017/11/26/git 핵심 명령어/" class="article-date">
@@ -230,7 +141,97 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/11/26/git 핵심 명령어/" data-id="ck7agiyuj003oiv6w0p3s7g0r" data-title="git 핵싱 명령어" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/11/26/git 핵심 명령어/" data-id="ck7agokyw003p2l6wo5fhz24d" data-title="git 핵싱 명령어" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-swagger object array" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/11/26/swagger object array/" class="article-date">
+  <time class="dt-published" datetime="2017-11-25T15:00:00.000Z" itemprop="datePublished">2017-11-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/node-js/">Node.js</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/11/26/swagger object array/">object array</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="array-에-object-를"><a href="#array-에-object-를" class="headerlink" title="array 에 object 를"></a>array 에 object 를</h2><p><img src="/image/49_re.png" alt></p>
+<p>​    </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2017/11/26/swagger object array/" data-id="ck7agokyy003y2l6wa4b291uh" data-title="object array" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-원격저장소 만들기" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/11/26/원격저장소 만들기/" class="article-date">
+  <time class="dt-published" datetime="2017-11-25T15:00:00.000Z" itemprop="datePublished">2017-11-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/git/">Git</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/11/26/원격저장소 만들기/">원격 저장소 만들기</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="작업하고-있던-것을-생성한-원격-저장소로-옮기기"><a href="#작업하고-있던-것을-생성한-원격-저장소로-옮기기" class="headerlink" title="작업하고 있던 것을 생성한 원격 저장소로 옮기기"></a>작업하고 있던 것을 생성한 원격 저장소로 옮기기</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">mkdir gitfth</span><br><span class="line">Git init</span><br><span class="line">Vim f1.txt</span><br><span class="line">Git add f1.txt</span><br><span class="line">Git commit -m ‘1’</span><br><span class="line">git remote add origin https://github.com/KoJunHee/gitfth.git</span><br><span class="line">	// 현재 우리의 로컬 저장소에  원격저장소(remote repository)를 연결 시킨다</span><br><span class="line">	// 그리고 그 원격저장소는 이 주소이다</span><br><span class="line">	// 이 주소는 너무 기니까 origin 이라는 별명을 부여하겠다</span><br><span class="line">	// 여러개의 원격저장소를 연결 시킬수 있음</span><br><span class="line">	// ~add friend ~ 이런식으로도 가능</span><br><span class="line"></span><br><span class="line">Git remote 		//잘 되었는지 확인할수 있음.</span><br><span class="line">Git remote -v 	//상세 보기 가능</span><br><span class="line">Git remote remove friend </span><br><span class="line">Git remote -v	//origin 만 남은걸 볼수 있음</span><br><span class="line">git push -u origin master	</span><br><span class="line">	// 로컬 저장소의 master와 origin 연결</span><br><span class="line">	// 유저네임 입력하고 </span><br><span class="line">	// 비밀번호 입력</span><br><span class="line">Vim f1.txt		//변경</span><br><span class="line">Git commit -am 2</span><br><span class="line">Git push  		// 이미 연결 시켰기 때문에 그 다음부터는 push만 하면 됨</span><br></pre></td></tr></table></figure>
+
+<h2 id="존재하는-원격-저장소를-내-로컬-저장소로-복제하면-다른-컴퓨터에서도-똑같이-가능"><a href="#존재하는-원격-저장소를-내-로컬-저장소로-복제하면-다른-컴퓨터에서도-똑같이-가능" class="headerlink" title="존재하는 원격 저장소를 내 로컬 저장소로 복제하면 다른 컴퓨터에서도 똑같이 가능"></a>존재하는 원격 저장소를 내 로컬 저장소로 복제하면 다른 컴퓨터에서도 똑같이 가능</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">github에서 clone or download에서 주소를 카피.</span><br><span class="line">새로운 컴퓨터라고 치고 새로운 디렉토리를 만들거임.</span><br><span class="line">cd ..</span><br><span class="line">Mkdir gitfth2</span><br><span class="line">Cd gitgth2</span><br><span class="line">Git clone https://github.com/KoJunHee/gitfth.git .     //.은 현재 디렉토리</span><br><span class="line"></span><br><span class="line">ls -al 			//하면 동기화 확인 가능하고</span><br><span class="line">Git romote -v		//하면 연결되어있다는 것을 확인</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2017/11/26/원격저장소 만들기/" data-id="ck7agokyx003r2l6wzpda855m" data-title="원격 저장소 만들기" class="article-share-link">Share</a>
       
       
       
@@ -277,7 +278,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/11/25/문자열 분석/" data-id="ck7agiyuk003qiv6wnc78tmam" data-title="문자열 분석" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/11/25/문자열 분석/" data-id="ck7agokyv003n2l6wz6buc7qv" data-title="문자열 분석" class="article-share-link">Share</a>
       
       
       
@@ -332,7 +333,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/11/22/환경변수설정/" data-id="ck7agiyuj003miv6wyli5nqb6" data-title="환경변수 설정" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/11/22/환경변수설정/" data-id="ck7agokyu003l2l6wiy4xxh6y" data-title="환경변수 설정" class="article-share-link">Share</a>
       
       
       
@@ -382,7 +383,55 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/11/22/접미사배열/" data-id="ck7agiyui003kiv6wya55689y" data-title="접미사배열" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/11/22/접미사배열/" data-id="ck7agokyu003j2l6wkjrk4q4x" data-title="접미사배열" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-swagger parameter 길이문제" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/11/21/swagger parameter 길이문제/" class="article-date">
+  <time class="dt-published" datetime="2017-11-20T15:00:00.000Z" itemprop="datePublished">2017-11-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/node-js/">Node.js</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/11/21/swagger parameter 길이문제/">Swagger parameter 길이 문제</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="Swagger-parameter-많아-졌을-때"><a href="#Swagger-parameter-많아-졌을-때" class="headerlink" title="Swagger parameter 많아 졌을 때"></a>Swagger parameter 많아 졌을 때</h2><ul>
+<li>옆 부분 짤리는 문제 발생</li>
+<li>다음과 같이 object로 묶어주자</li>
+</ul>
+<p><img src="/image/39.png" alt></p>
+<p>​    </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2017/11/21/swagger parameter 길이문제/" data-id="ck7agokyt003f2l6wus20umj9" data-title="Swagger parameter 길이 문제" class="article-share-link">Share</a>
       
       
       
@@ -432,55 +481,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/11/21/다리만들기/" data-id="ck7agiyug003giv6wazsk9iut" data-title="다리만들기" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-swagger parameter 길이문제" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2017/11/21/swagger parameter 길이문제/" class="article-date">
-  <time class="dt-published" datetime="2017-11-20T15:00:00.000Z" itemprop="datePublished">2017-11-21</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/node-js/">Node.js</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2017/11/21/swagger parameter 길이문제/">Swagger parameter 길이 문제</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Swagger-parameter-많아-졌을-때"><a href="#Swagger-parameter-많아-졌을-때" class="headerlink" title="Swagger parameter 많아 졌을 때"></a>Swagger parameter 많아 졌을 때</h2><ul>
-<li>옆 부분 짤리는 문제 발생</li>
-<li>다음과 같이 object로 묶어주자</li>
-</ul>
-<p><img src="/image/39.png" alt></p>
-<p>​    </p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/11/21/swagger parameter 길이문제/" data-id="ck7agiyuh003iiv6wm7sq0eas" data-title="Swagger parameter 길이 문제" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/11/21/다리만들기/" data-id="ck7agokyt003h2l6wjza8yzfi" data-title="다리만들기" class="article-share-link">Share</a>
       
       
       
@@ -529,7 +530,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/11/20/팩토리얼0의개수/" data-id="ck7agiyue003eiv6wo7cjo5ej" data-title="팩토리얼 0의 개수" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/11/20/팩토리얼0의개수/" data-id="ck7agokys003d2l6wcpfnidap" data-title="팩토리얼 0의 개수" class="article-share-link">Share</a>
       
       
       
@@ -580,7 +581,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/11/17/토마토/" data-id="ck7agiyud003aiv6wr1oew7at" data-title="토마토" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/11/17/토마토/" data-id="ck7agokys003b2l6wr33w1u4f" data-title="토마토" class="article-share-link">Share</a>
       
       
       
@@ -635,15 +636,15 @@
       <ul>
         
           <li>
-            <a href="/2020/03/02/tdd-chapter-05/">[테스트 주도 개발] 5장_솔직히 말하자며</a>
+            <a href="/2020/03/02/tdd-chapter-06/">[테스트 주도 개발] 6장_돌아온 모두를 위한 평등</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/02/tdd-chapter-05/">[테스트 주도 개발] 5장_솔직히 말하자면</a>
           </li>
         
           <li>
             <a href="/2020/03/02/tdd-chapter-04/">[테스트 주도 개발] 4장_프라이버시</a>
-          </li>
-        
-          <li>
-            <a href="/2020/03/02/tdd-chapter-06/">[테스트 주도 개발] 6장_돌아온 모두를 위한 평등</a>
           </li>
         
           <li>

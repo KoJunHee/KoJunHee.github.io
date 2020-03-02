@@ -71,9 +71,9 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-joi" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-exports" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/12/09/joi/" class="article-date">
+    <a href="/2018/12/09/exports/" class="article-date">
   <time class="dt-published" datetime="2018-12-08T15:00:00.000Z" itemprop="datePublished">2018-12-09</time>
 </a>
     
@@ -89,7 +89,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/09/joi/">Joi</a>
+      <a class="p-name article-title" href="/2018/12/09/exports/">exports</a>
     </h1>
   
 
@@ -97,16 +97,18 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h5 id="Joi-가-뭡니까"><a href="#Joi-가-뭡니까" class="headerlink" title="Joi 가 뭡니까 ?"></a>Joi 가 뭡니까 ?</h5><p>Hapi.js에서 사용하는 parameter 검증 모듈입니다.</p>
-<h5 id="Joi-를-사용하지-않으면"><a href="#Joi-를-사용하지-않으면" class="headerlink" title="Joi 를 사용하지 않으면 ?"></a>Joi 를 사용하지 않으면 ?</h5><p>routing 의 handler 에서 parameter 를 검증하는 로직과 서버 자원을 조회하는 로직이 섞여있습니다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> users = [<span class="string">'Chris'</span>, <span class="string">'Mod'</span>, <span class="string">'Daniel'</span>, <span class="string">'JT'</span>, <span class="string">'Justin'</span>];</span><br><span class="line"></span><br><span class="line">server.route(&#123;</span><br><span class="line">    method: <span class="string">'GET'</span>,</span><br><span class="line">    path:<span class="string">'/users/&#123;id&#125;'</span>,</span><br><span class="line">    handler: <span class="function"><span class="keyword">function</span> (<span class="params">req, reply</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 파라메터 검증 </span></span><br><span class="line">      <span class="keyword">if</span> (req.params.id &amp;lt; users.length) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 검증을 통과하면 로직 수행</span></span><br><span class="line">        reply(&#123;<span class="attr">user</span>: users[req.params.id]&#125;);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 검증 미통과시 404 에러코드 반환 </span></span><br><span class="line">        reply(<span class="string">'No user'</span>).code(<span class="number">404</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+        <h5 id="전역-객체인-exports가-뭔가요"><a href="#전역-객체인-exports가-뭔가요" class="headerlink" title="전역 객체인 exports가 뭔가요?"></a>전역 객체인 exports가 뭔가요?</h5><p>만들고자 하는 모듈을 파일로 만들고, exports 객체의 속성이나 메소드를 정의해주면 모듈을 만들어 낼 수 있습니다. 그리고 만들어진 모듈을 전역 함수 require()를 이용하여 추출합니다.</p>
+<h5 id="여러-속성과-메소드를-모듈로-만들고-이를-사용한-exports-예시는"><a href="#여러-속성과-메소드를-모듈로-만들고-이를-사용한-exports-예시는" class="headerlink" title="여러 속성과 메소드를 모듈로 만들고 이를 사용한 exports 예시는?"></a>여러 속성과 메소드를 모듈로 만들고 이를 사용한 exports 예시는?</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// cicle.js</span></span><br><span class="line"><span class="keyword">var</span> PI = <span class="built_in">Math</span>.PI;</span><br><span class="line"> </span><br><span class="line">exports.area = <span class="function"><span class="keyword">function</span> (<span class="params">r</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> PI * r * r;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line">exports.circumference = <span class="function"><span class="keyword">function</span> (<span class="params">r</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">2</span> * PI * r;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// foo.js</span></span><br><span class="line"><span class="keyword">var</span> circle = <span class="built_in">require</span>(<span class="string">'./circle.js'</span>);</span><br><span class="line"><span class="built_in">console</span>.log( <span class="string">'The area of a circle of radius 4 is '</span></span><br><span class="line">    + circle.area(<span class="number">4</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// result</span></span><br><span class="line">$ node foo.js</span><br><span class="line">The area <span class="keyword">of</span> a circle <span class="keyword">of</span> radius <span class="number">4</span> is <span class="number">50.26548245743669</span></span><br></pre></td></tr></table></figure>
 
-<h5 id="Joi-를-사용하면"><a href="#Joi-를-사용하면" class="headerlink" title="Joi 를 사용하면 ?"></a>Joi 를 사용하면 ?</h5><p>config 속성을 통해 parameter 를 검증할 수 있습니다. config.validate 속성에 자바스크립트 객체를 설정했습니다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Joi = <span class="built_in">require</span>(<span class="string">'joi'</span>);</span><br><span class="line"></span><br><span class="line">server.route(&#123;</span><br><span class="line">  method: <span class="string">'GET'</span>,</span><br><span class="line">  path:<span class="string">'/users/&#123;id&#125;'</span>,</span><br><span class="line">  handler: <span class="function"><span class="keyword">function</span> (<span class="params">req, reply</span>) </span>&#123;</span><br><span class="line">    reply(&#123;<span class="attr">user</span>: users[req.params.id]&#125;);</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// config.validate 속성에 검증 로직을 추가한다. 일종의 스키마 형태 </span></span><br><span class="line">  config: &#123;</span><br><span class="line">    validate: &#123;</span><br><span class="line">      params: &#123;</span><br><span class="line">        id: Joi.number().integer().min(<span class="number">0</span>).max(users.length)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h5 id="exports와-module-exports-차이는"><a href="#exports와-module-exports-차이는" class="headerlink" title="exports와 module.exports 차이는?"></a>exports와 module.exports 차이는?</h5><p>exports는 속성이나 메소드를 여러 개 정의할 수 있지만, module.exports는 하나만 정의할 수 있습니다. 파일 자체를 속성이나 메소드로 사용하는 방식입니다.</p>
+<h5 id="module-exports의-예시는"><a href="#module-exports의-예시는" class="headerlink" title="module.exports의 예시는?"></a>module.exports의 예시는?</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// square.js</span></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">width</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        area: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> width * width;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// bar.js</span></span><br><span class="line"><span class="keyword">var</span> square = <span class="built_in">require</span>(<span class="string">'./square.js'</span>);</span><br><span class="line"><span class="keyword">var</span> mySquare = square(<span class="number">2</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'The area of my square is '</span> + mySquare.area());</span><br><span class="line"></span><br><span class="line"><span class="comment">// result</span></span><br><span class="line">$ node bar.js</span><br><span class="line">The area <span class="keyword">of</span> my square is <span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://opentutorials.org/module/938/7190" target="_blank" rel="noopener">https://opentutorials.org/module/938/7190</a></p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/09/joi/" data-id="ck7agiz0v00leiv6w17r24ajm" data-title="Joi" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/09/exports/" data-id="ck7agol4k00le2l6wez0n4l8m" data-title="exports" class="article-share-link">Share</a>
       
       
       
@@ -184,7 +186,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/09/React.js/" data-id="ck7agiz0u00lciv6wctvmb36s" data-title="React.js" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/09/React.js/" data-id="ck7agol4j00lc2l6wkllyrqv8" data-title="React.js" class="article-share-link">Share</a>
       
       
       
@@ -242,7 +244,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/09/RabbitMQ/" data-id="ck7agiz0u00laiv6w1lhebciu" data-title="RabbitMQ" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/09/RabbitMQ/" data-id="ck7agol4j00la2l6wtpyvyu1l" data-title="RabbitMQ" class="article-share-link">Share</a>
       
       
       
@@ -286,7 +288,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/09/REPL/" data-id="ck7agiz0t00l8iv6wgqe54ts2" data-title="REPL" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/09/REPL/" data-id="ck7agol4i00l82l6wapco37j2" data-title="REPL" class="article-share-link">Share</a>
       
       
       
@@ -354,7 +356,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/09/MongoDB Replication/" data-id="ck7agiz0s00l5iv6wwoylx64v" data-title="MongoDB Replication" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/09/MongoDB Replication/" data-id="ck7agol4h00l52l6wmywib99k" data-title="MongoDB Replication" class="article-share-link">Share</a>
       
       
       
@@ -407,7 +409,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/09/Docker/" data-id="ck7agiz0s00l3iv6w8makhvjj" data-title="Docker" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/09/Docker/" data-id="ck7agol4h00l32l6w1knl7z04" data-title="Docker" class="article-share-link">Share</a>
       
       
       
@@ -419,14 +421,14 @@
 
 
   
-    <article id="post-Promise" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-Push Server" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/12/07/Promise/" class="article-date">
+    <a href="/2018/12/07/Push Server/" class="article-date">
   <time class="dt-published" datetime="2018-12-06T15:00:00.000Z" itemprop="datePublished">2018-12-07</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/node-js/">Node.js</a>
+    <a class="article-category-link" href="/categories/network/">Network</a>
   </div>
 
   </div>
@@ -437,7 +439,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/07/Promise/">Promise</a>
+      <a class="p-name article-title" href="/2018/12/07/Push Server/">Push Server</a>
     </h1>
   
 
@@ -445,74 +447,20 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h5 id="Promise는-무엇인가요"><a href="#Promise는-무엇인가요" class="headerlink" title="Promise는 무엇인가요?"></a>Promise는 무엇인가요?</h5><p>자바스크립트 비동기 처리에 사용되는 객체입니다. </p>
-<p>아래의 promise 코드는, 서버에서 제대로 응답을 받아오면 resolve() 메서드를 호출하고, 응답이 없으면 reject() 메서드를 호출하는 예제입니다. 호출된 메서드에 따라 then()이나 catch() 로 분기하여 데이터 또는 오류를 출력합니다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getData</span>(<span class="params">callbackFunc</span>) </span>&#123;</span><br><span class="line">  $.get(<span class="string">'url 주소/products/1'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">response</span>) </span>&#123;</span><br><span class="line">    callbackFunc(response); <span class="comment">// 서버에서 받은 데이터 response를 callbackFunc() 함수에 넘겨줌</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">getData(<span class="function"><span class="keyword">function</span> (<span class="params">tableData</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(tableData); <span class="comment">// $.get()의 response 값이 tableData에 전달됨</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getData</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">    $.get(<span class="string">'url 주소/products/1'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">response</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (response) &#123;</span><br><span class="line">        resolve(response);</span><br><span class="line">      &#125;</span><br><span class="line">      reject(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"Request is failed"</span>));</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Fulfilled 또는 Rejected의 결과 값 출력</span></span><br><span class="line">getData().then(<span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(data); <span class="comment">// response 값 출력</span></span><br><span class="line">&#125;).catch(<span class="function"><span class="keyword">function</span> (<span class="params">err</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.error(err); <span class="comment">// Error 출력</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<h5 id="Promise의-상태는-뭐가-있나요"><a href="#Promise의-상태는-뭐가-있나요" class="headerlink" title="Promise의 상태는 뭐가 있나요?"></a>Promise의 상태는 뭐가 있나요?</h5><p>new Promise()로 프로미스를 생성하고 종료될 때까지 세 가지 상태를 갖습니다.</p>
-<ol>
-<li><p>Pending(대기)</p>
-<p>비동기 처리 로직이 아직 완료되지 않은 상태</p>
-</li>
-<li><p>Fulfilled(이행) </p>
-<p>비동기 처리가 완료되어 프로미스가 결과 값을 반환해준 상태</p>
-</li>
-<li><p>Rejected(실패)</p>
-<p>비동기 처리가 실패하거나 오류가 발생한 상태</p>
-</li>
-</ol>
-<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://joshua1988.github.io/web-development/javascript/promise-for-beginners/" target="_blank" rel="noopener">https://joshua1988.github.io/web-development/javascript/promise-for-beginners/</a></p>
+        <h5 id="Push-Server-란"><a href="#Push-Server-란" class="headerlink" title="Push Server 란?"></a>Push Server 란?</h5><p>클라이언트의 요청이 오면 응답해주는 방식이 아닌 서버가 클라이언트에게 공지사항과 같은 무엇인가 통지해주기 위한 방법입니다. 다시 말해 클라이언트의 요청이 없이도 서버는 클라이언트에게 응답하는 방식입니다.</p>
+<p>HTTP 프로토콜의 특성때문에 실제 push server 구현은 되지 않습니다. 하지만 push server 의 효과와 비슷한 모델들이 등장합니다. 이것이 Polling, Long Polling, Stream 입니다.</p>
+<h5 id="Polling이란"><a href="#Polling이란" class="headerlink" title="Polling이란?"></a>Polling이란?</h5><p>클라이언트가 끊임없이 웹서버에게 새로운 내용이 있는지 물어보는 방식입니다.</p>
+<p><img src="/image/pushserver01.png" alt></p>
+<h5 id="Long-Polling이란"><a href="#Long-Polling이란" class="headerlink" title="Long Polling이란?"></a>Long Polling이란?</h5><p>클라이언트가 웹서버에게 새로운 내용이 있는지 물어보았을 때 웹서버에 새로운 내용이 없다면 대답해주지 않다가 새로운 내용이 생기면 이때 대답해주는 방식입니다.</p>
+<p><img src="/image/pushserver02.png" alt></p>
+<h5 id="Stream이란"><a href="#Stream이란" class="headerlink" title="Stream이란?"></a>Stream이란?</h5><p>웹서버의 응답 헤더의  content-length 를 이용한 방법입니다. 응답헤더의 content-length 가 존재하지 않는다면 클라이언트는 연결이 끊길때 까지 응답을 받아들입니다. 즉 한번의 요청에 대해 끊임없는 응답을 보내는 방식입니다. 이 방식은 한번의 요청만 있으면 되므로 효율은 좋지만 error 처리에 매우 취약합니다.</p>
+<p><img src="/image/pushserver03.png" alt></p>
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="http://onecellboy.tistory.com/category/%ED%95%99%EC%8A%B5%EC%9E%90%EB%A3%8C%28~2017%29/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC" target="_blank" rel="noopener">http://onecellboy.tistory.com/category/%ED%95%99%EC%8A%B5%EC%9E%90%EB%A3%8C%28~2017%29/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/07/Promise/" data-id="ck7agiz0o00kpiv6wqrlja1us" data-title="Promise" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-MVC" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/12/07/MVC/" class="article-date">
-  <time class="dt-published" datetime="2018-12-06T15:00:00.000Z" itemprop="datePublished">2018-12-07</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/07/MVC/">MVC</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>하나의 애플리케이션, 프로젝트를 구성할 때 그 구성요소를 Model, View, Controller로 구분한 패턴입니다. </p>
-<p>사용자가 Controller를 조작하면, Controller는 Model을 통해서 데이터를 가져오고, 그 정보를 바탕으로 시각적인 표현을 담당하는 View를 제어해서 사용자에게 전달합니다.</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/07/MVC/" data-id="ck7agiz0r00l1iv6wp4ql5esc" data-title="MVC" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/07/Push Server/" data-id="ck7agol4e00kt2l6w5v68c2ya" data-title="Push Server" class="article-share-link">Share</a>
       
       
       
@@ -558,7 +506,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/07/Web Socket/" data-id="ck7agiz0q00kxiv6w0xz345lf" data-title="Web Socket" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/07/Web Socket/" data-id="ck7agol4f00kz2l6wtnc2bven" data-title="Web Socket" class="article-share-link">Share</a>
       
       
       
@@ -624,7 +572,84 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/07/TDD/" data-id="ck7agiz0p00kviv6wp6gty9ml" data-title="TDD" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/07/TDD/" data-id="ck7agol4f00kx2l6wltat6stx" data-title="TDD" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Refactoring" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/07/Refactoring/" class="article-date">
+  <time class="dt-published" datetime="2018-12-06T15:00:00.000Z" itemprop="datePublished">2018-12-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/software-engineering/">Software Engineering</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/07/Refactoring/">Refactoring</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="code-refactoring-이란"><a href="#code-refactoring-이란" class="headerlink" title="code refactoring 이란?"></a>code refactoring 이란?</h5><p>외부동작을 바꾸지 않으면서 내부 구조를 개선하는 방법입니다.</p>
+<h5 id="왜-해야하죠"><a href="#왜-해야하죠" class="headerlink" title="왜 해야하죠?"></a>왜 해야하죠?</h5><ol>
+<li>소프트웨어의 디자인을 개선시킵니다.</li>
+<li>소프트웨어를 더 이해하기 쉽게 만든다.</li>
+<li>버그를 찾도록 도와줍니다.</li>
+</ol>
+<h5 id="언제-해야하죠"><a href="#언제-해야하죠" class="headerlink" title="언제 해야하죠?"></a>언제 해야하죠?</h5><ol>
+<li><p>삼진규칙, 즉 스트라이크 세 개면 리팩토링을 합니다.</p>
+<p>어떤 것을 처음 할 때는, 그냥 합니다.두번째로 비슷한 어떤 것을 하게 되면, 그냥 중복되도록 합니다. 세 번째로 비슷한 것을 하게 되면, 그때 리팩토링을 합니다.</p>
+</li>
+<li><p>기능을 추가할 때 리팩토링을 합니다.</p>
+</li>
+<li><p>버그를 수정해야 할 때 리팩토링을 합니다.</p>
+</li>
+<li><p>Code Review 를 할 때 리팩토링을 합니다.</p>
+</li>
+</ol>
+<h5 id="어떤-것을-해야하죠"><a href="#어떤-것을-해야하죠" class="headerlink" title="어떤 것을 해야하죠?"></a>어떤 것을 해야하죠?</h5><ol>
+<li><p>Shotgun Surgery (기능의 산재)</p>
+<p>수정할 때마다 여러 클래스에서 수많은 부분을 고쳐야 한다면, 이 부분을 의심합니다. 이 경우, 메서드 또는 필드를 하나의 클래스로 추출합니다. 기존의 클래스 중 적절한 것이 없다면 새로운 클래스를 만들어 추출합니다.</p>
+</li>
+<li><p>Lazy Class (직무유기 클래스)</p>
+<p>리팩토링으로 인해 기능이 축소된 클래스, 또는 수정할 계획으로 작성했으나 수정을 실시하지 않아 쓸모없어진 클래스입니다. </p>
+</li>
+<li><p>Middle Man (과잉 중개 메서드)</p>
+<p>클래스가 간단한 위임을 너무 많이 하고 있는 경우입니다. 많은 메소드가 이와 같이 하고 있다면 Person 클래스에 간단한 위임 메소드가 너무 많이 생기게 됩니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">  Department _department;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> Person <span class="title">getManager</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> _department.getManager();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Department</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> Person _manager;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">Department</span> <span class="params">(Person manager)</span> </span>&#123;</span><br><span class="line">    _manager = manager;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//client</span></span><br><span class="line">manager = john.getManager();</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> Department <span class="title">getDepartment</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> _department;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">manager = john.getDepartment().getManager();</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Refused Bequest (방치된 상속물)</p>
+<p>하위 클래스는 부모 클래스의 메서드와  데이터를 상속받습니다. 이 때, 하위 클래스에서 필요한 것을 제외한 나머지는 방치됩니다. 이는 잘못된 계층 구조 때문에 발생합니다.</p>
+</li>
+</ol>
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://wikidocs.net/593" target="_blank" rel="noopener">https://wikidocs.net/593</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/07/Refactoring/" data-id="ck7agol4e00kv2l6wgnnv7p2t" data-title="Refactoring" class="article-share-link">Share</a>
       
       
       
@@ -679,15 +704,15 @@
       <ul>
         
           <li>
-            <a href="/2020/03/02/tdd-chapter-05/">[테스트 주도 개발] 5장_솔직히 말하자며</a>
+            <a href="/2020/03/02/tdd-chapter-06/">[테스트 주도 개발] 6장_돌아온 모두를 위한 평등</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/02/tdd-chapter-05/">[테스트 주도 개발] 5장_솔직히 말하자면</a>
           </li>
         
           <li>
             <a href="/2020/03/02/tdd-chapter-04/">[테스트 주도 개발] 4장_프라이버시</a>
-          </li>
-        
-          <li>
-            <a href="/2020/03/02/tdd-chapter-06/">[테스트 주도 개발] 6장_돌아온 모두를 위한 평등</a>
           </li>
         
           <li>
