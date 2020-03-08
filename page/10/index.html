@@ -71,9 +71,109 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-Java 8" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-Redis" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/12/05/Java 8/" class="article-date">
+    <a href="/2018/12/05/Redis/" class="article-date">
+  <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/database/">Database</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/05/Redis/">Redis</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="Redis가-뭐죠"><a href="#Redis가-뭐죠" class="headerlink" title="Redis가 뭐죠 ?"></a>Redis가 뭐죠 ?</h5><p>REmote DIctionary System.</p>
+<p>메모리 기반의 Key/Value Store 입니다. Cassandra나 HBase와 같이 NoSQL DBMS로 분류되기도 하고, memcached와 같은 In memory 솔루션으로 분리되기도 합니다. </p>
+<h5 id="Redis는-어떤-용도로-사용되나요"><a href="#Redis는-어떤-용도로-사용되나요" class="headerlink" title="Redis는 어떤 용도로 사용되나요 ?"></a>Redis는 어떤 용도로 사용되나요 ?</h5><p>Message Queue, Shared memory, Remote Dictionary 용도로도 사용될 수 있습니다.</p>
+<h5 id="memcached와-Redis의-차이는-뭘까요"><a href="#memcached와-Redis의-차이는-뭘까요" class="headerlink" title="memcached와 Redis의 차이는 뭘까요 ?"></a>memcached와 Redis의 차이는 뭘까요 ?</h5><ol>
+<li>redis는 Key/Value Store이기는 하지만, 저장되는 Value가 단순한 Object가 아니라 다양한 데이터 구조체를 지원합니다.</li>
+<li>저장된 데이타에 대한 연산이나 추가 작업이 가능합니다. (합집합, 교집합 ,RANGE QUERY 등)</li>
+</ol>
+<h5 id="Redis-데이터-구조체의-특징은-무엇인가요"><a href="#Redis-데이터-구조체의-특징은-무엇인가요" class="headerlink" title="Redis 데이터 구조체의 특징은 무엇인가요 ?"></a>Redis 데이터 구조체의 특징은 무엇인가요 ?</h5><p>일반적인 string 뿐만 아니라, set, list, hash와 같은 집합형 데이타 구조를 지원합니다. set 는 일종의 집합, sorted set 은 오름차순으로 정렬된 집합, hash 는 키 기반의 테이블, list 는 일종의 링크드 리스트 와 같은 특성을 지니고 있습니다.</p>
+<h5 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h5><p><a href="http://bcho.tistory.com/1098?category=513811" target="_blank" rel="noopener">http://bcho.tistory.com/1098?category=513811</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/05/Redis/" data-id="ck7itpmqn00jt106wlwn9p9lo" data-title="Redis" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Connection Pool" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/05/Connection Pool/" class="article-date">
+  <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/database/">Database</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/05/Connection Pool/">Connection Pool</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="Connection-Pool이란"><a href="#Connection-Pool이란" class="headerlink" title="Connection Pool이란?"></a>Connection Pool이란?</h5><p>데이터베이스와 연결된 커넥션을 미리 만들어서 풀 (pool) 속에 저장해 두고 있다가 필요할 때 커넥션을 풀에서 쓰고 다시 풀에 반환하는 기법을 말합니다.</p>
+<h5 id="장점은"><a href="#장점은" class="headerlink" title="장점은?"></a>장점은?</h5><ol>
+<li>풀 속에 미리 커넥션이 생성되어 있기 때문에, 커넥션을 생성하는 데 드는 연결 시간이 소비되지 않습니다.</li>
+<li>커넥션을 계속해서 재사용하기 때문에 생성되는 커넥션 수가 많지 않습니다.</li>
+</ol>
+<h5 id="단점은"><a href="#단점은" class="headerlink" title="단점은?"></a>단점은?</h5><p>동시접속자 수가 많아져 남아있는 커넥션이 없을 경우, 해당 클라이언트는 대기 상태로 전환이 되고 커넥션이 반환되면 대기하고 있는 순서대로 커넥션이 제공됩니다.</p>
+<h5 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h5><p><a href="http://brownbears.tistory.com/289?category=191941" target="_blank" rel="noopener">http://brownbears.tistory.com/289?category=191941</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/05/Connection Pool/" data-id="ck7itpmqk00jh106wmfw5e3pp" data-title="Connection Pool" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Java Feature" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/05/Java Feature/" class="article-date">
   <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
 </a>
     
@@ -89,7 +189,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/05/Java 8/">Java 8</a>
+      <a class="p-name article-title" href="/2018/12/05/Java Feature/">Java 특징</a>
     </h1>
   
 
@@ -97,26 +197,15 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h5 id="자바-8의-변경사항은-어떠한-것이-있나요"><a href="#자바-8의-변경사항은-어떠한-것이-있나요" class="headerlink" title="자바 8의 변경사항은 어떠한 것이 있나요?"></a>자바 8의 변경사항은 어떠한 것이 있나요?</h5><ol>
-<li><p>람다 표현식(lambda expression) : 함수형 프로그래밍</p>
-<p>람다표현식(Lambda Expressions)은 람다를 이용하여 작성된 함수입니다.<br>‘-&gt;’ 화살표를 기준으로 왼쪽은 ‘()’로 감싸져서 매개변수를 나타내고, 오른쪽은 매개변수를 사용하는 함수 몸체를 정의합니다. 이때, 오른쪽의 정의되는 함수 몸체가 여러 줄이면 다음처럼 ‘{}’를 이용할 수 있습니다. </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        List&lt;Integer&gt; numbers = Arrays.asList(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>);</span><br><span class="line"> </span><br><span class="line">        <span class="comment">// 자바7</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> number : numbers) &#123;</span><br><span class="line">            System.out.println(number);</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        <span class="comment">// 자바8</span></span><br><span class="line">        numbers.forEach((Integer value) -&gt; System.out.println(value)); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>스트림 API(stream API) : 데이터의 추상화</p>
-<p>스트림 API는 데이터를 추상화하여 다루므로, 다양한 방식으로 저장된 데이터를 읽고 쓰기 위한 공통된 방법을 제공합니다.따라서 스트림 API를 이용하면 배열이나 컬렉션뿐만 아니라 파일에 저장된 데이터도 모두 같은 방법으로 다룰 수 있습니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">String[] arr = <span class="keyword">new</span> String[]&#123;<span class="string">"넷"</span>, <span class="string">"둘"</span>, <span class="string">"셋"</span>, <span class="string">"하나"</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 배열에서 스트림 생성</span></span><br><span class="line">Stream&lt;String&gt; stream1 = Arrays.stream(arr);</span><br><span class="line">stream1.forEach(e -&gt; System.out.print(e + <span class="string">" "</span>));</span><br><span class="line">System.out.println();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 배열의 특정 부분만을 이용한 스트림 생성</span></span><br><span class="line">Stream&lt;String&gt; stream2 = Arrays.stream(arr, <span class="number">1</span>, <span class="number">3</span>);</span><br><span class="line">stream2.forEach(e -&gt; System.out.print(e + <span class="string">" "</span>));</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>java.time 패키지 : Joda-Time을 이용한 새로운 날짜와 시간 API</p>
-</li>
-<li><p>나즈혼(Nashorn) : 자바스크립트의 새로운 엔진</p>
-</li>
-</ol>
-<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="http://tcpschool.com/java/java_intro_java8" target="_blank" rel="noopener">http://tcpschool.com/java/java_intro_java8</a></p>
+        <h5 id="추상화란"><a href="#추상화란" class="headerlink" title="추상화란?"></a>추상화란?</h5><p>불필요한 정보는 숨기고, 중요한 정보만을 표현함으로써 공통의 속성이나 기능을 묶어 이름을 붙이는 것입니다.</p>
+<h5 id="캡슐화란"><a href="#캡슐화란" class="headerlink" title="캡슐화란?"></a>캡슐화란?</h5><p>데이터와 데이터를 처리하는 함수를 하나로 묶는 것입니다.</p>
+<h5 id="상속이란"><a href="#상속이란" class="headerlink" title="상속이란?"></a>상속이란?</h5><p>부모 클래스가 가지고있는 모든것을(생성자 제외) 자식클래스가 물려받아 같이 공유하며 나아가 확장(extends)하는 개념이다</p>
+<h5 id="다형성이란"><a href="#다형성이란" class="headerlink" title="다형성이란?"></a>다형성이란?</h5><p>서로 다른 클래스의 객체가 같은 메세지를 받았을 때 각자의 방식으로 동작하는 능력입니다.<br>ex) Pet : abstract class / (Dog, Cat, Parrot) extends Parrot</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/Java 8/" data-id="ck7agol4200jp2l6w9p4lwgfs" data-title="Java 8" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/Java Feature/" data-id="ck7itpmqm00jp106wd87wkbmn" data-title="Java 특징" class="article-share-link">Share</a>
       
       
       
@@ -198,7 +287,64 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/High Availability/" data-id="ck7agol4100jn2l6wdadub5nc" data-title="High Availability" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/High Availability/" data-id="ck7itpmqm00jn106whwsr4eep" data-title="High Availability" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Java 8" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/05/Java 8/" class="article-date">
+  <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/05/Java 8/">Java 8</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="자바-8의-변경사항은-어떠한-것이-있나요"><a href="#자바-8의-변경사항은-어떠한-것이-있나요" class="headerlink" title="자바 8의 변경사항은 어떠한 것이 있나요?"></a>자바 8의 변경사항은 어떠한 것이 있나요?</h5><ol>
+<li><p>람다 표현식(lambda expression) : 함수형 프로그래밍</p>
+<p>람다표현식(Lambda Expressions)은 람다를 이용하여 작성된 함수입니다.<br>‘-&gt;’ 화살표를 기준으로 왼쪽은 ‘()’로 감싸져서 매개변수를 나타내고, 오른쪽은 매개변수를 사용하는 함수 몸체를 정의합니다. 이때, 오른쪽의 정의되는 함수 몸체가 여러 줄이면 다음처럼 ‘{}’를 이용할 수 있습니다. </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        List&lt;Integer&gt; numbers = Arrays.asList(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>);</span><br><span class="line"> </span><br><span class="line">        <span class="comment">// 자바7</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> number : numbers) &#123;</span><br><span class="line">            System.out.println(number);</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        <span class="comment">// 자바8</span></span><br><span class="line">        numbers.forEach((Integer value) -&gt; System.out.println(value)); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>스트림 API(stream API) : 데이터의 추상화</p>
+<p>스트림 API는 데이터를 추상화하여 다루므로, 다양한 방식으로 저장된 데이터를 읽고 쓰기 위한 공통된 방법을 제공합니다.따라서 스트림 API를 이용하면 배열이나 컬렉션뿐만 아니라 파일에 저장된 데이터도 모두 같은 방법으로 다룰 수 있습니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">String[] arr = <span class="keyword">new</span> String[]&#123;<span class="string">"넷"</span>, <span class="string">"둘"</span>, <span class="string">"셋"</span>, <span class="string">"하나"</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 배열에서 스트림 생성</span></span><br><span class="line">Stream&lt;String&gt; stream1 = Arrays.stream(arr);</span><br><span class="line">stream1.forEach(e -&gt; System.out.print(e + <span class="string">" "</span>));</span><br><span class="line">System.out.println();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 배열의 특정 부분만을 이용한 스트림 생성</span></span><br><span class="line">Stream&lt;String&gt; stream2 = Arrays.stream(arr, <span class="number">1</span>, <span class="number">3</span>);</span><br><span class="line">stream2.forEach(e -&gt; System.out.print(e + <span class="string">" "</span>));</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>java.time 패키지 : Joda-Time을 이용한 새로운 날짜와 시간 API</p>
+</li>
+<li><p>나즈혼(Nashorn) : 자바스크립트의 새로운 엔진</p>
+</li>
+</ol>
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="http://tcpschool.com/java/java_intro_java8" target="_blank" rel="noopener">http://tcpschool.com/java/java_intro_java8</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/05/Java 8/" data-id="ck7itpmql00jl106w5nkoclpn" data-title="Java 8" class="article-share-link">Share</a>
       
       
       
@@ -262,56 +408,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/DNS/" data-id="ck7agol4100jl2l6w8yzh1nma" data-title="DNS" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Connection Pool" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/12/05/Connection Pool/" class="article-date">
-  <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/database/">Database</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/05/Connection Pool/">Connection Pool</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h5 id="Connection-Pool이란"><a href="#Connection-Pool이란" class="headerlink" title="Connection Pool이란?"></a>Connection Pool이란?</h5><p>데이터베이스와 연결된 커넥션을 미리 만들어서 풀 (pool) 속에 저장해 두고 있다가 필요할 때 커넥션을 풀에서 쓰고 다시 풀에 반환하는 기법을 말합니다.</p>
-<h5 id="장점은"><a href="#장점은" class="headerlink" title="장점은?"></a>장점은?</h5><ol>
-<li>풀 속에 미리 커넥션이 생성되어 있기 때문에, 커넥션을 생성하는 데 드는 연결 시간이 소비되지 않습니다.</li>
-<li>커넥션을 계속해서 재사용하기 때문에 생성되는 커넥션 수가 많지 않습니다.</li>
-</ol>
-<h5 id="단점은"><a href="#단점은" class="headerlink" title="단점은?"></a>단점은?</h5><p>동시접속자 수가 많아져 남아있는 커넥션이 없을 경우, 해당 클라이언트는 대기 상태로 전환이 되고 커넥션이 반환되면 대기하고 있는 순서대로 커넥션이 제공됩니다.</p>
-<h5 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h5><p><a href="http://brownbears.tistory.com/289?category=191941" target="_blank" rel="noopener">http://brownbears.tistory.com/289?category=191941</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/Connection Pool/" data-id="ck7agol4000jj2l6ws4itvxeq" data-title="Connection Pool" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/DNS/" data-id="ck7itpmqk00jj106wfpz6vcnc" data-title="DNS" class="article-share-link">Share</a>
       
       
       
@@ -356,51 +453,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/Byte Order/" data-id="ck7agol3z00jh2l6wgva1bt77" data-title="Byte Order" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-ADT" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/12/05/ADT/" class="article-date">
-  <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/data-structure/">Data Structure</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/05/ADT/">ADT</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>추상자료형이란 기능의 구현 부분을 나타내지 않고 순수한 기능이 무엇인지 나열한 것입니다.</p>
-<p>예를 들면, 스택은 FILO(First In Last Out)/LIFO(Last In First Out)의 자료구조로, 마지막에 입력된 데이터가 먼저 출력되는 자료구조입니다. push는 스택에 데이터를 입력합니다. pop은 스택에 있는 데이터중에 가장 나중에 입력된 데이터를 출력하고, 스택에서 삭제합니다.</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/ADT/" data-id="ck7agol3z00jf2l6wt0c9u56k" data-title="ADT" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/Byte Order/" data-id="ck7itpmqj00jf106wdcxlozir" data-title="Byte Order" class="article-share-link">Share</a>
       
       
       
@@ -457,7 +510,64 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/11/22/Components/" data-id="ck7agol3y00jd2l6wsuij4oz9" data-title="Components" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/11/22/Components/" data-id="ck7itpmqn00jr106wvwfi5uaw" data-title="Components" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-길찾기" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/11/21/길찾기/" class="article-date">
+  <time class="dt-published" datetime="2018-11-20T15:00:00.000Z" itemprop="datePublished">2018-11-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/11/21/길찾기/">길찾기</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV14geLqABQCFAYD&amp;categoryId=AV14geLqABQCFAYD&amp;categoryType=CODE" target="_blank" rel="noopener">https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV14geLqABQCFAYD&amp;categoryId=AV14geLqABQCFAYD&amp;categoryType=CODE</a></p>
+<p>오랜만에 푸는 관계로, 쉬운 문제를 선택하였습니다. 탐색 기본 문제입니다.</p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p><a href="https://github.com/KoJunHee/algorithm/blob/master/src/swa_1219/Solution.java" target="_blank" rel="noopener">https://github.com/KoJunHee/algorithm/blob/master/src/swa_1219/Solution.java</a></p>
+<ol>
+<li><p>그래프 그리기</p>
+<p>주어진 그래프를 두 개의 배열로 표현합니다. 한 지점에서 최대 두 개의 길이 있기 때문입니다.</p>
+<p>예를 들어, 1번 지점에서  3번과 4번의 길로 갈 수 있다면 다음과 같이 배열에 저장합니다.</p>
+<p>arr01[1] =3 , arr02[1] =4</p>
+<p>마찬가지로 3번 지점에서 7번 길로만 갈 수 있다면 다음과 같이 배열에 저장합니다.</p>
+<p>arr01[3] = 7, arr02[3] = 0</p>
+</li>
+<li><p>경로 유무 찾기</p>
+<p>DFS를 사용합니다. 최대한 깊게 들어가다가 99번 위치에 도착하면 탐색을 종료합니다.</p>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/11/21/길찾기/" data-id="ck7itpmqi00jb106w5on7vczm" data-title="길찾기" class="article-share-link">Share</a>
       
       
       
@@ -525,114 +635,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/11/21/flow control/" data-id="ck7agol3x00j72l6w91tcojsa" data-title="flow control" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-길찾기" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/11/21/길찾기/" class="article-date">
-  <time class="dt-published" datetime="2018-11-20T15:00:00.000Z" itemprop="datePublished">2018-11-21</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/11/21/길찾기/">길찾기</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><a href="https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV14geLqABQCFAYD&amp;categoryId=AV14geLqABQCFAYD&amp;categoryType=CODE" target="_blank" rel="noopener">https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV14geLqABQCFAYD&amp;categoryId=AV14geLqABQCFAYD&amp;categoryType=CODE</a></p>
-<p>오랜만에 푸는 관계로, 쉬운 문제를 선택하였습니다. 탐색 기본 문제입니다.</p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p><a href="https://github.com/KoJunHee/algorithm/blob/master/src/swa_1219/Solution.java" target="_blank" rel="noopener">https://github.com/KoJunHee/algorithm/blob/master/src/swa_1219/Solution.java</a></p>
-<ol>
-<li><p>그래프 그리기</p>
-<p>주어진 그래프를 두 개의 배열로 표현합니다. 한 지점에서 최대 두 개의 길이 있기 때문입니다.</p>
-<p>예를 들어, 1번 지점에서  3번과 4번의 길로 갈 수 있다면 다음과 같이 배열에 저장합니다.</p>
-<p>arr01[1] =3 , arr02[1] =4</p>
-<p>마찬가지로 3번 지점에서 7번 길로만 갈 수 있다면 다음과 같이 배열에 저장합니다.</p>
-<p>arr01[3] = 7, arr02[3] = 0</p>
-</li>
-<li><p>경로 유무 찾기</p>
-<p>DFS를 사용합니다. 최대한 깊게 들어가다가 99번 위치에 도착하면 탐색을 종료합니다.</p>
-</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/11/21/길찾기/" data-id="ck7agol3y00jb2l6w1faerp6l" data-title="길찾기" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-flow, congestion control" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/11/21/flow, congestion control/" class="article-date">
-  <time class="dt-published" datetime="2018-11-20T15:00:00.000Z" itemprop="datePublished">2018-11-21</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/network/">Network</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/11/21/flow, congestion control/">flow, congestion control</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>flow control은 host와 host 간에 데이터 처리를 효율적으로 하기 위한 방법입니다. congestion control은 host와 network 간의 데이터 처리를 효율적으로 하기 위한 방법입니다.</p>
-<h2 id="flow-control-이란"><a href="#flow-control-이란" class="headerlink" title="flow control 이란?"></a>flow control 이란?</h2><p>송신측과 수신측의 데이터 처리 속도 차이를 해결하기 위한 방법입니다. </p>
-<p>수신측의 데이터 처리 속도가 송신측의 데이터 처리 속도보다 빠르면 문제가 되지 않습니다. 하지만, 송신측의 데이터 처리 속도가 더 빠르면 문제가 됩니다. 수신측에서 제한된 저장용량을 초과한 이후에 도착하는 데이터는, 손실 될 수 있으며 만약 손실 된다면 불필요하게 응답과 데이터 전송이 송/수신 측 간에 빈번이 발생합니다. 이러한 위험을 줄이기 위해 송신 측의 데이터 전송량을 수신측에 따라 조절하는 flow control 이 필요합니다. </p>
-<p>stop and wait, sliding window 방식이 있습니다.</p>
-<h2 id="congestion-control-이란"><a href="#congestion-control-이란" class="headerlink" title="congestion control 이란?"></a>congestion control 이란?</h2><p>송신측과 네트워크의 데이터 처리 속도 차이를 해결하기 위한 방법입니다.</p>
-<p>송신측의 데이터는 지역망이나 인터넷으로 연결된 대형 네트워크를 통해 전달됩니다. 만약 한 라우터에 데이터가 몰릴 경우, 자신에게 온 데이터를 모두 처리 할 수 없게 됩니다. 이런 경우 호스트들은 또 다시 재전송을 하게되고 결국 혼잡만 가중시켜 오버플로우나 데이터 손실을 발생시키게 됩니다. 이러한 네트워크의 혼잡을 피하기 위해 송신측에서 보내는 데이터의 전송 속도를  강제로 줄이는 congestion control 이 필요합니다.</p>
-<p>AIMD, Slow Start, Fast Transmit, Fast Recovery 방식이 있습니다.</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://jwprogramming.tistory.com/36" target="_blank" rel="noopener">http://jwprogramming.tistory.com/36</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/11/21/flow, congestion control/" data-id="ck7agol3x00j92l6wgl44jkdl" data-title="flow, congestion control" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/11/21/flow control/" data-id="ck7itpmqg00j5106wzbnt48hj" data-title="flow control" class="article-share-link">Share</a>
       
       
       
@@ -687,11 +690,7 @@
       <ul>
         
           <li>
-            <a href="/2020/03/02/tdd-chapter-06/">[테스트 주도 개발] 6장_돌아온 모두를 위한 평등</a>
-          </li>
-        
-          <li>
-            <a href="/2020/03/02/tdd-chapter-05/">[테스트 주도 개발] 5장_솔직히 말하자면</a>
+            <a href="/2020/03/08/bigdata-chapter-03/">[빅데이터] 3장_빅데이터를 위한 데이터 모델: 사례</a>
           </li>
         
           <li>
@@ -699,7 +698,11 @@
           </li>
         
           <li>
-            <a href="/2020/02/25/bigdata-chapter-01/">[빅데이터] 1장_빅데이터를 위한 새로운 패러다임</a>
+            <a href="/2020/03/02/tdd-chapter-05/">[테스트 주도 개발] 5장_솔직히 말하자면</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/02/tdd-chapter-06/">[테스트 주도 개발] 6장_돌아온 모두를 위한 평등</a>
           </li>
         
           <li>

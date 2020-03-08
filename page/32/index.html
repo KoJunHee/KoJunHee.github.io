@@ -276,7 +276,7 @@ case west</code></pre><p>}</p>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/29/데이터 타입 고급/" data-id="ck7agol6500nz2l6wplmr56in" data-title="데이터 타입 고급" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/29/데이터 타입 고급/" data-id="ck7itpmsr00o1106wnracz8uj" data-title="데이터 타입 고급" class="article-share-link">Share</a>
       
       
       
@@ -288,14 +288,14 @@ case west</code></pre><p>}</p>
 
 
   
-    <article id="post-swift 처음 시작하기" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-Centralized Workflow " class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/01/29/swift 처음 시작하기/" class="article-date">
+    <a href="/2018/01/29/Centralized Workflow /" class="article-date">
   <time class="dt-published" datetime="2018-01-28T15:00:00.000Z" itemprop="datePublished">2018-01-29</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/ios/">iOS</a>
+    <a class="article-category-link" href="/categories/git/">Git</a>
   </div>
 
   </div>
@@ -306,7 +306,7 @@ case west</code></pre><p>}</p>
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/01/29/swift 처음 시작하기/">swift 처음 시작하기</a>
+      <a class="p-name article-title" href="/2018/01/29/Centralized Workflow /">Centralized Workflow</a>
     </h1>
   
 
@@ -314,65 +314,81 @@ case west</code></pre><p>}</p>
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p><a href="https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/TheBasics.html#//apple_ref/doc/uid/TP40014097-CH5-ID309" target="_blank" rel="noopener">https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/TheBasics.html#//apple_ref/doc/uid/TP40014097-CH5-ID309</a></p>
-<h2 id="Naming-Constants-and-Variables"><a href="#Naming-Constants-and-Variables" class="headerlink" title="Naming Constants and Variables"></a>Naming Constants and Variables</h2><ul>
-<li><p>can contain almost any character, including Unicode characters</p>
+        <h2 id="concept"><a href="#concept" class="headerlink" title="concept"></a>concept</h2><ul>
+<li><p>Clone the central repository</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone ssh://user@host/path/to/repo.git</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>can’t contain </p>
-<ul>
-<li>whitespace characters, </li>
-<li>mathematical symbols, </li>
-<li>arrows, </li>
-<li>private-use (or invalid) Unicode code points,</li>
-<li>or line- and box-drawing characters.</li>
+<li><p>Make changes and commit</p>
+</li>
 </ul>
-</li>
-<li><p>can’t begin with a number</p>
-</li>
-<li><p>Once you’ve declared a constant or variable of a certain type, </p>
-<ul>
-<li>you can’t declare it again with the same name, </li>
-<li>or change it to store values of a different type. </li>
-<li>can’t change a constant into a variable or a variable into a constant.</li>
-</ul>
-</li>
-<li><p>can change the value of an existing variable to another value of a compatible type</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var friendlyWelcome = &quot;Hello!&quot;</span><br><span class="line">friendlyWelcome = &quot;Bonjour!&quot;</span><br></pre></td></tr></table></figure>
+<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git status # View the state of the repo</span><br><span class="line">git add &lt;some-file&gt; # Stage a file</span><br><span class="line">git commit # Commit a file&lt;/some-file&gt;</span><br></pre></td></tr></table></figure></code></pre><ul>
+<li><p>Push new commits to central repository</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
 
 
 </li>
 </ul>
 <ul>
-<li><p>the value of a constant can’t be changed after it’s set.</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">let languageName = &quot;Swift&quot;</span><br><span class="line">languageName = &quot;Swift++&quot;</span><br><span class="line">// This is a compile-time error: languageName cannot be changed.</span><br></pre></td></tr></table></figure>
-
-</li>
+<li>Managing conflicts</li>
 </ul>
-<h2 id="Printing-Constants-and-Variables"><a href="#Printing-Constants-and-Variables" class="headerlink" title="Printing Constants and Variables"></a>Printing Constants and Variables</h2><ul>
-<li><p>print(_:separator:terminator:) </p>
+<h2 id="example"><a href="#example" class="headerlink" title="example"></a>example</h2><ul>
+<li><p>John works on his feature</p>
 <ul>
-<li>The separator and terminator parameter have default values,</li>
-<li>so you can omit them when you call this function</li>
+<li>edit, stage, and commit.</li>
 </ul>
 </li>
-<li><p>string interpolation</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(&quot;The current value of friendlyWelcome is \(friendlyWelcome)&quot;)</span><br></pre></td></tr></table></figure>
+<li><p>Mary works on her feature</p>
+<ul>
+<li>edit, stage, and commit.</li>
+</ul>
+</li>
+<li><p>John publishes his feature</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
 
 
 </li>
 </ul>
-<pre><code>- result =&gt; The current value of friendlyWelcome is Bonjour!</code></pre><h2 id="Comments"><a href="#Comments" class="headerlink" title="Comments"></a>Comments</h2><ul>
-<li>// this is comment</li>
-<li>/* this is comment */</li>
-</ul>
-<h2 id="Semicolons"><a href="#Semicolons" class="headerlink" title="Semicolons"></a>Semicolons</h2><ul>
-<li>doesn’t require you to write a semicolon (;) </li>
-</ul>
+<ul>
+<li><p>Mary tries to publish her feature</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
 
+
+</li>
+</ul>
+<pre><code>- error
+- Mary needs to pull John’s updates into her repository</code></pre><ul>
+<li>Mary rebases on top of John’s commit(s)</li>
+</ul>
+<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull --rebase origin master</span><br></pre></td></tr></table></figure></code></pre><ul>
+<li><p>Mary resolves a merge conflict</p>
+<ul>
+<li><p>충돌이 발생하면 다음과 같은 에러</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CONFLICT (content): Merge conflict in &lt;some-file&gt;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>- Unmerged paths section에서 conflict file이 무엇인지 확인 가능
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git status</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># Unmerged paths:</span><br><span class="line"># (use &quot;git reset HEAD &lt;some-file&gt;...&quot; to unstage)</span><br><span class="line"># (use &quot;git add/rm &lt;some-file&gt;...&quot; as appropriate to mark resolution)</span><br><span class="line">#</span><br><span class="line"># both modified: &lt;some-file&gt;</span><br></pre></td></tr></table></figure>
+
+
+- 파일 수정 후
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git add &lt;some-file&gt;</span><br><span class="line">git rebase --continue</span><br><span class="line">git rebase --abort</span><br><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
+
+
+
+​    </code></pre>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/29/swift 처음 시작하기/" data-id="ck7agol0600742l6wp2d6w3pe" data-title="swift 처음 시작하기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/29/Centralized Workflow /" data-id="ck7itpmn10078106waq10cwrc" data-title="Centralized Workflow" class="article-share-link">Share</a>
       
       
       
@@ -489,7 +505,103 @@ case west</code></pre><p>}</p>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/29/데이터 타입 기본/" data-id="ck7agol09007d2l6wdeo4e751" data-title="데이터 타입 기본" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/29/데이터 타입 기본/" data-id="ck7itpmn2007e106wfpluykvm" data-title="데이터 타입 기본" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-swift 처음 시작하기" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/01/29/swift 처음 시작하기/" class="article-date">
+  <time class="dt-published" datetime="2018-01-28T15:00:00.000Z" itemprop="datePublished">2018-01-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/ios/">iOS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/01/29/swift 처음 시작하기/">swift 처음 시작하기</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/TheBasics.html#//apple_ref/doc/uid/TP40014097-CH5-ID309" target="_blank" rel="noopener">https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/TheBasics.html#//apple_ref/doc/uid/TP40014097-CH5-ID309</a></p>
+<h2 id="Naming-Constants-and-Variables"><a href="#Naming-Constants-and-Variables" class="headerlink" title="Naming Constants and Variables"></a>Naming Constants and Variables</h2><ul>
+<li><p>can contain almost any character, including Unicode characters</p>
+</li>
+<li><p>can’t contain </p>
+<ul>
+<li>whitespace characters, </li>
+<li>mathematical symbols, </li>
+<li>arrows, </li>
+<li>private-use (or invalid) Unicode code points,</li>
+<li>or line- and box-drawing characters.</li>
+</ul>
+</li>
+<li><p>can’t begin with a number</p>
+</li>
+<li><p>Once you’ve declared a constant or variable of a certain type, </p>
+<ul>
+<li>you can’t declare it again with the same name, </li>
+<li>or change it to store values of a different type. </li>
+<li>can’t change a constant into a variable or a variable into a constant.</li>
+</ul>
+</li>
+<li><p>can change the value of an existing variable to another value of a compatible type</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var friendlyWelcome = &quot;Hello!&quot;</span><br><span class="line">friendlyWelcome = &quot;Bonjour!&quot;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<ul>
+<li><p>the value of a constant can’t be changed after it’s set.</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">let languageName = &quot;Swift&quot;</span><br><span class="line">languageName = &quot;Swift++&quot;</span><br><span class="line">// This is a compile-time error: languageName cannot be changed.</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="Printing-Constants-and-Variables"><a href="#Printing-Constants-and-Variables" class="headerlink" title="Printing Constants and Variables"></a>Printing Constants and Variables</h2><ul>
+<li><p>print(_:separator:terminator:) </p>
+<ul>
+<li>The separator and terminator parameter have default values,</li>
+<li>so you can omit them when you call this function</li>
+</ul>
+</li>
+<li><p>string interpolation</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(&quot;The current value of friendlyWelcome is \(friendlyWelcome)&quot;)</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<pre><code>- result =&gt; The current value of friendlyWelcome is Bonjour!</code></pre><h2 id="Comments"><a href="#Comments" class="headerlink" title="Comments"></a>Comments</h2><ul>
+<li>// this is comment</li>
+<li>/* this is comment */</li>
+</ul>
+<h2 id="Semicolons"><a href="#Semicolons" class="headerlink" title="Semicolons"></a>Semicolons</h2><ul>
+<li>doesn’t require you to write a semicolon (;) </li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/01/29/swift 처음 시작하기/" data-id="ck7itpmn00073106wy9041igv" data-title="swift 처음 시작하기" class="article-share-link">Share</a>
       
       
       
@@ -535,7 +647,7 @@ case west</code></pre><p>}</p>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/26/수이어쓰기/" data-id="ck7agol0700762l6w5tgueouq" data-title="수이어쓰기1" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/26/수이어쓰기/" data-id="ck7itpmn1007a106wpc5dzg3g" data-title="수이어쓰기1" class="article-share-link">Share</a>
       
       
       
@@ -630,7 +742,7 @@ case west</code></pre><p>}</p>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/24/타일/" data-id="ck7agol0500722l6wwi85cyz9" data-title="타일" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/24/타일/" data-id="ck7itpmmz0071106wrglwx2qy" data-title="타일" class="article-share-link">Share</a>
       
       
       
@@ -690,7 +802,7 @@ case west</code></pre><p>}</p>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/20/슈퍼마리오/" data-id="ck7agol0500702l6woztx8dtb" data-title="슈퍼마리오" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/20/슈퍼마리오/" data-id="ck7itpmn00075106wn3niqx3l" data-title="슈퍼마리오" class="article-share-link">Share</a>
       
       
       
@@ -742,7 +854,7 @@ case west</code></pre><p>}</p>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/19/벽장문의 이동/" data-id="ck7agol04006y2l6wfrnxfsf1" data-title="벽장문의 이동" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/19/벽장문의 이동/" data-id="ck7itpmmz006z106w6gco7syi" data-title="벽장문의 이동" class="article-share-link">Share</a>
       
       
       
@@ -789,7 +901,7 @@ case west</code></pre><p>}</p>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/18/올림픽/" data-id="ck7agol03006w2l6wj7lk835w" data-title="올림픽" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/18/올림픽/" data-id="ck7itpmmx006x106wb16d82jo" data-title="올림픽" class="article-share-link">Share</a>
       
       
       
@@ -872,76 +984,7 @@ case west</code></pre><p>}</p>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/17/01타일/" data-id="ck7agol02006s2l6wprrcv96o" data-title="01타일" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-줄어들지않아" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/01/16/줄어들지않아/" class="article-date">
-  <time class="dt-published" datetime="2018-01-15T15:00:00.000Z" itemprop="datePublished">2018-01-16</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/01/16/줄어들지않아/">줄어들지않아</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><a href="https://www.acmicpc.net/problem/2688" target="_blank" rel="noopener">https://www.acmicpc.net/problem/2688</a></p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
-<li><p>처음에 계속 틀렸다고 나옴</p>
-<ul>
-<li>원인 : int로 변수를 설정했음</li>
-<li>해결 : long으로 바꿈</li>
-</ul>
-</li>
-<li><p>d[i][j]</p>
-<ul>
-<li>i자리인 수가 j로 끝날때, 줄어들지 않는 수의 개수</li>
-</ul>
-</li>
-<li><p>ex</p>
-<ul>
-<li><p>d[3][4] : 세 자리인 수가 4로 끝날때, 줄어들지 않는 수의 개수</p>
-<ul>
-<li>d[3][0] : _ _ 0</li>
-<li>d[3][1] : _ _ 1 </li>
-<li>d[3][2] : _ _ 2 </li>
-<li>d[3][3] : _ _ 3 =&gt; d[2][3] + d[2][2] + d[2][1] + d[2][0]</li>
-<li>d[3][4] : _ _ 4</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/16/줄어들지않아/" data-id="ck7agol02006u2l6wtkezbjev" data-title="줄어들지않아" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/17/01타일/" data-id="ck7itpmmw006t106wjkk5uapa" data-title="01타일" class="article-share-link">Share</a>
       
       
       
@@ -996,11 +1039,7 @@ case west</code></pre><p>}</p>
       <ul>
         
           <li>
-            <a href="/2020/03/02/tdd-chapter-06/">[테스트 주도 개발] 6장_돌아온 모두를 위한 평등</a>
-          </li>
-        
-          <li>
-            <a href="/2020/03/02/tdd-chapter-05/">[테스트 주도 개발] 5장_솔직히 말하자면</a>
+            <a href="/2020/03/08/bigdata-chapter-03/">[빅데이터] 3장_빅데이터를 위한 데이터 모델: 사례</a>
           </li>
         
           <li>
@@ -1008,7 +1047,11 @@ case west</code></pre><p>}</p>
           </li>
         
           <li>
-            <a href="/2020/02/25/bigdata-chapter-01/">[빅데이터] 1장_빅데이터를 위한 새로운 패러다임</a>
+            <a href="/2020/03/02/tdd-chapter-05/">[테스트 주도 개발] 5장_솔직히 말하자면</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/02/tdd-chapter-06/">[테스트 주도 개발] 6장_돌아온 모두를 위한 평등</a>
           </li>
         
           <li>

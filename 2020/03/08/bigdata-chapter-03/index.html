@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  
+  <title>[빅데이터] 3장_빅데이터를 위한 데이터 모델: 사례 | junhee.ko</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Apache Thrift 란 직렬화 프레임워크를 사용해 SuperWebAnalytics.com 데이터 모델을 구현한다. 3.1 어째서 직렬화 프레임워크인가많은 개발자들이 원시 데이터를 기록하는 방법으로 JSON 등의 스키마 없는 형식을 고른다. 작업을 쉽게 착수할 수 있는 장점이 있지만, 데이터 오염이 언제든지 터질 수 있는 단점이 있다. 데이터 오염 문제">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[빅데이터] 3장_빅데이터를 위한 데이터 모델: 사례">
+<meta property="og:url" content="https://kojunhee.github.io/2020/03/08/bigdata-chapter-03/index.html">
+<meta property="og:site_name" content="junhee.ko">
+<meta property="og:description" content="Apache Thrift 란 직렬화 프레임워크를 사용해 SuperWebAnalytics.com 데이터 모델을 구현한다. 3.1 어째서 직렬화 프레임워크인가많은 개발자들이 원시 데이터를 기록하는 방법으로 JSON 등의 스키마 없는 형식을 고른다. 작업을 쉽게 착수할 수 있는 장점이 있지만, 데이터 오염이 언제든지 터질 수 있는 단점이 있다. 데이터 오염 문제">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-03-08T09:17:01.923Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[빅데이터] 3장_빅데이터를 위한 데이터 모델: 사례">
+<meta name="twitter:description" content="Apache Thrift 란 직렬화 프레임워크를 사용해 SuperWebAnalytics.com 데이터 모델을 구현한다. 3.1 어째서 직렬화 프레임워크인가많은 개발자들이 원시 데이터를 기록하는 방법으로 JSON 등의 스키마 없는 형식을 고른다. 작업을 쉽게 착수할 수 있는 장점이 있지만, 데이터 오염이 언제든지 터질 수 있는 단점이 있다. 데이터 오염 문제">
+  
+    <link rel="alternate" href="/atom.xml" title="junhee.ko" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="css/images/favicon.ico">
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">junhee.ko</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">always learning</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://kojunhee.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-bigdata-chapter-03" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/03/08/bigdata-chapter-03/" class="article-date">
+  <time class="dt-published" datetime="2020-03-07T15:00:00.000Z" itemprop="datePublished">2020-03-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/big-data/">Big Data</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      [빅데이터] 3장_빅데이터를 위한 데이터 모델: 사례
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Apache Thrift 란 직렬화 프레임워크를 사용해 SuperWebAnalytics.com 데이터 모델을 구현한다.</p>
+<h4 id="3-1-어째서-직렬화-프레임워크인가"><a href="#3-1-어째서-직렬화-프레임워크인가" class="headerlink" title="3.1 어째서 직렬화 프레임워크인가"></a>3.1 어째서 직렬화 프레임워크인가</h4><p>많은 개발자들이 원시 데이터를 기록하는 방법으로 JSON 등의 스키마 없는 형식을 고른다. 작업을 쉽게 착수할 수 있는 장점이 있지만, 데이터 오염이 언제든지 터질 수 있는 단점이 있다.</p>
+<p>데이터 오염 문제는 그 문제가 어떻게 발생했는지에 대한 전후사정을 거의 손에 넣을 수 없기 때문에 디버깅이 어렵다. 예를 들어, 필수 항목이 누락되어 NPE 가 발생하면 문제의 원인이 누락된 항목이라는 것은 바로 알 수 있지만 애초에 그 데이터가 어떻게 들어왔는지에 대한 정보는 없다.</p>
+<p>강제 가능 스키마를 만들었으면, 데이터를 기록하는 시점에 오류가 나므로 데이터가 무효화된 사정과 원인에 대한 전후 사정을 알 수 있다. 그리고, 이때 발생한 오류 덕에 프로그램은 무효 데이터를 기록하지 못하므로 마스터 데이터 집합도 오염되지 않는다.</p>
+<p>직렬화 프레임워크를 사용하면 강제가능 스키마를 쉽게 적용 할 수 있다.</p>
+<h4 id="3-2-Apache-Thrift"><a href="#3-2-Apache-Thrift" class="headerlink" title="3.2 Apache Thrift"></a>3.2 Apache Thrift</h4><p>Apache Thrift 는 정적 타입의 강제가능 스키마를 정의하는데 쓰이는 도구이다. 이와 유사한 도구로, Protocol Buffers 나 Avro 등이다. </p>
+<p>Apache Thrift 의 주요 요소는 구조체 (struct) 와 공용체 (union) 타입 정의이다. 이들은 다음 필드의 조합으로 구성된다.</p>
+<ol>
+<li>기본 데이터 타입 : 문자열, 정수, long 정수, double 실수</li>
+<li>다른 타입의 집합체 (리스트, 맵, 세트)</li>
+<li>다른 구조체와 공용체</li>
+</ol>
+<h5 id="3-2-1-노드"><a href="#3-2-1-노드" class="headerlink" title="3.2.1 노드"></a>3.2.1 노드</h5><p>SuperWebAnalytics.com 의 사용자 노드에서 개인은 사용자ID 나 브라우저 키기로 식별된다. 이 둘이 동시에 함께 식별에 쓰이지는 않는다. 이런 패턴은 노드를 나타날 때 흔히 볼 수 있는데, 공용체 데이터 타입과 일치한다. 하나의 값으로 여러 가지를 나타내는 타입이다. </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">union PersonID &#123;</span><br><span class="line">	1: string cookie;</span><br><span class="line">	2: i64 user_id;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">union PageID &#123;</span><br><span class="line">	1: String url;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-2-2-간선"><a href="#3-2-2-간선" class="headerlink" title="3.2.2 간선"></a>3.2.2 간선</h5><p>간선은 두 개의 노드를 포함하는 구조체로 표현될 수 있다. 간선 구조체의 이름은 그것이 표현하는 관계를 가리킨다. 간선 구조체 내의 필드는 그 관계로 엮인 개체들이다.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">struct EquivEdge &#123;</span><br><span class="line">	1: required PersonID id1;</span><br><span class="line">	2: required PersonID id2;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct PageViewEdge &#123;</span><br><span class="line">	1: required PersonID person;</span><br><span class="line">	2: required PageID page;</span><br><span class="line">	3: required i64 nonce;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>스리프트 구조체의 필드는 required 나 optional 로 표시한다. 필드가 required 정의되었는데 값이 없으면 직렬화나 역직렬화할 때 스리프트 자체에서 오류가 난다. 그래프 스키마에서 각 간선은 두개의 노드가 필수이므로 required 필드로 정의된다.</p>
+<h5 id="3-2-3-속성"><a href="#3-2-3-속성" class="headerlink" title="3.2.3 속성"></a>3.2.3 속성</h5><p>속성은 노드와 그 속성 대한 값을 가진다. 값은 여러 타입이 될 수 있으므로 공용체를 사용한다.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">union PagePropertyValue &#123;</span><br><span class="line">	1: i32 page_views;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct PageProperty &#123;</span><br><span class="line">	1: required PageID id;</span><br><span class="line">	2: required PagePropertyValue property;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct Location &#123;</span><br><span class="line">	1: optional string city;</span><br><span class="line">	2: optional string state;</span><br><span class="line">	3: optional string country;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">enum GenderType &#123;</span><br><span class="line">	MALE = 1,</span><br><span class="line">	FEMALE = 2</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">union PersonPropertyValue &#123;</span><br><span class="line">	1: string full_name;</span><br><span class="line">	2: GenderType gender;</span><br><span class="line">	3: Location location;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct PersonProperty &#123;</span><br><span class="line">	1: required PersonID id;</span><br><span class="line">	2: required PersonPropertyValue property;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-2-4-노드-간선-속성을-모두-엮어-데이터-객체로-만들기"><a href="#3-2-4-노드-간선-속성을-모두-엮어-데이터-객체로-만들기" class="headerlink" title="3.2.4 노드, 간선, 속성을 모두 엮어 데이터 객체로 만들기"></a>3.2.4 노드, 간선, 속성을 모두 엮어 데이터 객체로 만들기</h5><p>정보에 접근하는 단일한 인터페이스를 제공하기 좋게 모든 데이터를 함께 저장하고자 한다. 그리고, 단일 데이터 집합에 저장되면 데이터 관리도 쉽다. </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">union DataUnit &#123;</span><br><span class="line">	1: PersonProperty person_property;</span><br><span class="line">	2: PageProperty page_property;</span><br><span class="line">	3: EquivEdge equiv;</span><br><span class="line">	4: PageViewEdge page_view;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct Pedigree &#123;</span><br><span class="line">	1: required i32 true_as_of_secs;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct Data &#123;</span><br><span class="line">	1: required Pedigree pedigree;</span><br><span class="line">	2: required DataUnit dataunit;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Pedigree 구조체는 정보에 붙을 타임스탬프를 가지고 있다. 필요하면 디버깅 정보나 데이터 출처를 가질 수 있다. Data 구조체는 팩트 기반 모델의 팩트에 해당한다.</p>
+<h5 id="3-2-5-스키마-발전시키기"><a href="#3-2-5-스키마-발전시키기" class="headerlink" title="3.2.5 스키마 발전시키기"></a>3.2.5 스키마 발전시키기</h5><p>스리프트는 시시때때로 스키마를 발전시키도록 설계되었다. 스키마를 변경할 때 기존 데이터와의 하위 호솬성을 유지하고자 하면 다음 규칙을 지켜야한다.</p>
+<ol>
+<li><p>필드의 이름은 변경해도 무방하다.</p>
+<p>직렬화된 객체 형식은 필드 식별을 위해 ID 를 사용한다.</p>
+</li>
+<li><p>필드를 삭제할 수 있지만, 필드 ID 를 재사용하면 안된다.</p>
+<p>기존 데이터를 역직렬화할 때 스리프트는 스키마에 포함되지 않은 ID 를 갖는 필드는 모두 무시한다. 삭제된 필드의 ID 를 재사용하면 스리프트는 오래된 데이터를 새로운 필드로 역직렬화할 것이다. 그래서 유효하지 않거나 잘못된 데이터가 만들어질 수 있다.</p>
+</li>
+<li><p>기존 구조체에는 optional 필드만 추가할 수 있다.</p>
+<p>기존 데이터는 그 필드가 없을 것이고 결국 역직렬화가 되지 않을 것이다. (공용체의 경우 required 나 optional 개념이 없다.)</p>
+</li>
+</ol>
+<h4 id="3-3-직렬화-프레임워크의-한계"><a href="#3-3-직렬화-프레임워크의-한계" class="headerlink" title="3.3 직렬화 프레임워크의 한계"></a>3.3 직렬화 프레임워크의 한계</h4><p>직렬화 프레임워크는 required 필드가 모두 존재하고, 타입이 일치하는지만 점검한다. 즉, “나이는 음수가 아니어야한다.”, “참인 시점의 타임스탬프는 미래가 아니어야한다.” 와 같은 다채로운 속성은 점검할 수 없다.</p>
+<blockquote>
+<p>스키마는 데이터를 받아 유효 여부를 반환하는 하나의 함수로 보는게 좋다. </p>
+</blockquote>
+<p>그런 이상적인 도구는 현실적으로 세상에 없지만, 한계를 우회할 수 있는 두 가지 방법이 있다.</p>
+<ol>
+<li><p>생성된 코드를 추가 코드로 감싸고, 추가 코드에서 나이는 음수가 아닌 조건을 체크하는 등의 추가적인 속성을 확인하도록 한다.</p>
+<p>여러 언어를 사용한다면 동일한 로직을 여러 언어로 작성하는 중복 작업이 요구된다.</p>
+</li>
+<li><p>일괄 처리 작업 흐름의 시작점에서 추가 속성을 확인한다.</p>
+<p>이 확인 단계에서 데이터 집합을 유효한 데이터와 유효하지 않은 데이터로 나누고 유효한 데이터가 발견되면 알림을 보낸다. 그러면, 작업 흐름의 나머지 부분 구현이 쉬워진다. 유효성 확인을 통과한 데이터이면 엄격한 속성을 일단 가지고 있다고 가정할 수 있다. 그런데, 무효 데이터가 마스터 데이터 집합에 기록되는 것을 막지는 못하며, 데이터 오염이 발생한 전후 사정을 알아낼 수 없다.</p>
+</li>
+</ol>
+<hr>
+<p>빅데이터, 람다 아키텍처로 알아보는 실시간 빅데이터 구축의 핵심 원리와 기법 &lt;네이선 마츠, 제임스 워렌&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2020/03/08/bigdata-chapter-03/" data-id="ck7itpmru00nf106wef2qou2c" data-title="[빅데이터] 3장_빅데이터를 위한 데이터 모델: 사례" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/03/02/tdd-chapter-04/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">[테스트 주도 개발] 4장_프라이버시</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/big-data/">Big Data</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boost-course/">Boost Course</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/dip/">DIP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/data-structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/design-pattern/">Design Pattern</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jpa/">JPA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">Kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/network/">Network</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/os/">OS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/object/">Object</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/software-engineering/">Software Engineering</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/spark/">Spark</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tdd/">TDD</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/etc/">etc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ios/">iOS</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/03/08/bigdata-chapter-03/">[빅데이터] 3장_빅데이터를 위한 데이터 모델: 사례</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/02/tdd-chapter-04/">[테스트 주도 개발] 4장_프라이버시</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/02/tdd-chapter-05/">[테스트 주도 개발] 5장_솔직히 말하자면</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/02/tdd-chapter-06/">[테스트 주도 개발] 6장_돌아온 모두를 위한 평등</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/25/bigdata-chapter-02/">[빅데이터] 2장_빅데이터를 위한 데이터 모델</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 junhee.ko<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+  <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
