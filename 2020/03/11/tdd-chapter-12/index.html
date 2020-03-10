@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  
+  <title>[테스트 주도 개발] 12장_드디어 더하기 | junhee.ko</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="전체 더하기 기능에 대한 스토리를 어떻게 적어야할지 모르겠다. 간단한 예, “5 달러 + 5달러 = 10 달러” 에서 시작하자. 12345@Testvoid testSimpleAddition() &amp;#123;    Money sum = Money.dollar(5).plus(Money.dollar(5));    assertEquals(Money.dollar(10">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[테스트 주도 개발] 12장_드디어 더하기">
+<meta property="og:url" content="https://kojunhee.github.io/2020/03/11/tdd-chapter-12/index.html">
+<meta property="og:site_name" content="junhee.ko">
+<meta property="og:description" content="전체 더하기 기능에 대한 스토리를 어떻게 적어야할지 모르겠다. 간단한 예, “5 달러 + 5달러 = 10 달러” 에서 시작하자. 12345@Testvoid testSimpleAddition() &amp;#123;    Money sum = Money.dollar(5).plus(Money.dollar(5));    assertEquals(Money.dollar(10">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-03-10T11:49:57.941Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[테스트 주도 개발] 12장_드디어 더하기">
+<meta name="twitter:description" content="전체 더하기 기능에 대한 스토리를 어떻게 적어야할지 모르겠다. 간단한 예, “5 달러 + 5달러 = 10 달러” 에서 시작하자. 12345@Testvoid testSimpleAddition() &amp;#123;    Money sum = Money.dollar(5).plus(Money.dollar(5));    assertEquals(Money.dollar(10">
+  
+    <link rel="alternate" href="/atom.xml" title="junhee.ko" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="css/images/favicon.ico">
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">junhee.ko</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">always learning</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://kojunhee.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-tdd-chapter-12" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/03/11/tdd-chapter-12/" class="article-date">
+  <time class="dt-published" datetime="2020-03-10T15:00:00.000Z" itemprop="datePublished">2020-03-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tdd/">TDD</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      [테스트 주도 개발] 12장_드디어 더하기
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>전체 더하기 기능에 대한 스토리를 어떻게 적어야할지 모르겠다. 간단한 예, “5 달러 + 5달러 = 10 달러” 에서 시작하자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testSimpleAddition</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Money sum = Money.dollar(<span class="number">5</span>).plus(Money.dollar(<span class="number">5</span>));</span><br><span class="line">    assertEquals(Money.dollar(<span class="number">10</span>), sum);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>그냥 Money.dollar(10) 을 반환하는 식으로 가짜 구현을 할 수 있지만, 어떻게 구현할지 명확하므로 다음과 같이 하겠다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Money</span></span><br><span class="line"><span class="function">Money <span class="title">plus</span><span class="params">(Money addend)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Money(amount + addend.amount, currency);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>다중 통화 사용에 대한 내용을 시스템의 나머지 코드에 숨기고 싶다. ( 2달러 + 3CHF ) * 5 를 보자. Money 가 수식의 가장 작은 단위가 된다. 연산의 결과로 Expression 들이 생기는데, 그 중 하나가 sum 이다. 연산이 완료되면 환율을 이용해서 결과 expression 을 단일 통화로 축약할 수 있다. 이런식으로 테스트할 수 있다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testSimpleAddition</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ....</span><br><span class="line">    assertEquals(Money.dollar(<span class="number">10</span>), reduced);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>reduced 란 이름의 expression 은 expression 에 환율을 적용해서 얻어진다. 실세계에서 환율이 적용되는 곳은 어디인가 ? 은행이다. </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testSimpleAddition</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    Money reduced = back.reduce(sum, <span class="string">"USD"</span>);</span><br><span class="line">    assertEquals(Money.dollar(<span class="number">10</span>), reduced);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>여기서, 단순히 “…reduce = sum.reduce(“USD”, back)” 라고 할수 있었다. 왜 Back 가 reduce() 를 수행할 책임을 맡았을 까 ?</p>
+<ol>
+<li>Expression 은 하려고 하는 일의 핵심이다. 핵심이 되는 객체가 다른 부분에 대해서 될 수 있는 한 모르도록 하자. 그러면, 핵심 객체가 가능한 오랫 동안 유연할 수 있다. 그리고, 테스트하기도 쉽고 재활용하거나 이해하기에 쉽다.</li>
+<li>Expression 과 관련이 있는 오퍼레이션이 많은 수 있다. 모든 오펴레이션을 Expression 에만 추가하면 Expression 는 무한히 커진다.</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testSimpleAddition</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    Bank bank = <span class="keyword">new</span> Bank();</span><br><span class="line">    Money reduced = bank.reduce(sum, <span class="string">"USD"</span>);</span><br><span class="line">    assertEquals(Money.dollar(<span class="number">10</span>), reduced);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>두 Money 의 합은 Expression 이어야한다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testSimpleAddition</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    Expression sum = five.plus(five);</span><br><span class="line">    Bank bank = <span class="keyword">new</span> Bank();</span><br><span class="line">    Money reduced = bank.reduce(sum, <span class="string">"USD"</span>);</span><br><span class="line">    assertEquals(Money.dollar(<span class="number">10</span>), reduced);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>5 달러를 만드는 것은 쉽다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testSimpleAddition</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Money five = Money.dollar(<span class="number">5</span>)</span><br><span class="line">    Expression sum = five.plus(five);</span><br><span class="line">    Bank bank = <span class="keyword">new</span> Bank();</span><br><span class="line">    Money reduced = bank.reduce(sum, <span class="string">"USD"</span>);</span><br><span class="line">    assertEquals(Money.dollar(<span class="number">10</span>), reduced);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이걸 컴파일하려면 어떻게 해야하나 ? Expression 인터페이스가 필요하다. 클래스도 되지만, 더 가볍다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Expression</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Money.plus 는 Expression 을 반환해야한다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Expression <span class="title">plus</span><span class="params">(Money addend)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Money(amount + addend.amount, currency);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이건, Money 가 Expressoin 을 구현해야한다는 뜻이다. Expressoin 에 아직 아무 연산이 없으니 쉽다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Money</span> <span class="keyword">implements</span> <span class="title">Expression</span> </span>&#123;</span><br></pre></td></tr></table></figure>
+
+<p>이제 빈 Back 클래스가 필요하다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bank</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>그리고 reduce() Stub 이 필요하다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bank</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">reduce</span><span class="params">(Expression source, String to)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이제 컴파일 되고, 바로 실패한다. 간단히 가짜 구현을 하자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bank</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">reduce</span><span class="params">(Expression source, String to)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Money.dollar(<span class="number">10</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>다시 초록막대. 리팩토링하자.</p>
+<hr>
+<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2020/03/11/tdd-chapter-12/" data-id="ck7lu78q000nvlk6w6s8vks79" data-title="[테스트 주도 개발] 12장_드디어 더하기" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/03/11/tdd-chapter-10/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">[테스트 주도 개발] 10장_흥미로운 시간</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/big-data/">Big Data</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boost-course/">Boost Course</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/dip/">DIP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/data-structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/design-pattern/">Design Pattern</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jpa/">JPA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">Kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/network/">Network</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/os/">OS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/object/">Object</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/software-engineering/">Software Engineering</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/spark/">Spark</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tdd/">TDD</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/etc/">etc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ios/">iOS</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/03/11/tdd-chapter-12/">[테스트 주도 개발] 12장_드디어 더하기</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/11/tdd-chapter-10/">[테스트 주도 개발] 10장_흥미로운 시간</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/11/tdd-chapter-09/">[테스트 주도 개발] 9장_우리가 사는 시간</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/11/tdd-chapter-08/">[테스트 주도 개발] 8장_객체 만들기</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/11/tdd-chapter-11/">[테스트 주도 개발] 11장_모든 악의 근원</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 junhee.ko<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+  <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

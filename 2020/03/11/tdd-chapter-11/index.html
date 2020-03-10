@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  
+  <title>[테스트 주도 개발] 11장_모든 악의 근원 | junhee.ko</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="두 하위 클래스에는 이제 생성자밖에 없다. 제거하자. 코드의 의미를 변경하지 않으면서 하위 클래스에 대한 참조를 상위 클래스에 대한 참조로 변경할 수 있다. 12345678//Moneystatic Money dollar(int amount) &amp;#123;    return new Money(amount, &quot;USD&quot;);&amp;#125;static Money fran">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[테스트 주도 개발] 11장_모든 악의 근원">
+<meta property="og:url" content="https://kojunhee.github.io/2020/03/11/tdd-chapter-11/index.html">
+<meta property="og:site_name" content="junhee.ko">
+<meta property="og:description" content="두 하위 클래스에는 이제 생성자밖에 없다. 제거하자. 코드의 의미를 변경하지 않으면서 하위 클래스에 대한 참조를 상위 클래스에 대한 참조로 변경할 수 있다. 12345678//Moneystatic Money dollar(int amount) &amp;#123;    return new Money(amount, &quot;USD&quot;);&amp;#125;static Money fran">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-03-10T11:30:15.791Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[테스트 주도 개발] 11장_모든 악의 근원">
+<meta name="twitter:description" content="두 하위 클래스에는 이제 생성자밖에 없다. 제거하자. 코드의 의미를 변경하지 않으면서 하위 클래스에 대한 참조를 상위 클래스에 대한 참조로 변경할 수 있다. 12345678//Moneystatic Money dollar(int amount) &amp;#123;    return new Money(amount, &quot;USD&quot;);&amp;#125;static Money fran">
+  
+    <link rel="alternate" href="/atom.xml" title="junhee.ko" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="css/images/favicon.ico">
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">junhee.ko</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">always learning</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://kojunhee.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-tdd-chapter-11" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/03/11/tdd-chapter-11/" class="article-date">
+  <time class="dt-published" datetime="2020-03-10T15:00:00.000Z" itemprop="datePublished">2020-03-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tdd/">TDD</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      [테스트 주도 개발] 11장_모든 악의 근원
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>두 하위 클래스에는 이제 생성자밖에 없다. 제거하자.</p>
+<p>코드의 의미를 변경하지 않으면서 하위 클래스에 대한 참조를 상위 클래스에 대한 참조로 변경할 수 있다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Money</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> Money <span class="title">dollar</span><span class="params">(<span class="keyword">int</span> amount)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Money(amount, <span class="string">"USD"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> Money <span class="title">franc</span><span class="params">(<span class="keyword">int</span> amount)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Money(amount, <span class="string">"CHF"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이제 Dollar 에 대한 참조가 하나도 없으므로 지울 수 있다. 하지만, Franc 는 테스트 코드에서 아직 참조한다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testDifferentClassEquality</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    assertTrue(<span class="keyword">new</span> Money(<span class="number">10</span>, <span class="string">"CHF"</span>).equals(<span class="keyword">new</span> Franc(<span class="number">10</span>, <span class="string">"CHF"</span>)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이 테스트를 지워도 될 정도로 다른 곳에서 이미 동치성 테스트를 충분히 하고 있는가 ? </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testEquality</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    assertTrue(Money.dollar(<span class="number">5</span>).equals(Money.dollar(<span class="number">5</span>))); <span class="comment">// 1</span></span><br><span class="line">    assertFalse(Money.dollar(<span class="number">5</span>).equals(Money.dollar(<span class="number">6</span>))); <span class="comment">// 2</span></span><br><span class="line">    assertTrue(Money.franc(<span class="number">5</span>).equals(Money.franc(<span class="number">5</span>))); <span class="comment">// 3</span></span><br><span class="line">    assertFalse(Money.franc(<span class="number">5</span>).equals(Money.franc(<span class="number">6</span>))); <span class="comment">// 4</span></span><br><span class="line">    assertFalse(Money.franc(<span class="number">5</span>).equals(Money.dollar(<span class="number">5</span>)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>3, 4 단언은 1, 2 단언과 중복이다. 지우자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testEquality</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    assertTrue(Money.dollar(<span class="number">5</span>).equals(Money.dollar(<span class="number">5</span>)));</span><br><span class="line">    assertFalse(Money.dollar(<span class="number">5</span>).equals(Money.dollar(<span class="number">6</span>)));</span><br><span class="line">    assertFalse(Money.franc(<span class="number">5</span>).equals(Money.dollar(<span class="number">5</span>)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2020/03/11/tdd-chapter-11/" data-id="ck7lu78pt00nnlk6wn1wuq62l" data-title="[테스트 주도 개발] 11장_모든 악의 근원" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/03/11/tdd-chapter-08/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          [테스트 주도 개발] 8장_객체 만들기
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/03/11/tdd-chapter-07/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">[테스트 주도 개발] 7장_사과와 오렌지</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/big-data/">Big Data</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boost-course/">Boost Course</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/dip/">DIP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/data-structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/design-pattern/">Design Pattern</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jpa/">JPA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">Kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/network/">Network</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/os/">OS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/object/">Object</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/software-engineering/">Software Engineering</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/spark/">Spark</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tdd/">TDD</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/etc/">etc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ios/">iOS</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/03/11/tdd-chapter-12/">[테스트 주도 개발] 12장_드디어 더하기</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/11/tdd-chapter-10/">[테스트 주도 개발] 10장_흥미로운 시간</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/11/tdd-chapter-09/">[테스트 주도 개발] 9장_우리가 사는 시간</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/11/tdd-chapter-08/">[테스트 주도 개발] 8장_객체 만들기</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/11/tdd-chapter-11/">[테스트 주도 개발] 11장_모든 악의 근원</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 junhee.ko<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+  <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

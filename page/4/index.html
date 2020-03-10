@@ -71,6 +71,658 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-object-chapter11" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/12/27/object-chapter11/" class="article-date">
+  <time class="dt-published" datetime="2019-12-26T15:00:00.000Z" itemprop="datePublished">2019-12-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/object/">Object</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/12/27/object-chapter11/">[오브젝트] 11장_합성과 유연한 설계</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>코드 재사용 기법으로는,</p>
+<ol>
+<li><p>상속</p>
+<p>부모클래스와 자식클래스를 연결해서, 부모클래스의 코드 재사용</p>
+</li>
+<li><p>합성</p>
+<p>전체를 표현하는 객체가 부분을 표현하는 객체를 포함해서 객체의 코드 재사용</p>
+<p>내부에 포함되는 객체의 구현이 아니라 <code>퍼블릭 인터페이스</code>에 의존</p>
+</li>
+</ol>
+<h2 id="01-상속을-합성으로-변경하기"><a href="#01-상속을-합성으로-변경하기" class="headerlink" title="01 상속을 합성으로 변경하기"></a>01 상속을 합성으로 변경하기</h2><p>상속의 문제는,</p>
+<ol>
+<li>불필요한 인터페이스 상속</li>
+<li>메서드 오버라이딩 오작용</li>
+<li>부모 클래스와 자식 클래스 동시 수정</li>
+</ol>
+<p>이 문제들을 합성으로 해결해보자.</p>
+<h5 id="불필요한-인터페이스-상속-java-utils-Properties-java-utils-Stack"><a href="#불필요한-인터페이스-상속-java-utils-Properties-java-utils-Stack" class="headerlink" title="불필요한 인터페이스 상속 : java.utils.Properties, java.utils.Stack"></a>불필요한 인터페이스 상속 : java.utils.Properties, java.utils.Stack</h5><ol>
+<li>불필요한 Hasbtable 의 오퍼레이션들이 Properties 클래스의 퍼블릭 인터페이스를 오염시키지 않는다.</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Properties</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Hashtable&lt;String, String&gt; properties = <span class="keyword">new</span> Hashtable&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">setProperty</span><span class="params">(String key, String value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> properties.put(key, value);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getProperty</span><span class="params">(String key)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> properties.get(key);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>불필요한 Vector 의 오퍼레이션들이 Stack 클래스의 퍼블릭 인터페이스를 오염시키지 않는다.</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Stack</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Vector&lt;E&gt; elements = <span class="keyword">new</span> Vector&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> E <span class="title">push</span><span class="params">(E item)</span> </span>&#123;</span><br><span class="line">        elements.addElement(item);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> item;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> E <span class="title">Pop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (elements.isEmpty()) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> EmptyStackException();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> elements.remove(elements.size() - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="메서드-오버라이딩-오작용-InstrumentedHashSet"><a href="#메서드-오버라이딩-오작용-InstrumentedHashSet" class="headerlink" title="메서드 오버라이딩 오작용 : InstrumentedHashSet"></a>메서드 오버라이딩 오작용 : InstrumentedHashSet</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InstrumentedHashSet</span>&lt;<span class="title">E</span>&gt; <span class="keyword">implements</span> <span class="title">Set</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Set&lt;E&gt; set;</span><br><span class="line">   	...   </span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span> ..</span><br><span class="line">    <span class="meta">@Override</span> ..      </span><br><span class="line">		<span class="meta">@Override</span> ..</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="부모-클래스와-자식-클래스의-동시-수정-PersonalPlaylist"><a href="#부모-클래스와-자식-클래스의-동시-수정-PersonalPlaylist" class="headerlink" title="부모 클래스와 자식 클래스의 동시 수정 : PersonalPlaylist"></a>부모 클래스와 자식 클래스의 동시 수정 : PersonalPlaylist</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PersonalPlaylis</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Playlist playlist = <span class="keyword">new</span> Playlist();</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">append</span><span class="params">(Song song)</span></span>&#123;</span><br><span class="line">        playlis.append(song);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(Song song)</span></span>&#123;</span><br><span class="line">        playlist.getTracks().remove(song);</span><br><span class="line">        playlist.getSingers().remove(song.getSinger());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="02-상속으로-인한-조합의-폭발적인-증가"><a href="#02-상속으로-인한-조합의-폭발적인-증가" class="headerlink" title="02 상속으로 인한 조합의 폭발적인 증가"></a>02 상속으로 인한 조합의 폭발적인 증가</h2><p>상속으로 작은 기능들을 조합해 더 큰 기능을 수행하는 객체를 만들 때의 문제는,</p>
+<ol>
+<li>하나의 기능을 추가하거나 수정을 위해 <code>불필요하게 많은 수의 클래스를 추가하거나 수정</code>해야한다.</li>
+<li>단일 상속만 지원하는 언어에서는 상속으로 <code>중복 코드</code>가 중가한다.</li>
+</ol>
+<h5 id="기본-정책과-부가-정책-조합하기"><a href="#기본-정책과-부가-정책-조합하기" class="headerlink" title="기본 정책과 부가 정책 조합하기"></a>기본 정책과 부가 정책 조합하기</h5><ol>
+<li><p>기본 정책 : 일반 요금제 / 심야 할인 요금제</p>
+</li>
+<li><p>부가 정책 : 세금 정책 / 기본 요금 할인 정책</p>
+<p>기본 정책의 계산 결과에 적용, 선택적으로 적용 가능, 조합 가능, 임의의 순서로 적용 가능</p>
+</li>
+</ol>
+<h5 id="상속을-이용해서-기본-정책-구현하기"><a href="#상속을-이용해서-기본-정책-구현하기" class="headerlink" title="상속을 이용해서 기본 정책 구현하기"></a>상속을 이용해서 기본 정책 구현하기</h5><h5 id="기본-정책에-세금-정책-조합하기"><a href="#기본-정책에-세금-정책-조합하기" class="headerlink" title="기본 정책에 세금 정책 조합하기"></a>기본 정책에 세금 정책 조합하기</h5><h5 id="기본-정책에-기본-요금-할인-정책-조합하기"><a href="#기본-정책에-기본-요금-할인-정책-조합하기" class="headerlink" title="기본 정책에 기본 요금 할인 정책 조합하기"></a>기본 정책에 기본 요금 할인 정책 조합하기</h5><h5 id="중복-코드의-덫에-걸리다"><a href="#중복-코드의-덫에-걸리다" class="headerlink" title="중복 코드의 덫에 걸리다"></a>중복 코드의 덫에 걸리다</h5><p><img src="/image/object_inheritance_problem.png" alt></p>
+<p>상속의 남용으로 하나의 기능을 추가하기 위해 필요 이상으로 많은 수의 클래스를 추가해야하는 경우를 <code>클래스 폭발 문제</code>,  <code>조합의 폭발 문제</code> 라고 한다.</p>
+<p>이 문제는, 자식 클래스가 부모 클래스의 구현에 강하게 결합되도록 강요하는 상속의 한계 때문에 발생하는 문제이다.</p>
+<h2 id="03-합성-관계로-변경하기"><a href="#03-합성-관계로-변경하기" class="headerlink" title="03 합성 관계로 변경하기"></a>03 합성 관계로 변경하기</h2><ol>
+<li><p>상속</p>
+<p>조합의 결과를 개별 클래스 안으로 밀어 넣는 방법</p>
+</li>
+<li><p>합성</p>
+<p>합성은 조합을 구성하는 요소들을 개별 클래스로 구현한 후 실행 시점에 인스턴스를 조립하는 방법</p>
+</li>
+</ol>
+<h5 id="기본-정책-합성하기"><a href="#기본-정책-합성하기" class="headerlink" title="기본 정책 합성하기"></a>기본 정책 합성하기</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">RatePolicy</span> </span>&#123;</span><br><span class="line">    <span class="function">Money <span class="title">calculateFee</span><span class="params">(Phone phone)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BasicRatePolicy</span> <span class="keyword">implements</span> <span class="title">RatePolicy</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">calculateFee</span><span class="params">(Phone phone)</span> </span>&#123;</span><br><span class="line">        Money result = Money.ZERO;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(Call call phone.getCalls()&#123;</span><br><span class="line">            result.plus(calculateCallFee(call));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> Money <span class="title">calculateCallFee</span><span class="params">(Call call)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RegularPolicy</span> <span class="keyword">extends</span> <span class="title">BasicRatePolicy</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Money amnount;</span><br><span class="line">    <span class="keyword">private</span> Duration seconds;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">RegularPolicy</span><span class="params">(Money amnount, Duration seconds)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.amnount = amnount;</span><br><span class="line">        <span class="keyword">this</span>.seconds = seconds;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Money <span class="title">calculateCallFee</span><span class="params">(Call call)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> amnount.times(call.getDuration().getSeconds() / seconds.getSeconds());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;            </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NightlyDiscountPolicy</span> <span class="keyword">extends</span> <span class="title">BasicRatePolicy</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> LATE_NIGHT_HOUR = <span class="number">22</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Money nightlyAmnount;</span><br><span class="line">    <span class="keyword">private</span> Money regularAmnount;</span><br><span class="line">    <span class="keyword">private</span> Duration seconds;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">NightlyDiscountPolicy</span><span class="params">(Money nightlyAmnount, Money regularAmnount, Duration seconds)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.nightlyAmnount = nightlyAmnount;</span><br><span class="line">        <span class="keyword">this</span>.regularAmnount = regularAmnount;</span><br><span class="line">        <span class="keyword">this</span>.seconds = seconds;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Money <span class="title">calculateCallFee</span><span class="params">(Call call)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (call.getFrom.getHour() &gt;= LATE_NIGHT_HOUR) &#123;</span><br><span class="line">            <span class="keyword">return</span> nightlyAmnount.times(call.getDuration().getSeconds() / seconds.getSeconds());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> regularAmnount.times(call.getDuration().getSeconds() / seconds.getSeconds());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">            </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Phone</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> RatePolicy ratePolicy; <span class="comment">// Phone 이 다양한 요금 정책과 협력할수 있어야 하므로 인터페이스</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;Call&gt; calls = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Phone</span><span class="params">(RatePolicy ratePolicy)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.ratePolicy = ratePolicy;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Call&gt; <span class="title">getCalls</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Collections.unmodifiableList(calls);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">calculateFee</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> ratePolicy.calculateFee(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 일반 요금제</span></span><br><span class="line">Phone phone = <span class="keyword">new</span> Phone(<span class="keyword">new</span> RegularPolicy(Money.wons(<span class="number">10</span>), Duration.ofSeconds(<span class="number">10</span>)));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 심야 할인 요금제</span></span><br><span class="line">Phone phone = <span class="keyword">new</span> Phone(<span class="keyword">new</span> NightlyDiscountPolicy(Money.wons(<span class="number">5</span>), Money.wons(<span class="number">10</span>), Duration.ofSeconds(<span class="number">10</span>)));</span><br></pre></td></tr></table></figure>
+
+<h5 id="부가-정책-적용하기"><a href="#부가-정책-적용하기" class="headerlink" title="부가 정책 적용하기"></a>부가 정책 적용하기</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AdditionalRatePolicy</span> <span class="keyword">implements</span> <span class="title">RatePolicy</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> RatePolicy next;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AdditionalRatePolicy</span><span class="params">(RatePolicy next)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.next = next;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">calculateFee</span><span class="params">(Phone phone)</span> </span>&#123;</span><br><span class="line">        Money fee = next.calculateFee(phone);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> afterCalculated(fee);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">abstract</span> <span class="keyword">protected</span> Money <span class="title">afterCalculated</span><span class="params">(Money fee)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TaxablePolicy</span> <span class="keyword">extends</span> <span class="title">AdditionalRatePolicy</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">double</span> taxRatio;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TaxablePolicy</span><span class="params">(RatePolicy next, <span class="keyword">double</span> taxRatio)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(next);</span><br><span class="line">        <span class="keyword">this</span>.taxRatio = taxRatio;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Money <span class="title">afterCalculated</span><span class="params">(Money fee)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> fee.plus(fee.times(taxRatio));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RateDiscountPolicy</span> <span class="keyword">extends</span> <span class="title">AdditionalRatePolicy</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Money disoucntAmount;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">RateDiscountPolicy</span><span class="params">(RatePolicy next, Money disoucntAmount)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(next);</span><br><span class="line">        <span class="keyword">this</span>.disoucntAmount = disoucntAmount;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Money <span class="title">afterCalculated</span><span class="params">(Money fee)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> fee.minus(disoucntAmount);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="기본-정책과-부가-정책-합성하기"><a href="#기본-정책과-부가-정책-합성하기" class="headerlink" title="기본 정책과 부가 정책 합성하기"></a>기본 정책과 부가 정책 합성하기</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 일반 요금제에 세금 정책 조합</span></span><br><span class="line">Phone phone = <span class="keyword">new</span> Phone(</span><br><span class="line">    <span class="keyword">new</span> TaxablePolicy(<span class="number">0.05</span>, </span><br><span class="line">        <span class="keyword">new</span> RegularPolicy(...)));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 일반 요금제에 기본 요금 할인 정책을 조합한 결과에 세금 정책 조합</span></span><br><span class="line">Phone phone = <span class="keyword">new</span> Phone(</span><br><span class="line">    <span class="keyword">new</span> TaxablePolicy(<span class="number">0.05</span>, </span><br><span class="line">        <span class="keyword">new</span> RateDiscountablePolicy(Money.wons(<span class="number">1000</span>),</span><br><span class="line">            <span class="keyword">new</span> RegularPolicy(...))));</span><br></pre></td></tr></table></figure>
+
+<h5 id="새로운-정책-추가하기"><a href="#새로운-정책-추가하기" class="headerlink" title="새로운 정책 추가하기"></a>새로운 정책 추가하기</h5><p><img src="/image/object_composition.png" alt></p>
+<p>요구사항이 변경되면 오직 하나의 클래스만 수정하면 된다.</p>
+<p>세금 정책을 변경한다고 할 때,</p>
+<ol>
+<li><p>상속</p>
+<p>여러 클래스를 수정</p>
+</li>
+<li><p>합성</p>
+<p>오직 TaxablePolicy 클래스 하나만 변경</p>
+</li>
+</ol>
+<h2 id="04-믹스인"><a href="#04-믹스인" class="headerlink" title="04 믹스인"></a>04 믹스인</h2><p>객체를 생성할 때 코드 일부를 클래스 안에 섞어 넣어 재사용하는 기법이다.</p>
+<p>합성처럼 유연하며 상속처럼 쉽게 코드 재사용할 수 있다.</p>
+<p>스칼라의 trait 를 이용하면 믹스인 구현이 가능하다.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2019/12/27/object-chapter11/" data-id="ck7lu78s500pdlk6wnnfdnc19" data-title="[오브젝트] 11장_합성과 유연한 설계" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-kafka-chapter1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/12/26/kafka-chapter1/" class="article-date">
+  <time class="dt-published" datetime="2019-12-25T15:00:00.000Z" itemprop="datePublished">2019-12-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/kafka/">Kafka</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/12/26/kafka-chapter1/">[카프카] 1장_카프카란 무엇인가</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>카프카 : 대용량, 대규모 메세지 데이터를 빠르게 처리하도록 개발된 메시징 플랫폼</p>
+<h3 id="1-탄생-배경"><a href="#1-탄생-배경" class="headerlink" title="1. 탄생 배경"></a>1. 탄생 배경</h3><p><img src="/image/kafka_end_to_end.png" alt></p>
+<p>위 그림 처럼 end-to-end 아키텍쳐의 문제점은,</p>
+<ol>
+<li>실시간 트랜잭션 (OLTP) 처리와 비동기 처리가 동시에 이뤄지지만, 통합된 전송 영역이 없어서 복잡도 증가</li>
+<li>데이터 파이프라인의 관리가 어려움</li>
+</ol>
+<p><img src="/image/kafka_architecture.png" alt></p>
+<p>위 그림처럼 카프카는,</p>
+<ol>
+<li>모든 시스템으로 데이터 전송 가능 </li>
+<li>실시간 처리 가능</li>
+<li>확장이 용이</li>
+</ol>
+<h3 id="2-동작-방식과-원리"><a href="#2-동작-방식과-원리" class="headerlink" title="2. 동작 방식과 원리"></a>2. 동작 방식과 원리</h3><p>메시징 시스템을 먼저 살펴보자.<br>중앙에 메시징 시스템 서버를 두고 메시지를 Publish 하고 Subscribe 하는 형태의 통신을 Pub/Sub 모델이라고 한다.<br>프로듀서가 메시지를 컨슈머에게 직접 전달하는 것이 아니라, 중간의 메시징 시스템으로 전달한다. 그래서,</p>
+<ol>
+<li>프로듀서가 수신 불능 상태가 되어도 메세징 시스템이 살아있으면 메세지가 유실이 되지 않는다.</li>
+<li>메세징 시스템을 중심으로 연결되기 때문에, 확장성이 용이하다.</li>
+</ol>
+<p>카프카의 메세지 전달 순서는,</p>
+<ol>
+<li>프로듀서가 메세지를 카프카에게 보낸다.</li>
+<li>메세지가 Topic 에 도착해 저장된다.</li>
+<li>컨슈머는 카프카 서버에 접속해 메세지를 가져간다. </li>
+</ol>
+<h3 id="3-특징"><a href="#3-특징" class="headerlink" title="3. 특징"></a>3. 특징</h3><ol>
+<li><p>프로듀서와 컨슈머의 분리<br>어느 한쪽 시스템에서 문제가 발생해도 연쇄 작용이 발생할 확률이 낮다.<br>서버 추가에 대한 부담이 준다.</p>
+</li>
+<li><p>멀티 프로듀서, 멀티 컨슈머<br>데이터 분석 및 처리 프로세스에서 하나의 데이터를 다양한 용도로 사용하는 요구 사항을 충족할 수 있다.</p>
+</li>
+<li><p>디스크에 메세지 저장<br>컨슈머가 메세지를 읽어가도 보관 주기 동안 디스크에 메세지를 저장한다.<br>( 일반적인 메세지 시스템은 컨슈머가 메세지를 읽어가면 큐에서 바로 메세지 삭제 )</p>
+</li>
+<li><p>확장성<br>온라인 상태에서 확장 작업 가능</p>
+</li>
+<li><p>높은 성능</p>
+</li>
+</ol>
+<hr>
+<p>카프카, 데이터 플랫폼의 최강자 &lt;고승범, 공용준&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2019/12/26/kafka-chapter1/" data-id="ck7lu78p300mhlk6w7twpdywt" data-title="[카프카] 1장_카프카란 무엇인가" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-kafka-chapter5" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/12/26/kafka-chapter5/" class="article-date">
+  <time class="dt-published" datetime="2019-12-25T15:00:00.000Z" itemprop="datePublished">2019-12-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/kafka/">Kafka</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/12/26/kafka-chapter5/">[카프카] 5장_카프카 컨슈머</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>컨슈머란, 프로듀서가 메세지를 생산해서 카프카의 토픽으로 보내면 그 토픽의 메세지를 가져와 소비하는 애플리케이션, 서버이다.<br>주요 기능은, 특정 파티션을 관리하고 있는 파티션 리더에게 메세지를 가져오기 요청을 하는 것이다.</p>
+<h3 id="2-콘솔-컨슈머로-메세지-가져오기"><a href="#2-콘솔-컨슈머로-메세지-가져오기" class="headerlink" title="2. 콘솔 컨슈머로 메세지 가져오기"></a>2. 콘솔 컨슈머로 메세지 가져오기</h3><p>컨슈머를 실행할 때는 항상 컨슈머 그룹이 필요하다.<br>만약 추가 옵션을 주지 않고 실행하면, 자동으로 다음 형태로 컨슈머 그룹이 생성된다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console-consumer-xxxx(숫자)</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-파티션과-메세지-순서"><a href="#4-파티션과-메세지-순서" class="headerlink" title="4. 파티션과 메세지 순서"></a>4. 파티션과 메세지 순서</h3><h4 id="4-1-파티션-3개로-구성한-토픽과-메세지-순서"><a href="#4-1-파티션-3개로-구성한-토픽과-메세지-순서" class="headerlink" title="4.1 파티션 3개로 구성한 토픽과 메세지 순서"></a>4.1 파티션 3개로 구성한 토픽과 메세지 순서</h4><p>프로듀서 다음 순서로 보낸다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a</span><br><span class="line">b</span><br><span class="line">c</span><br><span class="line">d</span><br><span class="line">e</span><br></pre></td></tr></table></figure>
+
+<p>컨슈머에서 –from-beginning 옵션으로 받는다.<br>메세지의 순서가 프로듀서가 보낸 순서가 아니다.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a</span><br><span class="line">d</span><br><span class="line">b</span><br><span class="line">e</span><br><span class="line">c</span><br></pre></td></tr></table></figure>
+
+<p>다음으로, 프로듀서서가 숫자를 보낸다.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td></tr></table></figure>
+
+<p>컨슈머에서 –from-beginning 옵션으로 받는다. </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">a</span><br><span class="line">d</span><br><span class="line">1</span><br><span class="line">4</span><br><span class="line">b</span><br><span class="line">e</span><br><span class="line">2</span><br><span class="line">5</span><br><span class="line">c</span><br><span class="line">3</span><br></pre></td></tr></table></figure>
+
+<p>위 현상들은 정상이다.<br>–partition 0, –partition 1, –partition 3 로 각각 옵션을 주어서 컨슈머를 각각 실행해보면,</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">b</span><br><span class="line">e</span><br><span class="line">2</span><br><span class="line">5</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a</span><br><span class="line">d</span><br><span class="line">1</span><br><span class="line">4</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">c</span><br><span class="line">3</span><br></pre></td></tr></table></figure>
+
+<p><img src="/image/kafka_partition_message.png" alt></p>
+<p>프로듀서가 메세지를 a b c d e 순서로 보냈지만, 해당 메세지들은 하나의 파티션에만 순서대로 저장되는 것이 아니라 각각의 파티션별로 메세지가 저장되었다.<br>컨슈머의 출력 내용은 각 파티션의 오프셋 순서대로 메세지를 가져온 것이다. 즉,</p>
+<ol>
+<li>카프카 컨슈머에서의 메세지 순서는 동일한 파티션 내에서는 프로듀서가 생성한 순서와 동일하게 처리하지만, </li>
+<li>파티션과 파티션 사이에서는 순서를 보장하지 않는다.</li>
+</ol>
+<h4 id="4-2-파티션-1개로-구성한-토픽과-메세지-순서"><a href="#4-2-파티션-1개로-구성한-토픽과-메세지-순서" class="headerlink" title="4.2 파티션 1개로 구성한 토픽과 메세지 순서"></a>4.2 파티션 1개로 구성한 토픽과 메세지 순서</h4><p>메세지 순서를 정확하게 보장받기 위해서는 토픽 파티션 수를 1로 지정하면 된다.<br>단점은, </p>
+<ol>
+<li>분산해서 처리할 수 없고 </li>
+<li>하나의 컨슈머에서만 처리할 수 있기 때문에 처리량이 낮다.</li>
+</ol>
+<h3 id="5-컨슈머-그룹"><a href="#5-컨슈머-그룹" class="headerlink" title="5. 컨슈머 그룹"></a>5. 컨슈머 그룹</h3><p>동일한 토픽에 대해 여러 컨슈머가 메세지를 가져갈 수 있도록 컨슈머 그룹이라는 기능을 제공한다.<br>이 방식은, 최근에 하나의 데이터를 다양한 용도로 사용하는 요구가 많아져서 좋다.</p>
+<p><img src="/image/kafka_consumer_g01.png" alt></p>
+<blockquote>
+<p> 위 그림에서, 갑자기 프로듀서가 해당 토픽으로 많은 메세지를 전송한다고 가정해보자. </p>
+</blockquote>
+<p>프로듀서가 메세지를 보내는 속도가 컨슈머가 메세지를 가져가는 속도보다 빨라서, 컨슈머가 읽어가지 못하는 메세지들이 쌓인다.</p>
+<p>그래서 다음과 같이 컨슈머를 확장한다.</p>
+<p><img src="/image/kafka_consumer_g02.png" alt></p>
+<p>컨슈머 그룹 안에서는 컨슈머들이 메세지를 가져오고 있는 토픽의 파티션에 대한 소유권을 공유한다.<br>파티션 1 의 소유권이 컨슈머 01 에서 02 로, 파티션 2 의 소유권이 컨슈머 01 에서 03 으로 이동했다.<br>이렇게 소유권이 이동하는 것을 <code>리밸런스</code> 라고 한다.<br>리밸런스의 단점은, 리밸런스 하는 동안 일시적으로 컨슈머는 메세지를 가져올 수 없다는 것이다.</p>
+<blockquote>
+<p>그런데, 이렇게 컨슈머를 추가했음에도 컨슈머가 가져가야하는 메세지가 쌓이면 어떻게 해야할까 ?</p>
+</blockquote>
+<p>컨슈머 04 를 추가해보자. 그대로다.<br>왜냐하면, 토픽의 파티션에는 하나의 컨슈머만 연결할 수 있기 때문이다. 각각의 파티션에 대해서는 메세지 순서를 보장하는데 두 개의 컨슈머가 하나의 파티션을 공유하면 안정적으로 메세지 순서를 보장할 수 없다.<br>그래서 파티션 수도 같이 늘려줘야한다.</p>
+<blockquote>
+<p> 컨슈머 그룹에서 컨슈머 04 가 다운되는 경우를 살펴보자.</p>
+</blockquote>
+<p>컨슈머가 컨슈머 그룹 안에서 멤버로 유지하고 할당된 파티션의 소유권을 유지하는 방법은 하트비트를 보내는 것이다.<br>만약, 커슈머가 오랫동안 하트비트를 보내지 않으면 세션은 타임아웃 되고 해당 커슈머가 다운되었다고 판단해서 리밸런스가 시작된다.<br>컨슈머 04 가 다운되면서 컨슈머 04 가 담당하던 파티션 3 을 컨슈머 03 이 이어받는다. </p>
+<h3 id="6-커밋과-오프셋"><a href="#6-커밋과-오프셋" class="headerlink" title="6. 커밋과 오프셋"></a>6. 커밋과 오프셋</h3><p>컨슈머가 poll() 을 호출할 때마다 컨슈머 그룹은 카프카에 저장되어 있는 아직 읽지 않는 메세지를 가져온다.<br>이것이 가능한 이유는, 컨슈머 그룹이 어디까지 메세지를 가져갔는지 알 수 있기 때문이다.<br>컨슈머 그룹의 각각 컨슈머들은 각각의 파티션에 자신이 가져간 메세지의 위치 정보인 오프셋을 기록한다.<br>각 파티션에 대해 현재 위치를 업데이하는 것을 <code>커밋</code> 이라고 한다.</p>
+<ol>
+<li><p>올드 카프카 컨슈머 (0.9 이전 버젼)<br>오프셋 정보를 주키퍼에 저장</p>
+</li>
+<li><p>뉴 카프카 컨슈머<br>내부에서 사용하는 토픽 (_consumer_offsets) 을 만들고 이 토픽에 오프셋 정보를 저장</p>
+</li>
+</ol>
+<h4 id="6-1-자동-커밋"><a href="#6-1-자동-커밋" class="headerlink" title="6.1 자동 커밋"></a>6.1 자동 커밋</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">enable.auto.commit = <span class="keyword">true</span></span><br></pre></td></tr></table></figure>
+
+<p>5초 마다 컨슈머가 poll() 을 호출할 때마다 가장 마지막 오프셋을 커밋한다. </p>
+<p><img src="/image/kafka_auto_commit.png" alt></p>
+<ol>
+<li>컨슈머는 한 번의 poll() 로 메세지를 1, 2 를 가져온다.</li>
+<li>5초가 되면서 마지막 오프셋 2 를 커밋한다.</li>
+<li>메세지 3 과 4를 가져온다.</li>
+<li>5초가 지나 오프셋 4를 커밋한다.</li>
+</ol>
+<h4 id="6-2-수동-커밋"><a href="#6-2-수동-커밋" class="headerlink" title="6.2 수동 커밋"></a>6.2 수동 커밋</h4><p>메세지 처리가 완료될 때까지 메세지를 가져온 것으로 간주되어서는 안되는 경우에 사용한다.<br>ex ) 메세지를 컨슈머가 가져오자마자 커밋하는 것이 아니라, 데이터베이스에 메세지를 저장한 후 커밋을 한다.</p>
+<h4 id="6-3-특정-파티션-할당"><a href="#6-3-특정-파티션-할당" class="headerlink" title="6.3 특정 파티션 할당"></a>6.3 특정 파티션 할당</h4><p>수동으로 파티션을 할당해 메세지를 가져올 수 있다. </p>
+<h4 id="6-4-특정-오프셋부터-메세지-가져오기"><a href="#6-4-특정-오프셋부터-메세지-가져오기" class="headerlink" title="6.4 특정 오프셋부터 메세지 가져오기"></a>6.4 특정 오프셋부터 메세지 가져오기</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">seek(파티션 번호, 오프셋 번호)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>카프카, 데이터 플랫폼의 최강자 &lt;고승범, 공용준&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2019/12/26/kafka-chapter5/" data-id="ck7lu78p300mjlk6wlaeinzqf" data-title="[카프카] 5장_카프카 컨슈머" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-kafka-chapter3" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/12/26/kafka-chapter3/" class="article-date">
+  <time class="dt-published" datetime="2019-12-25T15:00:00.000Z" itemprop="datePublished">2019-12-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/kafka/">Kafka</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/12/26/kafka-chapter3/">[카프카] 3장_카프카 디자인</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="1-카프카-디자인의-특징"><a href="#1-카프카-디자인의-특징" class="headerlink" title="1. 카프카 디자인의 특징"></a>1. 카프카 디자인의 특징</h3><h4 id="1-1-분산-시스템"><a href="#1-1-분산-시스템" class="headerlink" title="1.1 분산 시스템"></a>1.1 분산 시스템</h4><p>분산 시스템이란, 같은 역할을 하는 여러 대의 서버로 이뤄진 서버 그룹이다.<br>장점은,</p>
+<ol>
+<li>단일 시스템 보다 높은 성능</li>
+<li>하나의 서버가 장애가 발생해도 다른 서버가 대신 처리</li>
+<li>시스템 확장 용이</li>
+</ol>
+<h4 id="1-2-페이지-캐시"><a href="#1-2-페이지-캐시" class="headerlink" title="1.2 페이지 캐시"></a>1.2 페이지 캐시</h4><p>OS 는 물리적 메모리에 애플리케이션이 사용하는 부분을 할당하고, 남은 잔여 메모리 일부를 페이지 케시로 이용한다.<br>즉, 디스크에 읽고 쓰기를 하지 않고 페이지 케시를 읽고 쓰는 방식으로 처리 속도가 빠르고 전체적인 성능을 향상 시킨다.<br>카프카는 이 특징을 이용해 디자인되었다.</p>
+<h4 id="1-3-배치-전송-처리"><a href="#1-3-배치-전송-처리" class="headerlink" title="1.3 배치 전송 처리"></a>1.3 배치 전송 처리</h4><p>서버와 클라이언트 사이, 또는 서버 내부적으로 데이터를 주고 받는 과정에서 I/O 가 발생한다.<br>작은 I/O 가 빈번하게 발생하는 것을 막기 위해, 작은 I/O 들을 묶어러 처리할 수 있도록 배치 작업으로 처리한다.</p>
+<h3 id="2-카프카-데이터-모델"><a href="#2-카프카-데이터-모델" class="headerlink" title="2. 카프카 데이터 모델"></a>2. 카프카 데이터 모델</h3><h4 id="2-1-토픽"><a href="#2-1-토픽" class="headerlink" title="2.1 토픽"></a>2.1 토픽</h4><p>메세지를 받을 수 있도록 논리적으로 묶은 개념이다. 메일 주소라고 생각하면 쉽다.</p>
+<h4 id="2-2-파티션"><a href="#2-2-파티션" class="headerlink" title="2.2 파티션"></a>2.2 파티션</h4><p>토픽을 분할한 것이다. </p>
+<p><img src="/image/kafka_one_producer.png" alt></p>
+<p>위 그림에서, ‘뉴스 토픽’ 으로 4 개의 메세지를 보내는데 4 초가 걸린다.</p>
+<p><img src="/image/kafka_many_producer.png" alt></p>
+<p>위 그림에서, ‘뉴스 토픽’ 으로 4 개의 메세지를 보내는데 1 초가 걸린다.<br>이렇게 빠른 전송을 위해서는, 토픽의 파티션 수와 프로듀서 수를 모두 늘려줘야한다.</p>
+<blockquote>
+<p>무조건 파티션 수를 늘려야 하나 ?</p>
+</blockquote>
+<p>파티션 수가 늘어나면 카프카에 좋지 않은 영향을 끼칠 수 있다.</p>
+<ol>
+<li><p>파일 핸들러의 낭비<br>각 파티션은 브로커의 디렉토리와 매핑되고, 저장되는 데이터는 2 개의 파일 ( 인덱스, 실제 데이터 ) 이 있다.<br>파티션이 많을 수록, 파일 핸들 수 역시 많아져 리소스가 낭비가 될 수 있다.</p>
+</li>
+<li><p>장애 복구 시간 증가</p>
+</li>
+</ol>
+<blockquote>
+<p>토픽의 적절한 파티션 수는 ?</p>
+</blockquote>
+<p>먼저, 원하는 목표 처리량의 기준을 정해야한다. </p>
+<ol>
+<li><p>프로듀서<br>4 개의 프로듀서가 초당 10 개의 메세지를 토픽으로 보내면, 토픽에서 초당 40 개의 메시지를 받아줘야한다.</p>
+</li>
+<li><p>토픽<br>해당 토픽에서 파티션을 1로 했을 때 초당 10개의 메세지만 받아준다면, 파티션 수를 4로 조정하면 목표치를 달성한다.</p>
+</li>
+<li><p>컨슈머<br>8 개의 컨슈머가 각각 초당 5 개의 메세지를 토픽에서 가져올 수 있으면, 토픽의 파티션수는 8개로 맞춰서 각 컨슈머마다 각각의 파티션에 접근하게 해줘야한다.<br>주의할 점은, 파티션 수를 늘리는 것은 가능하지만 파티션 수을 줄이는 것은 불가능하다.</p>
+</li>
+</ol>
+<h4 id="2-3-오프셋과-메세지-순서"><a href="#2-3-오프셋과-메세지-순서" class="headerlink" title="2.3 오프셋과 메세지 순서"></a>2.3 오프셋과 메세지 순서</h4><p>오프셋이란, 각 파티션마다 메세지가 저장되는 위치이다. 파티션 내에서 유일한 숫자이고, 순차적으로 증가한다.<br>만약 컨슈머가 파티션 0 에서 데이터를 가져간다고 하면, 오프셋 0 1 2 3 4 5 순서대로 가져갈 수 있다. 절대로 오프셋 순서가 바뀐 상태로 가져갈 수 없다.</p>
+<h3 id="3-고가용성과-리플리케이션"><a href="#3-고가용성과-리플리케이션" class="headerlink" title="3. 고가용성과 리플리케이션"></a>3. 고가용성과 리플리케이션</h3><p>토픽을 이루는 각각의 <code>파티션을</code> 리플리케이션 하는 것이다.</p>
+<h4 id="3-1-리플리케이션-팩터와-리더-팔로워의-역할"><a href="#3-1-리플리케이션-팩터와-리더-팔로워의-역할" class="headerlink" title="3.1 리플리케이션 팩터와 리더, 팔로워의 역할"></a>3.1 리플리케이션 팩터와 리더, 팔로워의 역할</h4><p><img src="/image/kafka_reflecation.png" alt></p>
+<p>모든 읽기와 쓰기는 리더를 통해서만 일어난다. 팔로워는 리더의 데이터를 그대로 리플리케이션만 한다.<br>리더와 팔로워는 저장된 데이터의 순서도 일치하고 동일한 오프셋과 메시지를 갖는다.<br>리플리케이션된 토픽의 서버가 다운되어도, 리더 변경으로 문제 없이 프로듀서의 요청을 처리할 수 있다.</p>
+<p>리플리케이션의 단점은,</p>
+<ol>
+<li><p>디스크 사용량 증가<br>토픽의 사이즈가 100 GB, 리플리케이션 팩터 3 이면, 카프카 클러스터 내 필요 저장소 크기는 300 GB 이다.</p>
+</li>
+<li><p>브로커 리소스 사용량 증가<br>브로커는 리플리케이션 보장을 위해, 비활성화된 토픽이 리플리케이션을 잘하고 있는지 비활성화된 토픽을 계속 체크한다. </p>
+</li>
+</ol>
+<h4 id="3-2-리더와-팔로워의-관리"><a href="#3-2-리더와-팔로워의-관리" class="headerlink" title="3.2 리더와 팔로워의 관리"></a>3.2 리더와 팔로워의 관리</h4><p>팔로워에 문제가 있어서, 리더로부터 데이터를 가져오지 못하면 정합성이 맞지 않는다.<br>이를 해결하기 위해, ISR ( In Sync Replica ) 라는 개념이 있다. 현재 리플리케이션 되고 있는 리플리케이션 그룹이다.<br>ISR 에 속한 구성원만이 리더의 자격이 있다.<br>프로듀서 1, 브로커 3, 리플리케이션 팩터 3 일때, ISR 동작 순서는</p>
+<ol>
+<li>프로듀서가 메세지를 토픽의 리더에게 보낸다. </li>
+<li>리더는 메세지를 저장한다.</li>
+<li>팔로워는 매우 짧은 주기로 리더에 새로운 메세지가 저장된 것이 있는지 확인한다.</li>
+<li>팔로워 1은 잘 동작하고 2는 잘 동작하지 않는다고 가정하자.</li>
+<li>리더는 팔로워가 일정 주기 동안 확인 요청을 하지 않으면 그 팔로워를 ISR 그룹에서 추방한다.</li>
+<li>리더는 팔로워 2를 ISR 그룹에서 추방한다.</li>
+<li>팔로워 1은 리더에게 새로운 메세지가 있음을 확인하고 메세지를 가져가서 저장한다.</li>
+</ol>
+<h3 id="4-모든-브로커가-다운된다면"><a href="#4-모든-브로커가-다운된다면" class="headerlink" title="4. 모든 브로커가 다운된다면"></a>4. 모든 브로커가 다운된다면</h3><ol>
+<li><p>마지막 리더가 살아나기를 기다린다.<br>마지막 리더에게 모든 메세지가 저장되어 있을 때, 나중에 다시 살아난다면 메세지 손실이 없다.<br>하지만 마지막 리더가 살아나지 않는 경우가 있을 수 있고, 결국 마지막 리더가 정상화 될때 까지 카프카 클러스터 장애가 길어진다.</p>
+</li>
+<li><p>ISR 에서 추방되었지만 먼저 살아나면 자동으로 리더가 된다.<br>메세지가 일부 손실되지만, 브로커 하나만이라도 정상화되어 서비스가 빠르게 정상화된다.</p>
+</li>
+</ol>
+<p>다음 그림은, 토픽 / 파티션 / 리플리케이션 팩터 / 브로커 구성 예시이다.</p>
+<p><img src="/image/kafka_example01.png" alt></p>
+<p><img src="/image/kafka_example02.png" alt></p>
+<hr>
+<p>카프카, 데이터 플랫폼의 최강자 &lt;고승범, 공용준&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2019/12/26/kafka-chapter3/" data-id="ck7lu78p000melk6w5fd4zs7j" data-title="[카프카] 3장_카프카 디자인" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-kafka-chapter4" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/12/26/kafka-chapter4/" class="article-date">
+  <time class="dt-published" datetime="2019-12-25T15:00:00.000Z" itemprop="datePublished">2019-12-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/kafka/">Kafka</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/12/26/kafka-chapter4/">[카프카] 4장_카프카 프로듀서</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>프로듀서란, 메세지를 생산해서 카프카의 토픽으로 보내는 역할을 하는 애플리케이션, 서버이다.<br>주요 기능은, 각각의 메세지를 토픽 파티션에 매핑하고 파티션의 리더에 요청을 보내는 것이다.</p>
+<h3 id="1-콘솔-프로듀서로-메세지-보내기"><a href="#1-콘솔-프로듀서로-메세지-보내기" class="headerlink" title="1. 콘솔 프로듀서로 메세지 보내기"></a>1. 콘솔 프로듀서로 메세지 보내기</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">auto.create.topics.enable = <span class="keyword">true</span></span><br></pre></td></tr></table></figure>
+
+<p>위 처럼 설정되어 있으면,<br>프로듀서가 카프카에 존재하지 않는 토픽으로 메세지를 보낼 때 자동으로 토픽이 생성된다.</p>
+<h3 id="2-자바와-파이썬을-이용한-프로듀서"><a href="#2-자바와-파이썬을-이용한-프로듀서" class="headerlink" title="2. 자바와 파이썬을 이용한 프로듀서"></a>2. 자바와 파이썬을 이용한 프로듀서</h3><p>프로듀서에서 send() 로 메세지를 보내는 방식은 세 가지이다.</p>
+<ol>
+<li><p>메세지 보내고 확인하지 않기<br>메세지 손실 가능성이 있다.</p>
+</li>
+<li><p>동기 전송<br>카프카의 응답을 기다린다.</p>
+</li>
+<li><p>비동기 전송<br>응답을 기다리지 않기 때문에 빠른 전송이 가능하다.</p>
+</li>
+</ol>
+<h3 id="5-메세지-전송-방법"><a href="#5-메세지-전송-방법" class="headerlink" title="5. 메세지 전송 방법"></a>5. 메세지 전송 방법</h3><p>프로듀서 옵셩 중에 acks 옵션 설정에 따라, 카프카로 메세지를 전송할 때 메세지 손실 여부와 메세지 전송 속도 및 처리량이 달라진다.</p>
+<h4 id="5-1-메세지-손실-가능성-높음-빠른-전송-속도"><a href="#5-1-메세지-손실-가능성-높음-빠른-전송-속도" class="headerlink" title="5.1 메세지 손실 가능성 높음, 빠른 전송 속도"></a>5.1 메세지 손실 가능성 높음, 빠른 전송 속도</h4><p>acks = 0, 카프카 서버의 응답을 기다리지 않고 메세지 보낼 준비가 되면 즉시 다음 요청을 보낸다.</p>
+<h4 id="5-2-메세지-손실-가능성-낮음-적당한-전송-속도"><a href="#5-2-메세지-손실-가능성-낮음-적당한-전송-속도" class="headerlink" title="5.2 메세지 손실 가능성 낮음, 적당한 전송 속도"></a>5.2 메세지 손실 가능성 낮음, 적당한 전송 속도</h4><p><img src="/image/kafka_ack_1.png" alt></p>
+<p>asks = 1, 메세지를 보내고 잘 받았는지 확인한다.<br>위 그림 처럼, 팔로워들이 주기적으로 리더를 확인하고 새로운 메세지가 확인되면 팔로워들에도 저장한다.<br>메세지 손실이 발생하는 경우는 리더에 장애가 발생하는 경우이다.<br>즉, 프로듀서가 리더에게 메세지를 보내고 리더는 메시지를 저장한 후에 바로 장애가 발생하는 경우이다.</p>
+<h4 id="5-3-메세지-손실-없음-느린-전송-속도"><a href="#5-3-메세지-손실-없음-느린-전송-속도" class="headerlink" title="5.3 메세지 손실 없음, 느린 전송 속도"></a>5.3 메세지 손실 없음, 느린 전송 속도</h4><p>acks = all, 메세지를 보내고 잘 받았는지 확인하고 추가적으로 팔로워들까지 메세지를 잘 받았는지 확인한다.<br>프로듀서 설정 뿐만 아니라, 브로커 설정도 같이 해줘야한다.</p>
+<blockquote>
+<p>프로듀서 acks = all, 브로커 min.insync.replicas = 1 </p>
+</blockquote>
+<p>min.insync.replicas 는 최소 리플리케이션 팩터를 지정하는 옵션이다.</p>
+<ol>
+<li>프로듀서는 토픽의 리더에게 메세지를 보내고, </li>
+<li>리더는 메세지를 저장한다. </li>
+<li>최소 하나의 리플리케이션 조건을 갖췄기 때문에 acks 를 보낸다.</li>
+</ol>
+<blockquote>
+<p>프로듀서 acks = all, 브로커 min.insync.replicas = 2</p>
+</blockquote>
+<ol>
+<li>프로듀서는 토픽의 리더에게 메세지를 보내고, </li>
+<li>리더는 메세지를 저장한다. </li>
+<li>팔로워가 2 개가 있다고 할 때, 첫번째 팔로워는 리더로부터 주기적으로 새로운 메세지를 확인하며 새로운 메세지가 확인되면 자신도 리더의 메세지를 가져와 저장한다.</li>
+<li>최소 두 개의 리플리케이션 조건을 갖췄기 때문에 acks 를 보낸다.</li>
+</ol>
+<p>“손실 없는 메세지 전송을 위해서는,  프로듀서 acks = all, 브로커 min.insync.replicas = 2, 리플레케이션 팩터 = 3”</p>
+<blockquote>
+<p>프로듀서 acks = all, 브로커 min.insync.replicas = 3</p>
+</blockquote>
+<p>왜 카프카는 손실 없는 메세지 전송을 위해, min.insync.replicas = 3 이 아니라, min.insync.replicas = 2 를 추천할까 ?</p>
+<ol>
+<li>프로듀서는 토픽의 리더에게 메세지를 보낸다.</li>
+<li>팔로워가 2 개가 있다고 할 때, 팔로워가 위치한 브로커 하나를 강제 종료한다.</li>
+<li>에러가 발생한다.</li>
+<li>min.insync.replicas = 3 이기 때문에, 리더, 팔로워, 팔로워 이렇게 3 곳에서 모두 메세지를 받아야만 리더는 프로듀서에게 메세지를 잘 받았다는 acks 를 받을 수 있다. </li>
+<li>하지만, 팔로워 한 개를 강제 종료하였기 때문에 ISR 에는 리더와 팔로워 각각 하나만 남아 있는 상태다.</li>
+<li>결국 옵션의 조건을 충족시킬 수 없는 상황이기 때문에 에러가 발생한다.</li>
+</ol>
+<hr>
+<p>카프카, 데이터 플랫폼의 최강자 &lt;고승범, 공용준&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2019/12/26/kafka-chapter4/" data-id="ck7lu78p800mrlk6w2ii408cn" data-title="[카프카] 4장_카프카 프로듀서" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-object-chapter10" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/12/22/object-chapter10/" class="article-date">
+  <time class="dt-published" datetime="2019-12-21T15:00:00.000Z" itemprop="datePublished">2019-12-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/object/">Object</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/12/22/object-chapter10/">[오브젝트] 10장_상속과 코드 재사용</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>이번 장은, 클래스 재사용을 위해 새로운 클래스를 추가하는 가장 대표적 기법인 상속에 대해 정리한다.</p>
+<h2 id="01-상속과-중복-코드"><a href="#01-상속과-중복-코드" class="headerlink" title="01 상속과 중복 코드"></a>01 상속과 중복 코드</h2><h5 id="DRY-원칙-Don’t-Repeat-Yourself"><a href="#DRY-원칙-Don’t-Repeat-Yourself" class="headerlink" title="DRY 원칙 (Don’t Repeat Yourself)"></a>DRY 원칙 (Don’t Repeat Yourself)</h5><p>“동일한 지식을 중복하지 마라”</p>
+<p>중복 여부를 판단하는 기준은 변경이다. 중복 코드는 변경을 방해한다. 이것이 중복 코드를 제거해야하는 핵심적 이유이다. </p>
+<p>중복 코드는 코드를 수정하는데 노력을 몇배로 증가시킨다. 왜냐하면,</p>
+<ol>
+<li>어떤 코드가 중복인지 찾아야하고,</li>
+<li>찾아낸 모든 코드를 일관되게 수정해야하고,</li>
+<li>개별적으로 테스트를 다 해야하기 때문이다. </li>
+</ol>
+<h5 id="중복과-변경"><a href="#중복과-변경" class="headerlink" title="중복과 변경"></a>중복과 변경</h5><p>한 달에 한 번씩 가입자별로 전화 요금 계산하는 간단한 애플리케이션을 개발해보자.</p>
+<p>개별 통화 기간을 저장하는 클래스가 필요하다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Call</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> LocalDateTime from; <span class="comment">//통화 시작 시간</span></span><br><span class="line">    <span class="keyword">private</span> LocalDateTime to; <span class="comment">// 통화 종료 시간</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Call</span><span class="params">(LocalDateTime from, LocalDateTime to)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.from = from;</span><br><span class="line">        <span class="keyword">this</span>.to = to;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> Duration <span class="title">getDuration</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Duration.between(from, to);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> LocalDateTime <span class="title">getFrom</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> from;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>전체 통화 목록에 대해 알고 있는 정보 전문가에게 <code>요금 계산 책임</code> 을 할당해야한다. </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Phone</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Money amount;</span><br><span class="line">    <span class="keyword">private</span> Duration seconds;</span><br><span class="line">    <span class="keyword">private</span> List&lt;Call&gt; calls = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Phone</span><span class="params">(Money amount, Duration seconds)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.amount = amount;</span><br><span class="line">        <span class="keyword">this</span>.seconds = seconds;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">call</span><span class="params">(Call call)</span></span>&#123;</span><br><span class="line">        calls.add(call);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Call&gt; <span class="title">getCalls</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> calls;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">getAmount</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> amount;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Duration <span class="title">getSeconds</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> seconds;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">calculateFee</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Money result = Money.ZERO;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> (Call call : calls)&#123;</span><br><span class="line">            result = result.plus(amount.times(call.getDuration().getSeconds() / seconds.getSeconds()));</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>그런데, <code>심야 할인 요금제</code> 라는 새로운 요금 방식을 추가해야하는 요구사항이 접수됐다. </p>
+<p>Phone 코드를 복사해서 새로운 클래스를 만들어보자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NightlyDiscountPhone</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> LATE_NITGHT_HOUR = <span class="number">22</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> Money nightAmount;</span><br><span class="line">    <span class="keyword">private</span> Money regularAmount;</span><br><span class="line">    <span class="keyword">private</span> Duration seconds;</span><br><span class="line">    <span class="keyword">private</span> List&lt;Call&gt; calls = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">NightlyDiscountPhone</span><span class="params">(Money nightAmount, Money regularAmount, Duration seconds)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.nightAmount = nightAmount;</span><br><span class="line">        <span class="keyword">this</span>.regularAmount = regularAmount;</span><br><span class="line">        <span class="keyword">this</span>.seconds = seconds;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">calculateFee</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Money result = Money.ZERO;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (Call call : calls)&#123;</span><br><span class="line">            <span class="keyword">if</span>(call.getFrom().getHour() &gt;= LATE_NITGHT_HOUR)&#123;</span><br><span class="line">                result = result.plus(</span><br><span class="line">                    nightAmount.times(call.getDuration().getSeconds() / seconds.getSeconds())</span><br><span class="line">                );</span><br><span class="line">            &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                result = result.plus(</span><br><span class="line">                    regularAmount.times(call.getDuration().getSeconds() / seconds.getSeconds())</span><br><span class="line">                );</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>통화 요금에 부과할 세금</code>을 계산하는 요구사항을 추가해보자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Phone</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">double</span> taxRate;</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">      </span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">calculateFee</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Money result = Money.ZERO;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (Call call : calls)&#123;</span><br><span class="line">            result = result.plus(amount.times(call.getDuration().getSeconds() / seconds.getSeconds()));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result.plus(result.times(taxRate);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NightlyDiscountPhone</span> </span>&#123;</span><br><span class="line">	  ...</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">double</span> taxRate;</span><br><span class="line">	  ...</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">calculateFee</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Money result = Money.ZERO;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (Call call : calls)&#123;</span><br><span class="line">            <span class="keyword">if</span>(call.getFrom().getHour() &gt;= LATE_NITGHT_HOUR)&#123;</span><br><span class="line">                result = result.plus(</span><br><span class="line">                    nightAmount.times(call.getDuration().getSeconds() / seconds.getSeconds())</span><br><span class="line">                );</span><br><span class="line">            &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                result = result.plus(</span><br><span class="line">                    regularAmount.times(call.getDuration().getSeconds() / seconds.getSeconds())</span><br><span class="line">                );</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result.minus(result.times(taxRate));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이처럼, 많은 코드 속에서 어떤 코드가 중복인지리 파악하는 것은 쉬운 일이 아니다.</p>
+<p>두 클래스 사이의 중복 제거 방법으로, 클래스를 하나로 합치고 요금제를 구분하는 <code>타입 코드</code>를 추가하는 방법이 있다. 타입 코드 값에 따라 로직을 분기시키는 것이다. 하지만 이 방법은 낮은 응집도와 높은 결합도의 문제가 있다.</p>
+<h5 id="상속을-이용해-중복-코드-제거하기"><a href="#상속을-이용해-중복-코드-제거하기" class="headerlink" title="상속을 이용해 중복 코드 제거하기"></a>상속을 이용해 중복 코드 제거하기</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NightlyDiscountPhone</span> <span class="keyword">extends</span> <span class="title">Phone</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">calculateFee</span><span class="params">()</span></span>&#123;</span><br><span class="line">      ...</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>10시 이전의 통화요금 계산하는 경우는 Phone 에 구현된 로직을 재사용하고 10시 이후의 통화 요금 계산은 NightlyDiscountPhone 에서 구현하기로 결정한다.</p>
+<p>이 예제처럼, 상속을 이용해 코드 재사용 하기 위해서는 부모 클래스의 개발자가 세웠던 가정이나 추론 가정을 정확하게 이해해야한다. 이것은 자식 클래스의 작성자가 부모 클래스의 구현 방법에 대한 정확한 지식을 가져야한다는 것을 의미한다.</p>
+<p>따라서 상속은 결합도를 높인다.</p>
+<h5 id="강하게-결합된-Phone-과-NightlyDiscountPhone"><a href="#강하게-결합된-Phone-과-NightlyDiscountPhone" class="headerlink" title="강하게 결합된 Phone 과 NightlyDiscountPhone"></a>강하게 결합된 Phone 과 NightlyDiscountPhone</h5><p>자식 클래스가 부모 클래스의 구현에 강하게 결합되면 부모 클래스의 변경에 의해 자식 클래스가 영향을 받는다. </p>
+<h2 id="02-취약한-기반-클래스-문제"><a href="#02-취약한-기반-클래스-문제" class="headerlink" title="02 취약한 기반 클래스 문제"></a>02 취약한 기반 클래스 문제</h2><p>부모 클래스의 변경에 의해 자식 클래스가 영향을 받는 현상을 취약한 기반 클래스 문제라고 한다.</p>
+<p>취약한 기반 클래스 문제는, 자식 클래스가 부모 클래스의 구현 세부 사항에 의존하도록 만들기 때문에</p>
+<ol>
+<li>결합도를 높인다. </li>
+<li>캡슐화를 약화 시킨다. </li>
+</ol>
+<h5 id="불필요한-인터페이스-상속-문제"><a href="#불필요한-인터페이스-상속-문제" class="headerlink" title="불필요한 인터페이스 상속 문제"></a>불필요한 인터페이스 상속 문제</h5><ol>
+<li>다음 코드를 보자.</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Stack&lt;String&gt; stack = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line"></span><br><span class="line">stack.push(<span class="string">"1st"</span>);</span><br><span class="line">stack.push(<span class="string">"2nd"</span>);</span><br><span class="line">stack.push(<span class="string">"3rd"</span>);</span><br><span class="line"></span><br><span class="line">stack.add(<span class="number">0</span>, <span class="string">"4th"</span>);</span><br><span class="line"></span><br><span class="line">assertEquals(<span class="string">"4th"</span>, stack.pop()); <span class="comment">// 에러</span></span><br></pre></td></tr></table></figure>
+
+<p>반환값은 3rd 이다. 왜냐하면, Vector 의 add 메서드를 이용해서 스택의 맨 앞에 “4th” 를 추가했기 때문이다.</p>
+<p>문제 원인은, Stack 이 규칙을 무너뜨릴 여지가 있는 위험한 Vector 의 퍼블릭 인터페이스까지도 함께 상속 받았기 때문이다.</p>
+<ol start="2">
+<li>다음 코드를 보자.</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Properties properties = <span class="keyword">new</span> Properties();</span><br><span class="line">properties.setProperty(<span class="string">"aaa"</span>, <span class="string">"C++"</span>);</span><br><span class="line">properties.setProperty(<span class="string">"bbb"</span>, <span class="string">"Java"</span>);</span><br><span class="line"></span><br><span class="line">properties.put(<span class="string">"ccc"</span>, <span class="number">67</span>);</span><br><span class="line"></span><br><span class="line">assertEquals(<span class="string">"C"</span>, properties.getProperty(<span class="string">"ccc"</span>)); <span class="comment">// 에러</span></span><br></pre></td></tr></table></figure>
+
+<p>“ccc” 를 키로 검색하면 null 이 반환된다. Properties 의 getProperty 메서드가 반환할 값이 String 이 아니면 null 을 반환하도록 구현되어 있기 때문이다. </p>
+<p>Hashtable 의 인터페이스에 포함되어 있는 put 메서드를 이용해서 String 타입 이외의 키 값이라도 Properties 에 저장을 한 것이다.</p>
+<h5 id="메서드-오버라이딩의-오작용-문제"><a href="#메서드-오버라이딩의-오작용-문제" class="headerlink" title="메서드 오버라이딩의 오작용 문제"></a>메서드 오버라이딩의 오작용 문제</h5><p>상속은 코드 재사용을 위해 캡슐화를 희생한다.</p>
+<h5 id="부모-클래스와-자식-클래스의-동시-수정-문제"><a href="#부모-클래스와-자식-클래스의-동시-수정-문제" class="headerlink" title="부모 클래스와 자식 클래스의 동시 수정 문제"></a>부모 클래스와 자식 클래스의 동시 수정 문제</h5><h2 id="03-Phone-다시-살펴보기"><a href="#03-Phone-다시-살펴보기" class="headerlink" title="03 Phone 다시 살펴보기"></a>03 Phone 다시 살펴보기</h2><h5 id="추상화에-의존하자"><a href="#추상화에-의존하자" class="headerlink" title="추상화에 의존하자"></a>추상화에 의존하자</h5><p>부모 클래스와 자식 클래스 모두 추상화에 의존하도록 수정하자</p>
+<h5 id="차이를-메서드로-추출하자"><a href="#차이를-메서드로-추출하자" class="headerlink" title="차이를 메서드로 추출하자"></a>차이를 메서드로 추출하자</h5><p>변하는 것으로부터 변하지 않는 걸을 분리하자. 변하는 부분을 찾고 이를 캡슐화하자.</p>
+<h5 id="중복-코드를-부모-클래스로-올려라"><a href="#중복-코드를-부모-클래스로-올려라" class="headerlink" title="중복 코드를 부모 클래스로 올려라"></a>중복 코드를 부모 클래스로 올려라</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractPhone</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;Call&gt; calls = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">calculateFee</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Money result = Money.ZERO;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(Call calls : calls)&#123;</span><br><span class="line">            result = result.plus(calculateCallFee(call));</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">   	<span class="function"><span class="keyword">abstract</span> <span class="keyword">protected</span> Money <span class="title">calculateCallFee</span><span class="params">(Call call)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Phone</span> <span class="keyword">extends</span> <span class="title">AbstractPhone</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Money amount;</span><br><span class="line">    <span class="keyword">private</span> Duration seconds;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Phone</span><span class="params">(Money amount, Duration seconds)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.amount = amount;</span><br><span class="line">        <span class="keyword">this</span>.seconds = seconds;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Money <span class="title">calculateCallFee</span><span class="params">(Call call)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> amount.times(call.getDuration().getSeconds() / seconds.getSeconds());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NightlyDiscountPhone</span> <span class="keyword">extends</span> <span class="title">AbstractPhone</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> LATE_NITGHT_HOUR = <span class="number">22</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Money nightlyAmount;</span><br><span class="line">    <span class="keyword">private</span> Money regularAmount;</span><br><span class="line">    <span class="keyword">private</span> Duration seconds;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">NightlyDiscountPhone</span><span class="params">(Money nightlyAmount, Money regularAmount, Duration seconds)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.nightlyAmount = nightlyAmount;</span><br><span class="line">        <span class="keyword">this</span>.regularAmount = regularAmount;</span><br><span class="line">        <span class="keyword">this</span>.seconds = seconds;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">calculateCallFee</span><span class="params">(Call call)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(call.getFrom().getHour() &gt;= LATE_NITGHT_HOUR)&#123;</span><br><span class="line">            <span class="keyword">return</span> nightlyAmount.times(call.getDuration().getSeconds() / seconds.getSeconds());</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> regularAmount.times(call.getDuration().getSeconds() / seconds.getSeconds());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="추상화가-핵심이다"><a href="#추상화가-핵심이다" class="headerlink" title="추상화가 핵심이다"></a>추상화가 핵심이다</h5><p>공통 코드를 이동시킨 후에, 각 클래스는 서로 다른 변경 이유를 가진다.</p>
+<ol>
+<li><p>AbstractPhone</p>
+<p>전체 통화 목록을 계산하는 방법이 바뀔 경우에만 변경</p>
+</li>
+<li><p>Phone</p>
+<p>일반 요금제의 통화 한건을 계산하는 방법이 바뀔 경우에만 변경</p>
+</li>
+<li><p>NightlyDisoucoutPhone</p>
+<p>심야 할인 요금제의 통화 한건을 계산하는 방법이 바뀔 경우에만 변경</p>
+</li>
+</ol>
+<p>그리고, 추상화에 의존함으로써</p>
+<ol>
+<li>부모 클래스는 자신의 내부에 구현된 추상 메서드를 호출함으로써 추상화에 의존하고,</li>
+<li>요금 계산과 상위 수준의 정책을 구현하는 AbstractPhone 이 세부적인 요금 계산 로직을 구현하는 Phone 과 NightlyDisoucoutPhone 에 의존하지 않고 그 반대로 의존하기 때문에 의존성 역전 원칙을 지키고,</li>
+<li>새로운 요금제룰 추가하기도 쉽다. AbstractPhone 을 상속받는 클래스를 추가하고 calculateCallFee 메서드만 오버라이딩 하면 된다.</li>
+<li>개방 폐쇄 원칙을 준수한다. 확장에 열려있고 수정에 닫혀 있기 때문이다.</li>
+</ol>
+<h5 id="의도를-드러내는-이름-선택하기"><a href="#의도를-드러내는-이름-선택하기" class="headerlink" title="의도를 드러내는 이름 선택하기"></a>의도를 드러내는 이름 선택하기</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Phone</span> </span>&#123; ... &#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RegularPhone</span> <span class="keyword">extends</span> <span class="title">Phone</span> </span>&#123; ... &#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NightlyDiscountPhone</span> <span class="keyword">extends</span> <span class="title">Phone</span> </span>&#123; ... &#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="세금-추가하기"><a href="#세금-추가하기" class="headerlink" title="세금 추가하기"></a>세금 추가하기</h5><p>통화 요금에 세금 부과하는 요구사항 추가해보자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Phone</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">double</span> taxRate;</span><br><span class="line">    <span class="keyword">private</span> List&lt;Call&gt; calls = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">calculateFee</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Money result = Money.ZERO;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(Call calls : calls)&#123;</span><br><span class="line">            result = result.plus(calculateCallFee(call));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result.plus(result.times(taxRate));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">abstract</span> <span class="keyword">protected</span> Money <span class="title">calculateCallFee</span><span class="params">(Call call)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="04-차이에-의한-프로그래밍"><a href="#04-차이에-의한-프로그래밍" class="headerlink" title="04 차이에 의한 프로그래밍"></a>04 차이에 의한 프로그래밍</h2><p>기존 코드와 다른부분을 추가해서 애플리케이션의 기능을 확장하는 방법을 차이에 의한 프로그래밍이라고 한다. </p>
+<p>차이에 의한 프로그래밍의 목표는 중복 코드를 제거하고 코드를 재사용 하는 것이다.</p>
+<p>객체지향 세계에서 중복 코드 제거하고 코드 재사용하는 가장 유명한 방법은 상속이다. 상속의 오용과 남용은 애플리케이션을 이해하고 확장하기 어렵게 만든다. </p>
+<p>“정말로 필요한 경우에만 상속을 사용해라”</p>
+<hr>
+<p>오브젝트 &lt;조영호&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2019/12/22/object-chapter10/" data-id="ck7lu78s300pblk6wbbukz9j6" data-title="[오브젝트] 10장_상속과 코드 재사용" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-object-chapter9" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2019/12/15/object-chapter9/" class="article-date">
@@ -193,7 +845,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/12/15/object-chapter9/" data-id="ck7itpmta00ow106wqi5vm9w3" data-title="[오브젝트] 9장_유연한 설계" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/12/15/object-chapter9/" data-id="ck7lu78s200p9lk6wk2lwmbph" data-title="[오브젝트] 9장_유연한 설계" class="article-share-link">Share</a>
       
       
       
@@ -367,7 +1019,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/12/10/object-chapter8/" data-id="ck7itpmta00ou106wjpbxwzef" data-title="[오브젝트] 8장_의존성 관리하기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/12/10/object-chapter8/" data-id="ck7lu78s000p7lk6wuui56pjc" data-title="[오브젝트] 8장_의존성 관리하기" class="article-share-link">Share</a>
       
       
       
@@ -516,7 +1168,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/12/02/object-chapter7/" data-id="ck7itpmrg00mc106ws078qxya" data-title="[오브젝트] 7장_객체 분해" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/12/02/object-chapter7/" data-id="ck7lu78oz00mclk6wohj4ruus" data-title="[오브젝트] 7장_객체 분해" class="article-share-link">Share</a>
       
       
       
@@ -664,866 +1316,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/11/24/object-chapter6/" data-id="ck7itpmt800oq106w80f1pank" data-title="[오브젝트] 6장_메세지와 인터페이스" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-object-chapter4" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/11/18/object-chapter4/" class="article-date">
-  <time class="dt-published" datetime="2019-11-17T15:00:00.000Z" itemprop="datePublished">2019-11-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/object/">Object</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/11/18/object-chapter4/">[오브젝트] 4장_설계 품질과 트레이드오프</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>객체지향 설계란 올바른 객체에게 올바른 책임을 할당하며 낮은 결합도와 높은 응집도를 가진 구조를 만드는 것이다. 훌륭한 설계란 합리적인 비용안에서 변경을 수용할 수 있는 구조를 만드는 것이다.</p>
-<p>결합도와 응집도를 합리적인 수준으로 유지할 수 있는 원칙이 있다. 객체의 행동에 초점을 맞추는 것이다. </p>
-<p>이번 장에서는 책임이 아닌, 상태를 표현하는 데이터 중심의 설계를 보고 객체지향적으로 설계한 구조와 어떤 차이가 있는지 확인한다.</p>
-<p>상속, 지연 바인딩도 중요하지만, 구현 측면에 치우쳐져 있기 때문에 객체지향 패러다임의 본질과는 거리가 멀다. </p>
-<h2 id="01-데이터-중심의-영화-예매-시스템"><a href="#01-데이터-중심의-영화-예매-시스템" class="headerlink" title="01 데이터 중심의 영화 예매 시스템"></a>01 데이터 중심의 영화 예매 시스템</h2><p>상태 변경은 인터페이스의 변경을 초래하고 이 인터페이스에 의존하는 모든 객체에게 변경의 영향이 퍼진다. 그래서, 데이터에 초점을 맞춘 설계는 변경에 취약하다.</p>
-<p>책임을 드러내는 안정적인 인터페이스 뒤로 책임을 수행하기 위해 필요한 상태를 캡슐화함으로써 구현 변경에 대한 파장이 외부로 퍼져나가는 것을 방지한다. 그래서 책임에 초점을 맞추면 안정적인 설계를 할 수 있다.</p>
-<h5 id="데이터를-준비하자"><a href="#데이터를-준비하자" class="headerlink" title="데이터를 준비하자"></a>데이터를 준비하자</h5><p>데이터 중심의 설계란 객체 내부에 저장되는 데이터를 기반으로 시스템으 분할하는 방법이다.</p>
-<p>99 Page</p>
-<p>객체의 종류를 저장하는 인스턴스 변수 (movieType) 와 인스턴의 종류에 따라 배타적으로 상용될 인스턴스 변수 (discountAmount, discountPercent) 를 하나의 클래승 안에 포함시키는 방식은 데이터 중심 설계에서 흔히 보인다.</p>
-<p>메세지를 수신한 객체는 메세드를 실행해 요청에 응답한다. Screening 이 Movie 에게 처리를 위임하는 이유는 요금을 계산하는데 필요한 기본 요금과 할인 정책을 가장 잘 알고 있는 객체가 Movie 이기 때문이다. </p>
-<p>자율적인 객체란 자신의 상태를 직접 관리하고 스스로의 결정에 따라 행동하는 객체이다. 객체의 자율성을 보장하기 위해서는 필요한 정보와 정보에 기반한 행동을 같은 객체 안에 모아두어야 한다.</p>
-<p>결과적으로 객체를 자율적으로 만드는 가장 기본적인 방법은 내부 구현을 캡슐화 하는 것이다. </p>
-<p>자율적인 객체는 자신에게 할당된 책임을 수행하던 중에 필요한 정보를 알지 못하거나 외부의 도움이 필요한 경우 적절한 객체에게 메세지를 전송해 협력을 요청한다.</p>
-<h5 id="영화를-예매하자"><a href="#영화를-예매하자" class="headerlink" title="영화를 예매하자"></a>영화를 예매하자</h5><p>106 Page</p>
-<h2 id="02-설계-트레이드오프"><a href="#02-설계-트레이드오프" class="headerlink" title="02 설계 트레이드오프"></a>02 설계 트레이드오프</h2><p>데이터 중심 설계와 책임 중심 설계 구현을 위해 캡슐화, 응집도, 결합도를 사용한다.</p>
-<h5 id="캡슐화"><a href="#캡슐화" class="headerlink" title="캡슐화"></a>캡슐화</h5><p>상태와 행동을 하나의 객체 안에 모으는 이유는 객체의 내부 구현을 외부로부터 감추기위해서다. 구현이란, 나중에 변경될 가능성이 높은 어떤 것이다. 변경될 가능성이 높은 것을 구현, 상대적으로 안정적인 것을 인터페이스라고 한다.</p>
-<p>캡슐화란, 변경 가능성이 높은 것을 객체 내부로 숨기는 추상화 기법이다.</p>
-<h5 id="응집도와-결합도"><a href="#응집도와-결합도" class="headerlink" title="응집도와 결합도"></a>응집도와 결합도</h5><p>응집도는 모듈에 포함된 내부 요소들이 연관돼 있는 정도이다. 객체 또는 클래스에 얼마나 관련 높은 책임들을 할당했는지이다.</p>
-<p>결헙도는 의존성의 정도이다. 다른 모듈에 대해 얼마나 많은 지식을 갖고 있는지이다.</p>
-<p>응집도가 높은 설계에서는 하나의 요구사항 변경을 반영하기 위해 오직 하나의 모듈만 수정하면 된다. 응집도가 낮은 설계에서는 하나의 원인에 의해 변경해야 하는 부부닝 다수의 모듈에 분산돼 있기 때문에 여러 모듈을 동시 수정해야한다.</p>
-<p>내부 구현을 변경하면 이것이 다른 모듈에 영향을 미치는 경우 두 모듈 사이의 결합도가 높다고 말한다. 반면, 퍼블릭 인터페이스를 수정했을 때만 다른 모듈에 영향을 미치면 결합도가 낮다고 말한다. 그래서 구현이 아닌 인터페이스에 의존하도록 코드를 작성해야 낮은 결합도를 얻을 수 있다. 이것이 “인퍼페이스에 대해 프로그래밍 하라” 이다.</p>
-<h2 id="03-데이터-중심의-영화-예매-시스템의-문제점"><a href="#03-데이터-중심의-영화-예매-시스템의-문제점" class="headerlink" title="03 데이터 중심의 영화 예매 시스템의 문제점"></a>03 데이터 중심의 영화 예매 시스템의 문제점</h2><p>데이터 중심 설계의 문제점이다.</p>
-<ol>
-<li>캡슐화 위반</li>
-<li>높은 결합도</li>
-<li>낮은 응집도</li>
-</ol>
-<p>‘예매하라’ 라는 메세지를 처리하기 위해 적합한 객체로 Screening 을 선택하는 데는 두가지 단계가 있다.</p>
-<ol>
-<li>영화 예매를 할 수 있는 적절한 역할이 무엇인가 ?</li>
-<li>역할을 수행할 객체로 Screening 인스턴스를 선택한다.</li>
-</ol>
-<h5 id="캡슐화-위반"><a href="#캡슐화-위반" class="headerlink" title="캡슐화 위반"></a>캡슐화 위반</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Movie</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> Money fee;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> Money <span class="title">getFee</span><span class="params">()</span></span>&#123;</span><br><span class="line">    retrun fee;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">settFee</span><span class="params">(Money fee)</span></span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.fee = fee;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>getFee 와 setFee 메서드는 Movie 내부에 Money 타입의 fee 라는 인스턴스 변수가 존재한다는 사실을 퍼블릭 인터페이스에 노골적으로 드러낸다.</p>
-<p>설계할 때 협력을 고민하지 않으면, 캡슐화를 위반하는 과도한 접근자와 수정자를 가지게 되는 경향이 있다. 이것이 ‘추측에 의한 설계 전략’ 이다.</p>
-<h5 id="높은-결합도"><a href="#높은-결합도" class="headerlink" title="높은 결합도"></a>높은 결합도</h5><p>fee 타입을 변경한다고 가정해보자. 이를 위해, getFee 메서드의 반환 타입도 수정해야한다. 그리고, getFee 메서드를 호출하는 ReservationAgency 의 구현도 변경된 타입에 맞게 수정해야 한다.</p>
-<p>결합도 측면에서 또 다른 단점은, 여러 데이터 객체들을 사용하는 제어로직이 특정 객체 안에 집중된다는 것이다. 그래서 하나의 제어 객체가 다수의 데이터 객체에 강하게 결합된다. 즉, 어떤 데이터 객체를 변경하더라도 제어 객체를 함께 변경해야 한다.</p>
-<h5 id="낮은-응집도"><a href="#낮은-응집도" class="headerlink" title="낮은 응집도"></a>낮은 응집도</h5><p>서로 다른 이유로 변경되는 코드가, 하나의 모듈 안에 공존하면 응집도가 낮다고 한다.</p>
-<p>단일 책임 원칙이란, 클래스는 단 한가지의 변경 이유만 가져야 한다는 것이다.</p>
-<h2 id="04-자율적인-객체를-향해"><a href="#04-자율적인-객체를-향해" class="headerlink" title="04 자율적인 객체를 향해"></a>04 자율적인 객체를 향해</h2><h5 id="캡슐화를-지켜라"><a href="#캡슐화를-지켜라" class="headerlink" title="캡슐화를 지켜라"></a>캡슐화를 지켜라</h5><p>객체는 자신이 어떤 데이터를 가지고 있는지 내뷰에 캡슐화하고 외부에 공개하면 안된다. 객체는 스스로의 상태를 책임지고 외부에서는 인터페이스에 정의된 메서드를 통해서만 상태에 접근해야한다.</p>
-<p>속성의 가시성을 private 으로 설정해도, 접근자와 수정자를 통해 속성을 외부에 제공하고 있으면 캡슐화를 위반한 것이다.</p>
-<h5 id="스스로-자신의-데이터를-책임지는-객체"><a href="#스스로-자신의-데이터를-책임지는-객체" class="headerlink" title="스스로 자신의 데이터를 책임지는 객체"></a>스스로 자신의 데이터를 책임지는 객체</h5><p>객체 내부에 저장되는 데이터보다, 객체가 협력에 참여하며 수행할 책임을 정의하는 오퍼레이션이 중요하다.</p>
-<h2 id="05-하지만-여전히-부족하다"><a href="#05-하지만-여전히-부족하다" class="headerlink" title="05 하지만 여전히 부족하다"></a>05 하지만 여전히 부족하다</h2><h5 id="캡슐화-위반-1"><a href="#캡슐화-위반-1" class="headerlink" title="캡슐화 위반"></a>캡슐화 위반</h5><p>기간 조건을 판단하는</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">isDiscountable(DayofWeek dayOfWeek, LocalTime time)</span><br></pre></td></tr></table></figure>
-
-<p>메서드의 시그니처을 보면, 객체 내부에 요일과 시간정보가 인스턴스 변수로 포함돼 있다는 것을 인터페이스를 통해 외부에 노출한다.</p>
-<p>DiscountCondition 의 속성을 변경하면, isDiscountable 메서드의 파라미터를 수정하고 해당 메서드를 사용하는 모든 클라이언트도 함께 수정해야한다.</p>
-<p>캡슐화란, 변할 수 있는 어떤 것이라도 감추는 것이다.</p>
-<h5 id="높은-결합도-1"><a href="#높은-결합도-1" class="headerlink" title="높은 결합도"></a>높은 결합도</h5><p>결합도가 높으면 한 객체의 구현을 변경하면 다른 객체에 변경의 영향이 전파될 확률이 높다. </p>
-<h5 id="낮은-응집도-1"><a href="#낮은-응집도-1" class="headerlink" title="낮은 응집도"></a>낮은 응집도</h5><p>응집도가 낮은 이유는 캡슐화를 위반했기 때문이다.</p>
-<h2 id="06-데이터-중심-설계의-문제점"><a href="#06-데이터-중심-설계의-문제점" class="headerlink" title="06 데이터 중심 설계의 문제점"></a>06 데이터 중심 설계의 문제점</h2><p>변경에 취약한 이유는</p>
-<ol>
-<li>너무 이른시기에 데이터를 결정하도록 강요한다.</li>
-<li>협력이라는 문맥을 고려하지 않고 객체를 고립시킨 채 오퍼레이션을 결정한다.</li>
-</ol>
-<p>#####데이터 중심 설계는 객체의 행동보다 상태에 초점을 맞춘다.</p>
-<p>데이터는 구현의 일부다. </p>
-<p>데이터 중심 설계는 설계 초반에 데이터에 관해 결정하도록 강요해서 너무 이른시기에 내부 구현에 초점을 맞춘다. </p>
-<h5 id="데이터-중심-설계는-객체를-고립시킨-채-오퍼레이션을-결정한다"><a href="#데이터-중심-설계는-객체를-고립시킨-채-오퍼레이션을-결정한다" class="headerlink" title="데이터 중심 설계는 객체를 고립시킨 채 오퍼레이션을 결정한다."></a>데이터 중심 설계는 객체를 고립시킨 채 오퍼레이션을 결정한다.</h5><p>협력의 문맥 안에서 필요한 책임을 결정하고 이를 수행할 적절한 객체를 결정하는 것이 가장 중요하다.</p>
-<hr>
-<p>오브젝트 &lt;조영호&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/11/18/object-chapter4/" data-id="ck7itpmt700oo106wypvu0jwp" data-title="[오브젝트] 4장_설계 품질과 트레이드오프" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-object-chapter5" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/11/18/object-chapter5/" class="article-date">
-  <time class="dt-published" datetime="2019-11-17T15:00:00.000Z" itemprop="datePublished">2019-11-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/object/">Object</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/11/18/object-chapter5/">[오브젝트] 5장_책임 할당하기</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>데이터 중심 설계로 인한 문제를 해결하기 위한 가장 기본적인 방법은, 책임에 초점을 맞추는 것이다.</p>
-<p>이번 장에서는 GRASP 패턴을 살펴본다.</p>
-<p>결합도와 응집도를 합리적인 수준으로 유지할 수 있는 원칙이 있다. 객체의 행동에 초점을 맞추는 것이다. </p>
-<p>이번 장에서는 책임이 아닌, 상태를 표현하는 데이터 중심의 설계를 보고 객체지향적으로 설계한 구조와 어떤 차이가 있는지 확인한다.</p>
-<p>상속, 지연 바인딩도 중요하지만, 구현 측면에 치우쳐져 있기 때문에 객체지향 패러다임의 본질과는 거리가 멀다. </p>
-<h2 id="01-책임-주도-설계를-향해"><a href="#01-책임-주도-설계를-향해" class="headerlink" title="01 책임 주도 설계를 향해"></a>01 책임 주도 설계를 향해</h2><p>두 가지 원칙이 있다.</p>
-<ol>
-<li>데이터보다 행동을 먼저 결정하라</li>
-<li>협려이라는 문맥안에서 책임을 결정하라</li>
-</ol>
-<p>책임을 드러내는 안정적인 인터페이스 뒤로 책임을 수행하기 위해 필요한 상태를 캡슐화함으로써 구현 변경에 대한 파장이 외부로 퍼져나가는 것을 방지한다. 그래서 책임에 초점을 맞추면 안정적인 설계를 할 수 있다.</p>
-<h5 id="데이터보다-행동을-먼저-결정하라"><a href="#데이터보다-행동을-먼저-결정하라" class="headerlink" title="데이터보다 행동을 먼저 결정하라"></a>데이터보다 행동을 먼저 결정하라</h5><p>데이터는 객체가 책임 수행을 위해 필요한 재료일 뿐이다.</p>
-<p>“이 객체가 해야하는 책임은 무엇인가” 를 결정하고, 이 책임을 수행하는데 필요한 데이터는 무엇인가 결정해라.</p>
-<p>99 Page</p>
-<p>객체의 종류를 저장하는 인스턴스 변수 (movieType) 와 인스턴의 종류에 따라 배타적으로 상용될 인스턴스 변수 (discountAmount, discountPercent) 를 하나의 클래승 안에 포함시키는 방식은 데이터 중심 설계에서 흔히 보인다.</p>
-<p>메세지를 수신한 객체는 메세드를 실행해 요청에 응답한다. Screening 이 Movie 에게 처리를 위임하는 이유는 요금을 계산하는데 필요한 기본 요금과 할인 정책을 가장 잘 알고 있는 객체가 Movie 이기 때문이다. </p>
-<p>자율적인 객체란 자신의 상태를 직접 관리하고 스스로의 결정에 따라 행동하는 객체이다. 객체의 자율성을 보장하기 위해서는 필요한 정보와 정보에 기반한 행동을 같은 객체 안에 모아두어야 한다.</p>
-<p>결과적으로 객체를 자율적으로 만드는 가장 기본적인 방법은 내부 구현을 캡슐화 하는 것이다. </p>
-<p>자율적인 객체는 자신에게 할당된 책임을 수행하던 중에 필요한 정보를 알지 못하거나 외부의 도움이 필요한 경우 적절한 객체에게 메세지를 전송해 협력을 요청한다.</p>
-<h5 id="협력이라는-문맥-안에서-책임을-결정하라"><a href="#협력이라는-문맥-안에서-책임을-결정하라" class="headerlink" title="협력이라는 문맥 안에서 책임을 결정하라"></a>협력이라는 문맥 안에서 책임을 결정하라</h5><p>책임은 객체의 입장이 아니라, 객체가 참여하는 협력에 적합해야한다. 즉, 메세지를 전송하는 클라이언트의 의도에 적합한 책임을 할당해야한다.</p>
-<h5 id="책임-주도-설계"><a href="#책임-주도-설계" class="headerlink" title="책임 주도 설계"></a>책임 주도 설계</h5><ol>
-<li>시스템이 사용자에게 제공해야 하는 기능인, 시스템 책임을 파악</li>
-<li>시스템 책임을 더 작은 책임으로 분할</li>
-<li>분할된 책임을 수행할 적절한 객체, 또는 역할을 찾아 책임 할당</li>
-<li>객체가 책임 수행중 다른 객체의 도움이 필요하면, 이를 책임질 적절한 객체나 역할 찾음</li>
-<li>해당 객체 또는 역할에게 책임 할당해서 두 객체가 협력하도록</li>
-</ol>
-<h2 id="02-책임-할당을-위한-GRASP-패턴"><a href="#02-책임-할당을-위한-GRASP-패턴" class="headerlink" title="02 책임 할당을 위한 GRASP 패턴"></a>02 책임 할당을 위한 GRASP 패턴</h2><p>General Responsibility Assignment Software Pattern : 일반적인 책임 할당을 위한 소프트웨어 패턴</p>
-<p>객체에게 책임을 할당할 때 지침으로 삼을 수 있는 원칙들의 집합을 패턴 형식으로 정리한 것이다.</p>
-<h5 id="도메인-개념에서-출발하기"><a href="#도메인-개념에서-출발하기" class="headerlink" title="도메인 개념에서 출발하기"></a>도메인 개념에서 출발하기</h5><p>어떤 책임을 할당할 때 가장 먼저 고민해야하는 유력한 후보는 도메인 개념이다. 필요한 것은 도메인을 그대로 투영한 모델이 아니라, 구현에 도움이 되는 모델이다.</p>
-<p>도메인 개념을 정리하는데 많은 시간을 들이지 말고,빠르게 설계와 구현을 진행하라. </p>
-<h5 id="정보-전문가에게-책임을-할당하라"><a href="#정보-전문가에게-책임을-할당하라" class="headerlink" title="정보 전문가에게 책임을 할당하라"></a>정보 전문가에게 책임을 할당하라</h5><ol>
-<li><p>메세지를 전송할 객체는 무엇을 원하는가 ?</p>
-<p>협력을 시작하는 객체는 미정이다. 하지만 객체가 원하는 것은 영화를 예매하는 것이다. 따라서 메세지는 “예매하라”</p>
-</li>
-<li><p>메세지를 수신할 객체는 누구인가 ?</p>
-<p>책임을 수행할 정보를 알고 있는 객체에게 책임을 할당해라. (정보 전문가 패턴)  객체는 해당 정보를 제공할 수 있는 다른 객체를 알고 있거나 필요한 정보를 계산해서 제공할 수 있다. 정보 전문가가 반다스 데이터를 저장하고 있을 필요는 없다. 여기서는, 영화에 대한 정보와 상영 시간, 상영 순번 등 예매에 필요한 정보를 알고 있는 “상영” 이 적합하다.</p>
-</li>
-<li><p>Screening 내부로 들어가 메세지 처리에 필요한 절차와 구현을 고민한다.</p>
-<p>“예매하라” 메세지를 완료하기 위해 예매 가격을 계산하는 작업이 필요하다. 가격 계산하는데 필요한 정보를 상영이 모르기 때문에 외부 객체에게 도움을 요청해야한다.</p>
-</li>
-<li><p>새로운 메세지</p>
-<p>“가격을 계산하라”</p>
-</li>
-<li><p>책임질 객체 선택</p>
-<p>Movie</p>
-</li>
-<li><p>가격 계산을 위해 Movie 가 어떤 작업을 해야하나</p>
-<p>할인 조건에 따라 영화가 할인 가능한지 판단해아한다</p>
-</li>
-<li><p>새로운 메세지</p>
-<p>“할인 여부를 판단해라”</p>
-</li>
-<li><p>책임질 객체 선택</p>
-<p>DiscountCondition</p>
-</li>
-<li><p>DiscountCondition 은 자체적으로 할인 여부를 판단하는데필요한 정보를 알고 있어서 외부의 도움 없이 스스로 판단할 수 있다.</p>
-</li>
-</ol>
-<h5 id="높은-응집도와-낮은-결합도"><a href="#높은-응집도와-낮은-결합도" class="headerlink" title="높은 응집도와 낮은 결합도"></a>높은 응집도와 낮은 결합도</h5><p>Movie 대신 Screening 이 직접 DiscountCondition 과 협력하도록 하는건 어떨까 ?<br>높은 응집도와 낮은 결합도를 얻을 수 있는 설계를 선택해야한다.</p>
-<p>도메인 상으로 Movie 가 DiscountCondition 목록을 속성으로 포함하고 있다. 이미 결합되어 있기 때문에 Movie 가 DiscountCondition 과 협력하게 하면 설계 전체적으로 결합도를 추가하지 않고 협력을 완성할 수 있다.</p>
-<p>Screening 이 DiscountCondition 과 협력한다면 Screening 이 영화 요금 계산과 관련된 책임 일부를 맡아야한다. 그래서, 영화 예매 요금을 계산하는 방식이 바뀔 경우, Screening 도 함께 변경해야한다. </p>
-<p>반면, Movie 의 주된 책임은 영화 요금 계산이다. 그래서, 영화 요금 계산하는데 필요한 할인 조건을 판단하기 위해 DiscountCondition 과 협력하는 것은 응집도에 아무러 해를 끼치지 않는다.</p>
-<h5 id="창조자에게-객체-생성-책임을-할당하라"><a href="#창조자에게-객체-생성-책임을-할당하라" class="headerlink" title="창조자에게 객체 생성 책임을 할당하라"></a>창조자에게 객체 생성 책임을 할당하라</h5><p>GRASP 의 창조자 패턴은, 객체를 생성할 책임을 어떤 객체에게 할당할지 지침을 제공한다.</p>
-<p>창조자 패턴은 어떤 방식으로든, 생성되는 객체와 연결되거나 관련될 필요가 있는 객체에 해당 객체를 생성할 책임을 맡기는 것이다.</p>
-<p>Reservation 을 잘 알고 있거나, 긴밀하게 사용하거나, 초기화에 필요한 데이터를 가지고 있는 객체는 무엇인가 ? </p>
-<p>Screening 이다. Screening 을 Reservation 의 Creator 로 선택해라.</p>
-<h2 id="03-구현을-통한-검증"><a href="#03-구현을-통한-검증" class="headerlink" title="03 구현을 통한 검증"></a>03 구현을 통한 검증</h2><p>Screening 은 영화 예매할 책임을 맡고 있으며, Reservation  인스턴스를 생성할 책임을 수행해야한다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Screeing</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> Reservation <span class="title">reserve</span><span class="params">(Customer customer, <span class="keyword">int</span> audienceCount)</span></span>&#123;</span><br><span class="line">    </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>Screeing을 구현하는 과정에서, Movie 에 전송하는 메세지의 시그니처는 메세지의 수신자인 Movie 가 아니라 송신자인 Screening 의 의도를 표한한다. 이처럼, Movie 의 구현을 고려하지 않고 필요한 메세지를 결정하면 Movie 의 내부 구현을 캡슐화할 수 있다.</p>
-<h5 id="DiscountCondition-개선하기"><a href="#DiscountCondition-개선하기" class="headerlink" title="DiscountCondition 개선하기"></a>DiscountCondition 개선하기</h5><p>151 Page</p>
-<p>변경에 취약한 클래스란, 코드를 수정해야하는 이유를 하나 이상 가지는 클래스다.</p>
-<p>DiscountCondition 은 다음 서로 다른 이유로 변경될 수 있다.</p>
-<ol>
-<li>새로운 할인 조건 추가</li>
-<li>순번 조건을 판단하는 로직 변경</li>
-<li>기간 조건을 판단하는 로직 변경</li>
-</ol>
-<p>이를 해결 하기 위해, 변경의 이유에 따라 클래스를 분리해아한다.</p>
-<p>일반적으로, 설계를 개선하는 작업은 변경의 이유가 하나 이상인 클래스를 찾는 것으로 시작하는 것이 좋다. 코드를 통해 변경 이유를 파악할 수 있는 방법은,</p>
-<ol>
-<li><p>인스턴스 변수가 초기화 되는 시점을 살펴봐라. 함께 초기화 되는 속성을 기준으로 코드 분리 해야한다.</p>
-<p>응집도 높은 클래스는 인터스턴 생성할 때 모든 속성을 함께 초기화한다.</p>
-<p>DiscountCondition 클래스는 순번 조건을 표현하는 경우 sequence 는 초기화되지만, dayOfWeek, startTime, endTime 은 초기화되지 않는다.</p>
-</li>
-<li><p>인스턴스 변수를 사용하는 방식을 봐라. 속성 그룹과 해당 그룹에 접근하는 메서드 그룹을 기준으로 코드 분리해야한다.</p>
-<p>모든 메서드가 객체의 모든 속성을 사용하면 클래스의 응집도가 높다. isSatisfiedByPeriod 메서드는 dayOfWeek, startTime, endTime 은 사용하지만 sequence 는 사용하지 않는다.</p>
-</li>
-</ol>
-<h5 id="타입-분리하기"><a href="#타입-분리하기" class="headerlink" title="타입 분리하기"></a>타입 분리하기</h5><p>SequnceCondition 과 PeriodCondition 으로 분리한다.</p>
-<p>SequnceCondition 과 PeriodCondition 은 자신의 모든 인스턴스 변수를 함께 초기화할 수 있다. 그리고, 클래스에 있는 모든 메서드는 동일한 인스턴스 변수 그룹을 사용한다.</p>
-<p>하지만 이 방법은 두가지 문제가 있다.</p>
-<ol>
-<li>Movie 클래스가 SequnceCondition 과 PeriodCondition 클래스 양쪽에 결합한다.</li>
-<li>새로운 할인 조건 추가가 어렵다.</li>
-</ol>
-<h5 id="다형성을-통해-분리하기"><a href="#다형성을-통해-분리하기" class="headerlink" title="다형성을 통해 분리하기"></a>다형성을 통해 분리하기</h5><p>Movie 입장에서 SequnceCondition 과 PeriodCondition  은 동일한 책임을 수행한다. 즉, 동일한 역할을 수행한다.</p>
-<ul>
-<li>역할을 대체할 클래스들 사이에서구현을 공유하면, 추상클래스를 사용 </li>
-<li>구현 공유가 필요없고 역할을 대체하는 객체들의 책임만 정의하고 싶다면 인터페이스 사용</li>
-</ul>
-<p>객체의 타입에 따라 변하는 행동이 있다면, 타입을 분리하고 변화하는 행동을 각 타입의 책임으로 할당해라. 이것이 다형성 패턴이다.</p>
-<h5 id="변경으로부터-보호하기"><a href="#변경으로부터-보호하기" class="headerlink" title="변경으로부터 보호하기"></a>변경으로부터 보호하기</h5><p>Movie 입장에서 DiscountCondition 의 타입이 캡슐화 된다는 것은 새로운 DiscountCondition 타입을 추가해도, Movie 가 영향을 받닌 않는다. 이처럼, 변경을 캡슐화 하도록 책임 할당하는 것을 GRASP 에서 변경 보호 패턴이라고 한다.</p>
-<p>클래스를 변경에 따라 분리하고 인터페이스를 이용해 변경을 캡슐화하면, 결합도와 응집도를 향상시킨다.</p>
-<h5 id="Movie-클래스-개선하기"><a href="#Movie-클래스-개선하기" class="headerlink" title="Movie 클래스 개선하기"></a>Movie 클래스 개선하기</h5><p>AmountDiscountMovie / PercentDiscountMovie / NoneDiscountMovie</p>
-<h5 id="변경와-유연성"><a href="#변경와-유연성" class="headerlink" title="변경와 유연성"></a>변경와 유연성</h5><p>영화에 설정된 할인 정책을 실행중에 변경해야하는 요구사항이 생기면, 상속을 이용하고 있기 때문에 새로운 인스턴스 생성후에 필요한 정보를 복사해야한다. 이것은 번거롭고 오류 발생 가능성이 높다.</p>
-<p>해결방법은 합성을 이용하는 것이다. 할인 정책을 DiscountPolicy 로 분리하고 Movie 에 합성하도록 하면 유연한 설계가 된다.</p>
-<p>도메인 모델은 코드에 대한 가이드를 제공해야하고, 코드의 변화에 맞춰 함께 변화해야한다.</p>
-<h2 id="04-책임-주도-설계의-대안"><a href="#04-책임-주도-설계의-대안" class="headerlink" title="04 책임 주도 설계의 대안"></a>04 책임 주도 설계의 대안</h2><ol>
-<li>최대한 빠르게 목적한 기능을 수행하는 코드를 작성한다.</li>
-<li>이해가기 쉽고 수정하기 쉬운 소프트웨어로 개선하기 위해 겉으로 보인느 동작은 바꾸지 않고 내부 구조를 변경한다. </li>
-</ol>
-<p>책임 주도 설계에 익숙하지 않으면, 위와 같이 데이터 중심으로 구현하고 이를 리팩터링하는 것도 방법이다.</p>
-<h5 id="메서드-응집도"><a href="#메서드-응집도" class="headerlink" title="메서드 응집도"></a>메서드 응집도</h5><p>ReservationAgency 에 포함된 로직들을 적절한 객체의 책임으로 분배한다.</p>
-<p>긴 메서드의 단점은, </p>
-<ul>
-<li>코드를 전체적으로 이해하는데 너무 많은 시간 소요</li>
-<li>변경이 필요할 때 수정할 부분 찾기 힘듦</li>
-<li>메서드 내부 일부 로직을 수정하더라도 메서드 나머지 부분에서 버그 발생 가능</li>
-<li>로직의 일부만 재사용 불가능</li>
-<li>코드 중복 초래</li>
-</ul>
-<p>짧고 이해하기 쉬운 이름으로 된 메서드는,</p>
-<ul>
-<li>다른 메서드에서 사용될 확률 높음</li>
-<li>일련의 주석을 읽는 것 같은 느낌</li>
-<li>오버라이딩 쉬움</li>
-</ul>
-<p>객체로 책임을 분배할 때 가장 먼저, 메서드를 응집도 높은 수준으로 분해하는 것이다. 메서드들의 응집도가 높아졌지만, ReservationAgency 의 응집도는 아직 낮다. 그래서, 변경의 이유가 다른 메서드들을 적절한 위치에 분배한다. 적절한 위치란, 각 메서드가 사용하는 데이터를 정의하고 있는 클래스다. </p>
-<p>isDiscountable 메서드가 ReservationAgency 에 속할 때는 구현의 일부였지만, DiscountCondition 에 옮기고 나서는 퍼블릭 인터페이스의 일부가 된다.</p>
-<hr>
-<p>오브젝트 &lt;조영호&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/11/18/object-chapter5/" data-id="ck7itpmt900os106whoxyjir3" data-title="[오브젝트] 5장_책임 할당하기" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-object-chapter3" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/11/12/object-chapter3/" class="article-date">
-  <time class="dt-published" datetime="2019-11-11T15:00:00.000Z" itemprop="datePublished">2019-11-12</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/object/">Object</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/11/12/object-chapter3/">[오브젝트] 3장_역할,책임,협력</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>객체지향 설계의 핵심은 협력을 구성하기 위해 적절한 객체를 찾고 적절한 책임을 할당하는 과정에 있다. </p>
-<p>상속, 지연 바인딩도 중요하지만, 구현 측면에 치우쳐져 있기 때문에 객체지향 패러다임의 본질과는 거리가 멀다. </p>
-<h2 id="01-협력"><a href="#01-협력" class="headerlink" title="01 협력"></a>01 협력</h2><p>앞장의 영화 예매 시스템에서 중요한 것은, 다양한 객체들이 영화 예매라는 기능을 위해 메세지를 주고 받으면서 상호작용 한다는 점이다. </p>
-<p>객체들이 애플리케이션의 기능을 구현하기 위해 수행하는 상호작용을 협력이라고 한다. 객체가 협력에 참여하기 위해 수행하는 로직은 책임이다. 객체들이 구행하는 책임들이 모여 객체가 수행하는 역할을 구성한다.</p>
-<h5 id="협력"><a href="#협력" class="headerlink" title="협력"></a>협력</h5><p>두 객체 사이의 협력은 하나의 객체가 다른 객체에게 도움을 요청할 때 시작된다. 메세지 전송은 객체 간 협력을 위해 사용할 수 있는 유일한 수단이다.</p>
-<p>메세지를 수신한 객체는 메세드를 실행해 요청에 응답한다. Screening 이 Movie 에게 처리를 위임하는 이유는 요금을 계산하는데 필요한 기본 요금과 할인 정책을 가장 잘 알고 있는 객체가 Movie 이기 때문이다. </p>
-<p>자율적인 객체란 자신의 상태를 직접 관리하고 스스로의 결정에 따라 행동하는 객체이다. 객체의 자율성을 보장하기 위해서는 필요한 정보와 정보에 기반한 행동을 같은 객체 안에 모아두어야 한다.</p>
-<p>결과적으로 객체를 자율적으로 만드는 가장 기본적인 방법은 내부 구현을 캡슐화 하는 것이다. </p>
-<p>자율적인 객체는 자신에게 할당된 책임을 수행하던 중에 필요한 정보를 알지 못하거나 외부의 도움이 필요한 경우 적절한 객체에게 메세지를 전송해 협력을 요청한다.</p>
-<h5 id="협력이-설계를-위한-문맥을-결정한다"><a href="#협력이-설계를-위한-문맥을-결정한다" class="headerlink" title="협력이 설계를 위한 문맥을 결정한다"></a>협력이 설계를 위한 문맥을 결정한다</h5><p>객체가 참여하는 협력이 객체를 구성하는 행동과 상태를 결정한다. 협력은 객체를 설계하는데 필요한 일종의 문맥을 제공한다.</p>
-<p>Movie 가 기본 요금은 fee 와 할인 정책인 discountPolicy 라는 인스턴스 변수를 상태의 일부로 포함하고 있는 이유는 요금 계산이라는 행동을 위해 이 정보들이 필요하기 때문이다.</p>
-<h2 id="02-책임"><a href="#02-책임" class="headerlink" title="02 책임"></a>02 책임</h2><p>객체의 책임은 객체가 ‘하는 것’ 과 ‘아는 것’ 으로 구성된다.</p>
-<ul>
-<li>Movie 하는 것<ul>
-<li>요금을 계산하는 것</li>
-<li>예매 가격을 계산하는 것</li>
-</ul>
-</li>
-<li>Movie 아는 것<ul>
-<li>가격</li>
-<li>할인 정책</li>
-</ul>
-</li>
-</ul>
-<p>객체지향 개발에서 가장 중요한 능력은 책임을 능숙하게 소프트웨어 객체에 할당하는 것이다. 적절한 협력이 적절한 책임을 제공하고, 적절한 책임을 적절한 객체에게 할당해야한 단순하고 유연한 설계를 만들 수 있다.</p>
-<p>관람객이 스스로 가방 안의 현금과 초대장을 처리하고, 판매원이 스스로 매표소의 티켓과 판매 요금을 다루게 한다면 모든 문제는 해결된다. 즉, 자율적인 존재로 만들어야한다.</p>
-<h5 id="책임-할당"><a href="#책임-할당" class="headerlink" title="책임 할당"></a>책임 할당</h5><p>객체는 협력에 필요한 지식과 방법을 가장 잘 알고 있는 객체에게 도움을 요청한다. </p>
-<ol>
-<li><p>책임을 할당한다는 것은 메세지의 이름을 결정하는 것과 같다. ex) 예매하라</p>
-</li>
-<li><p>메세지를 선택했으면 메세지를 처리할 적절한 객체를 선택해야한다. 영화 예매와 관련된 정보를 가장 많이 알고 있는 객체에게 할당한느 것이 바람직한다. ex) Screening</p>
-</li>
-<li><p>영화 예매를 위해서는 예매 가격을 계산해야한다. Screening 은 예매에 대해서는 정보 전문가지만, 영화 가격 자체에 대해서는 모른다. 그래서 외부의 객체에게 가격 계산을 요청해야한다. 새로운 메세지가 필요하다. ex) 가격을 계산하라</p>
-</li>
-<li><p>가격 계산을 위해 정보 전문가가 필요하다. ex) Movie</p>
-</li>
-</ol>
-<h5 id="책임-주도-설계"><a href="#책임-주도-설계" class="headerlink" title="책임 주도 설계"></a>책임 주도 설계</h5><p> 책임 주도 설계 : 책임을 찾고 책임을 수행할 적절한 객체를 찾아 책임을 할당하는 방식으로 협력을 설계하는 방법</p>
-<p>협력은 객체를 설계하기 위한 구체적인 문맥을 제공한다. 협력이 책임을 이끌어내고 책임이 협력에 참여할 객체를 결정한다. </p>
-<p>책임을 할당할 때 고려해야할 두 가지 요소</p>
-<ol>
-<li>메세지가 객체를 결정</li>
-<li>행동이 상태를 결정</li>
-</ol>
-<h5 id="메세지가-객체를-결정한다"><a href="#메세지가-객체를-결정한다" class="headerlink" title="메세지가 객체를 결정한다"></a>메세지가 객체를 결정한다</h5><p>메세지가 객체를 선택해야하는 이유</p>
-<ol>
-<li>객체가 최소한의 인터페이스를 가지게 된다. </li>
-<li>추상적인 인터페이스를 가질 수 있다. 무엇을 하는지만 표현해야지, 어떻게 수행하는지는 노출해서는 안된다.</li>
-</ol>
-<h5 id="행동이-상태를-결정"><a href="#행동이-상태를-결정" class="headerlink" title="행동이 상태를 결정"></a>행동이 상태를 결정</h5><p>객체가 협력에 적합한지를 결정하는 것은 그 객체의 행동이다. 상태는 단지 객체가 행동을 정상 수행하기 위한 필요한 재료일 뿐이다.</p>
-<p>협력이 객체의 행동을 결정하고 행동이 상태를 결정한다. 그 행동이 객체의 책임이다.</p>
-<h2 id="03-역할"><a href="#03-역할" class="headerlink" title="03 역할"></a>03 역할</h2><p>역할은, 객체가 어떤 특정한 협력 안에서 수행하는 책임의 집합이다.</p>
-<p>‘예매하라’ 라는 메세지를 처리하기 위해 적합한 객체로 Screening 을 선택하는 데는 두가지 단계가 있다.</p>
-<ol>
-<li>영화 예매를 할 수 있는 적절한 역할이 무엇인가 ?</li>
-<li>역할을 수행할 객체로 Screening 인스턴스를 선택한다.</li>
-</ol>
-<h5 id="유연하고-재사용-가능한-협력"><a href="#유연하고-재사용-가능한-협력" class="headerlink" title="유연하고 재사용 가능한 협력"></a>유연하고 재사용 가능한 협력</h5><p>AmountDiscountPolicy 와 PercentDiscountPolicy 인스턴스라는 두가지 종류의 객체가 할인 요금을 계산하라 라는 메세지에 응답할 수 있어야한다. 그럼, 두 종류의 객체가 참여하는 협력을 개별적으로 만들어야할까?</p>
-<p>할인 요금을 계산하라라는 메세지에 응답할 수 있는 대표자를 생각한다면 두 협력을 하나로 통합할 수 있다. 이 대표자를 협력에서는 두 종류의 객체로 바꿔 끼울 수 있는 슬롯으로 생각할 수 있다. 이 슬롯이 역할이다.</p>
-<p>변경 전의 절차적 설계에서는 Theater 가 전체적인 작업을 도맡아 했다. 변경 후의 객체지향 설계에서는 각 객체가 자신이 맡은 일을 스스로 처리했다. </p>
-<h5 id="역할의-구현"><a href="#역할의-구현" class="headerlink" title="역할의 구현"></a>역할의 구현</h5><p>역할을 구현하는 방법</p>
-<ol>
-<li>추상 클래스 : 책임의 일부를 구현해 놓은 것</li>
-<li>인터페이스 : 구현 하나 없이, 책임의 집합을 나열해 놓은 것</li>
-</ol>
-<h5 id="객체-대-역할"><a href="#객체-대-역할" class="headerlink" title="객체 대 역할"></a>객체 대 역할</h5><p>협력에 참여하는 후보가 여러 종류의 객체에 의해 수행될 필요가 있다면 그 후보는 역할이 된다. 한 종류의 객체만이 협력에 참여할 필요가 있다면 후보는 객체가 된다.</p>
-<p>설계 초반에는 적절한 책임과 협력의 큰 그림을 탐색하는 것이 중요하다. 단순하게 객체로 시작하고 반복적으로 책임과 협력을 정제하며 필요한 순간에 객체로부터 역할을 분리하는 것이 좋다.</p>
-<h5 id="역할과-추상화"><a href="#역할과-추상화" class="headerlink" title="역할과 추상화"></a>역할과 추상화</h5><p>추상화를 이용한 설계의 장점</p>
-<ol>
-<li>중요한 정책을 상위 수준에서 단순화할 수 있다.</li>
-<li>설계가 유연해진다.</li>
-</ol>
-<h5 id="배우와-배역"><a href="#배우와-배역" class="headerlink" title="배우와 배역"></a>배우와 배역</h5><p>배우는 연극이 상영될 때 배역이라는 특정한 역할을 연기한다 == 객체는 협력이라는 실행 문맥안에서 특정한 역할을 수행한다.</p>
-<p>연극 배우는 연극이 끝나면 배역을 잊고 원래 자기로 돌아온다 == 객체는 협력이 끝나고 협력에서의 역할을 잊고 원래의 객체로 돌아온다.</p>
-<p>하나의 배역을 여러 배우가 연기할 수 있다 == 동일한 역할을 수행하는 하나 이상의 객체들이 존재할 수 있다</p>
-<p>객체는 다수의 역할을 보유할 수 있지만 객체가 참여하는 특정 협력은 객체의 한가지 역할만 바라볼 수 있다.</p>
-<hr>
-<p>오브젝트 &lt;조영호&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/11/12/object-chapter3/" data-id="ck7itpmrg00ma106wiffruebu" data-title="[오브젝트] 3장_역할,책임,협력" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-object-chapter2" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/11/06/object-chapter2/" class="article-date">
-  <time class="dt-published" datetime="2019-11-05T15:00:00.000Z" itemprop="datePublished">2019-11-06</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/object/">Object</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/11/06/object-chapter2/">[오브젝트] 2장_객체지향 프로그래밍</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>이번 장의 목표는 이 책의 다양한 주제들을 가볍게 살펴보는 것이다.</p>
-<h2 id="01-영화-예매-시스템"><a href="#01-영화-예매-시스템" class="headerlink" title="01 영화 예매 시스템"></a>01 영화 예매 시스템</h2><h5 id="요구사항-살펴보기"><a href="#요구사항-살펴보기" class="headerlink" title="요구사항 살펴보기"></a>요구사항 살펴보기</h5><p>38 Page </p>
-<h2 id="02-객체지향-프로그래밍을-향해"><a href="#02-객체지향-프로그래밍을-향해" class="headerlink" title="02 객체지향 프로그래밍을 향해"></a>02 객체지향 프로그래밍을 향해</h2><h5 id="협력-객체-클래스"><a href="#협력-객체-클래스" class="headerlink" title="협력, 객체, 클래스"></a>협력, 객체, 클래스</h5><p>객치지향 패러다임은, 클래스가 아닌 객체에 초점을 맞춰야한다. 다음 두가지에 집중해야 한다.</p>
-<ol>
-<li><p>어떤 클래스가 필요한지를 고민하기 전에, 어떤 객체들이 필요한지 고민하라. 클래스는 공통적인 상태와 행동을 공유하는 객체들을 추상화한 것이다.</p>
-</li>
-<li><p>객체는 독립적인 존재가 아니라, 기능 구현을 위한 협력 공동체의 일원이다.</p>
-</li>
-</ol>
-<h5 id="도메인의-구조를-따르는-프로그램-구조"><a href="#도메인의-구조를-따르는-프로그램-구조" class="headerlink" title="도메인의 구조를 따르는 프로그램 구조"></a>도메인의 구조를 따르는 프로그램 구조</h5><p>도메인이란, 문제를 해결하기 위해 사용자가 프로그램을 사용하는 분야이다. </p>
-<p>객체지향 패러다임에서는, 도메인을 구성하는 개념들이 프로그램의 객체와 클래스로 매끄럽게 연결된다. 일반적으로, 클래스의 이름은 대응되는 도메인의 개념의 이름과 동일하거나 유사하게 지어야한다. </p>
-<h5 id="클래스-구현하기"><a href="#클래스-구현하기" class="headerlink" title="클래스 구현하기"></a>클래스 구현하기</h5><p>클래스를 구현하거나 다른 개발자에 의해 개발된 클래스를 사용할 때 가장 중요한 것은, 클래스의 경계를 구분짓는 것이다. </p>
-<p>외부에서는 객체의 속성에 직접 접근할 수 없도록 막고 적절한 public 메서드를 통해서만 내부 상태를 변경할 수 있게해야한다. 경계의 명확성이 객체의 자율성을 보장하기 때문이다. 또, 프로그래머에게 구현의 자유를 제공하기 때문이다.</p>
-<h5 id="자율적인-객체"><a href="#자율적인-객체" class="headerlink" title="자율적인 객체"></a>자율적인 객체</h5><p>객체는 스스로 판단하고 행동하는 자율적인 존재다. 객체가 자율적인 존재가 되기 위해서는, 외부의 간섭을 최소화해야한다.</p>
-<p>캡슐화와 접근 제어는 객체를 두 부분으로 나눈다. (인터베이스와 구현의 분리)</p>
-<ol>
-<li>Public Interface : 외부에서 접근 가능한 부분</li>
-<li>Implementation : 외부에서 접근 불가능한 부분</li>
-</ol>
-<h5 id="프로그래머의-자유"><a href="#프로그래머의-자유" class="headerlink" title="프로그래머의 자유"></a>프로그래머의 자유</h5><p>프로그래머의 역할은, 클래스 작성자와 클라이언트 프로그래머로 구분할 수 있다.</p>
-<ol>
-<li>클래스 작성자 : 새로운 데이터 타입을 프로그램에 추가</li>
-<li>클라이언트 프로그래머 : 클래스 작성자가 추가한 데이터 타입을 사용</li>
-</ol>
-<p>클래스 작성자는 클라이언트 프로그래머에게 필요한 부분만 공개하고 나머지는 숨겨야한다. 클라이언트 프로그래머가 숨겨 놓여진 부분에 접근하는것을 막아 내부 구현을 마음대로 변경할 수 있다. (구현 은닉)</p>
-<p>객체의 외부와 내부를 구분하면 클라이언트 프로그래머가 알아야할 지식 양이 줄고 클래스 작성자가 자유롭게 구현을 변경할 수 있다. 변경될 가능성이 있는 세부적인 내용은 private 영역으로 감춰 변경으로 인한 혼란을 막을 수 있다.</p>
-<h5 id="협력하는-객체들의-공동체"><a href="#협력하는-객체들의-공동체" class="headerlink" title="협력하는 객체들의 공동체"></a>협력하는 객체들의 공동체</h5><p>금액을 Money 클래스로 정의하면, 저장하는 값이 금액과 관련돼 있다는 의미를 전달 할 수 있다. (Long Type 은 그렇지 못함) 객체지향의 장점은 객체를 이용해 도메인의 의미를 풍부하게 표현할 수 있다. </p>
-<p>객체지향 프로그램을 작성할 때, 협력의 관점에서 어떤 객체가 필요한지 결정하고, 객체들의 공통 상태와 행위를 구현하기 위해 클래스를 작성한다.</p>
-<h5 id="협력"><a href="#협력" class="headerlink" title="협력"></a>협력</h5><p>객체는 다른 객체의 인터페이스에 공개된 행동을 수행하도록 ‘요청’ 할 수 있다. 요청 받은 객체는 요청 처리후에 ‘응답’ 한다. </p>
-<p>객체가 다른 객체와 상호작용하는 방법은, ‘메세지’ 를 전송하는 것뿐이다. 메세지를 받는 객체는 메세지를 ‘수신했다’ 고 한다. 수신된 메세지를 처리하기 위한 자신만의 방법을 ‘메서드’ 라고 한다.</p>
-<p>메시지를 수신한 Movie 는 스스로 자신의 적절한 메서드를 선택한다. </p>
-<h2 id="03-할인-요금-구하기"><a href="#03-할인-요금-구하기" class="headerlink" title="03 할인 요금 구하기"></a>03 할인 요금 구하기</h2><h5 id="할인-요금-계산을-위한-협력-시작하기"><a href="#할인-요금-계산을-위한-협력-시작하기" class="headerlink" title="할인 요금 계산을 위한 협력 시작하기"></a>할인 요금 계산을 위한 협력 시작하기</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Moview</span></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> String title;</span><br><span class="line">  <span class="keyword">private</span> Money fee;</span><br><span class="line">  ...</span><br><span class="line">    </span><br><span class="line">  <span class="function"><span class="keyword">public</span> Money <span class="title">calculateMoneyFee</span><span class="params">(Screening screening)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> fee.minus(discountPolicy.caculateDiscountAmount(screening));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>위 메서드에서, 어떤 할인 정책을 사용할것인지 결정하는 코드가 안보인다. 여기에는 상속과 다형성 개념이 숨겨져있다.</p>
-<h5 id="할인-정책과-할인-조건"><a href="#할인-정책과-할인-조건" class="headerlink" title="할인 정책과 할인 조건"></a>할인 정책과 할인 조건</h5><p>할인 정책은, 금액할인 정책 (AmountDiscountPolicy) 과 비율 할인 정책 (PercentDiscountPolicy) 이 있다. 두 클래스는 대부분의 코드가 유사하고 할인 요금 계산하는 방식만 조금 다르기 때문에, 중복 코드 제거를 위해 추상 클래스를 사용한다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">DiscountPolicy</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> List&lt;DiscountCondition&gt; conditions = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">  </span><br><span class="line">	...</span><br><span class="line">    </span><br><span class="line">  <span class="function"><span class="keyword">public</span> Money <span class="title">caculateDiscountAmount</span><span class="params">(Screening screening)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(DiscountCondition each : conditions)&#123;</span><br><span class="line">      <span class="keyword">if</span>(each.isSatifiedBy(screening))&#123;</span><br><span class="line">        <span class="keyword">return</span> getDiscountAmount(screening);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> Money.ZERO;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">abstract</span> <span class="keyword">protected</span> Money <span class="title">getDiscountAmount</span><span class="params">(Screening screening)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>이처럼 부모 클래스에 기본적인 알고리즘의 흐름을 구현하고 중간에 필요한 처리를 자식 클래스에 위임하는 디자인 패턴을, 템플릿 메서드 패턴이라고 한다.</p>
-<h5 id="할인-정책-구성하기"><a href="#할인-정책-구성하기" class="headerlink" title="할인 정책 구성하기"></a>할인 정책 구성하기</h5><p>생성자의 파라미터 목록을 이용해 초기화에 필요한 정보를 전달하도록 강제하면, 올바른 상태를 가진 객체의 생성을 보장할 수 있다.</p>
-<h2 id="04-상속과-다형성"><a href="#04-상속과-다형성" class="headerlink" title="04 상속과 다형성"></a>04 상속과 다형성</h2><p>Movie 내부에 할인 정책을 결정하는 조건문이 없는데 어떻게 영화 요금을 계산할 때 할인 정책과 비율 할인 정책을 선택할 수 있을까? 답은 상속과 다형성이다.</p>
-<h5 id="컴파일-시간-의존성과-실행-시간-의존성"><a href="#컴파일-시간-의존성과-실행-시간-의존성" class="headerlink" title="컴파일 시간 의존성과 실행 시간 의존성"></a>컴파일 시간 의존성과 실행 시간 의존성</h5><p>코드의 의존성과 실행시점의 의존성이 서로 다를 수 있다.</p>
-<p>Movie 인스턴스는 실행 시에 AmountDiscountPolicy 나 PercentDiscountPolicy 의 인스턴스에 의존해야한다. 하지만 코드 수준에서는 두 클래스 중에 어떤 것에도 의존하지 않는다. 오직 추상클래스인 DiscountPolicy 에 의존한다.</p>
-<p>Movie 인스턴스를 생성하는 코드를 보면, 생성자에서 DiscountPolicy 타입의 객체를 인자로 받는다. 이제 실행시, AmountDiscountPolicy 클래스의 인스턴스에 의존하게 된다. </p>
-<h5 id="차이에-의한-프로그래밍"><a href="#차이에-의한-프로그래밍" class="headerlink" title="차이에 의한 프로그래밍"></a>차이에 의한 프로그래밍</h5><p>부모 클래스와 다른 부분만을 추가해서 새로운 클래스를 쉽고 빠르게 만드는 방법을, 차이에 의한 프로그래밍이라고 한다. 상속을 이용하면 클래스 사이의 관게를 설정하는 것만으로 기존 클래스가 가진 모든 속성과 행동을 새로운 클래스에 포함시킬 수 있다.</p>
-<h5 id="상속과-인터페이스"><a href="#상속과-인터페이스" class="headerlink" title="상속과 인터페이스"></a>상속과 인터페이스</h5><p>자식 클래스는 부모 클래스가 수신할 수 있는 모든 메세지를 수신할 수 있기 때문에, 외부 객체는 자식 클래스를 부모 클래스와 동일한 타입으로 간주할 수 있다. 자식 클래스가 부모 클래스를 대신하는 것을 업캐스팅이라고 한다.</p>
-<h5 id="다형성"><a href="#다형성" class="headerlink" title="다형성"></a>다형성</h5><p>Movie 는 동일한 메세지를 전송하지만, 실제로 어떤 메서드가 실행될 것인지는 메시지를 수신하는 객체의 클래스가 무엇이냐에 따라 다르다. 이것이 다형성이다. </p>
-<p>다형성은 컴파일 시간 의존성과 실행 시간 의존성을 다르게 만들 수 있는 객체지향 특성을 이용해 서로 다른 메서드를 실행할 수 있게 한다.</p>
-<p>다형성을 구현하는 방법은 다양하지만, 공통점은 메세지에 응답하기 위해 실행될 메서드를 컴파일 시점이 아닌 실행시점에 결정한다는 것이다. 이를 지연바인딩 / 동적바인딩 이라고 한다.</p>
-<h5 id="인터페이스와-다형성"><a href="#인터페이스와-다형성" class="headerlink" title="인터페이스와 다형성"></a>인터페이스와 다형성</h5><p>종종 구현을 공유할 필요가 없고, 순수하게 인터페이스만 공유하고 싶을 때가 있다. 자바에서는 인터페이스라는 프로그래밍 요소를 제공한다.</p>
-<h2 id="05-추상화와-유연성"><a href="#05-추상화와-유연성" class="headerlink" title="05 추상화와 유연성"></a>05 추상화와 유연성</h2><h5 id="추상화의-힘"><a href="#추상화의-힘" class="headerlink" title="추상화의 힘"></a>추상화의 힘</h5><p>같은 계층에 속하는 클래스들이 공통으로 가질 수 있는 인턴페이스를 구현하며 구현의 일부 (추상클래스) 또는 전체 (인터페이스) 를 자식 클래스가 결정할 수 있도록 결정권을 위임한다.</p>
-<p>추상화의 장점은,</p>
-<ol>
-<li>세부사항에 억눌리지 않고 상위 개념만으로 도메인의 중요한 개념을 설명할 수 있다</li>
-<li>기존 구조를 수정하지 않고 새로운 기능을 쉽게 추가하고 확장할 수 있다.</li>
-</ol>
-<h5 id="유연한-설계"><a href="#유연한-설계" class="headerlink" title="유연한 설계"></a>유연한 설계</h5><p>책임의 위치를 결정하기 위해 조건문을 사용하는 것은 협력의 설계 측면에서 좋지 않은 선택이다. 예를 들면, 0원 이라는 할인 요금을 계산할 책임을 그대로 DiscountPolicy 계층에 유지하기 위해, NoneDiscountPolicy 클래스를 추가할 수 있다.</p>
-<p>결론은, 유연성이 필요한 곳에 추상화를 사용해라.</p>
-<h5 id="추상-클래스와-인터페이스-트레이드오프"><a href="#추상-클래스와-인터페이스-트레이드오프" class="headerlink" title="추상 클래스와 인터페이스 트레이드오프"></a>추상 클래스와 인터페이스 트레이드오프</h5><p>코드에는 합당한 이유가 있어야한다.</p>
-<h5 id="코드-재사용"><a href="#코드-재사용" class="headerlink" title="코드 재사용"></a>코드 재사용</h5><p>합성은, 다른 객체의 인스턴스를 자신의 인스턴스 변수로 포함해서 재사용하는 방법이다.</p>
-<h5 id="상속"><a href="#상속" class="headerlink" title="상속"></a>상속</h5><p>상속의 단점은, </p>
-<ol>
-<li>캡슐화 위반이다.  부모 클래스가 변경되면,  자식 클래스도 함께 변경될 확률이 높다.</li>
-<li>설계가 유연하지 않다. 부모클래스와 자식클래스의 관계를 컴파일 시점에 결정해서 실행시점에 객체의 종류를 변경할 수 없다.</li>
-</ol>
-<p>인스턴스 변수로 연결하면, 실행 시점에 할인 정책을 간단히 변경할 수 있다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Movie</span></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> DiscountPolicy discountPolicy;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">changeDiscountPolicy</span><span class="params">(DiscountPolicy discountPolicy)</span></span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.discountPolicy = discountPolicy;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Moview avater = <span class="keyword">new</span> Movie(....., <span class="keyword">new</span> AmountDiscountPolicy);</span><br><span class="line">avater.changeDiscountPolicy(<span class="keyword">new</span> PercentDiscountPolicy());</span><br></pre></td></tr></table></figure>
-
-<h5 id="합성"><a href="#합성" class="headerlink" title="합성"></a>합성</h5><p>인터페이스에 정의된 메세지를 통해서만 코드를 재사용하는 방법이 합성이다.</p>
-<p>합성은 상속의 두가지 문제를 해결한다.</p>
-<ol>
-<li>인터페이스에 정의된 메세지를 통해서만 재사용하기 때문에 구현을 효과적으로 캡슐화한다.</li>
-<li>의존하는 인스턴스를 교체하는 것이 쉽기 때문에 유연하다. 상속은 클래스를 통해 강하게 결합, 합성은 메세지를 통해 느슨하게 결합.</li>
-</ol>
-<hr>
-<p>오브젝트 &lt;조영호&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/11/06/object-chapter2/" data-id="ck7itpmt700om106wup19lhpq" data-title="[오브젝트] 2장_객체지향 프로그래밍" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-object-chapter1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/11/04/object-chapter1/" class="article-date">
-  <time class="dt-published" datetime="2019-11-03T15:00:00.000Z" itemprop="datePublished">2019-11-04</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/object/">Object</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/11/04/object-chapter1/">[오브젝트] 1장_객체, 설계</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>소프트웨어 설계와 유지보수에 중점을 두려먼 이론이 아닌, 실무에 초점을 맞추어야한다. </p>
-<p>설계를 설명할 때 가장 유용한 도구는 이론으로 치장된 개념과 용어가 아니라, 코드다.</p>
-<h2 id="01-티켓-판매-애플리케이션-구현하기"><a href="#01-티켓-판매-애플리케이션-구현하기" class="headerlink" title="01 티켓 판매 애플리케이션 구현하기"></a>01 티켓 판매 애플리케이션 구현하기</h2><p>Code : Page 9</p>
-<h2 id="02-무엇이-문제인가"><a href="#02-무엇이-문제인가" class="headerlink" title="02 무엇이 문제인가"></a>02 무엇이 문제인가</h2><p>로머트 마틴에 따르면 모든 모듈 ( 크기와 상관 없이 클래스나 패키지, 라이브러리와 같이 프로그램을 구성하는 임의의 요소 ) 은 </p>
-<ol>
-<li>제대로 실행되어야 하고</li>
-<li>변경이 용이해야하고</li>
-<li>이해하기 쉬워야 한다.</li>
-</ol>
-<h5 id="예상을-빗나가는-코드"><a href="#예상을-빗나가는-코드" class="headerlink" title="예상을 빗나가는 코드"></a>예상을 빗나가는 코드</h5><p>문제는 관람객과 판매원이, 소극장의 통제를 받는 수동적인 존재라는 것이다. 관람객의 입장에서 문제는 소극장이라는 제 3자가 초대장 확인을 위해 가방을 마음대로 열어본다. 판매원 입장에서는 문제는 소극장이 매표소에 보관 중인 티켓과 혐금에 마음대로 열어본다.</p>
-<p>이해 가능한 코드란 동작이 우리의 예상에서 벗어나지 않는다. 현재의 코드는 우리의 상식과는 너무 다르게 동작하기 때문에 코드를 읽는 사람과 의사소통하지 못한다.</p>
-<p>코드를 이해하기 어려운 또 다른 이유는, 코드를 이해하기 위해 세부적인 내용들을 모두 기억하고 있어야 한다는 것이다. Theater 의 enter 메서드를 이해하기 위해 Audience 가 Bag 을 가지고 있고, Bag 안에는 현금과 티켓이 들어있고, TicketSeller 가 TicketOffice 에서 티켓을 판매하고, TicketOffice 안에 돈과 티켓이 보관되어 있다는 모든 사실을 기억하고 있어야 한다.</p>
-<p>가장 심각은 문제는 Audience 와 TicketSeller 를 변경할 경우 Theater 로 변경해야한다는 것이다.</p>
-<h5 id="변경에-취약한-코드"><a href="#변경에-취약한-코드" class="headerlink" title="변경에 취약한 코드"></a>변경에 취약한 코드</h5><p>세부적인 사실 중 한 가지라도 바뀌면 해당 클래스뿐만 아니라 이 클래스에 의존하는 Theater 도 함께 변경해야한다. 이것은 객체 사이의 의존성과 관련된 문제이다.</p>
-<p>우리의 목표는 기능을 구현하는 데 필요한 최소환의 의존성만 유지하고 불필요한 의존성을 제거하는 것이다. 객체 사이의 결합도를 낮춰 변경이 용이한 설계를 만들어야한다.</p>
-<h2 id="03-설계-개선하기"><a href="#03-설계-개선하기" class="headerlink" title="03 설계 개선하기"></a>03 설계 개선하기</h2><p>Code : Page 18</p>
-<p>관람객이 스스로 가방 안의 현금과 초대장을 처리하고, 판매원이 스스로 매표소의 티켓과 판매 요금을 다루게 한다면 모든 문제는 해결된다. 즉, 자율적인 존재로 만들어야한다.</p>
-<h5 id="자율성을-높이자"><a href="#자율성을-높이자" class="headerlink" title="자율성을 높이자"></a>자율성을 높이자</h5><p>객체 내부의 세부적인 사항을 감추는 것을 캡슐화라고 한다. 객체 내부로의 접근을 제한하면 객체와 객체 사이의 결합도를 낮춰서 설계를 좀 더 쉽게 변경할 수 있게 한다.</p>
-<p>캡슐화를 개선한 후에 가장 크데 달라진 점은 Audience 와 TicketSeller 가 내부 구현을 외부에 노출하지 않고 자신의 문제를 스스로 책임지고 해결한다는 것이다.</p>
-<h5 id="무엇이-개선됐는가"><a href="#무엇이-개선됐는가" class="headerlink" title="무엇이 개선됐는가"></a>무엇이 개선됐는가</h5><p> Audience 와 TicketSeller 의 내부 구현을 변경하더라도 Theater 를 함께 변경할 필요가 없어졌다. 수정된 코드는 변경 용이성의 측면에서 확실히 개선됐다.</p>
-<h5 id="어떻게-한-것인가"><a href="#어떻게-한-것인가" class="headerlink" title="어떻게 한 것인가"></a>어떻게 한 것인가</h5><p>자기 자신의 문제를 스스로 해결하도록 변경했다. 객체의 자율성을 높였다.</p>
-<h5 id="캡슐화와-응집도"><a href="#캡슐화와-응집도" class="headerlink" title="캡슐화와 응집도"></a>캡슐화와 응집도</h5><p>핵심은, 객체 내부의 상태를 캡슐화하고 객체 간에 오직 메시지를 통해 상호작용하도록 만드는 것이다. </p>
-<h5 id="절차지향과-객체지향"><a href="#절차지향과-객체지향" class="headerlink" title="절차지향과 객체지향"></a>절차지향과 객체지향</h5><p>Theater 의 enter 메서드는 프로세스, Audience, TicketSeller, Bag, TicketOffice 는 데이터다. </p>
-<p>프로세스와 데이터를 별도의 모듈에 위치시키는 방식을 절차적 프로그래밍이라 한다. 모든 처리가 하나의 클래스 안에 위치하고 나머지 클래스는 단지 데이터의 역할만 수행한다. </p>
-<p>데이터와 프로세스를 동일한 모듈 내부에 위치하도록 프로그래밍하는 방식을 객체지향 프로그래밍이라고 한다.</p>
-<h5 id="책임의-이동"><a href="#책임의-이동" class="headerlink" title="책임의 이동"></a>책임의 이동</h5><p>두 방식의 근본적인 차이를 만드는 것은 책임의 이동이다. 객체지향설계에서는 독재자가 없고, 각 객체에 책임이 적절히 분배된다.</p>
-<p>변경 전의 절차적 설계에서는 Theater 가 전체적인 작업을 도맡아 했다. 변경 후의 객체지향 설계에서는 각 객체가 자신이 맡은 일을 스스로 처리했다. </p>
-<h5 id="더-개선할-수-있다"><a href="#더-개선할-수-있다" class="headerlink" title="더 개선할 수 있다"></a>더 개선할 수 있다</h5><p>Code : Page 29</p>
-<p>어떤 기능을 설계하는 방법은 한 가지 이상일 수 있다. 그래서 설계는 트데이오프의 산물이다. </p>
-<h5 id="그래-거짓말이다"><a href="#그래-거짓말이다" class="headerlink" title="그래, 거짓말이다!"></a>그래, 거짓말이다!</h5><p>Theater, Bag, TicketOffice 는 실세계에서 자율적인 존재가 아니다. 하지만 비록 현실에서는 수동적인 존재라고 하더라도 객체지향 세계에서는 모든 것이 능동적이고 자율적인 존재가 된다. 이것을 의인화라고 한다.</p>
-<h2 id="객체지향-설계"><a href="#객체지향-설계" class="headerlink" title="객체지향 설계"></a>객체지향 설계</h2><h5 id="설계가-왜-필요한가"><a href="#설계가-왜-필요한가" class="headerlink" title="설계가 왜 필요한가"></a>설계가 왜 필요한가</h5><p>설계란 코드를 배치하는 것이다. 첫 번째 코드에서는 데이터와 프로세스를 나누어 별도의 클래스에 배치했지만, 두 번째 코드에서는 필요한 데이터를 보유한 클래스 안에 프로세스를 함께 배치했다.</p>
-<p>변경을 수용할 수 있는 설계가 중요한 이유는 요구사항이 항상 변경되기 때문이다. 그리고 코드를 변경할 때 버그가 추가될 가능성이 높기 때문이다.</p>
-<h5 id="객체지향-설계-1"><a href="#객체지향-설계-1" class="headerlink" title="객체지향 설계"></a>객체지향 설계</h5><p>훌륭한 객체지향 설계는, 협력하는 객체 사이의 의존성을 적절하게 관리하는 설계다. 협력하는 객체들 사이의 의존성을 적절하게 조절해서 변경에 용이한 설계를 만들어야한다.</p>
-<hr>
-<p>오브젝트 &lt;조영호&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/11/04/object-chapter1/" data-id="ck7itpmrf00m7106wr0vsmuta" data-title="[오브젝트] 1장_객체, 설계" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-spark-sql" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/08/07/spark-sql/" class="article-date">
-  <time class="dt-published" datetime="2019-08-06T15:00:00.000Z" itemprop="datePublished">2019-08-07</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/spark/">Spark</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/08/07/spark-sql/">[스파크2 프로그래밍] 5장_스파크SQL 과 데이터프레임,데이터셋</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>RDD 의 장점은, </p>
-<ul>
-<li>분산환경에서 메모리 기반으로 빠르고 안정적으로 동작하는 프로그램을 만들 수 있다는 것과, </li>
-<li>RDD 가 제공하는 풍부한 데이터 처리 연산입니다. ( &lt;-&gt; 맵과 리듀스로만 문제를 해결 ) </li>
-</ul>
-<p>RDD 의 단점은,</p>
-<ul>
-<li>스키마를 표현할 수 없다는 것입니다. </li>
-</ul>
-<p>스파크 SQL 은 RDD 의 이 단점을 보완할 수 있도록 또 다른 유형의 데이터 모델과 API를 제공하는 스파크 모듈입니다. 스파크 SQL 에서 데이터를 다루는 방법은 SQL을 사용하는 것과 데이터셋 API 를 사용하는 방법이 있습니다. </p>
-<p>데이터셋은 스파크 1.6 버젼에서 처음 소개된 것으로 자바와 스칼라 언어에서만 사용할 수 있었고, 그 이전에는 데이터프레임이라는 클래스를 구현 언어와 상관없이 사용하고 있었습니다. <strong>스파크 2.0 부터 데이터프레임 클래스가 데이터셋 클래스로 통합</strong>되면서 Type Alias 라는 독특한 기능을 가진 스칼라 언어에서만 기존과 같은 데이터 프레임을 사용할 수 있고 해당 기능이 없는 자바에서는 데이터셋 클래스만을 사용할 수 있게 됐습니다. </p>
-<p>스칼라의 데이터프레임은 “type DataFrame = Dataset[Row]” 와 같이 정의돼 있는데 바로 이 구문이 Type Alias 에 해당하는 부분으로, <strong>Dataset 의 타입 파라미터가 Row 인 경우를 DataFrame</strong> 이라는 이름으로도 사용하겠다는 의미입니다.</p>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> ds = <span class="type">List</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>).toDS</span><br><span class="line">ds.show</span><br><span class="line">ds.printScheme</span><br></pre></td></tr></table></figure>
-
-<h3 id="5-1-데이터셋"><a href="#5-1-데이터셋" class="headerlink" title="5.1 데이터셋"></a>5.1 데이터셋</h3><p>데이터셋 이전에는 데이터프레임이라는 API 를 사용했습니다. 가장 큰 특징은, 기존 RDD 와는 다른 형태를 가진 <strong>SQL 과 유사한 방식의 연산을 제공</strong>했다는 점입니다. 예를 들어,</p>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rdd.map(v=&gt;v+<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
-
-<p>와 같은 map() 연산을 사용한 것에 반해, 동일한 요소로 구성된 데이터프레임에서는 </p>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.select(df(<span class="string">"value"</span>)+<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
-
-<p>와 같은 방법을 사용했습니다. df는 데이터프레임을 df(“value”) 는 데이터프레임이 가지고 있는 “value” 라는 이름의 칼럼을 의미하는 것으로, 마치 SQL 의 SELECT 문과 유사한 형식으로 데이터를 조회하는 방법입니다.</p>
-<p>이러한 데이터 프레임의 장점은, </p>
-<ul>
-<li>풍부한 API 와 옵티마이저를 기반으로 한 높은 성능으로 복잡한 데이터 처리를 수월하게 수행할 수 있습니다.</li>
-</ul>
-<p>하지만,</p>
-<ul>
-<li>처리해야하는 작업의 특성에 따라 RDD 를 사용하는것에 비해 복잡한 코드를 작성하거나 컴파일 타임 오류 체크 기능을 사용할 수 없는 단점이 있습니다.</li>
-</ul>
-<p>데이터셋은 데이터프레임이 제공하던 <strong>성능 최적화 같은 장점을 유지하면서 RDD 에서만 가능했던 컴파일 타임 오류 체크 등의 기능을 사용</strong>할 수 있게 됐습니다. </p>
-<h3 id="5-2-연산의-종류와-주요-API"><a href="#5-2-연산의-종류와-주요-API" class="headerlink" title="5.2 연산의 종류와 주요 API"></a>5.2 연산의 종류와 주요 API</h3><p>데이터셋이 제공하는 연산은 RDD 와 마찬가지로 두 종류로 분류합니다.</p>
-<ul>
-<li>트렌스포메이션 <ul>
-<li>새로운 데이터셋을 생성하는 연산. (액션 연산이 호출될 때까지 수행되지 않습니다)</li>
-</ul>
-</li>
-<li>액션연산<ul>
-<li>실제 데이터 처리를 수행하고 결과를 생성하는 연산 </li>
-</ul>
-</li>
-</ul>
-<p>트랜스포메이션 연산은 데이터 타입을 처리하는 방법에 따라 두 가지로 나뉩니다.</p>
-<ul>
-<li>타입 연산</li>
-<li>비타입 연산</li>
-</ul>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="keyword">val</span> data = <span class="number">1</span> to <span class="number">100</span> toList</span><br><span class="line">scala&gt; <span class="keyword">val</span> ds = data.toDS <span class="comment">//데이터셋 생성</span></span><br><span class="line">scala&gt; <span class="keyword">val</span> result = ds.map(_+<span class="number">1</span>) <span class="comment">// == ds.select(col("value") + 1)</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ds.select(col(<span class="string">"value"</span>) + <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
-
-<p>이것은 데이터셋을 데이터베이스의 테이블과 유사하게 처리한 것으로, 마치 value 라는 칼럼을 가진 ds 라는 테이블에서 value 칼럼에 +1 을 한 결과를 조회하는 것과 유사한 방법입니다. 이 때, col(“value”) 라는 부분이 칼럼을 나타내며, 이 타입이 원래 데이터 타입인 정수가 아니라 org.apache.spark.sql.Column 타입입니다.</p>
-<p>데이터셋에는 SQL 과 유사한 방식의 데이터 처리를 위해 데이터베이스의 Row 와 Column 에 해당하는 타입을 정의하고 있으며, 실제 데이터가 어떤 타입이든지 로우와 칼럼 타입으로 감싸러 처리할 수 있는 구조입니다.</p>
-<p><strong>비타입 연산이란, 데이터를 처리할 때 데이터 본래의 타입이 아닌 org.apache.spark.sql.Column 과 org.apache.spark.sql.Row  타입의 객체로 감싸서 처리하는 연산</strong>입니다.</p>
-<p>데이터프레임은 org.apache.spark.sql.Row  타입의 요소로 구성된 데이터셋을 가리키는 용어입니다. 모든 데이터를 Row 타입으로 변환해서 생성된 데이터셋을 가리켜 데이터프레임이라는 별칭으로 부르기 대문에 이런 연산들을 데이터 프레임 연산이라고 부르기도 합니다.</p>
-<h3 id="5-3-코드-작성-절차-및-단어-수-세게-예제"><a href="#5-3-코드-작성-절차-및-단어-수-세게-예제" class="headerlink" title="5.3 코드 작성 절차 및 단어 수 세게 예제"></a>5.3 코드 작성 절차 및 단어 수 세게 예제</h3><p>단계별 스파크 SQL 코드 작성 방법입니다.</p>
-<ol>
-<li><p>스파크 세션 생성 (RDD 를 생성하기 위해 SparkContext가 필요한 것처럼, 데이터 프레임을 생성하기 위해 필요)</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SparkSession spark = SparkSession</span><br><span class="line">  .builder()</span><br><span class="line">  .appName(<span class="string">"jko"</span>) <span class="comment">//application name</span></span><br><span class="line">  .master(<span class="string">"local[*]"</span>) <span class="comment">//master info</span></span><br><span class="line">  .getOrCreate();</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>스파크세션으로부터 데이터셋 or 데이터프레임 생성</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String source = <span class="string">"file://&lt;spark_home_dir&gt;/README.md"</span>;</span><br><span class="line">Dataset&lt;Row&gt; df = spark.read().test(source); <span class="comment">//read() 는 DataFrameReader 인스턴스 리턴</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>생성된 데이터셋 또는 데이터프레임을 이용해 데이터 처리</p>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> ds = df.as[(<span class="type">String</span>)] <span class="comment">// 데이터 프레임을 데이터 셋으로 변환. Row 타입 요소 -&gt; 원래 데이터 타입</span></span><br><span class="line"><span class="keyword">val</span> wordDF = ds.flatMap(_.split(<span class="string">" "</span>)) <span class="comment">// 문장을 각 단어로 분리</span></span><br><span class="line"><span class="keyword">val</span> result = wordDF.groupByKey(v =&gt; v).count <span class="comment">// 같은 단어끼리 그룹 생성하고 그룹별 요소 개수 count</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>처리된 결과 데이터를 외부 저장소에 저장</p>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">result.write.test(<span class="string">"&lt;저장경로&gt;"</span>) <span class="comment">// write() 는 DataFrameWriter 를 리턴</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>스파크 세션 종료</p>
-</li>
-</ol>
-<h3 id="5-4-스파크세션"><a href="#5-4-스파크세션" class="headerlink" title="5.4 스파크세션"></a>5.4 스파크세션</h3><p>데이터프레임 또는 데이터셋을 생성하거나 사용자 정의 함수를 등록하기 위한 목적으로 사용됩니다. 스파크 SQL 2.0 부터 사용된 것으로, 기존에는 SQLContext 와 HiveContext를 사용했습니다.</p>
-<p>기존 SQLContext 는 스파크세션과 유사하게 데이터 프레임을 생성하고 사용자 정의 함수를 등록하는 기능을 수행했는데, 아파치  하이브에서 제공하는 <strong>HiveQL 을 사용하거나 기존 하이브 서버와 연동하기 위해서는 SQLContext 의 하위 클래스인 HiveContext 를 사용해야</strong>했습니다.</p>
-<p>이 두 클래스를 합친 <strong>스파크세션 클래스를 정의하면서 스파크 세션 하나만으로 하이브 지원까지 가능</strong>합니다. </p>
-<p>하이브 서버와 연동해서 사용하고 싶으면, 스파크의 conf 디렉토리에 hive-site.xml, core-site.xml., hfs-site.xml 파일을 생성해야 합니다. 하이브 및 하둡에서 사용하는 설정파일입니다.</p>
-<h3 id="5-5-데이터프레임-로우-칼럼"><a href="#5-5-데이터프레임-로우-칼럼" class="headerlink" title="5.5 데이터프레임, 로우, 칼럼"></a>5.5 데이터프레임, 로우, 칼럼</h3><p><strong>데이터프레임은 org.apache.spark.sql.Row 타입의 요소를 가진 데이터셋</strong>을 가리키는 별칭으로 사용되고 이습니다. R 의 데이터프레임이나 데이터베이스의 테이블과 비슷한 행과 열의 구조를 가지고 있어서, 데이터프레임에 포함된 데이터는 SQL 문을 사용하거나 데이터프레임이 제공하는 프로그래밍 API 를 이용해 처리 가능합니다.</p>
-<p>데이터프레임을 사용하는 궁긍적인 목적은 RDD 와 같이 분산 데이터를 저장하고 처리하기 위한것이지만 RDD 가 데이터의 값을 다루는데 초점을 맞추고 있었다면 <strong>데이터프레임은 데이터 값뿐만 아니라 제공된 스키마 정보를 이용해 RDD 를 통해서는 얻기 힘든 다양한 성능 최적화 기능을 제공</strong>하기 때문입니다.</p>
-<h4 id="5-5-1-데이터프레임-생성"><a href="#5-5-1-데이터프레임-생성" class="headerlink" title="5.5.1 데이터프레임 생성"></a>5.5.1 데이터프레임 생성</h4><p>스파크 세션을 이용해 생성합니다. </p>
-<p>생성 방법은 <strong>파일이나 데이터베이스와 같은 스파크 외부의 데이터소스에 저장된 데이터를 이용해 생성할 수도 있고 이미 생성돼 있는 다른 RDD 나 데이터프레임에 변환 연산을 적용해 새로운 데이터프레임을 생성</strong>할 수도 있습니다.</p>
-<p>다음은 생성 방법 입니다.</p>
-<ul>
-<li>외부데이터로부터</li>
-<li>기존 RDD 및 로컬 컬렉션으로부터</li>
-</ul>
-<h5 id="5-5-1-1-외부-데이터소스로부터-데이터프레임-생성"><a href="#5-5-1-1-외부-데이터소스로부터-데이터프레임-생성" class="headerlink" title="5.5.1.1 외부 데이터소스로부터 데이터프레임 생성"></a>5.5.1.1 외부 데이터소스로부터 데이터프레임 생성</h5><p>파일이나 데이터베이스 같은 외부저장소에서 데이터를 읽어서 데이터프레임을 생성할 때 가장 손쉽게 처리할 수 있는 방법은 스파크 세션이 제공하는 read() 메서드를 사용하는 것입니다. read() 메서드는 DateFrameReader 인스턴스를 생성하는데, 이를 이용해 다양한 유형의 데이터를 일고 데이터프레임을 생성할 수 있습니다.</p>
-<h5 id="5-5-1-2-기존-RDD-및-로컬-컬력센으로부터-데이터-프레임-생성"><a href="#5-5-1-2-기존-RDD-및-로컬-컬력센으로부터-데이터-프레임-생성" class="headerlink" title="5.5.1.2 기존 RDD 및 로컬 컬력센으로부터 데이터 프레임 생성"></a>5.5.1.2 기존 RDD 및 로컬 컬력센으로부터 데이터 프레임 생성</h5><p>스파크 SQL 은 스키마를 지정하는 두 가지 방법을 제공합니다. </p>
-<ul>
-<li>리플렉션 API 를 이용해 데이터의 스키마 정보를 자동으로 추론하는 방법<ul>
-<li>스키마의 정의 위한 별도의 추가 코드가 필요 없어서 간결한 코드를 작성할 수 있다는 장점</li>
-</ul>
-</li>
-<li>개발자가 직접 스키마 정보를 코드로 작성해서 지정<ul>
-<li>스키마 추론을 위한 부가적인 연산을 줄이고 스키마 정보를 원하는 대로 커스터마이징해서 사용하고자 한다면 이 방법을 사용</li>
-</ul>
-</li>
-</ul>
-<h6 id="5-5-1-2-1-리플렉션을-통한-데이터프레임-생성"><a href="#5-5-1-2-1-리플렉션을-통한-데이터프레임-생성" class="headerlink" title="5.5.1.2.1 리플렉션을 통한 데이터프레임 생성"></a>5.5.1.2.1 리플렉션을 통한 데이터프레임 생성</h6><p><strong>데이터 프레임 내부의 데이터는 동일한 수의 칼럼 정보를 포함하고 있는 로우의 집합</strong>입니다. 그래서 RDD 를 비롯해 로우와 칼럼 형태로 만들 수 있는 컬렉현 객체만 있다면 이를 이용해 새로운 데이터 프레임을 만들 수 있습니다.</p>
-<p>다음은 RDD 가 아닌 일반 리스트를 이용해 데이터 프레임을 생성하는 예제입니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> calss Person implements Serializable&#123;</span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line">  <span class="keyword">private</span> String job;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Person row1 = <span class="keyword">new</span> Person(<span class="string">"junhee"</span>, <span class="number">6</span>, <span class="string">"student"</span>);</span><br><span class="line">Person row2 = <span class="keyword">new</span> Person(<span class="string">"bill"</span>, <span class="number">12</span>, <span class="string">"god"</span>);</span><br><span class="line">Person row3 = <span class="keyword">new</span> Person(<span class="string">"jesi"</span>, <span class="number">14</span>, <span class="string">"mom"</span>);</span><br><span class="line">Person row4 = <span class="keyword">new</span> Person(<span class="string">"mina"</span>, <span class="number">41</span>, <span class="string">"chef"</span>);</span><br><span class="line"></span><br><span class="line">List&lt;Person&gt; data = Arrays.asList(row1, row2, row3, row4);		</span><br><span class="line">Dataset&lt;Row&gt; df4 = spark.createDataFrame(data, Person.class);</span><br><span class="line"></span><br><span class="line">df4.show();</span><br></pre></td></tr></table></figure>
-
-<p><strong>특별한 스키마 정의를 추가히지 않아도 컬렉션에 포함된 오브젝트의 속성값으로부터 알아서 스키마 정보를 추출하고 데이터 프레임을 만드는 방법을 리플렉션을 이용한 데이터 프레임 생성 방법</strong>이라고 합니다. </p>
-<p>다음은 RDD 로부터 데이터프레임을 생성하는 예제입니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> calss Person implements Serializable&#123;</span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line">  <span class="keyword">private</span> String job;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Person row1 = <span class="keyword">new</span> Person(<span class="string">"junhee"</span>, <span class="number">6</span>, <span class="string">"student"</span>);</span><br><span class="line">Person row2 = <span class="keyword">new</span> Person(<span class="string">"bill"</span>, <span class="number">12</span>, <span class="string">"god"</span>);</span><br><span class="line">Person row3 = <span class="keyword">new</span> Person(<span class="string">"jesi"</span>, <span class="number">14</span>, <span class="string">"mom"</span>);</span><br><span class="line">Person row4 = <span class="keyword">new</span> Person(<span class="string">"mina"</span>, <span class="number">41</span>, <span class="string">"chef"</span>);</span><br><span class="line"></span><br><span class="line">List&lt;Person&gt; data = Arrays.asList(row1, row2, row3, row4);	</span><br><span class="line"></span><br><span class="line">JavaRDD&lt;Person&gt; rdd = sc.parallelize(data);</span><br><span class="line">Dataset&lt;Row&gt; df5 = spark.createDataFrame(rdd, Person.class);</span><br></pre></td></tr></table></figure>
-
-<h6 id="5-5-1-2-2-명시적-타입-지정을-통한-데이터-프레임-생성"><a href="#5-5-1-2-2-명시적-타입-지정을-통한-데이터-프레임-생성" class="headerlink" title="5.5.1.2.2 명시적 타입 지정을 통한 데이터 프레임 생성"></a>5.5.1.2.2 명시적 타입 지정을 통한 데이터 프레임 생성</h6><p>리플렉션 방식은 스키마를 정의하지 않다는 점이 편리하지만, 데이터프레임 생성을 위한 케이스 클래스를 따로 정의해야하는 불편함이 있고 상황에 따라 원하는 대로 직접 스키마 정보를 구성할 수 있는 방법이 편리할 수 있습니다.</p>
-<p>스파크 SQL 은 개발자들이 직접 스키마를 지정할 수 있는 방법을 제공하는데 리플렉션 방식을 설명할때 사용한 것과 동일한 데이터 프레임을 생성하는 예제를 통해 그 차이점을 보겠습니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">StructField sf1 = DataTypes.createStructField(<span class="string">"name"</span>, DataTypes.StringType, <span class="keyword">true</span>);</span><br><span class="line">StructField sf2 = DataTypes.createStructField(<span class="string">"age"</span>, DataTypes.IntegerType, <span class="keyword">true</span>);</span><br><span class="line">StructField sf3 = DataTypes.createStructField(<span class="string">"job"</span>, DataTypes.StringType, <span class="keyword">true</span>);</span><br><span class="line">StructType scheme = DataTypes.createStructField(Arrays.asList(sf1, sf2, sf3, sf4));</span><br><span class="line"></span><br><span class="line">Row r1 = RowFactory.create(<span class="string">"junhee"</span>, <span class="number">6</span> <span class="string">"student"</span>);</span><br><span class="line">Row r2 = RowFactory.create(<span class="string">"bill"</span>, <span class="number">12</span> <span class="string">"god"</span>);</span><br><span class="line">Row r3 = RowFactory.create(<span class="string">"jesi"</span>, <span class="number">14</span> <span class="string">"mom"</span>);</span><br><span class="line">Row r4 = RowFactory.create(<span class="string">"mina"</span>, <span class="number">41</span> <span class="string">"chef"</span>);</span><br><span class="line"></span><br><span class="line">List&lt;Row&gt; rows = Arrays.asList(r1, r2, r3, r4);</span><br><span class="line">Dataset&lt;Row&gt; df6 = spark.createDataFrame(rows, scheme);</span><br></pre></td></tr></table></figure>
-
-<p>데이터 프레임의 스키마 정보는 <strong>칼럼을 나타내는 StructField 와 로우를 나타내는 StructType</strong> 으로 정의하는데, StructField 에는 칼럼의 이름과 타입, null 허용 여부를 지정하고, StructType 에는 칼럼으로 사용할 StructField 목록을 지정합니다.</p>
-<p>StructField 와 StructType 정보를 구성햇다면, 데이터 프레임을 생성할 데이터를 준비합니다. 스키마 정보에 맞춰 Row 객체를 생성하는 과정입니다.</p>
-<p>모든 준비가 끝나면, 스파크 세션이 제공하는 createDataFrame 메서드를 이용해 데이터프레임을 생성합니다.</p>
-<h6 id="5-5-1-2-3-이미지-파일을-이용한-데이터-프레임-생성"><a href="#5-5-1-2-3-이미지-파일을-이용한-데이터-프레임-생성" class="headerlink" title="5.5.1.2.3 이미지 파일을 이용한 데이터 프레임 생성"></a>5.5.1.2.3 이미지 파일을 이용한 데이터 프레임 생성</h6><h4 id="5-5-2-주요-연산-및-사용법"><a href="#5-5-2-주요-연산-및-사용법" class="headerlink" title="5.5.2 주요 연산 및 사용법"></a>5.5.2 주요 연산 및 사용법</h4><p><strong>데이터 프레임은 org.apache.spark.sql.Row 타입의 객체로 구성된 데이터셋</strong>을 가리키는 용어입니다. 스칼라 API 에서는 데이터셋의 선언부를 보면 Dataset[T] 라고 되어 있는데, Dataset[Int], Dataset[String] 등은 그냥 데이터셋, 유일하게 Dataset[Row] 경우에만 데이터프레임이라는 용어를 사용합니다.</p>
-<p><strong>이렇게 동일한 타입을 구분해서 사용하는 이유는 Dataset[Row] 인 경우 사용 가능한 트랜스포매이션 연산의 종류가 달라지기 때문</strong>입니다.</p>
-<p>지금부터 데이터셋이 제공하는 주요 연산을 살펴보면서 데이터프레임에 특화된 것들은 어떤 것들이 있는지 확인합니다.</p>
-<p>데이터셋이 제공하는 연산은 크게</p>
-<ul>
-<li>액션 연산</li>
-<li>기본 연산</li>
-<li>비타입 트랜스포매이션 연산<ul>
-<li>데이터셋의 구성요소가 org.apache.spark.sql.Row 타입인 경우, 즉 <strong>데이터 프레임인 경우에만</strong> 사용 가능</li>
-</ul>
-</li>
-<li>타입 트랜스포매이션 연산<ul>
-<li><strong>데이터프레임이 아닌 데이터셋</strong>의 경우에만 사용 가능</li>
-</ul>
-</li>
-</ul>
-<h5 id="5-5-2-1-액션-연산"><a href="#5-5-2-1-액션-연산" class="headerlink" title="5.5.2.1 액션 연산"></a>5.5.2.1 액션 연산</h5><p>데이터셋은 RDD 와 마찬가지로 액션 연산과 트렌스포매이션 연산을 제공하며, 액션 연산이 호출될 경우 실제 여산인 수행됩니다. 이는 데이터 프레임이 제공하는 비타입 트렌스포메이션 연산의 경우도 마찬가지고, <strong>액션 연산을 호출해야만 트렌스포메이션 연산의 결과를 확인 할 수 있습니다</strong>.</p>
-<ul>
-<li>show()</li>
-<li>head(), first()</li>
-<li>take()</li>
-<li>count()</li>
-<li>collect(), collectAsList()</li>
-<li>describe()</li>
-</ul>
-<h5 id="5-5-2-2-기본-연산"><a href="#5-5-2-2-기본-연산" class="headerlink" title="5.5.2.2 기본 연산"></a>5.5.2.2 기본 연산</h5><p>다음은 데이터 셋이 제공하는 기본 연산입니다.</p>
-<ul>
-<li>cache(), persist()</li>
-<li>printScheme(), columns, dtypes, scheme</li>
-<li>createOrReplaceTempView()</li>
-<li>explain()</li>
-</ul>
-<h5 id="5-5-2-3-비타입-트랜스포메이션-연산"><a href="#5-5-2-3-비타입-트랜스포메이션-연산" class="headerlink" title="5.5.2.3 비타입 트랜스포메이션 연산"></a>5.5.2.3 비타입 트랜스포메이션 연산</h5><p><strong>데이터의 실제 타입을 사용하지 않는 변환 연산</strong>을 수행한다는 의미에서 붙여진 이름입니다.</p>
-<p>동일한 Person 오브젝트로 구성된 RDD 와 데이터프레임을 준비하고 이들로부터 나이 값이 10 이상인 데이터만 조회할 경우 어떤 부분이 달라지는지 확인합니다.</p>
-<p>다음처럼 RDD 의 경우, 정상 동작합니다.</p>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scala &gt; rdd.filter(p =&gt; p.age &gt; <span class="number">10</span>).collect.foreach(println)</span><br></pre></td></tr></table></figure>
-
-<p>데이터프레임의 경우,</p>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scala &gt; df.filter(p =&gt; p.age &gt; <span class="number">10</span>).show</span><br></pre></td></tr></table></figure>
-
-<p>위와 같이 하면, “value age is not a member of org.apache.spark.sql.Row” 오류가 납니다. 이는 filter 함수에서 사용된 변수 p 가 Person 타입이 아닌, org.apache.spark.sql.Row 타입의 오브젝트 라는 뜻으로, 이를 통해 데이터프레임의 filter 함수 내부에서 참조하는 데이터들이 원래 데이터 타입인 Person 이 아니라는 것을 알 수 있습니다. </p>
-<p>이처럼, 원래 데이터의 타입이 아닌 Row 타입을 사용해 트랜스 포매이션 연산을 수행하게 된다는 의미로 비타입 트랜스 포매이션 연산이라는 이름을 사용합니다.</p>
-<p>다음은 기존 데이터 프레임에서 제공하던 연산에 해당하는 비타입 트렌스포매이션에 대한 것입니다.</p>
-<ul>
-<li>Row, Column, functions</li>
-<li>!==, ===</li>
-<li>alias(), as()</li>
-<li>isin()</li>
-<li>when()</li>
-<li>max(), mean()</li>
-<li>collect_list(), collect_set()</li>
-<li>count(), countDistinct()</li>
-<li>sum()</li>
-<li>grouping(), grouping_id()</li>
-<li>array_contains(), size(), sort_array()</li>
-<li>explode(), posexplode()</li>
-<li>current_date(), unix_timestamp(), to_date()</li>
-<li>add_months(), date_add(), last_dat()</li>
-<li>window()</li>
-<li>round(), sqrt()</li>
-<li>array()</li>
-<li>desc(), asc()</li>
-</ul>
-<p>…..</p>
-<h3 id="5-6-데이터셋"><a href="#5-6-데이터셋" class="headerlink" title="5.6 데이터셋"></a>5.6 데이터셋</h3><p>RDD 와 데이터프레임 이외에 다른 데이터 모델을 제시하는 가장 큰 이유는, 데이터프레임과 RDD 간의 데이터 타입을 다루는 방식의 차이때문입니다.</p>
-<p>RDD 는 내부 데이터의 타입을 명확하게 정의해서 사용하도록 강제돼있는데 반해, <strong>데이터프레임의 경우 내부 데이터가 Row 의 집합이라는 것만 보장돼 있을 뿐 실제 데이터의 타입에 대한 정보는 외부에 노출되지 않습니다</strong>.</p>
-<p>데이터프레임은 데이터셋과 다르지 않은 완전히 동일한 클래스입니다. 즉, 동일한 데이터를 서로 다른 방식으로 표현하기 위한 모델이지 서로 다른 것이 아닙니다. 실제로 데이터프레임과 데이터셋은 자유롭게 변환이 가능하며 둘 중 어떤 것을 사용하더라도 내부적인 구현은 동일한 방법을 따릅니다.</p>
-<p>단, 데이터셋을 사용할 경우 스파크 내부에서 최적화가 가능한 스파크 내장 함수보다 사용자 정의 함수나 스칼라 또는 자바 언어의 다양한 외부 라이브러리를 사용하게 될 가능성이 높은데, 이 경우 자칫 성능엥 안 좋은 영향을 줄 위험이 있으므로 주의해서 사용해야 합니다.</p>
-<h4 id="5-6-1-데이터셋-생성"><a href="#5-6-1-데이터셋-생성" class="headerlink" title="5.6.1 데이터셋 생성"></a>5.6.1 데이터셋 생성</h4><p>자바 객체 또는 기존 RDD, 데이터프레임으로부터 생성될 수 있습니다.</p>
-<h5 id="5-6-1-1-파일로부터-생성"><a href="#5-6-1-1-파일로부터-생성" class="headerlink" title="5.6.1.1 파일로부터 생성"></a>5.6.1.1 파일로부터 생성</h5><p>외부 파일로부터 데이터셋을 생성하기 위해서는 스파크세션이 제공하는 read() 메서드를 이용합니다.</p>
-<h5 id="5-6-1-2-자바-객체를-이용해-생성"><a href="#5-6-1-2-자바-객체를-이용해-생성" class="headerlink" title="5.6.1.2 자바 객체를 이용해 생성"></a>5.6.1.2 자바 객체를 이용해 생성</h5><p>앞에서 살펴본 리플렉션 방식의 데이터프레임 생성과 유사합니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Person row1 = <span class="keyword">new</span> Person(<span class="string">"hayoon"</span>, <span class="number">7</span>, <span class="string">"student"</span>);</span><br><span class="line">Person row2 = <span class="keyword">new</span> Person(<span class="string">"jko"</span>, <span class="number">12</span>, <span class="string">"teacher"</span>);</span><br><span class="line">Person row3 = <span class="keyword">new</span> Person(<span class="string">"junhee"</span>, <span class="number">14</span>, <span class="string">"worker"</span>);</span><br><span class="line">Person row4 = <span class="keyword">new</span> Person(<span class="string">"park"</span>, <span class="number">34</span>, <span class="string">"fireman"</span>);</span><br><span class="line"></span><br><span class="line">List&lt;Person&gt; data= Arrays.asList(row1,row2,row3,row4);</span><br><span class="line">Dataset&lt;Person&gt; df2 = spark.createDataset(data, Encoders.bean(Person.class));</span><br></pre></td></tr></table></figure>
-
-<p><strong>데이터셋을 생성할 때는 인코더 정보를 반드시 명시</strong>해야합니다. 인코더는 자바 객체와 스파크 내부 바이너리 포맷 간의 변환을 처리하기 위한 것으로 스파크 1.6 에서 데이터셋과 함께 처음 소개되었습니다. 인코더가 하는 역할은 기존 자바 직렬화 프레임워크나 Kyro 같이 자바 객체를 바이너리 포맷으로 변환하는 것입니다. </p>
-<p>하지만, 기존 직렬화 프레임워크처럼 단순히 네트워크 전송 최적화를 위한 바이너리 포맷을 만드는 것에 그치는 것이 아니라, 데이터의 타입과 그 데이터를 대상으로 수행하고자 하는 연산, 데이터를 처리하고 있는 하드웨어 환경까지 고려한 최적화된 바이너리를 생성하고 다룬다는 점에서 차이가 있습니다.</p>
-<h5 id="5-6-1-3-RDD-및-데이터프레임을-이용해-생성"><a href="#5-6-1-3-RDD-및-데이터프레임을-이용해-생성" class="headerlink" title="5.6.1.3 RDD 및 데이터프레임을 이용해 생성"></a>5.6.1.3 RDD 및 데이터프레임을 이용해 생성</h5><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> spark.implicits._ <span class="comment">// 스칼라의 경우, 기본 타입에 대한 인코더 정보를 암묵적 변환 방식을 이용해 제공</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> rdd = sc.parallelize(<span class="type">List</span>(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>))</span><br><span class="line"><span class="keyword">val</span> ds3 = spark.createDataset(rdd)</span><br><span class="line"><span class="keyword">val</span> ds4 = rdd.toDS()</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">JavaRDD&lt;Person&gt; rdd= sc.parallelize(data);</span><br><span class="line">Dataset&lt;Row&gt; df3 = spark.createDataFrame(rdd, Person.class);</span><br><span class="line">Dataset&lt;Person&gt; ds4 = df3.as(Encoders.bean(Person.class));</span><br></pre></td></tr></table></figure>
-
-<h5 id="5-6-1-4-range-로-생성"><a href="#5-6-1-4-range-로-생성" class="headerlink" title="5.6.1.4 range() 로 생성"></a>5.6.1.4 range() 로 생성</h5><p>스파크세션이 제공하는 range() 메서를 이용해 연속된 숫자로 구성된 간단한 데이터셋을 생성할 수 있습니다.</p>
-<h4 id="5-6-2-타입-트랜스포매이션-연산"><a href="#5-6-2-타입-트랜스포매이션-연산" class="headerlink" title="5.6.2 타입 트랜스포매이션 연산"></a>5.6.2 타입 트랜스포매이션 연산</h4><p>데이터셋이 제공하는 연산은</p>
-<ul>
-<li>기본연산</li>
-<li>타입/비타입 트랜스포메이션 연산</li>
-<li>액션 연산</li>
-</ul>
-<p>타입 트렌스포메이션 연산으로는</p>
-<ul>
-<li>select</li>
-<li>as</li>
-<li>distinct</li>
-<li>dropDuplicates</li>
-<li>filter</li>
-<li>map, flatMap</li>
-<li>groupByKey()</li>
-<li>agg()</li>
-<li>mapValues, reduceGroups</li>
-<li>…</li>
-</ul>
-<h3 id="5-7-하이브-연동"><a href="#5-7-하이브-연동" class="headerlink" title="5.7 하이브 연동"></a>5.7 하이브 연동</h3><p>하이브는 SQL 기반의 데이터 처리 기능을 제공하는 오픈소스 라이브러리 프로그램 작성의 편리함과 HiveQL 이라고 하는 강력하고 다양한 기능의 쿼리 API 로 인해 널리 사용되고 있는 데이터웨어하우스 시스템입니다.</p>
-<p>스파크SQL 은 하이브 시스템을 사용하지 않더라도 표준 SQL 이외에 하이브QL 을 사용할 수 있도록 지원하며, 필요한 경우 외부 하이브 시스템과 직접 연동해서 테이블을 공유하고 데이터를 주고 받는 방법도 제공합니다.</p>
-<p>별도로 설치한 하이브 서버가 있고 그 서버와 연동해서 사용하도 싶다면 스파크홈의 conf 디렉토리 아래에 하이브와 하둡 설정 파일인 hive-site.xml , core-size.xml , hdfs-site.xml 파일을 복사하며 됩니다.</p>
-<h3 id="5-8-분산-SQL-엔진"><a href="#5-8-분산-SQL-엔진" class="headerlink" title="5.8 분산 SQL 엔진"></a>5.8 분산 SQL 엔진</h3><p>스파크SQL 은 그 자체가 분산 SQL 서버로 동작해서, 다른 프로그램이 JDBC 또는 ODBC 방식으로 접속한 뒤 스파크에서 생성한 테이블을 사용할 수 있는 기능을 제공합니다. 따라서 이 기능을 사용하면 스파크 프로그램을 작성하지 않더라도 스파크 테이블을 대상으로 쿼리를 수행할 수 있습니다.</p>
-<p>스파크 SQL 엔진을 실행한 뒤 하이브의 JDBC 클라이언트 프로그램인 beeline 을 이용해 테이블을 조회할 수 있습니다.</p>
-<h3 id="5-9-Spark-SQL-CLI"><a href="#5-9-Spark-SQL-CLI" class="headerlink" title="5.9 Spark SQL CLI"></a>5.9 Spark SQL CLI</h3><p>스파크가 제공하는 명령행 툴입니다.</p>
-<h3 id="5-10-Query-Plan-과-디버깅"><a href="#5-10-Query-Plan-과-디버깅" class="headerlink" title="5.10 Query Plan 과 디버깅"></a>5.10 Query Plan 과 디버깅</h3><p>RDD 라는 훌륭한 API 가 있음에도 데이터프레임/데잉터셋 이라는 새로운 API 가 등장하게 된것은 데이터를 처리하는 과정의 최적화를 통한 성능 개선 가능성 때문입니다.</p>
-<h4 id="5-10-1-SparkSession-SessionState-SparkContext"><a href="#5-10-1-SparkSession-SessionState-SparkContext" class="headerlink" title="5.10.1 SparkSession / SessionState / SparkContext"></a>5.10.1 SparkSession / SessionState / SparkContext</h4><p>스파크세션 객체 안에는 스파크 컨텍스트 객체가 포함되어 있기 때문에, RDD 를 만들 때나 데이터프레임을 만들 때나 상관없이 스파크 세션 객체를 먼저 생성하면 됩니다.</p>
-<p>스파크세션 객체를 만들려면 스파크컨텍스트를 비롯한 SessionState 객체가 먼저 생성되어 있어야하며, 실제로 어딘가에 이부분을 처리하는 코드가 있습니다. </p>
-<p><strong>즉, 스파크세션은 스파크컨텍스트에 세션상태 정보(SessionState) 를 추가로 담은 것이라고 할 수 있습니다.</strong></p>
-<p>그렇다면, 스파크세션에 세션 상태 정보라는 것을 추가한 이유는 ? 스파크 컨텍스트는 스파크가 동작하기 위한 각종 백엔드 서비스에 대한 참조를 가지고 있는 객체이기 때문입니다.</p>
-<p>스파크에서 동작하는 모든 어플리케이션은 백엔드 서버와 통신하기 위해 스파크컨텍스트 객체를 사용해야하며 이 같은 이유로 스파크센션의 경우에도 스파크컨텍스트를 먼저 생성한 후 이에 대한 참조를 내부적으로 유지하고 있는 것입니다.</p>
-<h4 id="5-10-2-QueryExecution"><a href="#5-10-2-QueryExecution" class="headerlink" title="5.10.2 QueryExecution"></a>5.10.2 QueryExecution</h4><p>데이터프레임을 사용할 경우 스파크가 내부적으로 최적화 과정을 거쳐 실제 실행 코드를 생성합니다. 스파크에서는 이런 변환 과정에서 일어나는 일을 사용자가 확인할 수 있게 특화된 API 를 제공하는데 대표적인 것이 queryExecution 메서드 입니다.</p>
-<h4 id="5-10-3-LogicalPlan-과-SparkPlan"><a href="#5-10-3-LogicalPlan-과-SparkPlan" class="headerlink" title="5.10.3 LogicalPlan 과 SparkPlan"></a>5.10.3 LogicalPlan 과 SparkPlan</h4><p>스파크는 최적화 쿼리를 수행할 때 논리적 실행 계획을 나타내는 LogicalPlan 과 구체적 실행 계획을 나타내는 SparkPlan 이라는 두개의 클래스를 사용합니다. </p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/08/07/spark-sql/" data-id="ck7itpmuq00pp106wm1sykqcb" data-title="[스파크2 프로그래밍] 5장_스파크SQL 과 데이터프레임,데이터셋" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/11/24/object-chapter6/" data-id="ck7lu78rz00p5lk6wtqlahyze" data-title="[오브젝트] 6장_메세지와 인터페이스" class="article-share-link">Share</a>
       
       
       
@@ -1539,7 +1332,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/44/">44</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/45/">45</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -1578,23 +1371,23 @@
       <ul>
         
           <li>
-            <a href="/2020/03/08/bigdata-chapter-03/">[빅데이터] 3장_빅데이터를 위한 데이터 모델: 사례</a>
+            <a href="/2020/03/11/tdd-chapter-12/">[테스트 주도 개발] 12장_드디어 더하기</a>
           </li>
         
           <li>
-            <a href="/2020/03/02/tdd-chapter-04/">[테스트 주도 개발] 4장_프라이버시</a>
+            <a href="/2020/03/11/tdd-chapter-10/">[테스트 주도 개발] 10장_흥미로운 시간</a>
           </li>
         
           <li>
-            <a href="/2020/03/02/tdd-chapter-05/">[테스트 주도 개발] 5장_솔직히 말하자면</a>
+            <a href="/2020/03/11/tdd-chapter-09/">[테스트 주도 개발] 9장_우리가 사는 시간</a>
           </li>
         
           <li>
-            <a href="/2020/03/02/tdd-chapter-06/">[테스트 주도 개발] 6장_돌아온 모두를 위한 평등</a>
+            <a href="/2020/03/11/tdd-chapter-08/">[테스트 주도 개발] 8장_객체 만들기</a>
           </li>
         
           <li>
-            <a href="/2020/02/25/bigdata-chapter-02/">[빅데이터] 2장_빅데이터를 위한 데이터 모델</a>
+            <a href="/2020/03/11/tdd-chapter-11/">[테스트 주도 개발] 11장_모든 악의 근원</a>
           </li>
         
       </ul>

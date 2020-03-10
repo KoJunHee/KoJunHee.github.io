@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  
+  <title>[테스트 주도 개발] 10장_흥미로운 시간 | junhee.ko</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="두 times() 구현이 거의 비슷하다. 하지만 완전히 동일하지 않다. 123456789class Franc extends Money &amp;#123;    Franc(int amount, String currency) &amp;#123;        super(amount, currency);    &amp;#125;    Money times(int multiplier)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[테스트 주도 개발] 10장_흥미로운 시간">
+<meta property="og:url" content="https://kojunhee.github.io/2020/03/11/tdd-chapter-10/index.html">
+<meta property="og:site_name" content="junhee.ko">
+<meta property="og:description" content="두 times() 구현이 거의 비슷하다. 하지만 완전히 동일하지 않다. 123456789class Franc extends Money &amp;#123;    Franc(int amount, String currency) &amp;#123;        super(amount, currency);    &amp;#125;    Money times(int multiplier)">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-03-10T11:24:37.296Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[테스트 주도 개발] 10장_흥미로운 시간">
+<meta name="twitter:description" content="두 times() 구현이 거의 비슷하다. 하지만 완전히 동일하지 않다. 123456789class Franc extends Money &amp;#123;    Franc(int amount, String currency) &amp;#123;        super(amount, currency);    &amp;#125;    Money times(int multiplier)">
+  
+    <link rel="alternate" href="/atom.xml" title="junhee.ko" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="css/images/favicon.ico">
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">junhee.ko</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">always learning</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://kojunhee.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-tdd-chapter-10" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/03/11/tdd-chapter-10/" class="article-date">
+  <time class="dt-published" datetime="2020-03-10T15:00:00.000Z" itemprop="datePublished">2020-03-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tdd/">TDD</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      [테스트 주도 개발] 10장_흥미로운 시간
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>두 times() 구현이 거의 비슷하다. 하지만 완전히 동일하지 않다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Franc</span> <span class="keyword">extends</span> <span class="title">Money</span> </span>&#123;</span><br><span class="line">    Franc(<span class="keyword">int</span> amount, String currency) &#123;</span><br><span class="line">        <span class="keyword">super</span>(amount, currency);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Money.franc(amount * multiplier);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dollar</span> <span class="keyword">extends</span> <span class="title">Money</span> </span>&#123;</span><br><span class="line">    Dollar(<span class="keyword">int</span> amount, String currency) &#123;</span><br><span class="line">        <span class="keyword">super</span>(amount, currency);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Money.dollar(amount * multiplier);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>팩토리 메서드를 인라인 시키면 어떨까 ?</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Franc</span> <span class="keyword">extends</span> <span class="title">Money</span> </span>&#123;</span><br><span class="line">    Franc(<span class="keyword">int</span> amount, String currency) &#123;</span><br><span class="line">        <span class="keyword">super</span>(amount, currency);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Franc(amount * multiplier, <span class="string">"CHF"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Franc</span> <span class="keyword">extends</span> <span class="title">Money</span> </span>&#123;</span><br><span class="line">    Franc(<span class="keyword">int</span> amount, String currency) &#123;</span><br><span class="line">        <span class="keyword">super</span>(amount, currency);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Dollar(amount * multiplier, <span class="string">"USD"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>바로 전 장에서 팩토리 메서드를 호출하는 것으로 바꿨었는데.. 실망스러운 일이다.</p>
+<p>Franc 에서는 인스턴스 변수 currency 가 항상 ‘CHF’ 이므로,</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Franc</span> <span class="keyword">extends</span> <span class="title">Money</span> </span>&#123;</span><br><span class="line">    Franc(<span class="keyword">int</span> amount, String currency) &#123;</span><br><span class="line">        <span class="keyword">super</span>(amount, currency);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Franc(amount * multiplier, currency);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dollar</span> <span class="keyword">extends</span> <span class="title">Money</span> </span>&#123;</span><br><span class="line">    Dollar(<span class="keyword">int</span> amount, String currency) &#123;</span><br><span class="line">        <span class="keyword">super</span>(amount, currency);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Dollar(amount * multiplier, currency);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Franc 를 가질지, Money 를 가질지 정말 중요한 사실인가 ? 고민하는 대신 그냥 수정하고 테스트를 돌려보자. </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Franc</span> <span class="keyword">extends</span> <span class="title">Money</span> </span>&#123;</span><br><span class="line">    Franc(<span class="keyword">int</span> amount, String currency) &#123;</span><br><span class="line">        <span class="keyword">super</span>(amount, currency);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Money(amount * multiplier, currency);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>컴파일러가, Money 를 Concrete 클래스로 바꿔야한닫고 한다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Money</span> </span>&#123;</span><br><span class="line">	...</span><br><span class="line">	</span><br><span class="line">	<span class="function">Money <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>빨간 막대다. </p>
+<p>Expected :me.jko.tddstudy.Franc@262b2c86<br>Actual   :me.jko.tddstudy.Money@371a67ec</p>
+<p>더 나은 메세지를 보기 위해 toString() 을 정의하자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Money</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> amount + <span class="string">" "</span> + currency;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>테스트도 없이 코드를 작성했네 ? 테스트를 먼저 작성하는게 맞다. 하지만.</p>
+<ol>
+<li>화면에 나타나는 결과를 확인하려던 참이었다.</li>
+<li>toString 은 디버그 출력으로만 쓰이기 떄문에, 잘못 구현됨으로 인해 얻게 될 리스크가 적다.</li>
+<li>이미 빨간 막대 상태에서는 새로운 테스트를 작성하지 않는게 좋다.</li>
+</ol>
+<p>이제 에러 메세지에,</p>
+<p>expected: me.jko.tddstudy.Franc@262b2c86&lt;10 CHF&gt; but was: me.jko.tddstudy.Money@371a67ec&lt;10 CHF&gt;</p>
+<p>조금 나아졌지만, 혼란스럽다. 답은 맞았는데 클래스가 다르다. Franc 대신 Money 가 나왔다. 문제는 여기에 있다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Money</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object object)</span> </span>&#123;</span><br><span class="line">        Money money = (Money) object;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> amount == money.amount &amp;&amp; getClass().equals(money.getClass());</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>정말로 검사해야할 것은 클래스가 같은지가 아니라, currency 가 같은지 여부다.</p>
+<p>빨간 막대 상황에서는 테스트를 추가로 작성하고 싶지 않다. 하지만 지금은 실제 모델 코드를 수정하려고 하는중이고 테스트 없이는 모델 코드를 수정할 수 없다. 변경된 코드를 되돌려서 다시 초록 막대 상태로 돌아가야한다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Franc</span> <span class="keyword">extends</span> <span class="title">Money</span> </span>&#123;</span><br><span class="line">    Franc(<span class="keyword">int</span> amount, String currency) &#123;</span><br><span class="line">        <span class="keyword">super</span>(amount, currency);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Franc(amount * multiplier, currency);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>다시 초록 막대이다. 우리 상황은 Franc(10, ‘CHF’) 와 Money(10, ‘CHF’) 가 서로 같기를 바라지만, 사실 그렇지 않다고 보고된 것이다. 이걸 그대로 테스트 해보자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testDifferentClassEquality</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    assertTrue(<span class="keyword">new</span> Money(<span class="number">10</span>, <span class="string">"CHF"</span>).equals(<span class="keyword">new</span> Franc(<span class="number">10</span>, <span class="string">"CHF"</span>)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>예상 대로 실패한다. equals() 는 클래스가 아니라, currency 를 비교해야한다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Money</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object object)</span> </span>&#123;</span><br><span class="line">        Money money = (Money) object;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> amount == money.amount &amp;&amp; currency().equals(money.currency());</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>이제 Franc.times() 에서 Money 를 반환해도 테스트가 여전히 통과한다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Franc</span> <span class="keyword">extends</span> <span class="title">Money</span> </span>&#123;</span><br><span class="line">    Franc(<span class="keyword">int</span> amount, String currency) &#123;</span><br><span class="line">        <span class="keyword">super</span>(amount, currency);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Money(amount * multiplier, currency);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Dollar.times() 에도 적용하자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dollar</span> <span class="keyword">extends</span> <span class="title">Money</span> </span>&#123;</span><br><span class="line">    Dollar(<span class="keyword">int</span> amount, String currency) &#123;</span><br><span class="line">        <span class="keyword">super</span>(amount, currency);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Money(amount * multiplier, currency);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>잘 돈다. 이제 두 구현이 동일해졌다. 위로 올리자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Money</span></span><br><span class="line"><span class="function">Money <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Money(amount * multiplier, currency);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이제 아무것도 안 하는 하위 클래스들을 제거할 수 있겠다.</p>
+<hr>
+<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2020/03/11/tdd-chapter-10/" data-id="ck7lu78pz00nulk6wc3eiqaxi" data-title="[테스트 주도 개발] 10장_흥미로운 시간" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/03/11/tdd-chapter-12/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          [테스트 주도 개발] 12장_드디어 더하기
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/03/11/tdd-chapter-09/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">[테스트 주도 개발] 9장_우리가 사는 시간</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/big-data/">Big Data</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boost-course/">Boost Course</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/dip/">DIP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/data-structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/design-pattern/">Design Pattern</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jpa/">JPA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">Kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/network/">Network</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/os/">OS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/object/">Object</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/software-engineering/">Software Engineering</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/spark/">Spark</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tdd/">TDD</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/etc/">etc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ios/">iOS</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/03/11/tdd-chapter-12/">[테스트 주도 개발] 12장_드디어 더하기</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/11/tdd-chapter-10/">[테스트 주도 개발] 10장_흥미로운 시간</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/11/tdd-chapter-09/">[테스트 주도 개발] 9장_우리가 사는 시간</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/11/tdd-chapter-08/">[테스트 주도 개발] 8장_객체 만들기</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/11/tdd-chapter-11/">[테스트 주도 개발] 11장_모든 악의 근원</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 junhee.ko<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+  <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
