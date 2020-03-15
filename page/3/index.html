@@ -71,6 +71,111 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-kafka-chapter8" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/01/26/kafka-chapter8/" class="article-date">
+  <time class="dt-published" datetime="2020-01-25T15:00:00.000Z" itemprop="datePublished">2020-01-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/kafka/">Kafka</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/01/26/kafka-chapter8/">[카프카] 8장_카프카 스트림즈 API</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>카프카 스트림즈 API 를 통해 스트림을 처리하는 방법을 정리한다.</p>
+<h2 id="1-스트림-프로세싱-기초"><a href="#1-스트림-프로세싱-기초" class="headerlink" title="1. 스트림 프로세싱 기초"></a>1. 스트림 프로세싱 기초</h2><h4 id="1-1-스트림-프로세싱과-배치-프로세싱"><a href="#1-1-스트림-프로세싱과-배치-프로세싱" class="headerlink" title="1.1 스트림 프로세싱과 배치 프로세싱"></a>1.1 스트림 프로세싱과 배치 프로세싱</h4><p>오늘날 데이터 분석 시스템은 스트림 처리 시스템과 배치 처리 시스템을 모두 갖추어서 실시간과 정확성을 보장한다.</p>
+<ol>
+<li><p>스트림 프로세싱<br>데이터들이 지속적으로 유입되고 나가는 과정에서 데이터에 대한 분석이나 질의를 수행하는 것이다.<br>데이터가 분석 시스템이나 프로그램에 도달하자마자 처리를 해서 실시간 분석이라고도 한다.</p>
+</li>
+<li><p>배치 처리<br>이미 저장된 데이터를 기반으로 분석이나 질의를 수행하고 특정 시간에 처리하는 것이다.</p>
+</li>
+</ol>
+<p>스티름 프로세싱의 장점은,</p>
+<ol>
+<li>이벤트 발생, 분석, 조치에 지연시간이 없기 때문에, <code>최신의 데이터</code>를 반영한다.</li>
+<li>데이터 저장 후 분석을 하지 않으므로, 정적 분석보다 <code>더 많은 데이터를 분석</code>할 수 있다.</li>
+<li>시간에 따라 <code>지속적으로 유입되는 데이터 분석에 최적화</code>되어 있다.</li>
+<li>대규모 공유 데이터베이스에 대한 요구를 줄일 수 있어 <code>인프라에 독립적</code>으로 수행될 수 있다.</li>
+</ol>
+<h4 id="1-2-상태-기반-스트림-처리-무상태-스트림-처리"><a href="#1-2-상태-기반-스트림-처리-무상태-스트림-처리" class="headerlink" title="1.2 상태 기반 스트림 처리, 무상태 스트림 처리"></a>1.2 상태 기반 스트림 처리, 무상태 스트림 처리</h4><ol>
+<li><p>상태 기반 스트림 처리<br><code>이전 스트림을 처리한 결과를 참조하는 방식</code>의 처리이다.<br>애플리케이션에서 각각의 이벤트를 처리하고 결과를 저장할 상태 저장소가 필요하다.</p>
+</li>
+<li><p>무상태 스트림 처리<br>이전 스트림의 처리 결과와 관계 없이, <code>현재 애플리케이션에 도달한 스트림만을 기준으로 처리</code>한다. </p>
+</li>
+</ol>
+<h2 id="2-카프카-스트림즈"><a href="#2-카프카-스트림즈" class="headerlink" title="2. 카프카 스트림즈"></a>2. 카프카 스트림즈</h2><h4 id="2-1-카프카-스트림즈의-특징과-개념"><a href="#2-1-카프카-스트림즈의-특징과-개념" class="headerlink" title="2.1 카프카 스트림즈의 특징과 개념"></a>2.1 카프카 스트림즈의 특징과 개념</h4><p>카프카 스트림즈는 카프카에 저장된 데이터를 처리하고 분석하기 위해 개발된 클라이언트 라이브러리이다.<br>카프카 스트림즈의 특징은,</p>
+<ol>
+<li>간단하고 가벼운 클라이언트 라이브러리이다.</li>
+<li>시스템이나 카프카에 대한 의존성이 없다.</li>
+<li>이중화된 로컬 상태 저장소를 지원한다.</li>
+<li>카프카 브로커나 클라이언트에 장애가 생겨도, 스트림에 대해선 1번만 처리되도록 보장한다.</li>
+<li>한 번에 한 레코드만 처리한다.</li>
+<li>고수준의 스트림 DSL 를 지원하고, 저수준의 프로세싱 API 도 제공한다.</li>
+</ol>
+<p>카프카 스트림즈는 <code>스트림 처리를 하는 프로세서들이 서로 연결되어 항상 Topology 를 만들어 처리하는 API</code> 이다.</p>
+<p>다음 그림은 카프카 스트림즈 프로세스 토폴리지의 예이다.</p>
+<p><img src="/image/kafka_chapter08_01.png" alt></p>
+<p>프로세서 토폴리지 중에는 특별한 프로세서가 있다.</p>
+<ol>
+<li><p>소스 프로세서<br>위 쪽에 연결된 프로세서가 없는 프로세서이다.<br>하나 이상의 카프카 토픽에서 데이터 레코드를읽어 아래 쪽 프로세서에 전달한다.</p>
+</li>
+<li><p>싱크 프로세서<br>아래 쪽에 연결된 프로세서가 없는 프로세서이다.<br>상위 프로세서로부터. 받은 데이터 레코드를 특정 토픽에 저장한다.</p>
+</li>
+</ol>
+<p>카프카 스트림즈는 이와같은 프로세서들을 만드는 2가지 방법을 제공한다.</p>
+<ol>
+<li><p>카프카 스트림즈 DSL 에서 데이터 처리를 할 때 공통적으로 필요한 데이터 프로세싱 메서드를 제공<br>ex) map, filter, join, aggregations</p>
+</li>
+<li><p>프로세서 API 를 제공해서 저수준의 처리를 직접할 수 있게 하는 것이다.</p>
+</li>
+</ol>
+<h4 id="2-2-카프카-스트림즈-아키텍처"><a href="#2-2-카프카-스트림즈-아키텍처" class="headerlink" title="2.2 카프카 스트림즈 아키텍처"></a>2.2 카프카 스트림즈 아키텍처</h4><p>카프카 스트림즈에 들어오는 데이터는 카프카 토픽의 메세지이다.<br>카프카 토픽과 스트림의 관계는,</p>
+<ol>
+<li>각 스트림 파티션은 카프카의 토픽 파티션에 저장된 졍렬된 메세지이다.</li>
+<li>스트림의 데이터 레코드는 카프카 해당 토픽의 메세지이다.</li>
+<li>데이터 레코드의 키를 통해 다음 스트림으로 전달된다.</li>
+</ol>
+<p>카프카 스트림즈는 입력 스트림의  파티션 개수만큼 태스크를 생성한다.<br>각 태스크에는 입력 스트림, 즉 카프카 토픽 파티션들이 할당된다. 이것은 한번 정해지면 입력 토픽의 파티션이 변하지 않는한 변하지 않는다.<br>카프카 스트림즈는 사용자가 스레드의 개수를 지정할 수 있게 한다. 1개의 스레드는 1개 이상의 테스크를 처리할 수 있다. 다음 그림은 1개의 스레드에서 2개의 테스크가 수행되는 모습이다.</p>
+<p><img src="/image/kafka_chapter08_02.png" alt></p>
+<h2 id="3-파이프-예제-프로그램"><a href="#3-파이프-예제-프로그램" class="headerlink" title="3. 파이프 예제 프로그램"></a>3. 파이프 예제 프로그램</h2><p><img src="/image/kafka_chapter08_03.png" alt></p>
+<p>단순히 한쪽 토픽에 입력된 값을 다른 쪽 토픽으로 옮기는 역할을 수행한다.</p>
+<h2 id="4-행-분리-예제-프로그램"><a href="#4-행-분리-예제-프로그램" class="headerlink" title="4. 행 분리 예제 프로그램"></a>4. 행 분리 예제 프로그램</h2><p><img src="/image/kafka_chapter08_04.png" alt></p>
+<p>한쪽 토픽에서 읽은 데이터를 공백 기준으로 분리해서 값으로 다른 토픽에 저장하는 역할을 수행한다.</p>
+<h2 id="5-단어-빈도수-세기-예제-프로그램"><a href="#5-단어-빈도수-세기-예제-프로그램" class="headerlink" title="5. 단어 빈도수 세기 예제 프로그램"></a>5. 단어 빈도수 세기 예제 프로그램</h2><p><img src="/image/kafka_chapter08_05.png" alt></p>
+<p>지금까지는 이전 데이터에 영향을 받지 않고, 스트림에 들어온 현재 데이터만을 처리하는 무상태 형태의 애플리케이션이었다.<br>이번에는 이전 스트림에서 처리한 단어의 빈도를 계산에 넣어서 현재까지의 총 단어 빈도를 구하는 상태 기반 형태의 애플리케이션이다.</p>
+<hr>
+<p>카프카, 데이터 플랫폼의 최강자 &lt;고승범, 공용준&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2020/01/26/kafka-chapter8/" data-id="ck7t4ixnc00myme6w267opnlo" data-title="[카프카] 8장_카프카 스트림즈 API" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-kafka-chapter7" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2020/01/26/kafka-chapter7/" class="article-date">
@@ -162,7 +267,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/01/26/kafka-chapter7/" data-id="ck7lu78p900mulk6wbzh42qzv" data-title="[카프카] 7장_데이터 파이프라인 구축" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/01/26/kafka-chapter7/" data-id="ck7t4ixnb00mxme6wycxheh41" data-title="[카프카] 7장_데이터 파이프라인 구축" class="article-share-link">Share</a>
       
       
       
@@ -313,7 +418,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/01/20/object-chapter14/" data-id="ck7lu78sc00pnlk6wr1i7nvca" data-title="[오브젝트] 14장_일관성 있는 협력" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/01/20/object-chapter14/" data-id="ck7t4ixp800prme6w6dhp6s3h" data-title="[오브젝트] 14장_일관성 있는 협력" class="article-share-link">Share</a>
       
       
       
@@ -514,7 +619,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/01/13/object-chapter13/" data-id="ck7lu78sb00pllk6w0t45crp6" data-title="[오브젝트] 13장_서브클래싱과 서브타이핑" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/01/13/object-chapter13/" data-id="ck7t4ixp600plme6w3tz6uati" data-title="[오브젝트] 13장_서브클래싱과 서브타이핑" class="article-share-link">Share</a>
       
       
       
@@ -605,7 +710,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/01/12/review-2019/" data-id="ck7lu78p700mqlk6wrtun72am" data-title="2019년 회고" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/01/12/review-2019/" data-id="ck7t4ixnb00mume6w8ct2gfsq" data-title="2019년 회고" class="article-share-link">Share</a>
       
       
       
@@ -830,7 +935,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/01/06/object-chapter12/" data-id="ck7lu78s900pjlk6wzg1spxo1" data-title="[오브젝트] 12장_다형성" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/01/06/object-chapter12/" data-id="ck7t4ixp700pnme6w3ujec9uh" data-title="[오브젝트] 12장_다형성" class="article-share-link">Share</a>
       
       
       
@@ -1075,7 +1180,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/01/05/big-data-chapter5/" data-id="ck7lu78s800phlk6w6ikxbk0u" data-title="[빅데이터를 지탱하는 기술] 5장_빅데이터 파이프라인" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/01/05/big-data-chapter5/" data-id="ck7t4ixp700ppme6wre9qu248" data-title="[빅데이터를 지탱하는 기술] 5장_빅데이터 파이프라인" class="article-share-link">Share</a>
       
       
       
@@ -1295,7 +1400,160 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/01/02/big-data-chapter4/" data-id="ck7lu78u700q3lk6w7l27zid4" data-title="[빅데이터를 지탱하는 기술] 4장_빅데이터 축적" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/01/02/big-data-chapter4/" data-id="ck7t4ixqg00q9me6wfozhm0jl" data-title="[빅데이터를 지탱하는 기술] 4장_빅데이터 축적" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-big-data-chapter1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/12/30/big-data-chapter1/" class="article-date">
+  <time class="dt-published" datetime="2019-12-29T15:00:00.000Z" itemprop="datePublished">2019-12-30</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/big-data/">Big Data</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/12/30/big-data-chapter1/">[빅데이터를 지탱하는 기술] 1장_빅데이터 기초 지식</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="1-빅데이터의-정착"><a href="#1-빅데이터의-정착" class="headerlink" title="1.빅데이터의 정착"></a>1.빅데이터의 정착</h2><h5 id="빅데이터-기술의-요구-Hadoop-과-NoSQL-의-대두"><a href="#빅데이터-기술의-요구-Hadoop-과-NoSQL-의-대두" class="headerlink" title="빅데이터 기술의 요구 : Hadoop 과 NoSQL 의 대두"></a>빅데이터 기술의 요구 : Hadoop 과 NoSQL 의 대두</h5><p>세계 곳곳에서 엑세스 되는 시스템 증가로, 전통적인 관계형 데이터베이스로는 취급 할 수 없는 데이터가 쌓이게 되었다.</p>
+<p>그래서 다른 구조가 필요했다.</p>
+<ol>
+<li><p>Hadoop </p>
+<p>다수의 컴퓨터에서 대량의 데이터 처리</p>
+</li>
+<li><p>NoSQL Database </p>
+<p>빈번한 읽기/ 쓰기 및 분산처리가 강점</p>
+</li>
+</ol>
+<h5 id="분산-시스템의-비즈니스-이용-개척-데이터-웨어하우스와의-공존"><a href="#분산-시스템의-비즈니스-이용-개척-데이터-웨어하우스와의-공존" class="headerlink" title="분산 시스템의 비즈니스 이용 개척 : 데이터 웨어하우스와의 공존"></a>분산 시스템의 비즈니스 이용 개척 : 데이터 웨어하우스와의 공존</h5><p><img src="/image/bigdata_datawarehouse.png" alt></p>
+<p>위 그림처럼, 확장성이 뛰어난 Hadoop 에 데이터 처리를 맡겨 데이터 웨어하우스의 부하를 줄이고 있다.</p>
+<h5 id="직접-할-수-있는-데이터-분석-폭-확대"><a href="#직접-할-수-있는-데이터-분석-폭-확대" class="headerlink" title="직접 할 수 있는 데이터 분석 폭 확대"></a>직접 할 수 있는 데이터 분석 폭 확대</h5><p>‘여러 컴퓨터에서 분산 처리한다’ 는 빅데이터의 특징으로 하드웨어를 준비하고 관리하는게 어려웠다. </p>
+<p>하지만, 클라우드 시대에서는 필요한 자원 확보가 쉬워서 얼마든지 빅데이터를 이용할 수 있다.</p>
+<h5 id="데이터-디스커버리의-기초-지식"><a href="#데이터-디스커버리의-기초-지식" class="headerlink" title="데이터 디스커버리의 기초 지식"></a>데이터 디스커버리의 기초 지식</h5><ol>
+<li><p>데이터 디스커버리</p>
+<p>대화형으로 데이터를 시각화하여 가치있는 정보를 찾으려고하는 프로세스</p>
+</li>
+<li><p>BI 도구</p>
+<p>데이터 디스커버리를 위한 셀프 서비스용 시각화 시스템</p>
+</li>
+</ol>
+<h2 id="2-빅데이터-시대의-데이터-분석-기반"><a href="#2-빅데이터-시대의-데이터-분석-기반" class="headerlink" title="2. 빅데이터 시대의 데이터 분석 기반"></a>2. 빅데이터 시대의 데이터 분석 기반</h2><p>빅데이터 기술이 기존 데이터 웨어하우스와 다른 점은,</p>
+<p>다수의 분산 시스템을 조합하여 확장성이 뛰어난 데이터 처리 구조를 만든다는 것이다.</p>
+<h5 id="데이터-파이프라인"><a href="#데이터-파이프라인" class="headerlink" title="데이터 파이프라인"></a>데이터 파이프라인</h5><p><img src="/image/bigdata_data_pipeline.png" alt></p>
+<p>차례대로 전달해다가는 데이터로 구성된 시스템이다. 데이터 파이프라인의 기본적인 흐름은,</p>
+<ol>
+<li>데이터를 모아서 축적</li>
+<li>데이터 마트 구성</li>
+<li>시각화 도구</li>
+</ol>
+<h5 id="데이터-수집"><a href="#데이터-수집" class="headerlink" title="데이터 수집"></a>데이터 수집</h5><p>데이터 파이프라인은 데이터를 모으는 부분부터 시작한다. 수집 방법은,</p>
+<ol>
+<li><p>벌크형</p>
+<p>이미 어딘가에 있는 데이터를 정리해서 추출</p>
+<p>ex ) 데이터베이스와 파일 서버 등에서 정기적으로 데이터 수집</p>
+</li>
+<li><p>스트리밍형</p>
+<p>차례대로 생성되는 데이터를 끊임없이 보냄</p>
+<p>ex) 모바일 어플리케이션, 임베디드 장비</p>
+</li>
+</ol>
+<h5 id="스트림-처리와-배치처리"><a href="#스트림-처리와-배치처리" class="headerlink" title="스트림 처리와 배치처리"></a>스트림 처리와 배치처리</h5><ol>
+<li><p>스트림 처리</p>
+<p>스트리밍 형 방법으로 받은 데이터를 실시간으로 처리.</p>
+<p>장기적인 데이터 분석에는 적합하지 않음.</p>
+</li>
+<li><p>배치 처리</p>
+<p>정리된 데이터를 효율적으로 가공하기 위한 처리.</p>
+<p>장기적인 데이터 분석을 위해 대량의 데이터를 저장하고 처리하는데 적합한 분산 시스템이 필요.</p>
+</li>
+</ol>
+<h5 id="분산-스토리지"><a href="#분산-스토리지" class="headerlink" title="분산 스토리지"></a>분산 스토리지</h5><p>여러 컴퓨터와 디스크로 구성된 스토리지 시스템이다. 데이터 저장 방법으로,</p>
+<ol>
+<li><p>객체 스토리지</p>
+<p>한 덩어리로 모인 데이터에 이름을 부여해서 파일로 저장.</p>
+<p>ex ) Amazon S3</p>
+</li>
+<li><p>NoSQL 데이터베이스</p>
+<p>많은 데이터를 읽고 쓰기에 유리.</p>
+</li>
+</ol>
+<h5 id="분산-데이터-처리"><a href="#분산-데이터-처리" class="headerlink" title="분산 데이터 처리"></a>분산 데이터 처리</h5><p>분산 스토리지에 저장된 데이터를 처리하기 위해, 분산 데이터 처리 프레임워크가 필요하다. ex) MapReduce</p>
+<p>주 역할은, 나중에 분석하기 쉽도록 데이터를 가공해서 그 결과를 외부 데이터베이스에 저장하는 것이다.</p>
+<p>빅데이터를 SQL 로 집계하는 방법으로,</p>
+<ol>
+<li><p>쿼리 엔진</p>
+<p>Hive, 대화형 쿼리엔진</p>
+</li>
+<li><p>데이터 웨어하우스 제품</p>
+<p>ETL. </p>
+<p>데이터를 추출하고 가공한후, 데이터 웨어하우스에 로드한다.</p>
+</li>
+</ol>
+<h5 id="워크플로우-관리"><a href="#워크플로우-관리" class="headerlink" title="워크플로우 관리"></a>워크플로우 관리</h5><p>데이터파이프라인이 복잡해지면, 한곳에서 제어하지 않으면 전체 움직임 파악이 어렵다.</p>
+<h5 id="데이터-웨어하우스와-데이터-마트"><a href="#데이터-웨어하우스와-데이터-마트" class="headerlink" title="데이터 웨어하우스와 데이터 마트"></a>데이터 웨어하우스와 데이터 마트</h5><p><img src="/image/bigdata_data_pipeline_warehouse.png" alt></p>
+<ol>
+<li><p>데이터 소스</p>
+<p>RDB 나 로그 등을 저장하는 파일 서버</p>
+</li>
+<li><p>ETL 플로세스</p>
+<p>데이터 소스에 보존된 raw data 를 추출하고 필요에 따라 가공한 후 데이터 웨어하우스에 저장하기까지의 흐름</p>
+</li>
+<li><p>데이터 마트</p>
+<p>데이터웨어 하우스에서 필요한 데이터만을 추출하여 데이터마트를 구축</p>
+</li>
+</ol>
+<h5 id="데이터-레이크"><a href="#데이터-레이크" class="headerlink" title="데이터 레이크"></a>데이터 레이크</h5><p><img src="/image/bigdata_data_pipeline_lake.png" alt></p>
+<p>모든 데이터를 원래의 형태로 추적해두고 나중에 필요에 따라 가공하는 구조가 필요하다.</p>
+<p>이 데이터 축적 장소가 데이터 레이크이다. 분산 스토리지가 데이터 레이크로 이용된다. </p>
+<p>데이터 레이크의 데이터를 가공하기 위해 MapReduce 같은 분산 데이터 처리 기술이 필요하다.</p>
+<h5 id="데이터-분석-기반을-단계적으로-발전시키기"><a href="#데이터-분석-기반을-단계적으로-발전시키기" class="headerlink" title="데이터 분석 기반을 단계적으로 발전시키기"></a>데이터 분석 기반을 단계적으로 발전시키기</h5><ol>
+<li><p>데이터 엔지니어</p>
+<p>시스템의 구축 및 운용, 자동화</p>
+</li>
+<li><p>데이터 분석가</p>
+<p>데이터에서 가치있는 정보 추출</p>
+</li>
+</ol>
+<h5 id="확증적-데이터-분석과-탐색적-데이터-분석"><a href="#확증적-데이터-분석과-탐색적-데이터-분석" class="headerlink" title="확증적 데이터 분석과 탐색적 데이터 분석"></a>확증적 데이터 분석과 탐색적 데이터 분석</h5><ol>
+<li><p>확증적 데이터 분석</p>
+<p>가설을 세우고 검증.</p>
+<p>통계학적 모델링에 의한 데이터 분석.</p>
+</li>
+<li><p>탐색적 데이터 분석</p>
+<p>데이터를 보며 의미를 읽어냄.</p>
+<p>데이터를 시각화하여 사람의 힘으로 의미를 읽어냄</p>
+</li>
+</ol>
+<hr>
+<p>빅데이터를 지탱하는 기술 &lt;니시다 케이스케&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2019/12/30/big-data-chapter1/" data-id="ck7t4ixn900mqme6w1sgltvua" data-title="[빅데이터를 지탱하는 기술] 1장_빅데이터 기초 지식" class="article-share-link">Share</a>
       
       
       
@@ -1480,352 +1738,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/12/30/big-data-chapter2/" data-id="ck7lu78p500mnlk6wmq06mlyu" data-title="[빅데이터를 지탱하는 기술] 2장_빅데이터 탐색" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-big-data-chapter1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/12/30/big-data-chapter1/" class="article-date">
-  <time class="dt-published" datetime="2019-12-29T15:00:00.000Z" itemprop="datePublished">2019-12-30</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/big-data/">Big Data</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/12/30/big-data-chapter1/">[빅데이터를 지탱하는 기술] 1장_빅데이터 기초 지식</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="1-빅데이터의-정착"><a href="#1-빅데이터의-정착" class="headerlink" title="1.빅데이터의 정착"></a>1.빅데이터의 정착</h2><h5 id="빅데이터-기술의-요구-Hadoop-과-NoSQL-의-대두"><a href="#빅데이터-기술의-요구-Hadoop-과-NoSQL-의-대두" class="headerlink" title="빅데이터 기술의 요구 : Hadoop 과 NoSQL 의 대두"></a>빅데이터 기술의 요구 : Hadoop 과 NoSQL 의 대두</h5><p>세계 곳곳에서 엑세스 되는 시스템 증가로, 전통적인 관계형 데이터베이스로는 취급 할 수 없는 데이터가 쌓이게 되었다.</p>
-<p>그래서 다른 구조가 필요했다.</p>
-<ol>
-<li><p>Hadoop </p>
-<p>다수의 컴퓨터에서 대량의 데이터 처리</p>
-</li>
-<li><p>NoSQL Database </p>
-<p>빈번한 읽기/ 쓰기 및 분산처리가 강점</p>
-</li>
-</ol>
-<h5 id="분산-시스템의-비즈니스-이용-개척-데이터-웨어하우스와의-공존"><a href="#분산-시스템의-비즈니스-이용-개척-데이터-웨어하우스와의-공존" class="headerlink" title="분산 시스템의 비즈니스 이용 개척 : 데이터 웨어하우스와의 공존"></a>분산 시스템의 비즈니스 이용 개척 : 데이터 웨어하우스와의 공존</h5><p><img src="/image/bigdata_datawarehouse.png" alt></p>
-<p>위 그림처럼, 확장성이 뛰어난 Hadoop 에 데이터 처리를 맡겨 데이터 웨어하우스의 부하를 줄이고 있다.</p>
-<h5 id="직접-할-수-있는-데이터-분석-폭-확대"><a href="#직접-할-수-있는-데이터-분석-폭-확대" class="headerlink" title="직접 할 수 있는 데이터 분석 폭 확대"></a>직접 할 수 있는 데이터 분석 폭 확대</h5><p>‘여러 컴퓨터에서 분산 처리한다’ 는 빅데이터의 특징으로 하드웨어를 준비하고 관리하는게 어려웠다. </p>
-<p>하지만, 클라우드 시대에서는 필요한 자원 확보가 쉬워서 얼마든지 빅데이터를 이용할 수 있다.</p>
-<h5 id="데이터-디스커버리의-기초-지식"><a href="#데이터-디스커버리의-기초-지식" class="headerlink" title="데이터 디스커버리의 기초 지식"></a>데이터 디스커버리의 기초 지식</h5><ol>
-<li><p>데이터 디스커버리</p>
-<p>대화형으로 데이터를 시각화하여 가치있는 정보를 찾으려고하는 프로세스</p>
-</li>
-<li><p>BI 도구</p>
-<p>데이터 디스커버리를 위한 셀프 서비스용 시각화 시스템</p>
-</li>
-</ol>
-<h2 id="2-빅데이터-시대의-데이터-분석-기반"><a href="#2-빅데이터-시대의-데이터-분석-기반" class="headerlink" title="2. 빅데이터 시대의 데이터 분석 기반"></a>2. 빅데이터 시대의 데이터 분석 기반</h2><p>빅데이터 기술이 기존 데이터 웨어하우스와 다른 점은,</p>
-<p>다수의 분산 시스템을 조합하여 확장성이 뛰어난 데이터 처리 구조를 만든다는 것이다.</p>
-<h5 id="데이터-파이프라인"><a href="#데이터-파이프라인" class="headerlink" title="데이터 파이프라인"></a>데이터 파이프라인</h5><p><img src="/image/bigdata_data_pipeline.png" alt></p>
-<p>차례대로 전달해다가는 데이터로 구성된 시스템이다. 데이터 파이프라인의 기본적인 흐름은,</p>
-<ol>
-<li>데이터를 모아서 축적</li>
-<li>데이터 마트 구성</li>
-<li>시각화 도구</li>
-</ol>
-<h5 id="데이터-수집"><a href="#데이터-수집" class="headerlink" title="데이터 수집"></a>데이터 수집</h5><p>데이터 파이프라인은 데이터를 모으는 부분부터 시작한다. 수집 방법은,</p>
-<ol>
-<li><p>벌크형</p>
-<p>이미 어딘가에 있는 데이터를 정리해서 추출</p>
-<p>ex ) 데이터베이스와 파일 서버 등에서 정기적으로 데이터 수집</p>
-</li>
-<li><p>스트리밍형</p>
-<p>차례대로 생성되는 데이터를 끊임없이 보냄</p>
-<p>ex) 모바일 어플리케이션, 임베디드 장비</p>
-</li>
-</ol>
-<h5 id="스트림-처리와-배치처리"><a href="#스트림-처리와-배치처리" class="headerlink" title="스트림 처리와 배치처리"></a>스트림 처리와 배치처리</h5><ol>
-<li><p>스트림 처리</p>
-<p>스트리밍 형 방법으로 받은 데이터를 실시간으로 처리.</p>
-<p>장기적인 데이터 분석에는 적합하지 않음.</p>
-</li>
-<li><p>배치 처리</p>
-<p>정리된 데이터를 효율적으로 가공하기 위한 처리.</p>
-<p>장기적인 데이터 분석을 위해 대량의 데이터를 저장하고 처리하는데 적합한 분산 시스템이 필요.</p>
-</li>
-</ol>
-<h5 id="분산-스토리지"><a href="#분산-스토리지" class="headerlink" title="분산 스토리지"></a>분산 스토리지</h5><p>여러 컴퓨터와 디스크로 구성된 스토리지 시스템이다. 데이터 저장 방법으로,</p>
-<ol>
-<li><p>객체 스토리지</p>
-<p>한 덩어리로 모인 데이터에 이름을 부여해서 파일로 저장.</p>
-<p>ex ) Amazon S3</p>
-</li>
-<li><p>NoSQL 데이터베이스</p>
-<p>많은 데이터를 읽고 쓰기에 유리.</p>
-</li>
-</ol>
-<h5 id="분산-데이터-처리"><a href="#분산-데이터-처리" class="headerlink" title="분산 데이터 처리"></a>분산 데이터 처리</h5><p>분산 스토리지에 저장된 데이터를 처리하기 위해, 분산 데이터 처리 프레임워크가 필요하다. ex) MapReduce</p>
-<p>주 역할은, 나중에 분석하기 쉽도록 데이터를 가공해서 그 결과를 외부 데이터베이스에 저장하는 것이다.</p>
-<p>빅데이터를 SQL 로 집계하는 방법으로,</p>
-<ol>
-<li><p>쿼리 엔진</p>
-<p>Hive, 대화형 쿼리엔진</p>
-</li>
-<li><p>데이터 웨어하우스 제품</p>
-<p>ETL. </p>
-<p>데이터를 추출하고 가공한후, 데이터 웨어하우스에 로드한다.</p>
-</li>
-</ol>
-<h5 id="워크플로우-관리"><a href="#워크플로우-관리" class="headerlink" title="워크플로우 관리"></a>워크플로우 관리</h5><p>데이터파이프라인이 복잡해지면, 한곳에서 제어하지 않으면 전체 움직임 파악이 어렵다.</p>
-<h5 id="데이터-웨어하우스와-데이터-마트"><a href="#데이터-웨어하우스와-데이터-마트" class="headerlink" title="데이터 웨어하우스와 데이터 마트"></a>데이터 웨어하우스와 데이터 마트</h5><p><img src="/image/bigdata_data_pipeline_warehouse.png" alt></p>
-<ol>
-<li><p>데이터 소스</p>
-<p>RDB 나 로그 등을 저장하는 파일 서버</p>
-</li>
-<li><p>ETL 플로세스</p>
-<p>데이터 소스에 보존된 raw data 를 추출하고 필요에 따라 가공한 후 데이터 웨어하우스에 저장하기까지의 흐름</p>
-</li>
-<li><p>데이터 마트</p>
-<p>데이터웨어 하우스에서 필요한 데이터만을 추출하여 데이터마트를 구축</p>
-</li>
-</ol>
-<h5 id="데이터-레이크"><a href="#데이터-레이크" class="headerlink" title="데이터 레이크"></a>데이터 레이크</h5><p><img src="/image/bigdata_data_pipeline_lake.png" alt></p>
-<p>모든 데이터를 원래의 형태로 추적해두고 나중에 필요에 따라 가공하는 구조가 필요하다.</p>
-<p>이 데이터 축적 장소가 데이터 레이크이다. 분산 스토리지가 데이터 레이크로 이용된다. </p>
-<p>데이터 레이크의 데이터를 가공하기 위해 MapReduce 같은 분산 데이터 처리 기술이 필요하다.</p>
-<h5 id="데이터-분석-기반을-단계적으로-발전시키기"><a href="#데이터-분석-기반을-단계적으로-발전시키기" class="headerlink" title="데이터 분석 기반을 단계적으로 발전시키기"></a>데이터 분석 기반을 단계적으로 발전시키기</h5><ol>
-<li><p>데이터 엔지니어</p>
-<p>시스템의 구축 및 운용, 자동화</p>
-</li>
-<li><p>데이터 분석가</p>
-<p>데이터에서 가치있는 정보 추출</p>
-</li>
-</ol>
-<h5 id="확증적-데이터-분석과-탐색적-데이터-분석"><a href="#확증적-데이터-분석과-탐색적-데이터-분석" class="headerlink" title="확증적 데이터 분석과 탐색적 데이터 분석"></a>확증적 데이터 분석과 탐색적 데이터 분석</h5><ol>
-<li><p>확증적 데이터 분석</p>
-<p>가설을 세우고 검증.</p>
-<p>통계학적 모델링에 의한 데이터 분석.</p>
-</li>
-<li><p>탐색적 데이터 분석</p>
-<p>데이터를 보며 의미를 읽어냄.</p>
-<p>데이터를 시각화하여 사람의 힘으로 의미를 읽어냄</p>
-</li>
-</ol>
-<hr>
-<p>빅데이터를 지탱하는 기술 &lt;니시다 케이스케&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/12/30/big-data-chapter1/" data-id="ck7lu78p500mmlk6wu1ff9ulj" data-title="[빅데이터를 지탱하는 기술] 1장_빅데이터 기초 지식" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-big-data-chapter3" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/12/30/big-data-chapter3/" class="article-date">
-  <time class="dt-published" datetime="2019-12-29T15:00:00.000Z" itemprop="datePublished">2019-12-30</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/big-data/">Big Data</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/12/30/big-data-chapter3/">[빅데이터를 지탱하는 기술] 3장_빅데이터 분산처리</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="1-대규모-분산-처리의-프레임워크"><a href="#1-대규모-분산-처리의-프레임워크" class="headerlink" title="1. 대규모 분산 처리의 프레임워크"></a>1. 대규모 분산 처리의 프레임워크</h2><p>비구조화 데이터를 읽어 들여 열 지향 스토리지로 변환하는 과정에서, 데이터의 가공 및 압축을 위해 많은 컴퓨터 리소스가 소비된다. </p>
-<p>그래서 사용하는 것이 Hadoop, Spark 같은 분산 처리 프레임워크다.</p>
-<h5 id="구조화-데이터-비구조화-데이터-스키마리스-데이터"><a href="#구조화-데이터-비구조화-데이터-스키마리스-데이터" class="headerlink" title="구조화 데이터, 비구조화 데이터, 스키마리스 데이터"></a>구조화 데이터, 비구조화 데이터, 스키마리스 데이터</h5><ol>
-<li><p>구조화 데이터</p>
-<p>스키마가 명확하게 정의된 데이터.</p>
-<p>기존의 데이터 웨어하우스에서는 항상 구조화 데이터로 축적하는 것이 일반적이었다.</p>
-</li>
-<li><p>비구조화 데이터</p>
-<p>스키마가 없는 데이터.</p>
-<p>이 상태로는 SQL 로 제대로 집계할 수 없다.</p>
-</li>
-<li><p>스키마리스 데이터</p>
-<p>CSV, JSON, XML 등의 데이터는 서식은 정해져 있지만, 칼럼 수나 데이터 형은 명확하지 않다.</p>
-</li>
-</ol>
-<h5 id="데이터-구조화의-파이프라인"><a href="#데이터-구조화의-파이프라인" class="headerlink" title="데이터 구조화의 파이프라인"></a>데이터 구조화의 파이프라인</h5><p><img src="/image/structured_data.png" alt></p>
-<p>분산 스토리지에 수집된 데이터는 명확한 스키마를 갖지 않아 그대로는 SQL 로 집계할 수 없다. </p>
-<p>그래서, 먼저 스키마를 명확하게 한 테이블 형식으로 변환해야한다.</p>
-<p>구조화된 데이터는 데이터 압축률을 높이기 위해 열 지향 스토리지에 저장한다. </p>
-<h5 id="열-지향-스토리지의-작성"><a href="#열-지향-스토리지의-작성" class="headerlink" title="열 지향 스토리지의 작성"></a>열 지향 스토리지의 작성</h5><p>Hadoop 의 열 지향 스토리지는,</p>
-<ol>
-<li><p>Apache ORC</p>
-<p>처음에 스키마를 정한 후 데이터를 저장</p>
-</li>
-<li><p>Apache Parquet</p>
-<p>스키마리스에 가까운 데이터 구조로 되어 있어서 JSON 같은 데이터도 그대로 저장</p>
-</li>
-</ol>
-<h5 id="Hadoop"><a href="#Hadoop" class="headerlink" title="Hadoop"></a>Hadoop</h5><p><img src="/image/big_data_hadoop.png" alt></p>
-<p>단일 소프트웨어가 아니라 분산 시스템을 구성하는 다수의 소프트웨어로 이루어진 집합체이다.</p>
-<p>기본 구성 요소는,</p>
-<ol>
-<li><p>분산 파일 시스템</p>
-<p>HDFS.</p>
-<p>다수의 컴퓨터에 파일을 복사하여 중복성을 높이는 특징이 있다.</p>
-</li>
-<li><p>리소스 관리자</p>
-<p>YARN, Mesos.</p>
-<p>YARN 은 애플리케이션이 사용하는 CPU 코어와 메모리를 컨테이너라는 단위로 관리한다.</p>
-<p>Hadoop 에서 분산 애플리케이션을 실행하면 YARN 이 클러스터 전체의 부하를 보고 비어 있는 호스트부터 컨테이너를 할당한다.</p>
-<p>어느 애플리케이션에 얼마만큼의 리소스를 할당할 지 관리해서 모든 애플리케이션이 실행되도록 제어한다.</p>
-</li>
-<li><p>분산 데이터 처리</p>
-<p>MapReduce, Tez.</p>
-<p>MapReduce 도 YARN 위에서 동작하는 분산 애플리케이션 중 하나이다.</p>
-</li>
-</ol>
-<h5 id="쿼리-엔진"><a href="#쿼리-엔진" class="headerlink" title="쿼리 엔진"></a>쿼리 엔진</h5><p><img src="/image/big_data_hive_mr.png" alt></p>
-<p>하둡에서는 다수의 쿼리 엔진이 개발되었다. 총칭해서 SQL-on-Hadoop 이라고 한다.</p>
-<p>SQL 등의 쿼리 언어에 의한 데이터 집계가 목적이면, 이를 위해 설계된 쿼리 엔진을 사용한다.</p>
-<p>Apache Hive 가 대표적이다. 쿼리를 자동으로 MapReduce 프로그램으로 변환하는 소프트웨어이다.</p>
-<p>시간이 걸리는 배치 처리에는 적합하나, 애드 혹 쿼리를 여러 번 실행하는데는 부적합하다. </p>
-<p>왜냐하면 위 그림처럼, 스테이지가 바뀔 때 대기 시간이 있기 때문이다.</p>
-<p><img src="/image/big_data_hive_tez.png" alt></p>
-<p>Apache Tez 는 Hive 를 가속화하기 위해 개발되었다. 기존의 MapReduce 를 대체할 목적이다.</p>
-<p>Hive on MR 은, 1회의 MapReduce 스테이지가 끝날 때까지 다음의 처리를 진행할 수 없다.</p>
-<p>Hive on Tez 는, 위 그림처럼 스테이지의 종료를 기다리지 않고 데이터를 차례대로 후속 처리에 전달하여 쿼리 전체 실행 시간을 단축한다.</p>
-<h5 id="대화형-쿼리엔진"><a href="#대화형-쿼리엔진" class="headerlink" title="대화형 쿼리엔진"></a>대화형 쿼리엔진</h5><p><img src="/image/big_data_presto.png" alt></p>
-<p>Apache Impala 와 Presto 가 대표적이다.</p>
-<p>YARN 과 같은 리소스 관리자를 사용하지 않고, SQL 의 실행만으로 분산처리를 구현한다.</p>
-<p>순간 최대 속도를 높이기 위해 모든 오버 헤드가 제거되어, 사용할 수 있는 리소스를 최대한 활용하여 쿼리를 실행한다.</p>
-<h5 id="Spark"><a href="#Spark" class="headerlink" title="Spark"></a>Spark</h5><p><img src="/image/big_data_spark.png" alt></p>
-<p>MapReduce, Tez 모두 데이터 처리 과정에서 만들어진 중간 데이터를 디스크에 기록한다.</p>
-<p>Spark 는 대량의 메모리를 활용하여 고속화를 실현한다.</p>
-<p>Hadoop 을 대체하는 것이 아니라, MapReduce 를 대체하는 존재다.</p>
-<h2 id="2-쿼리-엔진"><a href="#2-쿼리-엔진" class="headerlink" title="2. 쿼리 엔진"></a>2. 쿼리 엔진</h2><p><img src="/image/big_data_hive_presto.png" alt></p>
-<h5 id="데이터-마트-구축의-파이프라인"><a href="#데이터-마트-구축의-파이프라인" class="headerlink" title="데이터 마트 구축의 파이프라인"></a>데이터 마트 구축의 파이프라인</h5><ol>
-<li><p>Hive</p>
-<p>분산 스토리지에 저장된 데이터를 구조화하고 열 지향 스토리지 형식으로 저장</p>
-</li>
-<li><p>Presto</p>
-<p>완성한 구조화 데이터를 결합, 집계하고 비정규화 테이블로 만든 데이터 마트에 써서 보냄</p>
-</li>
-</ol>
-<h5 id="Hive-에-의한-구조화-데이터-작성"><a href="#Hive-에-의한-구조화-데이터-작성" class="headerlink" title="Hive 에 의한 구조화 데이터 작성"></a>Hive 에 의한 구조화 데이터 작성</h5><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hive&gt; CREATE EXTERNAL TABLE access_log_csv (...)</span><br></pre></td></tr></table></figure>
-
-<p>CSV 파일을 읽어들여 외부 테이블을 정의한다.</p>
-<p>외부테이블이란, Hive 의 외부에 있는 특정 파일을 참고해 마치 거기에 테이블이 존재하는 것처럼 읽어 들이기 위해 지정한다.</p>
-<p>쿼리를 실행할 때마다 매번 텍스트를 읽어들이기 때문에 느리다. 그래서 열 지향 스토리지로 변환해야한다.</p>
-<h5 id="열-지향-스토리지로의-변환"><a href="#열-지향-스토리지로의-변환" class="headerlink" title="열 지향 스토리지로의 변환"></a>열 지향 스토리지로의 변환</h5><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hive&gt; CREATE TABLE access_log_orc STROED as ORC as SELECT ..</span><br></pre></td></tr></table></figure>
-
-<p>텍스트 데이터를 열 지향 스토리지로 변환함으로써 데이터의 집계가 크게 고속화된다.</p>
-<h5 id="Hive-로-비정규화-테이블-작성하기"><a href="#Hive-로-비정규화-테이블-작성하기" class="headerlink" title="Hive 로 비정규화 테이블 작성하기"></a>Hive 로 비정규화 테이블 작성하기</h5><p>데이터 구조화가 완료되면 데이터 마트를 구축해야한다. 즉, 테이블을 결합 및 집약해서 ‘비정규화 테이블’ 을 만든다.</p>
-<p>Preso 와 같은 대화형 쿼리 엔진, Hive 같은 배치형 쿼리 엔진을 사용할 수 있다. 시간이 걸리는 배치 처리는 Hive 를 사용해야한다.</p>
-<p>비정규화 테이블을 만드는 데 오랜 시간이 걸리므로, 가능한 효율적인 쿼리를 작성해야한다. </p>
-<ol>
-<li><p>서브 쿼리 안에서 레코드 수 줄이기</p>
-<p>서브 쿼리 안에서 팩트 테이블을 작게 해야한다.</p>
-<p>데이터의 양의 감소 시킨 후에 테이블을 결합하는 것이 쿼리 실행 시간을 단축시킨다.</p>
-</li>
-<li><p>데이터 편향 피하기</p>
-<p>분산 시스템의 성능을 발휘하기 위해서, 모든 노드에 데이터가 균등하게 분산되도록 해야한다.</p>
-</li>
-</ol>
-<h5 id="대화형-쿼리-엔진-Presto-구조"><a href="#대화형-쿼리-엔진-Presto-구조" class="headerlink" title="대화형 쿼리 엔진 Presto 구조"></a>대화형 쿼리 엔진 Presto 구조</h5><p>쿼리 실행의 지연을 감소시키는 목적으로 개발된 것이 대화형 쿼리 엔진이다.</p>
-<p>Presto 의 특징은,</p>
-<ol>
-<li><p>플러그인 가능한 스토리지</p>
-<p>다양한 데이터 소스를 테이블로 참고할 수 있다.</p>
-<p>ex) 하나의 쿼리 안에서 분산 스토리지 상의 팩트 테이블과 MySQL 의 마스터 테이블을 조인할 있다.</p>
-</li>
-<li><p>CPU 처리의 최적화</p>
-<p>코드의 실행을 멀티 스레드화되어 단일 머신에서 수백 태스크나 병렬로 실행된다.</p>
-<p>그래서, CPU 이용 효율이 높다.</p>
-</li>
-<li><p>인 메모리 처리에 의한 고속화</p>
-<p>모든 데이터 처리는 메모리 상에서 실시하고 메모리가 부족하면 여유가 생길 때까지 기다리거나 오류로 실패한다.</p>
-</li>
-</ol>
-<h5 id="데이터-분석의-프레임워크-선택하기"><a href="#데이터-분석의-프레임워크-선택하기" class="headerlink" title="데이터 분석의 프레임워크 선택하기"></a>데이터 분석의 프레임워크 선택하기</h5><ol>
-<li><p>MPP Database</p>
-<p>비정규화 테이블을 고속으로 집계하는 데에 최적</p>
-</li>
-<li><p>Hive</p>
-<p>데이터 양에 좌우되지 않는 쿼리 엔진</p>
-</li>
-<li><p>Presto</p>
-<p>속도 중시, 대화식으로 특화된 쿼리 엔진</p>
-</li>
-<li><p>Spark</p>
-<p>분산 시스템을 사용한 프로그래밍 환경.</p>
-<p>ETL 프로세스에서 SQL 에 이르기 까지의 일련의 흐름을 하나의 데이터 파이프라인으로 기술 가능.</p>
-</li>
-</ol>
-<h2 id="3-데이터-마트의-구축"><a href="#3-데이터-마트의-구축" class="headerlink" title="3. 데이터 마트의 구축"></a>3. 데이터 마트의 구축</h2><p>분산 시스템이 준비되면 시각화를 위해 데이터 마트를 만든다.</p>
-<h5 id="팩트-테이블"><a href="#팩트-테이블" class="headerlink" title="팩트 테이블"></a>팩트 테이블</h5><p>팩트 테이블 작성 방법으로,</p>
-<ol>
-<li><p>추가</p>
-<p>새로 도착한 데이터만을 증분으로 추가</p>
-</li>
-<li><p>치환</p>
-<p>과거 데이터를 포함하여 테이블 전체 치환</p>
-</li>
-</ol>
-<h5 id="테이블-파티셔닝"><a href="#테이블-파티셔닝" class="headerlink" title="테이블 파티셔닝"></a>테이블 파티셔닝</h5><p>위의 ‘추가’ 방법은 다음 문제가 있다.</p>
-<ol>
-<li>추가에 실패한것을 알아채지 못하면, 팩트 테이블의 일부에 결손</li>
-<li>추가를 잘못해서 여러번 실행하면, 일부 중복</li>
-<li>나중에 팩트 테이블 다시 만들고 싶으면, 관리 복잡</li>
-</ol>
-<p>그래서 파티셔닝이 필요하다.</p>
-<p>하나의 테이블을 여러 물리적인 파티션으로 나눠서 파티션 단위로 정리하여 데이터를 쓰거나 삭제하는 것이다.</p>
-<h5 id="집계-테이블"><a href="#집계-테이블" class="headerlink" title="집계 테이블"></a>집계 테이블</h5><p>팩트 테이블을 어느 정도 모아서 집계하면 데이터의 양이 줄어든다. 이것은 집계 테이블이라고 한다.</p>
-<p>각 칼럼이 취하는 값의 범위란, 카디널리티이다. ‘성별’ 과 같이 취할 수 있는 값이 적은 것은 카디널리티가 작은 것이다.</p>
-<p>집계 테이블을 작게 하려면 모든 칼럼의 카디널리티를 줄여야한다.</p>
-<h5 id="스냅샷-테이블-이력-테이블"><a href="#스냅샷-테이블-이력-테이블" class="headerlink" title="스냅샷 테이블, 이력 테이블"></a>스냅샷 테이블, 이력 테이블</h5><p>마스터 데이터처럼 업데이트 될 가능성이 있는 테이블은,</p>
-<p>정기적으로 테이블을 통째로 저장하는 스탭샷 테이블, 또는 변경 내용만을 저장하는 이력 테이블로 관리할 수 있다.</p>
-<h5 id="디멘전을-추가하여-비정규화-테이블-완성시키기"><a href="#디멘전을-추가하여-비정규화-테이블-완성시키기" class="headerlink" title="디멘전을 추가하여 비정규화 테이블 완성시키기"></a>디멘전을 추가하여 비정규화 테이블 완성시키기</h5><p>팩트 테이블과 디멘젼 테이블을 결합하여 비정규화 테이블을 만든다.</p>
-<hr>
-<p>빅데이터를 지탱하는 기술 &lt;니시다 케이스케&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/12/30/big-data-chapter3/" data-id="ck7lu78s600pflk6wipma1ucl" data-title="[빅데이터를 지탱하는 기술] 3장_빅데이터 분산처리" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/12/30/big-data-chapter2/" data-id="ck7t4ixna00mtme6wubjppxl6" data-title="[빅데이터를 지탱하는 기술] 2장_빅데이터 탐색" class="article-share-link">Share</a>
       
       
       
@@ -1880,7 +1793,11 @@
       <ul>
         
           <li>
-            <a href="/2020/03/11/tdd-chapter-12/">[테스트 주도 개발] 12장_드디어 더하기</a>
+            <a href="/2020/03/15/bigdata-chapter-04/">[빅데이터] 4장_일괄 처리 계층의 데이터 저장소</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/11/tdd-chapter-07/">[테스트 주도 개발] 7장_사과와 오렌지</a>
           </li>
         
           <li>
@@ -1888,15 +1805,11 @@
           </li>
         
           <li>
-            <a href="/2020/03/11/tdd-chapter-09/">[테스트 주도 개발] 9장_우리가 사는 시간</a>
-          </li>
-        
-          <li>
-            <a href="/2020/03/11/tdd-chapter-08/">[테스트 주도 개발] 8장_객체 만들기</a>
-          </li>
-        
-          <li>
             <a href="/2020/03/11/tdd-chapter-11/">[테스트 주도 개발] 11장_모든 악의 근원</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/11/tdd-chapter-12/">[테스트 주도 개발] 12장_드디어 더하기</a>
           </li>
         
       </ul>

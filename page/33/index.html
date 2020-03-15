@@ -71,6 +71,123 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-데이터 타입 기본" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/01/29/데이터 타입 기본/" class="article-date">
+  <time class="dt-published" datetime="2018-01-28T15:00:00.000Z" itemprop="datePublished">2018-01-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/ios/">iOS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/01/29/데이터 타입 기본/">데이터 타입 기본</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/TheBasics.html#//apple_ref/doc/uid/TP40014097-CH5-ID309" target="_blank" rel="noopener">https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/TheBasics.html#//apple_ref/doc/uid/TP40014097-CH5-ID309</a></p>
+<h2 id="Integers"><a href="#Integers" class="headerlink" title="Integers"></a>Integers</h2><ul>
+<li><p>signed (positive, zero, or negative)</p>
+</li>
+<li><p>unsigned (positive or zero)</p>
+<ul>
+<li>8-bit unsigned integer : UInt8</li>
+<li>32-bit signed integer : Int32</li>
+</ul>
+</li>
+<li><p>Int</p>
+<ul>
+<li><p>On a 32-bit platform, Int is the same size as Int32.</p>
+</li>
+<li><p>On a 64-bit platform, Int is the same size as Int64.</p>
+</li>
+<li><p>always use Int for integer values in your code</p>
+</li>
+</ul>
+</li>
+<li><p>UInt</p>
+<ul>
+<li><p>On a 32-bit platform, UInt is the same size as UInt32.</p>
+</li>
+<li><p>On a 64-bit platform, UInt is the same size as UInt64.</p>
+</li>
+<li><p>Int is preferred, even when the values to be stored are known to be nonnegative</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="Booleans"><a href="#Booleans" class="headerlink" title="Booleans"></a>Booleans</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">let orangesAreOrange = true</span><br><span class="line">let turnipsAreDelicious = false</span><br><span class="line"></span><br><span class="line">if turnipsAreDelicious &#123;</span><br><span class="line">    print(&quot;Mmm, tasty turnips!&quot;)</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    print(&quot;Eww, turnips are horrible.&quot;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Prints &quot;Eww, turnips are horrible.&quot;</span><br></pre></td></tr></table></figure></code></pre><ul>
+<li><p>Swift’s type safety prevents non-Boolean values from being substituted for Bool</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let i = 1</span><br><span class="line">if i &#123;</span><br><span class="line">    // this example will not compile, and will report an error</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>The result of the i == 1 comparison is of type Bool,</p>
+</li>
+<li><p>and so this second example passes the type-check. </p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let i = 1</span><br><span class="line">if i == 1 &#123;</span><br><span class="line">    // this example will compile successfully</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="Floating-Point-Numbers"><a href="#Floating-Point-Numbers" class="headerlink" title="Floating-Point Numbers"></a>Floating-Point Numbers</h2><ul>
+<li><p>Double represents a 64-bit floating-point number.</p>
+</li>
+<li><p>Float represents a 32-bit floating-point number.</p>
+<ul>
+<li>In situations where either type would be appropriate, Double is preferred.</li>
+</ul>
+</li>
+</ul>
+<h2 id="Strings-and-Characters"><a href="#Strings-and-Characters" class="headerlink" title="Strings and Characters"></a>Strings and Characters</h2><ul>
+<li><p>String Literals</p>
+<ul>
+<li><p>A literal value is a value that appears directly in your source code</p>
+</li>
+<li><p>Swift infers a type of String for the someString constant </p>
+</li>
+<li><p>because it’s initialized with a string literal value.</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">let someString = &quot;Some string literal value&quot;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>Initializing an Empty String</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var emptyString = &quot;&quot;               // empty string literal</span><br><span class="line">var anotherEmptyString = String()  // initializer syntax</span><br><span class="line">// these two strings are both empty, and are equivalent to each other</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<ul>
+<li><p>String Mutability</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var variableString = &quot;Horse&quot;</span><br><span class="line">variableString += &quot; and carriage&quot;</span><br><span class="line">// variableString is now &quot;Horse and carriage&quot;</span><br><span class="line"> </span><br><span class="line">let constantString = &quot;Highlander&quot;</span><br><span class="line">constantString += &quot; and another Highlander&quot;</span><br><span class="line">// this reports a compile-time error - a constant string cannot be modified</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/01/29/데이터 타입 기본/" data-id="ck7t4ixim007eme6w22ptxxgl" data-title="데이터 타입 기본" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-수이어쓰기" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2018/01/26/수이어쓰기/" class="article-date">
@@ -105,7 +222,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/26/수이어쓰기/" data-id="ck7lu78gk0073lk6wpafh36px" data-title="수이어쓰기1" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/26/수이어쓰기/" data-id="ck7t4ixik0075me6whm6jzaca" data-title="수이어쓰기1" class="article-share-link">Share</a>
       
       
       
@@ -200,7 +317,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/24/타일/" data-id="ck7lu78gk0075lk6wfjap7s43" data-title="타일" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/24/타일/" data-id="ck7t4ixik0073me6wt4mxmtyg" data-title="타일" class="article-share-link">Share</a>
       
       
       
@@ -260,7 +377,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/20/슈퍼마리오/" data-id="ck7lu78gh006vlk6wlhhk2d5o" data-title="슈퍼마리오" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/20/슈퍼마리오/" data-id="ck7t4ixij0071me6wy0eff3qz" data-title="슈퍼마리오" class="article-share-link">Share</a>
       
       
       
@@ -312,7 +429,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/19/벽장문의 이동/" data-id="ck7lu78gj0071lk6wnt2shfkb" data-title="벽장문의 이동" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/19/벽장문의 이동/" data-id="ck7t4ixii006zme6w02iuj2me" data-title="벽장문의 이동" class="article-share-link">Share</a>
       
       
       
@@ -359,7 +476,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/18/올림픽/" data-id="ck7lu78gj006zlk6wnx2blvng" data-title="올림픽" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/18/올림픽/" data-id="ck7t4ixii006xme6w5pibzirt" data-title="올림픽" class="article-share-link">Share</a>
       
       
       
@@ -442,7 +559,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/17/01타일/" data-id="ck7lu78gi006xlk6wdqwr764j" data-title="01타일" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/17/01타일/" data-id="ck7t4ixih006vme6w73k4qms0" data-title="01타일" class="article-share-link">Share</a>
       
       
       
@@ -511,7 +628,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/16/줄어들지않아/" data-id="ck7lu78gh006tlk6wygy3pjsp" data-title="줄어들지않아" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/16/줄어들지않아/" data-id="ck7t4ixig006tme6w9m56ksnw" data-title="줄어들지않아" class="article-share-link">Share</a>
       
       
       
@@ -564,7 +681,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/15/2007년/" data-id="ck7lu78gf006rlk6w51qssvm8" data-title="2007년" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/15/2007년/" data-id="ck7t4ixig006rme6wbtfm87u2" data-title="2007년" class="article-share-link">Share</a>
       
       
       
@@ -612,57 +729,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/13/듣보잡/" data-id="ck7lu78ge006plk6wzbnk2ow4" data-title="듣보잡" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-택시 기하학" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/01/12/택시 기하학/" class="article-date">
-  <time class="dt-published" datetime="2018-01-11T15:00:00.000Z" itemprop="datePublished">2018-01-12</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/01/12/택시 기하학/">택시기하학</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><a href="https://www.acmicpc.net/problem/3053" target="_blank" rel="noopener">https://www.acmicpc.net/problem/3053</a></p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
-<li>단순 수학</li>
-<li>T1(x1,y1), T2(x2,y2) 사이의 거리<ul>
-<li>D(T1,T2) = |x1-x2| + |y1-y2|</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/01/12/택시 기하학/" data-id="ck7lu78gd006nlk6w7ngpqcyu" data-title="택시기하학" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/01/13/듣보잡/" data-id="ck7t4ixif006pme6wa1mmx26n" data-title="듣보잡" class="article-share-link">Share</a>
       
       
       
@@ -717,7 +784,11 @@
       <ul>
         
           <li>
-            <a href="/2020/03/11/tdd-chapter-12/">[테스트 주도 개발] 12장_드디어 더하기</a>
+            <a href="/2020/03/15/bigdata-chapter-04/">[빅데이터] 4장_일괄 처리 계층의 데이터 저장소</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/11/tdd-chapter-07/">[테스트 주도 개발] 7장_사과와 오렌지</a>
           </li>
         
           <li>
@@ -725,15 +796,11 @@
           </li>
         
           <li>
-            <a href="/2020/03/11/tdd-chapter-09/">[테스트 주도 개발] 9장_우리가 사는 시간</a>
-          </li>
-        
-          <li>
-            <a href="/2020/03/11/tdd-chapter-08/">[테스트 주도 개발] 8장_객체 만들기</a>
-          </li>
-        
-          <li>
             <a href="/2020/03/11/tdd-chapter-11/">[테스트 주도 개발] 11장_모든 악의 근원</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/11/tdd-chapter-12/">[테스트 주도 개발] 12장_드디어 더하기</a>
           </li>
         
       </ul>
