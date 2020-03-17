@@ -71,6 +71,355 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-최대상금" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/03/12/최대상금/" class="article-date">
+  <time class="dt-published" datetime="2018-03-11T15:00:00.000Z" itemprop="datePublished">2018-03-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/03/12/최대상금/">최대상금</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p><a href="https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV15Khn6AN0CFAYD&amp;categoryId=AV15Khn6AN0CFAYD&amp;categoryType=CODE" target="_blank" rel="noopener">https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV15Khn6AN0CFAYD&amp;categoryId=AV15Khn6AN0CFAYD&amp;categoryType=CODE</a></p>
+<ul>
+<li>모든 경우의 수 완전 탐색을 하려고 하였다.</li>
+<li>겹치는 부분이 있기때문에, 방문체크 배열을 만들었다.</li>
+<li>바꿀 기회가 남아 있으면 다시 재귀 함수를 호출하여 탐색을 한다.</li>
+<li>계속 오답.</li>
+<li>많은 시간을 투자했지만 풀지 못하였다.</li>
+<li>다시 풀어봐야함.</li>
+</ul>
+<h2 id="해결"><a href="#해결" class="headerlink" title="해결"></a>해결</h2><ul>
+<li>결국 구글링을 하였다.</li>
+<li>해결의 핵심은 <ul>
+<li>같은 횟수에, 같은 숫자를 탐색하는지 체크하는 배열을 두는 것이다.</li>
+</ul>
+</li>
+<li>같은 횟수에, 해당 숫자를 <ul>
+<li>탐색하지 않았으면,  탐색을 시작하고</li>
+<li>탐색을 이미 했으면, 계속해서 반복문을 돌린다</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/03/12/최대상금/" data-id="ck7vvtrsg008nm46wjphlci7r" data-title="최대상금" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-그래프" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/03/10/그래프/" class="article-date">
+  <time class="dt-published" datetime="2018-03-09T15:00:00.000Z" itemprop="datePublished">2018-03-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/03/10/그래프/">그래프</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <ul>
+<li><p>그래프</p>
+<ul>
+<li>자료구조의 일종</li>
+<li>정점(node, vertex)<ul>
+<li>주로 번호가 써있음</li>
+</ul>
+</li>
+<li>간선(edge) :  정점 사이 연결</li>
+<li>그래프 G =(V,E)로 나타냄</li>
+</ul>
+</li>
+<li><p>그래프를 저장하는 방법</p>
+<ul>
+<li>인접 행렬<ul>
+<li>정점 개수를 v라고 할때,</li>
+<li>v 제곱 크기의 인차원 배열 이용</li>
+<li>a[i][j]=1<ul>
+<li>i에서 j 로 가는 간선이 있으면 </li>
+</ul>
+</li>
+<li>a[i][j]=0<ul>
+<li>i에서 j 로 가는 간선이 없으면 </li>
+</ul>
+</li>
+<li>a[i][j] = w<ul>
+<li>i에서 j로의 간선 가중치가 w 이면</li>
+</ul>
+</li>
+<li>없는 간선도 저장하기 때문에 자주 사용하지 않는 방법</li>
+<li>쉬운 문제 풀 때 주로 사용</li>
+</ul>
+</li>
+<li>인접 리스트<ul>
+<li>링크드 리스트를 이용해서 구현</li>
+<li>a[i] = i와 연결된 정점이 링크드리스트 형태로 저장</li>
+<li>a[1] : 2, 5 <ul>
+<li>1과 연결된 정점이 2, 5</li>
+</ul>
+</li>
+<li>링크드 리스트는 구현하는데 시간이 오래걸림<ul>
+<li>그래서, vector / arraylist로 함</li>
+</ul>
+</li>
+<li>가중치가 있으면<ul>
+<li>정점과 가중치를 같이 저장</li>
+<li>a[1] : (2,2), (5,7)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>그래프의 탐색</p>
+<ul>
+<li><p>목적 : 모든 정점을 한 번씩 방문</p>
+</li>
+<li><p>깊이 우선 탐색 (DFS)</p>
+<ul>
+<li>최대한 깊숙히 많이 감</li>
+<li>스택 사용</li>
+<li>스택을 이용해서 갈수 있는 만큼 많이 가고</li>
+<li>갈 수 없으면 이전 정점으로 돌아감 (스택에서 pop해서)</li>
+<li>check라는 배열이 필요함<ul>
+<li>0 : 아직 방문 X</li>
+<li>1 : 방문 O</li>
+</ul>
+</li>
+<li>갈 수 있는 정점이 여러개면<ul>
+<li>번호가 작은 것부터</li>
+</ul>
+</li>
+<li>pop 계속하다가 스택이 비면 탐색 종료</li>
+<li>구현</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">void dfs(int x)&#123;</span><br><span class="line"></span><br><span class="line">	//방문 했다고 체크</span><br><span class="line">    check[x] = true;</span><br><span class="line">    </span><br><span class="line">    //a[x] : x와 연결된 정점들이 저장되어 있음</span><br><span class="line">    for(int i=0; i&lt;a[x].size; i++)&#123;</span><br><span class="line">    </span><br><span class="line">    	//x와 연결된 정점</span><br><span class="line">        int y = a[x][i];</span><br><span class="line">        </span><br><span class="line">        //방문하지 않았으면 방문</span><br><span class="line">        if(check[y] == false)&#123;</span><br><span class="line">            dfs(y);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​</p>
+</li>
+<li><p>너비 우선 탐색 (BFS)</p>
+<ul>
+<li>최대한 넓게 가는 것</li>
+<li>큐 사용</li>
+<li>모든 가중치가 1이면 최단 거리 찾는 알고리즘</li>
+<li>큐를 이용해서 아직 방문하지 않았고, 지금 위치에서 갈 수 있는 것을 모두 큐에 넣는 방식</li>
+<li>큐에 넣을 때 방문했다고 체크</li>
+<li>check라는 배열이 필요함<ul>
+<li>0 : 아직 방문 X</li>
+<li>1 : 방문 O</li>
+</ul>
+</li>
+<li>구현</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">queue&lt;int&gt; q;</span><br><span class="line">check[1] = true; q.push(1);</span><br><span class="line"></span><br><span class="line">while(!q.empty())&#123;</span><br><span class="line">    int x = q.front(); q.pop();</span><br><span class="line">    printf(&quot;%d &quot; , x);</span><br><span class="line">    for(int i=0; i&lt;a[x].size; i++)&#123;</span><br><span class="line">        int y = a[x][i];</span><br><span class="line">        if(check[y] == false)&#123;</span><br><span class="line">            check[y] = true; q.push(y);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​</p>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/03/10/그래프/" data-id="ck7vvtrsf008lm46w63lbqpce" data-title="그래프" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-최빈수 구하기" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/03/09/최빈수 구하기/" class="article-date">
+  <time class="dt-published" datetime="2018-03-08T15:00:00.000Z" itemprop="datePublished">2018-03-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/03/09/최빈수 구하기/">최빈수</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV13zo1KAAACFAYh" target="_blank" rel="noopener">https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV13zo1KAAACFAYh</a></p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
+<li>특정 자료에서 가장 여러번 나타나는 값 찾기    </li>
+<li>i번째에서<ul>
+<li>i+1 ~ 1000 번째까지 같은 값 있는지 체크</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/03/09/최빈수 구하기/" data-id="ck7vvtrsd008jm46wiopbofsv" data-title="최빈수" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-프로세서 연결하기" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/03/05/프로세서 연결하기/" class="article-date">
+  <time class="dt-published" datetime="2018-03-04T15:00:00.000Z" itemprop="datePublished">2018-03-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/03/05/프로세서 연결하기/">프로세서 연결하기</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV4suNtaXFEDFAUf" target="_blank" rel="noopener">https://swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV4suNtaXFEDFAUf</a></p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
+<li>완전탐색 문제 </li>
+<li>전선의 중복 문제를 어떻게 해결할까..</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/03/05/프로세서 연결하기/" data-id="ck7vvtrsc008hm46w7x1x3rxn" data-title="프로세서 연결하기" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-구슬게임" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/02/28/구슬게임/" class="article-date">
+  <time class="dt-published" datetime="2018-02-27T15:00:00.000Z" itemprop="datePublished">2018-02-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/02/28/구슬게임/">구슬게임</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.acmicpc.net/problem/2600" target="_blank" rel="noopener">https://www.acmicpc.net/problem/2600</a></p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
+<li>감이 잡히질 않음</li>
+<li>다시 풀어야함</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/02/28/구슬게임/" data-id="ck7vvtrsb008dm46w33l8nv9f" data-title="구슬게임" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-Node Architecture" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2018/02/27/Node Architecture/" class="article-date">
@@ -137,7 +486,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/02/27/Node Architecture/" data-id="ck7t4ixiv0088me6wlwurote0" data-title="Node Architecture" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/02/27/Node Architecture/" data-id="ck7vvtrs90089m46w5eo5hevh" data-title="Node Architecture" class="article-share-link">Share</a>
       
       
       
@@ -193,7 +542,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/02/27/find in studio3T/" data-id="ck7t4ixix008ame6wbks0hrmd" data-title="find in studio3T" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/02/27/find in studio3T/" data-id="ck7vvtrsa008bm46wuh0vjcve" data-title="find in studio3T" class="article-share-link">Share</a>
       
       
       
@@ -244,7 +593,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/02/27/저작권/" data-id="ck7t4ixiy008eme6w7x9ci6ph" data-title="저작권" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/02/27/저작권/" data-id="ck7vvtrsc008fm46wx0kjv8s6" data-title="저작권" class="article-share-link">Share</a>
       
       
       
@@ -327,7 +676,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/02/26/coins/" data-id="ck7t4ixiv0086me6wfiqvbrxx" data-title="coins" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/02/26/coins/" data-id="ck7vvtrs90087m46w7j6mzbdg" data-title="coins" class="article-share-link">Share</a>
       
       
       
@@ -405,315 +754,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/02/20/라그랑주의 네 제곱수 정리/" data-id="ck7t4ixiu0084me6wv6wzmvlw" data-title="라그랑주의 네 제곱수 정리" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-축구" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/02/16/축구/" class="article-date">
-  <time class="dt-published" datetime="2018-02-15T15:00:00.000Z" itemprop="datePublished">2018-02-16</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/02/16/축구/">축구</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><a href="https://www.acmicpc.net/problem/1344" target="_blank" rel="noopener">https://www.acmicpc.net/problem/1344</a></p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
-<li>d[i][j][k]<ul>
-<li>i라운드에서, A팀이 j 포인트, B팀이 k포인트 얻었을 때, 18라운드까지 한 확률의 합</li>
-</ul>
-</li>
-<li>경우의 수<ul>
-<li>i 라운드드에서<ul>
-<li>A팀 : 1골, B팀 : 0골 </li>
-<li>A팀 : 0골, B팀 : 1골 </li>
-<li>A팀 : 1골, B팀 : 1골 </li>
-<li>A팀 : 0골, B팀 : 0골</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/02/16/축구/" data-id="ck7t4ixiu0082me6wy54mx4c3" data-title="축구" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-민균이의 계략" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/02/15/민균이의 계략/" class="article-date">
-  <time class="dt-published" datetime="2018-02-14T15:00:00.000Z" itemprop="datePublished">2018-02-15</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/02/15/민균이의 계략/">민균이의 계략</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><a href="https://www.acmicpc.net/problem/11568" target="_blank" rel="noopener">https://www.acmicpc.net/problem/11568</a></p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
-<li>‘’가장 긴 증가하는 부분수열’’ 문제와 동일</li>
-<li>처음에 계속 틀렸음<ul>
-<li>이유 : j를 i-1 ~ 0 번째까지 비교해야하는데 1번째 까지만 비교했음</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/02/15/민균이의 계략/" data-id="ck7t4ixit0080me6wxmb20i5q" data-title="민균이의 계략" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-구조체,클래스" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/02/06/구조체,클래스/" class="article-date">
-  <time class="dt-published" datetime="2018-02-05T15:00:00.000Z" itemprop="datePublished">2018-02-06</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/ios/">iOS</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/02/06/구조체,클래스/">구조체,클래스</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><a href="https://developer.apple.com/swift/" target="_blank" rel="noopener">https://developer.apple.com/swift/</a></p>
-<ul>
-<li>Unlike other programming languages, </li>
-<li>Swift does not require you to create separate interface and implementation files for custom classes and structures. </li>
-<li>In Swift, you define a class or a structure in a single file, </li>
-<li>and the external interface to that class or structure is automatically made available for other code to use.</li>
-<li>example of a structure definition and a class definition:</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">struct Resolution &#123;</span><br><span class="line">    var width = 0</span><br><span class="line">    var height = 0</span><br><span class="line">&#125;</span><br><span class="line">class VideoMode &#123;</span><br><span class="line">    var resolution = Resolution()</span><br><span class="line">    var interlaced = false</span><br><span class="line">    var frameRate = 0.0</span><br><span class="line">    var name: String?</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/02/06/구조체,클래스/" data-id="ck7t4ixir007ume6wmof75znk" data-title="구조체,클래스" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-접근제어" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/02/06/접근제어/" class="article-date">
-  <time class="dt-published" datetime="2018-02-05T15:00:00.000Z" itemprop="datePublished">2018-02-06</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/ios/">iOS</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/02/06/접근제어/">접근제어</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><a href="https://developer.apple.com/swift/" target="_blank" rel="noopener">https://developer.apple.com/swift/</a></p>
-<ul>
-<li><p>Access control restricts access to parts of your code from code in other source files and modules.</p>
-</li>
-<li><p>This feature enables you to hide the implementation details of your code, and to specify a preferred interface through which that code can be accessed and used.</p>
-</li>
-<li><p>You can assign specific access levels to individual types (classes, structures, and enumerations), </p>
-</li>
-<li><p>as well as to properties, methods, initializers, and subscripts belonging to those types. </p>
-</li>
-<li><p>Protocols can be restricted to a certain context, as can global constants, variables, and functions.</p>
-</li>
-<li><p>In addition to offering various levels of access control, Swift reduces the need to specify explicit access control levels by providing default access levels for typical scenarios. </p>
-</li>
-<li><p>Indeed, if you are writing a single-target app, you may not need to specify explicit access control levels at all.</p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public class SomePublicClass &#123;&#125;</span><br><span class="line">internal class SomeInternalClass &#123;&#125;</span><br><span class="line">fileprivate class SomeFilePrivateClass &#123;&#125;</span><br><span class="line">private class SomePrivateClass &#123;&#125;</span><br><span class="line"> </span><br><span class="line">public var somePublicVariable = 0</span><br><span class="line">internal let someInternalConstant = 0</span><br><span class="line">fileprivate func someFilePrivateFunction() &#123;&#125;</span><br><span class="line">private func somePrivateFunction() &#123;&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>Unless otherwise specified, the default access level is internal, </li>
-<li>This means that </li>
-<li>SomeInternalClass and someInternalConstant can be written without an explicit access-level modifier,</li>
-<li>and will still have an access level of internal:</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">class SomeInternalClass &#123;&#125;              // implicitly internal</span><br><span class="line">let someInternalConstant = 0            // implicitly internal</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/02/06/접근제어/" data-id="ck7t4ixir007sme6wrnafqauj" data-title="접근제어" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-프로퍼티와 메서드" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/02/06/프로퍼티와 메서드/" class="article-date">
-  <time class="dt-published" datetime="2018-02-05T15:00:00.000Z" itemprop="datePublished">2018-02-06</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/ios/">iOS</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/02/06/프로퍼티와 메서드/">프로퍼티와 메서드</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><a href="https://developer.apple.com/swift/" target="_blank" rel="noopener">https://developer.apple.com/swift/</a></p>
-<h2 id="Properties"><a href="#Properties" class="headerlink" title="Properties"></a>Properties</h2><ul>
-<li>Properties associate values with a particular class, structure, or enumeration. <ul>
-<li>Stored properties store constant and variable values as part of an instance. Stored properties are provided only by classes and structures.</li>
-<li>computed properties calculate (rather than store) a value. Computed properties are provided by classes, structures, and enumerations. </li>
-</ul>
-</li>
-</ul>
-<h2 id="Methods"><a href="#Methods" class="headerlink" title="Methods"></a>Methods</h2><ul>
-<li><p>Methods are functions that are associated with a particular type. </p>
-</li>
-<li><p>Classes, structures, and enumerations can all define instance methods, </p>
-<ul>
-<li>which encapsulate specific tasks and functionality for working with an instance of a given type. - Classes, structures, and enumerations can also define type methods, </li>
-<li>which are associated with the type itself. Type methods are similar to class methods in Objective-C.</li>
-</ul>
-</li>
-<li><p>Instance methods are functions </p>
-</li>
-<li><p>that belong to instances of a particular class, structure, or enumeration. </p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class Counter &#123;</span><br><span class="line">    var count = 0</span><br><span class="line">    func increment() &#123;</span><br><span class="line">        count += 1</span><br><span class="line">    &#125;</span><br><span class="line">    func increment(by amount: Int) &#123;</span><br><span class="line">        count += amount</span><br><span class="line">    &#125;</span><br><span class="line">    func reset() &#123;</span><br><span class="line">        count = 0</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>The Counter class defines three instance methods:</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">increment() increments the counter by 1.</span><br><span class="line">increment(by: Int) increments the counter by a specified integer amount.</span><br><span class="line">reset() resets the counter to zero.</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>can also define methods that are called on the type itself. These kinds of methods are called type methods</li>
-<li>You indicate type methods by writing the static keyword before the method’s func keyword. </li>
-<li>Classes may also use the class keyword to allow subclasses to override the superclass’s implementation of that method</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">struct LevelTracker &#123;</span><br><span class="line">    static var highestUnlockedLevel = 1</span><br><span class="line">    var currentLevel = 1</span><br><span class="line">    </span><br><span class="line">    static func unlock(_ level: Int) &#123;</span><br><span class="line">        if level &gt; highestUnlockedLevel &#123; highestUnlockedLevel = level &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    static func isUnlocked(_ level: Int) -&gt; Bool &#123;</span><br><span class="line">        return level &lt;= highestUnlockedLevel</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    @discardableResult</span><br><span class="line">    mutating func advance(to level: Int) -&gt; Bool &#123;</span><br><span class="line">        if LevelTracker.isUnlocked(level) &#123;</span><br><span class="line">            currentLevel = level</span><br><span class="line">            return true</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            return false</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/02/06/프로퍼티와 메서드/" data-id="ck7t4ixit007yme6wkolyopq1" data-title="프로퍼티와 메서드" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/02/20/라그랑주의 네 제곱수 정리/" data-id="ck7vvtrs80085m46w96no8py0" data-title="라그랑주의 네 제곱수 정리" class="article-share-link">Share</a>
       
       
       
@@ -729,7 +770,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/30/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/29/">29</a><a class="page-number" href="/page/30/">30</a><span class="page-number current">31</span><a class="page-number" href="/page/32/">32</a><a class="page-number" href="/page/33/">33</a><span class="space">&hellip;</span><a class="page-number" href="/page/45/">45</a><a class="extend next" rel="next" href="/page/32/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/30/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/29/">29</a><a class="page-number" href="/page/30/">30</a><span class="page-number current">31</span><a class="page-number" href="/page/32/">32</a><a class="page-number" href="/page/33/">33</a><span class="space">&hellip;</span><a class="page-number" href="/page/46/">46</a><a class="extend next" rel="next" href="/page/32/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -768,23 +809,23 @@
       <ul>
         
           <li>
-            <a href="/2020/03/15/bigdata-chapter-04/">[빅데이터] 4장_일괄 처리 계층의 데이터 저장소</a>
+            <a href="/2020/03/17/tdd-chapter-17/">[테스트 주도 개발] 17장_Money 회고</a>
           </li>
         
           <li>
-            <a href="/2020/03/11/tdd-chapter-07/">[테스트 주도 개발] 7장_사과와 오렌지</a>
+            <a href="/2020/03/16/tdd-chapter-13/">[테스트 주도 개발] 13장_진짜로 만들기</a>
           </li>
         
           <li>
-            <a href="/2020/03/11/tdd-chapter-10/">[테스트 주도 개발] 10장_흥미로운 시간</a>
+            <a href="/2020/03/16/tdd-chapter-15/">[테스트 주도 개발] 15장_서로 다른 통화 더하기</a>
           </li>
         
           <li>
-            <a href="/2020/03/11/tdd-chapter-11/">[테스트 주도 개발] 11장_모든 악의 근원</a>
+            <a href="/2020/03/16/tdd-chapter-16/">[테스트 주도 개발] 16장_드디어, 추상화</a>
           </li>
         
           <li>
-            <a href="/2020/03/11/tdd-chapter-12/">[테스트 주도 개발] 12장_드디어 더하기</a>
+            <a href="/2020/03/16/tdd-chapter-14/">[테스트 주도 개발] 14장_바꾸기</a>
           </li>
         
       </ul>

@@ -71,6 +71,334 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-스타트링크" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/06/01/스타트링크/" class="article-date">
+  <time class="dt-published" datetime="2018-05-31T15:00:00.000Z" itemprop="datePublished">2018-06-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/06/01/스타트링크/">스타트링크</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="문제-요약"><a href="#문제-요약" class="headerlink" title="문제 요약"></a>문제 요약</h2><ul>
+<li><p>F층으로 이루어진 건물</p>
+</li>
+<li><p>스타트 링크는 G층</p>
+</li>
+<li><p>현재 위치 S층</p>
+</li>
+<li><p>U </p>
+<ul>
+<li>위로 U층을 감</li>
+</ul>
+</li>
+<li><p>D</p>
+<ul>
+<li>아래로 D층을 감</li>
+</ul>
+</li>
+<li><p>U층 위, 또는 D층 아래에 해당하는 층이 없을 때는, </p>
+<ul>
+<li>엘리베이터는 움직이지 않는다</li>
+</ul>
+</li>
+<li><p>S층에서 G층 가려면 버튼을 적어도 몇번 눌러야해????</p>
+</li>
+<li><p>갈수 없다면  “use the stairs” 출력</p>
+</li>
+</ul>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
+<li>전형적인 BFS</li>
+<li>큐에서 deque를 한다 …. A</li>
+<li>도착지점인지 확인한다. <ul>
+<li>도착 지점이면 끝</li>
+<li>도착 지점이 아니라면 계속</li>
+</ul>
+</li>
+<li>deque한 지점에서 이동 가능한 곳을 모두 큐에 넣는다<ul>
+<li>이동 가능 한 곳<ul>
+<li>U층을 더 했을 때, 꼭대기 층 이하이어야함</li>
+<li>D층을 뺐을 때, 1층 이상이어야함 </li>
+</ul>
+</li>
+</ul>
+</li>
+<li>다시 A부터 반복한다</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/06/01/스타트링크/" data-id="ck7vvtrur00efm46wt2xy5bwf" data-title="스타트링크" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Template Method Pattern04" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/31/Template Method Pattern04/" class="article-date">
+  <time class="dt-published" datetime="2018-05-30T15:00:00.000Z" itemprop="datePublished">2018-05-31</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/31/Template Method Pattern04/">Template Method Pattern04</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>전체적인 알고리즘은 상위 클래스에서 구현하면서 다른 부분은 하위 클래스에서 구현할 수 있도록 하는 디자인 패턴이다. 전체적인 알고리즘 코드를 재사용하는 데 유용하다.</p>
+<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/template031.png" alt></p>
+<ul>
+<li>AbstractClass<ul>
+<li>템플릿 메서드를 정의하는 클래스</li>
+<li>하위 클래스에 공통 알고리즘을 정의하고, 하위 클래스에서 구현될 기능을 primitive method 또는 hook method로 정의하는 클래스</li>
+</ul>
+</li>
+<li>ConcreteClass<ul>
+<li>물려받은 primitive method 나 hook method 를 구현하는 클래스</li>
+<li>상위 클래스에서 구현된 템플릿 메서드의 일반적인 알고리즘에서 하위 클래스에 적합하게 primitive method나 hook method를 오버라이드하는 클래스</li>
+</ul>
+</li>
+</ul>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/template032.png" alt></p>
+<ul>
+<li>Motor <ul>
+<li>AbstractClass</li>
+</ul>
+</li>
+<li>HyundaiMotor, LGMotor<ul>
+<li>ConcreteClass</li>
+</ul>
+</li>
+<li>Motor 클래스의 move method <ul>
+<li>template method </li>
+</ul>
+</li>
+<li>Motor 클래스의 moveMotor method <ul>
+<li>primitive method</li>
+</ul>
+</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Java 객체지향 디자인 패턴 &lt;정인상, 채흥석 지음&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/31/Template Method Pattern04/" data-id="ck7vvtruq00edm46w770oc3po" data-title="Template Method Pattern04" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Template Method Pattern03" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/31/Template Method Pattern03/" class="article-date">
+  <time class="dt-published" datetime="2018-05-30T15:00:00.000Z" itemprop="datePublished">2018-05-31</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/31/Template Method Pattern03/">Template Method Pattern03</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>The Template Method Pattern defines the skeleton of an algorithm in a method, deferring some steps to subclasses. </p>
+<p>Template Method lets subclasses redefine certain steps of an algorithm without changing the algorithm’s structure. </p>
+<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/templateh01.png" alt></p>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><img src="/image/tmppattern01.png" alt></p>
+<p><img src="/image/tmppattern02.png" alt></p>
+<p><img src="/image/tmppattern03.png" alt></p>
+<h2 id="Using-the-hook"><a href="#Using-the-hook" class="headerlink" title="Using the hook"></a>Using the hook</h2><p>To use the hook, we override it in our subclass. </p>
+<p>Here, the hook controls whether the CaffeineBeverage evaluates a certain part of the algorithm; </p>
+<p>that is, whether it adds a condiment to the beverage. </p>
+<p>How do we know whether the customer wants the condiment? Just ask ! </p>
+<p><img src="/image/tmppattern04.png" alt></p>
+<p><img src="/image/tmppattern05.png" alt></p>
+<p><img src="/image/tmppattern06.png" alt></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Head First Design Pattern</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/31/Template Method Pattern03/" data-id="ck7vvtruq00ebm46wnlv3dhrx" data-title="Template Method Pattern03" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Template Method Pattern02" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/31/Template Method Pattern02/" class="article-date">
+  <time class="dt-published" datetime="2018-05-30T15:00:00.000Z" itemprop="datePublished">2018-05-31</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/31/Template Method Pattern02/">Template Method Pattern02</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/tmplate02.png" alt></p>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><img src="/image/tmplate03.png" alt></p>
+<p><img src="/image/tmplate04.png" alt></p>
+<p><img src="/image/tmplate05.png" alt></p>
+<p><img src="/image/tmplate06.png" alt></p>
+<p><img src="/image/tmplate07.png" alt></p>
+<p>##Reference</p>
+<p><a href="https://www.tutorialspoint.com/design_pattern/template_pattern.htm" target="_blank" rel="noopener">https://www.tutorialspoint.com/design_pattern/template_pattern.htm</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/31/Template Method Pattern02/" data-id="ck7vvtrup00e9m46wt8n9ox3l" data-title="Template Method Pattern02" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Template Method Pattern01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/31/Template Method Pattern01/" class="article-date">
+  <time class="dt-published" datetime="2018-05-30T15:00:00.000Z" itemprop="datePublished">2018-05-31</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/31/Template Method Pattern01/">Template Method Pattern01</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="Intent"><a href="#Intent" class="headerlink" title="Intent"></a>Intent</h2><ul>
+<li>Define the skeleton of an algorithm in an operation, deferring some steps to subclasses. </li>
+<li>Template Method lets subclasses redefine certain steps of an algorithm without letting them to change the algorithm’s structure.</li>
+</ul>
+<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/tmplate01.png" alt></p>
+<ul>
+<li>AbstractClass <ul>
+<li>defines abstract primitive operations that concrete subclasses define to implement steps of an algorithm. </li>
+<li>implements a template method which defines the skeleton of an algorithm. The template method calls primitive operations as well as operations defined in AbstractClass or those of other objects.</li>
+</ul>
+</li>
+<li>ConcreteClass <ul>
+<li>implements the primitive operations to carry out subclass-specific steps of the algorithm. When a concrete class is called the template method code will be executed from the base class while for each method used inside the template method will be called the implementation from the derived class.</li>
+</ul>
+</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.oodesign.com/template-method-pattern.html" target="_blank" rel="noopener">https://www.oodesign.com/template-method-pattern.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/31/Template Method Pattern01/" data-id="ck7vvtruo00e7m46wfclue6fp" data-title="Template Method Pattern01" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-State Pattern02" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2018/05/31/State Pattern02/" class="article-date">
@@ -138,7 +466,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/31/State Pattern02/" data-id="ck7t4ixks00e3me6wxt1xao8q" data-title="State Pattern02" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/31/State Pattern02/" data-id="ck7vvtruo00e5m46wyotnl9f4" data-title="State Pattern02" class="article-share-link">Share</a>
       
       
       
@@ -202,7 +530,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/31/State Pattern01/" data-id="ck7t4ixkr00e1me6wpokycr39" data-title="State Pattern01" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/31/State Pattern01/" data-id="ck7vvtrun00e3m46wa27mu8v8" data-title="State Pattern01" class="article-share-link">Share</a>
       
       
       
@@ -255,7 +583,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/28/촌수 계산/" data-id="ck7t4ixkr00dzme6wap5ovjlj" data-title="촌수 계산" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/28/촌수 계산/" data-id="ck7vvtrum00e1m46wn9mgygi9" data-title="촌수 계산" class="article-share-link">Share</a>
       
       
       
@@ -329,7 +657,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/28/Prototype Pattern01/" data-id="ck7t4ixkp00dvme6wmmilx16y" data-title="Prototype Pattern01" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/28/Prototype Pattern01/" data-id="ck7vvtrul00dxm46w0pyx9732" data-title="Prototype Pattern01" class="article-share-link">Share</a>
       
       
       
@@ -394,383 +722,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/28/Memento Pattern02/" data-id="ck7t4ixkp00dtme6wenkt128x" data-title="Memento Pattern02" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Memento Pattern01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/28/Memento Pattern01/" class="article-date">
-  <time class="dt-published" datetime="2018-05-27T15:00:00.000Z" itemprop="datePublished">2018-05-28</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/28/Memento Pattern01/">Memento Pattern01</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Intent"><a href="#Intent" class="headerlink" title="Intent"></a>Intent</h2><p>The intent of this pattern is to capture the internal state of an object without violating encapsulation and thus providing a mean for restoring the object into initial state when needed.</p>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/memento01.png" alt></p>
-<ul>
-<li>Memento<ul>
-<li>Stores internal state of the Originator object. The state can include any number of state variables.</li>
-<li>The Memento must have two interfaces.<ul>
-<li>an interface to the caretaker. This interface must not allow any operations or any access to internal state stored by the memento and thus honors encapsulation. </li>
-<li>The other interface is to the originator and allows the originator to access any state variables necessary to for the originator to restore previous state.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Originator<ul>
-<li>Creates a memento object capturing the originators internal state.</li>
-<li>Use the memento object to restore its previous state.</li>
-</ul>
-</li>
-<li>Caretaker<ul>
-<li>Responsible for keeping the memento.</li>
-<li>The memento is opaque to the caretaker, and the caretaker must not operate on it.</li>
-</ul>
-</li>
-</ul>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/mementoPattern011.png" alt></p>
-<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><img src="/image/memento02.png" alt></p>
-<p><img src="/image/memento03.png" alt></p>
-<p><img src="/image/memento04.png" alt></p>
-<p><img src="/image/memento05.png" alt></p>
-<p><img src="/image/memento06.png" alt></p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
-<li><a href="https://www.tutorialspoint.com/design_pattern/memento_pattern.htm" target="_blank" rel="noopener">https://www.tutorialspoint.com/design_pattern/memento_pattern.htm</a></li>
-<li><a href="https://www.oodesign.com/memento-pattern.html" target="_blank" rel="noopener">https://www.oodesign.com/memento-pattern.html</a></li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/28/Memento Pattern01/" data-id="ck7t4ixko00drme6wwe8nb1ck" data-title="Memento Pattern01" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Prototype Pattern02" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/28/Prototype Pattern02/" class="article-date">
-  <time class="dt-published" datetime="2018-05-27T15:00:00.000Z" itemprop="datePublished">2018-05-28</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/28/Prototype Pattern02/">Prototype Pattern02</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>Use the Prototype Pattern when creating an instance of a given class is either expensive or complicated. </p>
-<h2 id="Scenario"><a href="#Scenario" class="headerlink" title="Scenario"></a>Scenario</h2><p>Your interactive role playing game has an insatiable appetite for monsters. </p>
-<p>As your heros make their journey through a dynamically created landscape, they encounter an endless chain of foes that must be subdued. </p>
-<p>You’d like the monster’s characteristics to evolve with the changing landscape. </p>
-<p>It doesn’t make a lot of sense for bird-like monsters to follow your characters into underseas realms. </p>
-<p>Finally, you’d like to allow advanced players to create their own custom monsters. </p>
-<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><p>The Prototype Pattern allows you to make new instances by copying existing instances. </p>
-<p>(In Java this typically means using the clone() method, or de-serialization when you need deep copies.) </p>
-<p>A key aspect of this pattern is that the client code can make new instances without knowing which specific class is being instantiated. </p>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/protoMons02.png" alt></p>
-<p><img src="/image/protoMons01.png" alt></p>
-<h2 id="Benefits"><a href="#Benefits" class="headerlink" title="Benefits"></a>Benefits</h2><ul>
-<li>Hides the complexities of making new instances from the client. </li>
-<li>Provides the option for the client to generate objects whose type is not known. </li>
-<li>In some circumstances, copying an object can be more efficient than creating a new object. </li>
-</ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Head First Design Pattern</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/28/Prototype Pattern02/" data-id="ck7t4ixkq00dxme6wn9bzo69h" data-title="Prototype Pattern02" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-나이트의 이동" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/27/나이트의 이동/" class="article-date">
-  <time class="dt-published" datetime="2018-05-26T15:00:00.000Z" itemprop="datePublished">2018-05-27</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/27/나이트의 이동/">나이트의 이동</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
-<li>전형적인 BFS</li>
-<li>(1번) 큐에서 deque를 한다</li>
-<li>도착지점인지 확인한다. <ul>
-<li>도착 지점이면 끝</li>
-<li>도착 지점이 아니라면 계속</li>
-</ul>
-</li>
-<li>deque한 지점에서 이동 가능한 곳을 모두 큐에 넣는다</li>
-<li>다시 1번부터 반복한다</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/27/나이트의 이동/" data-id="ck7t4ixko00dpme6wol3c8ocf" data-title="나이트의 이동" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Sobel Operator" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/22/Sobel Operator/" class="article-date">
-  <time class="dt-published" datetime="2018-05-21T15:00:00.000Z" itemprop="datePublished">2018-05-22</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/dip/">DIP</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/22/Sobel Operator/">Sobel Operator</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>The sobel operator is very similar to Prewitt operator. </p>
-<p>It is also a derivate mask and is used for edge detection. Like Prewitt operator sobel operator is also used to detect two kinds of edges in an image:</p>
-<ul>
-<li>Vertical direction</li>
-<li>Horizontal direction</li>
-</ul>
-<h2 id="Difference-with-Prewitt-Operator"><a href="#Difference-with-Prewitt-Operator" class="headerlink" title="Difference with Prewitt Operator"></a>Difference with Prewitt Operator</h2><p>The major difference is that in sobel operator the coefficients of masks are not fixed and they can be adjusted according to our requirement unless they do not violate any property of derivative masks.</p>
-<h2 id="Vertical-Mask-of-Sobel-Operator"><a href="#Vertical-Mask-of-Sobel-Operator" class="headerlink" title="Vertical Mask of Sobel Operator"></a>Vertical Mask of Sobel Operator</h2><p><img src="/image/sobel01.png" alt></p>
-<p>This mask works exactly same as the Prewitt operator vertical mask. </p>
-<p>There is only one difference that is it has “2” and “-2” values in center of first and third column. </p>
-<p>When applied on an image this mask will highlight the vertical edges.</p>
-<h2 id="How-it-works"><a href="#How-it-works" class="headerlink" title="How it works"></a>How it works</h2><p>When we apply this mask on the image it prominent vertical edges. </p>
-<p>It simply works like as first order derivate and calculates the difference of pixel intensities in a edge region.</p>
-<p>As the center column is of zero so it does not include the original values of an image but rather it calculates the difference of right and left pixel values around that edge. </p>
-<p>Also the center values of both the first and third column is 2 and -2 respectively.</p>
-<p>This give more weight age to the pixel values around the edge region. </p>
-<p>This increase the edge intensity and it become enhanced comparatively to the original image.</p>
-<h2 id="Horizontal-Mask-of-Sobel-Operator"><a href="#Horizontal-Mask-of-Sobel-Operator" class="headerlink" title="Horizontal Mask of Sobel Operator"></a>Horizontal Mask of Sobel Operator</h2><p><img src="/image/sobel02.png" alt></p>
-<p>Above mask will find edges in horizontal direction and it is because that zeros column is in horizontal direction. </p>
-<p>When you will convolve this mask onto an image it would prominent horizontal edges in the image. </p>
-<p>The only difference between it is that it have 2 and -2 as a center element of first and third row.</p>
-<h2 id="How-it-works-1"><a href="#How-it-works-1" class="headerlink" title="How it works"></a>How it works</h2><p>This mask will prominent the horizontal edges in an image. </p>
-<p>It also works on the principle of above mask and calculates difference among the pixel intensities of a particular edge. </p>
-<p>As the center row of mask is consist of zeros so it does not include the original values of edge in the image but rather it calculate the difference of above and below pixel intensities of the particular edge. </p>
-<p>Thus increasing the sudden change of intensities and making the edge more visible.</p>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/sobel03.png" alt></p>
-<h2 id="Comparison"><a href="#Comparison" class="headerlink" title="Comparison"></a>Comparison</h2><p>As you can see that in the first picture on which we apply vertical mask, all the vertical edges are more visible than the original image. </p>
-<p>Similarly in the second picture we have applied the horizontal mask and in result all the horizontal edges are visible.</p>
-<p>So in this way you can see that we can detect both horizontal and vertical edges from an image. </p>
-<p>Also if you compare the result of sobel operator with Prewitt operator, you will find that sobel operator finds more edges or make edges more visible as compared to Prewitt Operator.</p>
-<p>This is because in sobel operator we have allotted more weight to the pixel intensities around the edges.</p>
-<h2 id="Applying-more-weight-to-mask"><a href="#Applying-more-weight-to-mask" class="headerlink" title="Applying more weight to mask"></a>Applying more weight to mask</h2><p>Now we can also see that if we apply more weight to the mask, the more edges it will get for us. </p>
-<p>There is no fixed coefficients in sobel operator, so here is another weighted operator</p>
-<p><img src="/image/sobel04.png" alt></p>
-<p>If you can compare the result of this mask with of the Prewitt vertical mask, </p>
-<p>it is clear that this mask will give out more edges as compared to Prewitt one just because we have allotted more weight in the mask.</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/22/Sobel Operator/" data-id="ck7t4ixkn00dnme6wlhie90jm" data-title="Sobel Operator" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Blurring" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/22/Blurring/" class="article-date">
-  <time class="dt-published" datetime="2018-05-21T15:00:00.000Z" itemprop="datePublished">2018-05-22</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/dip/">DIP</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/22/Blurring/">Blurring</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Blurring"><a href="#Blurring" class="headerlink" title="Blurring"></a>Blurring</h2><ul>
-<li>In blurring, we simple blur an image. </li>
-<li>An image looks more sharp or more detailed if we are able to perceive all the objects and their shapes correctly in it. </li>
-<li>For example. An image with a face, looks clear when we are able to identify eyes, ears, nose, lips, forehead e.t.c very clear. </li>
-<li>This shape of an object is due to its edges. </li>
-<li>So in blurring, we simple reduce the edge content and makes the transition form one color to the other very smooth.</li>
-</ul>
-<h2 id="Blurring-vs-zooming"><a href="#Blurring-vs-zooming" class="headerlink" title="Blurring vs zooming"></a>Blurring vs zooming</h2><ul>
-<li>You might have seen a blurred image when you zoom an image. <ul>
-<li>When you zoom an image using pixel replication, and zooming factor is increased, you saw a blurred image. This image also has less details, but it is not true blurring.</li>
-</ul>
-</li>
-<li>In zooming, you add new pixels to an image, that increase the overall number of pixels in an image, </li>
-<li>In blurring, the number of pixels of a normal image and a blurred image remains the same.</li>
-</ul>
-<h2 id="Common-example-of-a-blurred-image"><a href="#Common-example-of-a-blurred-image" class="headerlink" title="Common example of a blurred image"></a>Common example of a blurred image</h2><p><img src="/image/blur01.png" alt></p>
-<h2 id="Types-of-filters"><a href="#Types-of-filters" class="headerlink" title="Types of filters"></a>Types of filters</h2><ul>
-<li>Blurring can be achieved by many ways. </li>
-<li>The common type of filters that are used to perform blurring are.<ul>
-<li>Mean filter</li>
-<li>Weighted average filter</li>
-<li>Gaussian filter</li>
-</ul>
-</li>
-</ul>
-<h2 id="Mean-filter"><a href="#Mean-filter" class="headerlink" title="Mean filter"></a>Mean filter</h2><ul>
-<li>Mean filter is also known as Box filter and average filter. </li>
-<li>A mean filter has the following properties.<ul>
-<li>It must be odd ordered</li>
-<li>The sum of all the elements should be 1</li>
-<li>All the elements should be same</li>
-</ul>
-</li>
-<li>If we follow this rule, then for a mask of 3x3. We get the following result.</li>
-</ul>
-<p><img src="/image/blur02.png" alt></p>
-<ul>
-<li>The blurring can be increased by increasing the size of the mask. </li>
-<li>The more is the size of the mask, the more is the blurring. </li>
-<li>Because with greater mask, greater number of pixels are catered and one smooth transition is defined.</li>
-</ul>
-<p><img src="/image/blur03.png" alt></p>
-<h2 id="Weighted-average-filter"><a href="#Weighted-average-filter" class="headerlink" title="Weighted average filter"></a>Weighted average filter</h2><ul>
-<li><p>In weighted average filter, </p>
-</li>
-<li><p>we gave more weight to the center value. </p>
-</li>
-<li><p>Due to which the contribution of center becomes more then the rest of the values. Due to weighted average filtering, we can actually control the blurring.</p>
-</li>
-<li><p>Properties of the weighted average filter are.</p>
-<ul>
-<li>It must be odd ordered</li>
-<li>The sum of all the elements should be 1</li>
-<li>The weight of center element should be more then all of the other elements</li>
-</ul>
-</li>
-<li><p>Filter01</p>
-<p><img src="/image/blur04.png" alt></p>
-<ul>
-<li>The two properties are satisfied which are (1 and 3). But the property 2 is not satisfied. So in order to satisfy that we will simple divide the whole filter by 10, or multiply it with 1/10.</li>
-</ul>
-</li>
-<li><p>Filter02</p>
-<p><img src="/image/blur05.png" alt></p>
-<ul>
-<li>Dividing factor = 18.</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/22/Blurring/" data-id="ck7t4ixki00d7me6w5hobyic7" data-title="Blurring" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/28/Memento Pattern02/" data-id="ck7vvtruk00dvm46wgbhububj" data-title="Memento Pattern02" class="article-share-link">Share</a>
       
       
       
@@ -786,7 +738,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/20/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="page-number" href="/page/20/">20</a><span class="page-number current">21</span><a class="page-number" href="/page/22/">22</a><a class="page-number" href="/page/23/">23</a><span class="space">&hellip;</span><a class="page-number" href="/page/45/">45</a><a class="extend next" rel="next" href="/page/22/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/20/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="page-number" href="/page/20/">20</a><span class="page-number current">21</span><a class="page-number" href="/page/22/">22</a><a class="page-number" href="/page/23/">23</a><span class="space">&hellip;</span><a class="page-number" href="/page/46/">46</a><a class="extend next" rel="next" href="/page/22/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -825,23 +777,23 @@
       <ul>
         
           <li>
-            <a href="/2020/03/15/bigdata-chapter-04/">[빅데이터] 4장_일괄 처리 계층의 데이터 저장소</a>
+            <a href="/2020/03/17/tdd-chapter-17/">[테스트 주도 개발] 17장_Money 회고</a>
           </li>
         
           <li>
-            <a href="/2020/03/11/tdd-chapter-07/">[테스트 주도 개발] 7장_사과와 오렌지</a>
+            <a href="/2020/03/16/tdd-chapter-13/">[테스트 주도 개발] 13장_진짜로 만들기</a>
           </li>
         
           <li>
-            <a href="/2020/03/11/tdd-chapter-10/">[테스트 주도 개발] 10장_흥미로운 시간</a>
+            <a href="/2020/03/16/tdd-chapter-15/">[테스트 주도 개발] 15장_서로 다른 통화 더하기</a>
           </li>
         
           <li>
-            <a href="/2020/03/11/tdd-chapter-11/">[테스트 주도 개발] 11장_모든 악의 근원</a>
+            <a href="/2020/03/16/tdd-chapter-16/">[테스트 주도 개발] 16장_드디어, 추상화</a>
           </li>
         
           <li>
-            <a href="/2020/03/11/tdd-chapter-12/">[테스트 주도 개발] 12장_드디어 더하기</a>
+            <a href="/2020/03/16/tdd-chapter-14/">[테스트 주도 개발] 14장_바꾸기</a>
           </li>
         
       </ul>
