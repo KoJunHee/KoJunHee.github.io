@@ -71,6 +71,347 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-object-chapter4" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/11/18/object-chapter4/" class="article-date">
+  <time class="dt-published" datetime="2019-11-17T15:00:00.000Z" itemprop="datePublished">2019-11-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/object/">Object</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/11/18/object-chapter4/">[오브젝트] 4장_설계 품질과 트레이드오프</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>객체지향 설계란 올바른 객체에게 올바른 책임을 할당하며 낮은 결합도와 높은 응집도를 가진 구조를 만드는 것이다. 훌륭한 설계란 합리적인 비용안에서 변경을 수용할 수 있는 구조를 만드는 것이다.</p>
+<p>결합도와 응집도를 합리적인 수준으로 유지할 수 있는 원칙이 있다. 객체의 행동에 초점을 맞추는 것이다. </p>
+<p>이번 장에서는 책임이 아닌, 상태를 표현하는 데이터 중심의 설계를 보고 객체지향적으로 설계한 구조와 어떤 차이가 있는지 확인한다.</p>
+<p>상속, 지연 바인딩도 중요하지만, 구현 측면에 치우쳐져 있기 때문에 객체지향 패러다임의 본질과는 거리가 멀다. </p>
+<h2 id="01-데이터-중심의-영화-예매-시스템"><a href="#01-데이터-중심의-영화-예매-시스템" class="headerlink" title="01 데이터 중심의 영화 예매 시스템"></a>01 데이터 중심의 영화 예매 시스템</h2><p>상태 변경은 인터페이스의 변경을 초래하고 이 인터페이스에 의존하는 모든 객체에게 변경의 영향이 퍼진다. 그래서, 데이터에 초점을 맞춘 설계는 변경에 취약하다.</p>
+<p>책임을 드러내는 안정적인 인터페이스 뒤로 책임을 수행하기 위해 필요한 상태를 캡슐화함으로써 구현 변경에 대한 파장이 외부로 퍼져나가는 것을 방지한다. 그래서 책임에 초점을 맞추면 안정적인 설계를 할 수 있다.</p>
+<h5 id="데이터를-준비하자"><a href="#데이터를-준비하자" class="headerlink" title="데이터를 준비하자"></a>데이터를 준비하자</h5><p>데이터 중심의 설계란 객체 내부에 저장되는 데이터를 기반으로 시스템으 분할하는 방법이다.</p>
+<p>99 Page</p>
+<p>객체의 종류를 저장하는 인스턴스 변수 (movieType) 와 인스턴의 종류에 따라 배타적으로 상용될 인스턴스 변수 (discountAmount, discountPercent) 를 하나의 클래승 안에 포함시키는 방식은 데이터 중심 설계에서 흔히 보인다.</p>
+<p>메세지를 수신한 객체는 메세드를 실행해 요청에 응답한다. Screening 이 Movie 에게 처리를 위임하는 이유는 요금을 계산하는데 필요한 기본 요금과 할인 정책을 가장 잘 알고 있는 객체가 Movie 이기 때문이다. </p>
+<p>자율적인 객체란 자신의 상태를 직접 관리하고 스스로의 결정에 따라 행동하는 객체이다. 객체의 자율성을 보장하기 위해서는 필요한 정보와 정보에 기반한 행동을 같은 객체 안에 모아두어야 한다.</p>
+<p>결과적으로 객체를 자율적으로 만드는 가장 기본적인 방법은 내부 구현을 캡슐화 하는 것이다. </p>
+<p>자율적인 객체는 자신에게 할당된 책임을 수행하던 중에 필요한 정보를 알지 못하거나 외부의 도움이 필요한 경우 적절한 객체에게 메세지를 전송해 협력을 요청한다.</p>
+<h5 id="영화를-예매하자"><a href="#영화를-예매하자" class="headerlink" title="영화를 예매하자"></a>영화를 예매하자</h5><p>106 Page</p>
+<h2 id="02-설계-트레이드오프"><a href="#02-설계-트레이드오프" class="headerlink" title="02 설계 트레이드오프"></a>02 설계 트레이드오프</h2><p>데이터 중심 설계와 책임 중심 설계 구현을 위해 캡슐화, 응집도, 결합도를 사용한다.</p>
+<h5 id="캡슐화"><a href="#캡슐화" class="headerlink" title="캡슐화"></a>캡슐화</h5><p>상태와 행동을 하나의 객체 안에 모으는 이유는 객체의 내부 구현을 외부로부터 감추기위해서다. 구현이란, 나중에 변경될 가능성이 높은 어떤 것이다. 변경될 가능성이 높은 것을 구현, 상대적으로 안정적인 것을 인터페이스라고 한다.</p>
+<p>캡슐화란, 변경 가능성이 높은 것을 객체 내부로 숨기는 추상화 기법이다.</p>
+<h5 id="응집도와-결합도"><a href="#응집도와-결합도" class="headerlink" title="응집도와 결합도"></a>응집도와 결합도</h5><p>응집도는 모듈에 포함된 내부 요소들이 연관돼 있는 정도이다. 객체 또는 클래스에 얼마나 관련 높은 책임들을 할당했는지이다.</p>
+<p>결헙도는 의존성의 정도이다. 다른 모듈에 대해 얼마나 많은 지식을 갖고 있는지이다.</p>
+<p>응집도가 높은 설계에서는 하나의 요구사항 변경을 반영하기 위해 오직 하나의 모듈만 수정하면 된다. 응집도가 낮은 설계에서는 하나의 원인에 의해 변경해야 하는 부부닝 다수의 모듈에 분산돼 있기 때문에 여러 모듈을 동시 수정해야한다.</p>
+<p>내부 구현을 변경하면 이것이 다른 모듈에 영향을 미치는 경우 두 모듈 사이의 결합도가 높다고 말한다. 반면, 퍼블릭 인터페이스를 수정했을 때만 다른 모듈에 영향을 미치면 결합도가 낮다고 말한다. 그래서 구현이 아닌 인터페이스에 의존하도록 코드를 작성해야 낮은 결합도를 얻을 수 있다. 이것이 “인퍼페이스에 대해 프로그래밍 하라” 이다.</p>
+<h2 id="03-데이터-중심의-영화-예매-시스템의-문제점"><a href="#03-데이터-중심의-영화-예매-시스템의-문제점" class="headerlink" title="03 데이터 중심의 영화 예매 시스템의 문제점"></a>03 데이터 중심의 영화 예매 시스템의 문제점</h2><p>데이터 중심 설계의 문제점이다.</p>
+<ol>
+<li>캡슐화 위반</li>
+<li>높은 결합도</li>
+<li>낮은 응집도</li>
+</ol>
+<p>‘예매하라’ 라는 메세지를 처리하기 위해 적합한 객체로 Screening 을 선택하는 데는 두가지 단계가 있다.</p>
+<ol>
+<li>영화 예매를 할 수 있는 적절한 역할이 무엇인가 ?</li>
+<li>역할을 수행할 객체로 Screening 인스턴스를 선택한다.</li>
+</ol>
+<h5 id="캡슐화-위반"><a href="#캡슐화-위반" class="headerlink" title="캡슐화 위반"></a>캡슐화 위반</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Movie</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> Money fee;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> Money <span class="title">getFee</span><span class="params">()</span></span>&#123;</span><br><span class="line">    retrun fee;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">settFee</span><span class="params">(Money fee)</span></span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.fee = fee;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>getFee 와 setFee 메서드는 Movie 내부에 Money 타입의 fee 라는 인스턴스 변수가 존재한다는 사실을 퍼블릭 인터페이스에 노골적으로 드러낸다.</p>
+<p>설계할 때 협력을 고민하지 않으면, 캡슐화를 위반하는 과도한 접근자와 수정자를 가지게 되는 경향이 있다. 이것이 ‘추측에 의한 설계 전략’ 이다.</p>
+<h5 id="높은-결합도"><a href="#높은-결합도" class="headerlink" title="높은 결합도"></a>높은 결합도</h5><p>fee 타입을 변경한다고 가정해보자. 이를 위해, getFee 메서드의 반환 타입도 수정해야한다. 그리고, getFee 메서드를 호출하는 ReservationAgency 의 구현도 변경된 타입에 맞게 수정해야 한다.</p>
+<p>결합도 측면에서 또 다른 단점은, 여러 데이터 객체들을 사용하는 제어로직이 특정 객체 안에 집중된다는 것이다. 그래서 하나의 제어 객체가 다수의 데이터 객체에 강하게 결합된다. 즉, 어떤 데이터 객체를 변경하더라도 제어 객체를 함께 변경해야 한다.</p>
+<h5 id="낮은-응집도"><a href="#낮은-응집도" class="headerlink" title="낮은 응집도"></a>낮은 응집도</h5><p>서로 다른 이유로 변경되는 코드가, 하나의 모듈 안에 공존하면 응집도가 낮다고 한다.</p>
+<p>단일 책임 원칙이란, 클래스는 단 한가지의 변경 이유만 가져야 한다는 것이다.</p>
+<h2 id="04-자율적인-객체를-향해"><a href="#04-자율적인-객체를-향해" class="headerlink" title="04 자율적인 객체를 향해"></a>04 자율적인 객체를 향해</h2><h5 id="캡슐화를-지켜라"><a href="#캡슐화를-지켜라" class="headerlink" title="캡슐화를 지켜라"></a>캡슐화를 지켜라</h5><p>객체는 자신이 어떤 데이터를 가지고 있는지 내뷰에 캡슐화하고 외부에 공개하면 안된다. 객체는 스스로의 상태를 책임지고 외부에서는 인터페이스에 정의된 메서드를 통해서만 상태에 접근해야한다.</p>
+<p>속성의 가시성을 private 으로 설정해도, 접근자와 수정자를 통해 속성을 외부에 제공하고 있으면 캡슐화를 위반한 것이다.</p>
+<h5 id="스스로-자신의-데이터를-책임지는-객체"><a href="#스스로-자신의-데이터를-책임지는-객체" class="headerlink" title="스스로 자신의 데이터를 책임지는 객체"></a>스스로 자신의 데이터를 책임지는 객체</h5><p>객체 내부에 저장되는 데이터보다, 객체가 협력에 참여하며 수행할 책임을 정의하는 오퍼레이션이 중요하다.</p>
+<h2 id="05-하지만-여전히-부족하다"><a href="#05-하지만-여전히-부족하다" class="headerlink" title="05 하지만 여전히 부족하다"></a>05 하지만 여전히 부족하다</h2><h5 id="캡슐화-위반-1"><a href="#캡슐화-위반-1" class="headerlink" title="캡슐화 위반"></a>캡슐화 위반</h5><p>기간 조건을 판단하는</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">isDiscountable(DayofWeek dayOfWeek, LocalTime time)</span><br></pre></td></tr></table></figure>
+
+<p>메서드의 시그니처을 보면, 객체 내부에 요일과 시간정보가 인스턴스 변수로 포함돼 있다는 것을 인터페이스를 통해 외부에 노출한다.</p>
+<p>DiscountCondition 의 속성을 변경하면, isDiscountable 메서드의 파라미터를 수정하고 해당 메서드를 사용하는 모든 클라이언트도 함께 수정해야한다.</p>
+<p>캡슐화란, 변할 수 있는 어떤 것이라도 감추는 것이다.</p>
+<h5 id="높은-결합도-1"><a href="#높은-결합도-1" class="headerlink" title="높은 결합도"></a>높은 결합도</h5><p>결합도가 높으면 한 객체의 구현을 변경하면 다른 객체에 변경의 영향이 전파될 확률이 높다. </p>
+<h5 id="낮은-응집도-1"><a href="#낮은-응집도-1" class="headerlink" title="낮은 응집도"></a>낮은 응집도</h5><p>응집도가 낮은 이유는 캡슐화를 위반했기 때문이다.</p>
+<h2 id="06-데이터-중심-설계의-문제점"><a href="#06-데이터-중심-설계의-문제점" class="headerlink" title="06 데이터 중심 설계의 문제점"></a>06 데이터 중심 설계의 문제점</h2><p>변경에 취약한 이유는</p>
+<ol>
+<li>너무 이른시기에 데이터를 결정하도록 강요한다.</li>
+<li>협력이라는 문맥을 고려하지 않고 객체를 고립시킨 채 오퍼레이션을 결정한다.</li>
+</ol>
+<p>#####데이터 중심 설계는 객체의 행동보다 상태에 초점을 맞춘다.</p>
+<p>데이터는 구현의 일부다. </p>
+<p>데이터 중심 설계는 설계 초반에 데이터에 관해 결정하도록 강요해서 너무 이른시기에 내부 구현에 초점을 맞춘다. </p>
+<h5 id="데이터-중심-설계는-객체를-고립시킨-채-오퍼레이션을-결정한다"><a href="#데이터-중심-설계는-객체를-고립시킨-채-오퍼레이션을-결정한다" class="headerlink" title="데이터 중심 설계는 객체를 고립시킨 채 오퍼레이션을 결정한다."></a>데이터 중심 설계는 객체를 고립시킨 채 오퍼레이션을 결정한다.</h5><p>협력의 문맥 안에서 필요한 책임을 결정하고 이를 수행할 적절한 객체를 결정하는 것이 가장 중요하다.</p>
+<hr>
+<p>오브젝트 &lt;조영호&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2019/11/18/object-chapter4/" data-id="ck860sxs500pgr36wlu490nkp" data-title="[오브젝트] 4장_설계 품질과 트레이드오프" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-object-chapter3" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/11/12/object-chapter3/" class="article-date">
+  <time class="dt-published" datetime="2019-11-11T15:00:00.000Z" itemprop="datePublished">2019-11-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/object/">Object</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/11/12/object-chapter3/">[오브젝트] 3장_역할,책임,협력</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>객체지향 설계의 핵심은 협력을 구성하기 위해 적절한 객체를 찾고 적절한 책임을 할당하는 과정에 있다. </p>
+<p>상속, 지연 바인딩도 중요하지만, 구현 측면에 치우쳐져 있기 때문에 객체지향 패러다임의 본질과는 거리가 멀다. </p>
+<h2 id="01-협력"><a href="#01-협력" class="headerlink" title="01 협력"></a>01 협력</h2><p>앞장의 영화 예매 시스템에서 중요한 것은, 다양한 객체들이 영화 예매라는 기능을 위해 메세지를 주고 받으면서 상호작용 한다는 점이다. </p>
+<p>객체들이 애플리케이션의 기능을 구현하기 위해 수행하는 상호작용을 협력이라고 한다. 객체가 협력에 참여하기 위해 수행하는 로직은 책임이다. 객체들이 구행하는 책임들이 모여 객체가 수행하는 역할을 구성한다.</p>
+<h5 id="협력"><a href="#협력" class="headerlink" title="협력"></a>협력</h5><p>두 객체 사이의 협력은 하나의 객체가 다른 객체에게 도움을 요청할 때 시작된다. 메세지 전송은 객체 간 협력을 위해 사용할 수 있는 유일한 수단이다.</p>
+<p>메세지를 수신한 객체는 메세드를 실행해 요청에 응답한다. Screening 이 Movie 에게 처리를 위임하는 이유는 요금을 계산하는데 필요한 기본 요금과 할인 정책을 가장 잘 알고 있는 객체가 Movie 이기 때문이다. </p>
+<p>자율적인 객체란 자신의 상태를 직접 관리하고 스스로의 결정에 따라 행동하는 객체이다. 객체의 자율성을 보장하기 위해서는 필요한 정보와 정보에 기반한 행동을 같은 객체 안에 모아두어야 한다.</p>
+<p>결과적으로 객체를 자율적으로 만드는 가장 기본적인 방법은 내부 구현을 캡슐화 하는 것이다. </p>
+<p>자율적인 객체는 자신에게 할당된 책임을 수행하던 중에 필요한 정보를 알지 못하거나 외부의 도움이 필요한 경우 적절한 객체에게 메세지를 전송해 협력을 요청한다.</p>
+<h5 id="협력이-설계를-위한-문맥을-결정한다"><a href="#협력이-설계를-위한-문맥을-결정한다" class="headerlink" title="협력이 설계를 위한 문맥을 결정한다"></a>협력이 설계를 위한 문맥을 결정한다</h5><p>객체가 참여하는 협력이 객체를 구성하는 행동과 상태를 결정한다. 협력은 객체를 설계하는데 필요한 일종의 문맥을 제공한다.</p>
+<p>Movie 가 기본 요금은 fee 와 할인 정책인 discountPolicy 라는 인스턴스 변수를 상태의 일부로 포함하고 있는 이유는 요금 계산이라는 행동을 위해 이 정보들이 필요하기 때문이다.</p>
+<h2 id="02-책임"><a href="#02-책임" class="headerlink" title="02 책임"></a>02 책임</h2><p>객체의 책임은 객체가 ‘하는 것’ 과 ‘아는 것’ 으로 구성된다.</p>
+<ul>
+<li>Movie 하는 것<ul>
+<li>요금을 계산하는 것</li>
+<li>예매 가격을 계산하는 것</li>
+</ul>
+</li>
+<li>Movie 아는 것<ul>
+<li>가격</li>
+<li>할인 정책</li>
+</ul>
+</li>
+</ul>
+<p>객체지향 개발에서 가장 중요한 능력은 책임을 능숙하게 소프트웨어 객체에 할당하는 것이다. 적절한 협력이 적절한 책임을 제공하고, 적절한 책임을 적절한 객체에게 할당해야한 단순하고 유연한 설계를 만들 수 있다.</p>
+<p>관람객이 스스로 가방 안의 현금과 초대장을 처리하고, 판매원이 스스로 매표소의 티켓과 판매 요금을 다루게 한다면 모든 문제는 해결된다. 즉, 자율적인 존재로 만들어야한다.</p>
+<h5 id="책임-할당"><a href="#책임-할당" class="headerlink" title="책임 할당"></a>책임 할당</h5><p>객체는 협력에 필요한 지식과 방법을 가장 잘 알고 있는 객체에게 도움을 요청한다. </p>
+<ol>
+<li><p>책임을 할당한다는 것은 메세지의 이름을 결정하는 것과 같다. ex) 예매하라</p>
+</li>
+<li><p>메세지를 선택했으면 메세지를 처리할 적절한 객체를 선택해야한다. 영화 예매와 관련된 정보를 가장 많이 알고 있는 객체에게 할당한느 것이 바람직한다. ex) Screening</p>
+</li>
+<li><p>영화 예매를 위해서는 예매 가격을 계산해야한다. Screening 은 예매에 대해서는 정보 전문가지만, 영화 가격 자체에 대해서는 모른다. 그래서 외부의 객체에게 가격 계산을 요청해야한다. 새로운 메세지가 필요하다. ex) 가격을 계산하라</p>
+</li>
+<li><p>가격 계산을 위해 정보 전문가가 필요하다. ex) Movie</p>
+</li>
+</ol>
+<h5 id="책임-주도-설계"><a href="#책임-주도-설계" class="headerlink" title="책임 주도 설계"></a>책임 주도 설계</h5><p> 책임 주도 설계 : 책임을 찾고 책임을 수행할 적절한 객체를 찾아 책임을 할당하는 방식으로 협력을 설계하는 방법</p>
+<p>협력은 객체를 설계하기 위한 구체적인 문맥을 제공한다. 협력이 책임을 이끌어내고 책임이 협력에 참여할 객체를 결정한다. </p>
+<p>책임을 할당할 때 고려해야할 두 가지 요소</p>
+<ol>
+<li>메세지가 객체를 결정</li>
+<li>행동이 상태를 결정</li>
+</ol>
+<h5 id="메세지가-객체를-결정한다"><a href="#메세지가-객체를-결정한다" class="headerlink" title="메세지가 객체를 결정한다"></a>메세지가 객체를 결정한다</h5><p>메세지가 객체를 선택해야하는 이유</p>
+<ol>
+<li>객체가 최소한의 인터페이스를 가지게 된다. </li>
+<li>추상적인 인터페이스를 가질 수 있다. 무엇을 하는지만 표현해야지, 어떻게 수행하는지는 노출해서는 안된다.</li>
+</ol>
+<h5 id="행동이-상태를-결정"><a href="#행동이-상태를-결정" class="headerlink" title="행동이 상태를 결정"></a>행동이 상태를 결정</h5><p>객체가 협력에 적합한지를 결정하는 것은 그 객체의 행동이다. 상태는 단지 객체가 행동을 정상 수행하기 위한 필요한 재료일 뿐이다.</p>
+<p>협력이 객체의 행동을 결정하고 행동이 상태를 결정한다. 그 행동이 객체의 책임이다.</p>
+<h2 id="03-역할"><a href="#03-역할" class="headerlink" title="03 역할"></a>03 역할</h2><p>역할은, 객체가 어떤 특정한 협력 안에서 수행하는 책임의 집합이다.</p>
+<p>‘예매하라’ 라는 메세지를 처리하기 위해 적합한 객체로 Screening 을 선택하는 데는 두가지 단계가 있다.</p>
+<ol>
+<li>영화 예매를 할 수 있는 적절한 역할이 무엇인가 ?</li>
+<li>역할을 수행할 객체로 Screening 인스턴스를 선택한다.</li>
+</ol>
+<h5 id="유연하고-재사용-가능한-협력"><a href="#유연하고-재사용-가능한-협력" class="headerlink" title="유연하고 재사용 가능한 협력"></a>유연하고 재사용 가능한 협력</h5><p>AmountDiscountPolicy 와 PercentDiscountPolicy 인스턴스라는 두가지 종류의 객체가 할인 요금을 계산하라 라는 메세지에 응답할 수 있어야한다. 그럼, 두 종류의 객체가 참여하는 협력을 개별적으로 만들어야할까?</p>
+<p>할인 요금을 계산하라라는 메세지에 응답할 수 있는 대표자를 생각한다면 두 협력을 하나로 통합할 수 있다. 이 대표자를 협력에서는 두 종류의 객체로 바꿔 끼울 수 있는 슬롯으로 생각할 수 있다. 이 슬롯이 역할이다.</p>
+<p>변경 전의 절차적 설계에서는 Theater 가 전체적인 작업을 도맡아 했다. 변경 후의 객체지향 설계에서는 각 객체가 자신이 맡은 일을 스스로 처리했다. </p>
+<h5 id="역할의-구현"><a href="#역할의-구현" class="headerlink" title="역할의 구현"></a>역할의 구현</h5><p>역할을 구현하는 방법</p>
+<ol>
+<li>추상 클래스 : 책임의 일부를 구현해 놓은 것</li>
+<li>인터페이스 : 구현 하나 없이, 책임의 집합을 나열해 놓은 것</li>
+</ol>
+<h5 id="객체-대-역할"><a href="#객체-대-역할" class="headerlink" title="객체 대 역할"></a>객체 대 역할</h5><p>협력에 참여하는 후보가 여러 종류의 객체에 의해 수행될 필요가 있다면 그 후보는 역할이 된다. 한 종류의 객체만이 협력에 참여할 필요가 있다면 후보는 객체가 된다.</p>
+<p>설계 초반에는 적절한 책임과 협력의 큰 그림을 탐색하는 것이 중요하다. 단순하게 객체로 시작하고 반복적으로 책임과 협력을 정제하며 필요한 순간에 객체로부터 역할을 분리하는 것이 좋다.</p>
+<h5 id="역할과-추상화"><a href="#역할과-추상화" class="headerlink" title="역할과 추상화"></a>역할과 추상화</h5><p>추상화를 이용한 설계의 장점</p>
+<ol>
+<li>중요한 정책을 상위 수준에서 단순화할 수 있다.</li>
+<li>설계가 유연해진다.</li>
+</ol>
+<h5 id="배우와-배역"><a href="#배우와-배역" class="headerlink" title="배우와 배역"></a>배우와 배역</h5><p>배우는 연극이 상영될 때 배역이라는 특정한 역할을 연기한다 == 객체는 협력이라는 실행 문맥안에서 특정한 역할을 수행한다.</p>
+<p>연극 배우는 연극이 끝나면 배역을 잊고 원래 자기로 돌아온다 == 객체는 협력이 끝나고 협력에서의 역할을 잊고 원래의 객체로 돌아온다.</p>
+<p>하나의 배역을 여러 배우가 연기할 수 있다 == 동일한 역할을 수행하는 하나 이상의 객체들이 존재할 수 있다</p>
+<p>객체는 다수의 역할을 보유할 수 있지만 객체가 참여하는 특정 협력은 객체의 한가지 역할만 바라볼 수 있다.</p>
+<hr>
+<p>오브젝트 &lt;조영호&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2019/11/12/object-chapter3/" data-id="ck860sxq900m9r36wbmol07hb" data-title="[오브젝트] 3장_역할,책임,협력" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-object-chapter2" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/11/06/object-chapter2/" class="article-date">
+  <time class="dt-published" datetime="2019-11-05T15:00:00.000Z" itemprop="datePublished">2019-11-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/object/">Object</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/11/06/object-chapter2/">[오브젝트] 2장_객체지향 프로그래밍</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>이번 장의 목표는 이 책의 다양한 주제들을 가볍게 살펴보는 것이다.</p>
+<h2 id="01-영화-예매-시스템"><a href="#01-영화-예매-시스템" class="headerlink" title="01 영화 예매 시스템"></a>01 영화 예매 시스템</h2><h5 id="요구사항-살펴보기"><a href="#요구사항-살펴보기" class="headerlink" title="요구사항 살펴보기"></a>요구사항 살펴보기</h5><p>38 Page </p>
+<h2 id="02-객체지향-프로그래밍을-향해"><a href="#02-객체지향-프로그래밍을-향해" class="headerlink" title="02 객체지향 프로그래밍을 향해"></a>02 객체지향 프로그래밍을 향해</h2><h5 id="협력-객체-클래스"><a href="#협력-객체-클래스" class="headerlink" title="협력, 객체, 클래스"></a>협력, 객체, 클래스</h5><p>객치지향 패러다임은, 클래스가 아닌 객체에 초점을 맞춰야한다. 다음 두가지에 집중해야 한다.</p>
+<ol>
+<li><p>어떤 클래스가 필요한지를 고민하기 전에, 어떤 객체들이 필요한지 고민하라. 클래스는 공통적인 상태와 행동을 공유하는 객체들을 추상화한 것이다.</p>
+</li>
+<li><p>객체는 독립적인 존재가 아니라, 기능 구현을 위한 협력 공동체의 일원이다.</p>
+</li>
+</ol>
+<h5 id="도메인의-구조를-따르는-프로그램-구조"><a href="#도메인의-구조를-따르는-프로그램-구조" class="headerlink" title="도메인의 구조를 따르는 프로그램 구조"></a>도메인의 구조를 따르는 프로그램 구조</h5><p>도메인이란, 문제를 해결하기 위해 사용자가 프로그램을 사용하는 분야이다. </p>
+<p>객체지향 패러다임에서는, 도메인을 구성하는 개념들이 프로그램의 객체와 클래스로 매끄럽게 연결된다. 일반적으로, 클래스의 이름은 대응되는 도메인의 개념의 이름과 동일하거나 유사하게 지어야한다. </p>
+<h5 id="클래스-구현하기"><a href="#클래스-구현하기" class="headerlink" title="클래스 구현하기"></a>클래스 구현하기</h5><p>클래스를 구현하거나 다른 개발자에 의해 개발된 클래스를 사용할 때 가장 중요한 것은, 클래스의 경계를 구분짓는 것이다. </p>
+<p>외부에서는 객체의 속성에 직접 접근할 수 없도록 막고 적절한 public 메서드를 통해서만 내부 상태를 변경할 수 있게해야한다. 경계의 명확성이 객체의 자율성을 보장하기 때문이다. 또, 프로그래머에게 구현의 자유를 제공하기 때문이다.</p>
+<h5 id="자율적인-객체"><a href="#자율적인-객체" class="headerlink" title="자율적인 객체"></a>자율적인 객체</h5><p>객체는 스스로 판단하고 행동하는 자율적인 존재다. 객체가 자율적인 존재가 되기 위해서는, 외부의 간섭을 최소화해야한다.</p>
+<p>캡슐화와 접근 제어는 객체를 두 부분으로 나눈다. (인터베이스와 구현의 분리)</p>
+<ol>
+<li>Public Interface : 외부에서 접근 가능한 부분</li>
+<li>Implementation : 외부에서 접근 불가능한 부분</li>
+</ol>
+<h5 id="프로그래머의-자유"><a href="#프로그래머의-자유" class="headerlink" title="프로그래머의 자유"></a>프로그래머의 자유</h5><p>프로그래머의 역할은, 클래스 작성자와 클라이언트 프로그래머로 구분할 수 있다.</p>
+<ol>
+<li>클래스 작성자 : 새로운 데이터 타입을 프로그램에 추가</li>
+<li>클라이언트 프로그래머 : 클래스 작성자가 추가한 데이터 타입을 사용</li>
+</ol>
+<p>클래스 작성자는 클라이언트 프로그래머에게 필요한 부분만 공개하고 나머지는 숨겨야한다. 클라이언트 프로그래머가 숨겨 놓여진 부분에 접근하는것을 막아 내부 구현을 마음대로 변경할 수 있다. (구현 은닉)</p>
+<p>객체의 외부와 내부를 구분하면 클라이언트 프로그래머가 알아야할 지식 양이 줄고 클래스 작성자가 자유롭게 구현을 변경할 수 있다. 변경될 가능성이 있는 세부적인 내용은 private 영역으로 감춰 변경으로 인한 혼란을 막을 수 있다.</p>
+<h5 id="협력하는-객체들의-공동체"><a href="#협력하는-객체들의-공동체" class="headerlink" title="협력하는 객체들의 공동체"></a>협력하는 객체들의 공동체</h5><p>금액을 Money 클래스로 정의하면, 저장하는 값이 금액과 관련돼 있다는 의미를 전달 할 수 있다. (Long Type 은 그렇지 못함) 객체지향의 장점은 객체를 이용해 도메인의 의미를 풍부하게 표현할 수 있다. </p>
+<p>객체지향 프로그램을 작성할 때, 협력의 관점에서 어떤 객체가 필요한지 결정하고, 객체들의 공통 상태와 행위를 구현하기 위해 클래스를 작성한다.</p>
+<h5 id="협력"><a href="#협력" class="headerlink" title="협력"></a>협력</h5><p>객체는 다른 객체의 인터페이스에 공개된 행동을 수행하도록 ‘요청’ 할 수 있다. 요청 받은 객체는 요청 처리후에 ‘응답’ 한다. </p>
+<p>객체가 다른 객체와 상호작용하는 방법은, ‘메세지’ 를 전송하는 것뿐이다. 메세지를 받는 객체는 메세지를 ‘수신했다’ 고 한다. 수신된 메세지를 처리하기 위한 자신만의 방법을 ‘메서드’ 라고 한다.</p>
+<p>메시지를 수신한 Movie 는 스스로 자신의 적절한 메서드를 선택한다. </p>
+<h2 id="03-할인-요금-구하기"><a href="#03-할인-요금-구하기" class="headerlink" title="03 할인 요금 구하기"></a>03 할인 요금 구하기</h2><h5 id="할인-요금-계산을-위한-협력-시작하기"><a href="#할인-요금-계산을-위한-협력-시작하기" class="headerlink" title="할인 요금 계산을 위한 협력 시작하기"></a>할인 요금 계산을 위한 협력 시작하기</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Moview</span></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> String title;</span><br><span class="line">  <span class="keyword">private</span> Money fee;</span><br><span class="line">  ...</span><br><span class="line">    </span><br><span class="line">  <span class="function"><span class="keyword">public</span> Money <span class="title">calculateMoneyFee</span><span class="params">(Screening screening)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> fee.minus(discountPolicy.caculateDiscountAmount(screening));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>위 메서드에서, 어떤 할인 정책을 사용할것인지 결정하는 코드가 안보인다. 여기에는 상속과 다형성 개념이 숨겨져있다.</p>
+<h5 id="할인-정책과-할인-조건"><a href="#할인-정책과-할인-조건" class="headerlink" title="할인 정책과 할인 조건"></a>할인 정책과 할인 조건</h5><p>할인 정책은, 금액할인 정책 (AmountDiscountPolicy) 과 비율 할인 정책 (PercentDiscountPolicy) 이 있다. 두 클래스는 대부분의 코드가 유사하고 할인 요금 계산하는 방식만 조금 다르기 때문에, 중복 코드 제거를 위해 추상 클래스를 사용한다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">DiscountPolicy</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> List&lt;DiscountCondition&gt; conditions = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">  </span><br><span class="line">	...</span><br><span class="line">    </span><br><span class="line">  <span class="function"><span class="keyword">public</span> Money <span class="title">caculateDiscountAmount</span><span class="params">(Screening screening)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(DiscountCondition each : conditions)&#123;</span><br><span class="line">      <span class="keyword">if</span>(each.isSatifiedBy(screening))&#123;</span><br><span class="line">        <span class="keyword">return</span> getDiscountAmount(screening);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> Money.ZERO;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">abstract</span> <span class="keyword">protected</span> Money <span class="title">getDiscountAmount</span><span class="params">(Screening screening)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이처럼 부모 클래스에 기본적인 알고리즘의 흐름을 구현하고 중간에 필요한 처리를 자식 클래스에 위임하는 디자인 패턴을, 템플릿 메서드 패턴이라고 한다.</p>
+<h5 id="할인-정책-구성하기"><a href="#할인-정책-구성하기" class="headerlink" title="할인 정책 구성하기"></a>할인 정책 구성하기</h5><p>생성자의 파라미터 목록을 이용해 초기화에 필요한 정보를 전달하도록 강제하면, 올바른 상태를 가진 객체의 생성을 보장할 수 있다.</p>
+<h2 id="04-상속과-다형성"><a href="#04-상속과-다형성" class="headerlink" title="04 상속과 다형성"></a>04 상속과 다형성</h2><p>Movie 내부에 할인 정책을 결정하는 조건문이 없는데 어떻게 영화 요금을 계산할 때 할인 정책과 비율 할인 정책을 선택할 수 있을까? 답은 상속과 다형성이다.</p>
+<h5 id="컴파일-시간-의존성과-실행-시간-의존성"><a href="#컴파일-시간-의존성과-실행-시간-의존성" class="headerlink" title="컴파일 시간 의존성과 실행 시간 의존성"></a>컴파일 시간 의존성과 실행 시간 의존성</h5><p>코드의 의존성과 실행시점의 의존성이 서로 다를 수 있다.</p>
+<p>Movie 인스턴스는 실행 시에 AmountDiscountPolicy 나 PercentDiscountPolicy 의 인스턴스에 의존해야한다. 하지만 코드 수준에서는 두 클래스 중에 어떤 것에도 의존하지 않는다. 오직 추상클래스인 DiscountPolicy 에 의존한다.</p>
+<p>Movie 인스턴스를 생성하는 코드를 보면, 생성자에서 DiscountPolicy 타입의 객체를 인자로 받는다. 이제 실행시, AmountDiscountPolicy 클래스의 인스턴스에 의존하게 된다. </p>
+<h5 id="차이에-의한-프로그래밍"><a href="#차이에-의한-프로그래밍" class="headerlink" title="차이에 의한 프로그래밍"></a>차이에 의한 프로그래밍</h5><p>부모 클래스와 다른 부분만을 추가해서 새로운 클래스를 쉽고 빠르게 만드는 방법을, 차이에 의한 프로그래밍이라고 한다. 상속을 이용하면 클래스 사이의 관게를 설정하는 것만으로 기존 클래스가 가진 모든 속성과 행동을 새로운 클래스에 포함시킬 수 있다.</p>
+<h5 id="상속과-인터페이스"><a href="#상속과-인터페이스" class="headerlink" title="상속과 인터페이스"></a>상속과 인터페이스</h5><p>자식 클래스는 부모 클래스가 수신할 수 있는 모든 메세지를 수신할 수 있기 때문에, 외부 객체는 자식 클래스를 부모 클래스와 동일한 타입으로 간주할 수 있다. 자식 클래스가 부모 클래스를 대신하는 것을 업캐스팅이라고 한다.</p>
+<h5 id="다형성"><a href="#다형성" class="headerlink" title="다형성"></a>다형성</h5><p>Movie 는 동일한 메세지를 전송하지만, 실제로 어떤 메서드가 실행될 것인지는 메시지를 수신하는 객체의 클래스가 무엇이냐에 따라 다르다. 이것이 다형성이다. </p>
+<p>다형성은 컴파일 시간 의존성과 실행 시간 의존성을 다르게 만들 수 있는 객체지향 특성을 이용해 서로 다른 메서드를 실행할 수 있게 한다.</p>
+<p>다형성을 구현하는 방법은 다양하지만, 공통점은 메세지에 응답하기 위해 실행될 메서드를 컴파일 시점이 아닌 실행시점에 결정한다는 것이다. 이를 지연바인딩 / 동적바인딩 이라고 한다.</p>
+<h5 id="인터페이스와-다형성"><a href="#인터페이스와-다형성" class="headerlink" title="인터페이스와 다형성"></a>인터페이스와 다형성</h5><p>종종 구현을 공유할 필요가 없고, 순수하게 인터페이스만 공유하고 싶을 때가 있다. 자바에서는 인터페이스라는 프로그래밍 요소를 제공한다.</p>
+<h2 id="05-추상화와-유연성"><a href="#05-추상화와-유연성" class="headerlink" title="05 추상화와 유연성"></a>05 추상화와 유연성</h2><h5 id="추상화의-힘"><a href="#추상화의-힘" class="headerlink" title="추상화의 힘"></a>추상화의 힘</h5><p>같은 계층에 속하는 클래스들이 공통으로 가질 수 있는 인턴페이스를 구현하며 구현의 일부 (추상클래스) 또는 전체 (인터페이스) 를 자식 클래스가 결정할 수 있도록 결정권을 위임한다.</p>
+<p>추상화의 장점은,</p>
+<ol>
+<li>세부사항에 억눌리지 않고 상위 개념만으로 도메인의 중요한 개념을 설명할 수 있다</li>
+<li>기존 구조를 수정하지 않고 새로운 기능을 쉽게 추가하고 확장할 수 있다.</li>
+</ol>
+<h5 id="유연한-설계"><a href="#유연한-설계" class="headerlink" title="유연한 설계"></a>유연한 설계</h5><p>책임의 위치를 결정하기 위해 조건문을 사용하는 것은 협력의 설계 측면에서 좋지 않은 선택이다. 예를 들면, 0원 이라는 할인 요금을 계산할 책임을 그대로 DiscountPolicy 계층에 유지하기 위해, NoneDiscountPolicy 클래스를 추가할 수 있다.</p>
+<p>결론은, 유연성이 필요한 곳에 추상화를 사용해라.</p>
+<h5 id="추상-클래스와-인터페이스-트레이드오프"><a href="#추상-클래스와-인터페이스-트레이드오프" class="headerlink" title="추상 클래스와 인터페이스 트레이드오프"></a>추상 클래스와 인터페이스 트레이드오프</h5><p>코드에는 합당한 이유가 있어야한다.</p>
+<h5 id="코드-재사용"><a href="#코드-재사용" class="headerlink" title="코드 재사용"></a>코드 재사용</h5><p>합성은, 다른 객체의 인스턴스를 자신의 인스턴스 변수로 포함해서 재사용하는 방법이다.</p>
+<h5 id="상속"><a href="#상속" class="headerlink" title="상속"></a>상속</h5><p>상속의 단점은, </p>
+<ol>
+<li>캡슐화 위반이다.  부모 클래스가 변경되면,  자식 클래스도 함께 변경될 확률이 높다.</li>
+<li>설계가 유연하지 않다. 부모클래스와 자식클래스의 관계를 컴파일 시점에 결정해서 실행시점에 객체의 종류를 변경할 수 없다.</li>
+</ol>
+<p>인스턴스 변수로 연결하면, 실행 시점에 할인 정책을 간단히 변경할 수 있다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Movie</span></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> DiscountPolicy discountPolicy;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">changeDiscountPolicy</span><span class="params">(DiscountPolicy discountPolicy)</span></span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.discountPolicy = discountPolicy;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Moview avater = <span class="keyword">new</span> Movie(....., <span class="keyword">new</span> AmountDiscountPolicy);</span><br><span class="line">avater.changeDiscountPolicy(<span class="keyword">new</span> PercentDiscountPolicy());</span><br></pre></td></tr></table></figure>
+
+<h5 id="합성"><a href="#합성" class="headerlink" title="합성"></a>합성</h5><p>인터페이스에 정의된 메세지를 통해서만 코드를 재사용하는 방법이 합성이다.</p>
+<p>합성은 상속의 두가지 문제를 해결한다.</p>
+<ol>
+<li>인터페이스에 정의된 메세지를 통해서만 재사용하기 때문에 구현을 효과적으로 캡슐화한다.</li>
+<li>의존하는 인스턴스를 교체하는 것이 쉽기 때문에 유연하다. 상속은 클래스를 통해 강하게 결합, 합성은 메세지를 통해 느슨하게 결합.</li>
+</ol>
+<hr>
+<p>오브젝트 &lt;조영호&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2019/11/06/object-chapter2/" data-id="ck860sxs400per36wm40qxnvg" data-title="[오브젝트] 2장_객체지향 프로그래밍" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-object-chapter1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2019/11/04/object-chapter1/" class="article-date">
@@ -136,7 +477,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/11/04/object-chapter1/" data-id="ck7vvtrxe00mcm46wehpux43t" data-title="[오브젝트] 1장_객체, 설계" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/11/04/object-chapter1/" data-id="ck860sxq900m7r36w5f3r0ylq" data-title="[오브젝트] 1장_객체, 설계" class="article-share-link">Share</a>
       
       
       
@@ -402,7 +743,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/08/07/spark-sql/" data-id="ck7vvts1500qjm46wkb12ubsw" data-title="[스파크2 프로그래밍] 5장_스파크SQL 과 데이터프레임,데이터셋" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/08/07/spark-sql/" data-id="ck860sxtj00qjr36wtdxm57c7" data-title="[스파크2 프로그래밍] 5장_스파크SQL 과 데이터프레임,데이터셋" class="article-share-link">Share</a>
       
       
       
@@ -594,7 +935,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/07/16/rdd/" data-id="ck7vvtrzl00pcm46w8v1vpeqq" data-title="[스파크2 프로그래밍] 2장_RDD" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/07/16/rdd/" data-id="ck860sxs300pcr36w9nzy1u63" data-title="[스파크2 프로그래밍] 2장_RDD" class="article-share-link">Share</a>
       
       
       
@@ -693,7 +1034,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/07/01/spark-config/" data-id="ck7vvtrxd00mam46w5owsivzd" data-title="[스파크2 프로그래밍] 4장_스파크 설정" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/07/01/spark-config/" data-id="ck860sxq700m2r36w0t4boobw" data-title="[스파크2 프로그래밍] 4장_스파크 설정" class="article-share-link">Share</a>
       
       
       
@@ -823,7 +1164,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/07/01/spark-cluster/" data-id="ck7vvts0n00qem46wibi9kb0u" data-title="[스파크2 프로그래밍] 3장_클러스터 환경" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/07/01/spark-cluster/" data-id="ck860sxt100qer36wha5z1fh5" data-title="[스파크2 프로그래밍] 3장_클러스터 환경" class="article-share-link">Share</a>
       
       
       
@@ -938,7 +1279,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/06/23/spark-intro/" data-id="ck7vvtrzk00pam46w2l23sz70" data-title="[스파크2 프로그래밍] 1장_스파크 소개" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/06/23/spark-intro/" data-id="ck860sxs200par36wq44ai7kn" data-title="[스파크2 프로그래밍] 1장_스파크 소개" class="article-share-link">Share</a>
       
       
       
@@ -1026,418 +1367,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/06/19/collections/" data-id="ck7vvtrxc00m8m46wcz3za27k" data-title="[자바 ORM 표준 JPA 프로그래밍] 14장_컬렉션과 부가 기능" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-web-application-persistencen-context" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/06/12/web-application-persistencen-context/" class="article-date">
-  <time class="dt-published" datetime="2019-06-11T15:00:00.000Z" itemprop="datePublished">2019-06-12</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/jpa/">JPA</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/06/12/web-application-persistencen-context/">[자바 ORM 표준 JPA 프로그래밍] 13장_웹 어플리케이션과 영속성 관리</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>이번 장에서는 컨테이너 환경에서 JPA 가 동작하는 내부 동작 방식을 이해하고, 발생할 수 있는 문제점과 해결방안을 정리합니다.</p>
-<h4 id="13-1-트렌젝션-범위의-영속성-컨텍스트"><a href="#13-1-트렌젝션-범위의-영속성-컨텍스트" class="headerlink" title="13.1 트렌젝션 범위의 영속성 컨텍스트"></a>13.1 트렌젝션 범위의 영속성 컨텍스트</h4><p>스프링이나 J2EE 컨테이너 환경에서 JPA 를 사용하면 컨테이너가 제공하는 전략을 따라야합니다.</p>
-<h5 id="13-1-1-스프링-컨테이너의-기본-전략"><a href="#13-1-1-스프링-컨테이너의-기본-전략" class="headerlink" title="13.1.1 스프링 컨테이너의 기본 전략"></a>13.1.1 스프링 컨테이너의 기본 전략</h5><p>스프링 컨테이너는 트렌젝션 범위의 영속성 컨텐스트 전략을 기본으로 합니다. 즉, 트렌젝션을 시작할 때 영속성 컨텍스트를 생성하고 끝날 때 영속성 컨텍스트를 종료합니다. 그리고, 같은 트렌젝션 안에서는 항상 같은 영속성 컨텍스트에 접근합니다. </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HelloController</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Autowired</span> HelloService helloService;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">hello</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//반환된 member 엔티티는 준영속 상태</span></span><br><span class="line">    Member member = helloService.logic();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HelloService</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 엔티티 메니저 주입</span></span><br><span class="line">  <span class="meta">@PersistenceContext</span></span><br><span class="line">  EntityManager em;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Autowired</span> Repository1 repository1;</span><br><span class="line">  <span class="meta">@Autowired</span> Repository2 repository2;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//트랜잭션 시작</span></span><br><span class="line">  <span class="meta">@Transactional</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">logic</span><span class="params">()</span></span>&#123;</span><br><span class="line">    repository1.hello();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//Member 는 영속상태</span></span><br><span class="line">    Member member = repository2.findMember();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> member;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//트렌젝션 종료</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Repository1</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@PersistenceContext</span></span><br><span class="line">  EntityManager em;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">hello</span><span class="params">()</span></span>&#123;</span><br><span class="line">    em.xxx(); <span class="comment">//영속성 컨텍스트 접근</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Repository2</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@PersistenceContext</span></span><br><span class="line">  EntityManager em;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> Member <span class="title">findMember</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> em.find(Member.class, <span class="string">"id1"</span>); <span class="comment">//영속성 컨텍스트 접근</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="13-2-준영속-상태와-지연-로딩"><a href="#13-2-준영속-상태와-지연-로딩" class="headerlink" title="13.2 준영속 상태와 지연 로딩"></a>13.2 준영속 상태와 지연 로딩</h4><p>조회한 엔티티가 서비스와 리포지토리 계층에서는 영속성 컨텍스트에 관리되면서 영속 상태를 유지하지만, 컨트롤러나 뷰 같은 프리젠테이션 계층에서는 준영속 상태가 됩니다. 따라서, 변경감지와 지연로딩이 동작하지 않습니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Order</span></span>&#123;</span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span></span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@ManyToOne</span>(fetch = FetchType.LAZY) <span class="comment">//지연로딩</span></span><br><span class="line">  <span class="keyword">private</span> Member member; <span class="comment">//주문 회원</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">OrderController</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">view</span><span class="params">(Long orderId)</span></span>&#123;</span><br><span class="line">    Order order = orderService.findOne(orderId);</span><br><span class="line">    Member member = order.getMember();</span><br><span class="line">    member.getName(); <span class="comment">//지연로딩 시 예외 발생</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>준영속 상태와 변경 감지</li>
-</ul>
-<p>변경감지 기능이 프리젠테이션 계층에서 동작하지 않는것은 문제가 되지 않습니다. 변경 감지 기능이 프리젠테이션 계층에서도 동작하면 애플리케이션 계층이 가지는 책임이 모호해지고, 데이터를 어디서 어떻게 변경했는지 프리젠테이션 계층까지 다 찾아야 하므로 유지보수하기 어렵습니다. 비즈니스 로직은 서비스 계층에서 끝내야합니다.</p>
-<ul>
-<li>준영속 상태와 지연 로딩</li>
-</ul>
-<p>준영속 상태의 지연 로딩을 해결하는 방법은 두 가지 입니다. </p>
-<ol>
-<li>뷰가 필요한 엔티티를 미리 로딩</li>
-<li>OSIV</li>
-</ol>
-<p>뷰가 필요한 엔티티를 미리 로딩하는 방법은 어디서 미리 로딩 하느냐에 따라 세가지가 있습니다.</p>
-<ol>
-<li>글로벌 페치 전략 수정</li>
-<li>JPQL Fetch Join</li>
-<li>강제 초기화</li>
-</ol>
-<h5 id="13-2-1-글로벌-페치-전략-수정"><a href="#13-2-1-글로벌-페치-전략-수정" class="headerlink" title="13.2.1 글로벌 페치 전략 수정"></a>13.2.1 글로벌 페치 전략 수정</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Order</span></span>&#123;</span><br><span class="line">  <span class="meta">@Id</span> <span class="meta">@GeneratedValue</span></span><br><span class="line">  <span class="keyword">private</span> Long id;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@ManyToOne</span>(fetch = FetchType.EAGER) <span class="comment">//즉시 로딩 전략</span></span><br><span class="line">  <span class="keyword">private</span> Member member; <span class="comment">//주문 회원</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//Presentation Logic</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">OrderController</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">view</span><span class="params">(Long orderId)</span></span>&#123;</span><br><span class="line">    Order order = orderService.findOne(orderId);</span><br><span class="line">    Member member = order.getMember();</span><br><span class="line">    member.getName(); <span class="comment">//이미 로딩된 엔티티</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>글로벌 페치 전략에 즉시 로딩 사용시 단점은 두가지가 있습니다.</p>
-<ol>
-<li>사용하지 않는 엔티티를 로딩</li>
-</ol>
-<p>order 를 조회하면서 사용하지 않는 member 도 함께 조회</p>
-<ol start="2">
-<li>N+1 문제</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Order order = em.find(Order.class, <span class="number">1L</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//실행된 SQL</span></span><br><span class="line">select o.*, m.*</span><br><span class="line">from Order o</span><br><span class="line">left outer join Member m on o.MEMBER_ID = m.MEMBER_ID</span><br><span class="line">where o.id = <span class="number">1</span></span><br></pre></td></tr></table></figure>
-
-<p>여기까지 보면 글로벌 즉시 로딩 전략이 좋아보이지만, 문제는 JPQL 을 사용할 때 발생합니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">List &lt;Order&gt; orders = em.createQuery(<span class="string">"select o from Order o"</span>, Order.class).getResultList();</span><br><span class="line"></span><br><span class="line"><span class="comment">//실행된 SQL</span></span><br><span class="line">select * from Order <span class="comment">//JPQL 로 실행된 SQL</span></span><br><span class="line">select * from Member where id = ? <span class="comment">//EAGER 로 실행된 SQL</span></span><br><span class="line">select * from Member where id = ? <span class="comment">//EAGER 로 실행된 SQL</span></span><br><span class="line">select * from Member where id = ? <span class="comment">//EAGER 로 실행된 SQL</span></span><br><span class="line">select * from Member where id = ? <span class="comment">//EAGER 로 실행된 SQL</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-
-<p>JPA 가 JPQL 을 분석해서 SQL 을 생성할 때, 글로벌 패치 전략을 참고하지 않고 오직 JPQL 자체만 사용합니다. 따라서, 즉시로딩이든 지연 로딩이등 구분하지 않고 JPQL 쿼리 자체에 충신한 SQL 을 만듦니다.</p>
-<p>이런 N+1 문제는 이어서 소개할 JPQL Fetch Join 으로 해결할 수 있습니다.</p>
-<h5 id="13-2-2-JPQL-Fetch-Join"><a href="#13-2-2-JPQL-Fetch-Join" class="headerlink" title="13.2.2 JPQL Fetch Join"></a>13.2.2 JPQL Fetch Join</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Fetch Join 사용 전</span></span><br><span class="line">JPQL : select o from Order o</span><br><span class="line">SQL : select * from Order</span><br><span class="line"></span><br><span class="line"><span class="comment">//Fetch Join 사용 후</span></span><br><span class="line">JPQL :</span><br><span class="line">	select o </span><br><span class="line">	from Order o</span><br><span class="line">	join fetch o.member</span><br><span class="line">	</span><br><span class="line">SQL :</span><br><span class="line">	select o.*, m.*</span><br><span class="line">	from Order o</span><br><span class="line">	join Member m on o.MEMBER_ID = m.MEMBER_ID</span><br></pre></td></tr></table></figure>
-
-<p>Fetch Join 을 사용하면, SQL JOIN 을 사용해서 페치 조인 대상까지 함께 조회합니다. N+1 문제가 발생하지 않습니다.</p>
-<ul>
-<li>JPQL Fetch Join 의 단점</li>
-</ul>
-<p>무분별하게 사용하면 화면에 맞춘 리포지토리 메소드가 증가할 수 있습니다. 결국 프리젠테이션 계층이 데이터 접근 계층을 침범하는 것입니다.</p>
-<h5 id="13-2-3-강제로-초기화"><a href="#13-2-3-강제로-초기화" class="headerlink" title="13.2.3 강제로 초기화"></a>13.2.3 강제로 초기화</h5><p>영속성 컨테스트가 살아있을 때 프리젠테이션 계층이 필요한 엔티티를 강제로 초기화해서 반환하는 방법입니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">OrderService</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@Transactional</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> Order <span class="title">findOrder</span><span class="params">(id)</span></span>&#123;</span><br><span class="line">    Order order = oderRepository.findOrder(id);</span><br><span class="line">    order.getMember().getName(); <span class="comment">//프록시 객체를 강제로 초기화</span></span><br><span class="line">    <span class="keyword">return</span> order;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>글로벌 페치 전략을 지연로딩으로 설정하면, 연관된 엔티리를 실제 엔티티가 아닌 프록시 객체로 조회합니다. 프록시 객체는 실제 사용하는 시점에 초기화됩니다. order.getMember() 까지만 호출하면. 단순히 프록시 객체만 반환합니다. 아직 초기화 하지 않습니다. member.getName() 처럼 실제 값을 사용할 때 초기화됩니다.</p>
-<p>프록시 초기화 하는 역하을 서비스 계층이 담당하면, 뷰가 필요한 엔티티에 따라 서비스 계층의 로직을 변경해야 합니다. 비즈니스 로직을 담당하는 서비스 계층에서 프리젠테이션 계층을 위한 프록시 초기화 역할을 하는 FACADE 계층이 그 역할을 담당해줍니다.</p>
-<h5 id="13-2-4-FACADE-계층-추가"><a href="#13-2-4-FACADE-계층-추가" class="headerlink" title="13.2.4 FACADE 계층 추가"></a>13.2.4 FACADE 계층 추가</h5><ul>
-<li><p>프리젠테이션 계층과 도메인 모델 계층간의 논리적 의존성을 분리합니다. </p>
-</li>
-<li><p>프리젠테이션 계층에서 필요한 프록시 객체를 초기화합니다.</p>
-</li>
-<li><p>서비스 계층을 호출해서 비즈니스 로직을 실행합니다.</p>
-</li>
-<li><p>리포지토리를 직접 호출해서 뷰가 요구하는 엔티티를 찾습니다.</p>
-</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">OrderFacade</span></span>&#123;</span><br><span class="line">	<span class="meta">@Autowired</span> OrderService orderService;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> Order <span class="title">findOrder</span><span class="params">(id)</span></span>&#123;</span><br><span class="line">    Order order = orderService.findOrder(id);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//프리젠테이션 계층이 필요한 프록시 객체를 강제 초기화</span></span><br><span class="line">    order.getMember().getName();</span><br><span class="line">    <span class="keyword">return</span> order;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">OrderService</span></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> Order <span class="title">findOrder</span><span class="params">(id)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> orderRepository.findOrder(id);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="13-3-OSIV-Open-Session-in-View"><a href="#13-3-OSIV-Open-Session-in-View" class="headerlink" title="13.3 OSIV (Open Session in View)"></a>13.3 OSIV (Open Session in View)</h4><p>영속성 컨텍스트를 뷰까지 열어둔다는 뜻입니다. </p>
-<h5 id="13-3-1-과거-OSIV-요청-당-트렌젝션"><a href="#13-3-1-과거-OSIV-요청-당-트렌젝션" class="headerlink" title="13.3.1 과거 OSIV : 요청 당 트렌젝션"></a>13.3.1 과거 OSIV : 요청 당 트렌젝션</h5><p>OSIV 의 핵심은 뷰에서도 지연로딩이 가능하도록 하는 것입니다. 가장 단순한 구현은 클라이언트의 요청이 들어오자마자 서플릿 필터나 스프링 인터셉터에서 트렌젝션을 시작하고 요청을 끝날 때 트렌젝션도 끝내는 것입니다. 이것을 요청 당 트렌젝션 방식의 OSIV 라고 합니다.</p>
-<p>문제는, 프레센테이션 계층이 엔티티를 변경할 수 있다는 것입니다. </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MemberControlelr</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">viewMember</span><span class="params">(Long id)</span></span>&#123;</span><br><span class="line">    Member member = memberService.getMember(id);</span><br><span class="line">    member.setName(<span class="string">"XXX"</span>);</span><br><span class="line">    model.addAttribute(<span class="string">"member"</span>, member);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>개발자의 의도는 단순히 뷰에 노출할 때만 고객이름을 XXX 로 변경하고 싶은 것이지, 데이터베이스에 있는 고객 이름까지 변경하고자 하는 것이 아니었습니다. 하지만 요청당 트렌젝션 방식은 뷰 렌더링 이후에 트렌젝션으 커밋합니다. 커밋을 하면 영속성 컨텍스트를 플러쉬합니다. 영속성 컨텍스트의 변경 감지 기능이 동작해서 변경된 엔티티를 데이터베이스에 반영해버립니다.</p>
-<p>따라서, 프레젠테이션 계층에서 엔티티를 수정하지 못하게 해야합니다.</p>
-<ul>
-<li>엔티티를 읽기 전용 인터페이스로 제공</li>
-<li>엔티티 레핑</li>
-<li>DTO 만 반환</li>
-</ul>
-<h6 id="엔티티를-읽기-전용-인터페이스로-제공"><a href="#엔티티를-읽기-전용-인터페이스로-제공" class="headerlink" title="엔티티를 읽기 전용 인터페이스로 제공"></a>엔티티를 읽기 전용 인터페이스로 제공</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">MemberView</span></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Member</span> <span class="keyword">implements</span> <span class="title">MemberView</span></span>&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MemberService</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> MemberView <span class="title">getMember</span><span class="params">(id)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> memberRepository.findById(id);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h6 id="엔티티-레핑"><a href="#엔티티-레핑" class="headerlink" title="엔티티 레핑"></a>엔티티 레핑</h6><p>엔티티의 읽기 전용 메소드만 가지고 있는 엔티티를 감싼 객체를 만들고, 이것을 프리젠테이션 계층에 반환하는 방법입니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MemberWrapper</span></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> Member member;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">MemberWrapper</span><span class="params">(member)</span></span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.member = member;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 읽기 전용 메소드만 제공</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span></span>&#123;</span><br><span class="line">    member.getName;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h6 id="DTO-만-반환"><a href="#DTO-만-반환" class="headerlink" title="DTO 만 반환"></a>DTO 만 반환</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MemberDTO</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> STring name;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//GETTER, SETTER</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line">MemberDTO memberDTO = <span class="keyword">new</span> MemberDTO();</span><br><span class="line">memberDTO.setName(member.getName());</span><br><span class="line"><span class="keyword">return</span> memberDTO;</span><br></pre></td></tr></table></figure>
-
-<p>최근에는 비즈니스 계층에서만 트렌젝션을 유지하는 방식의 OSIV 를 사용합니다. 스프링 프레임워크가 제공하는 OSIV 방식입니다.</p>
-<h5 id="13-3-2-스프링-OSIV-비즈니스-계층-트렌젝션"><a href="#13-3-2-스프링-OSIV-비즈니스-계층-트렌젝션" class="headerlink" title="13.3.2 스프링 OSIV : 비즈니스 계층 트렌젝션"></a>13.3.2 스프링 OSIV : 비즈니스 계층 트렌젝션</h5><p>클라이언트의 요청이 들어오면 영속성 컨텍스트를 생성합니다. 이 때, 트렌젝션을 시작하지 않습니다. 서비스 계층에서 트렌젝션을 시작하면 앞에서 생성해둔 영속성 켄텍스트에 트렌젝션을 시작합니다. 비즈니스 로직을 실행하고 서비스 계층이 끝나면 트렌젝셩르 커밋하면서 영속성 컨텍스트를 플러쉬합니다. 이때, 트렌젝션만 종료하고 영속성 컨텍스트를 살려둡니다. 클라이언트의 요청이 끝날 때 영속성 컨텍스트를 종료합니다.</p>
-<p>엔티티를 변경하지 않고 단순히 조회만 할 때는 트렌젝션이 없어도 되는데, 이것을 트렌젝션 없이 읽기라고 합니다. 영속성 컨텍스트는 트렌젝션 범위 안에서 엔티티를 조회하고 수정할 수 있습니다. 영속성 컨텍스트는 트렌젝션 범위 밖에서 엔티리를 조회만 할 수 있습니다.</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/06/12/web-application-persistencen-context/" data-id="ck7vvtrzj00p8m46w3ek8hdl2" data-title="[자바 ORM 표준 JPA 프로그래밍] 13장_웹 어플리케이션과 영속성 관리" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-web-application" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/06/05/web-application/" class="article-date">
-  <time class="dt-published" datetime="2019-06-04T15:00:00.000Z" itemprop="datePublished">2019-06-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/jpa/">JPA</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/06/05/web-application/">[자바 ORM 표준 JPA 프로그래밍] 11장_웹 어플리케이션 제작</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>11장은 Spring Framework 와 JPA 를 사용해서 Web Application 을 만들어보는 장입니다. 진행 순서는 다음과 같습니다.</p>
-<ol>
-<li>프로젝트 환경설정</li>
-<li>도메인 모델과 테이블 설계</li>
-<li>기능 구현</li>
-</ol>
-<p>코드 위주의 챕터이기 때문에, 핵심 키워드 위주로 정리하려고 합니다.</p>
-<h4 id="11-1-프로젝트-환경설정"><a href="#11-1-프로젝트-환경설정" class="headerlink" title="11.1 프로젝트 환경설정"></a>11.1 프로젝트 환경설정</h4><h4 id="11-2-도메인-모델과-테이블-설계"><a href="#11-2-도메인-모델과-테이블-설계" class="headerlink" title="11.2 도메인 모델과 테이블 설계"></a>11.2 도메인 모델과 테이블 설계</h4><h5 id="11-2-1-요구사항-분석"><a href="#11-2-1-요구사항-분석" class="headerlink" title="11.2.1 요구사항 분석"></a>11.2.1 요구사항 분석</h5><ul>
-<li><p>회원 기능</p>
-<ul>
-<li>등록</li>
-<li>조회</li>
-</ul>
-</li>
-<li><p>상품 기능</p>
-<ul>
-<li>등록</li>
-<li>수정</li>
-<li>조회</li>
-</ul>
-</li>
-<li><p>주문</p>
-<ul>
-<li>주문</li>
-<li>조회</li>
-<li>취소</li>
-</ul>
-</li>
-<li><p>기타</p>
-<ul>
-<li>상품 종류 : 도서 / 음반 / 영화</li>
-<li>상품은 카테고리로 구분 가능</li>
-<li>상품 주문 시 배송 정보 입력 가능</li>
-</ul>
-</li>
-</ul>
-<h5 id="11-2-2-도메인-모델-설계"><a href="#11-2-2-도메인-모델-설계" class="headerlink" title="11.2.2 도메인 모델 설계"></a>11.2.2 도메인 모델 설계</h5><ul>
-<li>회원 / 주문 / 상품<ul>
-<li>주문과 상품은 다대다 관계<ul>
-<li>다대다 관계는 관계형 데이터베이스는 물론이고, 엔티티에서도 거의 사용하지 않음</li>
-<li>주문 상품이라는 엔티티를 추가해서 다다대 관계를 일대다, 다대일 관계로 풀어냄</li>
-</ul>
-</li>
-<li>상품 분류<ul>
-<li>상품은 도서, 음반, 영화로 구분되는데, 상품이라는 공통 속성을 사용하므로 상속 구조로 표현</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h5 id="11-2-3-테이블-설계"><a href="#11-2-3-테이블-설계" class="headerlink" title="11.2.3 테이블 설계"></a>11.2.3 테이블 설계</h5><h5 id="11-2-4-연관-관계-정리"><a href="#11-2-4-연관-관계-정리" class="headerlink" title="11.2.4 연관 관계 정리"></a>11.2.4 연관 관계 정리</h5><ul>
-<li>회원과 주문<ul>
-<li>일대다 양방향 관계</li>
-<li>연관 관계의 주인을 정해야함. 외래키가 있는 주문이 연관 관계의 주인.</li>
-</ul>
-</li>
-<li>주문 상품과 주문<ul>
-<li>다대일 양방향 관계</li>
-<li>주문 상품이 연관관계의 주인</li>
-</ul>
-</li>
-<li>주문 상품과 상품<ul>
-<li>일대일 단방향 관계</li>
-</ul>
-</li>
-<li>주문과 배송<ul>
-<li>일대일 양방향 관계</li>
-</ul>
-</li>
-<li>카테고리와 상품<ul>
-<li>@ManyToMany</li>
-</ul>
-</li>
-</ul>
-<h5 id="11-2-5-엔티티-클래스"><a href="#11-2-5-엔티티-클래스" class="headerlink" title="11.2.5 엔티티 클래스"></a>11.2.5 엔티티 클래스</h5><h4 id="11-3-애플리케이션-구현"><a href="#11-3-애플리케이션-구현" class="headerlink" title="11.3 애플리케이션 구현"></a>11.3 애플리케이션 구현</h4><h5 id="11-3-1-개발-방법"><a href="#11-3-1-개발-방법" class="headerlink" title="11.3.1 개발 방법"></a>11.3.1 개발 방법</h5><ul>
-<li>Controller<ul>
-<li>MVC 의 컨트롤러가 모여있는 곳</li>
-<li>서비스 계층을 호출하고 결과를 뷰에 전달</li>
-</ul>
-</li>
-<li>Service<ul>
-<li>비즈니스 로직이 있고 트렌젝션을 시작</li>
-<li>데이터 접근 계층인 Repository를 호출</li>
-</ul>
-</li>
-<li>Repository<ul>
-<li>JPA 를 직접 사용하는 곳</li>
-<li>Entity Manager 를 사용해서 Entity 를 저장하고 조회</li>
-</ul>
-</li>
-<li>Domain<ul>
-<li>엔티티가 모여 있는 계층</li>
-<li>모든 계층에서 사용</li>
-</ul>
-</li>
-</ul>
-<h5 id="11-3-2-회원-기능"><a href="#11-3-2-회원-기능" class="headerlink" title="11.3.2 회원 기능"></a>11.3.2 회원 기능</h5><p>순수 자바 환경에셔는 엔티티 메니저 팩토리에서 엔티티 메니저를 직접 생성해서 사용했지만, 스프링이나 J2EE 컨테이너를 사용하면 컨테이너가 엔티티 메니저를 관리하고 제공합니다. 그래서, 엔티티 메니저 팩토리에서 엔티티 메니저를 직접 생성해서 사용하지 않고, 컨테이너가 제공하는 엔티티 메니저를 사용합니다.</p>
-<p>@PersistenceContext 는 컨테이너가 관리하는 엔티티 메니저를 주입하는 Annotation 입니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@PersistenceContext</span></span><br><span class="line">EntityManager em;</span><br></pre></td></tr></table></figure>
-
-<h5 id="11-3-3-상품-기능"><a href="#11-3-3-상품-기능" class="headerlink" title="11.3.3 상품 기능"></a>11.3.3 상품 기능</h5><h5 id="11-3-4-주문-기능"><a href="#11-3-4-주문-기능" class="headerlink" title="11.3.4 주문 기능"></a>11.3.4 주문 기능</h5><p>주문 서비스의 주문과 주문 취소 메소드를 보면 비즈니스 로직 대부분이 엔티티에 있습니다. 서비스 계층은 단순히 엔티티에 필요한 요청을 위임하는 역할을 합니다. 이처럼, 엔티티가 비즈니로스 로직을 가지고 객체지향의 특성을 활용하는 것을 도메인 모델 패턴이라고 합니다.</p>
-<p>반대로, 엔티티에는 비즈니스 로직이 거의 없고 서비스 계층에서 대부분의 비즈니스 로직을 처리하는 것을 트랜잭션 스크립트 패턴이라고 합니다. </p>
-<h5 id="11-3-5-웹-계층-구현"><a href="#11-3-5-웹-계층-구현" class="headerlink" title="11.3.5 웹 계층 구현"></a>11.3.5 웹 계층 구현</h5><p>준영속 엔티티를 수정하는 방법은 2가지입니다.</p>
-<ul>
-<li>변경 감지 기능 사용</li>
-<li>병합 사용</li>
-</ul>
-<p>변경 감지 기능을 사용하는 방법은, 영속성 컨텍스트에서 엔티티를 다시 조회한 후에 데이터를 수정하는 방법입니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="comment">//itemParam : Parameter 로 넘어온 준영속 상태의 엔티티</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">update</span><span class="params">(Item itemParam)</span></span>&#123;</span><br><span class="line">  <span class="comment">//같은 엔티티를 조회</span></span><br><span class="line">  Item findItem = em.find(Item.class, itemParam.getId());</span><br><span class="line">  </span><br><span class="line">  findItem.setPrice(itemParam.getPrice()); <span class="comment">//데이터 수정</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>위 코드처럼, 트렌젝션 안에서 준영속 엔티티의 식별자로 엔티티를 다시 조회하면, 영속 상태의 엔티티를 얻을 수 있습니다. 이렇게 영속 상태인 엔티티의 값을 파라미터로 넘어온 준영속 사앹의 엔티티 값으로 변경하면 됩니다. 이렇게 하면, 이후 트렌젝션이 커밋될때 변경감지 기능이 동작해서 데이터베이스에 수정사항이 반영됩니다.</p>
-<p>병합은 파라미터로 넘긴 준영속 엔티티의 식별자 값으로 영속 엔티티를 조회하고, 영속 엔티티의 값을 준영속 엔티티의 값으로 채워넣습니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="comment">//itemParam : Parameter 로 넘어온 준영속 상태의 엔티티</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">update</span><span class="params">(Item itemParam)</span></span>&#123;</span><br><span class="line">  Item mergeItem = em.merge(itemParam);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>변경 감지 기능을 사용하면, 원하는 속성만 선택해서 변경할 수 있지만, 병합을 사용하면 모든 속성이 변경됩니다.</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/06/05/web-application/" data-id="ck7vvtrxb00m6m46woxop7i1e" data-title="[자바 ORM 표준 JPA 프로그래밍] 11장_웹 어플리케이션 제작" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-spring-data-jpa" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/04/21/spring-data-jpa/" class="article-date">
-  <time class="dt-published" datetime="2019-04-20T15:00:00.000Z" itemprop="datePublished">2019-04-21</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/jpa/">JPA</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/04/21/spring-data-jpa/">[자바 ORM 표준 JPA 프로그래밍] 12장_스프링 데이터 JPA</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>데이터 접근 계층 (Data Access Layer) 는 CRUD 로 불리는 등록, 수정, 삭제, 조회 코드를 반복해서 개발해야 합니다. JPA 를 사용해서 데이터 접근 계층을 개발할 때도 문제가 발생합니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MemberRepository</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@PersistenceContext</span></span><br><span class="line">  EntityManager em;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">save</span><span class="params">(Member member)</span> </span>&#123;...&#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> Member <span class="title">findOne</span><span class="params">(Long id)</span> </span>&#123;...&#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> List&lt;Member&gt; <span class="title">findAll</span><span class="params">()</span> </span>&#123;...&#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> Member <span class="title">findByUsername</span><span class="params">(String username)</span> </span>&#123;...&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ItemRepository</span></span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="meta">@PersistenceContext</span></span><br><span class="line">  EntityManager em;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">save</span><span class="params">(Item item)</span> </span>&#123;...&#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> Member <span class="title">findOne</span><span class="params">(Long id)</span> </span>&#123;...&#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> List&lt;Member&gt; <span class="title">findAll</span><span class="params">()</span> </span>&#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>위 코드를 보면, 회원 리포지토리와 상품 리포지토리가 하는 일이 비슷합니다. 이 문제를 해결하려면 제네릭과 상속을 적절히 사용해서 공통 부분을 처리하는 부모 클래스를 만들면 됩니다. 이것을 보통 GenericDAO 라고 합니다. 하지만 이것은, 공통 기능을 구렿낳ㄴ 부모 클래스에 종속되고 구현 클래스 상속이 가지는 단점이 있습니다. </p>
-<h4 id="12-1-스프링-데이터-JPA-소개"><a href="#12-1-스프링-데이터-JPA-소개" class="headerlink" title="12.1 스프링 데이터 JPA 소개"></a>12.1 스프링 데이터 JPA 소개</h4><p>스프링 데이터 JPA 는 스프링 프레임워크에서 JPA 를 편리하게 사용할수 있도록 지원하는 프로젝트입니다. 이 프로젝트는 데이터 접근 계층을 개발할 때 지루하게 반복되는 CRUD 문제를 세련된 방법으로 해결합니다. 데이터 접근 계층을 개발할 때 구현 클래스 없이 인터페이스만 작성해도 개발을 완료할 수있습니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MemberRepository</span> <span class="keyword">extends</span> <span class="title">JpaRepository</span>&lt;<span class="title">Member</span>, <span class="title">Long</span>&gt; </span>&#123;</span><br><span class="line">  <span class="function">Member <span class="title">findByUsername</span><span class="params">(String username)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ItemRepository</span> <span class="keyword">extends</span> <span class="title">JpaRepository</span>&lt;<span class="title">Item</span>, <span class="title">Long</span>&gt; </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>회원과 상품 리포지토리 구현체는 애플리케이션 실행 시점에 스프링 데이터 JPA가 생성해서 주입해줍니다. 즉, 개발자가 직접 구현체를 개발하지 않아도 됩니다.</p>
-<p>일반적인 CRUD 메소드는 JpaRepository 인터페이스가 공통으로 제공하지만, MemberRepository.findByUsername(…) 처럼 직접 작성한 공통으로 처리할 수 없는 메소드는 스프링 데이터 JPA 가 메소드 이름을 분석해서 JPQL 을 실행합니다.</p>
-<h5 id="12-1-1-스프링-데이터-프로젝트"><a href="#12-1-1-스프링-데이터-프로젝트" class="headerlink" title="12.1.1 스프링 데이터 프로젝트"></a>12.1.1 스프링 데이터 프로젝트</h5><p><img src="/image/spring-data-jpa.png" alt></p>
-<p>스프링 데이터 JPA 프로젝트는 JPA에 특화된 기능을 제공합니다. 스프링 프레임워크 + JPA 를 사용한다면, 스프링 데이터 JPA 를 추천합니다.</p>
-<h4 id="12-2-스프링-데이터-JPA-설정"><a href="#12-2-스프링-데이터-JPA-설정" class="headerlink" title="12.2 스프링 데이터 JPA 설정"></a>12.2 스프링 데이터 JPA 설정</h4><ul>
-<li>필요 라이브러리</li>
-<li>환경 설정</li>
-</ul>
-<h4 id="12-3-공통-인터페이스-기능"><a href="#12-3-공통-인터페이스-기능" class="headerlink" title="12.3 공통 인터페이스 기능"></a>12.3 공통 인터페이스 기능</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// JpaRepository 공통 기능 인터페이스</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">JpaRepository</span>&lt;<span class="title">T</span>, <span class="title">ID</span> <span class="keyword">extends</span> <span class="title">Serializable</span>&gt; <span class="keyword">extends</span> <span class="title">PagingAndSortingRepository</span>&lt;<span class="title">T</span>, <span class="title">ID</span>&gt; </span>&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// JpaRepository 를 사용하는 인터페이스</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MemberRepository</span> <span class="keyword">extends</span> <span class="title">JpaRepository</span>&lt;<span class="title">Member</span>, <span class="title">Long</span>&gt; </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>JpaRepsitory 인터페이스의 계층 구조는 다음과 같습니다.</p>
-<p><img src="/image/spring-data-jpa-inheritance.png" alt></p>
-<h4 id="12-4-쿼레-메소드-기능"><a href="#12-4-쿼레-메소드-기능" class="headerlink" title="12.4 쿼레 메소드 기능"></a>12.4 쿼레 메소드 기능</h4><p>스프링 데이터 JPA 가 제공하는 쿼리 메소드 기능은 크게 3가지입니다.</p>
-<ul>
-<li>메소드 이름으로 쿼리 생성</li>
-<li>메소드 이름으로 JPA NamedQuery 호출</li>
-<li>@Query 어노테이션을 사용해서 리포지토리 인터페이스에 쿼리 직접 정의</li>
-</ul>
-<h5 id="12-4-1-메소드-이름으로-쿼리-생성"><a href="#12-4-1-메소드-이름으로-쿼리-생성" class="headerlink" title="12.4.1 메소드 이름으로 쿼리 생성"></a>12.4.1 메소드 이름으로 쿼리 생성</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MemberRepository</span> <span class="keyword">extends</span> <span class="title">Repository</span>&lt;<span class="title">Member</span>, <span class="title">Long</span>&gt; </span>&#123;</span><br><span class="line">  <span class="function">List&lt;Member&gt; <span class="title">findByEmailAndName</span> <span class="params">(String email, String name)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>findByEmailAndName(…) 를 실행하면 스프링 데이터 JPA 는 메소드 이름을 분석해서 다음 JPQL을 생성하고 실행합니다.</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> m <span class="keyword">from</span> <span class="keyword">Member</span> m <span class="keyword">where</span> m.email = ?<span class="number">1</span> <span class="keyword">and</span> m.name =?<span class="number">2</span></span><br></pre></td></tr></table></figure>
-
-<h5 id="12-4-2-JPA-NamedQuery"><a href="#12-4-2-JPA-NamedQuery" class="headerlink" title="12.4.2 JPA NamedQuery"></a>12.4.2 JPA NamedQuery</h5><p>스프링 데이터 JPA 는 메소드 이름으로 JPA Named 쿼리를 호출하는 기능을 제공합니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@NamedQuery</span>&#123;</span><br><span class="line">  name = <span class="string">"Member.findByUsername"</span>,</span><br><span class="line">  query = <span class="string">"select m from Member m where m.username = :username"</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Member</span></span>&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>이렇게 정의한 Named 쿼리를 다음과 같이 호출합니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//JPA를 직접 사용해서 Named Query 호출</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MemberRepository</span></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> List&lt;Member&gt; <span class="title">findByUserName</span><span class="params">(String username)</span></span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    List&lt;Member&gt; resultList =</span><br><span class="line">      	em.createNaemdQuery(<span class="string">"Member.findByUsername"</span>, Member.class)</span><br><span class="line">      	  .setParameter(<span class="string">"username"</span>, <span class="string">"회원1"</span>)</span><br><span class="line">          .getResultList();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 스프링 데이터 JPA 로 호출</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MemberRepository</span> <span class="keyword">extends</span> <span class="title">JpaRepository</span> &lt;<span class="title">Member</span>, <span class="title">Long</span>&gt; </span>&#123;</span><br><span class="line">  List &lt;Member&gt; findByUserName(<span class="meta">@Param</span>(<span class="string">"username"</span>) String username);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>스프링 데이터 JPA 로 호출하는 경우, “도메인 클래스.메소드이름” 으로 Named Query 를 찾아서 실행합니다. 위 예제는, Member.findByUsername 이라는 Named Query 를 실행합니다. 만약, Named Query 가 없으면 메소드 이름으로 쿼리 생성 전략을 사용합니다.</p>
-<h5 id="12-4-3-Query-리포지토리-메소드에-쿼리-정의"><a href="#12-4-3-Query-리포지토리-메소드에-쿼리-정의" class="headerlink" title="12.4.3 @Query, 리포지토리 메소드에 쿼리 정의"></a>12.4.3 @Query, 리포지토리 메소드에 쿼리 정의</h5><p>실행할 메소드에 직접 정적 쿼리를 작성하므로, 이름 없는 Named Query 라고 할 수 있습니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MemberRepository</span> <span class="keyword">extends</span> <span class="title">JpaRepository</span>&lt;<span class="title">Member</span>, <span class="title">Long</span>&gt; </span>&#123;</span><br><span class="line">  <span class="meta">@Query</span>(<span class="string">"select m from Member m where m.username = ?1"</span>)</span><br><span class="line">  <span class="function">Member <span class="title">findByUserName</span><span class="params">(String username)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h5 id="12-4-4-파라미터-바인딩"><a href="#12-4-4-파라미터-바인딩" class="headerlink" title="12.4.4 파라미터 바인딩"></a>12.4.4 파라미터 바인딩</h5><p>스프링 데이터 JPA 는 위치 기반 파라미터 바인딩과 이름 기반 파라미터 바인딩을 모두 지원합니다. 다음은 이름 기반 파라미터 바인딩 예제입니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MemberRepository</span> <span class="keyword">extends</span> <span class="title">JpaRepository</span>&lt;<span class="title">Member</span>, <span class="title">Long</span>&gt; </span>&#123;</span><br><span class="line">  <span class="meta">@Query</span>(<span class="string">"select m from Member m where m.username = :name"</span>)</span><br><span class="line">  <span class="function">Member <span class="title">findByUserName</span><span class="params">(@Param(<span class="string">"name"</span>)</span> String username)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h5 id="12-4-5-벌크성-수정-쿼리"><a href="#12-4-5-벌크성-수정-쿼리" class="headerlink" title="12.4.5 벌크성 수정 쿼리"></a>12.4.5 벌크성 수정 쿼리</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// JPA 를 사용한 벌크성 수정 쿼리</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">bulkPriceUp</span><span class="params">(String stockAmout)</span></span>&#123;</span><br><span class="line">  ...</span><br><span class="line">  String qlString = <span class="string">"update Product p set p.price = p.price * 1.1 where </span></span><br><span class="line"><span class="string">    p.stockAmout &lt; :stockAmout"</span>;</span><br><span class="line">      </span><br><span class="line">  <span class="keyword">int</span> resultCount = em.createQuery(qlString)</span><br><span class="line">      						    .setParameter(<span class="string">"stockAmout"</span>, stockAmout)</span><br><span class="line">                      .executeUpdate();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 스프링 데이터 JPA 를 사용한 벌크성 수정 쿼리</span></span><br><span class="line"><span class="meta">@Modifying</span></span><br><span class="line"><span class="meta">@Query</span>(<span class="string">"update Product p set p.price = p.price * 1.1 where </span></span><br><span class="line"><span class="string">    p.stockAmout &lt; :stockAmout"</span>)</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">bulkPriceUp</span><span class="params">(@Param(<span class="string">"stockAmout"</span>)</span> String stockAmout)</span>;</span><br></pre></td></tr></table></figure>
-
-<h5 id="12-4-6-반환-타입"><a href="#12-4-6-반환-타입" class="headerlink" title="12.4.6 반환 타입"></a>12.4.6 반환 타입</h5><p>결과가 한건 이상이면 컬렉션 인터페이스, 단건이면 반환 타입을 지정합니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">List&lt;Member&gt; <span class="title">findByName</span> <span class="params">(String name)</span></span>; <span class="comment">//컬렉션</span></span><br><span class="line"><span class="function">Member <span class="title">findByEmail</span> <span class="params">(String email)</span></span>; <span class="comment">//단건</span></span><br></pre></td></tr></table></figure>
-
-<h5 id="12-4-7-페이징과-정렬"><a href="#12-4-7-페이징과-정렬" class="headerlink" title="12.4.7 페이징과 정렬"></a>12.4.7 페이징과 정렬</h5><p>쿼리 메소드에 페이징과 정렬 기능을 사용할 수 있도록 2가지 파라미터를 제공합니다.</p>
-<ul>
-<li>org.springframework.data.domain.sort</li>
-<li>org.springframework.data.domain.Pageable<ul>
-<li>파라미터에 Pageable 을 사용하면, 반환타입으로 List 나 org.springframework.data.domain.Page 사용 가능</li>
-<li>반환 타입으로 Page 사용하면 검색된 전체 데이터 건수 조회하는 count 쿼리 추가로 호출</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 페이징과 정렬 사용 예제</span></span><br><span class="line"><span class="function">Page&lt;Member&gt; <span class="title">findByName</span><span class="params">(String name, Pageable pageable)</span></span>;</span><br><span class="line"><span class="function">List&lt;Member&gt; <span class="title">findByName</span><span class="params">(String name, Pageable pageable)</span></span>;</span><br><span class="line"><span class="function">List&lt;Member&gt; <span class="title">findByName</span><span class="params">(String name, Sort sort)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Page 사용 예제 정의 코드</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MemberRepository</span> <span class="keyword">extends</span> <span class="title">Repository</span>&lt;<span class="title">Member</span>, <span class="title">Long</span>&gt; </span>&#123;</span><br><span class="line">  </span><br><span class="line">  <span class="function">Page&lt;Member&gt; <span class="title">findByNameStartingWith</span><span class="params">(String name, Pageable pageable)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Page 사용 예제 실행 코드</span></span><br><span class="line">PageRequest pageRequest = <span class="keyword">new</span> PageRequest(<span class="number">0</span>, <span class="number">10</span>, <span class="keyword">new</span> Sort(Direction.DESC, <span class="string">"name"</span>));</span><br><span class="line"></span><br><span class="line">Page&lt;Member&gt; result = memberRepository.findByNameStartingWith(<span class="string">"김"</span>, pageRequest);</span><br><span class="line"></span><br><span class="line">List&lt;Member&gt; members = result.getContent();</span><br><span class="line"><span class="keyword">int</span> totalPage = result.getTotalPages();</span><br><span class="line"><span class="keyword">boolean</span> hasNextPage = result.hasNextPage();</span><br></pre></td></tr></table></figure>
-
-<p>Pageable 은 인터페이스입니다. 실제 사용할 때는 이를 구현한 PageRequest 객체를 사용합니다.</p>
-<h5 id="12-4-8-힌트"><a href="#12-4-8-힌트" class="headerlink" title="12.4.8 힌트"></a>12.4.8 힌트</h5><p>SQL 힌트가 아니라 JPA 구현체에게 제공하는 힌트입니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@QueryHints</span>(value = &#123;<span class="meta">@QueryHint</span>(name = <span class="string">"org.hibernate.readOnly"</span>,</span><br><span class="line">                                value = <span class="string">"true"</span>)&#125;, forCounting = <span class="keyword">true</span>)</span><br><span class="line"><span class="function">Page&lt;Member&gt; <span class="title">findByName</span> <span class="params">(String name, Pagable pageable)</span></span>;</span><br></pre></td></tr></table></figure>
-
-<h5 id="12-4-9-Lock"><a href="#12-4-9-Lock" class="headerlink" title="12.4.9 Lock"></a>12.4.9 Lock</h5><h4 id="12-5-명세"><a href="#12-5-명세" class="headerlink" title="12.5 명세"></a>12.5 명세</h4><p>도메인 주도 설계에서 명세라는 개념을 소개하는데, 스프링 데이터 JPA 는 JPA Criteria 로 이 개념을 사용할 수 있습니다.</p>
-<p>명세를 이해하기 위한 핵심 단어는 술어입니다. 이것은 단순히 참이나 거짓으로 평가됩니다. 스프링 데이터 JPA 는 이 술어를 org.springframework.data.jpa.domain.Specification 클래스로 정의했습니다. Specification 은 컴포지트 패턴으로 구성되어 있어서 여러 Specification 으로 조합할 수 있습니다.즉, 다양한 검색 조건을 조립해서 새로운 검색 조건을 쉽게 만들 수 있습니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// JpaSpecificationExecutor 상속</span></span><br><span class="line">pubilc <span class="class"><span class="keyword">interface</span> <span class="title">OrderRepsitroy</span> <span class="keyword">extends</span> <span class="title">JpaRepository</span>&lt;<span class="title">Order</span>, <span class="title">Long</span>&gt;, <span class="title">JpaSpecificationExecutor</span>&lt;<span class="title">Order</span>&gt;</span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// JpaSpecificationExecutor 인터페이스</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">JpaSpecificationExecutor</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">  <span class="function">T <span class="title">findOne</span> <span class="params">(Specification&lt;T&gt; spec)</span></span>;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 명세 사용 코드</span></span><br><span class="line"><span class="comment">// Specification 은 명세들을 조립할 수 있도록 도와주는 클래스인데, </span></span><br><span class="line"><span class="comment">// where(), and(), or(), not() 메소드를 제공</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;Order&gt; <span class="title">findOrders</span> <span class="params">(String name)</span> </span>&#123;</span><br><span class="line">  List&lt;Order&gt; result = orderRepository.findAll(</span><br><span class="line">  				where(memberName(name)).and(isOrderStatus())</span><br><span class="line">  );</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="12-6-사용자-정의-리포지토리-구현"><a href="#12-6-사용자-정의-리포지토리-구현" class="headerlink" title="12.6 사용자 정의 리포지토리 구현"></a>12.6 사용자 정의 리포지토리 구현</h4><p>스프링 데이터 JPA 로 리포지토리를 개발하면 인터페이스만 정의하고 구현체는 만들지 않습니다. 하지만, 다양한 이유로 메소드를 직접 구현해야 할 때도 있습니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 사용자 정의 인터페이스</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MemberRepositoryCustom</span></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> List&lt;Member&gt; <span class="title">findMemberCustom</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 사용자 정의 구현 클래스</span></span><br><span class="line"><span class="comment">// 클래스 이름 짓는 규칙 : 리포지토리 인터페이스 이름 + Impl</span></span><br><span class="line"><span class="comment">// 이렇게 하면 스프링 데이터 JPA 가 사용자 정의 구현 클래스로 인식</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MemberRepositoryImpl</span> <span class="keyword">implements</span> <span class="title">MemberRepositoryCustom</span></span>&#123;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> List&lt;Member&gt; <span class="title">findMemberCustom</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">// 사용자 정의 구현</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 사용자 정의 인터페이스 상속</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MemberRepository</span> <span class="keyword">extends</span> <span class="title">JpaRepository</span>&lt;<span class="title">Member</span>, <span class="title">Long</span>&gt;, <span class="title">MemberRepositoryCustom</span></span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="12-7-Web-확장"><a href="#12-7-Web-확장" class="headerlink" title="12.7 Web 확장"></a>12.7 Web 확장</h4><p>스프링 데이터 프로젝트는 스프링 MVC 에서 사용할 수 있는 기능을 제공합니다.</p>
-<ul>
-<li>식별자로 도메인 클래스를 바로 바인딩 해주는 도메인 클래스 컨버터 기능</li>
-<li>페이징과 정렬 기능</li>
-</ul>
-<h5 id="12-7-1-설정"><a href="#12-7-1-설정" class="headerlink" title="12.7.1 설정"></a>12.7.1 설정</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableWebMvc</span></span><br><span class="line"><span class="meta">@EnableSpringDataWebSupport</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WebAppConfig</span></span>&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>설정을 완료하면, 도메인 클래스 컨버터와 페이징과 정렬을 위한 HandlerMethodArgumentResolver 가 스프링 빈으로 등록됩니다.</p>
-<h5 id="12-7-2-도메인-클래스-컨버터-기능"><a href="#12-7-2-도메인-클래스-컨버터-기능" class="headerlink" title="12.7.2 도메인 클래스 컨버터 기능"></a>12.7.2 도메인 클래스 컨버터 기능</h5><p>도메인 클래스 컨버터는 HTTP 파라미터로 넘어온 엔티티의 아이디로 엔티티 객체를 찾아서 바인딩해줍니다.</p>
-<h5 id="12-7-3-페이징과-정렬-기능"><a href="#12-7-3-페이징과-정렬-기능" class="headerlink" title="12.7.3 페이징과 정렬 기능"></a>12.7.3 페이징과 정렬 기능</h5><p>스프링 데이터가 제공하는 페이징과 정렬 기능을 스프링 MVC 에서 편리하게 사용할 수 있도록 HandlerMethodArgumentResolver 를 제공합니다. </p>
-<h4 id="12-8-스프링-데이터-JPA-가-사용하는-구현체"><a href="#12-8-스프링-데이터-JPA-가-사용하는-구현체" class="headerlink" title="12.8 스프링 데이터 JPA 가 사용하는 구현체"></a>12.8 스프링 데이터 JPA 가 사용하는 구현체</h4><p>스프링 데이터 JPA 가 제공하는 공통 인터페이스는 org.springframework.data.jpa.repository.support.SimpleJpaRepository 클래스가 구현합니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="meta">@Transactional</span>(readOnly = <span class="keyword">true</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SimpleJpaRepository</span>&lt;<span class="title">T</span>, <span class="title">ID</span> <span class="keyword">extends</span> <span class="title">Serializable</span>&gt; <span class="keyword">implements</span> <span class="title">JpaRepository</span>&lt;<span class="title">T</span>, <span class="title">ID</span>&gt;, <span class="title">JpaSpecificationExecutor</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/04/21/spring-data-jpa/" data-id="ck7vvtrzh00p6m46wsymhyy2s" data-title="[자바 ORM 표준 JPA 프로그래밍] 12장_스프링 데이터 JPA" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/06/19/collections/" data-id="ck860sxq600m0r36wnyz3ts94" data-title="[자바 ORM 표준 JPA 프로그래밍] 14장_컬렉션과 부가 기능" class="article-share-link">Share</a>
       
       
       
@@ -1492,23 +1422,23 @@
       <ul>
         
           <li>
+            <a href="/2020/03/24/tdd-chapter-18/">[테스트 주도 개발] 18장_xUnit 으로 가는 첫걸음</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/24/tdd-chapter-19/">[테스트 주도 개발] 18장_테이블 차리기</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/24/tdd-chapter-20/">[테스트 주도 개발] 18장_테이블 차리기</a>
+          </li>
+        
+          <li>
             <a href="/2020/03/17/tdd-chapter-17/">[테스트 주도 개발] 17장_Money 회고</a>
           </li>
         
           <li>
             <a href="/2020/03/16/tdd-chapter-13/">[테스트 주도 개발] 13장_진짜로 만들기</a>
-          </li>
-        
-          <li>
-            <a href="/2020/03/16/tdd-chapter-15/">[테스트 주도 개발] 15장_서로 다른 통화 더하기</a>
-          </li>
-        
-          <li>
-            <a href="/2020/03/16/tdd-chapter-16/">[테스트 주도 개발] 16장_드디어, 추상화</a>
-          </li>
-        
-          <li>
-            <a href="/2020/03/16/tdd-chapter-14/">[테스트 주도 개발] 14장_바꾸기</a>
           </li>
         
       </ul>

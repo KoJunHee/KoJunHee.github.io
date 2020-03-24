@@ -71,6 +71,267 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-static" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/05/static/" class="article-date">
+  <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/05/static/">static</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="static-예약어의-특징은"><a href="#static-예약어의-특징은" class="headerlink" title="static 예약어의 특징은?"></a>static 예약어의 특징은?</h5><ol>
+<li>인스턴스 생성 없이 바로 사용 가능합니다.</li>
+<li>메모리에 이미 올라가있으므로, static 변수나 메서드는 공유가 가능합니다. </li>
+<li>static 메소드에서 static 이 아닌 변수는 호출 할 수 없습니다.</li>
+</ol>
+<p>아래의 예시에서, 변수 b를 static 메서드 add 안에서 사용하면 오류가 발생합니다. int b는 StaticTest의 인스턴스가 생성되어야 쓸수 있는 멤버변수지만, static public void add()는 인스턴스가 생기길 기다려주지 않고 바로 메모리에 올라가기 때문입니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StaticTest</span></span>&#123;</span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">public</span> <span class="keyword">int</span> a = <span class="number">1</span>;</span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">int</span> b = <span class="number">3</span>;</span><br><span class="line">   <span class="function"><span class="keyword">static</span> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="public-staitc-void-main-String-args-에서-static-이-붙는-이유는"><a href="#public-staitc-void-main-String-args-에서-static-이-붙는-이유는" class="headerlink" title="public staitc void main(String [] args) 에서 static 이 붙는 이유는?"></a>public staitc void main(String [] args) 에서 static 이 붙는 이유는?</h5><p>Java 는 어플리케이션이 실행되면 제일 먼저 메인(main)메소드를 실행합니다. 메인 메소드가 메모리에 올라가 있지 않으면, 시작점인 main 메소드를 호출하려고 하는데 메모리에 main이 없기 때문에 실행 할 수 없습니다. 따라서, static 이 붙습니다.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/05/static/" data-id="ck860sxpo00k9r36w6d2rrgfp" data-title="static" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-overloading, overriding" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/05/overloading, overriding/" class="article-date">
+  <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/05/overloading, overriding/">overloading, overriding</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><img src="/image/overloading.png" alt></p>
+<ol>
+<li><p>오버 로딩</p>
+<p>같은 이름의 함수를 여러 개 정의하고, 파라미터의 타입과 개수를 다르게 하여 다양한 유형의 호출에 응답하게 합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Overloading</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">test</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span>&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">test</span><span class="params">(<span class="keyword">double</span> d)</span></span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>상속 관계에 있는 클래스 간에 같은 이름의 매서드를 정의하는 기술 입니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Employee</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"aa"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Manager</span> <span class="keyword">extends</span> <span class="title">Employee</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"bb"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/05/overloading, overriding/" data-id="ck860sxpo00k7r36wh6zdxt93" data-title="overloading, overriding" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-graph" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/05/graph/" class="article-date">
+  <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/data-structure/">Data Structure</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/05/graph/">그래프</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="그래프란"><a href="#그래프란" class="headerlink" title="그래프란 ?"></a>그래프란 ?</h5><p>노드 (N, node) 와 그 노드를 연결하는 간선 (E, edge) 을 하나로 모아 놓은 자료 구조입니다.</p>
+<h5 id="트리와-그래프의-차이는"><a href="#트리와-그래프의-차이는" class="headerlink" title="트리와 그래프의 차이는?"></a>트리와 그래프의 차이는?</h5><p>트리는 그래프의 한 종류입니다. 트리는 방향성이 있는 비순환 그래프입니다.</p>
+<h5 id="그래프는-어떻게-구현하나요"><a href="#그래프는-어떻게-구현하나요" class="headerlink" title="그래프는 어떻게 구현하나요 ?"></a>그래프는 어떻게 구현하나요 ?</h5><p>인접행렬과 인접리스트로 구현할 수 있습니다.</p>
+<ol>
+<li><p>인접행렬</p>
+<p>그래프의 연결 관계를 이차원 배열로 나타내는 방식입니다.<br>장점은, 노드 i와 노드 j가 연결되어 있는지 확인하고 싶을 때, adj(i)(j)가 1인지 0인지만 확인하면 되기 때문에 시간복잡도 O(1) 이라는 점입니다. 단점은, 노드 i에 연결된 모든 노드들에 방문해보고 싶은 경우, adj(i)(1)부터 adj(i)(v)를 모두 확인해보아야 하기 때문에 총 O(v)의 시간이 걸린다는 점입니다.</p>
+</li>
+<li><p>인접리스트</p>
+<p>그래프의 연결 관계를 연결 리스트로 나타내는 방식입니다.<br>장점은, 실제로 연결된 노드들에 대한 정보만 저장합니다. 단점은, 노드 i와 노드 j가 연결되어 있는지 알고 싶다면, adj[i]가 j를 성분으로 갖는지 확인해봐야합니다. 시간복잡도 O(v)가 됩니다.</p>
+</li>
+</ol>
+<h5 id="그래프를-어떻게-탐색하나요"><a href="#그래프를-어떻게-탐색하나요" class="headerlink" title="그래프를 어떻게 탐색하나요?"></a>그래프를 어떻게 탐색하나요?</h5><p>깊이 우선 탐색 (DFS) 와 너비 우선 탐색 (BFS)가 있습니다.</p>
+<ol>
+<li><p>DFS</p>
+<p>루트 노드(혹은 다른 임의의 노드)에서 시작해서 다음 분기(branch)로 넘어가기 전에 해당 분기를 완벽하게 탐색하는 방법입니다.</p>
+</li>
+<li><p>BFS</p>
+<p>루트 노드(혹은 다른 임의의 노드)에서 시작해서 인접한 노드를 먼저 탐색하는 방법입니다.</p>
+</li>
+</ol>
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://gmlwjd9405.github.io/2018/08/13/data-structure-graph.html" target="_blank" rel="noopener">https://gmlwjd9405.github.io/2018/08/13/data-structure-graph.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/05/graph/" data-id="ck860sxpn00k5r36wr4sbu8uj" data-title="그래프" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-keep alive" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/05/keep alive/" class="article-date">
+  <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/network/">Network</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/05/keep alive/">keep alive</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="keep-alive-방식이란"><a href="#keep-alive-방식이란" class="headerlink" title="keep-alive 방식이란?"></a>keep-alive 방식이란?</h5><p>Keep Alive Time Out 이내에 Client 에서 Request를 재 요청하면 Socket을 새로 여는 것이아니라, 이미 열려 있는 Socket(port)에 전송하는 구조입니다.</p>
+<h5 id="http-connectionless-방식과-keep-alive-방식의-차이는"><a href="#http-connectionless-방식과-keep-alive-방식의-차이는" class="headerlink" title="http connectionless 방식과 keep-alive 방식의 차이는 ?"></a>http connectionless 방식과 keep-alive 방식의 차이는 ?</h5><p>connection Less 방식은 매번 Socket(port)를 열어야 하기때문에 비용적인 측면에서 비효율적이며, keep-alive 방식은 port Conenction에 소요되는 시간을 절약할 수 있습니다.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/05/keep alive/" data-id="ck860sxpm00k3r36w83zf99ot" data-title="keep alive" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-OOP" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/05/OOP/" class="article-date">
+  <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/05/OOP/">OOP</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="객체지향프로그래밍-OOP-가-뭔가요"><a href="#객체지향프로그래밍-OOP-가-뭔가요" class="headerlink" title="객체지향프로그래밍(OOP) 가 뭔가요?"></a>객체지향프로그래밍(OOP) 가 뭔가요?</h5><p>프로그래밍에서 필요한 데이터를 추상화 시켜서 상태와 행위를 가진 객체를 만들고, 그 객체들 간의 유기적인 상호작용을 통해 로직을 구성하는 프로그래밍 방법입니다.</p>
+<h5 id="장점이-무엇인가요"><a href="#장점이-무엇인가요" class="headerlink" title="장점이 무엇인가요?"></a>장점이 무엇인가요?</h5><ol>
+<li>코드 재사용이 쉽습니다.<br>상속을 통해 확장해서 사용할 수 있고, 남이 만든 클래스를 가져와서 사용할 수 있습니다.</li>
+<li>유지보수가 쉽습니다.<br>절차 지향 프로그래밍에서는 코드를 수정 할 때 일일이 찾아야합니다. 반면, 객체지향 프로그래밍에서는 수정해야 할 부분이 클래스 내부에 멤버 변수 혹은 메소드로 있기 때문에 해당 부분만 수정하면 됩니다.</li>
+</ol>
+<h5 id="단점은-무엇인가요"><a href="#단점은-무엇인가요" class="headerlink" title="단점은 무엇인가요?"></a>단점은 무엇인가요?</h5><ol>
+<li>처리 속도가 상대적으로 느립니다.</li>
+<li>객체가 많으면 용량이 커질 수 있습니다.</li>
+<li>설계시 많은 시간이 소요됩니다.</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/05/OOP/" data-id="ck860sxpm00k1r36wc9wontp0" data-title="OOP" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-http method" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2018/12/05/http method/" class="article-date">
@@ -141,70 +402,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/http method/" data-id="ck7vvtrwm00k8m46w0secgw7u" data-title="http method" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-graph" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/12/05/graph/" class="article-date">
-  <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/data-structure/">Data Structure</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/05/graph/">그래프</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h5 id="그래프란"><a href="#그래프란" class="headerlink" title="그래프란 ?"></a>그래프란 ?</h5><p>노드 (N, node) 와 그 노드를 연결하는 간선 (E, edge) 을 하나로 모아 놓은 자료 구조입니다.</p>
-<h5 id="트리와-그래프의-차이는"><a href="#트리와-그래프의-차이는" class="headerlink" title="트리와 그래프의 차이는?"></a>트리와 그래프의 차이는?</h5><p>트리는 그래프의 한 종류입니다. 트리는 방향성이 있는 비순환 그래프입니다.</p>
-<h5 id="그래프는-어떻게-구현하나요"><a href="#그래프는-어떻게-구현하나요" class="headerlink" title="그래프는 어떻게 구현하나요 ?"></a>그래프는 어떻게 구현하나요 ?</h5><p>인접행렬과 인접리스트로 구현할 수 있습니다.</p>
-<ol>
-<li><p>인접행렬</p>
-<p>그래프의 연결 관계를 이차원 배열로 나타내는 방식입니다.<br>장점은, 노드 i와 노드 j가 연결되어 있는지 확인하고 싶을 때, adj(i)(j)가 1인지 0인지만 확인하면 되기 때문에 시간복잡도 O(1) 이라는 점입니다. 단점은, 노드 i에 연결된 모든 노드들에 방문해보고 싶은 경우, adj(i)(1)부터 adj(i)(v)를 모두 확인해보아야 하기 때문에 총 O(v)의 시간이 걸린다는 점입니다.</p>
-</li>
-<li><p>인접리스트</p>
-<p>그래프의 연결 관계를 연결 리스트로 나타내는 방식입니다.<br>장점은, 실제로 연결된 노드들에 대한 정보만 저장합니다. 단점은, 노드 i와 노드 j가 연결되어 있는지 알고 싶다면, adj[i]가 j를 성분으로 갖는지 확인해봐야합니다. 시간복잡도 O(v)가 됩니다.</p>
-</li>
-</ol>
-<h5 id="그래프를-어떻게-탐색하나요"><a href="#그래프를-어떻게-탐색하나요" class="headerlink" title="그래프를 어떻게 탐색하나요?"></a>그래프를 어떻게 탐색하나요?</h5><p>깊이 우선 탐색 (DFS) 와 너비 우선 탐색 (BFS)가 있습니다.</p>
-<ol>
-<li><p>DFS</p>
-<p>루트 노드(혹은 다른 임의의 노드)에서 시작해서 다음 분기(branch)로 넘어가기 전에 해당 분기를 완벽하게 탐색하는 방법입니다.</p>
-</li>
-<li><p>BFS</p>
-<p>루트 노드(혹은 다른 임의의 노드)에서 시작해서 인접한 노드를 먼저 탐색하는 방법입니다.</p>
-</li>
-</ol>
-<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://gmlwjd9405.github.io/2018/08/13/data-structure-graph.html" target="_blank" rel="noopener">https://gmlwjd9405.github.io/2018/08/13/data-structure-graph.html</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/graph/" data-id="ck7vvtrwl00k6m46wmookvh1o" data-title="그래프" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/http method/" data-id="ck860sxpl00jzr36wahiwqniw" data-title="http method" class="article-share-link">Share</a>
       
       
       
@@ -251,108 +449,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/coupling/" data-id="ck7vvtrwl00k4m46wdanjt7sx" data-title="coupling" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-abstract class, interface" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/12/05/abstract class, interface/" class="article-date">
-  <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/java/">Java</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/05/abstract class, interface/">abstract class, interface</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h5 id="추상-클래스와-인터페이스가-뭔가요"><a href="#추상-클래스와-인터페이스가-뭔가요" class="headerlink" title="추상 클래스와 인터페이스가 뭔가요 ?"></a>추상 클래스와 인터페이스가 뭔가요 ?</h5><p>추상클래스는 추상 메소드를 하나라도 가지는 클래스입니다.<br>인터페이스는 바디가 없는 메소드의 그룹입니다.</p>
-<h5 id="추상-클래스와-인터페이스를-사용하는-이유가-뭔가요"><a href="#추상-클래스와-인터페이스를-사용하는-이유가-뭔가요" class="headerlink" title="추상 클래스와 인터페이스를 사용하는 이유가 뭔가요 ?"></a>추상 클래스와 인터페이스를 사용하는 이유가 뭔가요 ?</h5><p>추상클래스는 추상클래스를 상속받아 그 기능을 이용하고 확장키는 목적으로 사용됩니다.<br>인터페이스는 메소드의 구현을 강제하기 위한 목적으로 사용됩니다.</p>
-<h5 id="다중-상속이-되나요"><a href="#다중-상속이-되나요" class="headerlink" title="다중 상속이 되나요?"></a>다중 상속이 되나요?</h5><p>추상클래스 다중 상속은 불가능하고, 인터페이스 다중 상속은 가능합니다.</p>
-<h5 id="추상클래스-예시는"><a href="#추상클래스-예시는" class="headerlink" title="추상클래스 예시는 ?"></a>추상클래스 예시는 ?</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Shape</span> </span>&#123; <span class="comment">//추상클래스 (슈퍼클래스)</span></span><br><span class="line">    <span class="keyword">int</span> x, y;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">move</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.x = x;</span><br><span class="line">        <span class="keyword">this</span>.y = y;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">draw</span><span class="params">()</span></span>; <span class="comment">//추상메서드</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Rectangle</span> <span class="keyword">extends</span> <span class="title">Shape</span></span>&#123; <span class="comment">//서브클래스</span></span><br><span class="line">    <span class="keyword">int</span> w, h;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">draw</span><span class="params">()</span></span>&#123; <span class="comment">//메서드 재정의</span></span><br><span class="line">       System.out.println(<span class="string">"Rectangle draw"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h5 id="인터페이스-예시는"><a href="#인터페이스-예시는" class="headerlink" title="인터페이스 예시는?"></a>인터페이스 예시는?</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">IWorker</span> </span>&#123; <span class="comment">//인터페이스</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">work</span><span class="params">()</span></span>;</span><br><span class="line">   	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line">   </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Worker</span> <span class="keyword">implements</span> <span class="title">IWorker</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">work</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// ...working</span></span><br><span class="line">   	&#125;</span><br><span class="line">   	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   		<span class="comment">// ...eating in launch break</span></span><br><span class="line">   	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/abstract class, interface/" data-id="ck7vvtrwk00k2m46wzmzzy4v6" data-title="abstract class, interface" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-OOP" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/12/05/OOP/" class="article-date">
-  <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/java/">Java</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/05/OOP/">OOP</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h5 id="객체지향프로그래밍-OOP-가-뭔가요"><a href="#객체지향프로그래밍-OOP-가-뭔가요" class="headerlink" title="객체지향프로그래밍(OOP) 가 뭔가요?"></a>객체지향프로그래밍(OOP) 가 뭔가요?</h5><p>프로그래밍에서 필요한 데이터를 추상화 시켜서 상태와 행위를 가진 객체를 만들고, 그 객체들 간의 유기적인 상호작용을 통해 로직을 구성하는 프로그래밍 방법입니다.</p>
-<h5 id="장점이-무엇인가요"><a href="#장점이-무엇인가요" class="headerlink" title="장점이 무엇인가요?"></a>장점이 무엇인가요?</h5><ol>
-<li>코드 재사용이 쉽습니다.<br>상속을 통해 확장해서 사용할 수 있고, 남이 만든 클래스를 가져와서 사용할 수 있습니다.</li>
-<li>유지보수가 쉽습니다.<br>절차 지향 프로그래밍에서는 코드를 수정 할 때 일일이 찾아야합니다. 반면, 객체지향 프로그래밍에서는 수정해야 할 부분이 클래스 내부에 멤버 변수 혹은 메소드로 있기 때문에 해당 부분만 수정하면 됩니다.</li>
-</ol>
-<h5 id="단점은-무엇인가요"><a href="#단점은-무엇인가요" class="headerlink" title="단점은 무엇인가요?"></a>단점은 무엇인가요?</h5><ol>
-<li>처리 속도가 상대적으로 느립니다.</li>
-<li>객체가 많으면 용량이 커질 수 있습니다.</li>
-<li>설계시 많은 시간이 소요됩니다.</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/OOP/" data-id="ck7vvtrwk00k0m46wzae52tbi" data-title="OOP" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/coupling/" data-id="ck860sxpk00jxr36w6huzqry9" data-title="coupling" class="article-share-link">Share</a>
       
       
       
@@ -403,7 +500,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/Redis/" data-id="ck7vvtrwj00jym46w9yl1uhpp" data-title="Redis" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/Redis/" data-id="ck860sxpk00jvr36w6ynzrvrk" data-title="Redis" class="article-share-link">Share</a>
       
       
       
@@ -415,14 +512,14 @@
 
 
   
-    <article id="post-Java Feature" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-ADT" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/12/05/Java Feature/" class="article-date">
+    <a href="/2018/12/05/ADT/" class="article-date">
   <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/java/">Java</a>
+    <a class="article-category-link" href="/categories/data-structure/">Data Structure</a>
   </div>
 
   </div>
@@ -433,7 +530,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/05/Java Feature/">Java 특징</a>
+      <a class="p-name article-title" href="/2018/12/05/ADT/">ADT</a>
     </h1>
   
 
@@ -441,15 +538,13 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h5 id="추상화란"><a href="#추상화란" class="headerlink" title="추상화란?"></a>추상화란?</h5><p>불필요한 정보는 숨기고, 중요한 정보만을 표현함으로써 공통의 속성이나 기능을 묶어 이름을 붙이는 것입니다.</p>
-<h5 id="캡슐화란"><a href="#캡슐화란" class="headerlink" title="캡슐화란?"></a>캡슐화란?</h5><p>데이터와 데이터를 처리하는 함수를 하나로 묶는 것입니다.</p>
-<h5 id="상속이란"><a href="#상속이란" class="headerlink" title="상속이란?"></a>상속이란?</h5><p>부모 클래스가 가지고있는 모든것을(생성자 제외) 자식클래스가 물려받아 같이 공유하며 나아가 확장(extends)하는 개념이다</p>
-<h5 id="다형성이란"><a href="#다형성이란" class="headerlink" title="다형성이란?"></a>다형성이란?</h5><p>서로 다른 클래스의 객체가 같은 메세지를 받았을 때 각자의 방식으로 동작하는 능력입니다.<br>ex) Pet : abstract class / (Dog, Cat, Parrot) extends Parrot</p>
+        <p>추상자료형이란 기능의 구현 부분을 나타내지 않고 순수한 기능이 무엇인지 나열한 것입니다.</p>
+<p>예를 들면, 스택은 FILO(First In Last Out)/LIFO(Last In First Out)의 자료구조로, 마지막에 입력된 데이터가 먼저 출력되는 자료구조입니다. push는 스택에 데이터를 입력합니다. pop은 스택에 있는 데이터중에 가장 나중에 입력된 데이터를 출력하고, 스택에서 삭제합니다.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/Java Feature/" data-id="ck7vvtrwi00jwm46w04bhwhbg" data-title="Java 특징" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/ADT/" data-id="ck860sxpe00jbr36ww6lirlrb" data-title="ADT" class="article-share-link">Share</a>
       
       
       
@@ -506,146 +601,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/Java 8/" data-id="ck7vvtrwi00jum46we5zfjezf" data-title="Java 8" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-High Availability" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/12/05/High Availability/" class="article-date">
-  <time class="dt-published" datetime="2018-12-04T15:00:00.000Z" itemprop="datePublished">2018-12-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/database/">Database</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/05/High Availability/">High Availability</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h5 id="고가용성-HA-High-Availability-이-뭔가요"><a href="#고가용성-HA-High-Availability-이-뭔가요" class="headerlink" title="고가용성(HA, High Availability)이 뭔가요?"></a>고가용성(HA, High Availability)이 뭔가요?</h5><p>서버가 오랜 시간 동안 지속적으로 정상 운영이 가능한 성질을 말합니다.</p>
-<h5 id="HA를-이루기-위한-방법이-뭐가-있나요"><a href="#HA를-이루기-위한-방법이-뭐가-있나요" class="headerlink" title="HA를 이루기 위한 방법이 뭐가 있나요?"></a>HA를 이루기 위한 방법이 뭐가 있나요?</h5><p>클러스터링, 이중화, RAID가 있습니다.</p>
-<h5 id="클러스터링이-뭔가요"><a href="#클러스터링이-뭔가요" class="headerlink" title="클러스터링이 뭔가요?"></a>클러스터링이 뭔가요?</h5><p>마치 하나의 컴퓨터처럼 사용하기 위해, 여러 컴퓨터를 연결한 병렬 시스템입니다. 클러스터링 환경에서는 특정 장비에 문제가 생기거나 특정 장비에서 실행중인 애플리케이션에서 문제가 발생더라도 전체 서비스에 영향을 미치지 않도록 제어가 가능합니다. </p>
-<h5 id="클러스터링의-장점은"><a href="#클러스터링의-장점은" class="headerlink" title="클러스터링의 장점은?"></a>클러스터링의 장점은?</h5><ol>
-<li>저렴한 비용으로 다수의 서버를 증설 할 수 있습니다.</li>
-<li>1대의 서버 장애가 발생하여도 서비스 중단없이 다른 서버로 적절히 자동 분배되어 서비스를 계속 운용할 수 있습니다.</li>
-<li>서버를 확장할 때도 서비스 중단 없이 증설이 가능합니다.</li>
-</ol>
-<h5 id="이중화-replication-는-무엇인가요"><a href="#이중화-replication-는-무엇인가요" class="headerlink" title="이중화(replication) 는 무엇인가요?"></a>이중화(replication) 는 무엇인가요?</h5><p>replication은 물리적으로 다른 서버의 저장 공간에 동일한 데이터를 복사하는 기술입니다.</p>
-<h5 id="master-와-slave가-뭔가요"><a href="#master-와-slave가-뭔가요" class="headerlink" title="master 와 slave가 뭔가요?"></a>master 와 slave가 뭔가요?</h5><p>원본 데이터가 위치하는 서버를 master 라고 하고 그 원본을 복제한 서버를 slave 라고 합니다. master에 쓰기 작업을 하고, 그 서버의 데이터를 복제해서 여러 대의 slave 서버를 만든 후에 slave 에서는 읽기 작업만을 수행합니다.</p>
-<h5 id="replication은-어떤-용도로-사용하나요"><a href="#replication은-어떤-용도로-사용하나요" class="headerlink" title="replication은 어떤 용도로 사용하나요?"></a>replication은 어떤 용도로 사용하나요?</h5><ol>
-<li><p>백업용으로 사용할 수 있습니다.</p>
-<p>master의 database와, 그로부터 복사된 slave의 database는 identical하기 때문에, master에 문제가 생겼을 경우에, slave가 하던 일을 떠맡도록 하면 다시 시스템을 정상적으로 가동하는 데 드는 시간을 절약할 수 있습니다.</p>
-</li>
-<li><p>역할을 분산할 수 있습니다.</p>
-<p>data를 직접 변경하는 처리는 master가 하도록 하고, 변경하지 않는 SELECT 같은 처리는 slave가 맡는 형식입니다.</p>
-</li>
-</ol>
-<h5 id="mysql-에서-replication은-어떤-방식으로-하나요"><a href="#mysql-에서-replication은-어떤-방식으로-하나요" class="headerlink" title="mysql 에서 replication은 어떤 방식으로 하나요?"></a>mysql 에서 replication은 어떤 방식으로 하나요?</h5><ol>
-<li>Master에서 데이터 변경이 일어나면 자신의 데이터베이스에 반영합니다.</li>
-<li>Master에서 변경된 이력을 Binary Log에 기록 후 관련 이벤트를 날립니다.</li>
-<li>Slave IO_THREAD에서 Master 이벤트를 감지하고, Master Binary Log를 자신의 Relay Log라는 곳에 기록을 합니다.</li>
-<li>Slave SQL_THREAD는 Relay Log를 읽고 자신의 데이터베이스에 기록을 합니다.</li>
-</ol>
-<h5 id="RAID가-무엇인가요"><a href="#RAID가-무엇인가요" class="headerlink" title="RAID가 무엇인가요?"></a>RAID가 무엇인가요?</h5><p>한 개의 디스크에 데이터를 저장하는 방식이 아닌, 데이터 저장의 성능 및 안정성 확보를 위해 복수의 디스크를 구성하는 방식입니다.</p>
-<h5 id="샤딩이-무엇인가요"><a href="#샤딩이-무엇인가요" class="headerlink" title="샤딩이 무엇인가요?"></a>샤딩이 무엇인가요?</h5><p>Horizontal Partitioning입니다. 같은 테이블 스키마를 가진 데이터를 다수의 데이터베이스에 분산하여 저장하는 방법입니다.</p>
-<h5 id="샤딩이-항상-필요하나요"><a href="#샤딩이-항상-필요하나요" class="headerlink" title="샤딩이 항상 필요하나요?"></a>샤딩이 항상 필요하나요?</h5><p>가능하면 Sharding을 피하거나 지연시킬 수 있는 방법을 찾는 것이 우선되어야 합니다. </p>
-<h5 id="샤딩-이외의-방법은-뭐가-있을까요"><a href="#샤딩-이외의-방법은-뭐가-있을까요" class="headerlink" title="샤딩 이외의 방법은 뭐가 있을까요?"></a>샤딩 이외의 방법은 뭐가 있을까요?</h5><ol>
-<li><p>Scale in 방식</p>
-<p>Hardware Spec이 더 좋은 컴퓨터를 사용할 수 있습니다. </p>
-</li>
-<li><p>Cache, Repliction</p>
-<p>read 부하가 크다면 </p>
-</li>
-<li><p>Vertically Partition</p>
-<p>Table의 일부 컬럼만 자주 사용한다면</p>
-</li>
-</ol>
-<h5 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h5><p><a href="http://snthewhitehacker.tistory.com/4" target="_blank" rel="noopener">http://snthewhitehacker.tistory.com/4</a></p>
-<p><a href="http://gywn.net/2011/12/mysql-replication-1/" target="_blank" rel="noopener">http://gywn.net/2011/12/mysql-replication-1/</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/05/High Availability/" data-id="ck7vvtrwg00jsm46wz988fygv" data-title="High Availability" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Components" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/11/22/Components/" class="article-date">
-  <time class="dt-published" datetime="2018-11-21T15:00:00.000Z" itemprop="datePublished">2018-11-22</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/android/">Android</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/11/22/Components/">Components</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>안드로이드 애플리케이션은 컴포넌트(component)로 구성되어있습니다. 안드로이드의 4대 컴포넌트는 액티비티(activity), 서비스(service), 콘텐트 제공자(content provider), 방송수신자(broadcast receiver) 입니다. </p>
-<p>각 컴포넌트들은 하나의 독립된 형태로 존재하며, 정해진 역할을 수행합니다. 이때, 인텐트를 통하여 다른 애플리케이션의 컴포넌트를 활성화시킬 수 있습니다. 인텐트는 서로 독립적으로 동작하는 4가지 컴포넌트들 간의 상호 통신을 위한 장치입니다. 즉, 컴포넌트 간의 통신수단입니다. 인텐트를 통하여 다른 애플리케이션의 컴포넌트를 활성화시킬 수 있습니다.</p>
-<h5 id="액티비티-activity"><a href="#액티비티-activity" class="headerlink" title="액티비티(activity)"></a>액티비티(activity)</h5><p>사용자 인터페이스 화면을 가지며 특정한 작업을 담당하는 컴포넌트입니다. </p>
-<p>일반적으로 UI를 갖는 하나의 스크린을 나타냅니다. 안드로이드 애플리케이션은 반드시 하나의 activity를 가지고 있어야합니다. 각 액티비티는 manifest 파일에 등록되어 있어야 합니다. 엑티비티는 하나 이상의 View를 가질 수 있습니다.</p>
-<p>예를 들어 이메일 앱이라면 새 이메일 목록을 표시하는 액티비티가 하나 있고, 이메일을 작성하는 액티비티가 또 하나, 그리고 이메일을 읽는 데 쓰는 액티비티가 또 하나 있을 수 있습니다. 여러 액티비티가 함께 작동하여 해당 이메일 앱에서 짜임새 있는 사용자 환경을 형성하는 것은 사실이지만, 각자 서로와는 독립적인 형태입니다</p>
-<h5 id="서비스-service"><a href="#서비스-service" class="headerlink" title="서비스(service)"></a>서비스(service)</h5><p>백그라운드에서 실행되는 컴포넌트로 오랫동안 실행되는 작업이나 원격 프로세스를 위한 작업을 할 때 사용됩니다.</p>
-<p>UI가 없습니다. 한번 시작된 Service는 애플리케이션이 종료되고 다른 애플리케이션으로 이동해도 계속 백그라운드에서 실행됩니다. 모든 서비스는 Service 클래스를 상속받아서 작성됩니다. </p>
-<p>예를 들어 서비스는 사용자가 다른 앱에 있는 동안에 백그라운드에서 음악을 재생할 수도 있고, 아니면 사용자와 액티비티 사이의 상호작용을 차단하지 않고 네트워크를 가로질러 데이터를 가져올 수도 있습니다. 또 다른 구성 요소(예: 액티비티)가 서비스를 시작한 다음 실행되도록 두거나 자신에게 바인드하여 상호작용하도록 할 수도 있습니다.</p>
-<h5 id="콘텐트-제공자-content-provider"><a href="#콘텐트-제공자-content-provider" class="headerlink" title="콘텐트 제공자(content provider)"></a>콘텐트 제공자(content provider)</h5><p>데이터를 관리하고 다른 애플리케이션 데이터를 제공하는 컴포넌트입니다.</p>
-<p>데이터는 파일 시스템이나 SQLite 데이터베이스, 웹상에 저장될 수 있습니다. 콘텐트 제공자를 통해서 다른 애플리케이션의 데이터를 쿼리하거나 변경 가능합니다.</p>
-<p>예를 들어, Android 시스템은 사용자의 연락처 정보를 관리하는 콘텐츠 제공자를 제공합니다. 따라서, 적절한 권한을 가진 앱이라면 어떤 것이든 해당 콘텐츠 제공자의 일부를 쿼리하여(예를 들어 ContactsContract.Data 등) 특정한 사람에 대한 정보를 읽고 쓸 수 있습니다.</p>
-<h5 id="방송수신자-broadcast-receiver"><a href="#방송수신자-broadcast-receiver" class="headerlink" title="방송수신자(broadcast receiver)"></a>방송수신자(broadcast receiver)</h5><p>안드로이드 단말기에서 발생하는 다양한 이벤트/정보를 받고 반응하는 컴포넌트입니다.</p>
-<p>예를들면 시스템부팅, 배터리 부족, 전화/문자 수신, 네트워크 끊김을 알려주는 것이 방송입니다. 단말기에서 발생하는 일 중에서 어플리케이션이 알아야 하는 상황이 발생하면 방송을 해줍니다. 수신기(BroadcastReceiver)를 통해 상황을 감지하고 적절한 작업을 수행합니다. 일반적으로 UI가 없습니다.</p>
-<h5 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h5><p><a href="https://developer.android.com/guide/components/fundamentals?hl=ko" target="_blank" rel="noopener">https://developer.android.com/guide/components/fundamentals?hl=ko</a></p>
-<p><a href="http://ggodol.tistory.com/entry/%EC%95%88%EB%93%9C%EB%A1%9C%EC%9D%B4%EB%93%9C%EC%95%88%EB%93%9C%EB%A1%9C%EC%9D%B4%EB%93%9C-4%EB%8C%80-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8" target="_blank" rel="noopener">http://ggodol.tistory.com/entry/%EC%95%88%EB%93%9C%EB%A1%9C%EC%9D%B4%EB%93%9C%EC%95%88%EB%93%9C%EB%A1%9C%EC%9D%B4%EB%93%9C-4%EB%8C%80-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/11/22/Components/" data-id="ck7vvtrwd00jim46w298hy6aa" data-title="Components" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/05/Java 8/" data-id="ck860sxpj00jrr36w2qtr767n" data-title="Java 8" class="article-share-link">Share</a>
       
       
       
@@ -700,23 +656,23 @@
       <ul>
         
           <li>
+            <a href="/2020/03/24/tdd-chapter-18/">[테스트 주도 개발] 18장_xUnit 으로 가는 첫걸음</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/24/tdd-chapter-19/">[테스트 주도 개발] 18장_테이블 차리기</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/24/tdd-chapter-20/">[테스트 주도 개발] 18장_테이블 차리기</a>
+          </li>
+        
+          <li>
             <a href="/2020/03/17/tdd-chapter-17/">[테스트 주도 개발] 17장_Money 회고</a>
           </li>
         
           <li>
             <a href="/2020/03/16/tdd-chapter-13/">[테스트 주도 개발] 13장_진짜로 만들기</a>
-          </li>
-        
-          <li>
-            <a href="/2020/03/16/tdd-chapter-15/">[테스트 주도 개발] 15장_서로 다른 통화 더하기</a>
-          </li>
-        
-          <li>
-            <a href="/2020/03/16/tdd-chapter-16/">[테스트 주도 개발] 16장_드디어, 추상화</a>
-          </li>
-        
-          <li>
-            <a href="/2020/03/16/tdd-chapter-14/">[테스트 주도 개발] 14장_바꾸기</a>
           </li>
         
       </ul>
