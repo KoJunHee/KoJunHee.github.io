@@ -71,9 +71,9 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-persistence context" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-entity mapping" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2019/03/20/persistence context/" class="article-date">
+    <a href="/2019/03/20/entity mapping/" class="article-date">
   <time class="dt-published" datetime="2019-03-19T15:00:00.000Z" itemprop="datePublished">2019-03-20</time>
 </a>
     
@@ -89,7 +89,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/03/20/persistence context/">[자바 ORM 표준 JPA 프로그래밍] 3장_영속성 관리</a>
+      <a class="p-name article-title" href="/2019/03/20/entity mapping/">[자바 ORM 표준 JPA 프로그래밍] 4장_앤티티 매핑</a>
     </h1>
   
 
@@ -97,63 +97,55 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>이번 포스팅에서는 Mapping 한 Entity 를 Entity Manager 를 통해 어떻게 사용하는지 정리합니다.</p>
-<h4 id="Entity-Manager-Factory-Entity-Manager"><a href="#Entity-Manager-Factory-Entity-Manager" class="headerlink" title="Entity Manager Factory, Entity Manager"></a>Entity Manager Factory, Entity Manager</h4><p>엔티티 메니저 펙토리는 한 개만 만들어서 애플리케이션 전체에서 공유합니다. 엔티티 메니저 펙토리는 서도 다른 스레드 간에 공유해도 되지만, 엔티티 메니저는 여러 스레드가 동시에 접근하면 동시성 문제가 발생하므로 스레드 간에 절대 공유하면 안됩니다.</p>
-<h4 id="Persistence-Context"><a href="#Persistence-Context" class="headerlink" title="Persistence Context"></a>Persistence Context</h4><p>엔티티를 여구 저장하는 환경입니다. 엔티티 메니저로 엔티티를 저장하거나 조회하면 엔티티 메니저는 영속성 컨텍스트에 엔티티를 보관하고 관리합니다.</p>
-<h4 id="엔티티의-생명주기"><a href="#엔티티의-생명주기" class="headerlink" title="엔티티의 생명주기"></a>엔티티의 생명주기</h4><p>4가지 상태가 있습니다.</p>
+        <p>엔티티와 테이블을 정확히 매핑하기 위해 JPA는 다양한 어노테이션을 지원합니다. 이번 포스팅에서는 다음 매핑에 대해 다룹니다.</p>
 <ul>
-<li>비영속<ul>
-<li>영속성 컨텍스트와 관계 없는 상태 </li>
+<li>객체와 테이블 매핑<ul>
+<li>@Entity, @Table</li>
 </ul>
 </li>
-<li>영속<ul>
-<li>영속성 컨텍스트에 저장된 상태</li>
+<li>기본 키 매핑<ul>
+<li>@Id</li>
 </ul>
 </li>
-<li>준영속<ul>
-<li>영속성 컨텍스트에 저장되었다가 분리된 상태</li>
-</ul>
-</li>
-<li>삭제<ul>
-<li>삭제된 상태</li>
+<li>필드와 컬럼 매핑<ul>
+<li>@Column</li>
 </ul>
 </li>
 </ul>
-<h4 id="영속성-컨텍스트의-특징"><a href="#영속성-컨텍스트의-특징" class="headerlink" title="영속성 컨텍스트의 특징"></a>영속성 컨텍스트의 특징</h4><ul>
-<li>영속 상태는 식별자 값이 반드시 있어야합니다.</li>
-<li>보통 Transaction 을 Commit 하는 순간 영속성 컨텍스트에 저장된 엔티티를 데이터베이스에 반영합니다. (Flush)</li>
-<li>1차 캐쉬 / 동일성 보장 / 쓰기 지연 / 변경 감지 / 지연 로딩</li>
-</ul>
-<h4 id="엔티티-조회"><a href="#엔티티-조회" class="headerlink" title="엔티티 조회"></a>엔티티 조회</h4><p>영속성 컨텍스트는 내부에 1차 캐시를 가지고 있습니다. 쉽게 이야기해, Map 처럼 키는 @Id로 매핑한 식별자이고 값은 엔티티 인스턴스입니다. 1차 캐시에 저장된 엔티티를 조회할 때 , 1차 캐시에 엔티티가 있으면 데이터베이스를 조회하지 않고 메모리에 있는 1차 캐시에서 엔티티를 조회합니다. 만약, 1차 캐시에 없으면 엔티티 메니저는 데이터베이스를 조회해서 엔티티를 생성하고 1차 캐시에 저장한 후에 영속 상태의 엔티티를 반환합니다. </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">entityManger.find(Member.class, <span class="string">"member1"</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="Entity"><a href="#Entity" class="headerlink" title="@Entity"></a>@Entity</h4><p>JPA를 사용해서 테이블을 매핑할 클래스는 @Entity 를 필수로 붙여야합니다. @Entity 적용시 기본 생성자는 필수입니다.</p>
+<h4 id="Table"><a href="#Table" class="headerlink" title="@Table"></a>@Table</h4><p>엔티티와 매핑할 테이블을 지정합니다. </p>
+<h4 id="데이터베이스-스키마-자동-생성"><a href="#데이터베이스-스키마-자동-생성" class="headerlink" title="데이터베이스 스키마 자동 생성"></a>데이터베이스 스키마 자동 생성</h4><p>JPA는 클래스의 매핑 정보와 데이터베이스 방언을 사용해서 데이터베이스 스키마를 생성합니다. 다음과 같이 설정하면 기존 테이블을 삭제하고 새로 생성합니다 (DROP+CREATE).  create-drop / update / validate / none 옵션이 있습니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spring.jpa.hibernate.ddl-auto=create</span><br></pre></td></tr></table></figure>
 
-<h4 id="영속-엔티티의-동일성-보장"><a href="#영속-엔티티의-동일성-보장" class="headerlink" title="영속 엔티티의 동일성 보장"></a>영속 엔티티의 동일성 보장</h4><p>영속성 컨텍스트는 성능상 이점과 엔티티의 동일성을 보장합니다. 따라서, 다음 코드의 결과는 참입니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Member a = em.find(Member.class, <span class="string">"member1"</span>);</span><br><span class="line">Member b = em.find(Member.class, <span class="string">"member1"</span>);</span><br><span class="line"></span><br><span class="line">System.out.println(a==b);</span><br></pre></td></tr></table></figure>
-
-<h4 id="엔티티-등록"><a href="#엔티티-등록" class="headerlink" title="엔티티 등록"></a>엔티티 등록</h4><p>엔티티 메니저는 트랜잭션을 커밋하기 직전까지 데이터베이스에 엔티티를 저장하지 않고 내부 쿼리 저장소에 INSERT SQL을 모아둡니다. 그리고 커밋할 때 모아둔 쿼리를 데이터베이스에 보냅니다. 이것을 Transactional Write Behind (쓰기 지연) 라고 합니다.</p>
-<h4 id="엔티티-수정"><a href="#엔티티-수정" class="headerlink" title="엔티티 수정"></a>엔티티 수정</h4><p>엔티티의 변경사항을 데이터베이스에 자동으로 반영하는 기능을 Dirty Checking (변경 감지) 이라고 합니다. 순서는 다음과 같습니다.</p>
-<ol>
-<li>커밋하면 엔티티 메니저 내부에서 flush() 가 호출됩니다.</li>
-<li>엔티티와 스냅샷 (JPA는 엔티티를 영속성 컨텐스트에 보관할 때, 최초 상태를 복사해서 저장합니다 )을 비교해서 변경된 엔티티를 찾습니다.</li>
-<li>변경된 엔티티가 있으면 수정 쿼리를 생성해서 쓰기 지연 SQL 저장소에 보냅니다.</li>
-<li>데이터베이스 트랜잭션을 커밋합니다.</li>
-</ol>
-<p>그리고 UPDATE SQL 을 생성할 때, 변경된 부분만 사용해서 동적으로 생성되는 것이 아니라, 엔티티의 모든 필드를 업데이트 합니다.</p>
-<h4 id="엔티티-삭제"><a href="#엔티티-삭제" class="headerlink" title="엔티티 삭제"></a>엔티티 삭제</h4><p>엔티티 등록과 비슷하게 삭제 쿼리를 쓰기 지연 SQL 저장소에 등록하고 트랜잭션을 커밋해서 flush()를 호출하면 데이터베이스에 삭제 쿼리를 전달합니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Member a = em.find(Member.class, <span class="string">"member1"</span>);</span><br><span class="line">em.remove(a);</span><br></pre></td></tr></table></figure>
-
-<h4 id="플러쉬"><a href="#플러쉬" class="headerlink" title="플러쉬"></a>플러쉬</h4><p>영속성 컨테르를 플러쉬하는 방법은 3가지입니다.</p>
+<h4 id="기본-키-Primary-Key-매핑"><a href="#기본-키-Primary-Key-매핑" class="headerlink" title="기본 키 (Primary Key) 매핑"></a>기본 키 (Primary Key) 매핑</h4><p>JPA가 제공하는 데이터베이스 기본 키 생성 전략은 다음과 같습니다.</p>
 <ul>
-<li>em.flush() 직접 호출</li>
-<li>트랜잭션 커밋 시 플러쉬 자동 호출</li>
-<li>JPQL 쿼리 실행시 플러쉬 자동 호출</li>
+<li>직접 할당<ul>
+<li>애플리케이션에서 직접 할당합니다.</li>
 </ul>
+</li>
+<li>자동 생성<ul>
+<li>IDENTITY<ul>
+<li>기본 키 생성을 데이터베이스에 위임합니다.</li>
+</ul>
+</li>
+<li>SEQUENCE<ul>
+<li>데이터베이스 시퀀스를 사용해 기본 키를 할당합니다.</li>
+</ul>
+</li>
+<li>TABLE<ul>
+<li>키 생성 테이블을 사용합니다.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="Column"><a href="#Column" class="headerlink" title="@Column"></a>@Column</h4><p>객체 필드를 테이블 칼럼에 매핑합니다. 속성 중에 name, nullable 이 주로 사용됩니다.</p>
 <h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><p>자바 ORM 표준 프로그래밍 &lt;김영한&gt;</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/03/20/persistence context/" data-id="ck860sxq400lsr36w36k90ol0" data-title="[자바 ORM 표준 JPA 프로그래밍] 3장_영속성 관리" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/03/20/entity mapping/" data-id="ck860v51a00lvsa6wbdcrfosy" data-title="[자바 ORM 표준 JPA 프로그래밍] 4장_앤티티 매핑" class="article-share-link">Share</a>
       
       
       
@@ -222,7 +214,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/03/18/JPA Simple Test/" data-id="ck860sxq200llr36wmmi7fo93" data-title="JPA Simple Test" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/03/18/JPA Simple Test/" data-id="ck860v51900ltsa6wz3h9oiul" data-title="JPA Simple Test" class="article-share-link">Share</a>
       
       
       
@@ -310,7 +302,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/03/13/ORM/" data-id="ck860sxq500lur36wlaa49ngq" data-title="ORM" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/03/13/ORM/" data-id="ck860v51800lrsa6w4m3o2930" data-title="ORM" class="article-share-link">Share</a>
       
       
       
@@ -419,7 +411,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/03/13/JPA Paradigm/" data-id="ck860sxq100lgr36wstmd1mw0" data-title="패러다임의 불일치" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/03/13/JPA Paradigm/" data-id="ck860v51700lmsa6wqxl7a0o5" data-title="패러다임의 불일치" class="article-share-link">Share</a>
       
       
       
@@ -546,7 +538,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/01/21/git note/" data-id="ck860sxq300lpr36wih2b4h3u" data-title="Git 정리" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2019/01/21/git note/" data-id="ck860v51800losa6wk3txbyp9" data-title="Git 정리" class="article-share-link">Share</a>
       
       
       
@@ -593,56 +585,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/09/joi/" data-id="ck860sxq000ler36w2ir3ws79" data-title="Joi" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-exports" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/12/09/exports/" class="article-date">
-  <time class="dt-published" datetime="2018-12-08T15:00:00.000Z" itemprop="datePublished">2018-12-09</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/node-js/">Node.js</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/09/exports/">exports</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h5 id="전역-객체인-exports가-뭔가요"><a href="#전역-객체인-exports가-뭔가요" class="headerlink" title="전역 객체인 exports가 뭔가요?"></a>전역 객체인 exports가 뭔가요?</h5><p>만들고자 하는 모듈을 파일로 만들고, exports 객체의 속성이나 메소드를 정의해주면 모듈을 만들어 낼 수 있습니다. 그리고 만들어진 모듈을 전역 함수 require()를 이용하여 추출합니다.</p>
-<h5 id="여러-속성과-메소드를-모듈로-만들고-이를-사용한-exports-예시는"><a href="#여러-속성과-메소드를-모듈로-만들고-이를-사용한-exports-예시는" class="headerlink" title="여러 속성과 메소드를 모듈로 만들고 이를 사용한 exports 예시는?"></a>여러 속성과 메소드를 모듈로 만들고 이를 사용한 exports 예시는?</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// cicle.js</span></span><br><span class="line"><span class="keyword">var</span> PI = <span class="built_in">Math</span>.PI;</span><br><span class="line"> </span><br><span class="line">exports.area = <span class="function"><span class="keyword">function</span> (<span class="params">r</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> PI * r * r;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line">exports.circumference = <span class="function"><span class="keyword">function</span> (<span class="params">r</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">2</span> * PI * r;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// foo.js</span></span><br><span class="line"><span class="keyword">var</span> circle = <span class="built_in">require</span>(<span class="string">'./circle.js'</span>);</span><br><span class="line"><span class="built_in">console</span>.log( <span class="string">'The area of a circle of radius 4 is '</span></span><br><span class="line">    + circle.area(<span class="number">4</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// result</span></span><br><span class="line">$ node foo.js</span><br><span class="line">The area <span class="keyword">of</span> a circle <span class="keyword">of</span> radius <span class="number">4</span> is <span class="number">50.26548245743669</span></span><br></pre></td></tr></table></figure>
-
-<h5 id="exports와-module-exports-차이는"><a href="#exports와-module-exports-차이는" class="headerlink" title="exports와 module.exports 차이는?"></a>exports와 module.exports 차이는?</h5><p>exports는 속성이나 메소드를 여러 개 정의할 수 있지만, module.exports는 하나만 정의할 수 있습니다. 파일 자체를 속성이나 메소드로 사용하는 방식입니다.</p>
-<h5 id="module-exports의-예시는"><a href="#module-exports의-예시는" class="headerlink" title="module.exports의 예시는?"></a>module.exports의 예시는?</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// square.js</span></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">width</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        area: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> width * width;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// bar.js</span></span><br><span class="line"><span class="keyword">var</span> square = <span class="built_in">require</span>(<span class="string">'./square.js'</span>);</span><br><span class="line"><span class="keyword">var</span> mySquare = square(<span class="number">2</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'The area of my square is '</span> + mySquare.area());</span><br><span class="line"></span><br><span class="line"><span class="comment">// result</span></span><br><span class="line">$ node bar.js</span><br><span class="line">The area <span class="keyword">of</span> my square is <span class="number">4</span></span><br></pre></td></tr></table></figure>
-
-<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://opentutorials.org/module/938/7190" target="_blank" rel="noopener">https://opentutorials.org/module/938/7190</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/09/exports/" data-id="ck860sxq000lcr36w0tmgu5cd" data-title="exports" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/09/joi/" data-id="ck860v51700lksa6wqh1ahlq0" data-title="Joi" class="article-share-link">Share</a>
       
       
       
@@ -720,7 +663,114 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/09/React.js/" data-id="ck860sxq200lir36wgfcn482k" data-title="React.js" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/09/React.js/" data-id="ck860v51600lisa6wzv63o8ev" data-title="React.js" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-exports" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/09/exports/" class="article-date">
+  <time class="dt-published" datetime="2018-12-08T15:00:00.000Z" itemprop="datePublished">2018-12-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/node-js/">Node.js</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/09/exports/">exports</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="전역-객체인-exports가-뭔가요"><a href="#전역-객체인-exports가-뭔가요" class="headerlink" title="전역 객체인 exports가 뭔가요?"></a>전역 객체인 exports가 뭔가요?</h5><p>만들고자 하는 모듈을 파일로 만들고, exports 객체의 속성이나 메소드를 정의해주면 모듈을 만들어 낼 수 있습니다. 그리고 만들어진 모듈을 전역 함수 require()를 이용하여 추출합니다.</p>
+<h5 id="여러-속성과-메소드를-모듈로-만들고-이를-사용한-exports-예시는"><a href="#여러-속성과-메소드를-모듈로-만들고-이를-사용한-exports-예시는" class="headerlink" title="여러 속성과 메소드를 모듈로 만들고 이를 사용한 exports 예시는?"></a>여러 속성과 메소드를 모듈로 만들고 이를 사용한 exports 예시는?</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// cicle.js</span></span><br><span class="line"><span class="keyword">var</span> PI = <span class="built_in">Math</span>.PI;</span><br><span class="line"> </span><br><span class="line">exports.area = <span class="function"><span class="keyword">function</span> (<span class="params">r</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> PI * r * r;</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line">exports.circumference = <span class="function"><span class="keyword">function</span> (<span class="params">r</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">2</span> * PI * r;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// foo.js</span></span><br><span class="line"><span class="keyword">var</span> circle = <span class="built_in">require</span>(<span class="string">'./circle.js'</span>);</span><br><span class="line"><span class="built_in">console</span>.log( <span class="string">'The area of a circle of radius 4 is '</span></span><br><span class="line">    + circle.area(<span class="number">4</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// result</span></span><br><span class="line">$ node foo.js</span><br><span class="line">The area <span class="keyword">of</span> a circle <span class="keyword">of</span> radius <span class="number">4</span> is <span class="number">50.26548245743669</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="exports와-module-exports-차이는"><a href="#exports와-module-exports-차이는" class="headerlink" title="exports와 module.exports 차이는?"></a>exports와 module.exports 차이는?</h5><p>exports는 속성이나 메소드를 여러 개 정의할 수 있지만, module.exports는 하나만 정의할 수 있습니다. 파일 자체를 속성이나 메소드로 사용하는 방식입니다.</p>
+<h5 id="module-exports의-예시는"><a href="#module-exports의-예시는" class="headerlink" title="module.exports의 예시는?"></a>module.exports의 예시는?</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// square.js</span></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">width</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        area: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> width * width;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// bar.js</span></span><br><span class="line"><span class="keyword">var</span> square = <span class="built_in">require</span>(<span class="string">'./square.js'</span>);</span><br><span class="line"><span class="keyword">var</span> mySquare = square(<span class="number">2</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'The area of my square is '</span> + mySquare.area());</span><br><span class="line"></span><br><span class="line"><span class="comment">// result</span></span><br><span class="line">$ node bar.js</span><br><span class="line">The area <span class="keyword">of</span> my square is <span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="https://opentutorials.org/module/938/7190" target="_blank" rel="noopener">https://opentutorials.org/module/938/7190</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/09/exports/" data-id="ck860v51500lgsa6wef6m12xg" data-title="exports" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-RabbitMQ" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/12/09/RabbitMQ/" class="article-date">
+  <time class="dt-published" datetime="2018-12-08T15:00:00.000Z" itemprop="datePublished">2018-12-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/etc/">etc</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/12/09/RabbitMQ/">RabbitMQ</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="RabbitMQ가-뭔가요"><a href="#RabbitMQ가-뭔가요" class="headerlink" title="RabbitMQ가 뭔가요?"></a>RabbitMQ가 뭔가요?</h5><p>producers 로부터 메시지를 받아 consumers 에게 전달해주는 서비스입니다.</p>
+<h5 id="producing이-뭔가요"><a href="#producing이-뭔가요" class="headerlink" title="producing이 뭔가요?"></a>producing이 뭔가요?</h5><p>메시지를 전송한다는 의미입니다. 메시지들을 전송하는 프로그램을 producer 라 부릅니다.</p>
+<h5 id="consuming이-뭔가요"><a href="#consuming이-뭔가요" class="headerlink" title="consuming이 뭔가요?"></a>consuming이 뭔가요?</h5><p>Consuming은 메시지를 수신한다는 의미입니다. 메시지 수신을 기다리는 프로그램을 consumer라고 합니다. </p>
+<h5 id="메세지-큐가-왜-필요한가요"><a href="#메세지-큐가-왜-필요한가요" class="headerlink" title="메세지 큐가 왜 필요한가요?"></a>메세지 큐가 왜 필요한가요?</h5><ol>
+<li>Queue에 넣기 때문에 나중에 처리 할 수 있습니다. (비동기)</li>
+<li>애플리케이션과 분리 할 수 있습니다. </li>
+<li>다수의 프로세스들이 큐에 메시지를 보낼 수 있습니다.</li>
+</ol>
+<h5 id="다른-메세징-시스템은-뭐가-있나요"><a href="#다른-메세징-시스템은-뭐가-있나요" class="headerlink" title="다른 메세징 시스템은 뭐가 있나요?"></a>다른 메세징 시스템은 뭐가 있나요?</h5><p>activeMQ, kafka 등이 있습니다.</p>
+<h5 id="rabbitMQ와-kafka의-차이는-뭔가요"><a href="#rabbitMQ와-kafka의-차이는-뭔가요" class="headerlink" title="rabbitMQ와 kafka의 차이는 뭔가요?"></a>rabbitMQ와 kafka의 차이는 뭔가요?</h5><p>kafaka는 scale out과 high availability 를 위해, 브로커들이 클러스터로 구성되어 동작하도록 설계되었습니다.</p>
+<p>rabbitMQ는 AMQP 프로토콜을 사용하고, kafaka는 단순한 메시지 헤더를 지닌 TCP기반의 프로토콜을 사용합니다.</p>
+<p>rabbitMQ는 Producer가 broker에게 다수의 메시지를 전송할 때 각 메시지를 개별적으로 전송하고, kafka는 다수의 메시지를 batch형태로 broker에게 한 번에 전달할 수 있어 TCP/IP 라운드트립 횟수를 줄일 수 있다.</p>
+<p>rabbitMQ는 메시지를 기본적으로 메모리에 저장하고, kafka는 메시지를 파일 시스템에 저장합니다.</p>
+<p>rabbitMQ는 Consumer에 의해 처리된 메시지(acknowledged message)를 곧바로 삭제하고, kafka는 처리된 메시지를 삭제하지 않고 파일 시스템에 그대로 두었다가 설정된 수명이 지나면 삭제합니다. </p>
+<p>rabbitMQ는 broker가 consumer에게 메시지를 push해 주는 방식인데 반해, Kafka는 consumer가 broker로부터 직접 메시지를 가지고 가는 pull 방식으로 동작합니다.</p>
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="http://epicdevs.com/17" target="_blank" rel="noopener">http://epicdevs.com/17</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/12/09/RabbitMQ/" data-id="ck860v51500lesa6wlknwa4b6" data-title="RabbitMQ" class="article-share-link">Share</a>
       
       
       
@@ -764,75 +814,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/09/REPL/" data-id="ck860sxpz00l8r36wybse711o" data-title="REPL" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-MongoDB Replication" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/12/09/MongoDB Replication/" class="article-date">
-  <time class="dt-published" datetime="2018-12-08T15:00:00.000Z" itemprop="datePublished">2018-12-09</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/node-js/">Node.js</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/12/09/MongoDB Replication/">MongoDB Replication</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h5 id="복제-replication-가-무엇인가요"><a href="#복제-replication-가-무엇인가요" class="headerlink" title="복제 (replication) 가 무엇인가요?"></a>복제 (replication) 가 무엇인가요?</h5><p>여러 서버 상에서 데이터의 동일한 복사본을 유지하는 방법입니다.</p>
-<h5 id="복제의-장점은-무엇인가요"><a href="#복제의-장점은-무엇인가요" class="headerlink" title="복제의 장점은 무엇인가요?"></a>복제의 장점은 무엇인가요?</h5><p>한 대 또는 그 이상의 서버에 이상이 발생하였을 때, 애플리케이션의 정상 동작 및 데이터를 안전하게 보존할 수 있습니다.</p>
-<ol>
-<li>백업</li>
-<li>역할 분리</li>
-</ol>
-<h5 id="MongoDB는-복제를-어떻게-하나요"><a href="#MongoDB는-복제를-어떻게-하나요" class="headerlink" title="MongoDB는 복제를 어떻게 하나요?"></a>MongoDB는 복제를 어떻게 하나요?</h5><p>복제 셋 (replica set) 을 생성함으로써 복제를 할 수 있습니다.</p>
-<h5 id="master-slave-복제는-없나요"><a href="#master-slave-복제는-없나요" class="headerlink" title="master-slave 복제는 없나요?"></a>master-slave 복제는 없나요?</h5><p>MongoDB 4.0 에서 master-slave replication 에 대한 지원을 제거했습니다.</p>
-<h5 id="replica-set은-어떻게-구성되나요"><a href="#replica-set은-어떻게-구성되나요" class="headerlink" title="replica set은 어떻게 구성되나요?"></a>replica set은 어떻게 구성되나요?</h5><p>1대의 primary 서버와 여러 대의 secondary 서버로 구성합니다.</p>
-<h5 id="primary-server의-특징은"><a href="#primary-server의-특징은" class="headerlink" title="primary server의 특징은?"></a>primary server의 특징은?</h5><p>클라이언트의 요청을 처리합니다. 데이터에 대한 read, write 모두 가능합니다.</p>
-<h5 id="secondary-server의-특징은"><a href="#secondary-server의-특징은" class="headerlink" title="secondary server의 특징은?"></a>secondary server의 특징은?</h5><p>프라이머리 데이터의 복제 데이터를 가집니다. 프라이머리의 oplog 에서 하던 동작을 세컨더리의 데이터 셋에 비동기적으로 적용합니다. 프라이머리 서버에 장애가 발생시 세컨더리 서버는 자신들 중 새로운 프라이머리 서버를 선출할 수 있습니다. 데이터의 읽기만 가능합니다.</p>
-<h5 id="데이터-복제는-어떻게-진행되나요"><a href="#데이터-복제는-어떻게-진행되나요" class="headerlink" title="데이터 복제는 어떻게 진행되나요?"></a>데이터 복제는 어떻게 진행되나요?</h5><p>세컨더리는 롱 폴링(long polling) 방식을 사용하여 프라이머리의 변경 데이터를 즉각적으로 적용합니다.</p>
-<ol>
-<li>클라이언트가 프라이머리 노드에 대해 쓰기를 할 때마다, 세컨더리에서 재생하기 위한 충분한 정보가 프라이머리 노드의 oplog에 자동으로 추가됩니다.</li>
-<li>세컨더리 노드는 자신의 오프로그에서 가장 최근 항목의 timestamp를 검사합니다.</li>
-<li>세컨더리 노드는 프라이머리 노드의 오피로그에서 최근 항목의 timestamp 이후의 모든 oplog 항목을 질의합니다.</li>
-<li>질의된 oplog 항목을 자신의 oplog에 추가합니다.</li>
-<li>추가된 oplog의 항목을 자신의 데이터에 적용합니다.</li>
-</ol>
-<h5 id="oplog가-무엇인가요"><a href="#oplog가-무엇인가요" class="headerlink" title="oplog가 무엇인가요?"></a>oplog가 무엇인가요?</h5><p>캡드(capped) 컬렉션으로, 모든 복제 노드에서 local 이라는 데이터베이스 내에 존재합니다.</p>
-<h5 id="capped-collection-이란"><a href="#capped-collection-이란" class="headerlink" title="capped collection 이란?"></a>capped collection 이란?</h5><p>고정된 크기(fixed size) 를 가진 컬렉션입니다. circular buffer와 비슷하게 동작합니다. 할당된 공간을 모두 채우면, 가장 오래된 document 를 덮어씁니다.</p>
-<h5 id="MongoDB가-건강상태를-확인하는-방법은-무엇인가요"><a href="#MongoDB가-건강상태를-확인하는-방법은-무엇인가요" class="headerlink" title="MongoDB가 건강상태를 확인하는 방법은 무엇인가요?"></a>MongoDB가 건강상태를 확인하는 방법은 무엇인가요?</h5><p>하트비트(heartbeat)를 합니다. 복제 셋의 각 멤버는 디폴트로 다른 멤버들을 매 2초마다 한 번씩 핑 (ping) 을 해봄으로써, 시스템의 건강 상태를 확인할 수 있습니다. 모든 모드가 건강한 상태일때만 복제 셋이 정상 동작하는 것이며 한 노드라도 반응이 없으면 조치를 취해야 합니다.</p>
-<h5 id="장애가-발생했을-때-어떻게-하나요"><a href="#장애가-발생했을-때-어떻게-하나요" class="headerlink" title="장애가 발생했을 때 어떻게 하나요?"></a>장애가 발생했을 때 어떻게 하나요?</h5><p>장애 발생시 새로운 프라이머리를 선출해야 합니다. 투표를 위해서는 과반수 이상이 필요합니다. 과반수란 복제 셋의 모든 멤버의 절반보다 많은 것입니다. 예를 들어, </p>
-<p>복제 셋의 멤버 수가 1 이면 복제 셋의 과반수는 1<br>복제 셋의 멤버 수가 2 이면 복제 셋의 과반수는 2<br>복제 셋의 멤버 수가 3 이면 복제 셋의 과반수는 2<br>복제 셋의 멤버 수가 4 이면 복제 셋의 과반수는 3<br>복제 셋의 멤버 수가 5 이면 복제 셋의 과반수는 3</p>
-<h5 id="Arbiter란"><a href="#Arbiter란" class="headerlink" title="Arbiter란?"></a>Arbiter란?</h5><p>데이터의 복제에는 참여하지 않지만 프라이머리 선출에만 참여하는 중재자입니다. 프라이머리 1대와 세컨더리 1대로 이뤄진 복제 셋의 과반수는 2인데 프라이머리의 장애시 투표를 행사할 수 있는 서버는 1대 뿐이므로 프라이머리를 선출할 수 없습니다. 그래서 arbiter가 필요합니다.</p>
-<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="http://kwsstudy.github.io/post/%EB%B3%B5%EC%A0%9C/" target="_blank" rel="noopener">http://kwsstudy.github.io/post/%EB%B3%B5%EC%A0%9C/</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/12/09/MongoDB Replication/" data-id="ck860sxpy00l6r36ww9v2u8sv" data-title="MongoDB Replication" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/12/09/REPL/" data-id="ck860v51400lcsa6w1vgsjdzq" data-title="REPL" class="article-share-link">Share</a>
       
       
       
@@ -887,15 +869,15 @@
       <ul>
         
           <li>
+            <a href="/2020/03/24/tdd-chapter-20/">[테스트 주도 개발] 20장_뒷정리하기</a>
+          </li>
+        
+          <li>
             <a href="/2020/03/24/tdd-chapter-18/">[테스트 주도 개발] 18장_xUnit 으로 가는 첫걸음</a>
           </li>
         
           <li>
-            <a href="/2020/03/24/tdd-chapter-19/">[테스트 주도 개발] 18장_테이블 차리기</a>
-          </li>
-        
-          <li>
-            <a href="/2020/03/24/tdd-chapter-20/">[테스트 주도 개발] 18장_테이블 차리기</a>
+            <a href="/2020/03/24/tdd-chapter-19/">[테스트 주도 개발] 19장_테이블 차리기</a>
           </li>
         
           <li>
@@ -903,7 +885,7 @@
           </li>
         
           <li>
-            <a href="/2020/03/16/tdd-chapter-13/">[테스트 주도 개발] 13장_진짜로 만들기</a>
+            <a href="/2020/03/16/tdd-chapter-15/">[테스트 주도 개발] 15장_서로 다른 통화 더하기</a>
           </li>
         
       </ul>
