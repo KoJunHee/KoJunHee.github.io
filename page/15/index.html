@@ -71,6 +71,333 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-TCP:IP" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/11/08/TCP:IP/" class="article-date">
+  <time class="dt-published" datetime="2018-11-07T15:00:00.000Z" itemprop="datePublished">2018-11-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/network/">Network</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/11/08/TCP:IP/">TCP/IP</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="OSI-7-계층이란"><a href="#OSI-7-계층이란" class="headerlink" title="OSI 7 계층이란 ?"></a>OSI 7 계층이란 ?</h5><p>Open System Interconnection Reference Model.</p>
+<p>시스템에 상관없이 서로의 시스템이 연결될 수 있도록 하는 모델입니다. 컴퓨터와 컴퓨터 사이에 데이터 전송을 위해 아래의 7 계층을 거쳐서 전송이 됩니다.  1-&gt;7로 이동하며 헤더가 붙고, 7-&gt;1로 이동하며 헤더를 풀어냅니다.</p>
+<ol>
+<li>Application Layer</li>
+<li>Presentation Layer</li>
+<li>Session Layer</li>
+<li>Transport Layer</li>
+<li>Network Layer</li>
+<li>Data Link Layer</li>
+<li>Pysical Layer</li>
+</ol>
+<h5 id="왜-계층화"><a href="#왜-계층화" class="headerlink" title="왜 계층화 ?"></a>왜 계층화 ?</h5><p>각 계층을 캡슐화할 수 있기 때문이다. 캡슐화를 함으로써, 계층별로 담당하는 역할을 나눌 수 있습니다. 계층에 존재하는 각 프로토콜은 자신의 기능만 충실히 하여 독립성을 보장합니다.</p>
+<h5 id="TCP-IP란"><a href="#TCP-IP란" class="headerlink" title="TCP/IP란 ?"></a>TCP/IP란 ?</h5><p>Transfer Control Protocol/Internet Protocol.</p>
+<p>TCP/IP는 OSI 7계층을 단순화하여 4 계층으로 만들어서 사용합니다. TCP는 서버와 클라이언트간에 데이타를 신뢰성있게 전달하기 위해 만들어진 프로토콜입니다. 데이터는 전송되는 과정에서 데이터가 유실, 손실되거나 순서가 뒤바뀌어 전달될 수 있습니다. TCP는 이를 검색하고 교정하여 순서를 재조합할 수 있도록 보장합니다. IP는 전송할 데이터를 packet 단위로 나누어서 어디로 보낼 것인지 결정합니다. 즉, TCP는 데이터의 정확성 확인을, IP는 패킷을 목적지까지 전송을 담당합니다.</p>
+<h5 id="TCP-IP-4-계층이란"><a href="#TCP-IP-4-계층이란" class="headerlink" title="TCP/IP 4 계층이란 ?"></a>TCP/IP 4 계층이란 ?</h5><p>TCP/IP는 OSI 7계층을 단순화하여 4 계층으로 만들어서 사용한다.</p>
+<p><img src="/image/tcpip01.png" alt></p>
+<ol>
+<li><p>Application Layer</p>
+<p>OSI 7 계층의 Application Layer, Presentation Layer, Session Layer를 포함합니다. 응용 프로그램들 간의 데이터 통신이 이루어지는 계층입니다. SMTP, FTP, HTTP 등이 사용됩니다.</p>
+</li>
+<li><p>Transport Layer</p>
+<p>인터넷 계층에서 결정한 목적지까지 실제 데이터를 신뢰성 있게 전송하는 역할을 합니다. TCP와 UDP 등이 사용됩니다.</p>
+</li>
+<li><p>Internet Layer</p>
+<p>데이터의 경로를 배정하는일 (라우팅)을 담당합니다. 데이터를 정확히 라우팅하기 위해 IP 등이 사용됩니다.</p>
+</li>
+<li><p>Pysical Layer</p>
+<p>이더넷 카드와 같은 하드웨어입니다. 인터넷 계층에서 형성된 패킷을 전기신호 또는 광신호로 바꾸어 전달합니다.</p>
+</li>
+</ol>
+<h5 id="TCP-연결-및-해제는-어떻게"><a href="#TCP-연결-및-해제는-어떻게" class="headerlink" title="TCP 연결 및 해제는 어떻게 ?"></a>TCP 연결 및 해제는 어떻게 ?</h5><p>TCP/IP 프로토콜은 OS 안에 라리브러로 내장되어 있습니다. 따라서 연결을 위한 3 way handshake 와 연결 해제를 위한 4 way handshake 는 OS가 처리합니다. 프로그래머는 커널 내부를 몰라도 Socket 을 통해 TCP/IP를 사용할 수 있습니다. 즉, Socket은 Application Layer 에서 TCP/IP를 사용할 수 있도록 하는 인터페이스 역할을 합니다.</p>
+<p><img src="/image/tcpip02.png" alt></p>
+<h5 id="3-way-handshake"><a href="#3-way-handshake" class="headerlink" title="3 way handshake"></a>3 way handshake</h5><p><img src="/image/tcpip03.png" alt></p>
+<p>클라이언트와 서버의 연결 3 way handshake를 통해 이루어집니다.</p>
+<ol>
+<li>연결을 하기 전 클라이언트는 Closed 상태이고, 서버는 요청을 기다리고 있는 LISTEN 상태입니다.</li>
+<li>클라이언트는 서버에 연결을 요청하는 SYN (M) 패킷을 보냅니다.</li>
+<li>서버는 클라이언트의 요청인 SYN (m) 을 받고 클라이언트에게 요청을 수락한다는 ACK (M+1) 과  클라이언트 쪽에서도 포트를 열어 달라는 SYN (N) 패킷을 보냅니다. 서버는 클라이언트의 응답을 기다리는 상대방의 응답을 기다리는 SYN_RCV 상태가 됩니다.</li>
+<li>클라이언트는 서버의 수락 응답은 ACK (M+1) 과 SYN (N) 패킷을 받고 포트를 열고 ACK (N+1) 을 서버로 보내면서 ESTABLISHED 상태가 됩니다.</li>
+<li>ACK 데이터를 받은 서버 역시 ESTBALISHED 상태로 변경되면서, 클라이언트와 서버는 연결이 됩니다.</li>
+</ol>
+<h5 id="4-way-handshake"><a href="#4-way-handshake" class="headerlink" title="4 way handshake"></a>4 way handshake</h5><p><img src="/image/tcpip04.png" alt></p>
+<p>연결 해제는 4 way handshake를 합니다.</p>
+<ol>
+<li>초기에, 서버와 클라이언트는 ESTABLISHED 상태입니다.</li>
+<li>클라이언트는 연결을 종료하겠다는 FIN 플래그를 보냅니다. ACK를 기다리고 있다는 의미로 FIN_WAIT_1 상태가 됩니다.</li>
+<li>서버는 알겠다는 의미로 클라이언트에 ACK를 보내고, 애플리케이션의 소켓을 닫습니다. 이 때, 남아있는 데이터를 모두 보냅니다. 자원을 정리하는데 시간이 소요 되므로, 소켓을 닫는데 기다리고 있는 상태라는 의미에서 CLOSE_WAIT 상태가 됩니다. 연결 종료를 요청한 클라이언트는 서버로부터 응답이 올 때까지 기다리고 있다는 FIN_WAIT_2 상태가 됩니다.</li>
+<li>데이터를 모두 보내고 통신이 끝났으면 연결이 종료 되었다고 클라이언트에게 FIN 플래그를 보냅니다. 그리고 자신은 클라이언트로부터 마지막 ACK를 기다리고 있는 LAST_ACK 상태가 됩니다.</li>
+<li>클라이언트는 FIN 데이터를 받으면 TIME_WAIT 상태로 바꾸면서 서버에 ACK 데이터를 보냅니다. 클라이언트는 TIME_WATE 상태에서 일정 시간이 되면 CLOSED 상태가 됩니다. 아직 서버로부터 받지 못한 데이터가 있을 것을 대비해 일정 시간 세션을 남겨놓고 잉여 패킷을 기다리는 것입니다.</li>
+<li>ACK 데이터를 받은 서버는 소켓 연결을 close하고 CLOSED 상태가 됩니다.</li>
+</ol>
+<h5 id="TCP와-UDP의-차이는"><a href="#TCP와-UDP의-차이는" class="headerlink" title="TCP와 UDP의 차이는?"></a>TCP와 UDP의 차이는?</h5><p>TCP는 연결형 프로토콜입니다. 3-way handshaking과정을 통해 연결을 설정하고 4-way handshaking을 통해 해제합니다. 신뢰성이 높습니다. 전송 순서를 보장하고 수신 여부를 확인하기 때문입니다. </p>
+<p>UDP는 비연결형 프로토콜입니다. 정보를 주고 받을 때 정보를 보내거나 받는다는 신호절차를 거치지 않습니다. 신뢰성이 낮고 TCP보다 속도가 빠릅니다. 신뢰성보다는 연속성이 중요한 서비스 예를 들면 실시간 서비스(streaming)에 자주 사용됩니다.</p>
+<h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p><a href="http://asfirstalways.tistory.com/356" target="_blank" rel="noopener">http://asfirstalways.tistory.com/356</a></p>
+<p><a href="https://github.com/JaeYeopHan/Interview_Question_for_Beginner/tree/master/Network" target="_blank" rel="noopener">https://github.com/JaeYeopHan/Interview_Question_for_Beginner/tree/master/Network</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/11/08/TCP:IP/" data-id="ck8ogwswh00iaq16wc8sxpm81" data-title="TCP/IP" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-초보자를 위한 점프대 배치하기" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/11/06/초보자를 위한 점프대 배치하기/" class="article-date">
+  <time class="dt-published" datetime="2018-11-05T15:00:00.000Z" itemprop="datePublished">2018-11-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/11/06/초보자를 위한 점프대 배치하기/">초보자를 위한 점프대 배치하기</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AWGsV8IaAXsDFAVW" target="_blank" rel="noopener">https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AWGsV8IaAXsDFAVW</a></p>
+<h2 id="오답-풀이"><a href="#오답-풀이" class="headerlink" title="오답 풀이"></a>오답 풀이</h2><p><a href="https://github.com/KoJunHee/algorithm/blob/master/src/swa_3503/Solution.java" target="_blank" rel="noopener">https://github.com/KoJunHee/algorithm/blob/master/src/swa_3503/Solution.java</a></p>
+<p><img src="/image/maxHeightDFS.png" alt></p>
+<p>정렬해서 나올 수 있는 모든 경우를 탐색하기 위해 DFS를 하였다. 원형이기 때문에, 시작점을 하나로 DFS 탐색을 시작해도 모든 경우가 커버 가능하다. 예를 들어, 2 4 5 7 9 의 경우에 2를 시작으로 DFS를 탐색한다. 탐색을 하며 높이 차를 계산한다. 시간 초과가 났다. 탐색으로 모든 케이스를 따져보는 것이 아닌 문제라는 것이다. </p>
+<h2 id="정답-풀이"><a href="#정답-풀이" class="headerlink" title="정답 풀이"></a>정답 풀이</h2><p><a href="https://github.com/KoJunHee/algorithm/blob/master/src/swa_3503_02/Solution.java" target="_blank" rel="noopener">https://github.com/KoJunHee/algorithm/blob/master/src/swa_3503_02/Solution.java</a></p>
+<ol>
+<li>오름 차순으로 정렬한다. </li>
+<li>가장 작은 값을 가운데에 둔다.</li>
+<li>맨 앞에, 다음으로 작은 값을 둔다.</li>
+<li>맨 뒤에, 다음으로 작은 값을 둔다.</li>
+<li>3,4를 반복한다.</li>
+</ol>
+<p>이와 같이 하면, 가장 큰 높이 차가 최소가 되도록 정렬된다. 구현을 위해서, 두개의 큐를 사용하였다.</p>
+<p>다음 그림을 보자.</p>
+<p><img src="/image/maxHeightsort.png" alt></p>
+<ol>
+<li>주어진 수를 오름 차순 정렬한다.</li>
+<li>가장 작은 2를 가운데에 둔다.</li>
+<li>그 다음으로 작은 4를 맨 앞에 둔다.</li>
+<li>그 다음으로 작은 5를 맨 뒤에 둔다.</li>
+<li>3, 4를 반복한다.</li>
+<li>최종적으로 7 4 2 5 9 배열이 얻어졌고, 가장 큰 높이 차(4) 가 최소가 되로록 정렬되었다.</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/11/06/초보자를 위한 점프대 배치하기/" data-id="ck8ogwswg00i8q16w5uak5ivo" data-title="초보자를 위한 점프대 배치하기" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-node.js" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/11/05/node.js/" class="article-date">
+  <time class="dt-published" datetime="2018-11-04T15:00:00.000Z" itemprop="datePublished">2018-11-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/node-js/">Node.js</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/11/05/node.js/">Node.js</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h5 id="Node-js-란"><a href="#Node-js-란" class="headerlink" title="Node.js 란"></a>Node.js 란</h5><p>Node.js® is a JavaScript runtime built on Chrome’s V8 JavaScript engine. Node.js uses an event-driven*<em>, *</em>non-blocking I/O model that makes it lightweight and efficient. Node.js’ package ecosystem, npm, is the largest ecosystem of open source libraries in the world. </p>
+<p>추가 설명 : <a href="http://junheeko.com/2018/02/27/Node-Architecture/" target="_blank" rel="noopener">http://junheeko.com/2018/02/27/Node-Architecture/</a> </p>
+<h5 id="특징"><a href="#특징" class="headerlink" title="특징"></a>특징</h5><ol>
+<li><p>생산성이 높다.</p>
+<p>Javascript를 이용해서 BE를 개발할 수 있기 때문에, FE와 BE의 기술 셋을 나눌 필요가 없습니다.</p>
+</li>
+<li><p>socket.io를 이용한 웹 push 구현이 가능하다.</p>
+<p>push 를 지원하는 WebSocket은 브라우져 종류나 버전에 따라서 제한적으로 동작합니다. 반면, node.js의 경우 웹브라우져의 종류에 따라서 WebSocket뿐만 아니라, Long Polling등 다른 push 메커니즘을 브라우져 종류에 따라서 자동으로 선택하여 사용합니다.</p>
+</li>
+<li><p>non-blocking I/O model을 지원한다.</p>
+<p>io 요청이 있으면 io 처리를 던져 놓고, thread나 process는 다른 일을 하고 있다가, io 처리가 끝나면 이에 대한 이벤트를 받아서, 응답을 처리하는 형태입니다.</p>
+<p>추가 설명 : <a href="http://junheeko.com/2018/10/01/System-Structure,-Program-Execution/" target="_blank" rel="noopener">http://junheeko.com/2018/10/01/System-Structure,-Program-Execution/</a></p>
+</li>
+<li><p>Single Thread 기반이다. (내부적으로 multi thread를 사용하기도 한다.)</p>
+<p>하나의 Thread만을 사용해서 여러 Client로부터 오는 Request를 처리합니다. 단, IO 작업이 있을 경우 앞에서 설명한 비동기 IO방식으로 IO 요청을 던져놓고, 다시 돌아와서 다른 작업을 하다가 IO 작업이 끝나면 이벤트를 받아서 처리하는 구조입니다.</p>
+</li>
+</ol>
+<h5 id="Multi-Thread"><a href="#Multi-Thread" class="headerlink" title="Multi Thread"></a>Multi Thread</h5><p><img src="/image/nodejsaa01.png" alt></p>
+<ol>
+<li><p>작동 방식</p>
+<p>Client에서부터 요청이 오면, 미리 만들어 놓은 Thread Pool에서 Thread를 꺼내서 Client의 요청을 처리하게 하고, 요청이 끝나면 Thread Pool로 돌려보낸 후, 다른 요청이 오면 다시 꺼내서 요청을 처리하게 하는 구조입니다. </p>
+</li>
+<li><p>동시에 처리할 수 있는 client 수</p>
+<p>동시에 서비스 할 수 있는 Client의 수는 Thread Pool의 Thread 수와 같은데, 물리적으로 생성할 수 있는 Thread의 수는 한계가 있습니다. 예를 들어 Tomcat의 경우 500개 정도의 쓰레드를 생성할 수 있습니다. (물론 2,000개 정도까지도 생성할 수 있지만, 한계가 있습니다.) 즉 동시에 처리할 수 있는 Client 수에 한계가 있습니다.</p>
+</li>
+<li><p>io 효율</p>
+<p>또한 IO 효율면에서도 보면, Client에 할당된 Thread는 IO 작업 (DB,Network,File)이 있을 경우 IO 호출을 해놓고, Thread는 CPU를 사용하지 않는 Wait상태로 빠져 버리게 됩니다.</p>
+</li>
+</ol>
+<h5 id="Single-Thread"><a href="#Single-Thread" class="headerlink" title="Single Thread"></a>Single Thread</h5><p><img src="/image/nodejsaa02.png" alt></p>
+<ol>
+<li><p>작동 방식</p>
+<p>하나의 Thread만을 사용해서 여러 Client로부터 오는 Request를 처리합니다. 단, IO 작업이 있을 경우 앞에서 설명한 비동기 IO방식으로 IO 요청을 던져놓고, 다시 돌아와서 다른 작업을 하다가 IO 작업이 끝나면 이벤트를 받아서 처리하는 구조입니다.</p>
+</li>
+<li><p>io 효율</p>
+<p>Client A가 요청을 받으면, CPU 작업을 먼저하다가 IO작업을 던져놓고, Client B에서 요청이 오면, CPU작업을 하다가 IO작업을 던져놓고, Client A의 IO작업이 끝나면 이를 받아서 Client A에 리턴하는 식의 구조입니다. IO작업시 기다리지 않기 때문에(Block 되지 않기 때문에), 하나의 Thread가 다른 요청을 받아서 작업을 처리할 수 있는 구조가 됩니다.  이 요청을 받아서 처리하는 Thread를 ELP(Event Loop Thread) 라고 합니다.</p>
+</li>
+<li><p>thread pool</p>
+<p><img src="/image/nodejsaa03.png" alt></p>
+<p>file open 등과 같은 일부 IO는 OS에 따라서 nonblocking function을 지원하지 않는 경우가 있기 때문에, 이러한 blocking io function을 호출할 경우에는 blocking이 발생합니다. 이 경우 single thread로 구현된 event loop thread가 정지됩니다. 이러한 문제를 해결 하기 위해서 내부적으로 thread pool을 별도로 운영하면서 blocking function call의 경우에는 thread pool의 thread를 이용하여 IO 처리를 하여 event loop thread가 io에 의해서 block되지 않게 합니다.</p>
+</li>
+</ol>
+<h5 id="Event-Loop"><a href="#Event-Loop" class="headerlink" title="Event Loop"></a>Event Loop</h5><p><img src="/image/nodejsaa04.png" alt></p>
+<p>하나의 Thread로 여러 클라이언트의 요청, 즉 여러 개의 socket connection을 처리하는 방법은 Multiplexing이다. 여러 개의 socket이 동시에 연결되어 있는 상태에서 하나의 Thread는 어느 socket 으로부터 메시지가 들어오는지 보고 있는다. socket에서 메시지가 들어오면, 그 메시지를 꺼내 받아서 처리를 하는 방식이다. epoll, kqueue, dev/poll ,select등을 이용한다.</p>
+<h5 id="Node-js-사용-용도"><a href="#Node-js-사용-용도" class="headerlink" title="Node.js 사용 용도"></a>Node.js 사용 용도</h5><ol>
+<li>prototyping</li>
+<li>file upload/download와 같은 network streaming 서비스에 유리합니다. async io를 사용하기 때문입니다.</li>
+<li>채팅 서비스 같은 real time web application에 유리합니다. socket.io를 사용하기 때문입니다.</li>
+<li>간단한 로직을 가지면서 대용량 그리고 빠른 응답 시간을 요구로 하는 애플리케이션</li>
+<li>상대적으로 CPU Intensive한 작업이 없고, 많은 Connection을 동시에 처리해야 하는 시나리오 대해서는 아무래도  node.js의 성능이 압도적으로 높습니다.</li>
+</ol>
+<h5 id="Node-js-비사용-용도"><a href="#Node-js-비사용-용도" class="headerlink" title="Node.js 비사용 용도"></a>Node.js 비사용 용도</h5><ol>
+<li><p>CPU 작업이 많은 애플리케이션</p>
+<p>Node.js는 single thread 구조입니다. 그래서 하나의  request를 처리할 때 CPU를 많이 사용하면 다른 요청 처리가 지연되게 되고, 전체적인 응답시간 저하로 연결됩니다.</p>
+</li>
+<li><p>trouble shooting이 중요한 애플리케이션</p>
+<p>Javascript 언어의 특성상 에러를 가지고 있는 코드 위치에 진입할 때 그때 에러가 나고, 에러가 나면 대부분 서버가 죽어버립니다. 따라서, 운영 관점에서 trouble shooting 등이 어려울 수 있습니다. single event loop의 특성상, 하나의 코드가 잘못되서 시스템이 느려지게 되면 전체 request 처리에 문제가 있을 수 있습니다. 코드가 잘못되면  전체 시스템이 hang up (멈춤) 됩니다.</p>
+</li>
+</ol>
+<h5 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h5><p><a href="http://bcho.tistory.com/881" target="_blank" rel="noopener">http://bcho.tistory.com/881</a></p>
+<p><a href="https://nodejs.org" target="_blank" rel="noopener">https://nodejs.org</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/11/05/node.js/" data-id="ck8ogwswf00i3q16wpvz4gemp" data-title="Node.js" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-러시아 국기 같은 깃발" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/11/05/러시아 국기 같은 깃발/" class="article-date">
+  <time class="dt-published" datetime="2018-11-04T15:00:00.000Z" itemprop="datePublished">2018-11-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/11/05/러시아 국기 같은 깃발/">러시아 국기 같은 깃발</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AWQl9TIK8qoDFAXj&amp;categoryId=AWQl9TIK8qoDFAXj&amp;categoryType=CODE" target="_blank" rel="noopener">https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AWQl9TIK8qoDFAXj&amp;categoryId=AWQl9TIK8qoDFAXj&amp;categoryType=CODE</a></p>
+<p>쉬웠다. 70분 소요되었다. 탐색문제이다.</p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p><img src="/image/russia.png" alt></p>
+<p>selectionSort01</p>
+<ol>
+<li><p>각 row에 어떤 색으로 칠할지 DFS로 탐색하여 결정한다.</p>
+<p>i번째 row에 W를 칠했으면, i+1 번째에 W / B / R 색칠 가능</p>
+<p>i번째 row에 B를 칠했으면, i+1 번째에 B / R 색칠 가능</p>
+<p>i번째 row에 R를 칠했으면, i+1 번째에 R 색칠 가능</p>
+</li>
+<li><p>DFS로 깊이 들어갈때마다, 색칠할 칸을 카운트한다.</p>
+</li>
+</ol>
+<h2 id="조건"><a href="#조건" class="headerlink" title="조건"></a>조건</h2><ol>
+<li><p>R를 칠하려고 하면, 그 전에 B가 하나라도 나와야함</p>
+</li>
+<li><p>W만으로 칠해서는 안된다.</p>
+</li>
+</ol>
+<h2 id="코드"><a href="#코드" class="headerlink" title="코드"></a>코드</h2><p><a href="https://github.com/KoJunHee/algorithm/blob/master/src/swa_4613/Solution.java" target="_blank" rel="noopener">https://github.com/KoJunHee/algorithm/blob/master/src/swa_4613/Solution.java</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/11/05/러시아 국기 같은 깃발/" data-id="ck8ogwswg00i6q16w3qjzjcqu" data-title="러시아 국기 같은 깃발" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-이진탐색트리" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2018/11/01/이진탐색트리/" class="article-date">
@@ -151,7 +478,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/11/01/이진탐색트리/" data-id="ck8fznlil00i7ve6w09o8zd7z" data-title="이진탐색트리" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/11/01/이진탐색트리/" data-id="ck8ogwswe00i1q16w48lzgigb" data-title="이진탐색트리" class="article-share-link">Share</a>
       
       
       
@@ -208,7 +535,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/10/29/인구이동/" data-id="ck8fznlii00hyve6w6jp7mvw2" data-title="인구이동" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/10/29/인구이동/" data-id="ck8ogwswd00hyq16wiq9t7hma" data-title="인구이동" class="article-share-link">Share</a>
       
       
       
@@ -257,7 +584,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/10/26/가장 많은 글자/" data-id="ck8fznlih00huve6w1r9b1d1l" data-title="가장 많은 글자" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/10/26/가장 많은 글자/" data-id="ck8ogwswd00hwq16wi37lm0wz" data-title="가장 많은 글자" class="article-share-link">Share</a>
       
       
       
@@ -302,73 +629,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/10/25/방번호/" data-id="ck8fznlih00hwve6w3egm8s26" data-title="방번호" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Type Casting" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/10/24/Type Casting/" class="article-date">
-  <time class="dt-published" datetime="2018-10-23T15:00:00.000Z" itemprop="datePublished">2018-10-24</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/java/">Java</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/10/24/Type Casting/">Type Casting</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Primitive-Data-Types"><a href="#Primitive-Data-Types" class="headerlink" title="Primitive Data Types"></a>Primitive Data Types</h2><p>Java에는 8 개의 기본 데이터 타입이 있다.</p>
-<p>정수 타입 : byte / short / int / long </p>
-<p>부동 소수점 타입 : float / double</p>
-<p>부울 데이터 타입 : boolean</p>
-<p>문자 데이타 타입 : char</p>
-<h2 id="Type-Casting"><a href="#Type-Casting" class="headerlink" title="Type Casting"></a>Type Casting</h2><p>한 type의 값을 다른 type의 변수에 할당하는 것이다. 두 가지로 나뉜다.</p>
-<p>화살표 방향으로 casting 하는 것이 Widening Casting, 반대가 Narrow Casting 이다.</p>
-<p><img src="/image/javatypecasting04.png" alt></p>
-<ol>
-<li><p>Widening Casting</p>
-<p>target type이 source type보다 클 때 일어난다.</p>
-<p>명시적으로 casting 하지 않아도 implicit 하게 casting 된다.</p>
-</li>
-<li><p>Narrowing Casting</p>
-<p>더 큰 type의 값을 작은 type의 변수에 할당 할 때, cast 연산자를 명시해야 한다.</p>
-</li>
-</ol>
-<h2 id="Widening-Casting"><a href="#Widening-Casting" class="headerlink" title="Widening Casting"></a>Widening Casting</h2><p>byte보다 더 큰 type 인 int 형 변수 b와 c에 byte형 값을 저장하고 있다. </p>
-<p>casting이 implicit 하게 되기 때문에, cast 연산자를 명시하는 것과 명시하지 않는 것의 결과가 같다.</p>
-<p><img src="/image/javatypecasting01.png" alt></p>
-<h2 id="Narrowing-Casting"><a href="#Narrowing-Casting" class="headerlink" title="Narrowing Casting"></a>Narrowing Casting</h2><p>다음과 같이 double 형 변수 a 에 3.14를 저장하고, 이를 int 형 변수 b에 casting 하지 않고 저장하려면 에러가 발생한다.</p>
-<p><img src="/image/javatypecasting02.png" alt></p>
-<p>따라서 다음과 같이 int 형으로 casting 한다고 명시를 해야한다. </p>
-<p><img src="/image/javatypecasting03.png" alt></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/10/24/Type Casting/" data-id="ck8fznlig00hrve6wc27dlqo7" data-title="Type Casting" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/10/25/방번호/" data-id="ck8ogwswc00huq16w6fixb4jg" data-title="방번호" class="article-share-link">Share</a>
       
       
       
@@ -434,7 +695,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/10/24/Java Sort/" data-id="ck8fznlif00hpve6wc7ay60zd" data-title="Java Sort" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/10/24/Java Sort/" data-id="ck8ogwswb00hpq16wwfe5zvx2" data-title="Java Sort" class="article-share-link">Share</a>
       
       
       
@@ -446,14 +707,14 @@
 
 
   
-    <article id="post-개복치" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-Type Casting" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/10/24/개복치/" class="article-date">
+    <a href="/2018/10/24/Type Casting/" class="article-date">
   <time class="dt-published" datetime="2018-10-23T15:00:00.000Z" itemprop="datePublished">2018-10-24</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+    <a class="article-category-link" href="/categories/java/">Java</a>
   </div>
 
   </div>
@@ -464,7 +725,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/10/24/개복치/">개복치</a>
+      <a class="p-name article-title" href="/2018/10/24/Type Casting/">Type Casting</a>
     </h1>
   
 
@@ -472,217 +733,35 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p><a href="https://www.acmicpc.net/problem/16236" target="_blank" rel="noopener">https://www.acmicpc.net/problem/16236</a></p>
-<p>2018 하반기 대졸 신입 삼성 코딩 테스트 기출문제이다.</p>
-<p>시험장에서  문제를 읽고 쉬울 것이라고 예상만 하고, 1번 문제를 푸느라 풀지는 못했다.</p>
-<p>따로 풀어보니, 시간이 오래 걸렸지만 간단한 문제이다.</p>
-<p>코드를 너무 복잡하게 짜서, 더 간단하고 깔끔한 풀이를 찾아봐야겠다.</p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p>BFS + Simulation</p>
+        <h2 id="Primitive-Data-Types"><a href="#Primitive-Data-Types" class="headerlink" title="Primitive Data Types"></a>Primitive Data Types</h2><p>Java에는 8 개의 기본 데이터 타입이 있다.</p>
+<p>정수 타입 : byte / short / int / long </p>
+<p>부동 소수점 타입 : float / double</p>
+<p>부울 데이터 타입 : boolean</p>
+<p>문자 데이타 타입 : char</p>
+<h2 id="Type-Casting"><a href="#Type-Casting" class="headerlink" title="Type Casting"></a>Type Casting</h2><p>한 type의 값을 다른 type의 변수에 할당하는 것이다. 두 가지로 나뉜다.</p>
+<p>화살표 방향으로 casting 하는 것이 Widening Casting, 반대가 Narrow Casting 이다.</p>
+<p><img src="/image/javatypecasting04.png" alt></p>
 <ol>
-<li>먹을 수 있는 물고기 후보 찾기 : BFS</li>
-<li>후보가 한 마리면 그 물고기 위치로 이동해서 먹기</li>
-<li>후보가 두 마리 이상이면 다음 조건들을 차례대로. 두 가지 이상 나오면, 다음 조건 확인 : Simulation<ol>
-<li>가장 가까운</li>
-<li>가장 i가 작은</li>
-<li>가장 j가 작은</li>
-</ol>
+<li><p>Widening Casting</p>
+<p>target type이 source type보다 클 때 일어난다.</p>
+<p>명시적으로 casting 하지 않아도 implicit 하게 casting 된다.</p>
+</li>
+<li><p>Narrowing Casting</p>
+<p>더 큰 type의 값을 작은 type의 변수에 할당 할 때, cast 연산자를 명시해야 한다.</p>
 </li>
 </ol>
-<h2 id="코드"><a href="#코드" class="headerlink" title="코드"></a>코드</h2><p><a href="https://github.com/KoJunHee/algorithm/blob/master/src/bj_16236/Main.java" target="_blank" rel="noopener">https://github.com/KoJunHee/algorithm/blob/master/src/bj_16236/Main.java</a></p>
+<h2 id="Widening-Casting"><a href="#Widening-Casting" class="headerlink" title="Widening Casting"></a>Widening Casting</h2><p>byte보다 더 큰 type 인 int 형 변수 b와 c에 byte형 값을 저장하고 있다. </p>
+<p>casting이 implicit 하게 되기 때문에, cast 연산자를 명시하는 것과 명시하지 않는 것의 결과가 같다.</p>
+<p><img src="/image/javatypecasting01.png" alt></p>
+<h2 id="Narrowing-Casting"><a href="#Narrowing-Casting" class="headerlink" title="Narrowing Casting"></a>Narrowing Casting</h2><p>다음과 같이 double 형 변수 a 에 3.14를 저장하고, 이를 int 형 변수 b에 casting 하지 않고 저장하려면 에러가 발생한다.</p>
+<p><img src="/image/javatypecasting02.png" alt></p>
+<p>따라서 다음과 같이 int 형으로 casting 한다고 명시를 해야한다. </p>
+<p><img src="/image/javatypecasting03.png" alt></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/10/24/개복치/" data-id="ck8fznlif00hnve6whollis1n" data-title="개복치" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-2018 하반기 삼성 코테 리뷰" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/10/23/2018 하반기 삼성 코테 리뷰/" class="article-date">
-  <time class="dt-published" datetime="2018-10-22T15:00:00.000Z" itemprop="datePublished">2018-10-23</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/10/23/2018 하반기 삼성 코테 리뷰/">2018 하반기 삼성 코테 리뷰</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>응시일 : 2018.10.21 15:00-18:00</p>
-<p>장소 : 영통 인재 개발원</p>
-<h2 id="시험-상황"><a href="#시험-상황" class="headerlink" title="시험 상황"></a>시험 상황</h2><p>계획은 1번 문제 90분, 2번 문제 90분 정도 잡았다. 1번 문제를 먼저 풀고 2번 문제로 넘어가려고 하였다.</p>
-<p>1번 문제가 시뮬레이션, 2번 문제가 탐색 문제였다.</p>
-<p>1먼 문제를 읽고, 90분 내에 충분히 풀 수 있다고 생각하였다. </p>
-<p>하지만 90분이 다 되어가는데도 풀리지 않았다. </p>
-<p>90분 즈음에 2번 문제를 읽었다. 충분히 풀 수 있을 것 같았지만, 조금만 더 하면 1번 문제를 풀 수 있을 것이라고 생각했다.</p>
-<p>1번 문제를 포기 못하고, 1번 문제를 계속 풀었고 시간이 점점 흐르고 2번 문제를 아예 포기 했다.</p>
-<h2 id="문제점"><a href="#문제점" class="headerlink" title="문제점"></a>문제점</h2><ol>
-<li>문제 이해를 완벽히 하지 않았는데 코딩을 시작해서, 코딩하다가 계속 문제를 다시 읽었다.</li>
-<li>윈도우 PC와 이클립스가 익숙치 않아 코딩은 하는데 굉장히 불편했다. </li>
-<li>90분 동안 1번 문제를 풀지 못했으면, 2번으로 넘어가야 했는데 계속 붙잡고 있었다.</li>
-</ol>
-<h2 id="고칠점"><a href="#고칠점" class="headerlink" title="고칠점"></a>고칠점</h2><ol>
-<li><p>문제를 확실히 이해하고 코딩을 하자. 문제를 이해하고, 어떻게 풀지 구상할 수만 있으면 코딩은 금방 한다.</p>
-</li>
-<li><p>시험 보기 전에 윈도우PC, 이클리스에 익숙해지도록 연습하자.</p>
-</li>
-<li><p>자신있는 탐색 문제부터 풀자.</p>
-</li>
-<li><p>멕시멈 90분 동안 풀지 못하면 다음 문제로 넘어가자.</p>
-</li>
-</ol>
-<h2 id="문제-설명"><a href="#문제-설명" class="headerlink" title="문제 설명"></a>문제 설명</h2><ol>
-<li><p>나무</p>
-<p>각 지역(i, j)의 나무의 나이, 양분, 투입 양분이 있다.</p>
-<p>봄, 여름, 가을, 겨울에 따라 조건이 있다.</p>
-<p>봄에는 ~</p>
-<p>여름에는 ~ : 이 부분이 확실히 이해가 가지 않았다.</p>
-<p>가을에는 ~</p>
-<p>겨울에는 ~ </p>
-</li>
-<li><p>개복치</p>
-</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/10/23/2018 하반기 삼성 코테 리뷰/" data-id="ck8fznlie00hlve6w7as9shp5" data-title="2018 하반기 삼성 코테 리뷰" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-홈 방범 서비스" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/10/19/홈 방범 서비스/" class="article-date">
-  <time class="dt-published" datetime="2018-10-18T15:00:00.000Z" itemprop="datePublished">2018-10-19</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/10/19/홈 방범 서비스/">홈 방범 서비스</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>&lt;<a href="https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV5V61LqAf8DFAWu" target="_blank" rel="noopener">https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV5V61LqAf8DFAWu</a></p>
-<p>쉬운 문제이다. </p>
-<p>시뮬레이션 문제로 처음에 풀었다.</p>
-<p>BFS로도 풀수 있다.</p>
-<h2 id="풀이-01"><a href="#풀이-01" class="headerlink" title="풀이 01"></a>풀이 01</h2><ol>
-<li><p>k 일 때, 전체 집 개수를 대상으로 이익이 0 이상인지 체크한다.</p>
-</li>
-<li><p>이익이 0 이상이면, 마름모를 이동 시켜서 집 개수를 count 한다. </p>
-<p>마름모 이동이란, 예들 들어 k가 2일 때, 마름모의 중심에서 거리가 1이하인 지점을 체크하는 것이다.</p>
-</li>
-<li><p>서비스 제공 받는 집 수의 최대 값 구하기.</p>
-</li>
-</ol>
-<h2 id="풀이-02"><a href="#풀이-02" class="headerlink" title="풀이 02"></a>풀이 02</h2><ol>
-<li>i, j 지점에서 BFS를 시작한다. ( 모든 지점에서 BFS )</li>
-<li>i, j 지점에서 지도의 영역을 넓힐 수 없을 때 까지 k를 증가시킨다.</li>
-<li>이익이 0 이상이면 집 개수의 최대 값을 구한다.</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/10/19/홈 방범 서비스/" data-id="ck8fznlie00hjve6wkptdvs78" data-title="홈 방범 서비스" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-미생물 격리" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/10/16/미생물 격리/" class="article-date">
-  <time class="dt-published" datetime="2018-10-15T15:00:00.000Z" itemprop="datePublished">2018-10-16</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/10/16/미생물 격리/">미생물 격리</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><a href="https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV597vbqAH0DFAVl" target="_blank" rel="noopener">https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV597vbqAH0DFAVl</a></p>
-<p>시뮬레이션 문제. 쉬운 문제이다. 어떻게 더 깔끔하게 코드를 짤까?</p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ol>
-<li>초기 입력시, 미생물 정보를 배열에 저장한다.</li>
-<li>m 시간 동안, 저장한 미생물을 이동시키고 다음 경우를 고려한다.<ul>
-<li>약품 칠해져 있는 곳으로 이동한 경우</li>
-<li>이동을 했는데 겹치는 경우</li>
-</ul>
-</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/10/16/미생물 격리/" data-id="ck8fznlid00hhve6wflkz45ap" data-title="미생물 격리" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/10/24/Type Casting/" data-id="ck8ogwswb00hrq16wy714bya3" data-title="Type Casting" class="article-share-link">Share</a>
       
       
       
@@ -698,7 +777,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/14/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="page-number" href="/page/14/">14</a><span class="page-number current">15</span><a class="page-number" href="/page/16/">16</a><a class="page-number" href="/page/17/">17</a><span class="space">&hellip;</span><a class="page-number" href="/page/46/">46</a><a class="extend next" rel="next" href="/page/16/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/14/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="page-number" href="/page/14/">14</a><span class="page-number current">15</span><a class="page-number" href="/page/16/">16</a><a class="page-number" href="/page/17/">17</a><span class="space">&hellip;</span><a class="page-number" href="/page/47/">47</a><a class="extend next" rel="next" href="/page/16/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -724,7 +803,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
     </div>
   </div>
 
@@ -737,23 +816,23 @@
       <ul>
         
           <li>
-            <a href="/2020/03/31/tdd-chapter-22/">[테스트 주도 개발] 22장_실패 처리하기</a>
+            <a href="/2020/04/06/tdd-chapter-28/">[테스트 주도 개발] 28장_초록 막대 패턴</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/06/tdd-chapter-27/">[테스트 주도 개발] 27장_테스팅 패턴</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/06/tdd-chapter-26/">[테스트 주도 개발] 26장_빨간 막대 패턴</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/06/tdd-chapter-25/">[테스트 주도 개발] 25장_테스트 주도 개발 패턴</a>
           </li>
         
           <li>
             <a href="/2020/03/31/tdd-chapter-24/">[테스트 주도 개발] 24장_xUnit 회고</a>
-          </li>
-        
-          <li>
-            <a href="/2020/03/31/tdd-chapter-23/">[테스트 주도 개발] 23장_얼마나 달콤한지</a>
-          </li>
-        
-          <li>
-            <a href="/2020/03/31/bigdata-chapter-05/">[빅데이터] 5장_일괄처리 계층의 데이터 저장소 : 사례</a>
-          </li>
-        
-          <li>
-            <a href="/2020/03/31/tdd-chapter-21/">[테스트 주도 개발] 21장_셈하기</a>
           </li>
         
       </ul>

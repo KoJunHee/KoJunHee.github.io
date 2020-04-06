@@ -71,6 +71,306 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-tdd-chapter-11" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/03/11/tdd-chapter-11/" class="article-date">
+  <time class="dt-published" datetime="2020-03-10T15:00:00.000Z" itemprop="datePublished">2020-03-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tdd/">TDD</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/03/11/tdd-chapter-11/">[테스트 주도 개발] 11장_모든 악의 근원</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>두 하위 클래스에는 이제 생성자밖에 없다. 제거하자.</p>
+<p>코드의 의미를 변경하지 않으면서 하위 클래스에 대한 참조를 상위 클래스에 대한 참조로 변경할 수 있다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Money</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> Money <span class="title">dollar</span><span class="params">(<span class="keyword">int</span> amount)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Money(amount, <span class="string">"USD"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> Money <span class="title">franc</span><span class="params">(<span class="keyword">int</span> amount)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Money(amount, <span class="string">"CHF"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이제 Dollar 에 대한 참조가 하나도 없으므로 지울 수 있다. 하지만, Franc 는 테스트 코드에서 아직 참조한다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testDifferentClassEquality</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    assertTrue(<span class="keyword">new</span> Money(<span class="number">10</span>, <span class="string">"CHF"</span>).equals(<span class="keyword">new</span> Franc(<span class="number">10</span>, <span class="string">"CHF"</span>)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이 테스트를 지워도 될 정도로 다른 곳에서 이미 동치성 테스트를 충분히 하고 있는가 ? </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testEquality</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    assertTrue(Money.dollar(<span class="number">5</span>).equals(Money.dollar(<span class="number">5</span>))); <span class="comment">// 1</span></span><br><span class="line">    assertFalse(Money.dollar(<span class="number">5</span>).equals(Money.dollar(<span class="number">6</span>))); <span class="comment">// 2</span></span><br><span class="line">    assertTrue(Money.franc(<span class="number">5</span>).equals(Money.franc(<span class="number">5</span>))); <span class="comment">// 3</span></span><br><span class="line">    assertFalse(Money.franc(<span class="number">5</span>).equals(Money.franc(<span class="number">6</span>))); <span class="comment">// 4</span></span><br><span class="line">    assertFalse(Money.franc(<span class="number">5</span>).equals(Money.dollar(<span class="number">5</span>)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>3, 4 단언은 1, 2 단언과 중복이다. 지우자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testEquality</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    assertTrue(Money.dollar(<span class="number">5</span>).equals(Money.dollar(<span class="number">5</span>)));</span><br><span class="line">    assertFalse(Money.dollar(<span class="number">5</span>).equals(Money.dollar(<span class="number">6</span>)));</span><br><span class="line">    assertFalse(Money.franc(<span class="number">5</span>).equals(Money.dollar(<span class="number">5</span>)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2020/03/11/tdd-chapter-11/" data-id="ck8ogwsyc00nxq16wih9ra2z5" data-title="[테스트 주도 개발] 11장_모든 악의 근원" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-tdd-chapter-07" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/03/11/tdd-chapter-07/" class="article-date">
+  <time class="dt-published" datetime="2020-03-10T15:00:00.000Z" itemprop="datePublished">2020-03-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tdd/">TDD</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/03/11/tdd-chapter-07/">[테스트 주도 개발] 7장_사과와 오렌지</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>제목 의미 : 서로 다른걸 비교할 수 없다.</p>
+<p>Franc 와 Dollar 를 비교하면 어떻게 될까 ?</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testEquality</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    assertTrue(<span class="keyword">new</span> Dollar(<span class="number">5</span>).equals(<span class="keyword">new</span> Dollar(<span class="number">5</span>)));</span><br><span class="line">    assertFalse(<span class="keyword">new</span> Dollar(<span class="number">5</span>).equals(<span class="keyword">new</span> Dollar(<span class="number">6</span>)));</span><br><span class="line">    assertTrue(<span class="keyword">new</span> Franc(<span class="number">5</span>).equals(<span class="keyword">new</span> Franc(<span class="number">5</span>)));</span><br><span class="line">    assertFalse(<span class="keyword">new</span> Franc(<span class="number">5</span>).equals(<span class="keyword">new</span> Franc(<span class="number">6</span>)));   </span><br><span class="line">    assertFalse(<span class="keyword">new</span> Franc(<span class="number">5</span>).equals(<span class="keyword">new</span> Dollar(<span class="number">5</span>)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>실패한다. 오직 금액과 클래스가 동일할 때만 두 Money 가 서로 같은 것이다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object object)</span> </span>&#123;</span><br><span class="line">    Money money = (Money) object;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> amount == money.amount &amp;&amp; getClass().equals(money.getClass());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>자바 객체의 용어를 사용하는 것보다 재정 분야에 맞는 용어를 사용하고 싶다. currency 통화 개념 같은 게 없고, 통화 개념을 도입할 충분한 이유가 없으므로 잠시 이렇게 두자.</p>
+<hr>
+<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2020/03/11/tdd-chapter-07/" data-id="ck8ogwsy800npq16wjiqa5zmg" data-title="[테스트 주도 개발] 7장_사과와 오렌지" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-tdd-chapter-10" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/03/11/tdd-chapter-10/" class="article-date">
+  <time class="dt-published" datetime="2020-03-10T15:00:00.000Z" itemprop="datePublished">2020-03-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tdd/">TDD</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/03/11/tdd-chapter-10/">[테스트 주도 개발] 10장_흥미로운 시간</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>두 times() 구현이 거의 비슷하다. 하지만 완전히 동일하지 않다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Franc</span> <span class="keyword">extends</span> <span class="title">Money</span> </span>&#123;</span><br><span class="line">    Franc(<span class="keyword">int</span> amount, String currency) &#123;</span><br><span class="line">        <span class="keyword">super</span>(amount, currency);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Money.franc(amount * multiplier);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dollar</span> <span class="keyword">extends</span> <span class="title">Money</span> </span>&#123;</span><br><span class="line">    Dollar(<span class="keyword">int</span> amount, String currency) &#123;</span><br><span class="line">        <span class="keyword">super</span>(amount, currency);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Money.dollar(amount * multiplier);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>팩토리 메서드를 인라인 시키면 어떨까 ?</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Franc</span> <span class="keyword">extends</span> <span class="title">Money</span> </span>&#123;</span><br><span class="line">    Franc(<span class="keyword">int</span> amount, String currency) &#123;</span><br><span class="line">        <span class="keyword">super</span>(amount, currency);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Franc(amount * multiplier, <span class="string">"CHF"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Franc</span> <span class="keyword">extends</span> <span class="title">Money</span> </span>&#123;</span><br><span class="line">    Franc(<span class="keyword">int</span> amount, String currency) &#123;</span><br><span class="line">        <span class="keyword">super</span>(amount, currency);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Dollar(amount * multiplier, <span class="string">"USD"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>바로 전 장에서 팩토리 메서드를 호출하는 것으로 바꿨었는데.. 실망스러운 일이다.</p>
+<p>Franc 에서는 인스턴스 변수 currency 가 항상 ‘CHF’ 이므로,</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Franc</span> <span class="keyword">extends</span> <span class="title">Money</span> </span>&#123;</span><br><span class="line">    Franc(<span class="keyword">int</span> amount, String currency) &#123;</span><br><span class="line">        <span class="keyword">super</span>(amount, currency);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Franc(amount * multiplier, currency);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dollar</span> <span class="keyword">extends</span> <span class="title">Money</span> </span>&#123;</span><br><span class="line">    Dollar(<span class="keyword">int</span> amount, String currency) &#123;</span><br><span class="line">        <span class="keyword">super</span>(amount, currency);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Dollar(amount * multiplier, currency);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Franc 를 가질지, Money 를 가질지 정말 중요한 사실인가 ? 고민하는 대신 그냥 수정하고 테스트를 돌려보자. </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Franc</span> <span class="keyword">extends</span> <span class="title">Money</span> </span>&#123;</span><br><span class="line">    Franc(<span class="keyword">int</span> amount, String currency) &#123;</span><br><span class="line">        <span class="keyword">super</span>(amount, currency);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Money(amount * multiplier, currency);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>컴파일러가, Money 를 Concrete 클래스로 바꿔야한닫고 한다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Money</span> </span>&#123;</span><br><span class="line">	...</span><br><span class="line">	</span><br><span class="line">	<span class="function">Money <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>빨간 막대다. </p>
+<p>Expected :me.jko.tddstudy.Franc@262b2c86<br>Actual   :me.jko.tddstudy.Money@371a67ec</p>
+<p>더 나은 메세지를 보기 위해 toString() 을 정의하자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Money</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> amount + <span class="string">" "</span> + currency;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>테스트도 없이 코드를 작성했네 ? 테스트를 먼저 작성하는게 맞다. 하지만.</p>
+<ol>
+<li>화면에 나타나는 결과를 확인하려던 참이었다.</li>
+<li>toString 은 디버그 출력으로만 쓰이기 떄문에, 잘못 구현됨으로 인해 얻게 될 리스크가 적다.</li>
+<li>이미 빨간 막대 상태에서는 새로운 테스트를 작성하지 않는게 좋다.</li>
+</ol>
+<p>이제 에러 메세지에,</p>
+<p>expected: me.jko.tddstudy.Franc@262b2c86&lt;10 CHF&gt; but was: me.jko.tddstudy.Money@371a67ec&lt;10 CHF&gt;</p>
+<p>조금 나아졌지만, 혼란스럽다. 답은 맞았는데 클래스가 다르다. Franc 대신 Money 가 나왔다. 문제는 여기에 있다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Money</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object object)</span> </span>&#123;</span><br><span class="line">        Money money = (Money) object;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> amount == money.amount &amp;&amp; getClass().equals(money.getClass());</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>정말로 검사해야할 것은 클래스가 같은지가 아니라, currency 가 같은지 여부다.</p>
+<p>빨간 막대 상황에서는 테스트를 추가로 작성하고 싶지 않다. 하지만 지금은 실제 모델 코드를 수정하려고 하는중이고 테스트 없이는 모델 코드를 수정할 수 없다. 변경된 코드를 되돌려서 다시 초록 막대 상태로 돌아가야한다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Franc</span> <span class="keyword">extends</span> <span class="title">Money</span> </span>&#123;</span><br><span class="line">    Franc(<span class="keyword">int</span> amount, String currency) &#123;</span><br><span class="line">        <span class="keyword">super</span>(amount, currency);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Franc(amount * multiplier, currency);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>다시 초록 막대이다. 우리 상황은 Franc(10, ‘CHF’) 와 Money(10, ‘CHF’) 가 서로 같기를 바라지만, 사실 그렇지 않다고 보고된 것이다. 이걸 그대로 테스트 해보자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testDifferentClassEquality</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    assertTrue(<span class="keyword">new</span> Money(<span class="number">10</span>, <span class="string">"CHF"</span>).equals(<span class="keyword">new</span> Franc(<span class="number">10</span>, <span class="string">"CHF"</span>)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>예상 대로 실패한다. equals() 는 클래스가 아니라, currency 를 비교해야한다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Money</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object object)</span> </span>&#123;</span><br><span class="line">        Money money = (Money) object;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> amount == money.amount &amp;&amp; currency().equals(money.currency());</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>이제 Franc.times() 에서 Money 를 반환해도 테스트가 여전히 통과한다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Franc</span> <span class="keyword">extends</span> <span class="title">Money</span> </span>&#123;</span><br><span class="line">    Franc(<span class="keyword">int</span> amount, String currency) &#123;</span><br><span class="line">        <span class="keyword">super</span>(amount, currency);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Money(amount * multiplier, currency);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Dollar.times() 에도 적용하자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dollar</span> <span class="keyword">extends</span> <span class="title">Money</span> </span>&#123;</span><br><span class="line">    Dollar(<span class="keyword">int</span> amount, String currency) &#123;</span><br><span class="line">        <span class="keyword">super</span>(amount, currency);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Money(amount * multiplier, currency);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>잘 돈다. 이제 두 구현이 동일해졌다. 위로 올리자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Money</span></span><br><span class="line"><span class="function">Money <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Money(amount * multiplier, currency);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이제 아무것도 안 하는 하위 클래스들을 제거할 수 있겠다.</p>
+<hr>
+<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2020/03/11/tdd-chapter-10/" data-id="ck8ogwsyb00nwq16w6honox1p" data-title="[테스트 주도 개발] 10장_흥미로운 시간" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-tdd-chapter-09" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/03/11/tdd-chapter-09/" class="article-date">
+  <time class="dt-published" datetime="2020-03-10T15:00:00.000Z" itemprop="datePublished">2020-03-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tdd/">TDD</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/03/11/tdd-chapter-09/">[테스트 주도 개발] 9장_우리가 사는 시간</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>제목 : 영어에서 시간과 곱하기가 모드 ‘times’ 라는 점에서 착안한 말장난이다.</p>
+<p>통화 개념을 어떻게 테스트하길 원하는가 ? 통화를 표현하기 위한 복잡한 객체를 만들 수도 있다. 그리고, 그 객체들이 필요한 만큼만 만들어지도록 하기 위해 flyweight factories 경량 팩토리를 사용할 수 있을 것이다. 하지만, 당분간 대신 문자열을 쓰자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testCurrency</span><span class="params">()</span></span>&#123;</span><br><span class="line">    assertEquals(<span class="string">"USD"</span>, Money.dollar(<span class="number">1</span>).currency);</span><br><span class="line">    assertEquals(<span class="string">"CHF"</span>, Money.franc(<span class="number">1</span>).currency);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>우선, Money 에 currency() 메서드를 선언하자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">abstract</span> String <span class="title">currency</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>그리고 이를, 두 하위 클래스에서 구현하자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Dollar Class</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="function">String <span class="title">currency</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"USD"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Franc Class</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function">String <span class="title">currency</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"CHF"</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>우린 두 클래스를 모두. 포함할 수 있는 동일한 구현을 원한다. 통화를 인스턴스 변수에 저장하고, 메서드에서는 그냥 그걸 반환하게 할 수 있을 것이다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Franc</span> <span class="keyword">extends</span> <span class="title">Money</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String currency;</span><br><span class="line">    </span><br><span class="line">    Franc(<span class="keyword">int</span> amount) &#123;</span><br><span class="line">        <span class="keyword">this</span>.amount = amount;</span><br><span class="line">        currency = <span class="string">"CHF"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Franc(amount * multiplier);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function">String <span class="title">currency</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> currency;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dollar</span> <span class="keyword">extends</span> <span class="title">Money</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String currency;</span><br><span class="line">    </span><br><span class="line">    Dollar(<span class="keyword">int</span> amount) &#123;</span><br><span class="line">        <span class="keyword">this</span>.amount = amount;</span><br><span class="line">        currency = <span class="string">"USD"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function">Money <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Dollar(amount * multiplier);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function">String <span class="title">currency</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> currency;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이제 두 currency() 가 동일하므로 변수 선언과 currency() 구현을 모두 위로 올릴 수 있다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Money</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">int</span> amount;</span><br><span class="line">    <span class="keyword">protected</span> String currency;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">static</span> Money <span class="title">dollar</span><span class="params">(<span class="keyword">int</span> amount)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Dollar(amount);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Franc <span class="title">franc</span><span class="params">(<span class="keyword">int</span> amount)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Franc(amount);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function">String <span class="title">currency</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> currency;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object object)</span> </span>&#123;</span><br><span class="line">        Money money = (Money) object;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> amount == money.amount &amp;&amp; getClass().equals(money.getClass());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">abstract</span> Money <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>문자열 ‘USD’ 와 ‘CHF’ 를 정적 팩토리 매서드로 옮기면 두 생성자가 동일해진다. 그럼 공통 구현을 만들 수 있다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Franc Class</span></span><br><span class="line">Franc(<span class="keyword">int</span> amount, String currency) &#123;</span><br><span class="line">        <span class="keyword">this</span>.amount = amount;</span><br><span class="line">        <span class="keyword">this</span>.currency = <span class="string">"CHF"</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>이제, 생성자를 호출하는 코드 두 곳이 깨진다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Money Class</span></span><br><span class="line">    <span class="function"><span class="keyword">static</span> Franc <span class="title">franc</span><span class="params">(<span class="keyword">int</span> amount)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Franc(amount, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Franc Class</span></span><br><span class="line"><span class="function">Money <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Franc(amount * multiplier, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>잠깐. 왜 Franc.times 가 팩토리 메서드를 호출하지 않고 생성자를 호출하고 있는거지 ? 지금 이걸 고쳐야하나 ? 아니면 지금 하고 있는 일을 먼저 끝내야 하나 ? 보통 짧은 중단이 필요한 경우에는 이를 흔쾌히 받아들이자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Franc Class</span></span><br><span class="line"><span class="function">Money <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Money.franc(amount * multiplier);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>이제 팩토리 메서드가 ‘CHF’ 를 전달할 수 있다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Money Class</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> Franc <span class="title">franc</span><span class="params">(<span class="keyword">int</span> amount)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Franc(amount, <span class="string">"CHF"</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>그리고, 마지막으로 인자를 인스턴스 변수에 할당할 수 있다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Franc Class</span></span><br><span class="line">Franc(<span class="keyword">int</span> amount, String currency) &#123;</span><br><span class="line">        <span class="keyword">this</span>.amount = amount;</span><br><span class="line">        <span class="keyword">this</span>.currency = currency;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>Dollar 도 이와 유사하게 수정하자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Money Class</span></span><br><span class="line">    <span class="function"><span class="keyword">static</span> Money <span class="title">dollar</span><span class="params">(<span class="keyword">int</span> amount)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Dollar(amount, <span class="string">"USD"</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dollar</span> <span class="keyword">extends</span> <span class="title">Money</span> </span>&#123;</span><br><span class="line">    Dollar(<span class="keyword">int</span> amount, String currency) &#123;</span><br><span class="line">        <span class="keyword">this</span>.amount = amount;</span><br><span class="line">        <span class="keyword">this</span>.currency = currency;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Money.dollar(amount * multiplier);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이제 두 생성자가 동일해졌다. 구현을 상위 클래스로 올리자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Money</span></span><br><span class="line">    Money(<span class="keyword">int</span> amount, String currency) &#123;</span><br><span class="line">        <span class="keyword">this</span>.amount = amount;</span><br><span class="line">        <span class="keyword">this</span>.currency = currency;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Dollar</span></span><br><span class="line">    Dollar(<span class="keyword">int</span> amount, String currency) &#123;</span><br><span class="line">        <span class="keyword">super</span>(amount, currency);  </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Franc</span></span><br><span class="line">    Franc(<span class="keyword">int</span> amount, String currency) &#123;</span><br><span class="line">        <span class="keyword">super</span>(amount, currency);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2020/03/11/tdd-chapter-09/" data-id="ck8ogwsya00ntq16wcm0va38q" data-title="[테스트 주도 개발] 9장_우리가 사는 시간" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-bigdata-chapter-03" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2020/03/08/bigdata-chapter-03/" class="article-date">
@@ -154,128 +454,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/03/08/bigdata-chapter-03/" data-id="ck8fznlk800nqve6wzqpec3nn" data-title="[빅데이터] 3장_빅데이터를 위한 데이터 모델: 사례" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-tdd-chapter-04" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/03/02/tdd-chapter-04/" class="article-date">
-  <time class="dt-published" datetime="2020-03-01T15:00:00.000Z" itemprop="datePublished">2020-03-02</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/tdd/">TDD</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/03/02/tdd-chapter-04/">[테스트 주도 개발] 4장_프라이버시</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testMultiplication</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	Dollar five = <span class="keyword">new</span> Dollar(<span class="number">5</span>);</span><br><span class="line">	Dollar product = five.times(<span class="number">2</span>);</span><br><span class="line">	assertEquals(<span class="number">10</span>, product.amount);</span><br><span class="line">	product = five.times(<span class="number">3</span>);</span><br><span class="line">	assertEquals(<span class="number">15</span>, product.amount);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>첫 번째 assertion 을 Dollar 와 Dollar 를 비교하는 것으로 재작성할 수 있다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testMultiplication</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	Dollar five = <span class="keyword">new</span> Dollar(<span class="number">5</span>);</span><br><span class="line">	Dollar product = five.times(<span class="number">2</span>);</span><br><span class="line">	assertEquals(<span class="keyword">new</span> Dollar(<span class="number">10</span>), product);</span><br><span class="line">	product = five.times(<span class="number">3</span>);</span><br><span class="line">	assertEquals(<span class="number">15</span>, product.amount);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>두 번째 assertion 도 마찬가지다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testMultiplication</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	Dollar five = <span class="keyword">new</span> Dollar(<span class="number">5</span>);</span><br><span class="line">	Dollar product = five.times(<span class="number">2</span>);</span><br><span class="line">	assertEquals(<span class="keyword">new</span> Dollar(<span class="number">10</span>), product);</span><br><span class="line">	product = five.times(<span class="number">3</span>);</span><br><span class="line">	assertEquals(<span class="keyword">new</span> Dollar(<span class="number">15</span>), product);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>이제 임시 변수인 product는 필요없다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testMultiplication</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	Dollar five = <span class="keyword">new</span> Dollar(<span class="number">5</span>);</span><br><span class="line">	assertEquals(<span class="keyword">new</span> Dollar(<span class="number">10</span>), five.times(<span class="number">2</span>));</span><br><span class="line">	assertEquals(<span class="keyword">new</span> Dollar(<span class="number">15</span>), five.times(<span class="number">3</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>테스트를 고치고 나니, Dollar 의 amount 인스턴스 변수를 사용하는 코드는 Dollar 자신 밖에 없다. 따라서, 변수를 private 으로 변경 가능하다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> amount;</span><br></pre></td></tr></table></figure>
-
-<p>동치성 테스트가, 동치성에 대한 코드가 정확히 동작하는 것을 검증하는데 실패하면다면 곱하기 테스트 역시, 곱하기에 대한 코드가 정확히 동작한다는 것을 검증하는데 실파헤가 된다. 이것은 TDD 를 하면서 적극적으로 관리해야할 위험 요소이다.</p>
-<hr>
-<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/03/02/tdd-chapter-04/" data-id="ck8fznlk400neve6w868ds09a" data-title="[테스트 주도 개발] 4장_프라이버시" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-tdd-chapter-05" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/03/02/tdd-chapter-05/" class="article-date">
-  <time class="dt-published" datetime="2020-03-01T15:00:00.000Z" itemprop="datePublished">2020-03-02</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/tdd/">TDD</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/03/02/tdd-chapter-05/">[테스트 주도 개발] 5장_솔직히 말하자면</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>다음을 테스트해보자.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">5 + 10CHF = $10 (환율이 2:1 일 경우)</span><br></pre></td></tr></table></figure>
-
-<p>우선 Dollar 객체와 비슷하지만 프랑을 표현할 수 있는 객체가 필요하다. Dollar 테스트를 복사한 후 수정해보자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testFrancMultiplication</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	Franc five = <span class="keyword">new</span> Franc(<span class="number">5</span>);</span><br><span class="line">	assertEquals(<span class="keyword">new</span> Franc(<span class="number">10</span>), five.times(<span class="number">2</span>));</span><br><span class="line">	assertEquals(<span class="keyword">new</span> Franc(<span class="number">15</span>), five.times(<span class="number">3</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>4장에서 테스트를 단순화해놓아서 지금하는 작업이 더 쉬워졌다. 테스트 주기에는 서로 다른 단계들이 있다는 것을 다시 정리하자.</p>
-<ol>
-<li>테스트 작성</li>
-<li>컴파일 되게하기</li>
-<li>실패하는지 확인하기 위해 실행</li>
-<li>실행하게 만듦</li>
-<li>중복 제거</li>
-</ol>
-<p>처음 네 단계는 빨리 진행해야한다. 또한, 다섯 번째 단계 없이는 앞의 네 단계도 제대로 되지 않는다. </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Franc</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> amount;</span><br><span class="line"></span><br><span class="line">	Franc(<span class="keyword">int</span> amount) &#123;</span><br><span class="line">		<span class="keyword">this</span>.amount = amount;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function">Franc <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> Franc(amount * multiplier);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object object)</span> </span>&#123;</span><br><span class="line">		Franc franc = (Franc) object;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> amount == franc.amount;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>중복이 엄청나게 많기 때문에, 다음 테스트를 작성하기 전에 이것들을 제거해야한다. equals() 를 일반화하는 것부터 시작하자.</p>
-<hr>
-<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/03/02/tdd-chapter-05/" data-id="ck8fznlk500ngve6w12bmzfip" data-title="[테스트 주도 개발] 5장_솔직히 말하자면" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/03/08/bigdata-chapter-03/" data-id="ck8ogwsy700nmq16wvwnfzvz4" data-title="[빅데이터] 3장_빅데이터를 위한 데이터 모델: 사례" class="article-share-link">Share</a>
       
       
       
@@ -359,7 +538,128 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/03/02/tdd-chapter-06/" data-id="ck8fznlk600njve6wfkg13lq0" data-title="[테스트 주도 개발] 6장_돌아온 모두를 위한 평등" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/03/02/tdd-chapter-06/" data-id="ck8ogwsy600nkq16wz2qyqnoc" data-title="[테스트 주도 개발] 6장_돌아온 모두를 위한 평등" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-tdd-chapter-05" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/03/02/tdd-chapter-05/" class="article-date">
+  <time class="dt-published" datetime="2020-03-01T15:00:00.000Z" itemprop="datePublished">2020-03-02</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tdd/">TDD</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/03/02/tdd-chapter-05/">[테스트 주도 개발] 5장_솔직히 말하자면</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>다음을 테스트해보자.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">5 + 10CHF = $10 (환율이 2:1 일 경우)</span><br></pre></td></tr></table></figure>
+
+<p>우선 Dollar 객체와 비슷하지만 프랑을 표현할 수 있는 객체가 필요하다. Dollar 테스트를 복사한 후 수정해보자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testFrancMultiplication</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	Franc five = <span class="keyword">new</span> Franc(<span class="number">5</span>);</span><br><span class="line">	assertEquals(<span class="keyword">new</span> Franc(<span class="number">10</span>), five.times(<span class="number">2</span>));</span><br><span class="line">	assertEquals(<span class="keyword">new</span> Franc(<span class="number">15</span>), five.times(<span class="number">3</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>4장에서 테스트를 단순화해놓아서 지금하는 작업이 더 쉬워졌다. 테스트 주기에는 서로 다른 단계들이 있다는 것을 다시 정리하자.</p>
+<ol>
+<li>테스트 작성</li>
+<li>컴파일 되게하기</li>
+<li>실패하는지 확인하기 위해 실행</li>
+<li>실행하게 만듦</li>
+<li>중복 제거</li>
+</ol>
+<p>처음 네 단계는 빨리 진행해야한다. 또한, 다섯 번째 단계 없이는 앞의 네 단계도 제대로 되지 않는다. </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Franc</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> amount;</span><br><span class="line"></span><br><span class="line">	Franc(<span class="keyword">int</span> amount) &#123;</span><br><span class="line">		<span class="keyword">this</span>.amount = amount;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function">Franc <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> Franc(amount * multiplier);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object object)</span> </span>&#123;</span><br><span class="line">		Franc franc = (Franc) object;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> amount == franc.amount;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>중복이 엄청나게 많기 때문에, 다음 테스트를 작성하기 전에 이것들을 제거해야한다. equals() 를 일반화하는 것부터 시작하자.</p>
+<hr>
+<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2020/03/02/tdd-chapter-05/" data-id="ck8ogwsy500nhq16w0an8c426" data-title="[테스트 주도 개발] 5장_솔직히 말하자면" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-tdd-chapter-04" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/03/02/tdd-chapter-04/" class="article-date">
+  <time class="dt-published" datetime="2020-03-01T15:00:00.000Z" itemprop="datePublished">2020-03-02</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tdd/">TDD</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/03/02/tdd-chapter-04/">[테스트 주도 개발] 4장_프라이버시</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testMultiplication</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	Dollar five = <span class="keyword">new</span> Dollar(<span class="number">5</span>);</span><br><span class="line">	Dollar product = five.times(<span class="number">2</span>);</span><br><span class="line">	assertEquals(<span class="number">10</span>, product.amount);</span><br><span class="line">	product = five.times(<span class="number">3</span>);</span><br><span class="line">	assertEquals(<span class="number">15</span>, product.amount);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>첫 번째 assertion 을 Dollar 와 Dollar 를 비교하는 것으로 재작성할 수 있다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testMultiplication</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	Dollar five = <span class="keyword">new</span> Dollar(<span class="number">5</span>);</span><br><span class="line">	Dollar product = five.times(<span class="number">2</span>);</span><br><span class="line">	assertEquals(<span class="keyword">new</span> Dollar(<span class="number">10</span>), product);</span><br><span class="line">	product = five.times(<span class="number">3</span>);</span><br><span class="line">	assertEquals(<span class="number">15</span>, product.amount);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>두 번째 assertion 도 마찬가지다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testMultiplication</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	Dollar five = <span class="keyword">new</span> Dollar(<span class="number">5</span>);</span><br><span class="line">	Dollar product = five.times(<span class="number">2</span>);</span><br><span class="line">	assertEquals(<span class="keyword">new</span> Dollar(<span class="number">10</span>), product);</span><br><span class="line">	product = five.times(<span class="number">3</span>);</span><br><span class="line">	assertEquals(<span class="keyword">new</span> Dollar(<span class="number">15</span>), product);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이제 임시 변수인 product는 필요없다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testMultiplication</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	Dollar five = <span class="keyword">new</span> Dollar(<span class="number">5</span>);</span><br><span class="line">	assertEquals(<span class="keyword">new</span> Dollar(<span class="number">10</span>), five.times(<span class="number">2</span>));</span><br><span class="line">	assertEquals(<span class="keyword">new</span> Dollar(<span class="number">15</span>), five.times(<span class="number">3</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>테스트를 고치고 나니, Dollar 의 amount 인스턴스 변수를 사용하는 코드는 Dollar 자신 밖에 없다. 따라서, 변수를 private 으로 변경 가능하다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> amount;</span><br></pre></td></tr></table></figure>
+
+<p>동치성 테스트가, 동치성에 대한 코드가 정확히 동작하는 것을 검증하는데 실패하면다면 곱하기 테스트 역시, 곱하기에 대한 코드가 정확히 동작한다는 것을 검증하는데 실파헤가 된다. 이것은 TDD 를 하면서 적극적으로 관리해야할 위험 요소이다.</p>
+<hr>
+<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2020/03/02/tdd-chapter-04/" data-id="ck8ogwsy500nfq16wzel02vu8" data-title="[테스트 주도 개발] 4장_프라이버시" class="article-share-link">Share</a>
       
       
       
@@ -513,7 +813,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/02/25/bigdata-chapter-02/" data-id="ck8fznlm400qjve6wi1z6jnda" data-title="[빅데이터] 2장_빅데이터를 위한 데이터 모델" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/02/25/bigdata-chapter-02/" data-id="ck8ogwt0e00qsq16wsul4a0zu" data-title="[빅데이터] 2장_빅데이터를 위한 데이터 모델" class="article-share-link">Share</a>
       
       
       
@@ -646,296 +946,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/02/25/bigdata-chapter-01/" data-id="ck8fznlmm00qsve6w6vhfvkot" data-title="[빅데이터] 1장_빅데이터를 위한 새로운 패러다임" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-tdd-chapter-03" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/02/24/tdd-chapter-03/" class="article-date">
-  <time class="dt-published" datetime="2020-02-23T15:00:00.000Z" itemprop="datePublished">2020-02-24</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/tdd/">TDD</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/02/24/tdd-chapter-03/">[테스트 주도 개발] 3장_모두를 위한 평등</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>Dollar 객체같이 객체를 값처럼 쓸 수 있는 것을 객체 Value Object Pattern 이라고 한다. 값 객체에 대한 제약사항 중 하나는 객체의 인스턴스 변수가 생성자를 통해서 일단 설정된 후에는 변하지 않는다는 것이다.</p>
-<p>값 객체가 암시하는 것은,</p>
-<ol>
-<li>모든 연산은 새 객체를 반환해야한다.</li>
-<li>값 객체는 equals() 를 구현해야한다.</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testEquality</span><span class="params">()</span></span>&#123;</span><br><span class="line">	assertTrue(<span class="keyword">new</span> Dollar(<span class="number">5</span>).equals(<span class="keyword">new</span> Dollar(<span class="number">5</span>)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>빨간 막대다. 가짜로 구현하는 방법은 단순히 true 를 반환하도록 하는 것이다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object object)</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>(삼각측량) 예제가 두 개 이상 있으면 코드를 일반화 할 수 있다.  다음과 같이 5!=6 을 해보자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testEquality</span><span class="params">()</span></span>&#123;</span><br><span class="line">	assertTrue(<span class="keyword">new</span> Dollar(<span class="number">5</span>).equals(<span class="keyword">new</span> Dollar(<span class="number">5</span>)));</span><br><span class="line">  assertFalse(<span class="keyword">new</span> Dollar(<span class="number">5</span>).equals(<span class="keyword">new</span> Dollar(<span class="number">6</span>)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>이제 equlity 를 일반화하자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object object)</span></span>&#123;</span><br><span class="line">	Dollar dollar = (Dollar) object;</span><br><span class="line">	<span class="keyword">return</span> amount == dollar.amount;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>이렇게 어떻게 리팩토링해야하는지 감이 안오면 삼각측량을 사용하자. 코드와 테스트 사이의 중복을 제거하고 일반적인 해법을 구할 방법이 보이면 그냥 그 방법대로 구현하면 된다.</p>
-<p>자, 동일성 문제는 일시적으로 해결했다. 널 값이나 다른 객체들과 비교하는 상황은 일반적이진 않지만 당장은 필요하지 않다. 할일 목록에 적어 두기만 하자.</p>
-<hr>
-<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/02/24/tdd-chapter-03/" data-id="ck8fznlk300n9ve6w5dymj8ws" data-title="[테스트 주도 개발] 3장_모두를 위한 평등" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-tdd-chapter-02" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/02/24/tdd-chapter-02/" class="article-date">
-  <time class="dt-published" datetime="2020-02-23T15:00:00.000Z" itemprop="datePublished">2020-02-24</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/tdd/">TDD</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/02/24/tdd-chapter-02/">[테스트 주도 개발] 2장_타락한 객체</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>TDD 주기는 다음과 같다.</p>
-<ol>
-<li>테스트를 작성한다. </li>
-<li>실행가능하게 만든다.</li>
-<li>올바르게 만든다. (중복 제거)</li>
-</ol>
-<p>“작동하는 깔끔한 코드” 를 얻어야한다는 전체 문제 중에서, “작동하는” 에 해당하는 부분을 먼저 해결해라.</p>
-<p>테스트를 하나 통과했지만, Dollar 에 대한 연산을 수행한 후에 해당 Dollar 의 값이 바뀌는 것이 이상하다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testMultiplication</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	Dollar product = <span class="keyword">new</span> Dollar(<span class="number">5</span>);</span><br><span class="line">	product.times(<span class="number">2</span>);</span><br><span class="line">	assertEquals(<span class="number">10</span>, product.amount);</span><br><span class="line">	product.times(<span class="number">3</span>);</span><br><span class="line">	assertEquals(<span class="number">15</span>, product.amount);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>times() 를 처음 호출한 이후에 product 는 더이상 5가 아니다. times() 가 새로운 객체를 반환하면 어떨까 ?</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testMultiplication</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	Dollar five = <span class="keyword">new</span> Dollar(<span class="number">5</span>);</span><br><span class="line">	Dollar product = five.times(<span class="number">2</span>);</span><br><span class="line">	assertEquals(<span class="number">10</span>, product.amount);</span><br><span class="line">	product = five.times(<span class="number">3</span>);</span><br><span class="line">	assertEquals(<span class="number">15</span>, product.amount);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dollar</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> amount;</span><br><span class="line"></span><br><span class="line">    Dollar(<span class="keyword">int</span> amount) &#123;</span><br><span class="line">        <span class="keyword">this</span>.amount = amount;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">Dollar <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">        amount *= multiplier;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>위 코드는 컴파일되지만 실행되지 않는다.  통과를 위해서는 올바른 금액을 갖는 새 Dollar 를 반환해야한다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dollar</span> </span>&#123;</span><br><span class="line">		...</span><br><span class="line">		</span><br><span class="line">    <span class="function">Dollar <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Dollar(amount * multiplier);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>최대한 빨리 초록색을 보기 위한 방법이 있다.</p>
-<ol>
-<li><p>가짜로 구현하기<br>상수를 반환하게 만들고 진짜 코드를 얻을 때 까지 단계적으로 상수를 변수로 바꾸어간다.</p>
-</li>
-<li><p>명백한 구현 사용하기<br>실제 구현을 입력한다.</p>
-</li>
-</ol>
-<p>보통 실무에서는 두 방법을 번갈아 사용한다. </p>
-<ol>
-<li>모든일이 잘 진행되고 뭘 입력할지 알 때는 병백한 구현을 더해나간다. </li>
-<li>예상치 못한 빨간 막대를 만나면 가짜로 구현하는 방법을 사용하면서 올바른 코드르 리펙토링한다. </li>
-<li>그리고 다시 자신감을 찾으면 명백한 구현을 사용한다.</li>
-</ol>
-<hr>
-<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/02/24/tdd-chapter-02/" data-id="ck8fznlk400nbve6wejzfkmqo" data-title="[테스트 주도 개발] 2장_타락한 객체" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-tdd-chapter-01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/02/24/tdd-chapter-01/" class="article-date">
-  <time class="dt-published" datetime="2020-02-23T15:00:00.000Z" itemprop="datePublished">2020-02-24</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/tdd/">TDD</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/02/24/tdd-chapter-01/">[테스트 주도 개발] 1장_다중 통화를 지원하는 Money 객체</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>테스트 주도 개발의 리듬은 다음과 같다.</p>
-<ol>
-<li>재빨리 테스트 하나 추가</li>
-<li>모든 테스트 실행하고 새로 추가한 것이 실패한지 확인</li>
-<li>코드를 조금 변경</li>
-<li>모든 테스트 실행하고 전부 성공하는지 확인</li>
-<li>리팩토링으로 중복 제거</li>
-</ol>
-<p>어떤 테스트들이 있어야 보고서에 제대로 계산되도록 하는 코드가 완성됐다고 확신할 수 있을까 ?</p>
-<ol>
-<li>통화가 다른 두 금액을 더해서 주어진 환율에 맞게 변환 금액을 결과로 얻을 수 있어야한다.</li>
-<li>어떤 금액을 어떤 수에 곱한 금액을 결과로 얻을 수 있어야한다.</li>
-</ol>
-<p>앞으로 어떤 일을 해야하는지 알려주고, 하는 일에 집중할 수 있게 하고, 언제 일이 끝나는지 알려 줄 수 있도록 할 일 목록을 만든다. 작업이 끝난 항목에는 줄을 긋는다.</p>
-<p>할일 목록에서 볼 수 있듯이 곱하기를 먼저 다룬다. 작은 것부터 시작한다. </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testMultiplication</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	Dollar five = <span class="keyword">new</span> Dollar(<span class="number">5</span>);</span><br><span class="line">	five.times(<span class="number">2</span>);</span><br><span class="line">	AssertionErrors.assertEquals(<span class="number">10</span>, five.amount);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>위 테스트는 아직 컴파일조차 되지 않는다. 실행은 안되더라도, 컴파일만은 되도록 만들고 싶다. 네 개의 컴파일 에러가 있다.</p>
-<ol>
-<li>Dollar 클래스가 없음</li>
-<li>생성자가 없음</li>
-<li>times(int) 메서드가 없음</li>
-<li>amount 필드가 없음</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dollar</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> amount;</span><br><span class="line">    </span><br><span class="line">    Dollar(<span class="keyword">int</span> amount) &#123;</span><br><span class="line">      </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span></span>&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>위 코드에서 times(int multiplier) 는 stub 구현이다. 이 메서드를 호출하는 코드가 컴파일 될 수 있도록 껍데기만 만들어두는 것을 의미한다.</p>
-<p>테스트를 다시 실행해보자. 실패한다. 테스팅 프레임워크가 결과로 10이 나와야 하는데 0이 나왔다는 것을 알려준다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dollar</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> amount = <span class="number">10</span>;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>이제 다시 실행해보면, 초록 막대가 나온다. 이제 중복을 제거할 차례이다.</p>
-<blockquote>
-<p>“의존성과 중복”</p>
-<p>의존성이 문제 그 자체라면, 중복은 문제의 징후다.</p>
-<p>만약 특정 데이터베이스 벤더가 제공하는 세세한 기능들이 코드 곳곳에서 사용되고 있으면 다른 벤더 제품으로 변경할 때 해당 벤더에 의존성을 갖고 있다는 것을 알게 된다. 즉, 코드를 변경하지 않고 벤더를 바꿀 수 없다.</p>
-<p>중복의 흔한 예는 로직의 중복이다. 중복된 로직을 하나로 끄집어내는 일엔 객체를 이용하는 것이 최고다.</p>
-<p>다음 테스트로 진행하기 전에 중복을 제거하면, 다음 테스트도 통과되게 만들 가능성을 최대화한다.</p>
-</blockquote>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dollar</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> amount;</span><br><span class="line"></span><br><span class="line">    Dollar(<span class="keyword">int</span> amount) &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span></span>&#123;</span><br><span class="line">        amount = <span class="number">5</span> * <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>테스트는 여전히 통과한다. </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dollar</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> amount;</span><br><span class="line"></span><br><span class="line">    Dollar(<span class="keyword">int</span> amount) &#123;</span><br><span class="line">        <span class="keyword">this</span>.amount = amount;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">        amount *= multiplier;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>이제 첫번째 테스트를 완료했다. 다음 장에서는 Dollar 부작용에 대한 작업을 한다.</p>
-<hr>
-<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/02/24/tdd-chapter-01/" data-id="ck8fznlk100n4ve6wcsbylr7f" data-title="[테스트 주도 개발] 1장_다중 통화를 지원하는 Money 객체" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-object-chapter-appendix-c" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/02/10/object-chapter-appendix-c/" class="article-date">
-  <time class="dt-published" datetime="2020-02-09T15:00:00.000Z" itemprop="datePublished">2020-02-10</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/object/">Object</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/02/10/object-chapter-appendix-c/">[오브젝트] 부록 C 동적인 협력, 정적인 코드</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>좋은 설계는 객체 사이의 협력과 행동을 표현하는 동적 모델을 기반으로 해야한다.</p>
-<ol>
-<li><p>동적 모델<br>프로그램 실행 구조를 표현하는 움직이는 모델</p>
-</li>
-<li><p>정적 모델<br>코드의 구조를 담는 고정된 모델</p>
-</li>
-</ol>
-<h2 id="01-동적-모델과-정적-모델"><a href="#01-동적-모델과-정적-모델" class="headerlink" title="01 동적 모델과 정적 모델"></a>01 동적 모델과 정적 모델</h2><h5 id="행동이-코드를-결정한다"><a href="#행동이-코드를-결정한다" class="headerlink" title="행동이 코드를 결정한다"></a>행동이 코드를 결정한다</h5><p>객체가 외부에 제공하는 행동이 중요하다. 동적 모델이 정적 모델을 결정해야한다.</p>
-<h2 id="02-도메인-모델과-구현"><a href="#02-도메인-모델과-구현" class="headerlink" title="02 도메인 모델과 구현"></a>02 도메인 모델과 구현</h2><h5 id="도메인-모델에-관하여"><a href="#도메인-모델에-관하여" class="headerlink" title="도메인 모델에 관하여"></a>도메인 모델에 관하여</h5><ol>
-<li><p>도메인<br>사용자가 프로그램을 사용하는 대상 영역</p>
-</li>
-<li><p>모델<br>지식을 선택적으로 단순화하고 의식적으로 구조화한 형태</p>
-</li>
-<li><p>도메인 모델<br>사용자가 프로그램을 사용하는 대상 영역에 대한 지식을 선택적으로 단순화하고 의식적으로 구조화한 형태</p>
-</li>
-</ol>
-<p>소프트웨어의 도메인에 대해 고민하고 도메인 모델을 기반으로 소프트웨어를 구축해야한다. 그러면, 개념과 소프트웨어 사이의 표현적 차이를 줄일 수 있기 때문에 이해하고 수정하기 쉬온 소프트웨어를 만들 수 있다. </p>
-<p>중요한 것은, 도메인 모델을 작성하는 것이 목표가 아니라 출발점이다. 중요한 것은 객체들의 협력을 지원하는 코드 구조를 만드는 것이다. 코드의 구조를 주도하는 것은 행동이다.</p>
-<h5 id="행동과-변경을-고려한-도메인-모델"><a href="#행동과-변경을-고려한-도메인-모델" class="headerlink" title="행동과 변경을 고려한 도메인 모델"></a>행동과 변경을 고려한 도메인 모델</h5><p>도메인 모델은 단순히 클래스 다이어그램이 아니다. 도메인의 핵심을 간략하게 단순화해서 표현할 수 있는 모든 것이다. 이렇게 작성된 개념이 코드에 대한 구조와 행동을 드러내면 훌륭한 도메인 모델이다.</p>
-<hr>
-<p>오브젝트 &lt;조영호&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/02/10/object-chapter-appendix-c/" data-id="ck8fznlk100n6ve6w4iofkjm2" data-title="[오브젝트] 부록 C 동적인 협력, 정적인 코드" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/02/25/bigdata-chapter-01/" data-id="ck8ogwt1800r1q16wzwzo6sjz" data-title="[빅데이터] 1장_빅데이터를 위한 새로운 패러다임" class="article-share-link">Share</a>
       
       
       
@@ -951,7 +962,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/46/">46</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/47/">47</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -977,7 +988,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
     </div>
   </div>
 
@@ -990,23 +1001,23 @@
       <ul>
         
           <li>
-            <a href="/2020/03/31/tdd-chapter-22/">[테스트 주도 개발] 22장_실패 처리하기</a>
+            <a href="/2020/04/06/tdd-chapter-28/">[테스트 주도 개발] 28장_초록 막대 패턴</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/06/tdd-chapter-27/">[테스트 주도 개발] 27장_테스팅 패턴</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/06/tdd-chapter-26/">[테스트 주도 개발] 26장_빨간 막대 패턴</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/06/tdd-chapter-25/">[테스트 주도 개발] 25장_테스트 주도 개발 패턴</a>
           </li>
         
           <li>
             <a href="/2020/03/31/tdd-chapter-24/">[테스트 주도 개발] 24장_xUnit 회고</a>
-          </li>
-        
-          <li>
-            <a href="/2020/03/31/tdd-chapter-23/">[테스트 주도 개발] 23장_얼마나 달콤한지</a>
-          </li>
-        
-          <li>
-            <a href="/2020/03/31/bigdata-chapter-05/">[빅데이터] 5장_일괄처리 계층의 데이터 저장소 : 사례</a>
-          </li>
-        
-          <li>
-            <a href="/2020/03/31/tdd-chapter-21/">[테스트 주도 개발] 21장_셈하기</a>
           </li>
         
       </ul>

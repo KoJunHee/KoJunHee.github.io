@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  
+  <title>[테스트 주도 개발] 28장_초록 막대 패턴 | junhee.ko</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="코드가 테스트를 통과하게 만들기 위해 이 패턴들을 사용해라. 가짜로 구현하기 ( 진짜로 만들기 전까지만 )실패하는 테스트를 만든 후 첫 번째 구현은 어떻게 하는게 좋을까? 상수를 반환하게 하라. 일단 테스트가 통과하면 단계적으로 상수를 변수를 사용하는 수식으로 변형한다. 삼각 측량오로지 예가 두개 이상일 때만 추상화를 해라. 두 정수 합을 반환하는 함수를">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[테스트 주도 개발] 28장_초록 막대 패턴">
+<meta property="og:url" content="https://kojunhee.github.io/2020/04/06/tdd-chapter-28/index.html">
+<meta property="og:site_name" content="junhee.ko">
+<meta property="og:description" content="코드가 테스트를 통과하게 만들기 위해 이 패턴들을 사용해라. 가짜로 구현하기 ( 진짜로 만들기 전까지만 )실패하는 테스트를 만든 후 첫 번째 구현은 어떻게 하는게 좋을까? 상수를 반환하게 하라. 일단 테스트가 통과하면 단계적으로 상수를 변수를 사용하는 수식으로 변형한다. 삼각 측량오로지 예가 두개 이상일 때만 추상화를 해라. 두 정수 합을 반환하는 함수를">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-04-06T12:44:55.436Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[테스트 주도 개발] 28장_초록 막대 패턴">
+<meta name="twitter:description" content="코드가 테스트를 통과하게 만들기 위해 이 패턴들을 사용해라. 가짜로 구현하기 ( 진짜로 만들기 전까지만 )실패하는 테스트를 만든 후 첫 번째 구현은 어떻게 하는게 좋을까? 상수를 반환하게 하라. 일단 테스트가 통과하면 단계적으로 상수를 변수를 사용하는 수식으로 변형한다. 삼각 측량오로지 예가 두개 이상일 때만 추상화를 해라. 두 정수 합을 반환하는 함수를">
+  
+    <link rel="alternate" href="/atom.xml" title="junhee.ko" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="css/images/favicon.ico">
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">junhee.ko</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">always learning</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://kojunhee.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-tdd-chapter-28" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/04/06/tdd-chapter-28/" class="article-date">
+  <time class="dt-published" datetime="2020-04-05T15:00:00.000Z" itemprop="datePublished">2020-04-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tdd/">TDD</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      [테스트 주도 개발] 28장_초록 막대 패턴
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>코드가 테스트를 통과하게 만들기 위해 이 패턴들을 사용해라.</p>
+<h5 id="가짜로-구현하기-진짜로-만들기-전까지만"><a href="#가짜로-구현하기-진짜로-만들기-전까지만" class="headerlink" title="가짜로 구현하기 ( 진짜로 만들기 전까지만 )"></a>가짜로 구현하기 ( 진짜로 만들기 전까지만 )</h5><p>실패하는 테스트를 만든 후 첫 번째 구현은 어떻게 하는게 좋을까? 상수를 반환하게 하라. 일단 테스트가 통과하면 단계적으로 상수를 변수를 사용하는 수식으로 변형한다.</p>
+<h5 id="삼각-측량"><a href="#삼각-측량" class="headerlink" title="삼각 측량"></a>삼각 측량</h5><p>오로지 예가 두개 이상일 때만 추상화를 해라.</p>
+<p>두 정수 합을 반환하는 함수를 예로 보자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testSum</span><span class="params">()</span></span>&#123;</span><br><span class="line">    assertEquals(<span class="number">4</span>, plus(<span class="number">3</span>,<span class="number">1</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">plus</span><span class="params">(<span class="keyword">int</span> augend, <span class="keyword">int</span> addend)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">4</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>삼각 층량을 사용해서 바른 설계로 간다면, 다음과 같이 작성해야한다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testSum</span><span class="params">()</span></span>&#123;</span><br><span class="line">    assertEquals(<span class="number">4</span>, plus(<span class="number">3</span>,<span class="number">1</span>));</span><br><span class="line">    assertEquals(<span class="number">7</span>, plus(<span class="number">3</span>,<span class="number">4</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>그러면, 우리는 plus 의 구현을 추상화 할 수 있다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">plus</span><span class="params">(<span class="keyword">int</span> augend, <span class="keyword">int</span> addend)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> augend + addend;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>어떤 계산을 어떻게 해야 올바르게 추상화할 것인지에 대해 감잡기 어려울 때만, 삼각측량을 사용해라. 그 이외는, 명백한 구현이나 가짜로 구현하기에 의존해라. </p>
+<h5 id="명백한-구현"><a href="#명백한-구현" class="headerlink" title="명백한 구현"></a>명백한 구현</h5><p>단순한 연산들은 그냥 구현해라.</p>
+<h5 id="하나에서-여럿으로"><a href="#하나에서-여럿으로" class="headerlink" title="하나에서 여럿으로"></a>하나에서 여럿으로</h5><p>객체 collection 을 다루는 연산은 어떻게 구현하나 ? 일단은 collection 없이 구현하고 그 다음에 collection 을 사용해라. </p>
+<hr>
+<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2020/04/06/tdd-chapter-28/" data-id="ck8ogwsyq00p2q16w9x8b0w25" data-title="[테스트 주도 개발] 28장_초록 막대 패턴" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/04/06/tdd-chapter-27/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">[테스트 주도 개발] 27장_테스팅 패턴</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/big-data/">Big Data</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boost-course/">Boost Course</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/dip/">DIP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/data-structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/design-pattern/">Design Pattern</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jpa/">JPA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">Kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/network/">Network</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/os/">OS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/object/">Object</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/software-engineering/">Software Engineering</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/spark/">Spark</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tdd/">TDD</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/etc/">etc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ios/">iOS</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/04/06/tdd-chapter-28/">[테스트 주도 개발] 28장_초록 막대 패턴</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/06/tdd-chapter-27/">[테스트 주도 개발] 27장_테스팅 패턴</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/06/tdd-chapter-26/">[테스트 주도 개발] 26장_빨간 막대 패턴</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/06/tdd-chapter-25/">[테스트 주도 개발] 25장_테스트 주도 개발 패턴</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/31/tdd-chapter-24/">[테스트 주도 개발] 24장_xUnit 회고</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 junhee.ko<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+  <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

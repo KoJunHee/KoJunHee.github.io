@@ -71,6 +71,290 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-타일채우기" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/11/01/타일채우기/" class="article-date">
+  <time class="dt-published" datetime="2017-10-31T15:00:00.000Z" itemprop="datePublished">2017-11-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/11/01/타일채우기/">2133:타일채우기</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.acmicpc.net/problem/2133" target="_blank" rel="noopener">https://www.acmicpc.net/problem/2133</a></p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ol>
+<li><p>d[i] </p>
+<ul>
+<li>3 * i 타일을 채우는 방법의 수 </li>
+</ul>
+</li>
+<li><p>가장 마지막에 올 수 있는 경우를 찾아야 한다.</p>
+<p><img src="/image/1.png" alt></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d[i] = 3 * d[i-2]</span><br></pre></td></tr></table></figure>
+
+<p><img src="/image/2.png" alt></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d[i] = 2 * d[i-4]</span><br></pre></td></tr></table></figure>
+
+<p><img src="/image/3.png" alt></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d[i] = 2 * d[i-6]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>d[i]</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3*d[i-2] + 2*d[i-4] + 2*d[i-6] + ... + 2*d[0]</span><br></pre></td></tr></table></figure>
+
+<p>어차피, 가로 길이가 홀수이면 타일로 채울 수 X</p>
+</li>
+<li><p>코드</p>
+<p><img src="/image/4.png" alt></p>
+<p>​    </p>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2017/11/01/타일채우기/" data-id="ck8ogwsql002fq16w5iskmtvw" data-title="2133:타일채우기" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-background-server" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/11/01/background-server/" class="article-date">
+  <time class="dt-published" datetime="2017-10-31T15:00:00.000Z" itemprop="datePublished">2017-11-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/node-js/">Node.js</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/11/01/background-server/">background server</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="background-server"><a href="#background-server" class="headerlink" title="background server"></a>background server</h2><p>aws ec2 접속해서</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nohup node index.js &amp;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>관리자 권한으로 실행해야 SSL protocol 끊겨도 지속</li>
+<li>nohup &amp; : background     방식으로 프로세스 실행 </li>
+<li>node : nodejs 실행 명령어</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>background에서 구동되는 프로세스 확인가능</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef|grep node</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>node로 시작하는 프로세스 모두 확인가능</li>
+</ul>
+<p>​    </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2017/11/01/background-server/" data-id="ck8ogwsqk002dq16wdyvl6mu0" data-title="background server" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-계단오르기" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/10/20/계단오르기/" class="article-date">
+  <time class="dt-published" datetime="2017-10-19T15:00:00.000Z" itemprop="datePublished">2017-10-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/10/20/계단오르기/">2579:계단오르기</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.acmicpc.net/problem/2579" target="_blank" rel="noopener">https://www.acmicpc.net/problem/2579</a></p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ol>
+<li><p>d[i]</p>
+<ul>
+<li>a[i]를 밟았을 경우, 0~i 번째까지 최대 점수</li>
+</ul>
+</li>
+<li><p>d[i]</p>
+<ul>
+<li>max( a[i]+a[i-1]+d[i-3] , a[i]+d[i-2] )</li>
+</ul>
+</li>
+<li><p>example : 10    20    15    25    10    20</p>
+<ul>
+<li>20 X     15 O    25 O : a[i]+a[i-1]+d[i-3]</li>
+<li>15 X     25 O : a[i]+d[i-2]</li>
+</ul>
+</li>
+<li><p>근데, 여기서 사소한 문제 !</p>
+<ul>
+<li>n을 입력받고, 배열을 생성할 때<br>0<del>n-1 인덱스로 할 것이냐,<br>1</del>n 인덱스로 할 것이냐에 따라 문제가 생김</li>
+</ul>
+</li>
+<li><p>0~n-1 인덱스로 다음과 같이 하면 틀렸음. </p>
+<ul>
+<li>왜냐하면, d[2]를 구하지 않았기 때문.</li>
+</ul>
+</li>
+</ol>
+<p><img src="http://cfile3.uf.tistory.com/image/9920A43359E752E439E48B" alt="img"><br>6. 따라서 다음과 같이 d[2]를 구해야함</p>
+<p><img src="http://cfile28.uf.tistory.com/image/9941113359E75310248E9B" alt="img"><br>7. 1~n 인덱스로 범위 잡으면, 상관 없음</p>
+<p><img src="http://cfile6.uf.tistory.com/image/99E8393359E7532D22AC37" alt="img"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2017/10/20/계단오르기/" data-id="ck8ogwsqi0029q16wh2l0l036" data-title="2579:계단오르기" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-제곱수의합" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/10/20/제곱수의합/" class="article-date">
+  <time class="dt-published" datetime="2017-10-19T15:00:00.000Z" itemprop="datePublished">2017-10-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/10/20/제곱수의합/">1699:제곱수의 합</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.acmicpc.net/problem/1699" target="_blank" rel="noopener">https://www.acmicpc.net/problem/1699</a></p>
+<h2 id="틀린-풀이"><a href="#틀린-풀이" class="headerlink" title="틀린 풀이"></a>틀린 풀이</h2><ol>
+<li><p>d[i] = i의 제곱수의 항의 최소 개수</p>
+</li>
+<li><p>n과 가장 가까운 제곱수를 찾음</p>
+</li>
+<li><p>d[n-(n과 가장 가까운수의 제곱수)] + 1</p>
+</li>
+<li><p>+1을 하는 이유</p>
+<ul>
+<li>제곱수 자체도 하나 이기 때문에</li>
+</ul>
+</li>
+<li><p>예를 들어</p>
+<ul>
+<li>d[7]  = d[ 7 - 2^2 ] + 1 = d[3] + 1 이라고 생각했다</li>
+</ul>
+</li>
+<li><p>하지만, 위의 예시에서, d[3]이 가장 작은 값이라는 보장이 없다</p>
+</li>
+<li><p>즉, 가장 가까운 제곱수를 찾는 것이 틀림</p>
+</li>
+</ol>
+<p><img src="http://cfile30.uf.tistory.com/image/99A19A3359E9F1261ABE35" alt="img"></p>
+<h2 id="맞는-풀이"><a href="#맞는-풀이" class="headerlink" title="맞는 풀이"></a>맞는 풀이</h2><ol>
+<li><p>예를 들어 ,</p>
+<ul>
+<li>d[25] 를 구하려고 할때,</li>
+<li>d[25-1^2] + 1</li>
+<li>d[25-2^2] + 1 </li>
+<li>d[25-3^2] + 1 </li>
+<li>d[25-4^2] + 1 </li>
+</ul>
+</li>
+<li><p>min 값이 답</p>
+</li>
+</ol>
+<p><img src="http://cfile21.uf.tistory.com/image/99AB5E3359E9F1BA07555D" alt="img"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2017/10/20/제곱수의합/" data-id="ck8ogwsqj002bq16w6e1q8yaa" data-title="1699:제곱수의 합" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-연속합" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2017/10/17/연속합/" class="article-date">
@@ -138,7 +422,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/10/17/연속합/" data-id="ck8fznldn0026ve6wzhcg896g" data-title="1912:연속합" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/10/17/연속합/" data-id="ck8ogwsqh0025q16w87chwfwt" data-title="1912:연속합" class="article-share-link">Share</a>
       
       
       
@@ -194,7 +478,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/10/16/가장긴바이토닉부분수열/" data-id="ck8fznldo0028ve6w2f67ux8h" data-title="11054:가장 긴 바이토닉 부분 수열" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/10/16/가장긴바이토닉부분수열/" data-id="ck8ogwsqi0027q16wyqb63ppl" data-title="11054:가장 긴 바이토닉 부분 수열" class="article-share-link">Share</a>
       
       
       
@@ -258,7 +542,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/10/13/network/" data-id="ck8fznldn0024ve6w4s21270y" data-title="network" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/10/13/network/" data-id="ck8ogwsqg0023q16w020n03zx" data-title="network" class="article-share-link">Share</a>
       
       
       
@@ -307,7 +591,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/10/12/baseconversion/" data-id="ck8fznldm0022ve6wvlpm5uf9" data-title="11576:base conversion" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/10/12/baseconversion/" data-id="ck8ogwsqf0021q16wo57n4rcx" data-title="11576:base conversion" class="article-share-link">Share</a>
       
       
       
@@ -359,7 +643,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/10/11/이진수/" data-id="ck8fznldm0020ve6wfj7ykxp6" data-title="2089:이진수" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/10/11/이진수/" data-id="ck8ogwsqe001zq16w8u8ynoj1" data-title="2089:이진수" class="article-share-link">Share</a>
       
       
       
@@ -411,227 +695,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/10/11/bcrypt-password 암호화/" data-id="ck8fznldk001wve6w5x5xzuch" data-title="bcrypt-password 암호화" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-login-token authentication" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2017/10/10/login-token authentication/" class="article-date">
-  <time class="dt-published" datetime="2017-10-09T15:00:00.000Z" itemprop="datePublished">2017-10-10</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/node-js/">Node.js</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2017/10/10/login-token authentication/">login-token authentication</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <ul>
-<li><p>클라이언트가 로그인을 하면</p>
-</li>
-<li><p>클라이언트는 서버로부터 jwt 토큰을 받음</p>
-</li>
-<li><p>클라이언트가 api 요청을 할때마다</p>
-</li>
-<li><p>token을 서버에게 보냄 </p>
-</li>
-<li><p>서버에서는</p>
-</li>
-<li><p>api 요청을 수행함</p>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/10/10/login-token authentication/" data-id="ck8fznldl001yve6wliz1ci53" data-title="login-token authentication" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-진법변환" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2017/10/08/진법변환/" class="article-date">
-  <time class="dt-published" datetime="2017-10-07T15:00:00.000Z" itemprop="datePublished">2017-10-08</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2017/10/08/진법변환/">2745:진법변환</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><a href="https://www.acmicpc.net/problem/1912" target="_blank" rel="noopener">https://www.acmicpc.net/problem/1912</a></p>
-<h2 id="틀린-풀이"><a href="#틀린-풀이" class="headerlink" title="틀린 풀이"></a>틀린 풀이</h2><ol>
-<li><p>수학에서 진법 변확 하는 방식으로 풀면 됨</p>
-</li>
-<li><p>수는 string 으로 , 진법은 int 로 입력 받음<br>(string으로 받아 각 자리에 접근하고, 자릿수를 쉽게 파악하기 위해)</p>
-</li>
-<li><p>각 자리 수에 접근하여 int로 입력받은 수의 자릿수 제곱을 곱하여 </p>
-</li>
-<li><p>더함</p>
-</li>
-</ol>
-<p><img src="http://cfile29.uf.tistory.com/image/99F8273359DA31220B49CF" alt="img"></p>
-<h2 id="맞는-풀이"><a href="#맞는-풀이" class="headerlink" title="맞는 풀이"></a>맞는 풀이</h2><p><img src="http://cfile26.uf.tistory.com/image/99B3C33359DA36C51E06C7" alt="img"></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/10/08/진법변환/" data-id="ck8fznldk001uve6w5pst3wx2" data-title="2745:진법변환" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-진법변환2" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2017/10/08/진법변환2/" class="article-date">
-  <time class="dt-published" datetime="2017-10-07T15:00:00.000Z" itemprop="datePublished">2017-10-08</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2017/10/08/진법변환2/">11005:진법변환2</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><a href="https://www.acmicpc.net/problem/11005" target="_blank" rel="noopener">https://www.acmicpc.net/problem/11005</a></p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ol>
-<li><p>몇 번 나누는지 count</p>
-</li>
-<li><p>count 만큼 배열 생성</p>
-</li>
-<li><p>생성한 배열에 n%b를 차례대로 저장</p>
-</li>
-<li><p>n 은 n/b를 새로 저장</p>
-</li>
-<li><p>n이 0보다 클때까지 3번4번을 반복 실행</p>
-</li>
-<li><p>값들을 저장한 배열의 값을 index 끝부터 0까지 차례대로 출력</p>
-</li>
-<li><p>그런데, 해당 index의 값이 10보다 큰경우는</p>
-</li>
-<li><p>char(값+55) 로 출력</p>
-</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">StringBuilder ans = new StringBuilder();</span><br><span class="line">        while (n &gt; 0) &#123;</span><br><span class="line">            int r = n % b;</span><br><span class="line">            if (r &lt; 10) &#123;</span><br><span class="line">                ans.append((char)(r + &apos;0&apos;));</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                ans.append((char)(r - 10 + &apos;A&apos;));</span><br><span class="line">            &#125;</span><br><span class="line">            n /= b;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(ans.reverse());</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/10/08/진법변환2/" data-id="ck8fznldj001sve6wn0erxuau" data-title="11005:진법변환2" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-GCD합" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2017/10/06/GCD합/" class="article-date">
-  <time class="dt-published" datetime="2017-10-05T15:00:00.000Z" itemprop="datePublished">2017-10-06</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2017/10/06/GCD합/">9613:GCD합</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><a href="https://www.acmicpc.net/problem/9613" target="_blank" rel="noopener">https://www.acmicpc.net/problem/9613</a></p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p>1) GCD 구하는 함수를 만든다</p>
-<p>2) 모든 쌍을 반복문 통해서 확인</p>
-<p>3) 더해서 출력</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/10/06/GCD합/" data-id="ck8fznldi001qve6wfz9ud32m" data-title="9613:GCD합" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/10/11/bcrypt-password 암호화/" data-id="ck8ogwsqd001xq16wygk1gb85" data-title="bcrypt-password 암호화" class="article-share-link">Share</a>
       
       
       
@@ -647,7 +711,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/42/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/41/">41</a><a class="page-number" href="/page/42/">42</a><span class="page-number current">43</span><a class="page-number" href="/page/44/">44</a><a class="page-number" href="/page/45/">45</a><a class="page-number" href="/page/46/">46</a><a class="extend next" rel="next" href="/page/44/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/42/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/41/">41</a><a class="page-number" href="/page/42/">42</a><span class="page-number current">43</span><a class="page-number" href="/page/44/">44</a><a class="page-number" href="/page/45/">45</a><span class="space">&hellip;</span><a class="page-number" href="/page/47/">47</a><a class="extend next" rel="next" href="/page/44/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -673,7 +737,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
     </div>
   </div>
 
@@ -686,23 +750,23 @@
       <ul>
         
           <li>
-            <a href="/2020/03/31/tdd-chapter-22/">[테스트 주도 개발] 22장_실패 처리하기</a>
+            <a href="/2020/04/06/tdd-chapter-28/">[테스트 주도 개발] 28장_초록 막대 패턴</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/06/tdd-chapter-27/">[테스트 주도 개발] 27장_테스팅 패턴</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/06/tdd-chapter-26/">[테스트 주도 개발] 26장_빨간 막대 패턴</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/06/tdd-chapter-25/">[테스트 주도 개발] 25장_테스트 주도 개발 패턴</a>
           </li>
         
           <li>
             <a href="/2020/03/31/tdd-chapter-24/">[테스트 주도 개발] 24장_xUnit 회고</a>
-          </li>
-        
-          <li>
-            <a href="/2020/03/31/tdd-chapter-23/">[테스트 주도 개발] 23장_얼마나 달콤한지</a>
-          </li>
-        
-          <li>
-            <a href="/2020/03/31/bigdata-chapter-05/">[빅데이터] 5장_일괄처리 계층의 데이터 저장소 : 사례</a>
-          </li>
-        
-          <li>
-            <a href="/2020/03/31/tdd-chapter-21/">[테스트 주도 개발] 21장_셈하기</a>
           </li>
         
       </ul>

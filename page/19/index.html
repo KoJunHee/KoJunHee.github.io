@@ -71,6 +71,251 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-테트로미노" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/09/18/테트로미노/" class="article-date">
+  <time class="dt-published" datetime="2018-09-17T15:00:00.000Z" itemprop="datePublished">2018-09-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/09/18/테트로미노/">테트로미노</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.acmicpc.net/problem/14500" target="_blank" rel="noopener">https://www.acmicpc.net/problem/14500</a></p>
+<p>삼성 기출문제이다. 매우 어려운 문제였다. </p>
+<p>처음에, 도형의 모든 경우의 수를 하나 하나 놓아봐서 최대값을 구해야하는지 생각했다.</p>
+<p>하지만, DFS로 해결할 수 있다.</p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p>다음 그림과 같이 DFS를 이용하여 최대한 깊이 탐색한다.</p>
+<p><img src="/image/ttr01.png" alt></p>
+<p><img src="/image/ttr02.png" alt></p>
+<p><img src="/image/ttr03.png" alt></p>
+<p>ㅗ 모양을 제외한 모양은 DFS로 탐색이 가능하다. 4개의 탐색(깊이 3) 까지 마쳤을 때, 최대값을 계산한다. </p>
+<p>ㅗ 모양은 현재 위치를 기준으로 동, 서, 남, 북을 조사하여 4개 중에 최소 값을 빼서 최대값을 계산할 수 있다.</p>
+<p>다음 그림처럼 A를 기준으로 B, C, D, E 네 방향을 탐색한다.</p>
+<p><img src="/image/ttr07.png" alt></p>
+<p>만약에, E가 B, C, D, E 네 개 중에 최소값이라면, 다음 그림처럼 E를 제외하고 합을 구한다.</p>
+<p><img src="/image/ttr08.png" alt></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/09/18/테트로미노/" data-id="ck8ogwsvt00g5q16woj6kk0lc" data-title="테트로미노" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-로봇청소기" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/09/13/로봇청소기/" class="article-date">
+  <time class="dt-published" datetime="2018-09-12T15:00:00.000Z" itemprop="datePublished">2018-09-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/09/13/로봇청소기/">로봇청소기</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.acmicpc.net/problem/14503" target="_blank" rel="noopener">https://www.acmicpc.net/problem/14503</a></p>
+<p>삼성 기출문제이다.</p>
+<p>매우 어려운 문제였다. 문제 이해 자체가 어렵다.</p>
+<p>BFS로 해결할 수 있다.</p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ol>
+<li><p>현재 위치를 청소한다.</p>
+</li>
+<li><p>현재위치에서 바라보는 방향의 왼쪽 방향을 확인한다. </p>
+<p>( 이 작업을 4번 진행한다. 그렇다면, 현재위치의 동서남북 모든 방향을 확인 할 수 있다.)</p>
+</li>
+<li><p>청소를 해야할 구역이고, 아직 방문하지 않았으면 방문한다.</p>
+</li>
+<li><p>네 방향 모두 청소가 이미 되어있거나 벽인 경우에는, 바라보는 방향을 유지한 채로 한 칸 후진한다.</p>
+</li>
+<li><p>네 방향 모두 청소가 이미 되어있거나 벽이면서, 뒤쪽 방향이 벽이라 후진도 할 수 없는 경우에는 작동을 멈춘다.</p>
+</li>
+</ol>
+<br>
+
+<p>다음  그림에서와 같이 처음 시작은 (7,4) 에서 시작하고, 방향은 북쪽(0)을 바라보고 있다고 하자.</p>
+<p><img src="/image/robottt02.png" alt></p>
+<p>최종 움직임은 다음과 같이 그려질 것이다.</p>
+<p><img src="/image/robottt03.png" alt></p>
+<p>다음 그림의 파란색 지점에서 어떻게 움직이는지 확인해보자. 파란색 지점은 (8,4) 에서 동쪽(1)을 바라보고 있다.</p>
+<p><img src="/image/robottt01.png" alt></p>
+<p>우선 파란색 지점의 방향에서 왼쪽방향(동쪽의 서쪽 방향) 인 북쪽(0)을 확인한다.</p>
+<p><img src="/image/robottt04.png" alt></p>
+<p>이미 방문하였으므로, 이제 북쪽의 왼쪽방향인 서쪽방향을 확인한다.</p>
+<p><img src="/image/robottt05.png" alt></p>
+<p>이미 방문하였으므로, 이제 서쪽의 왼쪽방향인 남쪽방향을 확인한다.</p>
+<p><img src="/image/robottt06.png" alt></p>
+<p>아직 방문하지 않았고, 청소를 해야하는 구역이므로 방문한다. 따라서 다음과 같이 이동을 하게 된다.</p>
+<p><img src="/image/robottt07.png" alt></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/09/13/로봇청소기/" data-id="ck8ogwsvs00g3q16wocnbn4b9" data-title="로봇청소기" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-감시" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/09/12/감시/" class="article-date">
+  <time class="dt-published" datetime="2018-09-11T15:00:00.000Z" itemprop="datePublished">2018-09-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/09/12/감시/">감시</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.acmicpc.net/problem/15683" target="_blank" rel="noopener">https://www.acmicpc.net/problem/15683</a></p>
+<p>어려웠다. BFS로 시도하였지만, 실패하였다.</p>
+<p>해설을 보고 DFS로 풀었다.</p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ol>
+<li>이전 감시 상태를 가져와 복사한다. (깊은 복사)</li>
+<li>감시 가능 지역을 표시한다.</li>
+<li>다음 cctv를 탐색한다.</li>
+</ol>
+<p>탐색 순서를 설명하기 위해 다음 표를 보자.</p>
+<p><img src="/image/detectt01.png" alt></p>
+<p>위의 표에서 감시 카메라는 A, B, C 세 개가 있다. </p>
+<p>A와 B 는 상하 / 좌우 를 감시할 수 있고, C는 상하좌우를 감시할 수 있다.</p>
+<p>탐색 순서는 다음 그림과 같이 나타낼 수 있다.</p>
+<p><img src="/image/detectt02.png" alt></p>
+<p>DFS이다. 최대한 깊이 탐색을 한다. 노랑색의 1~4 번 순서대로 탐색이 진행된다.</p>
+<h2 id="개념"><a href="#개념" class="headerlink" title="개념"></a>개념</h2><p>배열을 매개변수로 전달했을 때, call by reference이다.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/09/12/감시/" data-id="ck8ogwsvr00g1q16wjwtk6xz8" data-title="감시" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-콩 많이 심기" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/09/11/콩 많이 심기/" class="article-date">
+  <time class="dt-published" datetime="2018-09-10T15:00:00.000Z" itemprop="datePublished">2018-09-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/09/11/콩 많이 심기/">콩 많이 심기</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.swexpertacademy.com/main/code/problem/problemDetail.do" target="_blank" rel="noopener">https://www.swexpertacademy.com/main/code/problem/problemDetail.do</a></p>
+<p>SW Expert Academy [D4]</p>
+<h2 id="정답-풀이"><a href="#정답-풀이" class="headerlink" title="정답 풀이"></a>정답 풀이</h2><ol>
+<li><p>모든 판에 콩을 심었다고 가정하고 시작한다.</p>
+</li>
+<li><p>콩이 심은 판 사이의 거리가 2이면 콩을 지운다.</p>
+<p><img src="/image/bean01.png" alt></p>
+<p>위의 그림처럼, 빨간색 원이 기준이 된다. </p>
+<p>기준을 중심으로 길이가 2인 판에 콩이 있으면 콩을 없앤다. 파란색 네모 부분이 길이가 2인 지점이다.</p>
+<p>그리고 기준을 다음 칸으로 옮겨서 같은 작업을 반복한다.</p>
+</li>
+</ol>
+<h2 id="정답-코드"><a href="#정답-코드" class="headerlink" title="정답 코드"></a>정답 코드</h2><p><img src="/image/bean02.png" alt></p>
+<p><img src="/image/bean03.png" alt></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/09/11/콩 많이 심기/" data-id="ck8ogwsvp00fzq16wfsw31eyd" data-title="콩 많이 심기" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-백만 장자 프로젝트 " class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2018/09/10/백만 장자 프로젝트 /" class="article-date">
@@ -113,7 +358,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/09/10/백만 장자 프로젝트 /" data-id="ck8fznlhw00fvve6wqyau1lza" data-title="백만장자프로젝트" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/09/10/백만 장자 프로젝트 /" data-id="ck8ogwsvp00fxq16wejgl2hc5" data-title="백만장자프로젝트" class="article-share-link">Share</a>
       
       
       
@@ -165,7 +410,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/09/09/View/" data-id="ck8fznlhu00fpve6wyq34l1yt" data-title="View" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/09/09/View/" data-id="ck8ogwsvo00fvq16wo311cxet" data-title="View" class="article-share-link">Share</a>
       
       
       
@@ -221,7 +466,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/09/08/퇴사/" data-id="ck8fznlhv00ftve6wl517mi6a" data-title="퇴사" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/09/08/퇴사/" data-id="ck8ogwsvn00frq16wppwhkdnq" data-title="퇴사" class="article-share-link">Share</a>
       
       
       
@@ -298,7 +543,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/09/05/연산자 끼워넣기/" data-id="ck8fznlhu00fnve6wg3y7511h" data-title="연산자 끼워넣기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/09/05/연산자 끼워넣기/" data-id="ck8ogwsvn00fpq16wkqbm3q4f" data-title="연산자 끼워넣기" class="article-share-link">Share</a>
       
       
       
@@ -364,7 +609,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/09/04/톱니바퀴/" data-id="ck8fznlhx00fzve6wcm6dcsgg" data-title="톱니바퀴" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/09/04/톱니바퀴/" data-id="ck8ogwsvo00ftq16wvkld491e" data-title="톱니바퀴" class="article-share-link">Share</a>
       
       
       
@@ -441,287 +686,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/09/01/경사로/" data-id="ck8fznlht00flve6wzpuohf8s" data-title="경사로" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-스타트와링크" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/08/31/스타트와링크/" class="article-date">
-  <time class="dt-published" datetime="2018-08-30T15:00:00.000Z" itemprop="datePublished">2018-08-31</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/08/31/스타트와링크/">스타트와링크</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><a href="https://www.acmicpc.net/problem/14889" target="_blank" rel="noopener">https://www.acmicpc.net/problem/14889</a></p>
-<p>삼성 코딩 테스트 기출 문제이다.</p>
-<p>시뮬레이션 + 조합 으로 해결하였다.</p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p>플로우는 다음과 같다.</p>
-<ol>
-<li>팀을 배분한다.</li>
-<li>배분한 팀 각각의 능력치의 합을 구한다.</li>
-<li>두 팀 간의 능력치 차이를 구한다.</li>
-</ol>
-<p>우선, 팀을 배분하는 방법부터 보자.</p>
-<p>총 6명이 있다고 하자 : 1번, 2번, 3번, 4번, 5번, 6번</p>
-<p>6명이므로 3명 / 3명으로 팀을 나누어야한다.</p>
-<p>1번은 5명 중 2명과 팀을 이룬다. 즉, <sub>5</sub>C<sub>2</sub></p>
-<ul>
-<li>(1, 2, 3)</li>
-<li>(1, 2, 4)</li>
-<li>(1, 2, 5)</li>
-<li>(1, 2, 6)</li>
-<li>(1, 3, 4)</li>
-<li>(1, 3, 5)</li>
-<li>(1, 3, 6)</li>
-<li>(1, 4, 5)</li>
-<li>(1, 4, 6)</li>
-<li>(1, 5, 6)</li>
-</ul>
-<p>위와 같이 1번이 팀을 이루면, 나머지 사람들이 자동적으로 팀을 이루게 된다.</p>
-<p>이제, 배분한 팀 각각의 능력치의 합을 구한다.</p>
-<p>(1, 2, 3) 을 예로 들자. 1번이 2번, 3번과 팀을 이루었으니 (4, 5, 6)이 한 팀을 이룬다.</p>
-<ul>
-<li>(1, 2, 3) 팀의 능력치의 합<ul>
-<li>S12 + S13 + S21 + S23 + S31 + S32</li>
-</ul>
-</li>
-<li>(4, 5, 6) 팀의 능력치의 합<ul>
-<li>S45 + S46 + S54 + 56 + S64 + S65</li>
-</ul>
-</li>
-</ul>
-<p>다음 배열을 이용해 계산한다.</p>
-<p><img src="/image/startTeam03.png" alt></p>
-<p>마지막으로, 두 팀 간의 능력치 차이를 구한다.</p>
-<p>위에서 배분한 팀 각각의 능력치의 합을 구하였으므로, 쉽게 차를 구할 수 있다.</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/08/31/스타트와링크/" data-id="ck8fznlhv00frve6w2vevq6o1" data-title="스타트와링크" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-드래곤커브" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/08/30/드래곤커브/" class="article-date">
-  <time class="dt-published" datetime="2018-08-29T15:00:00.000Z" itemprop="datePublished">2018-08-30</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/08/30/드래곤커브/">드래곤 커브</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><a href="https://www.acmicpc.net/problem/15685" target="_blank" rel="noopener">https://www.acmicpc.net/problem/15685</a></p>
-<p>삼성 코딩 테스트 보러 가서 풀지 못한 문제이다. 시뮬레이션 문제이다.</p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p>우선 규칙을 찾아야한다.</p>
-<p>시작점이 (4,2), 첫 시작방향이 북쪽(1), 차원이 3차원을 그림으로 그려 확인해보자.</p>
-<p><img src="/image/dragon01.png" alt></p>
-<p>이를 숫자를 이용해 테이블로 나타내면 다음과 같다.</p>
-<p><img src="/image/dragon02.png" alt></p>
-<p>위의 테이블에서 알 수 있듯이, n차원의 요소들은 n-1차원의 요소들을 그대로 가지고, +1씩 더한 요소들을 추가적으로 가진다.</p>
-<p>여기서 중요한 것은, 남쪽 방향(3)은 다음 차례에서 동쪽 방향(0)으로 추가된다</p>
-<p>따라서 다음과 같은 플로우로 문제를 푼다.</p>
-<ol>
-<li>드레곤 커브의 개수 만큼 어레이리스트를 생성한다.</li>
-<li>바로 전 리스트 요소 복사하고 새로운 요소를 추가함으로써, i번째 어레이리스트를 setting 한다. </li>
-<li>i번째 어레이리스트를 map에 그린다.</li>
-<li>2번과 3번의 작업을 모두 마치고, 직사각형의 개수를 count 한다.</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/08/30/드래곤커브/" data-id="ck8fznlhr00fjve6wy52xmhnb" data-title="드래곤 커브" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-치킨배달" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/08/01/치킨배달/" class="article-date">
-  <time class="dt-published" datetime="2018-07-31T15:00:00.000Z" itemprop="datePublished">2018-08-01</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/08/01/치킨배달/">치킨 배달</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><a href="https://www.acmicpc.net/problem/4991" target="_blank" rel="noopener">https://www.acmicpc.net/problem/4991</a></p>
-<p>삼성 알고리즘 시험 보러 가서 못 푼 문제이다. </p>
-<ol>
-<li>다시 푸는데 오랜 걸렸다. ( 2018.08.01 ) : 조합 + BFS</li>
-<li>다시 푸는데 30분도 안걸렸다. ( 2018.10.01 ) : DFS</li>
-</ol>
-<h2 id="첫-번째-풀이"><a href="#첫-번째-풀이" class="headerlink" title="첫 번째 풀이"></a>첫 번째 풀이</h2><ol>
-<li>치킨집 K개 중에 M개를 고르는 경우의 수를 구한다. (조합)</li>
-<li>선택되지 않은 치킨집은 빈 칸으로 만든다.</li>
-<li>각 집을 출발점으로 가장 가까운 치킨집까지의 거리를 구한다 (BFS)</li>
-</ol>
-<h2 id="첫-번째-풀이-예시"><a href="#첫-번째-풀이-예시" class="headerlink" title="첫 번째 풀이 예시"></a>첫 번째 풀이 예시</h2><ul>
-<li>다음과 같이 치킨집이 3개가 있다고 하자. <ul>
-<li>0번 치킨집</li>
-<li>1번 치킨집</li>
-<li>2번 치킨집</li>
-</ul>
-</li>
-<li>최대 2개의 치킨집을 선택하는 경우의 수는 다음과 같다.<ul>
-<li>0번, 1번 — A</li>
-<li>0번, 2번 — B</li>
-<li>1번, 2번 — C </li>
-</ul>
-</li>
-<li>A를 생각해보자. <ul>
-<li>2번이 선택되지 않았기 때문에, 2번 치킨집을 폐업 시킨다.</li>
-<li>각 집의 위치에서 BFS를 실행한다. 이는 각 집에서 가장 가까운 치킨 집과의 거리를 구하기 위함이다.</li>
-</ul>
-</li>
-<li>B, C도 위와 같은 작업을 반복한다.</li>
-</ul>
-<h2 id="두-번째-풀이"><a href="#두-번째-풀이" class="headerlink" title="두 번째 풀이"></a>두 번째 풀이</h2><ol>
-<li>치킨을 선택하여 List에 저장한다. (DFS)</li>
-<li>각 집에서 선택된 치킨집 까지의 거리를 계산한다.</li>
-</ol>
-<p>치킨집이 A, B, C, D 네 개 있고, 최대 3개 선택을 한다고 했을 때, DFS는 다음과 같이 진행된다.</p>
-<p><img src="/image/chickende01.png" alt></p>
-<p><img src="/image/chickende02.png" alt></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/08/01/치킨배달/" data-id="ck8fznlho00fbve6wubnhby8m" data-title="치킨 배달" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-순환 공간" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/07/19/순환 공간/" class="article-date">
-  <time class="dt-published" datetime="2018-07-18T15:00:00.000Z" itemprop="datePublished">2018-07-19</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/07/19/순환 공간/">순환 공간</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p><a href="https://koitp.org/problem/SDS_TEST_SPACE/read/" target="_blank" rel="noopener">https://koitp.org/problem/SDS_TEST_SPACE/read/</a></p>
-<h2 id="오답"><a href="#오답" class="headerlink" title="오답"></a>오답</h2><p>BFS 로 풀었을 때는 메모리 초과가 뜬다.</p>
-<h2 id="해결"><a href="#해결" class="headerlink" title="해결"></a>해결</h2><p>시뮬레이션으로 풀면 해결된다.</p>
-<p><img src="/image/spacere01.png" alt></p>
-<ul>
-<li>1번<ul>
-<li>돌아가지 않고 직접 가는 경우이다. </li>
-<li>시작점과 도착점 사이의 절대값을 구한다.</li>
-</ul>
-</li>
-<li>2번<ul>
-<li>돌아가는 경우이다.</li>
-<li>행과 열의 대소 비교를 통해 구한다.</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/07/19/순환 공간/" data-id="ck8fznlhq00ffve6wtqgpu9ra" data-title="순환 공간" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/09/01/경사로/" data-id="ck8ogwsvm00fnq16wb7262hfb" data-title="경사로" class="article-share-link">Share</a>
       
       
       
@@ -737,7 +702,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/18/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="page-number" href="/page/18/">18</a><span class="page-number current">19</span><a class="page-number" href="/page/20/">20</a><a class="page-number" href="/page/21/">21</a><span class="space">&hellip;</span><a class="page-number" href="/page/46/">46</a><a class="extend next" rel="next" href="/page/20/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/18/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="page-number" href="/page/18/">18</a><span class="page-number current">19</span><a class="page-number" href="/page/20/">20</a><a class="page-number" href="/page/21/">21</a><span class="space">&hellip;</span><a class="page-number" href="/page/47/">47</a><a class="extend next" rel="next" href="/page/20/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -763,7 +728,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
     </div>
   </div>
 
@@ -776,23 +741,23 @@
       <ul>
         
           <li>
-            <a href="/2020/03/31/tdd-chapter-22/">[테스트 주도 개발] 22장_실패 처리하기</a>
+            <a href="/2020/04/06/tdd-chapter-28/">[테스트 주도 개발] 28장_초록 막대 패턴</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/06/tdd-chapter-27/">[테스트 주도 개발] 27장_테스팅 패턴</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/06/tdd-chapter-26/">[테스트 주도 개발] 26장_빨간 막대 패턴</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/06/tdd-chapter-25/">[테스트 주도 개발] 25장_테스트 주도 개발 패턴</a>
           </li>
         
           <li>
             <a href="/2020/03/31/tdd-chapter-24/">[테스트 주도 개발] 24장_xUnit 회고</a>
-          </li>
-        
-          <li>
-            <a href="/2020/03/31/tdd-chapter-23/">[테스트 주도 개발] 23장_얼마나 달콤한지</a>
-          </li>
-        
-          <li>
-            <a href="/2020/03/31/bigdata-chapter-05/">[빅데이터] 5장_일괄처리 계층의 데이터 저장소 : 사례</a>
-          </li>
-        
-          <li>
-            <a href="/2020/03/31/tdd-chapter-21/">[테스트 주도 개발] 21장_셈하기</a>
           </li>
         
       </ul>

@@ -71,6 +71,322 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Strategy Pattern01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/06/06/Strategy Pattern01/" class="article-date">
+  <time class="dt-published" datetime="2018-06-05T15:00:00.000Z" itemprop="datePublished">2018-06-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/06/06/Strategy Pattern01/">Strategy Pattern01</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>There are common situations when classes differ only in their behavior. For this cases is a good idea to isolate the algorithms in separate classes in order to have the ability to select different algorithms at runtime. </p>
+<h2 id="Intent"><a href="#Intent" class="headerlink" title="Intent"></a>Intent</h2><p>Define a family of algorithms, encapsulate each one, and make them interchangeable. Strategy lets the algorithm vary independently from clients that use it. </p>
+<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p>![](/image/Strategy Pattern01.png)</p>
+<ul>
+<li>The context object receives requests from the client and delegates them to the strategy object. Usually the ConcreteStartegy is created by the client and passed to the context. From this point the clients interacts only with the context.</li>
+<li>Strategy <ul>
+<li>defines an interface common to all supported algorithms. Context uses this interface to call the algorithm defined by a ConcreteStrategy.</li>
+</ul>
+</li>
+<li>Context<ul>
+<li>contains a reference to a strategy object.</li>
+<li>may define an interface that lets strategy accessing its data.</li>
+<li>The Context objects contains a reference to the ConcreteStrategy that should be used. When an operation is required then the algorithm is run from the strategy object. The Context is not aware of the strategy implementation. If necessary, addition objects can be defined to pass data from context object to strategy. </li>
+</ul>
+</li>
+<li>ConcreteStrategy <ul>
+<li>each concrete strategy implements an algorithm.</li>
+</ul>
+</li>
+</ul>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p>![](/image/Strategy Pattern02.png)<br>![](/image/Strategy Pattern03.png)<br>![](/image/Strategy Pattern04.png)<br>![](/image/Strategy Pattern05.png)<br>![](/image/Strategy Pattern06.png)<br>![](/image/Strategy Pattern07.png)<br>![](/image/Strategy Pattern08.png)</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="https://www.oodesign.com/strategy-pattern.html" target="_blank" rel="noopener">https://www.oodesign.com/strategy-pattern.html</a></li>
+<li><a href="https://www.tutorialspoint.com/design_pattern/strategy_pattern.htm" target="_blank" rel="noopener">https://www.tutorialspoint.com/design_pattern/strategy_pattern.htm</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/06/06/Strategy Pattern01/" data-id="ck8ogwsva00ehq16womissvs9" data-title="Strategy Pattern01" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-탈출" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/06/04/탈출/" class="article-date">
+  <time class="dt-published" datetime="2018-06-03T15:00:00.000Z" itemprop="datePublished">2018-06-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/06/04/탈출/">탈출</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="문제-요약"><a href="#문제-요약" class="headerlink" title="문제 요약"></a>문제 요약</h2><ul>
+<li>문자<ul>
+<li>비버 .</li>
+<li>물 *</li>
+<li>돌 X</li>
+<li>비버굴 D</li>
+<li>고슴도치 굴 S</li>
+</ul>
+</li>
+<li>매 분 1분 마다<ul>
+<li>고슴도치<ul>
+<li>동서남북으로 이동</li>
+<li>돌을 통과할 수 없다</li>
+</ul>
+</li>
+<li>물<ul>
+<li>동서남북으로 이동</li>
+<li>비어있는 칸으로 확장</li>
+<li>비버의 소굴로 확장할수 없다</li>
+<li>돌을 통과할 수 없다</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
+<li>이렇게 풀면 되지 않을까?<ul>
+<li>물의 확산 :DFS</li>
+<li>고슴도치의 이동 :BFS</li>
+</ul>
+</li>
+<li>아니다 ! <ul>
+<li>BFS 만으로 풀 수 있다</li>
+<li>물을 먼저 Enqueue</li>
+<li>고슴도치의 위치를 Enqueue</li>
+<li>하나의 큐에서 진행</li>
+</ul>
+</li>
+</ul>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><img src="https://github.com/KoJunHee/kojunhee.github.io/raw/master/img/outt01.png" alt="img"></p>
+<p><img src="https://github.com/KoJunHee/kojunhee.github.io/raw/master/img/outt02.png" alt="img"></p>
+<p><img src="https://github.com/KoJunHee/kojunhee.github.io/raw/master/img/outt03.png" alt="img"></p>
+<p><img src="https://github.com/KoJunHee/kojunhee.github.io/raw/master/img/outt04.png" alt="img"></p>
+<p><img src="https://github.com/KoJunHee/kojunhee.github.io/raw/master/img/outt05.png" alt="img"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/06/04/탈출/" data-id="ck8ogwsv900efq16w2llilnrt" data-title="탈출" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-스타트링크" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/06/01/스타트링크/" class="article-date">
+  <time class="dt-published" datetime="2018-05-31T15:00:00.000Z" itemprop="datePublished">2018-06-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/06/01/스타트링크/">스타트링크</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="문제-요약"><a href="#문제-요약" class="headerlink" title="문제 요약"></a>문제 요약</h2><ul>
+<li><p>F층으로 이루어진 건물</p>
+</li>
+<li><p>스타트 링크는 G층</p>
+</li>
+<li><p>현재 위치 S층</p>
+</li>
+<li><p>U </p>
+<ul>
+<li>위로 U층을 감</li>
+</ul>
+</li>
+<li><p>D</p>
+<ul>
+<li>아래로 D층을 감</li>
+</ul>
+</li>
+<li><p>U층 위, 또는 D층 아래에 해당하는 층이 없을 때는, </p>
+<ul>
+<li>엘리베이터는 움직이지 않는다</li>
+</ul>
+</li>
+<li><p>S층에서 G층 가려면 버튼을 적어도 몇번 눌러야해????</p>
+</li>
+<li><p>갈수 없다면  “use the stairs” 출력</p>
+</li>
+</ul>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
+<li>전형적인 BFS</li>
+<li>큐에서 deque를 한다 …. A</li>
+<li>도착지점인지 확인한다. <ul>
+<li>도착 지점이면 끝</li>
+<li>도착 지점이 아니라면 계속</li>
+</ul>
+</li>
+<li>deque한 지점에서 이동 가능한 곳을 모두 큐에 넣는다<ul>
+<li>이동 가능 한 곳<ul>
+<li>U층을 더 했을 때, 꼭대기 층 이하이어야함</li>
+<li>D층을 뺐을 때, 1층 이상이어야함 </li>
+</ul>
+</li>
+</ul>
+</li>
+<li>다시 A부터 반복한다</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/06/01/스타트링크/" data-id="ck8ogwsv900edq16w2fcm6s3c" data-title="스타트링크" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Template Method Pattern04" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/31/Template Method Pattern04/" class="article-date">
+  <time class="dt-published" datetime="2018-05-30T15:00:00.000Z" itemprop="datePublished">2018-05-31</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/31/Template Method Pattern04/">Template Method Pattern04</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>전체적인 알고리즘은 상위 클래스에서 구현하면서 다른 부분은 하위 클래스에서 구현할 수 있도록 하는 디자인 패턴이다. 전체적인 알고리즘 코드를 재사용하는 데 유용하다.</p>
+<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/template031.png" alt></p>
+<ul>
+<li>AbstractClass<ul>
+<li>템플릿 메서드를 정의하는 클래스</li>
+<li>하위 클래스에 공통 알고리즘을 정의하고, 하위 클래스에서 구현될 기능을 primitive method 또는 hook method로 정의하는 클래스</li>
+</ul>
+</li>
+<li>ConcreteClass<ul>
+<li>물려받은 primitive method 나 hook method 를 구현하는 클래스</li>
+<li>상위 클래스에서 구현된 템플릿 메서드의 일반적인 알고리즘에서 하위 클래스에 적합하게 primitive method나 hook method를 오버라이드하는 클래스</li>
+</ul>
+</li>
+</ul>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/template032.png" alt></p>
+<ul>
+<li>Motor <ul>
+<li>AbstractClass</li>
+</ul>
+</li>
+<li>HyundaiMotor, LGMotor<ul>
+<li>ConcreteClass</li>
+</ul>
+</li>
+<li>Motor 클래스의 move method <ul>
+<li>template method </li>
+</ul>
+</li>
+<li>Motor 클래스의 moveMotor method <ul>
+<li>primitive method</li>
+</ul>
+</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Java 객체지향 디자인 패턴 &lt;정인상, 채흥석 지음&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/31/Template Method Pattern04/" data-id="ck8ogwsv800ebq16wthdu8rna" data-title="Template Method Pattern04" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-Template Method Pattern03" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2018/05/31/Template Method Pattern03/" class="article-date">
@@ -115,7 +431,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/31/Template Method Pattern03/" data-id="ck8fznlhd00e9ve6w7ddq5oqn" data-title="Template Method Pattern03" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/31/Template Method Pattern03/" data-id="ck8ogwsv800e9q16wx40juykc" data-title="Template Method Pattern03" class="article-share-link">Share</a>
       
       
       
@@ -165,7 +481,66 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/31/Template Method Pattern02/" data-id="ck8fznlhd00e7ve6w108k9st5" data-title="Template Method Pattern02" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/31/Template Method Pattern02/" data-id="ck8ogwsv700e7q16w6hd8pbmn" data-title="Template Method Pattern02" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Template Method Pattern01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/31/Template Method Pattern01/" class="article-date">
+  <time class="dt-published" datetime="2018-05-30T15:00:00.000Z" itemprop="datePublished">2018-05-31</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/31/Template Method Pattern01/">Template Method Pattern01</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="Intent"><a href="#Intent" class="headerlink" title="Intent"></a>Intent</h2><ul>
+<li>Define the skeleton of an algorithm in an operation, deferring some steps to subclasses. </li>
+<li>Template Method lets subclasses redefine certain steps of an algorithm without letting them to change the algorithm’s structure.</li>
+</ul>
+<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/tmplate01.png" alt></p>
+<ul>
+<li>AbstractClass <ul>
+<li>defines abstract primitive operations that concrete subclasses define to implement steps of an algorithm. </li>
+<li>implements a template method which defines the skeleton of an algorithm. The template method calls primitive operations as well as operations defined in AbstractClass or those of other objects.</li>
+</ul>
+</li>
+<li>ConcreteClass <ul>
+<li>implements the primitive operations to carry out subclass-specific steps of the algorithm. When a concrete class is called the template method code will be executed from the base class while for each method used inside the template method will be called the implementation from the derived class.</li>
+</ul>
+</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.oodesign.com/template-method-pattern.html" target="_blank" rel="noopener">https://www.oodesign.com/template-method-pattern.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/31/Template Method Pattern01/" data-id="ck8ogwsv700e5q16wgai3r51d" data-title="Template Method Pattern01" class="article-share-link">Share</a>
       
       
       
@@ -244,7 +619,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/31/State Pattern02/" data-id="ck8fznlhb00e5ve6w2aulf0v5" data-title="State Pattern02" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/31/State Pattern02/" data-id="ck8ogwsv600e3q16w55v3uijg" data-title="State Pattern02" class="article-share-link">Share</a>
       
       
       
@@ -256,9 +631,9 @@
 
 
   
-    <article id="post-Template Method Pattern01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-State Pattern01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/05/31/Template Method Pattern01/" class="article-date">
+    <a href="/2018/05/31/State Pattern01/" class="article-date">
   <time class="dt-published" datetime="2018-05-30T15:00:00.000Z" itemprop="datePublished">2018-05-31</time>
 </a>
     
@@ -274,7 +649,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/31/Template Method Pattern01/">Template Method Pattern01</a>
+      <a class="p-name article-title" href="/2018/05/31/State Pattern01/">State Pattern01</a>
     </h1>
   
 
@@ -282,104 +657,33 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h2 id="Intent"><a href="#Intent" class="headerlink" title="Intent"></a>Intent</h2><ul>
-<li>Define the skeleton of an algorithm in an operation, deferring some steps to subclasses. </li>
-<li>Template Method lets subclasses redefine certain steps of an algorithm without letting them to change the algorithm’s structure.</li>
+        <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>The State Pattern allows an object to alter its behavior when its internal state changes. </p>
+<p>The object will appear to change its class. </p>
+<h2 id="Explanation"><a href="#Explanation" class="headerlink" title="Explanation"></a>Explanation</h2><ul>
+<li>The first part of this description makes a lot of sense, right?  Because the pattern encapsulates state into separate classes and delegates to the object representing the current state, we know that behavior changes along with the internal state. The Gumball Machine provides a good example: when the gumball machine is in the NoQuarterState and you insert a quarter, you get different behavior (the machine accepts the quarter) than if you insert a quarter when it’s in the HasQuarterState (the machine rejects the quarter). </li>
+<li>What about the second part of the definition? What does it mean for an object to “appear to change its class?” Think about it from the perspective of a client: if an object you’re using can completely change its behavior, then it appears to you that the object is actually instantiated from another class. In reality, however, you know that we are using composition to give the appearance of a class change by simply referencing different state objects. </li>
 </ul>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/tmplate01.png" alt></p>
+<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/statePatternUML01.png" alt></p>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><img src="/image/statePatternUML02.png" alt></p>
+<p><img src="/image/statePatternUML03.png" alt></p>
+<p><img src="/image/statePatternUML04.png" alt></p>
+<h2 id="Compared-to-‘Strategy-Pattern’"><a href="#Compared-to-‘Strategy-Pattern’" class="headerlink" title="Compared to ‘Strategy Pattern’"></a>Compared to ‘Strategy Pattern’</h2><p>The State and Strategy Patterns have the same class diagram, but they differ in intent. </p>
 <ul>
-<li>AbstractClass <ul>
-<li>defines abstract primitive operations that concrete subclasses define to implement steps of an algorithm. </li>
-<li>implements a template method which defines the skeleton of an algorithm. The template method calls primitive operations as well as operations defined in AbstractClass or those of other objects.</li>
+<li>Strategy Pattern <ul>
+<li>typically configures Context classes with a behavior or algorithm. </li>
 </ul>
 </li>
-<li>ConcreteClass <ul>
-<li>implements the primitive operations to carry out subclass-specific steps of the algorithm. When a concrete class is called the template method code will be executed from the base class while for each method used inside the template method will be called the implementation from the derived class.</li>
+<li>State Pattern <ul>
+<li>allows a Context to change its behavior as the state of the Context changes.</li>
 </ul>
 </li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.oodesign.com/template-method-pattern.html" target="_blank" rel="noopener">https://www.oodesign.com/template-method-pattern.html</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Head First Design Pattern</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/31/Template Method Pattern01/" data-id="ck8fznlha00dzve6wf88a1opo" data-title="Template Method Pattern01" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Template Method Pattern04" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/31/Template Method Pattern04/" class="article-date">
-  <time class="dt-published" datetime="2018-05-30T15:00:00.000Z" itemprop="datePublished">2018-05-31</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/31/Template Method Pattern04/">Template Method Pattern04</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>전체적인 알고리즘은 상위 클래스에서 구현하면서 다른 부분은 하위 클래스에서 구현할 수 있도록 하는 디자인 패턴이다. 전체적인 알고리즘 코드를 재사용하는 데 유용하다.</p>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/template031.png" alt></p>
-<ul>
-<li>AbstractClass<ul>
-<li>템플릿 메서드를 정의하는 클래스</li>
-<li>하위 클래스에 공통 알고리즘을 정의하고, 하위 클래스에서 구현될 기능을 primitive method 또는 hook method로 정의하는 클래스</li>
-</ul>
-</li>
-<li>ConcreteClass<ul>
-<li>물려받은 primitive method 나 hook method 를 구현하는 클래스</li>
-<li>상위 클래스에서 구현된 템플릿 메서드의 일반적인 알고리즘에서 하위 클래스에 적합하게 primitive method나 hook method를 오버라이드하는 클래스</li>
-</ul>
-</li>
-</ul>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/template032.png" alt></p>
-<ul>
-<li>Motor <ul>
-<li>AbstractClass</li>
-</ul>
-</li>
-<li>HyundaiMotor, LGMotor<ul>
-<li>ConcreteClass</li>
-</ul>
-</li>
-<li>Motor 클래스의 move method <ul>
-<li>template method </li>
-</ul>
-</li>
-<li>Motor 클래스의 moveMotor method <ul>
-<li>primitive method</li>
-</ul>
-</li>
-</ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Java 객체지향 디자인 패턴 &lt;정인상, 채흥석 지음&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/31/Template Method Pattern04/" data-id="ck8fznlhe00edve6wp999h735" data-title="Template Method Pattern04" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/31/State Pattern01/" data-id="ck8ogwsv500e1q16wzg28cw8e" data-title="State Pattern01" class="article-share-link">Share</a>
       
       
       
@@ -432,280 +736,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/28/촌수 계산/" data-id="ck8fznlhb00e3ve6wxqf5y1fw" data-title="촌수 계산" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Memento Pattern01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/28/Memento Pattern01/" class="article-date">
-  <time class="dt-published" datetime="2018-05-27T15:00:00.000Z" itemprop="datePublished">2018-05-28</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/28/Memento Pattern01/">Memento Pattern01</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Intent"><a href="#Intent" class="headerlink" title="Intent"></a>Intent</h2><p>The intent of this pattern is to capture the internal state of an object without violating encapsulation and thus providing a mean for restoring the object into initial state when needed.</p>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/memento01.png" alt></p>
-<ul>
-<li>Memento<ul>
-<li>Stores internal state of the Originator object. The state can include any number of state variables.</li>
-<li>The Memento must have two interfaces.<ul>
-<li>an interface to the caretaker. This interface must not allow any operations or any access to internal state stored by the memento and thus honors encapsulation. </li>
-<li>The other interface is to the originator and allows the originator to access any state variables necessary to for the originator to restore previous state.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Originator<ul>
-<li>Creates a memento object capturing the originators internal state.</li>
-<li>Use the memento object to restore its previous state.</li>
-</ul>
-</li>
-<li>Caretaker<ul>
-<li>Responsible for keeping the memento.</li>
-<li>The memento is opaque to the caretaker, and the caretaker must not operate on it.</li>
-</ul>
-</li>
-</ul>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/mementoPattern011.png" alt></p>
-<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><img src="/image/memento02.png" alt></p>
-<p><img src="/image/memento03.png" alt></p>
-<p><img src="/image/memento04.png" alt></p>
-<p><img src="/image/memento05.png" alt></p>
-<p><img src="/image/memento06.png" alt></p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
-<li><a href="https://www.tutorialspoint.com/design_pattern/memento_pattern.htm" target="_blank" rel="noopener">https://www.tutorialspoint.com/design_pattern/memento_pattern.htm</a></li>
-<li><a href="https://www.oodesign.com/memento-pattern.html" target="_blank" rel="noopener">https://www.oodesign.com/memento-pattern.html</a></li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/28/Memento Pattern01/" data-id="ck8fznlh700drve6w8fml4fn6" data-title="Memento Pattern01" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Prototype Pattern01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/28/Prototype Pattern01/" class="article-date">
-  <time class="dt-published" datetime="2018-05-27T15:00:00.000Z" itemprop="datePublished">2018-05-28</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/28/Prototype Pattern01/">Prototype Pattern01</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Intent"><a href="#Intent" class="headerlink" title="Intent"></a>Intent</h2><ul>
-<li>specifying the kind of objects to create using a prototypical instance</li>
-<li>creating new objects by copying this prototype</li>
-</ul>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/proto11.png" alt></p>
-<ul>
-<li>Client<ul>
-<li>creates a new object by asking a prototype to clone itself.</li>
-</ul>
-</li>
-<li>Prototype <ul>
-<li>declares an interface for cloning itself.</li>
-</ul>
-</li>
-<li>ConcretePrototype<ul>
-<li>implements the operation for cloning itself.</li>
-</ul>
-</li>
-</ul>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/proto011.png" alt></p>
-<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p>Create an abstract class implementing <em>Clonable</em> interface.</p>
-<p><img src="/image/proto02.png" alt></p>
-<p>Create concrete classes extending the above class. </p>
-<p><img src="/image/proto03.png" alt></p>
-<p><img src="/image/proto04.png" alt></p>
-<p><img src="/image/proto05.png" alt></p>
-<p>Create a class to get concrete classes from database and store them in a <em>Hashtable</em>.</p>
-<p><img src="/image/proto06.png" alt></p>
-<p>PrototypePatternDemo uses ShapeCache class to get clones of shapes stored in a <em>Hashtable</em>.</p>
-<p><img src="/image/proto07.png" alt></p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.tutorialspoint.com/design_pattern/prototype_pattern.htm" target="_blank" rel="noopener">https://www.tutorialspoint.com/design_pattern/prototype_pattern.htm</a></p>
-<p><a href="https://www.oodesign.com/prototype-pattern.html" target="_blank" rel="noopener">https://www.oodesign.com/prototype-pattern.html</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/28/Prototype Pattern01/" data-id="ck8fznlh900dvve6wa5yc9kn6" data-title="Prototype Pattern01" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Prototype Pattern02" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/28/Prototype Pattern02/" class="article-date">
-  <time class="dt-published" datetime="2018-05-27T15:00:00.000Z" itemprop="datePublished">2018-05-28</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/28/Prototype Pattern02/">Prototype Pattern02</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>Use the Prototype Pattern when creating an instance of a given class is either expensive or complicated. </p>
-<h2 id="Scenario"><a href="#Scenario" class="headerlink" title="Scenario"></a>Scenario</h2><p>Your interactive role playing game has an insatiable appetite for monsters. </p>
-<p>As your heros make their journey through a dynamically created landscape, they encounter an endless chain of foes that must be subdued. </p>
-<p>You’d like the monster’s characteristics to evolve with the changing landscape. </p>
-<p>It doesn’t make a lot of sense for bird-like monsters to follow your characters into underseas realms. </p>
-<p>Finally, you’d like to allow advanced players to create their own custom monsters. </p>
-<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><p>The Prototype Pattern allows you to make new instances by copying existing instances. </p>
-<p>(In Java this typically means using the clone() method, or de-serialization when you need deep copies.) </p>
-<p>A key aspect of this pattern is that the client code can make new instances without knowing which specific class is being instantiated. </p>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/protoMons02.png" alt></p>
-<p><img src="/image/protoMons01.png" alt></p>
-<h2 id="Benefits"><a href="#Benefits" class="headerlink" title="Benefits"></a>Benefits</h2><ul>
-<li>Hides the complexities of making new instances from the client. </li>
-<li>Provides the option for the client to generate objects whose type is not known. </li>
-<li>In some circumstances, copying an object can be more efficient than creating a new object. </li>
-</ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Head First Design Pattern</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/28/Prototype Pattern02/" data-id="ck8fznlh900dxve6w1zjle0t7" data-title="Prototype Pattern02" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Memento Pattern02" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/28/Memento Pattern02/" class="article-date">
-  <time class="dt-published" datetime="2018-05-27T15:00:00.000Z" itemprop="datePublished">2018-05-28</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/28/Memento Pattern02/">Memento Pattern02</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>Use the Memento Pattern when you need to be able to return an object to one of its previous states; </p>
-<p>for instance, if your user requests an “undo.” </p>
-<h2 id="Scenario"><a href="#Scenario" class="headerlink" title="Scenario"></a>Scenario</h2><p>Your interactive role playing game is hugely successful, and has created a legion of addicts, all trying to get<br> to the fabled “level 13.” </p>
-<p>As users progress to more challenging game levels, the odds of encountering a game-ending situation increase. </p>
-<p>Fans who have spent days progressing to an advanced level are understandably miffed when their character gets snuffed, and they have to start all over. </p>
-<p>The cry goes out for a “save progress” command, so that players can store their game progress and at least recover most of their efforts when their character is unfairly extinguished. </p>
-<p>The “save progress” function needs to be designed to return a resurrected player to the last level she completed successfully. </p>
-<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><p>The Memento has two goals:</p>
-<ul>
-<li>Saving the important state of a system’s key object. </li>
-<li>Maintaining the key object’s encapsulation. </li>
-</ul>
-<p>Keeping the single responsibility principle in mind, </p>
-<p>it’s also a good idea to keep the state that you’re saving separate from the key object. </p>
-<p>This separate object that holds the state is known as the Memento object. </p>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/mementoo01.png" alt></p>
-<p><img src="/image/mementoo02.png" alt></p>
-<h2 id="Benefits"><a href="#Benefits" class="headerlink" title="Benefits"></a>Benefits</h2><ul>
-<li>Keeping the saved state external from the key object helps to maintain cohesion. </li>
-<li>Keeps the key object’s data encapsulated.</li>
-<li>Provides easy-to-implement recovery capability. </li>
-</ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Head First Design Pattern</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/28/Memento Pattern02/" data-id="ck8fznlh800dtve6wqtdyli1f" data-title="Memento Pattern02" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/28/촌수 계산/" data-id="ck8ogwsv500dzq16wqyrf31di" data-title="촌수 계산" class="article-share-link">Share</a>
       
       
       
@@ -721,7 +752,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/21/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="page-number" href="/page/21/">21</a><span class="page-number current">22</span><a class="page-number" href="/page/23/">23</a><a class="page-number" href="/page/24/">24</a><span class="space">&hellip;</span><a class="page-number" href="/page/46/">46</a><a class="extend next" rel="next" href="/page/23/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/21/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="page-number" href="/page/21/">21</a><span class="page-number current">22</span><a class="page-number" href="/page/23/">23</a><a class="page-number" href="/page/24/">24</a><span class="space">&hellip;</span><a class="page-number" href="/page/47/">47</a><a class="extend next" rel="next" href="/page/23/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -747,7 +778,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
     </div>
   </div>
 
@@ -760,23 +791,23 @@
       <ul>
         
           <li>
-            <a href="/2020/03/31/tdd-chapter-22/">[테스트 주도 개발] 22장_실패 처리하기</a>
+            <a href="/2020/04/06/tdd-chapter-28/">[테스트 주도 개발] 28장_초록 막대 패턴</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/06/tdd-chapter-27/">[테스트 주도 개발] 27장_테스팅 패턴</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/06/tdd-chapter-26/">[테스트 주도 개발] 26장_빨간 막대 패턴</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/06/tdd-chapter-25/">[테스트 주도 개발] 25장_테스트 주도 개발 패턴</a>
           </li>
         
           <li>
             <a href="/2020/03/31/tdd-chapter-24/">[테스트 주도 개발] 24장_xUnit 회고</a>
-          </li>
-        
-          <li>
-            <a href="/2020/03/31/tdd-chapter-23/">[테스트 주도 개발] 23장_얼마나 달콤한지</a>
-          </li>
-        
-          <li>
-            <a href="/2020/03/31/bigdata-chapter-05/">[빅데이터] 5장_일괄처리 계층의 데이터 저장소 : 사례</a>
-          </li>
-        
-          <li>
-            <a href="/2020/03/31/tdd-chapter-21/">[테스트 주도 개발] 21장_셈하기</a>
           </li>
         
       </ul>
