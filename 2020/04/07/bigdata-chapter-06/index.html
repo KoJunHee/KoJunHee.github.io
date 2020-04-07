@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  
+  <title>[빅데이터] 6장_일괄처리 계층 | junhee.ko</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="데이터 시스템의 목적은, 데이터에 관한 임의의 질문에 응답하는 것이다. 데이터 집합 전체를 입력으로 받는 함수는 실행 시간이 매우 오래 걸리므로, 질의의 빠르게 응답할 수 있는 다른 전략이 필요하다.  람다 아키텍쳐에서 일괄처리 계층은, 마스터 데이터 집합으로부터 일괄처리 뷰를 사전 계산해서 질의가 빠르게 처리될 수 있도록 한다.  6.1 일괄 처리 구실로">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[빅데이터] 6장_일괄처리 계층">
+<meta property="og:url" content="https://kojunhee.github.io/2020/04/07/bigdata-chapter-06/index.html">
+<meta property="og:site_name" content="junhee.ko">
+<meta property="og:description" content="데이터 시스템의 목적은, 데이터에 관한 임의의 질문에 응답하는 것이다. 데이터 집합 전체를 입력으로 받는 함수는 실행 시간이 매우 오래 걸리므로, 질의의 빠르게 응답할 수 있는 다른 전략이 필요하다.  람다 아키텍쳐에서 일괄처리 계층은, 마스터 데이터 집합으로부터 일괄처리 뷰를 사전 계산해서 질의가 빠르게 처리될 수 있도록 한다.  6.1 일괄 처리 구실로">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://kojunhee.github.io/image/bigdata_batch_layer.png">
+<meta property="og:image" content="https://kojunhee.github.io/image/bigdata_batch_layer_pre_cal.png">
+<meta property="og:image" content="https://kojunhee.github.io/image/bigdata_batch_layer_pre_cal_ex.png">
+<meta property="og:updated_time" content="2020-04-07T13:51:23.962Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[빅데이터] 6장_일괄처리 계층">
+<meta name="twitter:description" content="데이터 시스템의 목적은, 데이터에 관한 임의의 질문에 응답하는 것이다. 데이터 집합 전체를 입력으로 받는 함수는 실행 시간이 매우 오래 걸리므로, 질의의 빠르게 응답할 수 있는 다른 전략이 필요하다.  람다 아키텍쳐에서 일괄처리 계층은, 마스터 데이터 집합으로부터 일괄처리 뷰를 사전 계산해서 질의가 빠르게 처리될 수 있도록 한다.  6.1 일괄 처리 구실로">
+<meta name="twitter:image" content="https://kojunhee.github.io/image/bigdata_batch_layer.png">
+  
+    <link rel="alternate" href="/atom.xml" title="junhee.ko" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="css/images/favicon.ico">
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">junhee.ko</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">always learning</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://kojunhee.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-bigdata-chapter-06" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/04/07/bigdata-chapter-06/" class="article-date">
+  <time class="dt-published" datetime="2020-04-06T15:00:00.000Z" itemprop="datePublished">2020-04-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/big-data/">Big Data</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      [빅데이터] 6장_일괄처리 계층
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>데이터 시스템의 목적은, 데이터에 관한 임의의 질문에 응답하는 것이다. 데이터 집합 전체를 입력으로 받는 함수는 실행 시간이 매우 오래 걸리므로, 질의의 빠르게 응답할 수 있는 다른 전략이 필요하다. </p>
+<p>람다 아키텍쳐에서 일괄처리 계층은, 마스터 데이터 집합으로부터 일괄처리 뷰를 사전 계산해서 질의가 빠르게 처리될 수 있도록 한다. </p>
+<h4 id="6-1-일괄-처리-구실로-좋은-예제"><a href="#6-1-일괄-처리-구실로-좋은-예제" class="headerlink" title="6.1 일괄 처리 구실로 좋은 예제"></a>6.1 일괄 처리 구실로 좋은 예제</h4><p>각 예제는 마스터 데이터 집합 전체를 입력 받는 함수로, 질의를 어떻게 실행하는지 보여준다. 이 예제는 질의 요청이 들어올 때 즉석으로 실행하는 대신, 사전 계산을 사용하도록 구현이 변경될 것이다.</p>
+<h5 id="6-1-1-시간대별-페이지뷰"><a href="#6-1-1-시간대별-페이지뷰" class="headerlink" title="6.1.1 시간대별 페이지뷰"></a>6.1.1 시간대별 페이지뷰</h5><p>지정한 시간대에서 발생한 특정 URL 에 대한 페이지뷰 수의 총계를 구하는 것.</p>
+<h5 id="6-1-2-성별-추로"><a href="#6-1-2-성별-추로" class="headerlink" title="6.1.2 성별 추로"></a>6.1.2 성별 추로</h5><p>이름 데이터 집합 레코드를 사용해서 개인의 성별 추론.</p>
+<h5 id="6-1-3-영향력-지수"><a href="#6-1-3-영향력-지수" class="headerlink" title="6.1.3 영향력 지수"></a>6.1.3 영향력 지수</h5><p>소셜 네트워크에서 개인의 영향력 지수를 구함.</p>
+<h4 id="6-2-일괄-처리-계층에서-계산을-수행하기"><a href="#6-2-일괄-처리-계층에서-계산을-수행하기" class="headerlink" title="6.2 일괄 처리 계층에서 계산을 수행하기"></a>6.2 일괄 처리 계층에서 계산을 수행하기</h4><p><img src="/image/bigdata_batch_layer.png" alt></p>
+<ol>
+<li>일괄 처리 계층은, 마스터 데이터 집합에 대한 함수를 실행해서 일괄 처리 뷰라고 불리는 중간 결과를 사전 계산한다. </li>
+<li>일괄 처리 뷰는 서빙 계층에 로딩되고, 서빙 계층은 데이터에 빨리 접근할 수 있도록 이것에 대한 색인을 만들어둔다. </li>
+<li>속도 계층은 일괄 처리 계층의 지연시간이 높은 것을 보완한다. 아직 일괄처리 뷰료 사전 계산 되지 않은 데이터에 대해 지연 시간이 낮은 갱신을 실행하는 것이다. </li>
+<li>질의는 서빙 계층 뷰와 속도 계층 뷰의 처리 결과를 합쳐서 완료된다.</li>
+</ol>
+<p>람다 아키텍쳐의 핵심은, 어떤 질의의 대해서도 일괄 처리 계층에서 데이터를 사전계산하여 서빙 계층에서 신속하게 처리할 수 있도록 할 수 있다는 것이다.</p>
+<p>모든 질의를 사전계산할 수는 없다. 그 대신, 다음 그림처럼 중간 결과를 사전 계산하고 그 결과들을 사용해서 질의를 즉석으로 처리할 수 있다. </p>
+<p><img src="/image/bigdata_batch_layer_pre_cal.png" alt></p>
+<p>시간대별 페이지뷰 질의 예제에 대해 중관 결과를 사전 계산한다면, URL 개개마다 모든 시각에 대한 페이지뷰를 사전계산 해두는 것이다. 질의 처리를 완료하려면 색인에서 지정한 범위에 속하는 모든 시각에 대한 페이지뷰 수를 얻어서 그 결과를 합치면 된다. </p>
+<p><img src="/image/bigdata_batch_layer_pre_cal_ex.png" alt></p>
+<hr>
+<p>빅데이터, 람다 아키텍처로 알아보는 실시간 빅데이터 구축의 핵심 원리와 기법 &lt;네이선 마츠, 제임스 워렌&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2020/04/07/bigdata-chapter-06/" data-id="ck8pyrhw300p6b66wsep490h9" data-title="[빅데이터] 6장_일괄처리 계층" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/04/06/tdd-chapter-27/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">[테스트 주도 개발] 27장_테스팅 패턴</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/big-data/">Big Data</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boost-course/">Boost Course</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/dip/">DIP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/data-structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/design-pattern/">Design Pattern</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jpa/">JPA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">Kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/network/">Network</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/os/">OS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/object/">Object</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/software-engineering/">Software Engineering</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/spark/">Spark</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tdd/">TDD</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/etc/">etc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ios/">iOS</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/04/07/bigdata-chapter-06/">[빅데이터] 6장_일괄처리 계층</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/06/tdd-chapter-27/">[테스트 주도 개발] 27장_테스팅 패턴</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/06/tdd-chapter-26/">[테스트 주도 개발] 26장_빨간 막대 패턴</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/06/tdd-chapter-28/">[테스트 주도 개발] 28장_초록 막대 패턴</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/06/tdd-chapter-25/">[테스트 주도 개발] 25장_테스트 주도 개발 패턴</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 junhee.ko<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+  <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

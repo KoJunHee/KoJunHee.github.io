@@ -132,7 +132,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/22/Edge Detection/" data-id="ck8ogwsuy00d9q16wq8cxhm7u" data-title="Edge Detection" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/22/Edge Detection/" data-id="ck8pyrhs900dab66wjxi3jlsk" data-title="Edge Detection" class="article-share-link">Share</a>
       
       
       
@@ -196,7 +196,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/22/Frequency domain/" data-id="ck8ogwsuy00dbq16wisdjd5u4" data-title="Frequency domain" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/22/Frequency domain/" data-id="ck8pyrhsa00dcb66wv18diuyx" data-title="Frequency domain" class="article-share-link">Share</a>
       
       
       
@@ -208,9 +208,9 @@
 
 
   
-    <article id="post-Laplacian Operator" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-Prewitt Operator" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/05/22/Laplacian Operator/" class="article-date">
+    <a href="/2018/05/22/Prewitt Operator/" class="article-date">
   <time class="dt-published" datetime="2018-05-21T15:00:00.000Z" itemprop="datePublished">2018-05-22</time>
 </a>
     
@@ -226,7 +226,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/22/Laplacian Operator/">Laplacian Operator</a>
+      <a class="p-name article-title" href="/2018/05/22/Prewitt Operator/">Prewitt Operator</a>
     </h1>
   
 
@@ -234,36 +234,45 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>Laplacian Operator is also a derivative operator which is used to find edges in an image. </p>
-<p>The major difference between Laplacian and other operators like Prewitt, Sobel, Robinson and Kirsch is that these all are first order derivative masks but Laplacian is a second order derivative mask. </p>
-<p>In this mask we have two further classifications one is Positive Laplacian Operator and other is Negative Laplacian Operator.</p>
-<p>Another difference between Laplacian and other operators is that unlike other operators Laplacian didn’t take out edges in any particular direction but it take out edges in following classification.</p>
+        <p>Prewitt operator is used for edge detection in an image. It detects two types of edges</p>
 <ul>
-<li>Inward Edges</li>
-<li>Outward Edges</li>
+<li>Horizontal edges</li>
+<li>Vertical Edges</li>
 </ul>
-<p>Let’s see that how Laplacian operator works.</p>
-<h2 id="Positive-Laplacian-Operator"><a href="#Positive-Laplacian-Operator" class="headerlink" title="Positive Laplacian Operator"></a>Positive Laplacian Operator</h2><p>In Positive Laplacian we have standard mask in which center element of the mask should be negative </p>
-<p>and corner elements of mask should be zero.</p>
-<p>Positive Laplacian Operator is use to take out outward edges in an image.</p>
-<p><img src="/image/laplacian01.png" alt> </p>
-<h2 id="Negative-Laplacian-Operator"><a href="#Negative-Laplacian-Operator" class="headerlink" title="Negative Laplacian Operator"></a>Negative Laplacian Operator</h2><p>In negative Laplacian operator we also have a standard mask, in which center element should be positive. All the elements in the corner should be zero and rest of all the elements in the mask should be -1.</p>
-<p>Negative Laplacian operator is use to take out inward edges in an image</p>
-<p><img src="/image/laplacian02.png" alt> </p>
-<h2 id="How-it-works"><a href="#How-it-works" class="headerlink" title="How it works"></a>How it works</h2><p>Laplacian is a derivative operator; its uses highlight gray level discontinuities in an image and try to deemphasize regions with slowly varying gray levels. </p>
-<p>This operation in result produces such images which have grayish edge lines and other discontinuities on a dark background. T</p>
-<p>his produces inward and outward edges in an image</p>
-<p>The important thing is how to apply these filters onto image. </p>
-<p>Remember we can’t apply both the positive and negative Laplacian operator on the same image. </p>
-<p>We have to apply just one but the thing to remember is that if we apply positive Laplacian operator on the image then we subtract the resultant image from the original image to get the sharpened image. </p>
-<p>Similarly if we apply negative Laplacian operator then we have to add the resultant image onto original image to get the sharpened image.</p>
-<p>Let’s apply these filters onto an image and see how it will get us inward and outward edges from an image. </p>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/laplacian03.png" alt> </p>
+<p>Edges are calculated by using difference between corresponding pixel intensities of an image. </p>
+<p>All the masks that are used for edge detection are also known as derivative masks. </p>
+<p>Because image is also a signal so changes in a signal can only be calculated using differentiation. </p>
+<p>So that’s why these operators are also called as derivative operators or derivative masks.</p>
+<p>All the derivative masks should have the following properties:</p>
+<ul>
+<li>Opposite sign should be present in the mask.</li>
+<li>Sum of mask should be equal to zero.</li>
+<li>More weight means more edge detection.</li>
+</ul>
+<p>Prewitt operator provides us two masks one for detecting edges in horizontal direction and another for detecting edges in an vertical direction.</p>
+<h2 id="Vertical-direction"><a href="#Vertical-direction" class="headerlink" title="Vertical direction"></a>Vertical direction</h2><p><img src="/image/prewitt01.png" alt></p>
+<p>Above mask will find the edges in vertical direction and it is because the zeros column in the vertical direction. When you will convolve this mask on an image, it will give you the vertical edges in an image.</p>
+<h2 id="How-it-works"><a href="#How-it-works" class="headerlink" title="How it works"></a>How it works</h2><p>When we apply this mask on the image it prominent vertical edges. </p>
+<p>It simply works like as first order derivate and calculates the difference of pixel intensities in a edge region. As the center column is of zero so it does not include the original values of an image but rather it calculates the difference of right and left pixel values around that edge. </p>
+<p>This increase the edge intensity and it become enhanced comparatively to the original image.</p>
+<h2 id="Horizontal-Direction"><a href="#Horizontal-Direction" class="headerlink" title="Horizontal Direction"></a>Horizontal Direction</h2><p><img src="/image/prewitt02.png" alt></p>
+<p>Above mask will find edges in horizontal direction and it is because that zeros column is in horizontal direction. When you will convolve this mask onto an image it would prominent horizontal edges in the image.</p>
+<h2 id="How-it-works-1"><a href="#How-it-works-1" class="headerlink" title="How it works"></a>How it works</h2><p>This mask will prominent the horizontal edges in an image. </p>
+<p>It also works on the principle of above mask and calculates difference among the pixel intensities of a particular edge. </p>
+<p>As the center row of mask is consist of zeros so it does not include the original values of edge in the image but rather it calculate the difference of above and below pixel intensities of the particular edge. </p>
+<p>Thus increasing the sudden change of intensities and making the edge more visible. </p>
+<p>Both the above masks follow the principle of derivate mask. </p>
+<p>Both masks have opposite sign in them and both masks sum equals to zero. </p>
+<p>The third condition will not be applicable in this operator as both the above masks are standardize and we can’t change the value in them.</p>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/prewitt03.png" alt></p>
+<p>As you can see that in the first picture on which we apply vertical mask, all the vertical edges are more visible than the original image. </p>
+<p>Similarly in the second picture we have applied the horizontal mask and in result all the horizontal edges are visible. </p>
+<p>So in this way you can see that we can detect both horizontal and vertical edges from an image.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/22/Laplacian Operator/" data-id="ck8ogwsv000dhq16wos9wft7r" data-title="Laplacian Operator" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/22/Prewitt Operator/" data-id="ck8pyrhsc00dkb66wbty6z6ld" data-title="Prewitt Operator" class="article-share-link">Share</a>
       
       
       
@@ -330,7 +339,74 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/22/Krisch Compass Mask/" data-id="ck8ogwsuz00dfq16what6p9lc" data-title="Krisch Compass Mask" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/22/Krisch Compass Mask/" data-id="ck8pyrhsb00dgb66wf0ppz8hs" data-title="Krisch Compass Mask" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Laplacian Operator" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/22/Laplacian Operator/" class="article-date">
+  <time class="dt-published" datetime="2018-05-21T15:00:00.000Z" itemprop="datePublished">2018-05-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/dip/">DIP</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/22/Laplacian Operator/">Laplacian Operator</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Laplacian Operator is also a derivative operator which is used to find edges in an image. </p>
+<p>The major difference between Laplacian and other operators like Prewitt, Sobel, Robinson and Kirsch is that these all are first order derivative masks but Laplacian is a second order derivative mask. </p>
+<p>In this mask we have two further classifications one is Positive Laplacian Operator and other is Negative Laplacian Operator.</p>
+<p>Another difference between Laplacian and other operators is that unlike other operators Laplacian didn’t take out edges in any particular direction but it take out edges in following classification.</p>
+<ul>
+<li>Inward Edges</li>
+<li>Outward Edges</li>
+</ul>
+<p>Let’s see that how Laplacian operator works.</p>
+<h2 id="Positive-Laplacian-Operator"><a href="#Positive-Laplacian-Operator" class="headerlink" title="Positive Laplacian Operator"></a>Positive Laplacian Operator</h2><p>In Positive Laplacian we have standard mask in which center element of the mask should be negative </p>
+<p>and corner elements of mask should be zero.</p>
+<p>Positive Laplacian Operator is use to take out outward edges in an image.</p>
+<p><img src="/image/laplacian01.png" alt> </p>
+<h2 id="Negative-Laplacian-Operator"><a href="#Negative-Laplacian-Operator" class="headerlink" title="Negative Laplacian Operator"></a>Negative Laplacian Operator</h2><p>In negative Laplacian operator we also have a standard mask, in which center element should be positive. All the elements in the corner should be zero and rest of all the elements in the mask should be -1.</p>
+<p>Negative Laplacian operator is use to take out inward edges in an image</p>
+<p><img src="/image/laplacian02.png" alt> </p>
+<h2 id="How-it-works"><a href="#How-it-works" class="headerlink" title="How it works"></a>How it works</h2><p>Laplacian is a derivative operator; its uses highlight gray level discontinuities in an image and try to deemphasize regions with slowly varying gray levels. </p>
+<p>This operation in result produces such images which have grayish edge lines and other discontinuities on a dark background. T</p>
+<p>his produces inward and outward edges in an image</p>
+<p>The important thing is how to apply these filters onto image. </p>
+<p>Remember we can’t apply both the positive and negative Laplacian operator on the same image. </p>
+<p>We have to apply just one but the thing to remember is that if we apply positive Laplacian operator on the image then we subtract the resultant image from the original image to get the sharpened image. </p>
+<p>Similarly if we apply negative Laplacian operator then we have to add the resultant image onto original image to get the sharpened image.</p>
+<p>Let’s apply these filters onto an image and see how it will get us inward and outward edges from an image. </p>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/laplacian03.png" alt> </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/22/Laplacian Operator/" data-id="ck8pyrhsb00dib66wfjucnd76" data-title="Laplacian Operator" class="article-share-link">Share</a>
       
       
       
@@ -416,7 +492,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/21/PMF, CDF/" data-id="ck8ogwsuv00d3q16wdiy6smsr" data-title="PMF, CDF" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/21/PMF, CDF/" data-id="ck8pyrhs700d4b66wsfm2yhm8" data-title="PMF, CDF" class="article-share-link">Share</a>
       
       
       
@@ -508,7 +584,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/21/Mask/" data-id="ck8ogwsuu00d1q16wacvvv38r" data-title="Mask" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/21/Mask/" data-id="ck8pyrhs700d2b66wkwwgpvbh" data-title="Mask" class="article-share-link">Share</a>
       
       
       
@@ -577,7 +653,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/21/Histogram Sliding/" data-id="ck8ogwsur00cvq16wk2huwpbl" data-title="Histogram Sliding" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/21/Histogram Sliding/" data-id="ck8pyrhs500cwb66wi7kpr5rf" data-title="Histogram Sliding" class="article-share-link">Share</a>
       
       
       
@@ -670,7 +746,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/21/Histogram Equalization/" data-id="ck8ogwsuq00ctq16w326wwq73" data-title="Histogram Equalization" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/21/Histogram Equalization/" data-id="ck8pyrhs400cub66w4iqmz6kr" data-title="Histogram Equalization" class="article-share-link">Share</a>
       
       
       
@@ -780,80 +856,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/21/Convolution/" data-id="ck8ogwsuq00crq16wauvlesif" data-title="Convolution" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Brightness and Contrast" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/21/Brightness and Contrast/" class="article-date">
-  <time class="dt-published" datetime="2018-05-20T15:00:00.000Z" itemprop="datePublished">2018-05-21</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/dip/">DIP</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/21/Brightness and Contrast/">Brightness and Contrast</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Brightness"><a href="#Brightness" class="headerlink" title="Brightness"></a>Brightness</h2><ul>
-<li><p>Brightness is a relative term. </p>
-</li>
-<li><p>It depends on your visual perception. </p>
-</li>
-<li><p>Since brightness is a relative term, so brightness can be defined as the amount of energy output by a source of light relative to the source we are comparing it to. </p>
-</li>
-<li><p>In some cases we can easily say that the image is bright, and in some cases, its not easy to perceive.</p>
-</li>
-<li><p>Consider this black image of 5 rows and 5 columns</p>
-<p><img src="/image/bri01.png" alt></p>
-<p><img src="/image/bri02.png" alt></p>
-<p><img src="/image/bri03.png" alt></p>
-<p><img src="/image/bri04.png" alt></p>
-</li>
-</ul>
-<h2 id="Contrast"><a href="#Contrast" class="headerlink" title="Contrast"></a>Contrast</h2><ul>
-<li><p>Contrast can be simply explained as the difference between maximum and minimum pixel intensity in an image.</p>
-<p><img src="/image/bri05.png" alt></p>
-<ul>
-<li><p>The maximum value in this matrix is 100.</p>
-</li>
-<li><p>The minimum value in this matrix is 100.</p>
-</li>
-<li><p>Contrast = maximum pixel intensity(subtracted by) minimum pixel intensity</p>
-<p>= 100 (subtracted by) 100</p>
-<p>= 0</p>
-</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/21/Brightness and Contrast/" data-id="ck8ogwsup00coq16wemuwwh8k" data-title="Brightness and Contrast" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/21/Convolution/" data-id="ck8pyrhs300csb66wveesqoyl" data-title="Convolution" class="article-share-link">Share</a>
       
       
       
@@ -908,7 +911,7 @@
       <ul>
         
           <li>
-            <a href="/2020/04/06/tdd-chapter-28/">[테스트 주도 개발] 28장_초록 막대 패턴</a>
+            <a href="/2020/04/07/bigdata-chapter-06/">[빅데이터] 6장_일괄처리 계층</a>
           </li>
         
           <li>
@@ -920,11 +923,11 @@
           </li>
         
           <li>
-            <a href="/2020/04/06/tdd-chapter-25/">[테스트 주도 개발] 25장_테스트 주도 개발 패턴</a>
+            <a href="/2020/04/06/tdd-chapter-28/">[테스트 주도 개발] 28장_초록 막대 패턴</a>
           </li>
         
           <li>
-            <a href="/2020/03/31/tdd-chapter-24/">[테스트 주도 개발] 24장_xUnit 회고</a>
+            <a href="/2020/04/06/tdd-chapter-25/">[테스트 주도 개발] 25장_테스트 주도 개발 패턴</a>
           </li>
         
       </ul>

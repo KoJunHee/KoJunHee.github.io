@@ -71,6 +71,80 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Flyweight Pattern01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/06/08/Flyweight Pattern01/" class="article-date">
+  <time class="dt-published" datetime="2018-06-07T15:00:00.000Z" itemprop="datePublished">2018-06-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/06/08/Flyweight Pattern01/">Flyweight Pattern01</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h2><p>Some programs require a large number of objects that have some shared state among them. </p>
+<p>Consider for example a game of war, were there is a large number of soldier objects; </p>
+<p>a soldier object maintain the graphical representation of a soldier, soldier behavior such as motion, and firing weapons, in addition soldier’s health and location on the war terrain. </p>
+<p>Creating a large number of soldier objects is a necessity however it would incur a huge memory cost. </p>
+<p>Note that although the representation and behavior of a soldier is the same their health and location can vary greatly.</p>
+<h2 id="Intent"><a href="#Intent" class="headerlink" title="Intent"></a>Intent</h2><p>To use sharing to support a large number of objects that have part of their internal state in common where the other part of state can vary.</p>
+<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/FlyweightPattern01.png" alt></p>
+<ul>
+<li><p><strong>Flyweight</strong></p>
+<ul>
+<li>Declares an interface through which flyweights can receive and act on extrinsic state.</li>
+</ul>
+</li>
+<li><p><strong>ConcreteFlyweight</strong></p>
+<ul>
+<li>Implements the Flyweight interface and stores intrinsic state. A ConcreteFlyweight object must be sharable. The Concrete flyweight object must maintain state that it is intrinsic to it, and must be able to manipulate state that is extrinsic. In the war game example graphical representation is an intrinsic state, where location and health states are extrinsic. Soldier moves, the motion behavior manipulates the external state (location) to create a new location.</li>
+</ul>
+</li>
+<li><p><strong>FlyweightFactory</strong>  </p>
+<ul>
+<li>The factory creates and manages flyweight objects. In addition the factory ensures sharing of the flyweight objects. The factory maintains a pool of different flyweight objects and returns an object from the pool if it is already created, adds one to the pool and returns it in case it is new.<br>In the war example a Soldier Flyweight factory can create two types of flyweights : a Soldier flyweight, as well as a Colonel Flyweight. When the Client asks the Factory for a soldier, the factory checks to see if there is a soldier in the pool, if there is, it is returned to the client, if there is no soldier in pool, a soldier is created, added to pool, and returned to the client, the next time a client asks for a soldier, the soldier created previously is returned, no new soldier is created.</li>
+</ul>
+</li>
+<li><p><strong>Client</strong></p>
+<ul>
+<li>A client maintains references to flyweights in addition to computing and maintaining extrinsic state</li>
+</ul>
+</li>
+<li><p>A client needs a flyweight object; it calls the factory to get the flyweight object. The factory checks a pool of flyweights to determine if a flyweight object of the requested type is in the pool, if there is, the reference to that object is returned. If there is no object of the required type, the factory creates a flyweight of the requested type, adds it to the pool, and returns a reference to the flyweight. The flyweight maintains intrinsic state (state that is shared among the large number of objects that we have created the flyweight for) and provides methods to manipulate external state (State that vary from object to object and is not common among the objects we have created the flyweight for).</p>
+</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.oodesign.com/flyweight-pattern.html" target="_blank" rel="noopener">https://www.oodesign.com/flyweight-pattern.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/06/08/Flyweight Pattern01/" data-id="ck8pyrhsp00eub66wrwhf2j85" data-title="Flyweight Pattern01" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-Builder Pattern03" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2018/06/08/Builder Pattern03/" class="article-date">
@@ -125,7 +199,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/06/08/Builder Pattern03/" data-id="ck8ogwsvd00erq16wccj7ld6x" data-title="Builder Pattern03" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/06/08/Builder Pattern03/" data-id="ck8pyrhso00esb66w4x6f0nq3" data-title="Builder Pattern03" class="article-share-link">Share</a>
       
       
       
@@ -188,7 +262,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/06/08/Builder Pattern02/" data-id="ck8ogwsvc00epq16w5h26uu01" data-title="Builder Pattern02" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/06/08/Builder Pattern02/" data-id="ck8pyrhso00eqb66w1h4dapcx" data-title="Builder Pattern02" class="article-share-link">Share</a>
       
       
       
@@ -246,7 +320,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/06/08/Flyweight Pattern03/" data-id="ck8ogwsve00exq16ws6it3x9l" data-title="Flyweight Pattern03" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/06/08/Flyweight Pattern03/" data-id="ck8pyrhsq00eyb66wnaqix0yr" data-title="Flyweight Pattern03" class="article-share-link">Share</a>
       
       
       
@@ -301,7 +375,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/06/06/Decorator Pattern01/" data-id="ck8ogwsvh00f5q16w57co0xe8" data-title="Decorator Pattern01" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/06/06/Decorator Pattern01/" data-id="ck8pyrhst00f6b66w5nbzmon2" data-title="Decorator Pattern01" class="article-share-link">Share</a>
       
       
       
@@ -380,7 +454,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/06/06/Command Pattern03/" data-id="ck8ogwsvg00f3q16wh15js7ol" data-title="Command Pattern03" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/06/06/Command Pattern03/" data-id="ck8pyrhss00f4b66wr2yivl8i" data-title="Command Pattern03" class="article-share-link">Share</a>
       
       
       
@@ -449,7 +523,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/06/06/Command Pattern02/" data-id="ck8ogwsvf00f1q16wm46ljwbb" data-title="Command Pattern02" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/06/06/Command Pattern02/" data-id="ck8pyrhss00f2b66wyeu2eo4h" data-title="Command Pattern02" class="article-share-link">Share</a>
       
       
       
@@ -515,7 +589,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/06/06/Command Pattern01/" data-id="ck8ogwsvf00ezq16wjo5dy663" data-title="Command Pattern01" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/06/06/Command Pattern01/" data-id="ck8pyrhsr00f0b66wt4mvtjw3" data-title="Command Pattern01" class="article-share-link">Share</a>
       
       
       
@@ -598,7 +672,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/06/06/Decorator Pattern02/" data-id="ck8ogwsvh00f7q16we2gaqx2t" data-title="Decorator Pattern02" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/06/06/Decorator Pattern02/" data-id="ck8pyrhst00f8b66wkxux9soo" data-title="Decorator Pattern02" class="article-share-link">Share</a>
       
       
       
@@ -676,60 +750,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/06/06/Strategy Pattern03/" data-id="ck8ogwsvb00elq16weriric41" data-title="Strategy Pattern03" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Strategy Pattern02" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/06/06/Strategy Pattern02/" class="article-date">
-  <time class="dt-published" datetime="2018-06-05T15:00:00.000Z" itemprop="datePublished">2018-06-06</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/06/06/Strategy Pattern02/">Strategy Pattern02</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>The Strategy Pattern defines a family of algorithms, encapsulates each one, and makes them interchangeable. </p>
-<p>Strategy lets the algorithm vary independently from clients that use it. </p>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/stpa.png" alt></p>
-<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><img src="/image/stpa01.png" alt></p>
-<p><img src="/image/stpa02.png" alt></p>
-<p><img src="/image/stpa03.png" alt></p>
-<p><img src="/image/stpa04.png" alt></p>
-<p><img src="/image/stpa05.png" alt></p>
-<p><img src="/image/stpa06.png" alt></p>
-<p><img src="/image/stpa07.png" alt></p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Head First Design Pattern</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/06/06/Strategy Pattern02/" data-id="ck8ogwsvb00ejq16wzwccf2lk" data-title="Strategy Pattern02" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/06/06/Strategy Pattern03/" data-id="ck8pyrhsn00emb66wc80fqxo1" data-title="Strategy Pattern03" class="article-share-link">Share</a>
       
       
       
@@ -784,7 +805,7 @@
       <ul>
         
           <li>
-            <a href="/2020/04/06/tdd-chapter-28/">[테스트 주도 개발] 28장_초록 막대 패턴</a>
+            <a href="/2020/04/07/bigdata-chapter-06/">[빅데이터] 6장_일괄처리 계층</a>
           </li>
         
           <li>
@@ -796,11 +817,11 @@
           </li>
         
           <li>
-            <a href="/2020/04/06/tdd-chapter-25/">[테스트 주도 개발] 25장_테스트 주도 개발 패턴</a>
+            <a href="/2020/04/06/tdd-chapter-28/">[테스트 주도 개발] 28장_초록 막대 패턴</a>
           </li>
         
           <li>
-            <a href="/2020/03/31/tdd-chapter-24/">[테스트 주도 개발] 24장_xUnit 회고</a>
+            <a href="/2020/04/06/tdd-chapter-25/">[테스트 주도 개발] 25장_테스트 주도 개발 패턴</a>
           </li>
         
       </ul>
