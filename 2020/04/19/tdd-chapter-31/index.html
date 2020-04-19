@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  
+  <title>[테스트 주도 개발] 31장_리팩토링 | Always Learning</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="시스템의 설계를 작은 단계를 통해 변화시키는 방법들을 정리한다. 차이점 일치시키기비슷해 보이는 두 코드 조각을 합리려면?  두 코드를 단계적으로 닮아가게 수정한다. 완전히 동일해지면 둘을 합쳐라. 변화 격리하기객체나 메서드의 일부만 바꾸려면?  일단 바꿔야할 부분을 격리해라. 격리 방법으로는,  메서드 추출 객체 추출 메서드 객체  메서드 추출하기길고 복잡">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[테스트 주도 개발] 31장_리팩토링">
+<meta property="og:url" content="https://kojunhee.github.io/2020/04/19/tdd-chapter-31/index.html">
+<meta property="og:site_name" content="Always Learning">
+<meta property="og:description" content="시스템의 설계를 작은 단계를 통해 변화시키는 방법들을 정리한다. 차이점 일치시키기비슷해 보이는 두 코드 조각을 합리려면?  두 코드를 단계적으로 닮아가게 수정한다. 완전히 동일해지면 둘을 합쳐라. 변화 격리하기객체나 메서드의 일부만 바꾸려면?  일단 바꿔야할 부분을 격리해라. 격리 방법으로는,  메서드 추출 객체 추출 메서드 객체  메서드 추출하기길고 복잡">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-04-19T13:36:55.439Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[테스트 주도 개발] 31장_리팩토링">
+<meta name="twitter:description" content="시스템의 설계를 작은 단계를 통해 변화시키는 방법들을 정리한다. 차이점 일치시키기비슷해 보이는 두 코드 조각을 합리려면?  두 코드를 단계적으로 닮아가게 수정한다. 완전히 동일해지면 둘을 합쳐라. 변화 격리하기객체나 메서드의 일부만 바꾸려면?  일단 바꿔야할 부분을 격리해라. 격리 방법으로는,  메서드 추출 객체 추출 메서드 객체  메서드 추출하기길고 복잡">
+  
+    <link rel="alternate" href="/atom.xml" title="Always Learning" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="css/images/favicon.ico">
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Always Learning</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">junhee.ko</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://kojunhee.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-tdd-chapter-31" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/04/19/tdd-chapter-31/" class="article-date">
+  <time class="dt-published" datetime="2020-04-18T15:00:00.000Z" itemprop="datePublished">2020-04-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tdd/">TDD</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      [테스트 주도 개발] 31장_리팩토링
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>시스템의 설계를 작은 단계를 통해 변화시키는 방법들을 정리한다.</p>
+<h5 id="차이점-일치시키기"><a href="#차이점-일치시키기" class="headerlink" title="차이점 일치시키기"></a>차이점 일치시키기</h5><p>비슷해 보이는 두 코드 조각을 합리려면? </p>
+<p>두 코드를 단계적으로 닮아가게 수정한다. 완전히 동일해지면 둘을 합쳐라.</p>
+<h5 id="변화-격리하기"><a href="#변화-격리하기" class="headerlink" title="변화 격리하기"></a>변화 격리하기</h5><p>객체나 메서드의 일부만 바꾸려면? </p>
+<p>일단 바꿔야할 부분을 격리해라. 격리 방법으로는,</p>
+<ol>
+<li>메서드 추출</li>
+<li>객체 추출</li>
+<li>메서드 객체</li>
+</ol>
+<h5 id="메서드-추출하기"><a href="#메서드-추출하기" class="headerlink" title="메서드 추출하기"></a>메서드 추출하기</h5><p>길고 복잡한 메서드를 읽기 쉽게 만들려면? </p>
+<p>긴 메서드의 일부분을 별도의 메서드로 분리하고 이를 호출해라. 복잡한 코드를 이해하기 쉽고, 중복을 제거하기도 좋다. </p>
+<h5 id="메서드-인라인"><a href="#메서드-인라인" class="headerlink" title="메서드 인라인"></a>메서드 인라인</h5><p>제어 흐름이 너무 산재되어 있으면? </p>
+<p>메서드 호출하는 부분을 호출될 메서드의 본문으로 교체해라.</p>
+<h5 id="인터페이스-추출하기"><a href="#인터페이스-추출하기" class="headerlink" title="인터페이스 추출하기"></a>인터페이스 추출하기</h5><p>자바 오퍼레이션에 대한 두 번째 구현을 추가하려면? </p>
+<p>공통되는 오퍼레이션을 담고 있는 인터페이스를 만들어라.</p>
+<h5 id="메서드-옮기기"><a href="#메서드-옮기기" class="headerlink" title="메서드 옮기기"></a>메서드 옮기기</h5><p>메서드를 원래 있어야할 장소로 옮기려면?</p>
+<p>적절한 클래스에 메서드를 추가하고, 이를 호출하게 해라. 다음과 같이, 한 메서드에서 다른 객체에 하나 이상의 메세지를 보내면 의심해봐라.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> width = bounds.right() - bounds.left();</span><br><span class="line"><span class="keyword">int</span> height = bounds.bottom - bounds.top();</span><br><span class="line"><span class="keyword">int</span> area = width * height;</span><br></pre></td></tr></table></figure>
+
+<p>다음과 같이 수정할 수 있다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Shape</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">int</span> area = bounds.area();</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Rectangle</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">area</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> width = <span class="keyword">this</span>.right() - <span class="keyword">this</span>.left();</span><br><span class="line">        <span class="keyword">int</span> height = <span class="keyword">this</span>.bottom() - <span class="keyword">this</span>.pop();</span><br><span class="line">        </span><br><span class="line">      <span class="keyword">return</span> width * height;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="메서드-객체"><a href="#메서드-객체" class="headerlink" title="메서드 객체"></a>메서드 객체</h5><p>여러 개의 매개 변수와 직역 변수를 갖는 복잡한 메서드는 어떻게 표현? </p>
+<p>메서드를 꺼내서 객체로 만들어라. </p>
+<h5 id="매개-변수-추가"><a href="#매개-변수-추가" class="headerlink" title="매개 변수 추가"></a>매개 변수 추가</h5><p>메서드에 매개 변수를 어떻게 추가? </p>
+<p>메서드가 인터페이스에 선언되어 있으면 인터페이스에 매개 변수를 추가해라.</p>
+<hr>
+<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2020/04/19/tdd-chapter-31/" data-id="ck973jwzg00pa576wx7sqn0wa" data-title="[테스트 주도 개발] 31장_리팩토링" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/04/19/tdd-chapter-32/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">[테스트 주도 개발] 32장_TDD 마스터하기</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/big-data/">Big Data</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boost-course/">Boost Course</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/dip/">DIP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/data-structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/design-pattern/">Design Pattern</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jpa/">JPA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">Kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/network/">Network</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/oop/">OOP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/os/">OS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/software-engineering/">Software Engineering</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/spark/">Spark</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tdd/">TDD</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/etc/">etc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ios/">iOS</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/04/19/tdd-chapter-31/">[테스트 주도 개발] 31장_리팩토링</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/19/tdd-chapter-32/">[테스트 주도 개발] 32장_TDD 마스터하기</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/19/tdd-chapter-30/">[테스트 주도 개발] 30장_디자인 패턴</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/19/tdd-chapter-29/">[테스트 주도 개발] 29장_xUnit 패턴</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/07/bigdata-chapter-06/">[빅데이터] 6장_일괄처리 계층</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 junhee.ko<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+  <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

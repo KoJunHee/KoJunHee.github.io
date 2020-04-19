@@ -68,6 +68,273 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-leve3-시저암호" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/09/09/leve3-시저암호/" class="article-date">
+  <time class="dt-published" datetime="2017-09-08T15:00:00.000Z" itemprop="datePublished">2017-09-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/09/09/leve3-시저암호/">level3_시저암호</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://programmers.co.kr/learn/challenge_codes/144" target="_blank" rel="noopener">https://programmers.co.kr/learn/challenge_codes/144</a></p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ol>
+<li><p>소문자이면</p>
+<ul>
+<li>현재 문자에서 ‘a’ 기준으로 얼만큼 떨어져 있는지 + n</li>
+<li>알파뱃 수 만큼 % </li>
+<li><ul>
+<li>a</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>대문자이면</p>
+<ul>
+<li>소문자와 같은 방식</li>
+</ul>
+</li>
+<li><p>공백</p>
+<ul>
+<li>pass</li>
+</ul>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2017/09/09/leve3-시저암호/" data-id="ck973jwrj000e576wryidx3m9" data-title="level3_시저암호" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Dynamic Programming" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/09/08/Dynamic Programming/" class="article-date">
+  <time class="dt-published" datetime="2017-09-07T15:00:00.000Z" itemprop="datePublished">2017-09-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/09/08/Dynamic Programming/">Dynamic Programming</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="정의"><a href="#정의" class="headerlink" title="정의"></a>정의</h2><ul>
+<li>복잡한 문제를 간단한 여러 개의 문제로 나누어 푸는 방법</li>
+</ul>
+<h2 id="원리"><a href="#원리" class="headerlink" title="원리"></a>원리</h2><ul>
+<li>문제를 여러 개의 하위 문제(subproblem)로 나누어 푼 다음, 그것을 결합하여 최종적인 목적에 도달</li>
+<li>각 하위 문제의 해결을 계산한 뒤, 그 해결책을 저장하여 후에 같은 하위 문제가 나왔을 경우 그것을 간단하게 해결</li>
+</ul>
+<h2 id="예제"><a href="#예제" class="headerlink" title="예제"></a>예제</h2><ul>
+<li>막대기 자르기 ( 막대기를 적절히 잘라서 가장 가격이 높게 만들어야 함)</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">길이(i)   0  1  2  3  4   5   6   7   8   9  10</span><br><span class="line">가격(Pi)  0  1  5  8  9  10  17  17  20  24  30</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>길이가 4인 막대기로 자를 때 얻을 수 있는 최대 가격 : 길이 2인 막대기 두 개로 자름. -&gt; 5 + 5 = 10 </li>
+<li>길이가 6인 막대기 : 자르지 않고 그대로</li>
+<li>길이가 n인 막대기의 최대 가격 = Rn = max(Pi + Rn-i) (i는 1부터 n) </li>
+<li>R1 = max(P1 + R0)  =1</li>
+<li>R2 = max(P1 + R1, P2 + R0) = 5</li>
+<li>R3 = max(P1 + R2, P2 + R1, P3 + R0) = 8</li>
+<li>R4 = max(P1 + R3, P2 + R2, P3 + R1) = 10</li>
+</ul>
+<p>–&gt; R1, R2, R3… 가 반복적으로 나옴 . 메모제이션 사용. 이전에 계산한 값들 저장.</p>
+<h2 id="단점"><a href="#단점" class="headerlink" title="단점"></a>단점</h2><ul>
+<li>모든 방법을 일일이 검토하여 그 중 최적해를 찾아내는 주먹구구식 방법</li>
+</ul>
+<h2 id="장점"><a href="#장점" class="headerlink" title="장점"></a>장점</h2><ul>
+<li>문제가 가능한 모든 방법을 충분히 빠른 속도로 처리할 수 있는 경우, 동적 계획법은 최적의 해법</li>
+<li>계산 횟수를 줄임 </li>
+<li>하위 문제의 수가 기하급수적으로 증가할 때 유용</li>
+</ul>
+<h2 id="그리디-알고리즘과-비교"><a href="#그리디-알고리즘과-비교" class="headerlink" title="그리디 알고리즘과 비교"></a>그리디 알고리즘과 비교</h2><p>ex) A라는 지점에서 B라는 지점까지 가능한 빨리 이동하는 경로를 찾기”</p>
+<ul>
+<li>그리디 :  전체적인 상황을 고려하지 않고, 순간순간 교차로가 보일 때마다 가장 빠른 경로를 검색</li>
+<li><blockquote>
+<p>즉효성이 있음, but 항상 최적의 경로를 찾아주지는 않음 (각 구간마다는 최적경로O, 전체적으로는 최적 경로X)</p>
+</blockquote>
+</li>
+<li>DP : 갈 수 있는 모든 상황과 교통 정체를 전부 감안하여 최적의 경로 찾음</li>
+<li><blockquote>
+<p>약간의 시간 소요, but 가장 빠른 길이 된다고 장담</p>
+</blockquote>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2017/09/08/Dynamic Programming/" data-id="ck973jwrh000b576wxsubkb2o" data-title="Dynamic Programming" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-leve3-야근지수" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/09/08/leve3-야근지수/" class="article-date">
+  <time class="dt-published" datetime="2017-09-07T15:00:00.000Z" itemprop="datePublished">2017-09-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/09/08/leve3-야근지수/">leve3_야근지수</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://programmers.co.kr/learn/challenge_codes/145" target="_blank" rel="noopener">https://programmers.co.kr/learn/challenge_codes/145</a></p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ol>
+<li><p>리스트의 값 중 최대값을 찾음</p>
+</li>
+<li><p>n이 0이 될때 까지, 그 최대값 -1</p>
+</li>
+<li><p>최종 제곱의 합을 출력</p>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2017/09/08/leve3-야근지수/" data-id="ck973jwrg000a576w95icxqri" data-title="leve3_야근지수" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-leve3-n개의최소공배수" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/09/07/leve3-n개의최소공배수/" class="article-date">
+  <time class="dt-published" datetime="2017-09-06T15:00:00.000Z" itemprop="datePublished">2017-09-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/09/07/leve3-n개의최소공배수/">level3_n개의 최소공배수</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://programmers.co.kr/learn/challenge_codes/152" target="_blank" rel="noopener">https://programmers.co.kr/learn/challenge_codes/152</a></p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ol>
+<li><p>두 수의 최소 공배수</p>
+<ul>
+<li>두 수의 곱 / 두 수의 최대공약수</li>
+</ul>
+</li>
+<li><p>두 수의 최대 공약수 </p>
+<p> ![img](<a href="http://cfile27.uf.tistory.com/image/" target="_blank" rel="noopener">http://cfile27.uf.tistory.com/image/</a>    992E363359B0DF7D1A5547)</p>
+</li>
+<li><p>10 12 14 의 최소공배수</p>
+<ul>
+<li>(10, 12) 의 최소공배수와 14의 최소공배수</li>
+</ul>
+</li>
+</ol>
+<h2 id="개념"><a href="#개념" class="headerlink" title="개념"></a>개념</h2><blockquote>
+<p>유클리드 알고리즘 (from 위키백과)</p>
+</blockquote>
+<pre><code>- 호제법이란 말은 두 수가 서로(互) 상대방 수를 나누어(除)서 결국 원하는 수를 얻는 알고리즘.
+- 2개의 자연수(또는 정식) a, b에 대해서 a를 b로 나눈 나머지를 r이라 하면(단, a&gt;b), 
+- a와 b의 최대공약수는 b와 r의 최대공약수와 같다. 
+- 이 성질에 따라, b를 r로 나눈 나머지 r&apos;를 구하고, 
+- 다시 r을 r&apos;로 나눈 나머지를 구하는 과정을 반복하여 
+- 나머지가 0이 되었을 때 나누는 수가 a와 b의 최대공약수이다.</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2017/09/07/leve3-n개의최소공배수/" data-id="ck973jwrl000i576w08cvsybw" data-title="level3_n개의 최소공배수" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-leve3-멀리뛰기" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2017/09/06/leve3-멀리뛰기/" class="article-date">
@@ -123,7 +390,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/09/06/leve3-멀리뛰기/" data-id="ck913utoa0008p26wou6izei1" data-title="Level3_멀리뛰기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/09/06/leve3-멀리뛰기/" data-id="ck973jwre0008576wtppyndmp" data-title="Level3_멀리뛰기" class="article-share-link">Share</a>
       
       
       
@@ -174,7 +441,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/09/05/boj-parentheses/" data-id="ck913uto10004p26wjlgj8332" data-title="9012:괄호" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/09/05/boj-parentheses/" data-id="ck973jwr90003576w039a77wb" data-title="9012:괄호" class="article-share-link">Share</a>
       
       
       
@@ -230,7 +497,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/09/05/leve3-다음큰숫자/" data-id="ck913uto90007p26wcvrxtqe5" data-title="Level3_다음 큰 숫자" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/09/05/leve3-다음큰숫자/" data-id="ck973jwrd0007576wmsxxl8i3" data-title="Level3_다음 큰 숫자" class="article-share-link">Share</a>
       
       
       
@@ -287,7 +554,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/09/05/boj-pole/" data-id="ck913uto70006p26w3ztgas32" data-title="쇠막대기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/09/05/boj-pole/" data-id="ck973jwrc0006576weeebi59c" data-title="쇠막대기" class="article-share-link">Share</a>
       
       
       
@@ -348,7 +615,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2017/09/05/boj-editor/" data-id="ck913utnx0003p26wtt3sn7fn" data-title="1406:에디터" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/09/05/boj-editor/" data-id="ck973jwr50001576w9o345mxr" data-title="1406:에디터" class="article-share-link">Share</a>
       
       
       
@@ -403,23 +670,23 @@
       <ul>
         
           <li>
+            <a href="/2020/04/19/tdd-chapter-31/">[테스트 주도 개발] 31장_리팩토링</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/19/tdd-chapter-32/">[테스트 주도 개발] 32장_TDD 마스터하기</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/19/tdd-chapter-30/">[테스트 주도 개발] 30장_디자인 패턴</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/19/tdd-chapter-29/">[테스트 주도 개발] 29장_xUnit 패턴</a>
+          </li>
+        
+          <li>
             <a href="/2020/04/07/bigdata-chapter-06/">[빅데이터] 6장_일괄처리 계층</a>
-          </li>
-        
-          <li>
-            <a href="/2020/04/06/tdd-chapter-28/">[테스트 주도 개발] 28장_초록 막대 패턴</a>
-          </li>
-        
-          <li>
-            <a href="/2020/04/06/tdd-chapter-27/">[테스트 주도 개발] 27장_테스팅 패턴</a>
-          </li>
-        
-          <li>
-            <a href="/2020/04/06/tdd-chapter-26/">[테스트 주도 개발] 26장_빨간 막대 패턴</a>
-          </li>
-        
-          <li>
-            <a href="/2020/04/06/tdd-chapter-25/">[테스트 주도 개발] 25장_테스트 주도 개발 패턴</a>
           </li>
         
       </ul>

@@ -68,6 +68,242 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Servlet" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/07/Servlet/" class="article-date">
+  <time class="dt-published" datetime="2018-05-06T15:00:00.000Z" itemprop="datePublished">2018-05-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/boost-course/">Boost Course</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/07/Servlet/">Servlet</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <ul>
+<li><p>Servlet 이란</p>
+<ul>
+<li>자바 웹 어플리케이션의 구성요소 중 동적인 처리를 하는 프로그램의 역할입니다.</li>
+<li>서블릿(servlet)은 WAS에 동작하는 JAVA 클래스입니다. </li>
+<li>서블릿은 HttpServlet 클래스를 상속받아야 합니다.</li>
+<li>웹 페이지를 구성하는 화면(HTML)은 JSP로 표현하고, 복잡한 프로그래밍은 서블릿으로 구현합니다.</li>
+</ul>
+</li>
+<li><p>Life Cycle</p>
+<p><img src="/image/slf.png" alt></p>
+<ul>
+<li>WAS는 서블릿 요청을 받으면 해당 서블릿이 메모리에 있는지 확인합니다.</li>
+<li>if (메모리에 없음) {<ul>
+<li>해당 서블릿 클래스를 메모리에 올림</li>
+<li>init() 메소드를 실행<br>}</li>
+<li>service()메소드를 실행</li>
+</ul>
+</li>
+<li>was가 종료되거나, 웹 어플리케이션이 새롭게 갱신될 경우 destroy() 메소드가 실행됩니다.</li>
+</ul>
+</li>
+<li><p>service(request, response) 메소드</p>
+<ul>
+<li><p>HttpServlet의 service메소드는 템플릿 메소드 패턴으로 구현합니다.</p>
+</li>
+<li><p>클라이언트의 요청이 GET일 경우에는 자신이 가지고 있는 doGet(request, response)메소드를 호출</p>
+</li>
+<li><p>클라이언트의 요청이 Post일 경우에는 자신이 가지고 있는 doPost(request, response)를 호출</p>
+</li>
+</ul>
+</li>
+<li><p>Reference</p>
+<ul>
+<li>NAVER edwith boostcourse Full-Stack Web Developer </li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/07/Servlet/" data-id="ck973jwvb00be576w871q0lmz" data-title="Servlet" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Spring IoC:DI 컨테이너" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/06/Spring IoC:DI 컨테이너/" class="article-date">
+  <time class="dt-published" datetime="2018-05-05T15:00:00.000Z" itemprop="datePublished">2018-05-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/boost-course/">Boost Course</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/06/Spring IoC:DI 컨테이너/">Spring IoC/DI 컨테이너</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <ul>
+<li><p>컨테이너</p>
+<ul>
+<li>인스턴스의 생명 주기를 관리<ul>
+<li>Servlet을 실행해주는 WAS는 Servlet 컨테이너를 가지고 있다고 말합니다.</li>
+<li>WAS는 웹 브라우저로부터 서블릿 URL에 해당하는 요청을 받으면, 서블릿을 메모리에 올린 후 실행합니다.</li>
+<li>개발자가 서블릿 클래스를 작성했지만, 실제로 메모리에 올리고 실행하는 것은 WAS가 가지고 있는 Servlet컨테이너입니다.</li>
+<li>Servlet컨테이너는 동일한 서블릿에 해당하는 요청을 받으면, 또 메모리에 올리지 않고 기존에 메모리에 올라간 서블릿을 실행하여 그 결과를 웹 브라우저에게 전달합니다.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>IoC (Inversion of Control)</p>
+<ul>
+<li>예를 들어 서블릿 클래스는 개발자가 만들지만, </li>
+<li>그 서블릿의 메소드를 알맞게 호출하는 것은 WAS입니다.</li>
+<li>이렇게 개발자가 만든 어떤 클래스나 메소드를 다른 프로그램이 대신 실행해주는 것을 제어의 역전이라고 합니다.</li>
+</ul>
+</li>
+<li><p>DI(Dependency Injection)</p>
+<ul>
+<li>DI는 클래스 사이의 의존 관계를 빈(Bean) 설정 정보를 바탕으로 컨테이너가 자동으로 연결해주는 것을 말합니다.</li>
+</ul>
+</li>
+<li><p>DI가 적용 안된 예</p>
+<ul>
+<li>개발자가 직접 인스턴스를 생성합니다.</li>
+<li><img src="/image/di01.png" alt></li>
+</ul>
+</li>
+<li><p>Spring 에서 DI가 적용된 예</p>
+<ul>
+<li><p>엔진 type의 v5변수에 아직 인스턴스가 할당되지 않았습니다.</p>
+<p>컨테이너가 v5변수에 인스턴스를 할당해주게 됩니다.</p>
+</li>
+</ul>
+<p><img src="/image/di02.png" alt></p>
+</li>
+<li><p>Reference</p>
+<ul>
+<li>NAVER edwith boostcourse Full-Stack Web Developer </li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/06/Spring IoC:DI 컨테이너/" data-id="ck973jwva00b8576wvxjoub2p" data-title="Spring IoC/DI 컨테이너" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-물통" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/06/물통/" class="article-date">
+  <time class="dt-published" datetime="2018-05-05T15:00:00.000Z" itemprop="datePublished">2018-05-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/06/물통/">물통</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p><a href="https://www.acmicpc.net/problem/2251" target="_blank" rel="noopener">https://www.acmicpc.net/problem/2251</a></p>
+<ul>
+<li><p>경우의 수</p>
+<ul>
+<li>A -&gt; B</li>
+<li>A -&gt; C</li>
+<li>B -&gt; A</li>
+<li>B -&gt; C</li>
+<li>C -&gt; A</li>
+<li>C -&gt; B</li>
+</ul>
+</li>
+<li><p>가능한 모든 경우를 Queue에 넣어가면서 체크</p>
+</li>
+<li><p>EX</p>
+<ul>
+<li><p>(0 0 10)</p>
+</li>
+<li><p>(8 0 2), (0 9 1)</p>
+<ul>
+<li>(0 8 2), (0, 0, 10) : 이미 체크했으므로 큐에 넣지 않음, (8, 2, 0)</li>
+<li>(8 1 1), (0 0 10) : 이미 체크했으므로 큐에 넣지 않음, (1 9 0)</li>
+</ul>
+<p>….</p>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/06/물통/" data-id="ck973jwvb00bc576wy1yijw3e" data-title="물통" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-browser 동작" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2018/05/05/browser 동작/" class="article-date">
@@ -155,7 +391,229 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/05/browser 동작/" data-id="ck913uts800asp26w1wfqshd3" data-title="browser 동작" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/05/browser 동작/" data-id="ck973jwv700az576weusx0nnr" data-title="browser 동작" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-프론트엔드, 백엔드" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/05/프론트엔드, 백엔드/" class="article-date">
+  <time class="dt-published" datetime="2018-05-04T15:00:00.000Z" itemprop="datePublished">2018-05-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/boost-course/">Boost Course</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/05/프론트엔드, 백엔드/">프론트엔드, 백엔드</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <ul>
+<li><p>웹 프론트엔드</p>
+<ul>
+<li>사용자에게 웹을 통해 다양한 콘텐츠(문서, 동영상, 사진 등)을 제공</li>
+<li>사용자의 요청(요구사항)에 반응해서 동작</li>
+</ul>
+</li>
+<li><p>웹 프론트엔드의 역할</p>
+<ul>
+<li>웹 콘텐츠를 보여주기 위해 구조를 만들어야함 - HTML : 구조를 잡아</li>
+<li>적절한 배치와 일관된 디자인 제공(보기좋게) - CSS : 디자인</li>
+<li>사용장 요청을 잘 반영해야함 (소통하듯이) - JacaScript : 동적 제어. 프로그래밍</li>
+</ul>
+</li>
+<li><p>벡엔드 개발자가 알아야할 것들</p>
+<ul>
+<li>프로그래밍 언어(JAVA, Python, PHP, JavaScript)</li>
+<li>웹의 동작 원리</li>
+<li>알고리즘, 자료구조 등 프로그래밍 기반 지식</li>
+<li>운영체제, 네트워크 등에 대한 이해</li>
+<li>프레임워크에 대한 이해(ex: Spring)</li>
+<li>DBMS에 대한 이해와 사용방법(ex: MySQL, Oracle)  </li>
+</ul>
+</li>
+<li><p>Reference</p>
+<ul>
+<li>NAVER edwith boostcourse Full-Stack Web Developer </li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/05/프론트엔드, 백엔드/" data-id="ck973jwv600av576wf90ap3m5" data-title="프론트엔드, 백엔드" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-web 동작" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/05/web 동작/" class="article-date">
+  <time class="dt-published" datetime="2018-05-04T15:00:00.000Z" itemprop="datePublished">2018-05-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/boost-course/">Boost Course</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/05/web 동작/">web 동작</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <ul>
+<li><p>물리적인 하나의 컴퓨터에 여러개의 서버가 동작 가능</p>
+</li>
+<li><p>각각 서버는 포트를 가지고 잇음</p>
+</li>
+<li><p>인터넷은 네트워크들의 네트워크. 네트워크들의 결합체</p>
+</li>
+<li><p>TCP/IP로 연결되어 있다</p>
+</li>
+<li><p>통신을 하기 위해 HTTP를 사용함</p>
+<ul>
+<li>HTTP v0.9가 최초</li>
+<li>HTTP : 서바와 클라이언트가 인터넷상에서 데이터 주고 받기 위한 프로토콜</li>
+<li>어떤 종류의 데이터도 전송 가능<ul>
+<li>이미지, 동영상, 텍스트 등 …</li>
+</ul>
+</li>
+<li>HTTP/2 까지 등장</li>
+<li>HTTP/1.1 을 다룰거임</li>
+</ul>
+</li>
+<li><p>HTTP 작동방식</p>
+</li>
+<li><p>네트워크 통신방식에는 유상태와 무상태 두개가 있다</p>
+<ul>
+<li>유상태  방식 :  stateful<ul>
+<li>접속이 계속 유지</li>
+<li>클라이언트와 서버 간에 지속적으로 데이터 주고 받을 수 있어</li>
+<li>채탱, 온라인 게임에 적합</li>
+<li>서버가 동시에 접속 유지 할수 있는 수 정해짐<ul>
+<li>그래서 클라이언트 수가 많아지면 서버의 수도 많아져야해</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>무상태 : stateless  &lt;– HTTP는 이걸 써<ul>
+<li>계속 연결을 맺지 않아</li>
+<li>필요한 경우에만 연결을 맺어</li>
+<li>클라이언트가 계속 연결을 맺고 있지 않아</li>
+<li>하나의 서버가 굉장히 많은 요청/ 응답 처리 가능</li>
+<li>서버/ 클라이언트 모델을 따름</li>
+<li>불특정 다수를 대상으로 하는 서비스에는 적합</li>
+<li>클라이언트와 서버가 계속 연결된 형태가 아니기 때문에 클라이언트와 서버 간의 최대 연결 수보다 훨씬 많은 요청과 응답을 처리할 수 있다.</li>
+<li>연결을 끊어버리기 때문에, 클라이언트의 이전 상황을 알 수가 없다. </li>
+<li>이러한 특징을 무상태(Stateless)라고 말한다. </li>
+<li>이러한 특징 때문에 정보를 유지하기 위해서 Cookie와 같은 기술이 등장하게 되었다.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>URL</p>
+<ul>
+<li>인터넷 상의 자원의 위치</li>
+<li>문서/이미지/동영상등의 위치</li>
+<li>크게 세부분으로 나뉨</li>
+<li>프로토콜의 종류 / 서버의 IP주소(도메인주소) / 자원의 위치</li>
+<li>IP : 집의 집 주소</li>
+<li>하나의 컴퓨터에는 하나의 IP 존재</li>
+<li>집에는 방들이 여러개 ㅇ있어</li>
+<li>각각의 하나의 방을 포트</li>
+<li>한방에 여러명이 생활하기도해. 서버는 이렇게 불가능</li>
+<li>서버는 각 하나의 방을 하나씩 차지</li>
+<li>하나의 방에 여러개의 서버가 존재할수 없다</li>
+<li>포트 번호가 각각 달라야됨</li>
+<li>하나의 물리적 컴퓨터에는 여러개의 서버가 동작 가능</li>
+<li>서버는 포트값이 다르게 동작</li>
+<li>포트값은 0보다 큰 숫자값이다</li>
+<li>HTTP 서버는 기본 포트값이 80 이다</li>
+</ul>
+</li>
+<li><p>웹 동작 원리</p>
+<ul>
+<li>클라이언트가 서버에 접속을 함</li>
+<li>다시 클라이언트가 요청을 함<ul>
+<li>요청되는 데이터들은 정해진 규칙이 있어. 요청데이터포맷 이라고 함</li>
+<li>요청 데이터 포맷<ul>
+<li>헤더<ul>
+<li>요청 메서드 + 요청URI(요청하는 자원의 위치 명시) + HTTP 프로토콜의 버젼<ul>
+<li>요청 메서드 : GET 말고도 많아</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>요청 바디<ul>
+<li>GET방식은 요청바디가 없어</li>
+<li>POST나 PUT을 사용하면 바디에 들어가</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>응답 데이터 포맷<ul>
+<li>헤더</li>
+<li>바디</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>요청에 따른 응답결과를 클라이언트게 응답</li>
+<li>응답이 끝나고 나면 서버와 클라이어트의 연결이 끊겨</li>
+</ul>
+</li>
+<li><p>Reference</p>
+<ul>
+<li><a href="https://www.html5rocks.com/en/tutorials/internals/howbrowserswork/#Introduction" target="_blank" rel="noopener">https://www.html5rocks.com/en/tutorials/internals/howbrowserswork/#Introduction</a></li>
+<li>NAVER edwith boostcourse Full-Stack Web Developer </li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2018/05/05/web 동작/" data-id="ck973jwv300aq576wza3uc696" data-title="web 동작" class="article-share-link">Share</a>
       
       
       
@@ -230,7 +688,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/05/HTML/" data-id="ck913utsb00b6p26whzcspzgo" data-title="HTML Layout" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/05/HTML/" data-id="ck973jwv900b6576wlkjxvmbm" data-title="HTML Layout" class="article-share-link">Share</a>
       
       
       
@@ -311,79 +769,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/05/ 웹 서버/" data-id="ck913utsb00b4p26wtcl0f436" data-title="웹 서버" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-프론트엔드, 백엔드" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/05/프론트엔드, 백엔드/" class="article-date">
-  <time class="dt-published" datetime="2018-05-04T15:00:00.000Z" itemprop="datePublished">2018-05-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/boost-course/">Boost Course</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/05/프론트엔드, 백엔드/">프론트엔드, 백엔드</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <ul>
-<li><p>웹 프론트엔드</p>
-<ul>
-<li>사용자에게 웹을 통해 다양한 콘텐츠(문서, 동영상, 사진 등)을 제공</li>
-<li>사용자의 요청(요구사항)에 반응해서 동작</li>
-</ul>
-</li>
-<li><p>웹 프론트엔드의 역할</p>
-<ul>
-<li>웹 콘텐츠를 보여주기 위해 구조를 만들어야함 - HTML : 구조를 잡아</li>
-<li>적절한 배치와 일관된 디자인 제공(보기좋게) - CSS : 디자인</li>
-<li>사용장 요청을 잘 반영해야함 (소통하듯이) - JacaScript : 동적 제어. 프로그래밍</li>
-</ul>
-</li>
-<li><p>벡엔드 개발자가 알아야할 것들</p>
-<ul>
-<li>프로그래밍 언어(JAVA, Python, PHP, JavaScript)</li>
-<li>웹의 동작 원리</li>
-<li>알고리즘, 자료구조 등 프로그래밍 기반 지식</li>
-<li>운영체제, 네트워크 등에 대한 이해</li>
-<li>프레임워크에 대한 이해(ex: Spring)</li>
-<li>DBMS에 대한 이해와 사용방법(ex: MySQL, Oracle)  </li>
-</ul>
-</li>
-<li><p>Reference</p>
-<ul>
-<li>NAVER edwith boostcourse Full-Stack Web Developer </li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/05/프론트엔드, 백엔드/" data-id="ck913uts900axp26wywqvw7a8" data-title="프론트엔드, 백엔드" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/05/ 웹 서버/" data-id="ck973jwv800b4576w1ydteut6" data-title="웹 서버" class="article-share-link">Share</a>
       
       
       
@@ -472,7 +858,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/05/ browser에서의 웹 개발/" data-id="ck913utsa00b1p26w3v9flccb" data-title=" browser에서의 웹 개발" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/05/ browser에서의 웹 개발/" data-id="ck973jwv800b2576w28nvtf8v" data-title=" browser에서의 웹 개발" class="article-share-link">Share</a>
       
       
       
@@ -556,266 +942,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/04/프린터 큐/" data-id="ck913uts900azp26w9mbgbgs9" data-title="프린터 큐" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Proxy Pattern01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/03/Proxy Pattern01/" class="article-date">
-  <time class="dt-published" datetime="2018-05-02T15:00:00.000Z" itemprop="datePublished">2018-05-03</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/03/Proxy Pattern01/">Proxy Pattern01</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <ul>
-<li><p>Intent</p>
-<ul>
-<li>The intent of this pattern is to provide a ‘Placeholder’ for an object to control references to it.</li>
-</ul>
-</li>
-<li><p>다른 이름 </p>
-<ul>
-<li>Surrogate            </li>
-</ul>
-</li>
-<li><p>Class Diagram</p>
-<p><img src="/image/proxyUML.png" alt></p>
-</li>
-</ul>
-<ul>
-<li>Code</li>
-</ul>
-<p><img src="/image/proxy01.png" alt></p>
-<p><img src="/image/proxy02.png" alt></p>
-<p><img src="/image/proxy03.png" alt></p>
-<p><img src="/image/proxy04.png" alt></p>
-<ul>
-<li><p>Result</p>
-<p><img src="/image/proxyResult.png" alt></p>
-</li>
-<li><p>Reference</p>
-<ul>
-<li><a href="http://www.oodesign.com/proxy-pattern.html" target="_blank" rel="noopener">http://www.oodesign.com/proxy-pattern.html</a></li>
-<li><a href="https://www.tutorialspoint.com/design_pattern/singleton_pattern.html" target="_blank" rel="noopener">https://www.tutorialspoint.com/design_pattern/singleton_pattern.html</a></li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/03/Proxy Pattern01/" data-id="ck913uts600aop26wslqkv0za" data-title="Proxy Pattern01" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Proxy Pattern02" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/03/Proxy Pattern02/" class="article-date">
-  <time class="dt-published" datetime="2018-05-02T15:00:00.000Z" itemprop="datePublished">2018-05-03</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/03/Proxy Pattern02/">Proxy Pattern02</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><ul>
-<li>The Proxy Pattern provides a surrogate or placeholder for another object to control access to it. </li>
-<li>Use the Proxy Pattern to create a representative object that controls access to another object, which may be remote, expensive to create or in need of securing. </li>
-</ul>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/proxyUML02.png" alt></p>
-<h2 id="RMI-Remote-Method-Invocation"><a href="#RMI-Remote-Method-Invocation" class="headerlink" title="RMI (Remote Method Invocation)"></a>RMI (Remote Method Invocation)</h2><p>RMI gives us a way to find objects in a remote JVM and allows us to invoke their methods. </p>
-<p><img src="/image/rmi01.png" alt></p>
-<p><img src="/image/rmi02.png" alt></p>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/rmiexample01.png" alt></p>
-<p><img src="/image/rmiexample02.png" alt></p>
-<p><img src="/image/rmiexample03.png" alt></p>
-<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><img src="/image/rmicode01.png" alt></p>
-<p><img src="/image/rmicode02.png" alt></p>
-<p><img src="/image/rmicode03.png" alt></p>
-<p><img src="/image/rmicode04.png" alt></p>
-<p><img src="/image/rmicode05.png" alt></p>
-<p><img src="/image/rmicode06.png" alt></p>
-<p><img src="/image/rmicode07.png" alt></p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Head First Design Pattern</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/03/Proxy Pattern02/" data-id="ck913uts700aqp26wq2j9qug5" data-title="Proxy Pattern02" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-케빈 베이컨의 6단계 법칙 " class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/01/케빈 베이컨의 6단계 법칙 /" class="article-date">
-  <time class="dt-published" datetime="2018-04-30T15:00:00.000Z" itemprop="datePublished">2018-05-01</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/01/케빈 베이컨의 6단계 법칙 /">케빈 베이컨의 6단계 법칙</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p><a href="https://www.acmicpc.net/problem/1389" target="_blank" rel="noopener">https://www.acmicpc.net/problem/1389</a></p>
-<ul>
-<li>유저의 수 만큼 BFS<ul>
-<li>start(root) 에서 다음 유저까지 가는데 얼마나 가야하는지<ul>
-<li>depth 구하는것과 동일<ul>
-<li>queue에 넣을 때, 부모가 누구인지도 같이 저장하면 됨</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/01/케빈 베이컨의 6단계 법칙 /" data-id="ck913uts600amp26w7uxuftq7" data-title="케빈 베이컨의 6단계 법칙" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-연구소" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/04/29/연구소/" class="article-date">
-  <time class="dt-published" datetime="2018-04-28T15:00:00.000Z" itemprop="datePublished">2018-04-29</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/04/29/연구소/">연구소</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p><a href="https://www.acmicpc.net/problem/14502" target="_blank" rel="noopener">https://www.acmicpc.net/problem/14502</a></p>
-<ul>
-<li>반복<ul>
-<li>벽 3개 설치 =&gt; DFS<ul>
-<li>첫 번째 벽 어디 세울지 찾음 ( 첫번째 dfs 메소드 )<ul>
-<li>for문 다 돌면, main을 돌아가</li>
-</ul>
-</li>
-<li>두 번째 벽 어디 세울지 찾음 ( 두 번째 dfs 메소드 )<ul>
-<li>for문 다 돌면, ( 첫번째 dfs 메소드 )로 돌아가</li>
-</ul>
-</li>
-<li>세 번째 벽 어디 세울지 찾음 ( 세 번째 dfs 메소드 )<ul>
-<li>세우고, 바이러스 퍼뜨림</li>
-<li>세번째 벽 세웠던거 초기화하고</li>
-<li>( 두 번째 dfs 메소드 ) 로 돌아감</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>바이러스 퍼짐 =&gt; BFS</li>
-<li>0의 개수 세기 </li>
-</ul>
-</li>
-<li>0의 개수의 최댓값 구하기</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/04/29/연구소/" data-id="ck913uts500akp26wm6zmewux" data-title="연구소" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2018/05/04/프린터 큐/" data-id="ck973jwv700ax576w94th580d" data-title="프린터 큐" class="article-share-link">Share</a>
       
       
       
@@ -870,23 +997,23 @@
       <ul>
         
           <li>
+            <a href="/2020/04/19/tdd-chapter-31/">[테스트 주도 개발] 31장_리팩토링</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/19/tdd-chapter-32/">[테스트 주도 개발] 32장_TDD 마스터하기</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/19/tdd-chapter-30/">[테스트 주도 개발] 30장_디자인 패턴</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/19/tdd-chapter-29/">[테스트 주도 개발] 29장_xUnit 패턴</a>
+          </li>
+        
+          <li>
             <a href="/2020/04/07/bigdata-chapter-06/">[빅데이터] 6장_일괄처리 계층</a>
-          </li>
-        
-          <li>
-            <a href="/2020/04/06/tdd-chapter-28/">[테스트 주도 개발] 28장_초록 막대 패턴</a>
-          </li>
-        
-          <li>
-            <a href="/2020/04/06/tdd-chapter-27/">[테스트 주도 개발] 27장_테스팅 패턴</a>
-          </li>
-        
-          <li>
-            <a href="/2020/04/06/tdd-chapter-26/">[테스트 주도 개발] 26장_빨간 막대 패턴</a>
-          </li>
-        
-          <li>
-            <a href="/2020/04/06/tdd-chapter-25/">[테스트 주도 개발] 25장_테스트 주도 개발 패턴</a>
           </li>
         
       </ul>

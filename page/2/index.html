@@ -68,6 +68,304 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-bigdata-chapter-05" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/03/31/bigdata-chapter-05/" class="article-date">
+  <time class="dt-published" datetime="2020-03-30T15:00:00.000Z" itemprop="datePublished">2020-03-31</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/big-data/">Big Data</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/03/31/bigdata-chapter-05/">[빅데이터] 5장_일괄처리 계층의 데이터 저장소 : 사례</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>HDFS  를 사용하는 방법과, 상위 수준 API 를 사용하여 필요한 작업을 자동화하는 방법을 정리한다. 항상 그랬듯이, 도구를 비교하는 것이 아니라 상위 수준의 개념을 보강하는 것이 목적이다.</p>
+<h4 id="5-1-하둡-분산-파일-시스템-사용하기"><a href="#5-1-하둡-분산-파일-시스템-사용하기" class="headerlink" title="5.1 하둡 분산 파일 시스템 사용하기"></a>5.1 하둡 분산 파일 시스템 사용하기</h4><p>HDFS 의 동작 방식을 정리하면,</p>
+<ol>
+<li>파일은 블록으로 쪼개져서 클러스터에  있는 여러 노드로 퍼뜨려진다.</li>
+<li>블록은 여러 노드로 복제되어서 장비가 다운되어도 데이터는 여전히 사용 가능하다.</li>
+<li>네임노드는 각 파일이 어떤 블록으로 구성되는지와, 그 블록이 어디에 저장되어 있는지를 추적한다.</li>
+</ol>
+<p>파일과 폴더를 조작하는 HDFS API 사용법을 보자. 서버에 로그인한 정보를 모두 저장한다고 하자.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ cat logins-2020-03-31.txt</span><br><span class="line">jko	192.168.12.125 Thu Mar 31 22:33 - 22:46</span><br><span class="line">jh	192.168.12.125 Thu Mar 31 21:15 - 22:42</span><br><span class="line">ko	192.168.12.125 Thu Mar 31 23:31 - 22:13</span><br><span class="line">jko	192.168.12.125 Thu Mar 31 22:33 - 22:43</span><br></pre></td></tr></table></figure>
+
+<p>이 데이터를 HDFS 에 저장하려면 데이터 집합 저장용 디렉토리를 우선 만들고 올리면 된다. 파일을 올리면 자동으로 블록으로 쪼개져서 여러 데이터 노드 사이에 분산된다.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ haddop fs -mkdir /logins</span><br><span class="line">$ haddop fs -put logins-2020-03-31.txt /logins</span><br></pre></td></tr></table></figure>
+
+<h5 id="5-1-1-작은-파일-문제"><a href="#5-1-1-작은-파일-문제" class="headerlink" title="5.1.1 작은 파일 문제"></a>5.1.1 작은 파일 문제</h5><p>하둡은 데이터가 HDFS 상의 여러 작은 파일에 저장되어있을 때는, 계산 성능이 떨어지는 특성이 있다. </p>
+<p>그 원인은, 맵리듀스 작업이 입력 데이터 집합의 각 블록마다 테스크를 하나씩 실행하기 때문이다. 각 테스크는 실행을 계획하고 조정하는 오버헤드를 소모하는데, 각각의 작은 파일은 독립적인 테스크에서 실행되어야하므로, 그 비용은 반복적으로 발생한다.</p>
+<h5 id="5-1-2-상위-수준-추상화를-향하여"><a href="#5-1-2-상위-수준-추상화를-향하여" class="headerlink" title="5.1.2 상위 수준 추상화를 향하여"></a>5.1.2 상위 수준 추상화를 향하여</h5><p>솔루션이란, </p>
+<ol>
+<li>확장성 있고</li>
+<li>내결함성을 지니며</li>
+<li>성능이 좋아야하며</li>
+<li>우아해야한다. ( = 관심 있는 계산을 간결하게 표현할 수 있는 부분이 있어야한다. )</li>
+</ol>
+<p>지난 장에서, 마스터 데이터 집합을 조작할 때, 다음 두 중요한 연산을 살펴봤다.</p>
+<ol>
+<li>새로운 데이터를 데이터 집합에 추가하기</li>
+<li>데이터 집합에 수직 분할을 적용하고 기존의 분할이 깨지는 것을 방지하기</li>
+</ol>
+<p>이제 여기에, HDFS 의 요구사항을 추가하자. <strong>작은 파일을 효율적으로 큰 파일로 통합할 수 있어야 한다</strong>는 것이다.</p>
+<p>앞 장에서 봤듯이, 파일과 폴더를 직접 다루어서 작업을 하기에는 불편하고 오류가 발생하기 쉽다. 우아한 방식의 Pail 이란 라이브러리 살펴보자. Pail 을 사용하면, 코드 한 줄로 폴더를 추가하거나 작은 파일들을 통합 할 수 있다.</p>
+<blockquote>
+<p>[잠깐 뒤돌아 보기] 큰 관점으로 살펴보자. </p>
+<p>마스터 데이터 집합은 람다 아키텍쳐에서 모든 정보의 원천이다. </p>
+<p>일괄 처리 계층은 거대하고 꾸준히 증가하는 데이터 집합을 문제없이 처리해야한다.</p>
+<p>실제 질의에 응답하기 위해서, 데이터를 일괄 처리 뷰로 변환하는 쉽고 효율적인 수단이 있어야한다.</p>
+</blockquote>
+<h4 id="5-2-페일을-사용하여-일괄처리-계층에-데이터를-저장하기"><a href="#5-2-페일을-사용하여-일괄처리-계층에-데이터를-저장하기" class="headerlink" title="5.2 페일을 사용하여 일괄처리 계층에 데이터를 저장하기"></a>5.2 페일을 사용하여 일괄처리 계층에 데이터를 저장하기</h4><p>페일은 dfs-datasource 라이브러리에 포함된 것으로, 파일과 폴더를 얇게 추상화한것이다. 이 추상화를 통해 일괄처리에 사용할 레코드 집합을 관리하기가 쉬워진다. 페일의 목적은, 우리가 신경써야 할 연산 ( 데이터 집합에 새로운 데이터 추가하기, 수직 분할, 파일 통합 ) 을 안전하고 쉽고 성능 기준에 맞게 수행할 수 있도록 해준다.</p>
+<p>내부적으로 페일은, 표준 하둡 API 를 사용하는 자바 라이브러리일 뿐이다. 하위 수준 파일 시스템 상호 작용을 처리하며 하둡 내부 구조의 복잡성을 감추는 API 를 제공한다.</p>
+<p>페일을 살펴볼 때는, 어떻게 HDFS 의 장점을 보존하면서 데이터에 대한 연산을 간소화하는지를 기억해두어야한다.</p>
+<hr>
+<p>빅데이터, 람다 아키텍처로 알아보는 실시간 빅데이터 구축의 핵심 원리와 기법 &lt;네이선 마츠, 제임스 워렌&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2020/03/31/bigdata-chapter-05/" data-id="ck973jwz900om576wa5kk4p9d" data-title="[빅데이터] 5장_일괄처리 계층의 데이터 저장소 : 사례" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-tdd-chapter-21" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/03/31/tdd-chapter-21/" class="article-date">
+  <time class="dt-published" datetime="2020-03-30T15:00:00.000Z" itemprop="datePublished">2020-03-31</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tdd/">TDD</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/03/31/tdd-chapter-21/">[테스트 주도 개발] 21장_셈하기</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <ul>
+<li><del>테스트 메서드 호출하기</del></li>
+<li><del>먼저 setUp 호출하기</del></li>
+<li>나중에 tearDown 호출하기</li>
+<li>테스트 메서드가 실패해도 tearDown 호출하기</li>
+<li>여러 개의 테스트 실행하기</li>
+<li><strong>수집된 결과를 출력하기</strong></li>
+<li><del>WasRun 에 로그 문자열 남기기</del></li>
+</ul>
+<p>테스트 메서드에에서 예외가 발생하건 말건 tearDown() 이 호출되도록 구현했다. 하지만,테스트가 작동하기 위해선 예외를 작아야한다. </p>
+<p>여러 테스트를 실행하고 그 결과를 다음과 같이 보길 원한다. </p>
+<p>“5개 테스트가 실행됨. 2개 실패. TestCaseTest.testFooBar-ZeroDivide Exception, MoneyTest.testNegation-AssertionError”</p>
+<p>TestCase.run()이 테스트 하나의 실행 결과를 기록하는 TestResult 객체를 반환하게 만들자.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// TestCaseTest</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_result</span><span class="params">(self)</span>:</span></span><br><span class="line">    test = WasRun(<span class="string">"testMethod"</span>)</span><br><span class="line">    result = test.run()</span><br><span class="line">    <span class="keyword">assert</span>(<span class="string">"1 run, 0 failed"</span> == result.summary())</span><br></pre></td></tr></table></figure>
+
+<p>가짜 구현하자.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestResult</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">summary</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"1 run, 0 failed"</span></span><br></pre></td></tr></table></figure>
+
+<p>이제 TestCase.run() 이 TestResult 를 결과로 반환한다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// TestCase</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">    self.setUp()</span><br><span class="line">    method = getattr(self, self.name)</span><br><span class="line">    method()</span><br><span class="line">    self.tearDown()</span><br><span class="line">    <span class="keyword">return</span> TestResult()</span><br></pre></td></tr></table></figure>
+
+<p>이제 테스트가 실행된다. 이제 summary()의 구현을 실체화하자. 우선 실행된 테스트의 수를 상수로 만들자.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// TestResul</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">	self.runCount = <span class="number">1</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">summary</span><span class="params">(self)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> <span class="string">"%d run, 0 failed"</span> % self.runCount</span><br></pre></td></tr></table></figure>
+
+<p>runCount를 0으로 초기화하고 테스트가 실행될 때마다 1씩 증가하도록 만들 수 있다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// TestResult</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">	self.runCount = <span class="number">0</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">testStarted</span><span class="params">(self)</span>:</span></span><br><span class="line">	self.runCount = self.runCount + <span class="number">1</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">summary</span><span class="params">(self)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> <span class="string">"%d run, 0 failed"</span> % self.runCount</span><br></pre></td></tr></table></figure>
+
+<p>이제,  새 메서드를 실제로 호출하게 하자.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// TestCase</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">    result = TestResult()</span><br><span class="line">    result.testStarted()</span><br><span class="line">    self.setUp()</span><br><span class="line">    method = getattr(self, self.name)</span><br><span class="line">    method()</span><br><span class="line">    self.tearDown()</span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+
+<p>실패하는 테스트의 수를 나타내는 문자열 상수 ‘0’을 runCount 를 실체화했을 때와 마찬가지의 방법을 통해 변수로 만들 수는 있겠다.</p>
+<p>하지만, 이 작업을 하게끔 만들어주는 테스트가 없다. 그러니 또 다른 테스트를 하나 작성하자.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// TestCaseTest <span class="class"><span class="keyword">class</span></span></span><br><span class="line"><span class="class"><span class="title">def</span> <span class="title">testFailedResult</span><span class="params">(self)</span>:</span></span><br><span class="line">    test = WasRun(<span class="string">"testBrokenMethod"</span>)</span><br><span class="line">    result = test.run()</span><br><span class="line">    <span class="keyword">assert</span> (<span class="string">"1 run, 1 failed"</span> == result.summary())</span><br><span class="line"></span><br><span class="line">// WasRun <span class="class"><span class="keyword">class</span></span></span><br><span class="line"><span class="class"><span class="title">def</span> <span class="title">testBrokenMethod</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="keyword">raise</span> Exception</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><del>테스트 메서드 호출하기</del></li>
+<li><del>먼저 setUp 호출하기</del></li>
+<li>나중에 tearDown 호출하기</li>
+<li>테스트 메서드가 실패해도 tearDown 호출하기</li>
+<li>여러 개의 테스트 실행하기</li>
+<li><del>수집된 결과를 출력하기</del></li>
+<li><del>WasRun 에 로그 문자열 남기기</del></li>
+<li>실패한 테스트 보고하기</li>
+</ul>
+<p>우리가 관심을 가져야 할 사항은, WasRun.testBrokenMethod에서 던진 예외를 처리하지 않았다는 것이다.</p>
+<hr>
+<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2020/03/31/tdd-chapter-21/" data-id="ck973jwz900oo576wnbru2053" data-title="[테스트 주도 개발] 21장_셈하기" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-tdd-chapter-24" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/03/31/tdd-chapter-24/" class="article-date">
+  <time class="dt-published" datetime="2020-03-30T15:00:00.000Z" itemprop="datePublished">2020-03-31</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tdd/">TDD</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/03/31/tdd-chapter-24/">[테스트 주도 개발] 24장_xUnit 회고</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>xUnit을 사용하다 보면 assertion 의 실패와 나머지 종류의 에러 사이에 큰 차이점을 알게된다. 일반적으로 assertion failure가 디버깅 시간을 더 많이 잡아먹는다.</p>
+<p>JUnit은 간단한 Test Interface 를 선언하는데 TestCase와 TestSuite 모두 이를 상속받는다. 만약 JUnit 도구가 테스트를 실행하게 만들고 싶으면, Test 인터페이스만 구현하면 된다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">int</span> <span class="title">countTestCases</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">(TestResult result)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2020/03/31/tdd-chapter-24/" data-id="ck973jwzb00ou576wf01c76se" data-title="[테스트 주도 개발] 24장_xUnit 회고" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-tdd-chapter-23" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/03/31/tdd-chapter-23/" class="article-date">
+  <time class="dt-published" datetime="2020-03-30T15:00:00.000Z" itemprop="datePublished">2020-03-31</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tdd/">TDD</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/03/31/tdd-chapter-23/">[테스트 주도 개발] 23장_얼마나 달콤한지</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <ul>
+<li><del>테스트 메서드 호출하기</del></li>
+<li><del>먼저 setUp 호출하기</del></li>
+<li>나중에 tearDown 호출하기</li>
+<li>테스트 메서드가 실패해도 tearDown 호출하기</li>
+<li><strong>여러 개의 테스트 실행하기</strong></li>
+<li><del>수집된 결과를 출력하기</del></li>
+<li><del>WasRun 에 로그 문자열 남기기</del></li>
+<li><del>실패한 테스트 보고하기</del></li>
+<li>setUp 에러 잡아서 보고하기</li>
+</ul>
+<p>테스트들을 모두 모아서 한 번에 실행하고 싶다. TestSuite 가 필요하다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// TestCaseTest</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">testSuite</span><span class="params">(self)</span>:</span></span><br><span class="line">    suite = TestSuite()</span><br><span class="line">    suite.add(WasRun(<span class="string">"testMethod"</span>))</span><br><span class="line">    suite.add(WasRun(<span class="string">"testBrokenMethod"</span>))</span><br><span class="line">    result = suite.run()</span><br><span class="line">    <span class="keyword">assert</span> (<span class="string">"2 run, 1 failed"</span> == result.summary())</span><br></pre></td></tr></table></figure>
+
+<p>add() 메서드를 구현은, 테스트들을 리스트에 추가하는 것으로 된다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestSuite</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.tests = []</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(self, test)</span>:</span></span><br><span class="line">        self.tests.append(test)</span><br></pre></td></tr></table></figure>
+
+<p>run() 메서드는, 하나의 TestResult가 모든 테스트에 대해 쓰이길 바라기 때문에 다음과 같이 작성해야 한다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// TestSuite</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">    result = TestResult()</span><br><span class="line">    <span class="keyword">for</span> test <span class="keyword">in</span> self.tests:</span><br><span class="line">        test.run(result)</span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+
+<p>만약 TestCase.run() 에 매개변수를 추가하면, TestSuite.run() 에도 똑같은 매개 변수를 추가해야 한다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// TestCaseTest</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">testSuite</span><span class="params">(self)</span>:</span></span><br><span class="line">    suite = TestSuite()</span><br><span class="line">    suite.add(WasRun(<span class="string">"testMethod"</span>))</span><br><span class="line">    suite.add(WasRun(<span class="string">"testBrokenMethod"</span>))</span><br><span class="line"></span><br><span class="line">    result = TestResult()</span><br><span class="line">    suite.run(result)</span><br><span class="line">    <span class="keyword">assert</span> (<span class="string">"2 run, 1 failed"</span> == result.summary())</span><br></pre></td></tr></table></figure>
+
+<p>이 방법은, run() 이 무언가를 명시적으로 반환하지 않아도 된다는 장점이 있다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">// TestSuite <span class="class"><span class="keyword">class</span></span></span><br><span class="line"><span class="class"><span class="title">def</span> <span class="title">run</span><span class="params">(self, result)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> test <span class="keyword">in</span> self.tests:</span><br><span class="line">        test.run(result)</span><br><span class="line"></span><br><span class="line">// TestCase <span class="class"><span class="keyword">class</span></span></span><br><span class="line"><span class="class"><span class="title">def</span> <span class="title">run</span><span class="params">(self, result)</span>:</span></span><br><span class="line">    result.testStarted()</span><br><span class="line">    self.setUp()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        method = getattr(self, self.name)</span><br><span class="line">        method()</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        result.testFailed()</span><br><span class="line">    self.tear_down()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">suite = TestSuite()</span><br><span class="line">suite.add(TestCaseTest(<span class="string">"testTemplateMethod"</span>))</span><br><span class="line">suite.add(TestCaseTest(<span class="string">"testResult"</span>))</span><br><span class="line">suite.add(TestCaseTest(<span class="string">"testFailedResultFormatting"</span>))</span><br><span class="line">suite.add(TestCaseTest(<span class="string">"testFailedResult"</span>))</span><br><span class="line"></span><br><span class="line">result = TestResult()</span><br><span class="line">suite.run(result)</span><br><span class="line">print(result.summary())</span><br></pre></td></tr></table></figure>
+
+<p>우선, 실패하는 테스트 3 개를 고치자.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">// TestCaseTest <span class="class"><span class="keyword">class</span></span></span><br><span class="line"><span class="class"><span class="title">def</span> <span class="title">testTemplateMethod</span><span class="params">(self)</span>:</span></span><br><span class="line">    test = WasRun(<span class="string">"testMethod"</span>)</span><br><span class="line">    result = TestResult()</span><br><span class="line">    test.run(result)</span><br><span class="line">    <span class="keyword">assert</span> <span class="string">"setUp testMethod tearDown "</span> == test.log</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">testResult</span><span class="params">(self)</span>:</span></span><br><span class="line">    test = WasRun(<span class="string">"testMethod"</span>)</span><br><span class="line">    result = TestResult()</span><br><span class="line">    test.run(result)</span><br><span class="line">    <span class="keyword">assert</span> <span class="string">"1 run, 0 failed"</span> == result.summary()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_failed_result</span><span class="params">(self)</span>:</span></span><br><span class="line">    test = WasRun(<span class="string">"TestBrokenMethod"</span>)</span><br><span class="line">    result = TestResult()</span><br><span class="line">    test.run(result)</span><br><span class="line">    <span class="keyword">assert</span> <span class="string">"1 run, 1 failed"</span> == result.summary()</span><br></pre></td></tr></table></figure>
+
+<p>각 테스트들이 TestResult 를 할당하고 있다는 것을 주목하자. </p>
+<p>이제, TestResult 를 setUp 에서 생성하면 만들면 테스트를 단순화된다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">// TestCaseTest</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">setUp</span><span class="params">(self)</span>:</span></span><br><span class="line">	  self.result = TestResult()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">testTemplateMethod</span><span class="params">(self)</span>:</span></span><br><span class="line">    test = WasRun(<span class="string">"testMethod"</span>)</span><br><span class="line">    test.run(self.result)</span><br><span class="line">    <span class="keyword">assert</span> <span class="string">"setUp testMethod tearDown "</span> == test.log</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">testResult</span><span class="params">(self)</span>:</span></span><br><span class="line">    test = WasRun(<span class="string">"testMethod"</span>)</span><br><span class="line">    test.run(self.result)</span><br><span class="line">    <span class="keyword">assert</span> <span class="string">"1 run, 0 failed"</span> == self.result.summary()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">testFailedResult</span><span class="params">(self)</span>:</span></span><br><span class="line">    test = WasRun(<span class="string">"testBrokenMethod"</span>)</span><br><span class="line">    test.run(self.result)</span><br><span class="line">    <span class="keyword">assert</span> <span class="string">"1 run, 1 failed"</span> == self.result.summary()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">testFailedResultFormatting</span><span class="params">(self)</span>:</span></span><br><span class="line">    self.result.testStarted()</span><br><span class="line">    self.result.testFailed()</span><br><span class="line">    <span class="keyword">assert</span> <span class="string">"1 run, 1 failed"</span> == self.result.summary()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">testSuite</span><span class="params">(self)</span>:</span></span><br><span class="line">    suite = TestSuite()</span><br><span class="line">    suite.add(WasRun(<span class="string">"testMethod"</span>))</span><br><span class="line">    suite.add(WasRun(<span class="string">"testBrokenMethod"</span>))</span><br><span class="line">    suite.run(self.result)</span><br><span class="line">    <span class="keyword">assert</span> <span class="string">"2 run, 1 failed"</span> == self.result.summary()</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2020/03/31/tdd-chapter-23/" data-id="ck973jwza00os576wua5hvyg6" data-title="[테스트 주도 개발] 23장_얼마나 달콤한지" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-tdd-chapter-20" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2020/03/24/tdd-chapter-20/" class="article-date">
@@ -143,7 +441,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/03/24/tdd-chapter-20/" data-id="ck913utxa00olp26w2b4y8z70" data-title="[테스트 주도 개발] 20장_뒷정리하기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/03/24/tdd-chapter-20/" data-id="ck973jwz800ok576wpt05rka9" data-title="[테스트 주도 개발] 20장_뒷정리하기" class="article-share-link">Share</a>
       
       
       
@@ -225,7 +523,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/03/24/tdd-chapter-19/" data-id="ck913utx900oip26wjqq0rjgn" data-title="[테스트 주도 개발] 19장_테이블 차리기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/03/24/tdd-chapter-19/" data-id="ck973jwz700oh576w36d1tku7" data-title="[테스트 주도 개발] 19장_테이블 차리기" class="article-share-link">Share</a>
       
       
       
@@ -322,7 +620,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/03/24/tdd-chapter-18/" data-id="ck913utx900ogp26w1kh5ila4" data-title="[테스트 주도 개발] 18장_xUnit 으로 가는 첫걸음" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/03/24/tdd-chapter-18/" data-id="ck973jwz600of576wzvzkn94a" data-title="[테스트 주도 개발] 18장_xUnit 으로 가는 첫걸음" class="article-share-link">Share</a>
       
       
       
@@ -413,7 +711,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/03/17/tdd-chapter-17/" data-id="ck913utx800odp26wfnajcmk6" data-title="[테스트 주도 개발] 17장_Money 회고" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/03/17/tdd-chapter-17/" data-id="ck973jwz500oc576wmg6p31lc" data-title="[테스트 주도 개발] 17장_Money 회고" class="article-share-link">Share</a>
       
       
       
@@ -515,7 +813,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/03/16/tdd-chapter-13/" data-id="ck913utx500o3p26we873z0zw" data-title="[테스트 주도 개발] 13장_진짜로 만들기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/03/16/tdd-chapter-13/" data-id="ck973jwz200o2576wkt8sapui" data-title="[테스트 주도 개발] 13장_진짜로 만들기" class="article-share-link">Share</a>
       
       
       
@@ -579,359 +877,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/03/16/tdd-chapter-16/" data-id="ck913utx700obp26wumhlov61" data-title="[테스트 주도 개발] 16장_드디어, 추상화" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-tdd-chapter-15" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/03/16/tdd-chapter-15/" class="article-date">
-  <time class="dt-published" datetime="2020-03-15T15:00:00.000Z" itemprop="datePublished">2020-03-16</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/tdd/">TDD</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/03/16/tdd-chapter-15/">[테스트 주도 개발] 15장_서로 다른 통화 더하기</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>이제 드디어, “5달러 + 10프랑” 테스트할 준비가 모두 되었다.</p>
-<p>우리가 원하는 코드는,</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testMixedAddition</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Expression fiveBucks = Money.dollar(<span class="number">5</span>);</span><br><span class="line">    Expression tenFrancs = Money.franc(<span class="number">10</span>);</span><br><span class="line">    Bank bank = <span class="keyword">new</span> Bank();</span><br><span class="line">    bank.addRate(<span class="string">"CHF"</span>, <span class="string">"USD"</span>, <span class="number">2</span>);</span><br><span class="line">    Money result = bank.reduce(</span><br><span class="line">        fiveBucks.plus(tenFrancs), <span class="string">"USD"</span></span><br><span class="line">    );</span><br><span class="line">    assertEquals(Money.dollar(<span class="number">10</span>), result);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>컴파일 에러가 많다. 천천히 해결하자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testMixedAddition</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Money fiveBucks = Money.dollar(<span class="number">5</span>);</span><br><span class="line">    Money tenFrancs = Money.franc(<span class="number">10</span>);</span><br><span class="line">    Bank bank = <span class="keyword">new</span> Bank();</span><br><span class="line">    bank.addRate(<span class="string">"CHF"</span>, <span class="string">"USD"</span>, <span class="number">2</span>);</span><br><span class="line">    Money result = bank.reduce(</span><br><span class="line">        fiveBucks.plus(tenFrancs), <span class="string">"USD"</span></span><br><span class="line">    );</span><br><span class="line">    assertEquals(Money.dollar(<span class="number">10</span>), result);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>실패한다. 10 USD 대신, 15 USD 가 나왔다. Sum.reduce() 가 인자를 축약하지 않은 것으로 보인다. 다음과 같이 두 인자를 모두 축약하자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sum</span> <span class="keyword">implements</span> <span class="title">Expression</span> </span>&#123;</span><br><span class="line">    Money augend;</span><br><span class="line">    Money addend;</span><br><span class="line"></span><br><span class="line">    Sum(Money augend, Money addend) &#123;</span><br><span class="line">        <span class="keyword">this</span>.augend = augend;</span><br><span class="line">        <span class="keyword">this</span>.addend = addend;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">reduce</span><span class="params">(Bank bank, String to)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> amount = augend.reduce(bank, to).amount +</span><br><span class="line">            addend.reduce(bank, to).amount;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Money(amount, to);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>그리고, Expression 이어야하는 Money 들을 조금씩 없앨 수 있다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sum</span> <span class="keyword">implements</span> <span class="title">Expression</span> </span>&#123;</span><br><span class="line">    Expression augend;</span><br><span class="line">    Expression addend;</span><br><span class="line"></span><br><span class="line">    Sum(Expression augend, Expression addend) &#123;</span><br><span class="line">        <span class="keyword">this</span>.augend = augend;</span><br><span class="line">        <span class="keyword">this</span>.addend = addend;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">reduce</span><span class="params">(Bank bank, String to)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> amount = augend.reduce(bank, to).amount +</span><br><span class="line">            addend.reduce(bank, to).amount;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Money(amount, to);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>Money 의 plus() 인자도 바꾸자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Expression <span class="title">plus</span><span class="params">(Expression addend)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Sum(<span class="keyword">this</span>, addend);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>테스트 케이스에 나오는 plus() 의 인자를 다음 처럼 바꾸자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testMixedAddition</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Money fiveBucks = Money.dollar(<span class="number">5</span>);</span><br><span class="line">    Expression tenFrancs = Money.franc(<span class="number">10</span>);</span><br><span class="line">    Bank bank = <span class="keyword">new</span> Bank();</span><br><span class="line">    bank.addRate(<span class="string">"CHF"</span>, <span class="string">"USD"</span>, <span class="number">2</span>);</span><br><span class="line">    Money result = bank.reduce(</span><br><span class="line">        fiveBucks.plus(tenFrancs), <span class="string">"USD"</span></span><br><span class="line">    );</span><br><span class="line">    assertEquals(Money.dollar(<span class="number">10</span>), result);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>fiveBucks 를 Expression 으로 바꾸고 나면, 몇 군데 수정해야한다. 컴파일러가 할 일 목록을 제공하기 때문에 우린 계속 집중할 수 있다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testMixedAddition</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Expression fiveBucks = Money.dollar(<span class="number">5</span>);</span><br><span class="line">    Expression tenFrancs = Money.franc(<span class="number">10</span>);</span><br><span class="line">    Bank bank = <span class="keyword">new</span> Bank();</span><br><span class="line">    bank.addRate(<span class="string">"CHF"</span>, <span class="string">"USD"</span>, <span class="number">2</span>);</span><br><span class="line">    Money result = bank.reduce(</span><br><span class="line">        fiveBucks.plus(tenFrancs), <span class="string">"USD"</span></span><br><span class="line">    );</span><br><span class="line">    assertEquals(Money.dollar(<span class="number">10</span>), result);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>컴파일러가 Expression 에 plus() 가 정의되어 있지 않다고 한다. 정의하자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Expression</span> </span>&#123;</span><br><span class="line">    <span class="function">Money <span class="title">reduce</span><span class="params">(Bank bank, String to)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">Expression <span class="title">plus</span><span class="params">(Expression addend)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>이제 Money 와 Sum 에도 추가하자. Money 에서는 기존에도 있었다. public 으로 해주자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Expression <span class="title">plus</span><span class="params">(Expression addend)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Sum(<span class="keyword">this</span>, addend);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>Sum 에는  스텁 구현으로 하자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Expression <span class="title">plus</span><span class="params">(Expression addend)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<hr>
-<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/03/16/tdd-chapter-15/" data-id="ck913utx600o8p26ww3rvua0x" data-title="[테스트 주도 개발] 15장_서로 다른 통화 더하기" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-tdd-chapter-14" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/03/16/tdd-chapter-14/" class="article-date">
-  <time class="dt-published" datetime="2020-03-15T15:00:00.000Z" itemprop="datePublished">2020-03-16</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/tdd/">TDD</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/03/16/tdd-chapter-14/">[테스트 주도 개발] 14장_바꾸기</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>이번에는 2프랑을 달러로 바꾸고 싶다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testReduceMoneyDifferentCurrency</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Bank bank = <span class="keyword">new</span> Bank();</span><br><span class="line">    bank.addRate(<span class="string">"CHF"</span>, <span class="string">"USD"</span>, <span class="number">2</span>);</span><br><span class="line">    Money result = bank.reduce(Money.franc(<span class="number">2</span>), <span class="string">"USD"</span>);</span><br><span class="line">    assertEquals(Money.dollar(<span class="number">1</span>), result);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>프랑을 달러로 바꿀때 나누기 2를 하자. 다음 코드를 추가하자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Money</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Money <span class="title">reduce</span><span class="params">(String to)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> rate = (currency.equals(<span class="string">"CHF"</span>) &amp;&amp; to.equals(<span class="string">"USD"</span>)) ? <span class="number">2</span> : <span class="number">1</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Money(amount / rate, to);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>환율에 대한 일은 모두 Bank 가 처리해야한다. Expression.reduce() 의 인자로 Bank 를 넘겨야할 것이다. 우선 호출하는 부분을 작성하자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bank</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">reduce</span><span class="params">(Expression source, String to)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> source.reduce(<span class="keyword">this</span>, to);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>그리구 구현 부분,</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Expression</span> </span>&#123;</span><br><span class="line">    <span class="function">Money <span class="title">reduce</span><span class="params">(Bank bank, String to)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sum</span> <span class="keyword">implements</span> <span class="title">Expression</span> </span>&#123;</span><br><span class="line">    Money augend;</span><br><span class="line">    Money addend;</span><br><span class="line"></span><br><span class="line">    Sum(Money augend, Money addend) &#123;</span><br><span class="line">        <span class="keyword">this</span>.augend = augend;</span><br><span class="line">        <span class="keyword">this</span>.addend = addend;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">reduce</span><span class="params">(Bank bank, String to)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> amount = augend.amount + addend.amount;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Money(amount, to);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Money</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Money <span class="title">reduce</span><span class="params">(Bank bank, String to)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> rate = (currency.equals(<span class="string">"CHF"</span>) &amp;&amp; to.equals(<span class="string">"USD"</span>)) ? <span class="number">2</span> : <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Money(amount / rate, to);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>이제 환율을 Bank 에서 계산할 수 있다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bank</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">reduce</span><span class="params">(Expression source, String to)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> source.reduce(<span class="keyword">this</span>, to);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">rate</span><span class="params">(String from, String to)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (from.equals(<span class="string">"CHF"</span>) &amp;&amp; to.equals(<span class="string">"USD"</span>)) ? <span class="number">2</span> : <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>그리고 환율을 Bank 에게 물어보자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Money</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Money <span class="title">reduce</span><span class="params">(Bank bank, String to)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> rate = bank.rate(currency,to);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Money(amount / rate, to);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>2 가 아직도 테스트 코드 두 부분에 나온다. 이를 없애기 위해서, Bank 에서 환율표를 가지고 있다가 필요할 때 찾아볼 수 있게 하자. 두 개의 통화와 환율을 매핑하는 Hash Table 을 사용할 수 있다.</p>
-<p>통화 쌍을 해쉬 테이블의 키로 쓰기 위해 배열을 사용할 수 있을까 ? Array.equlas() 가 각각의 원소에 대해 동치성 검사를 수행하나 ? 테스트 코드를 만들어보자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testArrayEquals</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    assertEquals(<span class="keyword">new</span> Object[]&#123;<span class="string">"abc"</span>&#125;, <span class="keyword">new</span> Object[]&#123;<span class="string">"abc"</span>&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>테스트가 실패한다. 키를 위한 객체를 따로 만들자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Pair</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String from;</span><br><span class="line">    <span class="keyword">private</span> String to;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Pair</span><span class="params">(String from, String to)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.from = from;</span><br><span class="line">        <span class="keyword">this</span>.to = to;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>우린 위 클래스를 키로 쓸거니까, equals() 와 hashCode() 를 구현해야한다. 지금은 리팩토링하는 중에 코드를 작성하는 것이기 때문에, 테스트를 작성하지 않을 것이다. 이 리팩토링을마치고 모든 테스트를 통과하면, 그 코드가 실제로 사용되었다고 생각할 수 있다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Pair</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String from;</span><br><span class="line">    <span class="keyword">private</span> String to;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Pair</span><span class="params">(String from, String to)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.from = from;</span><br><span class="line">        <span class="keyword">this</span>.to = to;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object object)</span></span>&#123;</span><br><span class="line">        Pair pair = (Pair) object;</span><br><span class="line">        <span class="keyword">return</span> from.equals(pair.from) &amp;&amp; to.equals(pair.to);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>0은 최악의 해쉬코드이다. 하지만, 구현이 쉽고 우리가 빨리 달리수 있다. 해시 코드를 이대로 두면 해쉬 테이블에서의 검색이 선형 검색과 비슷하게 수행될 것이다. 많은 통화를 다뤄야 한다면 실제 측정 데이터를 가지고 개선하자.</p>
-<p>일단, 환율을 저장할 뭔가가 필요하다. 그리고, 환율을 설정할 수 있어야한다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bank</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Hashtable rates = <span class="keyword">new</span> Hashtable();</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">reduce</span><span class="params">(Expression source, String to)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> source.reduce(<span class="keyword">this</span>, to);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">rate</span><span class="params">(String from, String to)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (from.equals(<span class="string">"CHF"</span>) &amp;&amp; to.equals(<span class="string">"USD"</span>)) ? <span class="number">2</span> : <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addRate</span><span class="params">(String from, String to, <span class="keyword">int</span> rate)</span> </span>&#123;</span><br><span class="line">        rates.put(<span class="keyword">new</span> Pair(from, to), <span class="keyword">new</span> Integer(rate));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>그리고, 필요할 때 환율을 얻을 수 있어야한다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bank</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Hashtable rates = <span class="keyword">new</span> Hashtable();</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">reduce</span><span class="params">(Expression source, String to)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> source.reduce(<span class="keyword">this</span>, to);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">rate</span><span class="params">(String from, String to)</span></span>&#123;</span><br><span class="line">        Integer rate = (Integer) rates.get(<span class="keyword">new</span> Pair(from, to));</span><br><span class="line">        <span class="keyword">return</span> rate.intValue();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addRate</span><span class="params">(String from, String to, <span class="keyword">int</span> rate)</span> </span>&#123;</span><br><span class="line">        rates.put(<span class="keyword">new</span> Pair(from, to), <span class="keyword">new</span> Integer(rate));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>빨간 막대다. USD 에서 USD 로의 환율을 요청하면, 그 값이 1이 되어야한다고 기대한다는 것을 알 수 있다. 뜻 밖의 일이므로, 발견한 내용을 나중에 코드를 읽어볼 다른 사람에게도 알려주기 위해 테스트로 만들자.</p>
-<p>이제 에러가 두개다. 다음 처럼 수정하자. 초록 막대 ~</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bank</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Hashtable rates = <span class="keyword">new</span> Hashtable();</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">reduce</span><span class="params">(Expression source, String to)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> source.reduce(<span class="keyword">this</span>, to);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">rate</span><span class="params">(String from, String to)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span> ( from.equals(to)) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        Integer rate = (Integer) rates.get(<span class="keyword">new</span> Pair(from, to));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> rate.intValue();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">addRate</span><span class="params">(String from, String to, <span class="keyword">int</span> rate)</span> </span>&#123;</span><br><span class="line">        rates.put(<span class="keyword">new</span> Pair(from, to), <span class="keyword">new</span> Integer(rate));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<hr>
-<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/03/16/tdd-chapter-14/" data-id="ck913utx600o6p26w2httormn" data-title="[테스트 주도 개발] 14장_바꾸기" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-bigdata-chapter-04" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/03/15/bigdata-chapter-04/" class="article-date">
-  <time class="dt-published" datetime="2020-03-14T15:00:00.000Z" itemprop="datePublished">2020-03-15</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/big-data/">Big Data</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/03/15/bigdata-chapter-04/">[빅데이터] 4장_일괄 처리 계층의 데이터 저장소</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>마스터 데이터 집합은하나의 서버에 저장하기에는 너무 크다. 데이터를 여러 장비에 어떻게 분산시킬 것인지기 중요하다.</p>
-<p>이번 장은 다음을 정리한다.</p>
-<ol>
-<li>마스터 데이터 집합을 저장하는데 필요한 요구사항</li>
-<li>분산 파일 시스템이 왜 데이터 집합을 저장하는데 적합한지</li>
-</ol>
-<h4 id="4-1-마스터-데이터-집합-저장소의-요구사항"><a href="#4-1-마스터-데이터-집합-저장소의-요구사항" class="headerlink" title="4.1 마스터 데이터 집합 저장소의 요구사항"></a>4.1 마스터 데이터 집합 저장소의 요구사항</h4><p>“데이터를 한 번만 쓰고, 읽기는 큰 단위로 여러 번 수행된다” 방식에 초점을 두면, 다음과 같이 요구사항을 정리할 수 있다.</p>
-<ul>
-<li><p>쓰기</p>
-<ul>
-<li>데이터 추가의 효율성 : 유일한 쓰기 연산은 새로운 데이터를 추가하는 것뿐이다.</li>
-<li>확장성 있는 저장소 : 데이터 집합이 커질 때 확장하기 쉬워야한다.</li>
-</ul>
-</li>
-<li><p>읽기</p>
-<ul>
-<li>병렬 처리 지원 : 거대한 양의 데이터를 확장성 있는 방식으로 다룰 수 있도록 병렬 처리를 지원해야한다.</li>
-</ul>
-</li>
-<li><p>둘 다</p>
-<ul>
-<li>저장 비용과 처리 비용 조율 : 필요에 따라 데이터를 저장학고 압축하는 방식을 선택하는 유연성이 있어야한다.</li>
-<li>불변성 강제</li>
-</ul>
-</li>
-</ul>
-<h4 id="4-2-일괄-처리-계층을-위한-저장소-솔루션-선택"><a href="#4-2-일괄-처리-계층을-위한-저장소-솔루션-선택" class="headerlink" title="4.2 일괄 처리 계층을 위한 저장소 솔루션 선택"></a>4.2 일괄 처리 계층을 위한 저장소 솔루션 선택</h4><h5 id="4-2-1-키-값-저장소"><a href="#4-2-1-키-값-저장소" class="headerlink" title="4.2.1 키/값 저장소"></a>4.2.1 키/값 저장소</h5><p>여러 장비에 분산되는 거대하고 영속적인 hash map</p>
-<ol>
-<li><p>값은 저장할 데이터이다. 키는 무엇일까 ? 우리가 사용하는 데이터 모델에는 데이터 자체가 대량 소비를 전제로 한다. 그래서 원래 키가 없고, 필요하지도 않다. 즉, 처음 부터 데이터 모델과 키/값 저장소의 동작 방식이 맞지 않는 것이다. 유일하게 쓸만한 방법이라면, UUID 를 생성해서 키로 사용하는 것이다.</p>
-</li>
-<li><p>키/값 저장소는 무작위 읽기와 쓰기를 지원하기 위해 키/값 쌍에 세밀하게 접근해야한다. 그래서, 여러 개의 키/값 쌍을 묶어서 압축하는 것도 불가능하다. </p>
-</li>
-<li><p>키/값 저장소는 변경 가능한 저장소에 사용하도록 만들어져서, 마스터 데이터 집합에 불변성을 강제하는 게 극히 필요한 경우라면 문제가 된다. </p>
-</li>
-<li><p>키/값 저장소에는 불필요한 기능이 많다. 무작위 읽기, 쓰기 그리고 이들을 가능하게 하는 모든 장치들이 이에 해당된다.</p>
-</li>
-<li><p>데이터 색인을 하며 우리에게는 필요 없는 서비스도 제공해서 저장소 비용이 증가하고 데이터를 읽고 쓰는 성능이 저하될 수 있다.</p>
-</li>
-</ol>
-<h5 id="4-2-2-분산-파일-시스템"><a href="#4-2-2-분산-파일-시스템" class="headerlink" title="4.2.2 분산 파일 시스템"></a>4.2.2 분산 파일 시스템</h5><p>파일은 디스크에 순차적으로 저장된다. 파일에 들어있는 바이트는 완전히 제어할 수 있고 압축도 가능하다. 파일 시스템은 딱 필요한 기능만 제공하고 세밀한 권한 시스템으로 구현되어 있어서 불변성을 강제할 수 있다.</p>
-<p>보통의 파일시스템의 문제는, 오직 하나의 장비에만 존재한다는 것이다. 그래서, 확장하려고 해도 단일 장비가 제공하는 저장소 크기와 처리 용량에 제한된다. 하지만, <strong>저장소가 컴퓨터 클러스터에 나뉘어져 있는 분산 파일 시스템</strong> 이 있다. 클러스터에 장비를 추가함으로써 규모가 확장된다. 또한, 장비가 한 대 죽더라도 모든 파일과 데이터에 접근할 수 있다. (내결함성)</p>
-<p>분산 파일 시스템과 일반적인 파일 시스템은 조금 다르다. 분산 파일시스템에서 수행가능한 연산은 제한적이다. 예를 들어, 파일 중간에 쓸 수 없고, 파일을 만든 후에 변경이 불가능하다. 또, 작은 파일은 비효율적이라서 파일 크기를 상대적으로 크게 유지해야한다. (64MB 정도가 일반적)</p>
-<h4 id="4-3-분산-파일시스템의-동작-방식"><a href="#4-3-분산-파일시스템의-동작-방식" class="headerlink" title="4.3 분산 파일시스템의 동작 방식"></a>4.3 분산 파일시스템의 동작 방식</h4><p>하둡 분산 파일 시스템 (HDFS) 를 예로 들자.</p>
-<p>HDFS 와 Hadoop MapReduce 는, <strong>대용량 데이터를 저장하고 처리하기 위한 자바 프레임워크인 하둡</strong> 프로젝트의 구성 요소이다. 하둡은 클러스터라고 부르는 여러 서버에 배포되고, HDFS 는 확장성 있는 파일 시스템으로 클러스터에 데이터가 어떻게 저장될지를 관리한다.</p>
-<p>HDFS 에는 두 종류의 노드가 있다 : 하나의 네임 노드와 복수 개의 데이터노드</p>
-<p>파일을 HDFS 에 올리면, 그 파일은 먼저 고정된 크기의 블록으로 쪼개진다. 블록 크기는 보통 64MB ~ 256MB 이다. 그리고, 각 블록은 임의의 선택된 복수개의 (보통 3개) 데이터 노드로 복제된다. 프로그램이 HDFS 에 저장된 파일에 접근할 때는 파일 내용을 보관하고 있는 데이터 노드를 알아내기 위해 네임노드에 접속한다.</p>
-<p>각각의 블록이 추가적으로 여러 노드에 복제되어 있어서, 개별 노드가 오프라인 상태가 되어도 데이터는 여전히 사용 가능하다.</p>
-<p><img src="/image/bigdata-hdfs.png" alt></p>
-<h4 id="4-4-분산-파일-시스템을-사용해서-마스테-데이터-집합을-저장하기"><a href="#4-4-분산-파일-시스템을-사용해서-마스테-데이터-집합을-저장하기" class="headerlink" title="4.4 분산 파일 시스템을 사용해서 마스테 데이터 집합을 저장하기"></a>4.4 분산 파일 시스템을 사용해서 마스테 데이터 집합을 저장하기</h4><p>파일을 한번 생성한 후에 변경할 수 없는 가장 기본적인 분산 파일시스템을 사용해보자.</p>
-<p>파일을 변경할 수 없다면 당연히 마스터 데이터 집합 전체를 하나의 파일에 저장할 수 없다. 다른 방법으로, 마스터 데이터 집합을 여러 파일로 나누고 모든 파일을 동일한 폴더에 저장하면 된다. 각 파일에는 직렬화된 데이터 객체가 들어있다.</p>
-<p>마스터 데이터 집합에 데이터를 추가하려면, 새로운 데이터 객체를 가지고 있는 새로운 파일을 마스터 데이터 집합 폴더에 추가하면 된다. </p>
-<p><img src="/image/bigdata-master-data.png" alt></p>
-<h4 id="4-5-수직분할"><a href="#4-5-수직분할" class="headerlink" title="4.5 수직분할"></a>4.5 수직분할</h4><p>일괄 처리 계층은 전체 데이터 집합에 대한 함수를 실행하도록 만들어졌다. 하지만, 데이터 전체를 사용할 필요가 없는 계산도 있다. 예를 들면, 지난 두 주 동안 수집된 정보만 필요한 계산도 있을 수 있다.</p>
-<p>일괄 처리 저장소는 데이터를 분할하여 <strong>함수가 자신의 계산과 관련있는 데이터에만 접근</strong>하록 해야한다. 이것이 수직분할이다. 일괄 처리 계층을 효율적으로 만든다.</p>
-<p>데이터를 개개의 폴더에 저장하는 걸로 구현할 수 있다. 예를 들어, 분산 파일 시스템에 로그인 정보를 저장한다고 하자. 각각의 로그인 정보에는 사용자 이름 / IP / 주소 / 타임스탬프가 포함된다. 날짜를 기준으로 수직분할 하면, 그날 그날의 데이터에 사용할 독립적인 폴더를 만들면 된다. </p>
-<p>이제 일부 데이터 집합에만 접근하고 싶으면, 특정 폴더에 있는 파일만 보고 나머지 파일은 무시할 수 있다.</p>
-<p><img src="/image/bigdata-columnar.png" alt></p>
-<h4 id="4-6-분산-파일-시스템의-하위-수준-속성"><a href="#4-6-분산-파일-시스템의-하위-수준-속성" class="headerlink" title="4.6 분산 파일 시스템의 하위 수준 속성"></a>4.6 분산 파일 시스템의 하위 수준 속성</h4><p>분산 파일 시스템 API 를 직접 사용하는 것은 실행해야 하는 작업에 비해, 너무 하위 수준이다.</p>
-<p>마스터 데이터 집합에 데이터를 추가하는 예를 보자. 마스터 데이터 집합은 /master 폴더에 있다. 마스터 데이터 집합에 추가하고 싶은 데이터는 /new-data 폴더에 있다. 폴더에 있는 데이터는 파일에 저장된다.</p>
-<p><img src="/image/bigdata-low-level.png" alt></p>
-<p>가장 뻔한 방법은 다음 의사 코드 처럼 하는 것이다.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">foreach file:&quot;/new-data&quot;</span><br><span class="line">	mv file &quot;/master&quot;</span><br></pre></td></tr></table></figure>
-
-<p>결함이 있다. 만약, 마스터 데이터 집합 폴더에 이름이 같은 파일이 있으면 mv 연산은 실패한다. 파일의 이름을 임의의 이름으로 바꿔서 충돌을 회피해야한다.</p>
-<p>또한, /new-data 에 있는 파일과 /master 에 있는 파일의 형식이 다르면, mv 연산은 작동하지 않는다. 그래서, /new-data 에 있는 레코드를 복사해서 /master 에 있는 파일 포맷과 동일한 새로운 파일을 만들어야한다.</p>
-<p>수직 분할 된 마스터 데이터 집합에 동일한 작업을 해보자.</p>
-<p><img src="/image/bigdata-columnar-master-data.png" alt></p>
-<p>/master 의 수직 분할을 따르지 않기 때문에, /new-data 에 있는 파일을 /master 의 최상위 경로로 바로 옮기면 안된다. 데이터 추가 연산을 허용하지 않거나, /new-data 에 대해 데이터 추가 연산의  부분으로 수직 분할을 해야한다. </p>
-<p>그런데, 여기에 파일 및 폴더용 API 를 직접 사용하면 실수를 저지르기 쉽고 데이터 집합의 수직분할도 쉽게 깨질 수 있다. 이런 작업을 바르게 처리하기 위해 일일히 필요한 연산과 점검을 챙겨야 하는 것은, 파일과 폴더는 데이터 집합을 조작하기에는 추상화 수준이 너무 낮다는 것을 의미한다.</p>
-<p>이러한 작업을 자동화해주는 라이브러리들을 다음 장에서 정리하자.</p>
-<hr>
-<p>빅데이터, 람다 아키텍처로 알아보는 실시간 빅데이터 구축의 핵심 원리와 기법 &lt;네이선 마츠, 제임스 워렌&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/03/15/bigdata-chapter-04/" data-id="ck913utz100qxp26wnv6cm7xt" data-title="[빅데이터] 4장_일괄 처리 계층의 데이터 저장소" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-tdd-chapter-08" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/03/11/tdd-chapter-08/" class="article-date">
-  <time class="dt-published" datetime="2020-03-10T15:00:00.000Z" itemprop="datePublished">2020-03-11</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/tdd/">TDD</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/03/11/tdd-chapter-08/">[테스트 주도 개발] 8장_객체 만들기</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>times() 의 구현 코드가 거의 같다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Franc Class</span></span><br><span class="line"><span class="function">Franc <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Franc(amount * multiplier);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line"><span class="comment">// Dollar Class</span></span><br><span class="line"><span class="function">Dollar <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Dollar(amount * multiplier);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<p>양쪽 모두 Money 를 반환하게 만들면 더 비슷해진다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Franc Class</span></span><br><span class="line"><span class="function">Money <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Franc(amount * multiplier);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line"><span class="comment">// Dollar Class</span></span><br><span class="line"><span class="function">Money <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Dollar(amount * multiplier);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<p>이제, Money 의 두 하위 클래스는 많은 일을 하지 않으므로 제거하고 싶다. 한번에 이렇게 큰 단계를 밟는 것은 TDD 를 효과적으로 보여주기 적절치 않을 것 같다. </p>
-<p>하위 클래스에 대한 직접적인 참조가 적어지면 하위 클래스를 제거하기 쉬울 것 같다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testMultiplication</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Dollar five = Money.dollar(<span class="number">5</span>);</span><br><span class="line">    assertEquals(<span class="keyword">new</span> Dollar(<span class="number">10</span>), five.times(<span class="number">2</span>));</span><br><span class="line">    assertEquals(<span class="keyword">new</span> Dollar(<span class="number">15</span>), five.times(<span class="number">3</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>구현 코드는 Dollar 를 생성해 반환한다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Money Class</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> Dollar <span class="title">dollar</span><span class="params">(<span class="keyword">int</span> amount)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Dollar(amount);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<p>Test 선언부도 다음과 같이 변경한다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testMultiplication</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Money five = Money.dollar(<span class="number">5</span>);</span><br><span class="line">    assertEquals(<span class="keyword">new</span> Dollar(<span class="number">10</span>), five.times(<span class="number">2</span>));</span><br><span class="line">    assertEquals(<span class="keyword">new</span> Dollar(<span class="number">15</span>), five.times(<span class="number">3</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>컴파일러가 이제 times() 가 정의되어 있지 않았다는 사실을 알려준다. 지금은 이걸 구현할 준비가 안되어 있기 때문에, Money 를 추상 클래스로 변경한 후 Money.times() 를 선언하자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Money</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">int</span> amount;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">static</span> Dollar <span class="title">dollar</span><span class="params">(<span class="keyword">int</span> amount)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Dollar(amount);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">abstract</span> Money <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object object)</span> </span>&#123;</span><br><span class="line">        Money money = (Money) object;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> amount == money.amount &amp;&amp; getClass().equals(money.getClass());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>이제 팩토리 메서드의 선언을 바꿀 수 있다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> Money <span class="title">dollar</span><span class="params">(<span class="keyword">int</span> amount)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Dollar(amount);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>모든 테스트가 실행된다. 이제 팩토리 메서드를 테스트 코드의 나머지 모든 곳에 사용하자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testMultiplication</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Money five = Money.dollar(<span class="number">5</span>);</span><br><span class="line">    assertEquals(Money.dollar(<span class="number">10</span>), five.times(<span class="number">2</span>));</span><br><span class="line">    assertEquals(Money.dollar(<span class="number">15</span>), five.times(<span class="number">3</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testEquality</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    assertTrue(Money.dollar(<span class="number">5</span>).equals(Money.dollar(<span class="number">5</span>)));</span><br><span class="line">    assertFalse(Money.dollar(<span class="number">5</span>).equals(Money.dollar(<span class="number">6</span>)));</span><br><span class="line">    assertTrue(<span class="keyword">new</span> Franc(<span class="number">5</span>).equals(<span class="keyword">new</span> Franc(<span class="number">5</span>)));</span><br><span class="line">    assertFalse(<span class="keyword">new</span> Franc(<span class="number">5</span>).equals(<span class="keyword">new</span> Franc(<span class="number">6</span>)));</span><br><span class="line"></span><br><span class="line">    assertFalse(<span class="keyword">new</span> Franc(<span class="number">5</span>).equals(Money.dollar(<span class="number">5</span>)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>어떤 클라이언트 코드도 Dollar 라는 이름의 하위 클래스가 있다는 사실을 모른다. 하위 클래스의 존재를 테스트에서 분리함으로써 어떤 모델 코드에도 영향을 주지 않고 상속 구조를 마음대로 변경할 수 있게 됐다.</p>
-<p>이제 Franc 에도 적용하자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testFrancMultiplication</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Franc five = Money.franc(<span class="number">5</span>);</span><br><span class="line">    assertEquals(Money.franc(<span class="number">10</span>), five.times(<span class="number">2</span>));</span><br><span class="line">    assertEquals(Money.franc(<span class="number">15</span>), five.times(<span class="number">3</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testEquality</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    assertTrue(Money.dollar(<span class="number">5</span>).equals(Money.dollar(<span class="number">5</span>)));</span><br><span class="line">    assertFalse(Money.dollar(<span class="number">5</span>).equals(Money.dollar(<span class="number">6</span>)));</span><br><span class="line">    assertTrue(Money.franc(<span class="number">5</span>).equals(Money.franc(<span class="number">5</span>)));</span><br><span class="line">    assertFalse(Money.franc(<span class="number">5</span>).equals(Money.franc(<span class="number">6</span>)));</span><br><span class="line"></span><br><span class="line">    assertFalse(Money.franc(<span class="number">5</span>).equals(Money.dollar(<span class="number">5</span>)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>구현은 Money.dollar() 와 유사하다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Money Class</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Franc <span class="title">franc</span><span class="params">(<span class="keyword">int</span> amount)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Franc(amount);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<hr>
-<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/03/11/tdd-chapter-08/" data-id="ck913utx100nsp26we1rq1inp" data-title="[테스트 주도 개발] 8장_객체 만들기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/03/16/tdd-chapter-16/" data-id="ck973jwz500oa576wo7gq9a46" data-title="[테스트 주도 개발] 16장_드디어, 추상화" class="article-share-link">Share</a>
       
       
       
@@ -986,23 +932,23 @@
       <ul>
         
           <li>
+            <a href="/2020/04/19/tdd-chapter-31/">[테스트 주도 개발] 31장_리팩토링</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/19/tdd-chapter-32/">[테스트 주도 개발] 32장_TDD 마스터하기</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/19/tdd-chapter-30/">[테스트 주도 개발] 30장_디자인 패턴</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/19/tdd-chapter-29/">[테스트 주도 개발] 29장_xUnit 패턴</a>
+          </li>
+        
+          <li>
             <a href="/2020/04/07/bigdata-chapter-06/">[빅데이터] 6장_일괄처리 계층</a>
-          </li>
-        
-          <li>
-            <a href="/2020/04/06/tdd-chapter-28/">[테스트 주도 개발] 28장_초록 막대 패턴</a>
-          </li>
-        
-          <li>
-            <a href="/2020/04/06/tdd-chapter-27/">[테스트 주도 개발] 27장_테스팅 패턴</a>
-          </li>
-        
-          <li>
-            <a href="/2020/04/06/tdd-chapter-26/">[테스트 주도 개발] 26장_빨간 막대 패턴</a>
-          </li>
-        
-          <li>
-            <a href="/2020/04/06/tdd-chapter-25/">[테스트 주도 개발] 25장_테스트 주도 개발 패턴</a>
           </li>
         
       </ul>

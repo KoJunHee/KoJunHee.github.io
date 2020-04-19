@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  
+  <title>[테스트 주도 개발] 30장_디자인 패턴 | Always Learning</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="TDD 에서 쓰일 수 있는 디자인 패턴들을 정리한다. 커맨트 패턴간단한 메서드 호출보다 복잡한 형태의 계산 작업에 대한 호출이 필요하다면 어떻게 할까?  계산 작업에 대한 객체를 생성해서 이를 호출하면 된다. Runnable 인터페이스가 대표적인 예이다. 값 객체공유되어야 하지만, identity (동일성) 은 중요하지 않을 때 겍체를 어떤식으로 설계할까?">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[테스트 주도 개발] 30장_디자인 패턴">
+<meta property="og:url" content="https://kojunhee.github.io/2020/04/19/tdd-chapter-30/index.html">
+<meta property="og:site_name" content="Always Learning">
+<meta property="og:description" content="TDD 에서 쓰일 수 있는 디자인 패턴들을 정리한다. 커맨트 패턴간단한 메서드 호출보다 복잡한 형태의 계산 작업에 대한 호출이 필요하다면 어떻게 할까?  계산 작업에 대한 객체를 생성해서 이를 호출하면 된다. Runnable 인터페이스가 대표적인 예이다. 값 객체공유되어야 하지만, identity (동일성) 은 중요하지 않을 때 겍체를 어떤식으로 설계할까?">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-04-19T13:35:31.273Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[테스트 주도 개발] 30장_디자인 패턴">
+<meta name="twitter:description" content="TDD 에서 쓰일 수 있는 디자인 패턴들을 정리한다. 커맨트 패턴간단한 메서드 호출보다 복잡한 형태의 계산 작업에 대한 호출이 필요하다면 어떻게 할까?  계산 작업에 대한 객체를 생성해서 이를 호출하면 된다. Runnable 인터페이스가 대표적인 예이다. 값 객체공유되어야 하지만, identity (동일성) 은 중요하지 않을 때 겍체를 어떤식으로 설계할까?">
+  
+    <link rel="alternate" href="/atom.xml" title="Always Learning" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="css/images/favicon.ico">
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Always Learning</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">junhee.ko</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://kojunhee.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-tdd-chapter-30" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/04/19/tdd-chapter-30/" class="article-date">
+  <time class="dt-published" datetime="2020-04-18T15:00:00.000Z" itemprop="datePublished">2020-04-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tdd/">TDD</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      [테스트 주도 개발] 30장_디자인 패턴
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>TDD 에서 쓰일 수 있는 디자인 패턴들을 정리한다.</p>
+<h5 id="커맨트-패턴"><a href="#커맨트-패턴" class="headerlink" title="커맨트 패턴"></a>커맨트 패턴</h5><p>간단한 메서드 호출보다 복잡한 형태의 계산 작업에 대한 호출이 필요하다면 어떻게 할까? </p>
+<p>계산 작업에 대한 객체를 생성해서 이를 호출하면 된다. Runnable 인터페이스가 대표적인 예이다.</p>
+<h5 id="값-객체"><a href="#값-객체" class="headerlink" title="값 객체"></a>값 객체</h5><p>공유되어야 하지만, identity (동일성) 은 중요하지 않을 때 겍체를 어떤식으로 설계할까? </p>
+<p>객체가 생성될 때 객체의 상태를 설정한다. 그리고, 이 상태가 절대 변할 수 없도록 해라. 이 객체에 대해 수행되는 연산은 언제나 새로운 객체를 반환하게 만들어라.</p>
+<p>별칭 문제란, 두 객체가 제 삼의 다른 객체에 대한 참조를 공유하는데, 한 객체가 공유 객체의 상태를 변화시키면, 다른 객체가 영향을 받는 문제이다. 해결하기 위한 방법으로,</p>
+<ol>
+<li>의존하는 객체애 대한 참조를 외부로 알리지 않는 방법이다. 그 대신 객체에 대한 복사본을 제공한다. 이 방법의 문제는, 수행 시간이나 메모리 공간 측면에서 비효율적이다. 또한, 공유 객체의 상태 변화를 공유할 수 없다.</li>
+<li>옵저버 패턴. 의존하는 객체에 자기를 등록해 놓고, 객체의 상태가 변하면 통지를 받는다. 이 방법의 문제는, 제어 흐름이 어렵고 의존성을 설정하고 제거하기 위한 로직이 지저분해진다.</li>
+<li>객체를 덜 객체답게 취급. 객체는 시간의 흐름에 따라 변할 수 있는 상태를 가진다. 그런데, 이러한 특징을 제거해버려라. 이것이 값 객체이다.</li>
+</ol>
+<p>모든 값 객체는 동등성을 구현해야한다. 만약, </p>
+<ol>
+<li>계약을 표현하는 객체가 두 개가 있는데, 둘이 서로 같은 객체가 아니면 이 둘은 동등한것이 아니라 다른것이다. </li>
+<li>하지만, 5프랑 짜리 동전 두개가 있는데, 이 동전들이 동일한 (identity) 동전인지는 중요하지 않다. 5프랑은 5프랑이다. 이들은 동등해야한다.(equality)</li>
+</ol>
+<h5 id="널-객체"><a href="#널-객체" class="headerlink" title="널 객체"></a>널 객체</h5><p>객체의 특별한 상황은 어떻게 표현하나? </p>
+<p>그 상황을 표현하는 새로운 객체를 만들어라. Java.io.File 에는 getSesurityManager() 의 반환값이 null 인지 항상 검사를 한다. 다른 방법은 새로운 클래스를 만드는 것이다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> SecurityManager <span class="title">getSecurityManager</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> security == <span class="keyword">null</span> ? <span class="keyword">new</span> LaxSecurity() : security;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="템플릿-메서드"><a href="#템플릿-메서드" class="headerlink" title="템플릿 메서드"></a>템플릿 메서드</h5><p>작업 순서는 변하지 않지만, 각 작업 단위에 대한 미래의 개선 가능성을 열어두고 싶으면? </p>
+<p>다른 메서드들을 호출하는 내용으로만 이루어진 메서드를 만들어라.</p>
+<h5 id="플러거블-객체"><a href="#플러거블-객체" class="headerlink" title="플러거블 객체"></a>플러거블 객체</h5><p>변이를 어떻게 표현? </p>
+<p>명시적인 조건을 사용해라. 다음은 중복 조건문들이 정의된 코드이다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SelectionTool</span> </span>&#123;</span><br><span class="line">    Figure selected;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">mouseDown</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        selected = findFigure();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (selected != <span class="keyword">null</span>) &#123;</span><br><span class="line">            select(selected);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">mouseMove</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (selected != <span class="keyword">null</span>) &#123;</span><br><span class="line">            move(selected);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            moveSelectionRectangle();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">mouseUp</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (selected == <span class="keyword">null</span>) &#123;</span><br><span class="line">            selectAll();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>해법으로, 다음과 같이 플러거블 객체인 SelectionMode 를 만들어라.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SelectionTool</span> </span>&#123;</span><br><span class="line">    SelectionMode mode; <span class="comment">//  플러거블 객체</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">mouseDown</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        selected = findFigure();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (selected != <span class="keyword">null</span>) &#123;</span><br><span class="line">            mode = <span class="keyword">new</span> SingleSelection(selected); <span class="comment">// 구현체</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            mode = MultipleSelection(); <span class="comment">// 구현체</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">mouseMove</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        mode.mouseMove();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">mouseUp</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        mode.mouseUp();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="플러거블-셀렉터"><a href="#플러거블-셀렉터" class="headerlink" title="플러거블 셀렉터"></a>플러거블 셀렉터</h5><p>인스턴스 별로 서로 다른 메서드가 동적으로 호출하게 하려면?</p>
+<p>메서드의 이름을 저장하고 있다가 그 이름에 해당하는 메서드를 동적으로 호출해라. 다음과 같이 새로운 종류 출력문을 추가할 때마다 switch 문을 변경할 것인가.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">switch</span> (printMessage) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">"printHTML"</span>:</span><br><span class="line">            printHtml();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">"printXML"</span>:</span><br><span class="line">            printXML();</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>플러거블 셀렉터는, 리플랙션을 이용해서 동적으로 메서드를 호출한다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Method method = getClass().getMethod(printMessage, <span class="keyword">null</span>);</span><br><span class="line">    method.invoke(<span class="keyword">this</span>, <span class="keyword">new</span> CLass[<span class="number">0</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>메서드를 달랑 한개만 가지는 하위 클래스들이 여러 개 있을 때, 확실히 직관적인 상황에서 코드 정리 목적으로 사용해라.</p>
+<h5 id="팩토리-메서드"><a href="#팩토리-메서드" class="headerlink" title="팩토리 메서드"></a>팩토리 메서드</h5><p>다음 메서드가, 팩토리 메서드이다. 객체를 생성하기 때문이다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> Dollar <span class="title">dollar</span><span class="params">(<span class="keyword">int</span> amount)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Dollar(amount);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>클라이언트는 다음과 같이 사용한다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Dollar five = Money.dollar(<span class="number">5</span>);</span><br></pre></td></tr></table></figure>
+
+<p>팩토리 메서드의 단점은, indirection 이다. 메서드가 생성자처럼 생기지 않았지만, 이 안에서 객체를 생성한다는 사실을 기억해야한다. 유연함이 필요 없다면, 생성자를 써라.</p>
+<h5 id="사칭-사기꾼"><a href="#사칭-사기꾼" class="headerlink" title="사칭 사기꾼"></a>사칭 사기꾼</h5><p>기존의 코드에 새로운 변이를 도입하려면? </p>
+<p>기존의 객체와 같은 프로토콜(인터페이스) 를 갖지만 구현은 다른 새로운 객체를 추가해라.</p>
+<p>예를 들면,</p>
+<ol>
+<li>널 객체 : 데이터가 없는 상태를, 데이터가 있는 상태와 동일하게 취급 가능</li>
+<li>컴포지트 : 객체의 집합을 단일 객체 처럼 취급 가능.</li>
+</ol>
+<h5 id="컴포지트"><a href="#컴포지트" class="headerlink" title="컴포지트"></a>컴포지트</h5><p>하나의 객체가 다른 객체 목록의 행위를 조합한 것처럼 행동하게 하려면? </p>
+<p>객체 집합을 나타내는 객체를 단일 객체에 대한 임포스터로 구현해라. ( Folder 는 Folder 를 포함한다. )</p>
+<h5 id="수집-매개변수"><a href="#수집-매개변수" class="headerlink" title="수집 매개변수"></a>수집 매개변수</h5><p>여러 객체에 걸쳐 있는 오퍼레이션의 결과를 수집하라면? </p>
+<p>결과가 수집될 객체를 각 오퍼레이션의 매개 변수로 추가해라.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    IndentingStream writer = <span class="keyword">new</span> IndentingStream();</span><br><span class="line">    toString(writer);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> writer.contents();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">toString</span><span class="params">(IndentingStream writer)</span> </span>&#123;</span><br><span class="line">    writer.println(<span class="string">"+"</span>);</span><br><span class="line">    writer.index();</span><br><span class="line">    augend.toString(writer);</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2020/04/19/tdd-chapter-30/" data-id="ck973jwzf00p8576wtv1oi99b" data-title="[테스트 주도 개발] 30장_디자인 패턴" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/04/19/tdd-chapter-32/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          [테스트 주도 개발] 32장_TDD 마스터하기
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/04/19/tdd-chapter-29/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">[테스트 주도 개발] 29장_xUnit 패턴</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/big-data/">Big Data</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boost-course/">Boost Course</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/dip/">DIP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/data-structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/design-pattern/">Design Pattern</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jpa/">JPA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">Kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/network/">Network</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/oop/">OOP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/os/">OS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/software-engineering/">Software Engineering</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/spark/">Spark</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tdd/">TDD</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/etc/">etc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ios/">iOS</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/04/19/tdd-chapter-31/">[테스트 주도 개발] 31장_리팩토링</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/19/tdd-chapter-32/">[테스트 주도 개발] 32장_TDD 마스터하기</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/19/tdd-chapter-30/">[테스트 주도 개발] 30장_디자인 패턴</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/19/tdd-chapter-29/">[테스트 주도 개발] 29장_xUnit 패턴</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/07/bigdata-chapter-06/">[빅데이터] 6장_일괄처리 계층</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 junhee.ko<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+  <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
