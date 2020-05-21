@@ -68,81 +68,6 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-tdd-chapter-15" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/03/16/tdd-chapter-15/" class="article-date">
-  <time class="dt-published" datetime="2020-03-15T15:00:00.000Z" itemprop="datePublished">2020-03-16</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/tdd/">TDD</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/03/16/tdd-chapter-15/">[테스트 주도 개발] 15장_서로 다른 통화 더하기</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>이제 드디어, “5달러 + 10프랑” 테스트할 준비가 모두 되었다.</p>
-<p>우리가 원하는 코드는,</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testMixedAddition</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Expression fiveBucks = Money.dollar(<span class="number">5</span>);</span><br><span class="line">    Expression tenFrancs = Money.franc(<span class="number">10</span>);</span><br><span class="line">    Bank bank = <span class="keyword">new</span> Bank();</span><br><span class="line">    bank.addRate(<span class="string">"CHF"</span>, <span class="string">"USD"</span>, <span class="number">2</span>);</span><br><span class="line">    Money result = bank.reduce(</span><br><span class="line">        fiveBucks.plus(tenFrancs), <span class="string">"USD"</span></span><br><span class="line">    );</span><br><span class="line">    assertEquals(Money.dollar(<span class="number">10</span>), result);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>컴파일 에러가 많다. 천천히 해결하자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testMixedAddition</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Money fiveBucks = Money.dollar(<span class="number">5</span>);</span><br><span class="line">    Money tenFrancs = Money.franc(<span class="number">10</span>);</span><br><span class="line">    Bank bank = <span class="keyword">new</span> Bank();</span><br><span class="line">    bank.addRate(<span class="string">"CHF"</span>, <span class="string">"USD"</span>, <span class="number">2</span>);</span><br><span class="line">    Money result = bank.reduce(</span><br><span class="line">        fiveBucks.plus(tenFrancs), <span class="string">"USD"</span></span><br><span class="line">    );</span><br><span class="line">    assertEquals(Money.dollar(<span class="number">10</span>), result);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>실패한다. 10 USD 대신, 15 USD 가 나왔다. Sum.reduce() 가 인자를 축약하지 않은 것으로 보인다. 다음과 같이 두 인자를 모두 축약하자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sum</span> <span class="keyword">implements</span> <span class="title">Expression</span> </span>&#123;</span><br><span class="line">    Money augend;</span><br><span class="line">    Money addend;</span><br><span class="line"></span><br><span class="line">    Sum(Money augend, Money addend) &#123;</span><br><span class="line">        <span class="keyword">this</span>.augend = augend;</span><br><span class="line">        <span class="keyword">this</span>.addend = addend;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">reduce</span><span class="params">(Bank bank, String to)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> amount = augend.reduce(bank, to).amount +</span><br><span class="line">            addend.reduce(bank, to).amount;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Money(amount, to);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>그리고, Expression 이어야하는 Money 들을 조금씩 없앨 수 있다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sum</span> <span class="keyword">implements</span> <span class="title">Expression</span> </span>&#123;</span><br><span class="line">    Expression augend;</span><br><span class="line">    Expression addend;</span><br><span class="line"></span><br><span class="line">    Sum(Expression augend, Expression addend) &#123;</span><br><span class="line">        <span class="keyword">this</span>.augend = augend;</span><br><span class="line">        <span class="keyword">this</span>.addend = addend;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Money <span class="title">reduce</span><span class="params">(Bank bank, String to)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> amount = augend.reduce(bank, to).amount +</span><br><span class="line">            addend.reduce(bank, to).amount;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Money(amount, to);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>Money 의 plus() 인자도 바꾸자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Expression <span class="title">plus</span><span class="params">(Expression addend)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Sum(<span class="keyword">this</span>, addend);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>테스트 케이스에 나오는 plus() 의 인자를 다음 처럼 바꾸자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testMixedAddition</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Money fiveBucks = Money.dollar(<span class="number">5</span>);</span><br><span class="line">    Expression tenFrancs = Money.franc(<span class="number">10</span>);</span><br><span class="line">    Bank bank = <span class="keyword">new</span> Bank();</span><br><span class="line">    bank.addRate(<span class="string">"CHF"</span>, <span class="string">"USD"</span>, <span class="number">2</span>);</span><br><span class="line">    Money result = bank.reduce(</span><br><span class="line">        fiveBucks.plus(tenFrancs), <span class="string">"USD"</span></span><br><span class="line">    );</span><br><span class="line">    assertEquals(Money.dollar(<span class="number">10</span>), result);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>fiveBucks 를 Expression 으로 바꾸고 나면, 몇 군데 수정해야한다. 컴파일러가 할 일 목록을 제공하기 때문에 우린 계속 집중할 수 있다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testMixedAddition</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Expression fiveBucks = Money.dollar(<span class="number">5</span>);</span><br><span class="line">    Expression tenFrancs = Money.franc(<span class="number">10</span>);</span><br><span class="line">    Bank bank = <span class="keyword">new</span> Bank();</span><br><span class="line">    bank.addRate(<span class="string">"CHF"</span>, <span class="string">"USD"</span>, <span class="number">2</span>);</span><br><span class="line">    Money result = bank.reduce(</span><br><span class="line">        fiveBucks.plus(tenFrancs), <span class="string">"USD"</span></span><br><span class="line">    );</span><br><span class="line">    assertEquals(Money.dollar(<span class="number">10</span>), result);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>컴파일러가 Expression 에 plus() 가 정의되어 있지 않다고 한다. 정의하자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Expression</span> </span>&#123;</span><br><span class="line">    <span class="function">Money <span class="title">reduce</span><span class="params">(Bank bank, String to)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">Expression <span class="title">plus</span><span class="params">(Expression addend)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>이제 Money 와 Sum 에도 추가하자. Money 에서는 기존에도 있었다. public 으로 해주자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Expression <span class="title">plus</span><span class="params">(Expression addend)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Sum(<span class="keyword">this</span>, addend);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>Sum 에는  스텁 구현으로 하자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Expression <span class="title">plus</span><span class="params">(Expression addend)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<hr>
-<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/03/16/tdd-chapter-15/" data-id="ck973jwz400o7576wrct8tho8" data-title="[테스트 주도 개발] 15장_서로 다른 통화 더하기" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
     <article id="post-tdd-chapter-14" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2020/03/16/tdd-chapter-14/" class="article-date">
@@ -218,7 +143,71 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/03/16/tdd-chapter-14/" data-id="ck973jwz300o5576w3uz5wlg8" data-title="[테스트 주도 개발] 14장_바꾸기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/03/16/tdd-chapter-14/" data-id="ckag7j38b00doqk6wanxwlfwl" data-title="[테스트 주도 개발] 14장_바꾸기" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-tdd-chapter-16" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/03/16/tdd-chapter-16/" class="article-date">
+  <time class="dt-published" datetime="2020-03-15T15:00:00.000Z" itemprop="datePublished">2020-03-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tdd/">TDD</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/03/16/tdd-chapter-16/">[테스트 주도 개발] 16장_드디어, 추상화</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Expression.plus 를 끝내려면, Sum.plus() 를 구현해야한다. 그리고, Expression.times() 를 구현하면 끝난다. 다음은 Sum.plus() 테스트다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testSumPlusMoney</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Expression fiveBucks = Money.dollar(<span class="number">5</span>);</span><br><span class="line">    Expression tenFrancs = Money.franc(<span class="number">10</span>);</span><br><span class="line">    Bank bank = <span class="keyword">new</span> Bank();</span><br><span class="line">    bank.addRate(<span class="string">"CHF"</span>, <span class="string">"USD"</span>, <span class="number">2</span>);</span><br><span class="line">    Expression sum = <span class="keyword">new</span> Sum(fiveBucks, tenFrancs).plus(fiveBucks);</span><br><span class="line">    Money result = bank.reduce(sum, <span class="string">"USD"</span>);</span><br><span class="line">    assertEquals(Money.dollar(<span class="number">15</span>), result);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>테스트가 코드보다 더 길다. 그리고 코드는 Money 의 코드와 똑같다. </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Sum</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Expression <span class="title">plus</span><span class="params">(Expression addend)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Sum(<span class="keyword">this</span>, addend);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>일단, Sum.times() 가 작동하게 된다면, Expression.times() 를 선언하는 일은 쉽다. 테스트는,</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testSumTimes</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Expression fiveBucks = Money.dollar(<span class="number">5</span>);</span><br><span class="line">    Expression tenFrancs = Money.franc(<span class="number">10</span>);</span><br><span class="line">    Bank bank = <span class="keyword">new</span> Bank();</span><br><span class="line">    bank.addRate(<span class="string">"CHF"</span>, <span class="string">"USD"</span>, <span class="number">2</span>);</span><br><span class="line">    Expression sum = <span class="keyword">new</span> Sum(fiveBucks, tenFrancs).times(<span class="number">2</span>);</span><br><span class="line">    Money result = bank.reduce(sum, <span class="string">"USD"</span>);</span><br><span class="line">    assertEquals(Money.dollar(<span class="number">20</span>), result);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Sum</span></span><br><span class="line"><span class="function">Expression <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Sum(</span><br><span class="line">        augend.times(multiplier), addend.times(multiplier)</span><br><span class="line">    );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이제 컴파일되게 만들려면, Expression 에 times() 를 선언해야한다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Expression</span> </span>&#123;</span><br><span class="line">    <span class="function">Money <span class="title">reduce</span><span class="params">(Bank bank, String to)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">Expression <span class="title">plus</span><span class="params">(Expression addend)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">Expression <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>위 작업 때문에, Money.times() 와 Sum.times() 의 가시성을 높여야한다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Money</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Money <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Money(amount * multiplier, currency);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Sum</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Expression <span class="title">times</span><span class="params">(<span class="keyword">int</span> multiplier)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Sum(</span><br><span class="line">        augend.times(multiplier), addend.times(multiplier)</span><br><span class="line">    );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>테스트가 통과한다.</p>
+<hr>
+<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2020/03/16/tdd-chapter-16/" data-id="ckag7j38c00drqk6wcb9eqhoa" data-title="[테스트 주도 개발] 16장_드디어, 추상화" class="article-share-link">Share</a>
       
       
       
@@ -332,7 +321,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/03/15/bigdata-chapter-04/" data-id="ck973jx1200r4576wezoxm4a5" data-title="[빅데이터] 4장_일괄 처리 계층의 데이터 저장소" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/03/15/bigdata-chapter-04/" data-id="ckag7j3a100gsqk6wsset1ca6" data-title="[빅데이터] 4장_일괄 처리 계층의 데이터 저장소" class="article-share-link">Share</a>
       
       
       
@@ -434,7 +423,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/03/11/tdd-chapter-10/" data-id="ck973jwz000nw576wxsakgdze" data-title="[테스트 주도 개발] 10장_흥미로운 시간" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/03/11/tdd-chapter-10/" data-id="ckag7j38900dgqk6wfyriqjt7" data-title="[테스트 주도 개발] 10장_흥미로운 시간" class="article-share-link">Share</a>
       
       
       
@@ -446,9 +435,9 @@
 
 
   
-    <article id="post-tdd-chapter-07" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-tdd-chapter-12" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2020/03/11/tdd-chapter-07/" class="article-date">
+    <a href="/2020/03/11/tdd-chapter-12/" class="article-date">
   <time class="dt-published" datetime="2020-03-10T15:00:00.000Z" itemprop="datePublished">2020-03-11</time>
 </a>
     
@@ -464,7 +453,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/03/11/tdd-chapter-07/">[테스트 주도 개발] 7장_사과와 오렌지</a>
+      <a class="p-name article-title" href="/2020/03/11/tdd-chapter-12/">[테스트 주도 개발] 12장_드디어 더하기</a>
     </h1>
   
 
@@ -472,78 +461,57 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>제목 의미 : 서로 다른걸 비교할 수 없다.</p>
-<p>Franc 와 Dollar 를 비교하면 어떻게 될까 ?</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testEquality</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    assertTrue(<span class="keyword">new</span> Dollar(<span class="number">5</span>).equals(<span class="keyword">new</span> Dollar(<span class="number">5</span>)));</span><br><span class="line">    assertFalse(<span class="keyword">new</span> Dollar(<span class="number">5</span>).equals(<span class="keyword">new</span> Dollar(<span class="number">6</span>)));</span><br><span class="line">    assertTrue(<span class="keyword">new</span> Franc(<span class="number">5</span>).equals(<span class="keyword">new</span> Franc(<span class="number">5</span>)));</span><br><span class="line">    assertFalse(<span class="keyword">new</span> Franc(<span class="number">5</span>).equals(<span class="keyword">new</span> Franc(<span class="number">6</span>)));   </span><br><span class="line">    assertFalse(<span class="keyword">new</span> Franc(<span class="number">5</span>).equals(<span class="keyword">new</span> Dollar(<span class="number">5</span>)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <p>전체 더하기 기능에 대한 스토리를 어떻게 적어야할지 모르겠다. 간단한 예, “5 달러 + 5달러 = 10 달러” 에서 시작하자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testSimpleAddition</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Money sum = Money.dollar(<span class="number">5</span>).plus(Money.dollar(<span class="number">5</span>));</span><br><span class="line">    assertEquals(Money.dollar(<span class="number">10</span>), sum);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>실패한다. 오직 금액과 클래스가 동일할 때만 두 Money 가 서로 같은 것이다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object object)</span> </span>&#123;</span><br><span class="line">    Money money = (Money) object;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> amount == money.amount &amp;&amp; getClass().equals(money.getClass());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>그냥 Money.dollar(10) 을 반환하는 식으로 가짜 구현을 할 수 있지만, 어떻게 구현할지 명확하므로 다음과 같이 하겠다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Money</span></span><br><span class="line"><span class="function">Money <span class="title">plus</span><span class="params">(Money addend)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Money(amount + addend.amount, currency);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>자바 객체의 용어를 사용하는 것보다 재정 분야에 맞는 용어를 사용하고 싶다. currency 통화 개념 같은 게 없고, 통화 개념을 도입할 충분한 이유가 없으므로 잠시 이렇게 두자.</p>
+<p>다중 통화 사용에 대한 내용을 시스템의 나머지 코드에 숨기고 싶다. ( 2달러 + 3CHF ) * 5 를 보자. Money 가 수식의 가장 작은 단위가 된다. 연산의 결과로 Expression 들이 생기는데, 그 중 하나가 sum 이다. 연산이 완료되면 환율을 이용해서 결과 expression 을 단일 통화로 축약할 수 있다. 이런식으로 테스트할 수 있다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testSimpleAddition</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ....</span><br><span class="line">    assertEquals(Money.dollar(<span class="number">10</span>), reduced);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>reduced 란 이름의 expression 은 expression 에 환율을 적용해서 얻어진다. 실세계에서 환율이 적용되는 곳은 어디인가 ? 은행이다. </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testSimpleAddition</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    Money reduced = back.reduce(sum, <span class="string">"USD"</span>);</span><br><span class="line">    assertEquals(Money.dollar(<span class="number">10</span>), reduced);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>여기서, 단순히 “…reduce = sum.reduce(“USD”, back)” 라고 할수 있었다. 왜 Back 가 reduce() 를 수행할 책임을 맡았을 까 ?</p>
+<ol>
+<li>Expression 은 하려고 하는 일의 핵심이다. 핵심이 되는 객체가 다른 부분에 대해서 될 수 있는 한 모르도록 하자. 그러면, 핵심 객체가 가능한 오랫 동안 유연할 수 있다. 그리고, 테스트하기도 쉽고 재활용하거나 이해하기에 쉽다.</li>
+<li>Expression 과 관련이 있는 오퍼레이션이 많은 수 있다. 모든 오펴레이션을 Expression 에만 추가하면 Expression 는 무한히 커진다.</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testSimpleAddition</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    Bank bank = <span class="keyword">new</span> Bank();</span><br><span class="line">    Money reduced = bank.reduce(sum, <span class="string">"USD"</span>);</span><br><span class="line">    assertEquals(Money.dollar(<span class="number">10</span>), reduced);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>두 Money 의 합은 Expression 이어야한다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testSimpleAddition</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    Expression sum = five.plus(five);</span><br><span class="line">    Bank bank = <span class="keyword">new</span> Bank();</span><br><span class="line">    Money reduced = bank.reduce(sum, <span class="string">"USD"</span>);</span><br><span class="line">    assertEquals(Money.dollar(<span class="number">10</span>), reduced);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>5 달러를 만드는 것은 쉽다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testSimpleAddition</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Money five = Money.dollar(<span class="number">5</span>)</span><br><span class="line">    Expression sum = five.plus(five);</span><br><span class="line">    Bank bank = <span class="keyword">new</span> Bank();</span><br><span class="line">    Money reduced = bank.reduce(sum, <span class="string">"USD"</span>);</span><br><span class="line">    assertEquals(Money.dollar(<span class="number">10</span>), reduced);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이걸 컴파일하려면 어떻게 해야하나 ? Expression 인터페이스가 필요하다. 클래스도 되지만, 더 가볍다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Expression</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Money.plus 는 Expression 을 반환해야한다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Expression <span class="title">plus</span><span class="params">(Money addend)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Money(amount + addend.amount, currency);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이건, Money 가 Expressoin 을 구현해야한다는 뜻이다. Expressoin 에 아직 아무 연산이 없으니 쉽다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Money</span> <span class="keyword">implements</span> <span class="title">Expression</span> </span>&#123;</span><br></pre></td></tr></table></figure>
+
+<p>이제 빈 Back 클래스가 필요하다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bank</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>그리고 reduce() Stub 이 필요하다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bank</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">reduce</span><span class="params">(Expression source, String to)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이제 컴파일 되고, 바로 실패한다. 간단히 가짜 구현을 하자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bank</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">reduce</span><span class="params">(Expression source, String to)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Money.dollar(<span class="number">10</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>다시 초록막대. 리팩토링하자.</p>
 <hr>
 <p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/03/11/tdd-chapter-07/" data-id="ck973jwyy00np576wq2ynfs6m" data-title="[테스트 주도 개발] 7장_사과와 오렌지" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-tdd-chapter-11" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/03/11/tdd-chapter-11/" class="article-date">
-  <time class="dt-published" datetime="2020-03-10T15:00:00.000Z" itemprop="datePublished">2020-03-11</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/tdd/">TDD</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/03/11/tdd-chapter-11/">[테스트 주도 개발] 11장_모든 악의 근원</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>두 하위 클래스에는 이제 생성자밖에 없다. 제거하자.</p>
-<p>코드의 의미를 변경하지 않으면서 하위 클래스에 대한 참조를 상위 클래스에 대한 참조로 변경할 수 있다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Money</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> Money <span class="title">dollar</span><span class="params">(<span class="keyword">int</span> amount)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Money(amount, <span class="string">"USD"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> Money <span class="title">franc</span><span class="params">(<span class="keyword">int</span> amount)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Money(amount, <span class="string">"CHF"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>이제 Dollar 에 대한 참조가 하나도 없으므로 지울 수 있다. 하지만, Franc 는 테스트 코드에서 아직 참조한다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testDifferentClassEquality</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    assertTrue(<span class="keyword">new</span> Money(<span class="number">10</span>, <span class="string">"CHF"</span>).equals(<span class="keyword">new</span> Franc(<span class="number">10</span>, <span class="string">"CHF"</span>)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>이 테스트를 지워도 될 정도로 다른 곳에서 이미 동치성 테스트를 충분히 하고 있는가 ? </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testEquality</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    assertTrue(Money.dollar(<span class="number">5</span>).equals(Money.dollar(<span class="number">5</span>))); <span class="comment">// 1</span></span><br><span class="line">    assertFalse(Money.dollar(<span class="number">5</span>).equals(Money.dollar(<span class="number">6</span>))); <span class="comment">// 2</span></span><br><span class="line">    assertTrue(Money.franc(<span class="number">5</span>).equals(Money.franc(<span class="number">5</span>))); <span class="comment">// 3</span></span><br><span class="line">    assertFalse(Money.franc(<span class="number">5</span>).equals(Money.franc(<span class="number">6</span>))); <span class="comment">// 4</span></span><br><span class="line">    assertFalse(Money.franc(<span class="number">5</span>).equals(Money.dollar(<span class="number">5</span>)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>3, 4 단언은 1, 2 단언과 중복이다. 지우자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testEquality</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    assertTrue(Money.dollar(<span class="number">5</span>).equals(Money.dollar(<span class="number">5</span>)));</span><br><span class="line">    assertFalse(Money.dollar(<span class="number">5</span>).equals(Money.dollar(<span class="number">6</span>)));</span><br><span class="line">    assertFalse(Money.franc(<span class="number">5</span>).equals(Money.dollar(<span class="number">5</span>)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<hr>
-<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/03/11/tdd-chapter-11/" data-id="ck973jwz100nx576wihsp2g1k" data-title="[테스트 주도 개발] 11장_모든 악의 근원" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/03/11/tdd-chapter-12/" data-id="ckag7j38q00f1qk6wolwo7esp" data-title="[테스트 주도 개발] 12장_드디어 더하기" class="article-share-link">Share</a>
       
       
       
@@ -619,7 +587,116 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/03/11/tdd-chapter-08/" data-id="ck973jwyz00nr576wpmsy2zj7" data-title="[테스트 주도 개발] 8장_객체 만들기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/03/11/tdd-chapter-08/" data-id="ckag7j38a00dkqk6w72xlznyv" data-title="[테스트 주도 개발] 8장_객체 만들기" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-tdd-chapter-07" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/03/11/tdd-chapter-07/" class="article-date">
+  <time class="dt-published" datetime="2020-03-10T15:00:00.000Z" itemprop="datePublished">2020-03-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tdd/">TDD</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/03/11/tdd-chapter-07/">[테스트 주도 개발] 7장_사과와 오렌지</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>제목 의미 : 서로 다른걸 비교할 수 없다.</p>
+<p>Franc 와 Dollar 를 비교하면 어떻게 될까 ?</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testEquality</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    assertTrue(<span class="keyword">new</span> Dollar(<span class="number">5</span>).equals(<span class="keyword">new</span> Dollar(<span class="number">5</span>)));</span><br><span class="line">    assertFalse(<span class="keyword">new</span> Dollar(<span class="number">5</span>).equals(<span class="keyword">new</span> Dollar(<span class="number">6</span>)));</span><br><span class="line">    assertTrue(<span class="keyword">new</span> Franc(<span class="number">5</span>).equals(<span class="keyword">new</span> Franc(<span class="number">5</span>)));</span><br><span class="line">    assertFalse(<span class="keyword">new</span> Franc(<span class="number">5</span>).equals(<span class="keyword">new</span> Franc(<span class="number">6</span>)));   </span><br><span class="line">    assertFalse(<span class="keyword">new</span> Franc(<span class="number">5</span>).equals(<span class="keyword">new</span> Dollar(<span class="number">5</span>)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>실패한다. 오직 금액과 클래스가 동일할 때만 두 Money 가 서로 같은 것이다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object object)</span> </span>&#123;</span><br><span class="line">    Money money = (Money) object;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> amount == money.amount &amp;&amp; getClass().equals(money.getClass());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>자바 객체의 용어를 사용하는 것보다 재정 분야에 맞는 용어를 사용하고 싶다. currency 통화 개념 같은 게 없고, 통화 개념을 도입할 충분한 이유가 없으므로 잠시 이렇게 두자.</p>
+<hr>
+<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2020/03/11/tdd-chapter-07/" data-id="ckag7j38800d9qk6wuw12y80u" data-title="[테스트 주도 개발] 7장_사과와 오렌지" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-tdd-chapter-11" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/03/11/tdd-chapter-11/" class="article-date">
+  <time class="dt-published" datetime="2020-03-10T15:00:00.000Z" itemprop="datePublished">2020-03-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tdd/">TDD</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/03/11/tdd-chapter-11/">[테스트 주도 개발] 11장_모든 악의 근원</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>두 하위 클래스에는 이제 생성자밖에 없다. 제거하자.</p>
+<p>코드의 의미를 변경하지 않으면서 하위 클래스에 대한 참조를 상위 클래스에 대한 참조로 변경할 수 있다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Money</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> Money <span class="title">dollar</span><span class="params">(<span class="keyword">int</span> amount)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Money(amount, <span class="string">"USD"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> Money <span class="title">franc</span><span class="params">(<span class="keyword">int</span> amount)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Money(amount, <span class="string">"CHF"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이제 Dollar 에 대한 참조가 하나도 없으므로 지울 수 있다. 하지만, Franc 는 테스트 코드에서 아직 참조한다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testDifferentClassEquality</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    assertTrue(<span class="keyword">new</span> Money(<span class="number">10</span>, <span class="string">"CHF"</span>).equals(<span class="keyword">new</span> Franc(<span class="number">10</span>, <span class="string">"CHF"</span>)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이 테스트를 지워도 될 정도로 다른 곳에서 이미 동치성 테스트를 충분히 하고 있는가 ? </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testEquality</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    assertTrue(Money.dollar(<span class="number">5</span>).equals(Money.dollar(<span class="number">5</span>))); <span class="comment">// 1</span></span><br><span class="line">    assertFalse(Money.dollar(<span class="number">5</span>).equals(Money.dollar(<span class="number">6</span>))); <span class="comment">// 2</span></span><br><span class="line">    assertTrue(Money.franc(<span class="number">5</span>).equals(Money.franc(<span class="number">5</span>))); <span class="comment">// 3</span></span><br><span class="line">    assertFalse(Money.franc(<span class="number">5</span>).equals(Money.franc(<span class="number">6</span>))); <span class="comment">// 4</span></span><br><span class="line">    assertFalse(Money.franc(<span class="number">5</span>).equals(Money.dollar(<span class="number">5</span>)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>3, 4 단언은 1, 2 단언과 중복이다. 지우자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testEquality</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    assertTrue(Money.dollar(<span class="number">5</span>).equals(Money.dollar(<span class="number">5</span>)));</span><br><span class="line">    assertFalse(Money.dollar(<span class="number">5</span>).equals(Money.dollar(<span class="number">6</span>)));</span><br><span class="line">    assertFalse(Money.franc(<span class="number">5</span>).equals(Money.dollar(<span class="number">5</span>)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2020/03/11/tdd-chapter-11/" data-id="ckag7j38a00diqk6wov4wmisw" data-title="[테스트 주도 개발] 11장_모든 악의 근원" class="article-share-link">Share</a>
       
       
       
@@ -708,95 +785,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/03/11/tdd-chapter-09/" data-id="ck973jwyz00nt576wbxgw7ytx" data-title="[테스트 주도 개발] 9장_우리가 사는 시간" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-tdd-chapter-12" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/03/11/tdd-chapter-12/" class="article-date">
-  <time class="dt-published" datetime="2020-03-10T15:00:00.000Z" itemprop="datePublished">2020-03-11</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/tdd/">TDD</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/03/11/tdd-chapter-12/">[테스트 주도 개발] 12장_드디어 더하기</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>전체 더하기 기능에 대한 스토리를 어떻게 적어야할지 모르겠다. 간단한 예, “5 달러 + 5달러 = 10 달러” 에서 시작하자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testSimpleAddition</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Money sum = Money.dollar(<span class="number">5</span>).plus(Money.dollar(<span class="number">5</span>));</span><br><span class="line">    assertEquals(Money.dollar(<span class="number">10</span>), sum);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>그냥 Money.dollar(10) 을 반환하는 식으로 가짜 구현을 할 수 있지만, 어떻게 구현할지 명확하므로 다음과 같이 하겠다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Money</span></span><br><span class="line"><span class="function">Money <span class="title">plus</span><span class="params">(Money addend)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Money(amount + addend.amount, currency);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>다중 통화 사용에 대한 내용을 시스템의 나머지 코드에 숨기고 싶다. ( 2달러 + 3CHF ) * 5 를 보자. Money 가 수식의 가장 작은 단위가 된다. 연산의 결과로 Expression 들이 생기는데, 그 중 하나가 sum 이다. 연산이 완료되면 환율을 이용해서 결과 expression 을 단일 통화로 축약할 수 있다. 이런식으로 테스트할 수 있다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testSimpleAddition</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ....</span><br><span class="line">    assertEquals(Money.dollar(<span class="number">10</span>), reduced);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>reduced 란 이름의 expression 은 expression 에 환율을 적용해서 얻어진다. 실세계에서 환율이 적용되는 곳은 어디인가 ? 은행이다. </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testSimpleAddition</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    Money reduced = back.reduce(sum, <span class="string">"USD"</span>);</span><br><span class="line">    assertEquals(Money.dollar(<span class="number">10</span>), reduced);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>여기서, 단순히 “…reduce = sum.reduce(“USD”, back)” 라고 할수 있었다. 왜 Back 가 reduce() 를 수행할 책임을 맡았을 까 ?</p>
-<ol>
-<li>Expression 은 하려고 하는 일의 핵심이다. 핵심이 되는 객체가 다른 부분에 대해서 될 수 있는 한 모르도록 하자. 그러면, 핵심 객체가 가능한 오랫 동안 유연할 수 있다. 그리고, 테스트하기도 쉽고 재활용하거나 이해하기에 쉽다.</li>
-<li>Expression 과 관련이 있는 오퍼레이션이 많은 수 있다. 모든 오펴레이션을 Expression 에만 추가하면 Expression 는 무한히 커진다.</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testSimpleAddition</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    Bank bank = <span class="keyword">new</span> Bank();</span><br><span class="line">    Money reduced = bank.reduce(sum, <span class="string">"USD"</span>);</span><br><span class="line">    assertEquals(Money.dollar(<span class="number">10</span>), reduced);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>두 Money 의 합은 Expression 이어야한다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testSimpleAddition</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    Expression sum = five.plus(five);</span><br><span class="line">    Bank bank = <span class="keyword">new</span> Bank();</span><br><span class="line">    Money reduced = bank.reduce(sum, <span class="string">"USD"</span>);</span><br><span class="line">    assertEquals(Money.dollar(<span class="number">10</span>), reduced);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>5 달러를 만드는 것은 쉽다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testSimpleAddition</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Money five = Money.dollar(<span class="number">5</span>)</span><br><span class="line">    Expression sum = five.plus(five);</span><br><span class="line">    Bank bank = <span class="keyword">new</span> Bank();</span><br><span class="line">    Money reduced = bank.reduce(sum, <span class="string">"USD"</span>);</span><br><span class="line">    assertEquals(Money.dollar(<span class="number">10</span>), reduced);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>이걸 컴파일하려면 어떻게 해야하나 ? Expression 인터페이스가 필요하다. 클래스도 되지만, 더 가볍다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Expression</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>Money.plus 는 Expression 을 반환해야한다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Expression <span class="title">plus</span><span class="params">(Money addend)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Money(amount + addend.amount, currency);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>이건, Money 가 Expressoin 을 구현해야한다는 뜻이다. Expressoin 에 아직 아무 연산이 없으니 쉽다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Money</span> <span class="keyword">implements</span> <span class="title">Expression</span> </span>&#123;</span><br></pre></td></tr></table></figure>
-
-<p>이제 빈 Back 클래스가 필요하다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bank</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>그리고 reduce() Stub 이 필요하다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bank</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">reduce</span><span class="params">(Expression source, String to)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>이제 컴파일 되고, 바로 실패한다. 간단히 가짜 구현을 하자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bank</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">reduce</span><span class="params">(Expression source, String to)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Money.dollar(<span class="number">10</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>다시 초록막대. 리팩토링하자.</p>
-<hr>
-<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/03/11/tdd-chapter-12/" data-id="ck973jwz200o0576wq3q9led3" data-title="[테스트 주도 개발] 12장_드디어 더하기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/03/11/tdd-chapter-09/" data-id="ckag7j38900deqk6we4qfb19e" data-title="[테스트 주도 개발] 9장_우리가 사는 시간" class="article-share-link">Share</a>
       
       
       
@@ -891,7 +880,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/03/08/bigdata-chapter-03/" data-id="ck973jwyx00nm576waap29neh" data-title="[빅데이터] 3장_빅데이터를 위한 데이터 모델: 사례" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/03/08/bigdata-chapter-03/" data-id="ckag7j38800dcqk6wja0yk065" data-title="[빅데이터] 3장_빅데이터를 위한 데이터 모델: 사례" class="article-share-link">Share</a>
       
       
       
@@ -907,7 +896,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/47/">47</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/30/">30</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -918,7 +907,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/big-data/">Big Data</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boost-course/">Boost Course</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/dip/">DIP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/data-structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/design-pattern/">Design Pattern</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jpa/">JPA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">Kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/network/">Network</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/oop/">OOP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/os/">OS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/software-engineering/">Software Engineering</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/spark/">Spark</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tdd/">TDD</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/etc/">etc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ios/">iOS</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/big-data/">Big Data</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boost-course/">Boost Course</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jpa/">JPA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">Kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/oop/">OOP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/os/">OS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/spark/">Spark</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tdd/">TDD</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/etc/">etc</a></li></ul>
     </div>
   </div>
 
@@ -933,7 +922,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
     </div>
   </div>
 
@@ -946,10 +935,6 @@
       <ul>
         
           <li>
-            <a href="/2020/04/19/tdd-chapter-31/">[테스트 주도 개발] 31장_리팩토링</a>
-          </li>
-        
-          <li>
             <a href="/2020/04/19/tdd-chapter-32/">[테스트 주도 개발] 32장_TDD 마스터하기</a>
           </li>
         
@@ -959,6 +944,10 @@
         
           <li>
             <a href="/2020/04/19/tdd-chapter-29/">[테스트 주도 개발] 29장_xUnit 패턴</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/19/tdd-chapter-31/">[테스트 주도 개발] 31장_리팩토링</a>
           </li>
         
           <li>

@@ -68,176 +68,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-Servlet" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-스티커" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/05/07/Servlet/" class="article-date">
-  <time class="dt-published" datetime="2018-05-06T15:00:00.000Z" itemprop="datePublished">2018-05-07</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/boost-course/">Boost Course</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/07/Servlet/">Servlet</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <ul>
-<li><p>Servlet 이란</p>
-<ul>
-<li>자바 웹 어플리케이션의 구성요소 중 동적인 처리를 하는 프로그램의 역할입니다.</li>
-<li>서블릿(servlet)은 WAS에 동작하는 JAVA 클래스입니다. </li>
-<li>서블릿은 HttpServlet 클래스를 상속받아야 합니다.</li>
-<li>웹 페이지를 구성하는 화면(HTML)은 JSP로 표현하고, 복잡한 프로그래밍은 서블릿으로 구현합니다.</li>
-</ul>
-</li>
-<li><p>Life Cycle</p>
-<p><img src="/image/slf.png" alt></p>
-<ul>
-<li>WAS는 서블릿 요청을 받으면 해당 서블릿이 메모리에 있는지 확인합니다.</li>
-<li>if (메모리에 없음) {<ul>
-<li>해당 서블릿 클래스를 메모리에 올림</li>
-<li>init() 메소드를 실행<br>}</li>
-<li>service()메소드를 실행</li>
-</ul>
-</li>
-<li>was가 종료되거나, 웹 어플리케이션이 새롭게 갱신될 경우 destroy() 메소드가 실행됩니다.</li>
-</ul>
-</li>
-<li><p>service(request, response) 메소드</p>
-<ul>
-<li><p>HttpServlet의 service메소드는 템플릿 메소드 패턴으로 구현합니다.</p>
-</li>
-<li><p>클라이언트의 요청이 GET일 경우에는 자신이 가지고 있는 doGet(request, response)메소드를 호출</p>
-</li>
-<li><p>클라이언트의 요청이 Post일 경우에는 자신이 가지고 있는 doPost(request, response)를 호출</p>
-</li>
-</ul>
-</li>
-<li><p>Reference</p>
-<ul>
-<li>NAVER edwith boostcourse Full-Stack Web Developer </li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/07/Servlet/" data-id="ck973jwvb00be576w871q0lmz" data-title="Servlet" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Spring IoC:DI 컨테이너" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/06/Spring IoC:DI 컨테이너/" class="article-date">
-  <time class="dt-published" datetime="2018-05-05T15:00:00.000Z" itemprop="datePublished">2018-05-06</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/boost-course/">Boost Course</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/06/Spring IoC:DI 컨테이너/">Spring IoC/DI 컨테이너</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <ul>
-<li><p>컨테이너</p>
-<ul>
-<li>인스턴스의 생명 주기를 관리<ul>
-<li>Servlet을 실행해주는 WAS는 Servlet 컨테이너를 가지고 있다고 말합니다.</li>
-<li>WAS는 웹 브라우저로부터 서블릿 URL에 해당하는 요청을 받으면, 서블릿을 메모리에 올린 후 실행합니다.</li>
-<li>개발자가 서블릿 클래스를 작성했지만, 실제로 메모리에 올리고 실행하는 것은 WAS가 가지고 있는 Servlet컨테이너입니다.</li>
-<li>Servlet컨테이너는 동일한 서블릿에 해당하는 요청을 받으면, 또 메모리에 올리지 않고 기존에 메모리에 올라간 서블릿을 실행하여 그 결과를 웹 브라우저에게 전달합니다.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>IoC (Inversion of Control)</p>
-<ul>
-<li>예를 들어 서블릿 클래스는 개발자가 만들지만, </li>
-<li>그 서블릿의 메소드를 알맞게 호출하는 것은 WAS입니다.</li>
-<li>이렇게 개발자가 만든 어떤 클래스나 메소드를 다른 프로그램이 대신 실행해주는 것을 제어의 역전이라고 합니다.</li>
-</ul>
-</li>
-<li><p>DI(Dependency Injection)</p>
-<ul>
-<li>DI는 클래스 사이의 의존 관계를 빈(Bean) 설정 정보를 바탕으로 컨테이너가 자동으로 연결해주는 것을 말합니다.</li>
-</ul>
-</li>
-<li><p>DI가 적용 안된 예</p>
-<ul>
-<li>개발자가 직접 인스턴스를 생성합니다.</li>
-<li><img src="/image/di01.png" alt></li>
-</ul>
-</li>
-<li><p>Spring 에서 DI가 적용된 예</p>
-<ul>
-<li><p>엔진 type의 v5변수에 아직 인스턴스가 할당되지 않았습니다.</p>
-<p>컨테이너가 v5변수에 인스턴스를 할당해주게 됩니다.</p>
-</li>
-</ul>
-<p><img src="/image/di02.png" alt></p>
-</li>
-<li><p>Reference</p>
-<ul>
-<li>NAVER edwith boostcourse Full-Stack Web Developer </li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/06/Spring IoC:DI 컨테이너/" data-id="ck973jwva00b8576wvxjoub2p" data-title="Spring IoC/DI 컨테이너" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-물통" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/06/물통/" class="article-date">
-  <time class="dt-published" datetime="2018-05-05T15:00:00.000Z" itemprop="datePublished">2018-05-06</time>
+    <a href="/2017/09/27/스티커/" class="article-date">
+  <time class="dt-published" datetime="2017-09-26T15:00:00.000Z" itemprop="datePublished">2017-09-27</time>
 </a>
     
   <div class="article-category">
@@ -252,7 +86,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/06/물통/">물통</a>
+      <a class="p-name article-title" href="/2017/09/27/스티커/">9465:스티커</a>
     </h1>
   
 
@@ -260,39 +94,44 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p><a href="https://www.acmicpc.net/problem/2251" target="_blank" rel="noopener">https://www.acmicpc.net/problem/2251</a></p>
+        <p><a href="https://www.acmicpc.net/problem/9465" target="_blank" rel="noopener">https://www.acmicpc.net/problem/9465</a></p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ol>
+<li><p>s : n열의 상태 </p>
 <ul>
-<li><p>경우의 수</p>
-<ul>
-<li>A -&gt; B</li>
-<li>A -&gt; C</li>
-<li>B -&gt; A</li>
-<li>B -&gt; C</li>
-<li>C -&gt; A</li>
-<li>C -&gt; B</li>
+<li>[0]      [1]      [2]</li>
+<li>X        O        X</li>
+<li>X        X        O</li>
 </ul>
 </li>
-<li><p>가능한 모든 경우를 Queue에 넣어가면서 체크</p>
-</li>
-<li><p>EX</p>
+<li><p>d[n][s] </p>
 <ul>
-<li><p>(0 0 10)</p>
+<li>2 x n 에서 얻을 수 있는 최대 점수. n열에서 뜯은 스티커는 s</li>
+</ul>
 </li>
-<li><p>(8 0 2), (0 9 1)</p>
+<li><p>a[i][j]</p>
 <ul>
-<li>(0 8 2), (0, 0, 10) : 이미 체크했으므로 큐에 넣지 않음, (8, 2, 0)</li>
-<li>(8 1 1), (0 0 10) : 이미 체크했으므로 큐에 넣지 않음, (1 9 0)</li>
-</ul>
-<p>….</p>
-</li>
+<li>i열 j행에 들어있는 스티커의 점수</li>
 </ul>
 </li>
+<li><p>결과</p>
+<ul>
+<li>d[n][0] =  max( d[n-1][0] , d[n-1][1] , d[n-1][2] )</li>
+<li>d[n][1] =  max( d[n-1][0] , d[n-1][2] ) + a[n][1]</li>
+<li>d[n][2] =  max( d[n-1][0] , d[n-1][1] ) + a[n][2]</li>
 </ul>
+</li>
+<li><p>정답</p>
+<ul>
+<li>max( d[n][0], d[n][1], d[n][2] )</li>
+</ul>
+</li>
+</ol>
+<p>==&gt; 어렵다. 다시 풀어야함</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/06/물통/" data-id="ck973jwvb00bc576wy1yijw3e" data-title="물통" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/09/27/스티커/" data-id="ckag7j3340015qk6wtbm0jgxt" data-title="9465:스티커" class="article-share-link">Share</a>
       
       
       
@@ -304,576 +143,10 @@
 
 
   
-    <article id="post-browser 동작" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-이친수" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/05/05/browser 동작/" class="article-date">
-  <time class="dt-published" datetime="2018-05-04T15:00:00.000Z" itemprop="datePublished">2018-05-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/boost-course/">Boost Course</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/05/browser 동작/">browser 동작</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <ul>
-<li><p>Rroweser comonents</p>
-<p><img src="/image/Browsercomponents.png" alt></p>
-<ul>
-<li>UI</li>
-<li>Browser engine : 소스코드 실행해서 화면에 보여주는. 브롸우저 소프트웨어를 동작시켜주는 핵심 엔진</li>
-<li>Rendering engine : 화면에 위치를 잡고 색칠을 해줌</li>
-<li>Data Persistence : 브라우저도 일부 데이터를 케쉬하고 저장을 해</li>
-<li>Networking : 서버와 HTTP로 정보를 주고 받을 수 있는 네트워크 모듈</li>
-<li>JavaScript Intetpreter : 자바스크림트 코드 처리</li>
-<li>UI Backend : UI 영역 처리</li>
-</ul>
-</li>
-<li><p>Rendering Engines</p>
-<ul>
-<li><p>브라우져별로 다르게 가지고 있어</p>
-</li>
-<li><p>main flow</p>
-<p><img src="/image/rendering.png" alt></p>
-<ul>
-<li>Parsing HTML to construct the DOM tree<ul>
-<li>HTML을 먼저 파싱. 문자 단위로 해석을해서 의미 파악.   </li>
-<li>DOM : Document Objedt Model<ul>
-<li>HTML을 해석해서 일종의 트리구조로 데이터들을 가지고 있어</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Render tree construction</li>
-<li>Layout of the render tree : 스타일 정보와 구조를 합쳐서 화면에 어떠게 배치할지</li>
-<li>Paining the render tree : 화면에 직접 그림 </li>
-<li>diplay</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>사파리 브라우저에서 처리되는 webkit렌더링엔진의 처리과정</p>
-<p><img src="/image/webkit.png" alt></p>
-<ul>
-<li>HTML을 해석해서 DOM Tree를 만들고 </li>
-<li>CSS를 해석해서 CSS Tree(CSS Object Model)을 만든다</li>
-<li>이 두 과정에서 Parsing 과정이 필요<ul>
-<li>토큰 단위로 해석되는 방식은 일반적인 소스코드의 컴파일 과정이라고 보면 된다</li>
-</ul>
-</li>
-<li>DOM Tree와 CSS Tree, 이 두 개는 연관되어 있으므로 Render Tree로 다시 조합</li>
-<li>이렇게 조합된 결과는 화면에 어떻게 배치할지 크기와 위치 정보를 담고 있습니다.</li>
-<li>이후에 이렇게 구성된 Render Tree정보를 통해서 화면에 어떤 부분에 어떻게 색칠을 할지 Painting과정을 거치게 된다</li>
-</ul>
-</li>
-<li><p>Reference</p>
-<ul>
-<li><a href="https://www.html5rocks.com/en/tutorials/internals/howbrowserswork/#Introduction" target="_blank" rel="noopener">https://www.html5rocks.com/en/tutorials/internals/howbrowserswork/#Introduction</a></li>
-<li>NAVER edwith boostcourse Full-Stack Web Developer </li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/05/browser 동작/" data-id="ck973jwv700az576weusx0nnr" data-title="browser 동작" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-프론트엔드, 백엔드" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/05/프론트엔드, 백엔드/" class="article-date">
-  <time class="dt-published" datetime="2018-05-04T15:00:00.000Z" itemprop="datePublished">2018-05-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/boost-course/">Boost Course</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/05/프론트엔드, 백엔드/">프론트엔드, 백엔드</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <ul>
-<li><p>웹 프론트엔드</p>
-<ul>
-<li>사용자에게 웹을 통해 다양한 콘텐츠(문서, 동영상, 사진 등)을 제공</li>
-<li>사용자의 요청(요구사항)에 반응해서 동작</li>
-</ul>
-</li>
-<li><p>웹 프론트엔드의 역할</p>
-<ul>
-<li>웹 콘텐츠를 보여주기 위해 구조를 만들어야함 - HTML : 구조를 잡아</li>
-<li>적절한 배치와 일관된 디자인 제공(보기좋게) - CSS : 디자인</li>
-<li>사용장 요청을 잘 반영해야함 (소통하듯이) - JacaScript : 동적 제어. 프로그래밍</li>
-</ul>
-</li>
-<li><p>벡엔드 개발자가 알아야할 것들</p>
-<ul>
-<li>프로그래밍 언어(JAVA, Python, PHP, JavaScript)</li>
-<li>웹의 동작 원리</li>
-<li>알고리즘, 자료구조 등 프로그래밍 기반 지식</li>
-<li>운영체제, 네트워크 등에 대한 이해</li>
-<li>프레임워크에 대한 이해(ex: Spring)</li>
-<li>DBMS에 대한 이해와 사용방법(ex: MySQL, Oracle)  </li>
-</ul>
-</li>
-<li><p>Reference</p>
-<ul>
-<li>NAVER edwith boostcourse Full-Stack Web Developer </li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/05/프론트엔드, 백엔드/" data-id="ck973jwv600av576wf90ap3m5" data-title="프론트엔드, 백엔드" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-web 동작" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/05/web 동작/" class="article-date">
-  <time class="dt-published" datetime="2018-05-04T15:00:00.000Z" itemprop="datePublished">2018-05-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/boost-course/">Boost Course</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/05/web 동작/">web 동작</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <ul>
-<li><p>물리적인 하나의 컴퓨터에 여러개의 서버가 동작 가능</p>
-</li>
-<li><p>각각 서버는 포트를 가지고 잇음</p>
-</li>
-<li><p>인터넷은 네트워크들의 네트워크. 네트워크들의 결합체</p>
-</li>
-<li><p>TCP/IP로 연결되어 있다</p>
-</li>
-<li><p>통신을 하기 위해 HTTP를 사용함</p>
-<ul>
-<li>HTTP v0.9가 최초</li>
-<li>HTTP : 서바와 클라이언트가 인터넷상에서 데이터 주고 받기 위한 프로토콜</li>
-<li>어떤 종류의 데이터도 전송 가능<ul>
-<li>이미지, 동영상, 텍스트 등 …</li>
-</ul>
-</li>
-<li>HTTP/2 까지 등장</li>
-<li>HTTP/1.1 을 다룰거임</li>
-</ul>
-</li>
-<li><p>HTTP 작동방식</p>
-</li>
-<li><p>네트워크 통신방식에는 유상태와 무상태 두개가 있다</p>
-<ul>
-<li>유상태  방식 :  stateful<ul>
-<li>접속이 계속 유지</li>
-<li>클라이언트와 서버 간에 지속적으로 데이터 주고 받을 수 있어</li>
-<li>채탱, 온라인 게임에 적합</li>
-<li>서버가 동시에 접속 유지 할수 있는 수 정해짐<ul>
-<li>그래서 클라이언트 수가 많아지면 서버의 수도 많아져야해</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>무상태 : stateless  &lt;– HTTP는 이걸 써<ul>
-<li>계속 연결을 맺지 않아</li>
-<li>필요한 경우에만 연결을 맺어</li>
-<li>클라이언트가 계속 연결을 맺고 있지 않아</li>
-<li>하나의 서버가 굉장히 많은 요청/ 응답 처리 가능</li>
-<li>서버/ 클라이언트 모델을 따름</li>
-<li>불특정 다수를 대상으로 하는 서비스에는 적합</li>
-<li>클라이언트와 서버가 계속 연결된 형태가 아니기 때문에 클라이언트와 서버 간의 최대 연결 수보다 훨씬 많은 요청과 응답을 처리할 수 있다.</li>
-<li>연결을 끊어버리기 때문에, 클라이언트의 이전 상황을 알 수가 없다. </li>
-<li>이러한 특징을 무상태(Stateless)라고 말한다. </li>
-<li>이러한 특징 때문에 정보를 유지하기 위해서 Cookie와 같은 기술이 등장하게 되었다.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>URL</p>
-<ul>
-<li>인터넷 상의 자원의 위치</li>
-<li>문서/이미지/동영상등의 위치</li>
-<li>크게 세부분으로 나뉨</li>
-<li>프로토콜의 종류 / 서버의 IP주소(도메인주소) / 자원의 위치</li>
-<li>IP : 집의 집 주소</li>
-<li>하나의 컴퓨터에는 하나의 IP 존재</li>
-<li>집에는 방들이 여러개 ㅇ있어</li>
-<li>각각의 하나의 방을 포트</li>
-<li>한방에 여러명이 생활하기도해. 서버는 이렇게 불가능</li>
-<li>서버는 각 하나의 방을 하나씩 차지</li>
-<li>하나의 방에 여러개의 서버가 존재할수 없다</li>
-<li>포트 번호가 각각 달라야됨</li>
-<li>하나의 물리적 컴퓨터에는 여러개의 서버가 동작 가능</li>
-<li>서버는 포트값이 다르게 동작</li>
-<li>포트값은 0보다 큰 숫자값이다</li>
-<li>HTTP 서버는 기본 포트값이 80 이다</li>
-</ul>
-</li>
-<li><p>웹 동작 원리</p>
-<ul>
-<li>클라이언트가 서버에 접속을 함</li>
-<li>다시 클라이언트가 요청을 함<ul>
-<li>요청되는 데이터들은 정해진 규칙이 있어. 요청데이터포맷 이라고 함</li>
-<li>요청 데이터 포맷<ul>
-<li>헤더<ul>
-<li>요청 메서드 + 요청URI(요청하는 자원의 위치 명시) + HTTP 프로토콜의 버젼<ul>
-<li>요청 메서드 : GET 말고도 많아</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>요청 바디<ul>
-<li>GET방식은 요청바디가 없어</li>
-<li>POST나 PUT을 사용하면 바디에 들어가</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>응답 데이터 포맷<ul>
-<li>헤더</li>
-<li>바디</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>요청에 따른 응답결과를 클라이언트게 응답</li>
-<li>응답이 끝나고 나면 서버와 클라이어트의 연결이 끊겨</li>
-</ul>
-</li>
-<li><p>Reference</p>
-<ul>
-<li><a href="https://www.html5rocks.com/en/tutorials/internals/howbrowserswork/#Introduction" target="_blank" rel="noopener">https://www.html5rocks.com/en/tutorials/internals/howbrowserswork/#Introduction</a></li>
-<li>NAVER edwith boostcourse Full-Stack Web Developer </li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/05/web 동작/" data-id="ck973jwv300aq576wza3uc696" data-title="web 동작" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-HTML" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/05/HTML/" class="article-date">
-  <time class="dt-published" datetime="2018-05-04T15:00:00.000Z" itemprop="datePublished">2018-05-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/boost-course/">Boost Course</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/05/HTML/">HTML Layout</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <ul>
-<li><p>‘레이아웃(Layout)’ 이란 ‘배치’라는 뜻으로, HTML 태그로 감싸진 각 정보 요소를 화면상의 어느 위치에 어떻게 자리잡을지를 결정하는 것을 말합니다.</p>
-<ul>
-<li>기본적으로 상단의 <header></header></li>
-<li>하단의 <footer></footer></li>
-<li>운데의 본문 영역</li>
-</ul>
-</li>
-<li><p>레이아웃을 위한 태그</p>
-<p><img src="/image/layoutT.png" alt></p>
-</li>
-<li><p>id, class</p>
-<ul>
-<li>id<ul>
-<li>고유한 속성으로 한 HTML 문서에 하나만 사용 가능합니다.</li>
-<li>고유한 ID 값이 있으면 하나하나에 특별한 제어를 할 수 있으며 검색에도 용이합니다.</li>
-</ul>
-</li>
-<li>class<ul>
-<li>하나의 HTML문서 안에 중복해서 사용 가능합니다.</li>
-<li>하나의 태그에 여러 개의 다른 class 이름을 공백을 기준으로 나열할 수가 있습니다.</li>
-<li>홈페이지 전체적인 스타일을 일관성 있게 지정하기 위해서는 class의 사용이 필수적입니다.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Reference</p>
-<ul>
-<li>NAVER edwith boostcourse Full-Stack Web Developer </li>
-<li><a href="https://gist.github.com/thomd/9220049" target="_blank" rel="noopener">https://gist.github.com/thomd/9220049</a></li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/05/HTML/" data-id="ck973jwv900b6576wlkjxvmbm" data-title="HTML Layout" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post- 웹 서버" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/05/ 웹 서버/" class="article-date">
-  <time class="dt-published" datetime="2018-05-04T15:00:00.000Z" itemprop="datePublished">2018-05-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/boost-course/">Boost Course</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/05/ 웹 서버/">웹 서버</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <ul>
-<li><p>웹 서버란</p>
-<ul>
-<li>웹 서버는 소프트웨어(Software)를 보통 말하지만, 웹 서버 소프트웨어가 동작하는 컴퓨터를 말합니다.</li>
-<li>웹 서버의 가장 중요한 기능은 클라이언트(Client)가 요청하는 HTML 문서나 각종 리소스(Resource)를 전달하는 것입니다.<ul>
-<li>클라이언트 : 웹 브라우저, 웹 크롤러(네이버나 구글같은 검색 사이트가 다른 웹 사이트 정보를 읽어갈때 사용하는 소프트웨어)<ul>
-<li>HTTP에 맞게 서버에게 리소스 요쳥</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>웹 브라우저나 웹 크롤러가 요청하는 리소스는 컴퓨터에 저장된 정적(static)인 데이터이거나 동적인 결과가 될 수 있습니다.<ul>
-<li>정적 데이터 : 이미지 , HTML, CSS, JavaScript (컴퓨터에 저장된 파일들)</li>
-<li>동적 데이터 : 웹 서버에 의해 실행되는, 프로그래밍을 통해 만들어진 결과</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>웹 서버 소프트웨어 종류</p>
-<ul>
-<li>Apache, Nginx, Microsoft, Google 웹 서버<ul>
-<li>Apache웹 서버<ul>
-<li>Apache Software Foundation에서 개발한 웹서버로 오픈소스 소프트웨어(Open-source Software)이며, 거의 대부분 운영체제에서 설치 및 사용을 할 수 있습니다.</li>
-</ul>
-</li>
-<li>Nginx <ul>
-<li>차세대 웹서버로 불리며 더 적은 자원으로 더 빠르게 데이터를 서비스하는 것을 목적으로 만들어진 서버이며 Apache웹 서버와 마찬가지로 오픈소스 소프트웨어입니다.</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Reference</p>
-<ul>
-<li>NAVER edwith boostcourse Full-Stack Web Developer </li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/05/ 웹 서버/" data-id="ck973jwv800b4576w1ydteut6" data-title="웹 서버" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post- browser에서의 웹 개발" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/05/ browser에서의 웹 개발/" class="article-date">
-  <time class="dt-published" datetime="2018-05-04T15:00:00.000Z" itemprop="datePublished">2018-05-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/boost-course/">Boost Course</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/05/ browser에서의 웹 개발/"> browser에서의 웹 개발</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <ul>
-<li><p>HTML 문서구조</p>
-<ul>
-<li>크롬 개발자 도구 열기 (Option + Command + i)</li>
-<li>Network tab 에서 새로고침을 하면</li>
-</ul>
-</li>
-<li><p>알게된 몇 가지 특징</p>
-<ul>
-<li><p>html 문서는 html이라는 태그로 시작해서 html 태그로 끝남</p>
-</li>
-<li><p>head</p>
-<ul>
-<li>자세한 문서에 대한 정보를 포함</li>
-</ul>
-</li>
-<li><p>body</p>
-<ul>
-<li>화면에 포함될 div 같은것들</li>
-</ul>
-</li>
-<li><p>html은 계청적</p>
-</li>
-<li><p>html은 tag를 사용해서 표현</p>
-</li>
-<li><p>JavaScript와 CSS가 html 안에 여기 저기 존재</p>
-</li>
-</ul>
-</li>
-<li><p>CSS / JavaScript 코드 위치</p>
-<ul>
-<li>JavaScript 코드<ul>
-<li>body 태그 닫히기 전에 위치하는 것이 렌더링을 방해하지 않아도 좋고, </li>
-</ul>
-</li>
-<li>CSS<ul>
-<li>head 안에 위치해서 렌더링 처리 시에 브라우저가 더 빨리 참고할 수 있게 하는 것이 좋습니다.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Reference</p>
-<ul>
-<li>NAVER edwith boostcourse Full-Stack Web Developer </li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/05/ browser에서의 웹 개발/" data-id="ck973jwv800b2576w28nvtf8v" data-title=" browser에서의 웹 개발" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-프린터 큐" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/04/프린터 큐/" class="article-date">
-  <time class="dt-published" datetime="2018-05-03T15:00:00.000Z" itemprop="datePublished">2018-05-04</time>
+    <a href="/2017/09/26/이친수/" class="article-date">
+  <time class="dt-published" datetime="2017-09-25T15:00:00.000Z" itemprop="datePublished">2017-09-26</time>
 </a>
     
   <div class="article-category">
@@ -888,7 +161,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/04/프린터 큐/">프린터 큐</a>
+      <a class="p-name article-title" href="/2017/09/26/이친수/">2193:이친수</a>
     </h1>
   
 
@@ -896,53 +169,457 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p><a href="https://www.acmicpc.net/problem/1966" target="_blank" rel="noopener">https://www.acmicpc.net/problem/1966</a></p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ul>
-<li><p>queue에서 하나씩 dequeue하면서 우선순위가 더 큰 문서가 있는지 확인</p>
+        <p><a href="https://www.acmicpc.net/problem/2193" target="_blank" rel="noopener">https://www.acmicpc.net/problem/2193</a></p>
+<h2 id="풀이-1"><a href="#풀이-1" class="headerlink" title="풀이 1)"></a>풀이 1)</h2><ol>
+<li>d[n][l]<ul>
+<li>자리가 n &amp; 끝자리가 l 인 이친수의 개수</li>
+</ul>
+</li>
+<li>d[n][0]<ul>
+<li>d[n-1][0] + d[n-1][1]</li>
+</ul>
+</li>
+<li>d[n][1]<ul>
+<li>d[n-1][0]</li>
+</ul>
+</li>
+<li>ans<ul>
+<li>d[n][0]+d[n][1]        </li>
+</ul>
+</li>
+</ol>
+<p>=&gt; 근데 왜 답은 틀렸다고 나올까..?</p>
+<h2 id="풀이-2"><a href="#풀이-2" class="headerlink" title="풀이 2)"></a>풀이 2)</h2><ol>
+<li>d[n]<ul>
+<li>n 자리 이친수의 개수</li>
+<li>d[n-1] + d[n-2]</li>
+</ul>
+</li>
+</ol>
+<p>=&gt; 이 방법도 틀리게 나옴</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2017/09/26/이친수/" data-id="ckag7j3350017qk6w4e3qcvfl" data-title="2193:이친수" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-오르막수" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/09/25/오르막수/" class="article-date">
+  <time class="dt-published" datetime="2017-09-24T15:00:00.000Z" itemprop="datePublished">2017-09-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/09/25/오르막수/">11057:오르막수</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.acmicpc.net/problem/11057" target="_blank" rel="noopener">https://www.acmicpc.net/problem/11057</a></p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ol>
+<li><p>이차원 배열로 생각</p>
+</li>
+<li><p>식 세우기 … 다음과 같이 시도했지만 정답 도출 실패..  <br>==&gt; 답지 보고 다시 풀 예정</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int d[n][l] : 자리수가 n 자리인 수의 마지막 수가 l인 오르막 수의 개수</span><br><span class="line">d[n][l] = d[n-1][l] + (10-l)  ( l은 0~9 )</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2017/09/25/오르막수/" data-id="ckag7j3330013qk6wqsz9o7v4" data-title="11057:오르막수" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-쉬운계단수" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/09/23/쉬운계단수/" class="article-date">
+  <time class="dt-published" datetime="2017-09-22T15:00:00.000Z" itemprop="datePublished">2017-09-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/09/23/쉬운계단수/">10844:쉬운계단수</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.acmicpc.net/problem/10844" target="_blank" rel="noopener">https://www.acmicpc.net/problem/10844</a></p>
+<h2 id="틀린-풀이"><a href="#틀린-풀이" class="headerlink" title="틀린 풀이"></a>틀린 풀이</h2><p>직접 <br><br>길이가 1인 계단수 <br><br>길이가 2인 계단수<br><br>…<br><br>를 하나하나 구해보니 <br><br>길이가 n인 계단 수 = 길이가 n-1인 계단수 * 2 -1 이라는 규칙이 나왔다.<br><br>하지만 계속 채점 결과는 틀렸다고 나옴.. </p>
+<h2 id="맞는-풀이"><a href="#맞는-풀이" class="headerlink" title="맞는 풀이"></a>맞는 풀이</h2><p>이차원 배열로 품</p>
+<pre><code>* D[i][j] : 길이 i, 마지막 숫자가 j인 계단 수의 개수
+* D[N][L] : N자리 계단수 마지막수는 L인 계단수의 개수
+* D[N][L] = D[N-1][L-1] + D[N-1][L+1] (L : 1~8)
+* D[N][0] = D[N][1]
+* D[N][9] = D[N-1][8]</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2017/09/23/쉬운계단수/" data-id="ckag7j3320011qk6w82v6i7iu" data-title="10844:쉬운계단수" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-붕어빵판매하기" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/09/22/붕어빵판매하기/" class="article-date">
+  <time class="dt-published" datetime="2017-09-21T15:00:00.000Z" itemprop="datePublished">2017-09-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/09/22/붕어빵판매하기/">11052:붕어빵 판매하기</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.acmicpc.net/problem/11052" target="_blank" rel="noopener">https://www.acmicpc.net/problem/11052</a></p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p>d[n] = n개 팔아서 얻을 수 있는 최대 수익 <br><br>따라서<br>max( p[i] + d[n-i] )<br>i는 1~n</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2017/09/22/붕어빵판매하기/" data-id="ckag7j330000zqk6w91h2tquu" data-title="11052:붕어빵 판매하기" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-123더하기" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/09/21/123더하기/" class="article-date">
+  <time class="dt-published" datetime="2017-09-20T15:00:00.000Z" itemprop="datePublished">2017-09-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/09/21/123더하기/">9095:1,2,3더하기</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.acmicpc.net/problem/9095" target="_blank" rel="noopener">https://www.acmicpc.net/problem/9095</a></p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p>재귀로 푸니 또 다시 런타임 에러. <br>그래서 재귀로 풀지 않음<br></p>
+<p>핵심 : 가장 마지막에 1을 더하거나, 2를 더하거나, 3을 더하건<br></p>
+<pre><code>d[n] = d[n-1] + d[n-2] + d[n-3]</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2017/09/21/123더하기/" data-id="ckag7j330000xqk6wtq4f1wfe" data-title="9095:1,2,3더하기" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2xn타일링2" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/09/20/2xn타일링2/" class="article-date">
+  <time class="dt-published" datetime="2017-09-19T15:00:00.000Z" itemprop="datePublished">2017-09-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/09/20/2xn타일링2/">11727:2xn타일링2</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.acmicpc.net/problem/11727" target="_blank" rel="noopener">https://www.acmicpc.net/problem/11727</a></p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ol>
+<li><p>d(n) = d(n-1) + 2*d(n-2)<br></p>
+</li>
+<li><p>재귀</p>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2017/09/20/2xn타일링2/" data-id="ckag7j32x000tqk6wev4tdbyl" data-title="11727:2xn타일링2" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-2xn타일링" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/09/19/2xn타일링/" class="article-date">
+  <time class="dt-published" datetime="2017-09-18T15:00:00.000Z" itemprop="datePublished">2017-09-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/09/19/2xn타일링/">11726:2xn타일링</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.acmicpc.net/problem/11726" target="_blank" rel="noopener">https://www.acmicpc.net/problem/11726</a></p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ol>
+<li>d(n) = d(n-2) + n(n-1)</li>
+</ol>
+<ol start="2">
+<li><p>재귀함수</p>
+<p> “왜 시간 초과?”</p>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2017/09/19/2xn타일링/" data-id="ckag7j32w000rqk6wxq1sp679" data-title="11726:2xn타일링" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-1로만들기" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/09/18/1로만들기/" class="article-date">
+  <time class="dt-published" datetime="2017-09-17T15:00:00.000Z" itemprop="datePublished">2017-09-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/09/18/1로만들기/">1463:1로 만들기</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.acmicpc.net/problem/1463" target="_blank" rel="noopener">https://www.acmicpc.net/problem/1463</a></p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p>D[N] = N을 1로 만드는데 필요한 연산의 최솟값</p>
+<p>N<br>​    -&gt; N-3 -&gt; ….. &gt; 1    :  1 + D[N/3]    ====1번 <br><br>​    -&gt; N-2 -&gt; ….. &gt; 1    :  1 + D[N/2]    ====2번 <br><br>​    -&gt; N-1 -&gt; ….. &gt; 1        :  1 + D[N/1]    ====3번 <br></p>
+<pre><code>D[N] = min(1번, 2번, 3번)</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2017/09/18/1로만들기/" data-id="ckag7j32z000vqk6w5k6a7qkd" data-title="1463:1로 만들기" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Greedy Algorithm" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/09/17/Greedy Algorithm/" class="article-date">
+  <time class="dt-published" datetime="2017-09-16T15:00:00.000Z" itemprop="datePublished">2017-09-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/09/17/Greedy Algorithm/">Greedy Algorithm</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="정의"><a href="#정의" class="headerlink" title="정의"></a>정의</h2><ul>
+<li>어떤 것을 결정해야 하는 순간, 가장 좋다고 생각하는 것을 선택하면서 답 찾는 알고리즘</li>
+</ul>
+<h2 id="Dynamic-Programming과-비교"><a href="#Dynamic-Programming과-비교" class="headerlink" title="Dynamic Programming과 비교"></a>Dynamic Programming과 비교</h2><ul>
+<li><p>DP : 어떤 상황에서 할수 있는 상황 모두 살펴보고 거기서 가장 좋은것 선택</p>
+</li>
+<li><p>Greedy : 할수 있는 선택 중에 제일 좋다고 생각되는 것 하나 선택해서 정답 찾아감</p>
+</li>
+</ul>
+<h2 id="단점"><a href="#단점" class="headerlink" title="단점"></a>단점</h2><ul>
+<li>그 때 그 때는 최적일 수 있지만, 최종적으로는 최적이 아니 수도</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">ex)  12원을 1, 4, 5원으로 거슬러 줄 때, </span><br><span class="line"></span><br><span class="line">5원 2개, 1원 2개 --&gt; 총 4개가 필요</span><br><span class="line"></span><br><span class="line">but, 정답은 4원 3개!!!</span><br><span class="line"></span><br><span class="line">DP로 풀어야해.</span><br><span class="line"></span><br><span class="line">D[n] = n원을 거슬러 주는 동전의 최소 개수</span><br><span class="line"></span><br><span class="line">min(D[n-1], D[n-4], D[n-5]) + 1</span><br></pre></td></tr></table></figure>
+
+<h2 id="그럼-언제-쓰나"><a href="#그럼-언제-쓰나" class="headerlink" title="그럼 언제 쓰나"></a>그럼 언제 쓰나</h2><ul>
+<li><p>지금 이 순간 가장 좋은 경우 선택하는 것이 최적일 때.</p>
+</li>
+<li><p>왜 그게 최적인지 증명해야함 </p>
+</li>
+<li><p>그래서 가장 어려워</p>
+</li>
+<li><p>그래서 시험이나 대회에 나오면 가장 나중에 풀어</p>
+</li>
+</ul>
+<h2 id="예제"><a href="#예제" class="headerlink" title="예제"></a>예제</h2><p><a href="https://www.acmicpc.net/problem/11399" target="_blank" rel="noopener">https://www.acmicpc.net/problem/11399</a></p>
 <ul>
-<li>이를 위해, temp queue를 생성</li>
+<li>줄 서 있는 사람 N, 각 사람의 인출 시간 Pi. 각 사람이 인출하는데 필요한 시간의 합의 최소값은?</li>
 </ul>
-</li>
-<li><p>ex</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">ex) P1=3, P2=1, P3=4, P4=3, P5=2</span><br><span class="line"></span><br><span class="line">1번  : 3분 소요</span><br><span class="line"></span><br><span class="line">2번 : 3 +1 = 4분 소요 </span><br><span class="line"></span><br><span class="line">3번 : 3 + 1 + 4 = 8분 소요 </span><br><span class="line"></span><br><span class="line">4번 : 3 + 1 + 4 + 3 = 11분  소요 </span><br><span class="line"></span><br><span class="line">5번 : 3 + 1 + 4 + 3 + 2 = 13 분 소요      </span><br><span class="line"></span><br><span class="line">따라서, 3 + 4 + 8 + 11 + 13 = 39분 소요</span><br></pre></td></tr></table></figure>
+
 <ul>
-<li><p>original : 1 2 3 4</p>
-<ul>
-<li>temp : 2 3 4 1 <ul>
-<li>우선순위 더 큰 문서가 있음</li>
-</ul>
+<li><p>기다리는 시간 짧은 사람부터 인출하는 것이 좋음 … 이걸 증명해야함.</p>
 </li>
-</ul>
+<li><p>p1 &lt;= p2&lt;= ……&lt;=pn 이라고 가정</p>
 </li>
-<li><p>original : 2 3 4 1</p>
-<ul>
-<li>temp : 3 4 1 2<ul>
-<li>우선순위 더 큰 문서가 있음</li>
-</ul>
+<li><p>S = p1 + (p1+p2) + (p1+p2+p3) +  …. + (p1+p2+p3+…+pn) = n<em>p1 + (n-1)</em>p2 + … + pn</p>
 </li>
-</ul>
+<li><p>중간에 i&lt;j 인 pi&lt;pj 순서를 바꾸면 S는 더 커지거나 같아져야함. 즉, S &lt;= S<code>----&gt;  S-S</code> &lt;=0</p>
 </li>
-<li><p>original : 4 1 2 3</p>
-<ul>
-<li>temp : 1 2 3 4</li>
-<li>temp : 2 3 4 1</li>
-<li>temp : 3 4 1 2<ul>
-<li>우선순위 더 큰 문서가 없음</li>
-<li>original 에서 head remove</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>original : 1 2 3</p>
-<p>….</p>
-</li>
-</ul>
+<li><p>계산결과, S-S`&lt;=0 을 성립함.  따라서 오름차순이 정답</p>
 </li>
 </ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/04/프린터 큐/" data-id="ck973jwv700ax576w94th580d" data-title="프린터 큐" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/09/17/Greedy Algorithm/" data-id="ckag7j32s000lqk6wshh63ucj" data-title="Greedy Algorithm" class="article-share-link">Share</a>
       
       
       
@@ -958,7 +635,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/27/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/26/">26</a><a class="page-number" href="/page/27/">27</a><span class="page-number current">28</span><a class="page-number" href="/page/29/">29</a><a class="page-number" href="/page/30/">30</a><span class="space">&hellip;</span><a class="page-number" href="/page/47/">47</a><a class="extend next" rel="next" href="/page/29/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/27/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/26/">26</a><a class="page-number" href="/page/27/">27</a><span class="page-number current">28</span><a class="page-number" href="/page/29/">29</a><a class="page-number" href="/page/30/">30</a><a class="extend next" rel="next" href="/page/29/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -969,7 +646,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/big-data/">Big Data</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boost-course/">Boost Course</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/dip/">DIP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/data-structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/design-pattern/">Design Pattern</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jpa/">JPA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">Kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/network/">Network</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/oop/">OOP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/os/">OS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/software-engineering/">Software Engineering</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/spark/">Spark</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tdd/">TDD</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/etc/">etc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ios/">iOS</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/big-data/">Big Data</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boost-course/">Boost Course</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jpa/">JPA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">Kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/oop/">OOP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/os/">OS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/spark/">Spark</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tdd/">TDD</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/etc/">etc</a></li></ul>
     </div>
   </div>
 
@@ -984,7 +661,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
     </div>
   </div>
 
@@ -997,10 +674,6 @@
       <ul>
         
           <li>
-            <a href="/2020/04/19/tdd-chapter-31/">[테스트 주도 개발] 31장_리팩토링</a>
-          </li>
-        
-          <li>
             <a href="/2020/04/19/tdd-chapter-32/">[테스트 주도 개발] 32장_TDD 마스터하기</a>
           </li>
         
@@ -1010,6 +683,10 @@
         
           <li>
             <a href="/2020/04/19/tdd-chapter-29/">[테스트 주도 개발] 29장_xUnit 패턴</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/19/tdd-chapter-31/">[테스트 주도 개발] 31장_리팩토링</a>
           </li>
         
           <li>

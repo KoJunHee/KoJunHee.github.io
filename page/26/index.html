@@ -68,10 +68,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-안전영역" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-합분해" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/05/15/안전영역/" class="article-date">
-  <time class="dt-published" datetime="2018-05-14T15:00:00.000Z" itemprop="datePublished">2018-05-15</time>
+    <a href="/2017/11/04/합분해/" class="article-date">
+  <time class="dt-published" datetime="2017-11-03T15:00:00.000Z" itemprop="datePublished">2017-11-04</time>
 </a>
     
   <div class="article-category">
@@ -86,7 +86,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/15/안전영역/">안전영역</a>
+      <a class="p-name article-title" href="/2017/11/04/합분해/">2225:합분해</a>
     </h1>
   
 
@@ -94,20 +94,24 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p><a href="https://www.acmicpc.net/problem/2468" target="_blank" rel="noopener">https://www.acmicpc.net/problem/2468</a></p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p>비의 높이(지역 높이 최소~최대) 로 다음을 반복</p>
-<ol>
-<li>물에 잠긴 영역 체크</li>
-<li>BFS로 안정 영역 개수 체크</li>
+        <p><a href="https://www.acmicpc.net/problem/2225" target="_blank" rel="noopener">https://www.acmicpc.net/problem/2225</a></p>
+<h2 id="틀린-풀이"><a href="#틀린-풀이" class="headerlink" title="틀린 풀이"></a>틀린 풀이</h2><ol>
+<li><p>d[n][k]</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">k개 더해서 합이 n이 되는 경우의 수</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>d[n][k]</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d[0][k-1] + d[1][k-1] + d[2][k-1] + ... + d[n][k-1]</span><br></pre></td></tr></table></figure>
+
+</li>
 </ol>
-<h2 id="오답-원인"><a href="#오답-원인" class="headerlink" title="오답 원인"></a>오답 원인</h2><p>최소 답을 0으로 설정하였기 때문에 계속 틀렸었다.</p>
-<h2 id="해결"><a href="#해결" class="headerlink" title="해결"></a>해결</h2><p>최소 답은 1이다. </p>
-<p>왜냐하면, 아무 것도 잠기지 않는다면 하나의 영역이기 때문이다.</p>
+<h2 id="맞는-풀이"><a href="#맞는-풀이" class="headerlink" title="맞는 풀이"></a>맞는 풀이</h2><p><img src="/image/8.png" alt></p>
+<p><img src="/image/7.png" alt></p>
+<p>​    </p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/15/안전영역/" data-id="ck973jwvm00cj576wm8dugg33" data-title="안전영역" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/11/04/합분해/" data-id="ckag7j33o002bqk6w0okge23w" data-title="2225:합분해" class="article-share-link">Share</a>
       
       
       
@@ -119,90 +123,10 @@
 
 
   
-    <article id="post-Sampling, Quantization" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-파도반수열" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/05/15/Sampling, Quantization/" class="article-date">
-  <time class="dt-published" datetime="2018-05-14T15:00:00.000Z" itemprop="datePublished">2018-05-15</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/dip/">DIP</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/15/Sampling, Quantization/">Sampling, Quantization</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <ul>
-<li><p>Conversion of analog signal to digital signal</p>
-<p><img src="/image/sampling.png" alt></p>
-<ul>
-<li>The output of most of the image sensors is an analog signal, </li>
-<li>and we can not apply digital processing on it </li>
-<li>because we can not store it. </li>
-<li>We can not store it because it requires infinite memory </li>
-<li>to store a signal that can have infinite values.</li>
-<li>So we have to convert an analog signal into a digital signal.</li>
-<li>To create an image which is digital, </li>
-<li>we need to covert continuous data into digital form. </li>
-<li>There are two steps in which it is done.<ul>
-<li>Sampling</li>
-<li>Quantization</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Sampling</p>
-<ul>
-<li><p>It is done on X axis.</p>
-</li>
-<li><p>It is the conversion of x axis (infinite values) to digital values.</p>
-</li>
-</ul>
-</li>
-<li><p>Quantization</p>
-<p><img src="/image/quantization.png" alt></p>
-<ul>
-<li>It is done on Y axis.</li>
-<li>digitizing the amplitudes is known as Quantization</li>
-<li>In the figure shown above, </li>
-<li>these vertically ranging values have been quantized into 5 different levels or partitions. </li>
-<li>Ranging from 0 black to 4 white. </li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/15/Sampling, Quantization/" data-id="ck973jwvl00ce576wo9bkg1ow" data-title="Sampling, Quantization" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-숨바꼭질" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/13/숨바꼭질/" class="article-date">
-  <time class="dt-published" datetime="2018-05-12T15:00:00.000Z" itemprop="datePublished">2018-05-13</time>
+    <a href="/2017/11/03/파도반수열/" class="article-date">
+  <time class="dt-published" datetime="2017-11-02T15:00:00.000Z" itemprop="datePublished">2017-11-03</time>
 </a>
     
   <div class="article-category">
@@ -217,7 +141,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/13/숨바꼭질/">숨바꼭질</a>
+      <a class="p-name article-title" href="/2017/11/03/파도반수열/">파도반 수열</a>
     </h1>
   
 
@@ -225,33 +149,21 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p><a href="https://www.acmicpc.net/problem/1697" target="_blank" rel="noopener">https://www.acmicpc.net/problem/1697</a></p>
-<ul>
-<li>현재 위치에서 이동 가능한 곳 체크<ul>
-<li>X - 1</li>
-<li>X + 1</li>
-<li>X * 2</li>
-</ul>
+        <p><a href="https://www.acmicpc.net/problem/9461" target="_blank" rel="noopener">https://www.acmicpc.net/problem/9461</a></p>
+<h2 id="틀린-풀이"><a href="#틀린-풀이" class="headerlink" title="틀린 풀이"></a>틀린 풀이</h2><ol>
+<li><p>p[i]를 나열해서 규칙을 찾음</p>
 </li>
-<li>체크 조건<ul>
-<li>이동 가능한 곳이 범위 안에 있나?</li>
-<li>아직 방문하지 않은 곳인가?</li>
-</ul>
+<li><p>p[i] = p[i-1] + p[i-5]</p>
 </li>
-<li>Queue에서 이동 가능한 곳을 뽑아냄<ul>
-<li>동생의 위치이면 그래프의 Depth를 출력</li>
-</ul>
+<li><p>결과 : 틀렸다고 나옴</p>
+<p><img src="/image/5.png" alt></p>
 </li>
-<li>그래프의 Depth를 표현하기 위해 <ul>
-<li>Class는 위치와 depth로 구성</li>
-</ul>
-</li>
-</ul>
+</ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/13/숨바꼭질/" data-id="ck973jwvk00cc576w34ck6rz3" data-title="숨바꼭질" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/11/03/파도반수열/" data-id="ckag7j33n0027qk6w4zbu87sf" data-title="파도반 수열" class="article-share-link">Share</a>
       
       
       
@@ -263,371 +175,10 @@
 
 
   
-    <article id="post-Abstract Factory Pattern01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-암호코드" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/05/13/Abstract Factory Pattern01/" class="article-date">
-  <time class="dt-published" datetime="2018-05-12T15:00:00.000Z" itemprop="datePublished">2018-05-13</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/13/Abstract Factory Pattern01/">Abstract Factory Pattern01</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>The Abstract Factory Pattern provides an interface for creating families of related or dependent objects without specifying their concrete classes. </p>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/abstractFactoryPattern.png" alt></p>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/abstarct001.png" alt></p>
-<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><img src="/image/afp01.png" alt></p>
-<p><img src="/image/afp02.png" alt></p>
-<p><img src="/image/afp03.png" alt></p>
-<p><img src="/image/afp04.png" alt></p>
-<p><img src="/image/afp05.png" alt></p>
-<p><img src="/image/afp06.png" alt></p>
-<p><img src="/image/afp07.png" alt></p>
-<p><img src="/image/afp08.png" alt></p>
-<p><img src="/image/afp09.png" alt></p>
-<p><img src="/image/afp10.png" alt></p>
-<p><img src="/image/afp11.png" alt></p>
-<p><img src="/image/afp12.png" alt></p>
-<p><img src="/image/afp13.png" alt></p>
-<p><img src="/image/afp14.png" alt></p>
-<p><img src="/image/afp15.png" alt></p>
-<p><img src="/image/afp16.png" alt></p>
-<p><img src="/image/afp17.png" alt></p>
-<p><img src="/image/afp18.png" alt></p>
-<p><img src="/image/afp19.png" alt></p>
-<p><img src="/image/afp20.png" alt></p>
-<p><img src="/image/afp21.png" alt></p>
-<p><img src="/image/afp22.png" alt></p>
-<p><img src="/image/afp23.png" alt></p>
-<p><img src="/image/afp24.png" alt></p>
-<p><img src="/image/afp25.png" alt></p>
-<p><img src="/image/afp26.png" alt></p>
-<p><img src="/image/afp27.png" alt></p>
-<p><img src="/image/afp28.png" alt></p>
-<p><img src="/image/afp29.png" alt></p>
-<p><img src="/image/afp30.png" alt></p>
-<p><img src="/image/afp31.png" alt></p>
-<p><img src="/image/afp32.png" alt></p>
-<p><img src="/image/afp33.png" alt></p>
-<p><img src="/image/afp34.png" alt></p>
-<p><img src="/image/afp35.png" alt></p>
-<p><img src="/image/afp36.png" alt></p>
-<p><img src="/image/afp37.png" alt></p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Head First Design Pattern</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/13/Abstract Factory Pattern01/" data-id="ck973jwvi00c2576wkubgh5uz" data-title="Abstract Factory Pattern01" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Simple Factory" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/13/Simple Factory/" class="article-date">
-  <time class="dt-published" datetime="2018-05-12T15:00:00.000Z" itemprop="datePublished">2018-05-13</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/13/Simple Factory/">Simple Factory</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>The Simple Factory isn’t actually a Design Pattern; it’s more of a programming idiom. </p>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/simpleFactoryUML.png" alt></p>
-<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><img src="/image/pizza01.png" alt></p>
-<p><img src="/image/pizza02.png" alt></p>
-<p><img src="/image/pizza03.png" alt></p>
-<p><img src="/image/pizza08.png" alt></p>
-<p><img src="/image/pizza04.png" alt></p>
-<p><img src="/image/pizza05.png" alt></p>
-<p><img src="/image/pizza06.png" alt></p>
-<p><img src="/image/pizza07.png" alt></p>
-<h2 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h2><p><img src="/image/pizza09.png" alt></p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Head First Design Pattern</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/13/Simple Factory/" data-id="ck973jwvk00ca576wvkpbm4uz" data-title="Simple Factory" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Factory Method Pattern02" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/13/Factory Method Pattern02/" class="article-date">
-  <time class="dt-published" datetime="2018-05-12T15:00:00.000Z" itemprop="datePublished">2018-05-13</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/13/Factory Method Pattern02/">Factory Method Pattern02</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>객체를 생성하는 코드를 별도의 클래스/메소드로 분리함으로써 객체 생성 방식의 변화에 대비하는데 유용하다.</p>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/factorymethodpa01.png" alt></p>
-<ul>
-<li>Product <ul>
-<li>펙토리 메서드로 생설될 객체의 공통 인터페이스</li>
-</ul>
-</li>
-<li>ConcreteProduct<ul>
-<li>구체적으로 객체가 생성되는 클래스</li>
-</ul>
-</li>
-<li>Creator<ul>
-<li>팩토리 메서드를 갖는 클래스</li>
-</ul>
-</li>
-<li>ConcreteCreator<ul>
-<li>팩토리 매서드를 구현하는 클래스</li>
-<li>ConcreteProduct 객체를 생성 </li>
-</ul>
-</li>
-</ul>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/factorymethodpa02.png" alt></p>
-<ul>
-<li>ElevatorScheduler interface<ul>
-<li>Prudct</li>
-</ul>
-</li>
-<li>ResponseTimeScheduler, ThroughputScheduler<ul>
-<li>ConcretePrudct</li>
-</ul>
-</li>
-<li>ElevatorManger<ul>
-<li>Creator</li>
-</ul>
-</li>
-<li>ElevatorMangerWithThroughputScheduling, ElevatorMangerWithDynamicScheduling, ElevatorManagerWithResponseTimeScheduling<ul>
-<li>ConcreteCreator</li>
-</ul>
-</li>
-</ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Java 객체 지향 디자인 패턴 &lt;정인상, 채흥석 지음&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/13/Factory Method Pattern02/" data-id="ck973jwvj00c8576wn85u6lod" data-title="Factory Method Pattern02" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Factory Method Pattern01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/13/Factory Method Pattern01/" class="article-date">
-  <time class="dt-published" datetime="2018-05-12T15:00:00.000Z" itemprop="datePublished">2018-05-13</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/13/Factory Method Pattern01/">Factory Method Pattern01</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>The Factory Method Pattern defines an interface for creating an object, </p>
-<p>but lets subclasses decide which class to instantiate. </p>
-<p>Factory Method lets a class defer instantiation to subclasses. </p>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/factoryMethod01.png" alt> </p>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/factoryMethod02.png" alt> </p>
-<h2 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h2><p><img src="/image/fm15.png" alt> </p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Head First Design Pattern</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/13/Factory Method Pattern01/" data-id="ck973jwvj00c6576wqpsi294z" data-title="Factory Method Pattern01" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Abstract Factory Pattern02" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/13/Abstract Factory Pattern02/" class="article-date">
-  <time class="dt-published" datetime="2018-05-12T15:00:00.000Z" itemprop="datePublished">2018-05-13</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/13/Abstract Factory Pattern02/">Abstract Factory Pattern02</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>관련성 있는 여러 종류의 객체를 일관성 있는 방식으로 생성할 때 유용하다.</p>
-<h2 id="Class-Diagram"><a href="#Class-Diagram" class="headerlink" title="Class Diagram"></a>Class Diagram</h2><p><img src="/image/abstractF01.png" alt></p>
-<ul>
-<li>Abstarct Factory<ul>
-<li>실제 팩토리 클래스의 공통 인터페이스</li>
-<li>각 제품의 부품을 생성하는 기능을 추사 메서드로 정의</li>
-</ul>
-</li>
-<li>ConcreteFactory<ul>
-<li>구체적인 팩토리 클래스</li>
-<li>AbstractFactory 클래스의 추상 메서드를 오버라이드함으로써 구체적인 제품을 생성</li>
-</ul>
-</li>
-<li>AbstractProduct<ul>
-<li>제품의 공통 인터페이스</li>
-</ul>
-</li>
-<li>ConcreteProduct<ul>
-<li>구체적인 팩토리 클래스에서 생성되는 구체적인 제품</li>
-</ul>
-</li>
-</ul>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p><img src="/image/abstractF02.png" alt></p>
-<ul>
-<li>ElevatorFactory<ul>
-<li>AbstractFactory</li>
-</ul>
-</li>
-<li>LGElevatorFactory, HyundaiElevatorFactory<ul>
-<li>ConcreteFactory</li>
-</ul>
-</li>
-<li>Motor<ul>
-<li>AbstractProductA</li>
-</ul>
-</li>
-<li>LGMotor, HyundaiMotor<ul>
-<li>ConcreteProductA</li>
-</ul>
-</li>
-<li>Door<ul>
-<li>AbstractProductB</li>
-</ul>
-</li>
-<li>LGDoor, HyundaiDoor<ul>
-<li>ConcreteProductB</li>
-</ul>
-</li>
-</ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Java 객체 지향 디자인 패턴 &lt;정인상, 채흥석 지음&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/13/Abstract Factory Pattern02/" data-id="ck973jwvi00c4576wyy6k38zb" data-title="Abstract Factory Pattern02" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-팀배분" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/05/10/팀배분/" class="article-date">
-  <time class="dt-published" datetime="2018-05-09T15:00:00.000Z" itemprop="datePublished">2018-05-10</time>
+    <a href="/2017/11/02/암호코드/" class="article-date">
+  <time class="dt-published" datetime="2017-11-01T15:00:00.000Z" itemprop="datePublished">2017-11-02</time>
 </a>
     
   <div class="article-category">
@@ -642,7 +193,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/10/팀배분/">팀배분</a>
+      <a class="p-name article-title" href="/2017/11/02/암호코드/">2011:암호코드</a>
     </h1>
   
 
@@ -650,22 +201,23 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><p><a href="https://www.acmicpc.net/problem/1953" target="_blank" rel="noopener">https://www.acmicpc.net/problem/1953</a></p>
-<p><img src="/image/teammake04.png" alt></p>
+        <p><a href="https://www.acmicpc.net/problem/2011" target="_blank" rel="noopener">https://www.acmicpc.net/problem/2011</a></p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ol>
+<li><p>d[i]</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">i번째 까지 해석했을 때, 경우의 수</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>i번째 문자</p>
 <ul>
-<li>깊이에 따라 팀을 나눔<ul>
-<li>깊이 0, 2, 4, 6, 8 …. : 백팀</li>
-<li>깊이 1, 3, 5, 7, 8 …. : 청팀</li>
+<li>한 자리로 해석되는 경우 : 1 ~ 9 </li>
+<li>두 자리로 해석되는 경우 : 10 ~ 26</li>
 </ul>
 </li>
-<li>학생을 아직 방문하지 않았으면 학생을 root로 BFS</li>
-<li>깊이 정보를 나타내기 위해 Student class 생성해서, 학생 번호와 깊이 저장</li>
-</ul>
+</ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/10/팀배분/" data-id="ck973jwvh00c0576wvisw0zjw" data-title="팀배분" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/11/02/암호코드/" data-id="ckag7j33n0029qk6wi5z69lsp" data-title="2011:암호코드" class="article-share-link">Share</a>
       
       
       
@@ -677,14 +229,14 @@
 
 
   
-    <article id="post-Chain of Responsibility Pattern01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-타일채우기" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/05/09/Chain of Responsibility Pattern01/" class="article-date">
-  <time class="dt-published" datetime="2018-05-08T15:00:00.000Z" itemprop="datePublished">2018-05-09</time>
+    <a href="/2017/11/01/타일채우기/" class="article-date">
+  <time class="dt-published" datetime="2017-10-31T15:00:00.000Z" itemprop="datePublished">2017-11-01</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/design-pattern/">Design Pattern</a>
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
   </div>
 
   </div>
@@ -695,7 +247,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/09/Chain of Responsibility Pattern01/">Chain of Responsibility Pattern01</a>
+      <a class="p-name article-title" href="/2017/11/01/타일채우기/">2133:타일채우기</a>
     </h1>
   
 
@@ -703,28 +255,428 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h2 id="Intent"><a href="#Intent" class="headerlink" title="Intent"></a>Intent</h2><ul>
-<li><p>It avoids attaching the sender of a request to its receiver, giving this way other objects the possibility of handling the request too.</p>
-</li>
-<li><p>The objects become parts of a chain and the request is sent from one object to another across the chain until one of the objects will handle it.</p>
-</li>
-<li><p>Class Diagram</p>
-<p><img src="/image/corUML.png" alt></p>
-</li>
+        <p><a href="https://www.acmicpc.net/problem/2133" target="_blank" rel="noopener">https://www.acmicpc.net/problem/2133</a></p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ol>
+<li><p>d[i] </p>
+<ul>
+<li>3 * i 타일을 채우는 방법의 수 </li>
 </ul>
-<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><img src="/image/cor01.png" alt></p>
-<p><img src="/image/cor02.png" alt></p>
-<p><img src="/image/cor03.png" alt></p>
-<p><img src="/image/cor04.png" alt></p>
-<p><img src="/image/cor05.png" alt></p>
-<h2 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h2><p><img src="/image/cor06.png" alt></p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://www.oodesign.com/proxy-pattern.html" target="_blank" rel="noopener">http://www.oodesign.com/proxy-pattern.html</a></p>
-<p><a href="https://www.tutorialspoint.com/design_pattern/singleton_pattern.html" target="_blank" rel="noopener">https://www.tutorialspoint.com/design_pattern/singleton_pattern.html</a></p>
+</li>
+<li><p>가장 마지막에 올 수 있는 경우를 찾아야 한다.</p>
+<p><img src="/image/1.png" alt></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d[i] = 3 * d[i-2]</span><br></pre></td></tr></table></figure>
+
+<p><img src="/image/2.png" alt></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d[i] = 2 * d[i-4]</span><br></pre></td></tr></table></figure>
+
+<p><img src="/image/3.png" alt></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d[i] = 2 * d[i-6]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>d[i]</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3*d[i-2] + 2*d[i-4] + 2*d[i-6] + ... + 2*d[0]</span><br></pre></td></tr></table></figure>
+
+<p>어차피, 가로 길이가 홀수이면 타일로 채울 수 X</p>
+</li>
+<li><p>코드</p>
+<p><img src="/image/4.png" alt></p>
+<p>​    </p>
+</li>
+</ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2018/05/09/Chain of Responsibility Pattern01/" data-id="ck973jwvg00bu576wknkpv6xm" data-title="Chain of Responsibility Pattern01" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2017/11/01/타일채우기/" data-id="ckag7j33k0021qk6w2zpc124w" data-title="2133:타일채우기" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-제곱수의합" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/10/20/제곱수의합/" class="article-date">
+  <time class="dt-published" datetime="2017-10-19T15:00:00.000Z" itemprop="datePublished">2017-10-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/10/20/제곱수의합/">1699:제곱수의 합</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.acmicpc.net/problem/1699" target="_blank" rel="noopener">https://www.acmicpc.net/problem/1699</a></p>
+<h2 id="틀린-풀이"><a href="#틀린-풀이" class="headerlink" title="틀린 풀이"></a>틀린 풀이</h2><ol>
+<li><p>d[i] = i의 제곱수의 항의 최소 개수</p>
+</li>
+<li><p>n과 가장 가까운 제곱수를 찾음</p>
+</li>
+<li><p>d[n-(n과 가장 가까운수의 제곱수)] + 1</p>
+</li>
+<li><p>+1을 하는 이유</p>
+<ul>
+<li>제곱수 자체도 하나 이기 때문에</li>
+</ul>
+</li>
+<li><p>예를 들어</p>
+<ul>
+<li>d[7]  = d[ 7 - 2^2 ] + 1 = d[3] + 1 이라고 생각했다</li>
+</ul>
+</li>
+<li><p>하지만, 위의 예시에서, d[3]이 가장 작은 값이라는 보장이 없다</p>
+</li>
+<li><p>즉, 가장 가까운 제곱수를 찾는 것이 틀림</p>
+</li>
+</ol>
+<p><img src="http://cfile30.uf.tistory.com/image/99A19A3359E9F1261ABE35" alt="img"></p>
+<h2 id="맞는-풀이"><a href="#맞는-풀이" class="headerlink" title="맞는 풀이"></a>맞는 풀이</h2><ol>
+<li><p>예를 들어 ,</p>
+<ul>
+<li>d[25] 를 구하려고 할때,</li>
+<li>d[25-1^2] + 1</li>
+<li>d[25-2^2] + 1 </li>
+<li>d[25-3^2] + 1 </li>
+<li>d[25-4^2] + 1 </li>
+</ul>
+</li>
+<li><p>min 값이 답</p>
+</li>
+</ol>
+<p><img src="http://cfile21.uf.tistory.com/image/99AB5E3359E9F1BA07555D" alt="img"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2017/10/20/제곱수의합/" data-id="ckag7j33l0023qk6wei2zt648" data-title="1699:제곱수의 합" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-계단오르기" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/10/20/계단오르기/" class="article-date">
+  <time class="dt-published" datetime="2017-10-19T15:00:00.000Z" itemprop="datePublished">2017-10-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/10/20/계단오르기/">2579:계단오르기</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.acmicpc.net/problem/2579" target="_blank" rel="noopener">https://www.acmicpc.net/problem/2579</a></p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ol>
+<li><p>d[i]</p>
+<ul>
+<li>a[i]를 밟았을 경우, 0~i 번째까지 최대 점수</li>
+</ul>
+</li>
+<li><p>d[i]</p>
+<ul>
+<li>max( a[i]+a[i-1]+d[i-3] , a[i]+d[i-2] )</li>
+</ul>
+</li>
+<li><p>example : 10    20    15    25    10    20</p>
+<ul>
+<li>20 X     15 O    25 O : a[i]+a[i-1]+d[i-3]</li>
+<li>15 X     25 O : a[i]+d[i-2]</li>
+</ul>
+</li>
+<li><p>근데, 여기서 사소한 문제 !</p>
+<ul>
+<li>n을 입력받고, 배열을 생성할 때<br>0<del>n-1 인덱스로 할 것이냐,<br>1</del>n 인덱스로 할 것이냐에 따라 문제가 생김</li>
+</ul>
+</li>
+<li><p>0~n-1 인덱스로 다음과 같이 하면 틀렸음. </p>
+<ul>
+<li>왜냐하면, d[2]를 구하지 않았기 때문.</li>
+</ul>
+</li>
+</ol>
+<p><img src="http://cfile3.uf.tistory.com/image/9920A43359E752E439E48B" alt="img"><br>6. 따라서 다음과 같이 d[2]를 구해야함</p>
+<p><img src="http://cfile28.uf.tistory.com/image/9941113359E75310248E9B" alt="img"><br>7. 1~n 인덱스로 범위 잡으면, 상관 없음</p>
+<p><img src="http://cfile6.uf.tistory.com/image/99E8393359E7532D22AC37" alt="img"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2017/10/20/계단오르기/" data-id="ckag7j33m0025qk6wt4tyl06b" data-title="2579:계단오르기" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-연속합" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/10/17/연속합/" class="article-date">
+  <time class="dt-published" datetime="2017-10-16T15:00:00.000Z" itemprop="datePublished">2017-10-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/10/17/연속합/">1912:연속합</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.acmicpc.net/problem/1912" target="_blank" rel="noopener">https://www.acmicpc.net/problem/1912</a></p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ol>
+<li><p>d[n]<br>a[n]을 마지막으로 하는 연속하는 수들의 합 중 가장 큰 수 </p>
+</li>
+<li><p>예를들어,<br>10 -4 3 1 5 6 -35 12 21 -1 </p>
+</li>
+<li><p>d[4]</p>
+<ul>
+<li>5</li>
+<li>5    + 1</li>
+<li>5 + 1 + 3</li>
+<li>5 + 1 + 3 -1</li>
+<li>5 + 1 + 3 -1 -4</li>
+<li>5 + 1 + 3 -1 -4 + 10</li>
+<li>중 가장 큰 값</li>
+</ul>
+</li>
+<li><p>여기서 dp 문제라고 파악해야함</p>
+</li>
+<li><p>왜냐하면,</p>
+</li>
+<li><p>d[3] 은</p>
+<ul>
+<li>1</li>
+<li>1 + 3</li>
+<li>1 + 3 - 4</li>
+<li>1 + 3 - 4 + 10 </li>
+<li>이기 때문이다. </li>
+<li>d[3]이 d[4] 구할때 쓰임</li>
+</ul>
+</li>
+<li><p>따라서<br>d[4] = max ( a[4] , a[4]+d[3] )</p>
+</li>
+<li><p>즉,<br>d[n] = max ( a[n], a[n]+d[n-1] )</p>
+</li>
+</ol>
+<p><img src="http://cfile30.uf.tistory.com/image/99C01A3359E5FBAE21B896" alt="img"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2017/10/17/연속합/" data-id="ckag7j33j001zqk6w6iesn8vd" data-title="1912:연속합" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-가장긴바이토닉부분수열" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/10/16/가장긴바이토닉부분수열/" class="article-date">
+  <time class="dt-published" datetime="2017-10-15T15:00:00.000Z" itemprop="datePublished">2017-10-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/10/16/가장긴바이토닉부분수열/">11054:가장 긴 바이토닉 부분 수열</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.acmicpc.net/problem/11054" target="_blank" rel="noopener">https://www.acmicpc.net/problem/11054</a></p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ol>
+<li><p>가장 긴 증가하는 부분 수열 문제와 가장 긴 감소하는 부분 수열 문제를 더한 문제</p>
+</li>
+<li><p>가장 긴 증가하는 부분 수열을 구한다</p>
+</li>
+<li><p>가장 긴 감소하는 부분 수열을 구한다 </p>
+</li>
+<li><p>d1[i] + d2[i] -1 의 최대값을 구한다</p>
+</li>
+<li><p>여기서 1을 빼는 이유 =&gt; 증가하다가 감소할 경우에 1이 두번 더해지기 때문에</p>
+</li>
+</ol>
+<p><img src="http://cfile25.uf.tistory.com/image/9980443359E4C54A226E06" alt="img"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2017/10/16/가장긴바이토닉부분수열/" data-id="ckag7j33i001xqk6woz3pixck" data-title="11054:가장 긴 바이토닉 부분 수열" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-baseconversion" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/10/12/baseconversion/" class="article-date">
+  <time class="dt-published" datetime="2017-10-11T15:00:00.000Z" itemprop="datePublished">2017-10-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/10/12/baseconversion/">11576:base conversion</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.acmicpc.net/problem/11576" target="_blank" rel="noopener">https://www.acmicpc.net/problem/11576</a></p>
+<h2 id="틀린-풀이"><a href="#틀린-풀이" class="headerlink" title="틀린 풀이"></a>틀린 풀이</h2><ul>
+<li>a 진법 -&gt; 10진법 -&gt; b진법</li>
+<li>다음과 같이 풀면 틀렸다고 나옴.</li>
+</ul>
+<p><img src="http://cfile9.uf.tistory.com/image/994C503359DF6E021AA0A8" alt="img"></p>
+<h2 id="맞는-풀이"><a href="#맞는-풀이" class="headerlink" title="맞는 풀이"></a>맞는 풀이</h2><p><img src="http://cfile23.uf.tistory.com/image/99FDC63359DF6E222CDB02" alt="img"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2017/10/12/baseconversion/" data-id="ckag7j33h001vqk6w6h6zdzga" data-title="11576:base conversion" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-이진수" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/10/11/이진수/" class="article-date">
+  <time class="dt-published" datetime="2017-10-10T15:00:00.000Z" itemprop="datePublished">2017-10-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/10/11/이진수/">2089:이진수</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.acmicpc.net/problem/2089" target="_blank" rel="noopener">https://www.acmicpc.net/problem/2089</a></p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ol>
+<li><p>일반적인 진법 변환이랑 같음</p>
+</li>
+<li><p>-2로 계속 나누어감</p>
+</li>
+<li><p>양수냐 음수냐가 중요 </p>
+</li>
+</ol>
+<p><img src="http://cfile10.uf.tistory.com/image/99B47E3359DE3510229328" alt="img"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2017/10/11/이진수/" data-id="ckag7j33f001rqk6w73ml32uh" data-title="2089:이진수" class="article-share-link">Share</a>
       
       
       
@@ -740,7 +692,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/25/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="page-number" href="/page/25/">25</a><span class="page-number current">26</span><a class="page-number" href="/page/27/">27</a><a class="page-number" href="/page/28/">28</a><span class="space">&hellip;</span><a class="page-number" href="/page/47/">47</a><a class="extend next" rel="next" href="/page/27/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/25/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="page-number" href="/page/25/">25</a><span class="page-number current">26</span><a class="page-number" href="/page/27/">27</a><a class="page-number" href="/page/28/">28</a><span class="space">&hellip;</span><a class="page-number" href="/page/30/">30</a><a class="extend next" rel="next" href="/page/27/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -751,7 +703,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/android/">Android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/big-data/">Big Data</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boost-course/">Boost Course</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/dip/">DIP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/data-structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/design-pattern/">Design Pattern</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">Git</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jpa/">JPA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">Kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/network/">Network</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/node-js/">Node.js</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/oop/">OOP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/os/">OS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/software-engineering/">Software Engineering</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/spark/">Spark</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tdd/">TDD</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/etc/">etc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/ios/">iOS</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/big-data/">Big Data</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boost-course/">Boost Course</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jpa/">JPA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">Kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/oop/">OOP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/os/">OS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/spark/">Spark</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tdd/">TDD</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/etc/">etc</a></li></ul>
     </div>
   </div>
 
@@ -766,7 +718,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
     </div>
   </div>
 
@@ -779,10 +731,6 @@
       <ul>
         
           <li>
-            <a href="/2020/04/19/tdd-chapter-31/">[테스트 주도 개발] 31장_리팩토링</a>
-          </li>
-        
-          <li>
             <a href="/2020/04/19/tdd-chapter-32/">[테스트 주도 개발] 32장_TDD 마스터하기</a>
           </li>
         
@@ -792,6 +740,10 @@
         
           <li>
             <a href="/2020/04/19/tdd-chapter-29/">[테스트 주도 개발] 29장_xUnit 패턴</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/19/tdd-chapter-31/">[테스트 주도 개발] 31장_리팩토링</a>
           </li>
         
           <li>
