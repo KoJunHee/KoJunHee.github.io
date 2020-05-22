@@ -68,9 +68,92 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-tdd-chapter-32" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-spring-mvc" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2020/04/19/tdd-chapter-32/" class="article-date">
+    <a href="/2020/05/22/spring-mvc/" class="article-date">
+  <time class="dt-published" datetime="2020-05-21T15:00:00.000Z" itemprop="datePublished">2020-05-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/spring/">Spring</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/05/22/spring-mvc/">Spring MVC 요청 처리 과정</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Spring MVC 는 어떻게 Client 의 요청을 처리하는지에 대해 정리한다.</p>
+<h2 id="DispatcherServlet"><a href="#DispatcherServlet" class="headerlink" title="DispatcherServlet"></a>DispatcherServlet</h2><p>DispatchServlet 은 Client 의 요청에 대해 실제 처리하는 메서드를 호출해주는 Front Controller 역할을 하는 클래스이다.</p>
+<p>계층 구조는 다음과 같다.</p>
+<p><img src="/image/spring_mvc_01.png" alt></p>
+<p>이제, DispatchServlet 이 Client 의 요청을 받은 뒤에, 어떻게 요청을 처리할 Controller 를 찾고 응답하는지 알아보자.</p>
+<h2 id="Client-요청-처리-흐름"><a href="#Client-요청-처리-흐름" class="headerlink" title="Client 요청 처리 흐름"></a>Client 요청 처리 흐름</h2><p>전체 흐름은 다음과 같다.</p>
+<ol>
+<li>Application 이 구동될 때, Spring Boot <strong>Auto Configure</strong> 로 Spring MVC 의 Bean 들이 자동 등록된다.</li>
+<li>사용자의 요청이 들어오면, DispatcherServlet 의 <strong>doService()</strong> 가 실행된다.</li>
+<li>doService() 에서 여러 설정을 한 뒤, <strong>doDispatch()</strong> 가 실행이 된다.</li>
+<li><strong>HandlerMapping</strong> 이 요청을 처리할 Handler 를 찾는다.</li>
+<li>등록되어 있는 <strong>HandlerAdapter</strong> 중에 해당 Handler 를 실행할 Adapter 를 찾는다.</li>
+<li>HandlerAdapter 는 Handler 의 응답을 처리한다.</li>
+<li>최종적으로 응답을 보낸다.</li>
+</ol>
+<p>디버거를 이용해서, 위 흐름을 코드로 상세히 살펴보자.</p>
+<ol>
+<li><p>Client 가 GET 요청을 하면, FrameworkServlet 의 doGet() 이 실행된다.</p>
+<p><img src="/image/spring_mvc_02.png" alt></p>
+</li>
+<li><p>processRequest() 의 doService() 에 들어가자.  </p>
+<p><img src="/image/spring_mvc_03.png" alt></p>
+</li>
+<li><p>DispatcherServlet 의 doService 메서드임을 알 수 있다.</p>
+<p>여기서, handlerMappings 나 hadnlerAdapterts 클래스들은 아래와 같이 주입된 것이 확인된다.</p>
+<p><img src="/image/spring_mvc_04.png" alt></p>
+<p>이 클래스들은, Spring Boot Auto Configure 로 인해서, WebMvcAutoConfiguration 에서 Bean 으로 등록된다. </p>
+<p>다음과 같이 WebMvcAutoConfiguration 에서 여러 Bean 들이 등록되는 것을 알 수 있다.</p>
+<p><img src="/image/spring_mvc_05.png" alt></p>
+</li>
+<li><p>이제 다시, doSerivce() 에서 doDispatch() 에 들어가보자.</p>
+<p><img src="/image/spring_mvc_06.png" alt></p>
+<p>다음과 같이,</p>
+<ul>
+<li>요청을 처리할 핸들러를 찾고 (by HandlerMappings)</li>
+<li>해당 핸드러를 실행할 수 있는 HandlerAdapter 를 찾는다.</li>
+<li>찾아낸 HandlerAdapter 를 이용해서 handle 한다.</li>
+</ul>
+<p><img src="/image/spring_mvc_07.png" alt></p>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2020/05/22/spring-mvc/" data-id="ckahww15h00gog86wtbp33x9n" data-title="Spring MVC 요청 처리 과정" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-tdd-chapter-31" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/04/19/tdd-chapter-31/" class="article-date">
   <time class="dt-published" datetime="2020-04-18T15:00:00.000Z" itemprop="datePublished">2020-04-19</time>
 </a>
     
@@ -86,7 +169,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/04/19/tdd-chapter-32/">[테스트 주도 개발] 32장_TDD 마스터하기</a>
+      <a class="p-name article-title" href="/2020/04/19/tdd-chapter-31/">[테스트 주도 개발] 31장_리팩토링</a>
     </h1>
   
 
@@ -94,30 +177,42 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h5 id="좋은-테스트인지는-어덯게-알-수-있나"><a href="#좋은-테스트인지는-어덯게-알-수-있나" class="headerlink" title="좋은 테스트인지는 어덯게 알 수 있나?"></a>좋은 테스트인지는 어덯게 알 수 있나?</h5><p>다음은 설계에 문제가 있음을 알려준다.</p>
+        <p>시스템의 설계를 작은 단계를 통해 변화시키는 방법들을 정리한다.</p>
+<h5 id="차이점-일치시키기"><a href="#차이점-일치시키기" class="headerlink" title="차이점 일치시키기"></a>차이점 일치시키기</h5><p>비슷해 보이는 두 코드 조각을 합리려면? </p>
+<p>두 코드를 단계적으로 닮아가게 수정한다. 완전히 동일해지면 둘을 합쳐라.</p>
+<h5 id="변화-격리하기"><a href="#변화-격리하기" class="headerlink" title="변화 격리하기"></a>변화 격리하기</h5><p>객체나 메서드의 일부만 바꾸려면? </p>
+<p>일단 바꿔야할 부분을 격리해라. 격리 방법으로는,</p>
 <ol>
-<li>긴 setUp 코드</li>
-<li>setUp 중복</li>
-<li>실행 시간이 오래 걸리는 테스트</li>
-<li>깨지기 쉬운 테스트</li>
+<li>메서드 추출</li>
+<li>객체 추출</li>
+<li>메서드 객체</li>
 </ol>
-<h5 id="테스트를-지워야할-때는"><a href="#테스트를-지워야할-때는" class="headerlink" title="테스트를 지워야할 때는?"></a>테스트를 지워야할 때는?</h5><ol>
-<li>테스트를 삭제하고 자신감이 줄어들 것 같으면 삭제하지마라. </li>
-<li>두 테스트 코드가 동일한 부분을 실행해도, 서로 다른 시나리오를 말한다면 그대로 남겨둬라.</li>
-</ol>
-<h5 id="프로젝트-중반에-TDD-를-도입하려면"><a href="#프로젝트-중반에-TDD-를-도입하려면" class="headerlink" title="프로젝트 중반에 TDD 를 도입하려면?"></a>프로젝트 중반에 TDD 를 도입하려면?</h5><ol>
-<li>우선, 변경의 범위를 제한해라. 극적으로 단순화 될 수 있지만 지금 당장 변할 필요가 없으면 그냥 그대로 둬라. </li>
-<li>그리고나서, 테스트와 리팩토링 사이의 교착 상태를 풀어줘라. 파트너와 같이 작업을 하거나, 아주 조심스럽게 작업을 할 수 있다.</li>
-</ol>
-<p>시간이 지나면, 시스템에서 늘 변화하는 부분들은 테스트 주도로 된 것 처럼 보이게 될 것이다.</p>
-<h5 id="TDD-와-패턴의-관계는"><a href="#TDD-와-패턴의-관계는" class="headerlink" title="TDD 와 패턴의 관계는?"></a>TDD 와 패턴의 관계는?</h5><p>단순히 시스템에서 무슨 일을 할지 생각하고, 나중에 설계가 알아서 정해지도록 해라.</p>
+<h5 id="메서드-추출하기"><a href="#메서드-추출하기" class="headerlink" title="메서드 추출하기"></a>메서드 추출하기</h5><p>길고 복잡한 메서드를 읽기 쉽게 만들려면? </p>
+<p>긴 메서드의 일부분을 별도의 메서드로 분리하고 이를 호출해라. 복잡한 코드를 이해하기 쉽고, 중복을 제거하기도 좋다. </p>
+<h5 id="메서드-인라인"><a href="#메서드-인라인" class="headerlink" title="메서드 인라인"></a>메서드 인라인</h5><p>제어 흐름이 너무 산재되어 있으면? </p>
+<p>메서드 호출하는 부분을 호출될 메서드의 본문으로 교체해라.</p>
+<h5 id="인터페이스-추출하기"><a href="#인터페이스-추출하기" class="headerlink" title="인터페이스 추출하기"></a>인터페이스 추출하기</h5><p>자바 오퍼레이션에 대한 두 번째 구현을 추가하려면? </p>
+<p>공통되는 오퍼레이션을 담고 있는 인터페이스를 만들어라.</p>
+<h5 id="메서드-옮기기"><a href="#메서드-옮기기" class="headerlink" title="메서드 옮기기"></a>메서드 옮기기</h5><p>메서드를 원래 있어야할 장소로 옮기려면?</p>
+<p>적절한 클래스에 메서드를 추가하고, 이를 호출하게 해라. 다음과 같이, 한 메서드에서 다른 객체에 하나 이상의 메세지를 보내면 의심해봐라.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> width = bounds.right() - bounds.left();</span><br><span class="line"><span class="keyword">int</span> height = bounds.bottom - bounds.top();</span><br><span class="line"><span class="keyword">int</span> area = width * height;</span><br></pre></td></tr></table></figure>
+
+<p>다음과 같이 수정할 수 있다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Shape</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">int</span> area = bounds.area();</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Rectangle</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">area</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> width = <span class="keyword">this</span>.right() - <span class="keyword">this</span>.left();</span><br><span class="line">        <span class="keyword">int</span> height = <span class="keyword">this</span>.bottom() - <span class="keyword">this</span>.pop();</span><br><span class="line">        </span><br><span class="line">      <span class="keyword">return</span> width * height;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="메서드-객체"><a href="#메서드-객체" class="headerlink" title="메서드 객체"></a>메서드 객체</h5><p>여러 개의 매개 변수와 직역 변수를 갖는 복잡한 메서드는 어떻게 표현? </p>
+<p>메서드를 꺼내서 객체로 만들어라. </p>
+<h5 id="매개-변수-추가"><a href="#매개-변수-추가" class="headerlink" title="매개 변수 추가"></a>매개 변수 추가</h5><p>메서드에 매개 변수를 어떻게 추가? </p>
+<p>메서드가 인터페이스에 선언되어 있으면 인터페이스에 매개 변수를 추가해라.</p>
 <hr>
 <p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/04/19/tdd-chapter-32/" data-id="ckag7j38p00exqk6w452drory" data-title="[테스트 주도 개발] 32장_TDD 마스터하기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/04/19/tdd-chapter-31/" data-id="ckahww15f00ggg86wbkdkd32p" data-title="[테스트 주도 개발] 31장_리팩토링" class="article-share-link">Share</a>
       
       
       
@@ -218,7 +313,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/04/19/tdd-chapter-30/" data-id="ckag7j38o00evqk6wet52p72k" data-title="[테스트 주도 개발] 30장_디자인 패턴" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/04/19/tdd-chapter-30/" data-id="ckahww15g00gkg86w31c7vzc4" data-title="[테스트 주도 개발] 30장_디자인 패턴" class="article-share-link">Share</a>
       
       
       
@@ -277,7 +372,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/04/19/tdd-chapter-29/" data-id="ckag7j38n00erqk6wpui11fsl" data-title="[테스트 주도 개발] 29장_xUnit 패턴" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/04/19/tdd-chapter-29/" data-id="ckahww15h00gmg86wlbeaw354" data-title="[테스트 주도 개발] 29장_xUnit 패턴" class="article-share-link">Share</a>
       
       
       
@@ -289,9 +384,9 @@
 
 
   
-    <article id="post-tdd-chapter-31" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-tdd-chapter-32" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2020/04/19/tdd-chapter-31/" class="article-date">
+    <a href="/2020/04/19/tdd-chapter-32/" class="article-date">
   <time class="dt-published" datetime="2020-04-18T15:00:00.000Z" itemprop="datePublished">2020-04-19</time>
 </a>
     
@@ -307,7 +402,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/04/19/tdd-chapter-31/">[테스트 주도 개발] 31장_리팩토링</a>
+      <a class="p-name article-title" href="/2020/04/19/tdd-chapter-32/">[테스트 주도 개발] 32장_TDD 마스터하기</a>
     </h1>
   
 
@@ -315,42 +410,30 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>시스템의 설계를 작은 단계를 통해 변화시키는 방법들을 정리한다.</p>
-<h5 id="차이점-일치시키기"><a href="#차이점-일치시키기" class="headerlink" title="차이점 일치시키기"></a>차이점 일치시키기</h5><p>비슷해 보이는 두 코드 조각을 합리려면? </p>
-<p>두 코드를 단계적으로 닮아가게 수정한다. 완전히 동일해지면 둘을 합쳐라.</p>
-<h5 id="변화-격리하기"><a href="#변화-격리하기" class="headerlink" title="변화 격리하기"></a>변화 격리하기</h5><p>객체나 메서드의 일부만 바꾸려면? </p>
-<p>일단 바꿔야할 부분을 격리해라. 격리 방법으로는,</p>
+        <h5 id="좋은-테스트인지는-어덯게-알-수-있나"><a href="#좋은-테스트인지는-어덯게-알-수-있나" class="headerlink" title="좋은 테스트인지는 어덯게 알 수 있나?"></a>좋은 테스트인지는 어덯게 알 수 있나?</h5><p>다음은 설계에 문제가 있음을 알려준다.</p>
 <ol>
-<li>메서드 추출</li>
-<li>객체 추출</li>
-<li>메서드 객체</li>
+<li>긴 setUp 코드</li>
+<li>setUp 중복</li>
+<li>실행 시간이 오래 걸리는 테스트</li>
+<li>깨지기 쉬운 테스트</li>
 </ol>
-<h5 id="메서드-추출하기"><a href="#메서드-추출하기" class="headerlink" title="메서드 추출하기"></a>메서드 추출하기</h5><p>길고 복잡한 메서드를 읽기 쉽게 만들려면? </p>
-<p>긴 메서드의 일부분을 별도의 메서드로 분리하고 이를 호출해라. 복잡한 코드를 이해하기 쉽고, 중복을 제거하기도 좋다. </p>
-<h5 id="메서드-인라인"><a href="#메서드-인라인" class="headerlink" title="메서드 인라인"></a>메서드 인라인</h5><p>제어 흐름이 너무 산재되어 있으면? </p>
-<p>메서드 호출하는 부분을 호출될 메서드의 본문으로 교체해라.</p>
-<h5 id="인터페이스-추출하기"><a href="#인터페이스-추출하기" class="headerlink" title="인터페이스 추출하기"></a>인터페이스 추출하기</h5><p>자바 오퍼레이션에 대한 두 번째 구현을 추가하려면? </p>
-<p>공통되는 오퍼레이션을 담고 있는 인터페이스를 만들어라.</p>
-<h5 id="메서드-옮기기"><a href="#메서드-옮기기" class="headerlink" title="메서드 옮기기"></a>메서드 옮기기</h5><p>메서드를 원래 있어야할 장소로 옮기려면?</p>
-<p>적절한 클래스에 메서드를 추가하고, 이를 호출하게 해라. 다음과 같이, 한 메서드에서 다른 객체에 하나 이상의 메세지를 보내면 의심해봐라.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> width = bounds.right() - bounds.left();</span><br><span class="line"><span class="keyword">int</span> height = bounds.bottom - bounds.top();</span><br><span class="line"><span class="keyword">int</span> area = width * height;</span><br></pre></td></tr></table></figure>
-
-<p>다음과 같이 수정할 수 있다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Shape</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">int</span> area = bounds.area();</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Rectangle</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">area</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> width = <span class="keyword">this</span>.right() - <span class="keyword">this</span>.left();</span><br><span class="line">        <span class="keyword">int</span> height = <span class="keyword">this</span>.bottom() - <span class="keyword">this</span>.pop();</span><br><span class="line">        </span><br><span class="line">      <span class="keyword">return</span> width * height;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h5 id="메서드-객체"><a href="#메서드-객체" class="headerlink" title="메서드 객체"></a>메서드 객체</h5><p>여러 개의 매개 변수와 직역 변수를 갖는 복잡한 메서드는 어떻게 표현? </p>
-<p>메서드를 꺼내서 객체로 만들어라. </p>
-<h5 id="매개-변수-추가"><a href="#매개-변수-추가" class="headerlink" title="매개 변수 추가"></a>매개 변수 추가</h5><p>메서드에 매개 변수를 어떻게 추가? </p>
-<p>메서드가 인터페이스에 선언되어 있으면 인터페이스에 매개 변수를 추가해라.</p>
+<h5 id="테스트를-지워야할-때는"><a href="#테스트를-지워야할-때는" class="headerlink" title="테스트를 지워야할 때는?"></a>테스트를 지워야할 때는?</h5><ol>
+<li>테스트를 삭제하고 자신감이 줄어들 것 같으면 삭제하지마라. </li>
+<li>두 테스트 코드가 동일한 부분을 실행해도, 서로 다른 시나리오를 말한다면 그대로 남겨둬라.</li>
+</ol>
+<h5 id="프로젝트-중반에-TDD-를-도입하려면"><a href="#프로젝트-중반에-TDD-를-도입하려면" class="headerlink" title="프로젝트 중반에 TDD 를 도입하려면?"></a>프로젝트 중반에 TDD 를 도입하려면?</h5><ol>
+<li>우선, 변경의 범위를 제한해라. 극적으로 단순화 될 수 있지만 지금 당장 변할 필요가 없으면 그냥 그대로 둬라. </li>
+<li>그리고나서, 테스트와 리팩토링 사이의 교착 상태를 풀어줘라. 파트너와 같이 작업을 하거나, 아주 조심스럽게 작업을 할 수 있다.</li>
+</ol>
+<p>시간이 지나면, 시스템에서 늘 변화하는 부분들은 테스트 주도로 된 것 처럼 보이게 될 것이다.</p>
+<h5 id="TDD-와-패턴의-관계는"><a href="#TDD-와-패턴의-관계는" class="headerlink" title="TDD 와 패턴의 관계는?"></a>TDD 와 패턴의 관계는?</h5><p>단순히 시스템에서 무슨 일을 할지 생각하고, 나중에 설계가 알아서 정해지도록 해라.</p>
 <hr>
 <p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/04/19/tdd-chapter-31/" data-id="ckag7j38p00ezqk6w6w0nh72i" data-title="[테스트 주도 개발] 31장_리팩토링" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/04/19/tdd-chapter-32/" data-id="ckahww15i00gqg86wkgky60zj" data-title="[테스트 주도 개발] 32장_TDD 마스터하기" class="article-share-link">Share</a>
       
       
       
@@ -412,7 +495,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/04/07/bigdata-chapter-06/" data-id="ckag7j38o00etqk6wog1xlmw5" data-title="[빅데이터] 6장_일괄처리 계층" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/04/07/bigdata-chapter-06/" data-id="ckahww15e00gcg86w6uxqkivw" data-title="[빅데이터] 6장_일괄처리 계층" class="article-share-link">Share</a>
       
       
       
@@ -424,9 +507,9 @@
 
 
   
-    <article id="post-tdd-chapter-28" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-tdd-chapter-26" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2020/04/06/tdd-chapter-28/" class="article-date">
+    <a href="/2020/04/06/tdd-chapter-26/" class="article-date">
   <time class="dt-published" datetime="2020-04-05T15:00:00.000Z" itemprop="datePublished">2020-04-06</time>
 </a>
     
@@ -442,7 +525,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/04/06/tdd-chapter-28/">[테스트 주도 개발] 28장_초록 막대 패턴</a>
+      <a class="p-name article-title" href="/2020/04/06/tdd-chapter-26/">[테스트 주도 개발] 26장_빨간 막대 패턴</a>
     </h1>
   
 
@@ -450,30 +533,23 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>코드가 테스트를 통과하게 만들기 위해 이 패턴들을 사용해라.</p>
-<h5 id="가짜로-구현하기-진짜로-만들기-전까지만"><a href="#가짜로-구현하기-진짜로-만들기-전까지만" class="headerlink" title="가짜로 구현하기 ( 진짜로 만들기 전까지만 )"></a>가짜로 구현하기 ( 진짜로 만들기 전까지만 )</h5><p>실패하는 테스트를 만든 후 첫 번째 구현은 어떻게 하는게 좋을까? 상수를 반환하게 하라. 일단 테스트가 통과하면 단계적으로 상수를 변수를 사용하는 수식으로 변형한다.</p>
-<h5 id="삼각-측량"><a href="#삼각-측량" class="headerlink" title="삼각 측량"></a>삼각 측량</h5><p>오로지 예가 두개 이상일 때만 추상화를 해라.</p>
-<p>두 정수 합을 반환하는 함수를 예로 보자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testSum</span><span class="params">()</span></span>&#123;</span><br><span class="line">    assertEquals(<span class="number">4</span>, plus(<span class="number">3</span>,<span class="number">1</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">plus</span><span class="params">(<span class="keyword">int</span> augend, <span class="keyword">int</span> addend)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">4</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>삼각 층량을 사용해서 바른 설계로 간다면, 다음과 같이 작성해야한다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testSum</span><span class="params">()</span></span>&#123;</span><br><span class="line">    assertEquals(<span class="number">4</span>, plus(<span class="number">3</span>,<span class="number">1</span>));</span><br><span class="line">    assertEquals(<span class="number">7</span>, plus(<span class="number">3</span>,<span class="number">4</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>그러면, 우리는 plus 의 구현을 추상화 할 수 있다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">plus</span><span class="params">(<span class="keyword">int</span> augend, <span class="keyword">int</span> addend)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> augend + addend;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>어떤 계산을 어떻게 해야 올바르게 추상화할 것인지에 대해 감잡기 어려울 때만, 삼각측량을 사용해라. 그 이외는, 명백한 구현이나 가짜로 구현하기에 의존해라. </p>
-<h5 id="명백한-구현"><a href="#명백한-구현" class="headerlink" title="명백한 구현"></a>명백한 구현</h5><p>단순한 연산들은 그냥 구현해라.</p>
-<h5 id="하나에서-여럿으로"><a href="#하나에서-여럿으로" class="headerlink" title="하나에서 여럿으로"></a>하나에서 여럿으로</h5><p>객체 collection 을 다루는 연산은 어떻게 구현하나 ? 일단은 collection 없이 구현하고 그 다음에 collection 을 사용해라. </p>
+        <p>이 패턴들은 테스트를 언제 어디서 작성할 건지, 테스트 작성을 언제 멈출지에 대한 것이다.</p>
+<h5 id="한-단계-테스트"><a href="#한-단계-테스트" class="headerlink" title="한 단계 테스트"></a>한 단계 테스트</h5><p>목록에서 다음 테스트를 고를 때 무엇을 기준으로 골라야 할까? 새로운 무언가를 가르쳐 줄 수 있고, 구현할 수 있는 확신이 드는 테스트를 골라라.</p>
+<h5 id="시작-테스트"><a href="#시작-테스트" class="headerlink" title="시작 테스트"></a>시작 테스트</h5><p>어떤 테스트부터 시작하는게 좋을까? 오퍼레이션이 아무 일도 하지 않는 경우를 먼저 테스트해라.</p>
+<h5 id="설명-테스트"><a href="#설명-테스트" class="headerlink" title="설명 테스트"></a>설명 테스트</h5><p>자동화된 테스트가 널리 쓰이게 하려면 어떻게 해야할까? 테스트로 설명을 요청하고 테스트로 설명해라.</p>
+<p>예를 들어, 누군가 시퀀스 다이엄드램을 설명하라고 하면, 시퀀스 다이어그램의 모든 요소를 포함하는 테스트케이스를 작성해라.</p>
+<h5 id="학습-테스트"><a href="#학습-테스트" class="headerlink" title="학습 테스트"></a>학습 테스트</h5><p>외부에서 만든 소프트웨어에 대한 테스트를 작성해야 할 때도 있나? 패키지의 새로운 기능을 처음 사용해보기 전에 할 수 있다.</p>
+<p>자바의 모바일 정보 기기 프로파일 라이브러리르 기반으로 뭔가를 만든다고 하자. 그냥 바로 사용하는 대신 API 가 우리 예상대로 실행된다는 것을 확인해줄만한 테스트를 먼저 만들어라. 만약, 테스트가 통과하지 않으면 애플리케이션 역시 실행되지 않을것이므로 애플리케이션을 실행해볼 필요도 없다.</p>
+<h5 id="또-다른-테스트"><a href="#또-다른-테스트" class="headerlink" title="또 다른 테스트"></a>또 다른 테스트</h5><p>어떻게 하면 주제에서 벗어나지 않고 기술적인 논의를 계속할 수 있나 ? 주제와 무관한 아이디어가 떠오르면 이에 대한 테스트를 할일 목록에 적어놓고 다시 주제로 돌아가라.</p>
+<h5 id="회괴-테스트"><a href="#회괴-테스트" class="headerlink" title="회괴 테스트"></a>회괴 테스트</h5><p>시스템 장애가 보고될 때 무슨 일을 해야하는가 ? 그 장애로 인해 실패하는 테스트, 그리고 통과할 경우엔 장애가 수정되었다고 볼 수 있는 테스트를 가장 간단하게 작성해라.</p>
+<p>회귀 테스트를 작성할 때는 이 테스트를 작성해야한다는 사실을 어떻게 하면 애초에 알 수 있었을지 생각해봐라. </p>
 <hr>
 <p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/04/06/tdd-chapter-28/" data-id="ckag7j38m00epqk6wo2ibnxa6" data-title="[테스트 주도 개발] 28장_초록 막대 패턴" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/04/06/tdd-chapter-26/" data-id="ckahww15c00g6g86wqwffovv9" data-title="[테스트 주도 개발] 26장_빨간 막대 패턴" class="article-share-link">Share</a>
       
       
       
@@ -546,7 +622,68 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/04/06/tdd-chapter-25/" data-id="ckag7j38l00elqk6wi2jd5fju" data-title="[테스트 주도 개발] 25장_테스트 주도 개발 패턴" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/04/06/tdd-chapter-25/" data-id="ckahww15d00g8g86wgi0z92u8" data-title="[테스트 주도 개발] 25장_테스트 주도 개발 패턴" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-tdd-chapter-28" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/04/06/tdd-chapter-28/" class="article-date">
+  <time class="dt-published" datetime="2020-04-05T15:00:00.000Z" itemprop="datePublished">2020-04-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tdd/">TDD</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/04/06/tdd-chapter-28/">[테스트 주도 개발] 28장_초록 막대 패턴</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>코드가 테스트를 통과하게 만들기 위해 이 패턴들을 사용해라.</p>
+<h5 id="가짜로-구현하기-진짜로-만들기-전까지만"><a href="#가짜로-구현하기-진짜로-만들기-전까지만" class="headerlink" title="가짜로 구현하기 ( 진짜로 만들기 전까지만 )"></a>가짜로 구현하기 ( 진짜로 만들기 전까지만 )</h5><p>실패하는 테스트를 만든 후 첫 번째 구현은 어떻게 하는게 좋을까? 상수를 반환하게 하라. 일단 테스트가 통과하면 단계적으로 상수를 변수를 사용하는 수식으로 변형한다.</p>
+<h5 id="삼각-측량"><a href="#삼각-측량" class="headerlink" title="삼각 측량"></a>삼각 측량</h5><p>오로지 예가 두개 이상일 때만 추상화를 해라.</p>
+<p>두 정수 합을 반환하는 함수를 예로 보자.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testSum</span><span class="params">()</span></span>&#123;</span><br><span class="line">    assertEquals(<span class="number">4</span>, plus(<span class="number">3</span>,<span class="number">1</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">plus</span><span class="params">(<span class="keyword">int</span> augend, <span class="keyword">int</span> addend)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">4</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>삼각 층량을 사용해서 바른 설계로 간다면, 다음과 같이 작성해야한다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testSum</span><span class="params">()</span></span>&#123;</span><br><span class="line">    assertEquals(<span class="number">4</span>, plus(<span class="number">3</span>,<span class="number">1</span>));</span><br><span class="line">    assertEquals(<span class="number">7</span>, plus(<span class="number">3</span>,<span class="number">4</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>그러면, 우리는 plus 의 구현을 추상화 할 수 있다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">plus</span><span class="params">(<span class="keyword">int</span> augend, <span class="keyword">int</span> addend)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> augend + addend;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>어떤 계산을 어떻게 해야 올바르게 추상화할 것인지에 대해 감잡기 어려울 때만, 삼각측량을 사용해라. 그 이외는, 명백한 구현이나 가짜로 구현하기에 의존해라. </p>
+<h5 id="명백한-구현"><a href="#명백한-구현" class="headerlink" title="명백한 구현"></a>명백한 구현</h5><p>단순한 연산들은 그냥 구현해라.</p>
+<h5 id="하나에서-여럿으로"><a href="#하나에서-여럿으로" class="headerlink" title="하나에서 여럿으로"></a>하나에서 여럿으로</h5><p>객체 collection 을 다루는 연산은 어떻게 구현하나 ? 일단은 collection 없이 구현하고 그 다음에 collection 을 사용해라. </p>
+<hr>
+<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2020/04/06/tdd-chapter-28/" data-id="ckahww15d00gag86waq2aa4y4" data-title="[테스트 주도 개발] 28장_초록 막대 패턴" class="article-share-link">Share</a>
       
       
       
@@ -604,140 +741,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/04/06/tdd-chapter-27/" data-id="ckag7j38m00enqk6wlychl7s9" data-title="[테스트 주도 개발] 27장_테스팅 패턴" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-tdd-chapter-26" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/04/06/tdd-chapter-26/" class="article-date">
-  <time class="dt-published" datetime="2020-04-05T15:00:00.000Z" itemprop="datePublished">2020-04-06</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/tdd/">TDD</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/04/06/tdd-chapter-26/">[테스트 주도 개발] 26장_빨간 막대 패턴</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>이 패턴들은 테스트를 언제 어디서 작성할 건지, 테스트 작성을 언제 멈출지에 대한 것이다.</p>
-<h5 id="한-단계-테스트"><a href="#한-단계-테스트" class="headerlink" title="한 단계 테스트"></a>한 단계 테스트</h5><p>목록에서 다음 테스트를 고를 때 무엇을 기준으로 골라야 할까? 새로운 무언가를 가르쳐 줄 수 있고, 구현할 수 있는 확신이 드는 테스트를 골라라.</p>
-<h5 id="시작-테스트"><a href="#시작-테스트" class="headerlink" title="시작 테스트"></a>시작 테스트</h5><p>어떤 테스트부터 시작하는게 좋을까? 오퍼레이션이 아무 일도 하지 않는 경우를 먼저 테스트해라.</p>
-<h5 id="설명-테스트"><a href="#설명-테스트" class="headerlink" title="설명 테스트"></a>설명 테스트</h5><p>자동화된 테스트가 널리 쓰이게 하려면 어떻게 해야할까? 테스트로 설명을 요청하고 테스트로 설명해라.</p>
-<p>예를 들어, 누군가 시퀀스 다이엄드램을 설명하라고 하면, 시퀀스 다이어그램의 모든 요소를 포함하는 테스트케이스를 작성해라.</p>
-<h5 id="학습-테스트"><a href="#학습-테스트" class="headerlink" title="학습 테스트"></a>학습 테스트</h5><p>외부에서 만든 소프트웨어에 대한 테스트를 작성해야 할 때도 있나? 패키지의 새로운 기능을 처음 사용해보기 전에 할 수 있다.</p>
-<p>자바의 모바일 정보 기기 프로파일 라이브러리르 기반으로 뭔가를 만든다고 하자. 그냥 바로 사용하는 대신 API 가 우리 예상대로 실행된다는 것을 확인해줄만한 테스트를 먼저 만들어라. 만약, 테스트가 통과하지 않으면 애플리케이션 역시 실행되지 않을것이므로 애플리케이션을 실행해볼 필요도 없다.</p>
-<h5 id="또-다른-테스트"><a href="#또-다른-테스트" class="headerlink" title="또 다른 테스트"></a>또 다른 테스트</h5><p>어떻게 하면 주제에서 벗어나지 않고 기술적인 논의를 계속할 수 있나 ? 주제와 무관한 아이디어가 떠오르면 이에 대한 테스트를 할일 목록에 적어놓고 다시 주제로 돌아가라.</p>
-<h5 id="회괴-테스트"><a href="#회괴-테스트" class="headerlink" title="회괴 테스트"></a>회괴 테스트</h5><p>시스템 장애가 보고될 때 무슨 일을 해야하는가 ? 그 장애로 인해 실패하는 테스트, 그리고 통과할 경우엔 장애가 수정되었다고 볼 수 있는 테스트를 가장 간단하게 작성해라.</p>
-<p>회귀 테스트를 작성할 때는 이 테스트를 작성해야한다는 사실을 어떻게 하면 애초에 알 수 있었을지 생각해봐라. </p>
-<hr>
-<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/04/06/tdd-chapter-26/" data-id="ckag7j38k00eiqk6w4g2svfj3" data-title="[테스트 주도 개발] 26장_빨간 막대 패턴" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-tdd-chapter-23" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/03/31/tdd-chapter-23/" class="article-date">
-  <time class="dt-published" datetime="2020-03-30T15:00:00.000Z" itemprop="datePublished">2020-03-31</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/tdd/">TDD</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/03/31/tdd-chapter-23/">[테스트 주도 개발] 23장_얼마나 달콤한지</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <ul>
-<li><del>테스트 메서드 호출하기</del></li>
-<li><del>먼저 setUp 호출하기</del></li>
-<li>나중에 tearDown 호출하기</li>
-<li>테스트 메서드가 실패해도 tearDown 호출하기</li>
-<li><strong>여러 개의 테스트 실행하기</strong></li>
-<li><del>수집된 결과를 출력하기</del></li>
-<li><del>WasRun 에 로그 문자열 남기기</del></li>
-<li><del>실패한 테스트 보고하기</del></li>
-<li>setUp 에러 잡아서 보고하기</li>
-</ul>
-<p>테스트들을 모두 모아서 한 번에 실행하고 싶다. TestSuite 가 필요하다.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// TestCaseTest</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">testSuite</span><span class="params">(self)</span>:</span></span><br><span class="line">    suite = TestSuite()</span><br><span class="line">    suite.add(WasRun(<span class="string">"testMethod"</span>))</span><br><span class="line">    suite.add(WasRun(<span class="string">"testBrokenMethod"</span>))</span><br><span class="line">    result = suite.run()</span><br><span class="line">    <span class="keyword">assert</span> (<span class="string">"2 run, 1 failed"</span> == result.summary())</span><br></pre></td></tr></table></figure>
-
-<p>add() 메서드를 구현은, 테스트들을 리스트에 추가하는 것으로 된다.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestSuite</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.tests = []</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(self, test)</span>:</span></span><br><span class="line">        self.tests.append(test)</span><br></pre></td></tr></table></figure>
-
-<p>run() 메서드는, 하나의 TestResult가 모든 테스트에 대해 쓰이길 바라기 때문에 다음과 같이 작성해야 한다.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// TestSuite</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">    result = TestResult()</span><br><span class="line">    <span class="keyword">for</span> test <span class="keyword">in</span> self.tests:</span><br><span class="line">        test.run(result)</span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
-
-<p>만약 TestCase.run() 에 매개변수를 추가하면, TestSuite.run() 에도 똑같은 매개 변수를 추가해야 한다.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// TestCaseTest</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">testSuite</span><span class="params">(self)</span>:</span></span><br><span class="line">    suite = TestSuite()</span><br><span class="line">    suite.add(WasRun(<span class="string">"testMethod"</span>))</span><br><span class="line">    suite.add(WasRun(<span class="string">"testBrokenMethod"</span>))</span><br><span class="line"></span><br><span class="line">    result = TestResult()</span><br><span class="line">    suite.run(result)</span><br><span class="line">    <span class="keyword">assert</span> (<span class="string">"2 run, 1 failed"</span> == result.summary())</span><br></pre></td></tr></table></figure>
-
-<p>이 방법은, run() 이 무언가를 명시적으로 반환하지 않아도 된다는 장점이 있다.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">// TestSuite <span class="class"><span class="keyword">class</span></span></span><br><span class="line"><span class="class"><span class="title">def</span> <span class="title">run</span><span class="params">(self, result)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> test <span class="keyword">in</span> self.tests:</span><br><span class="line">        test.run(result)</span><br><span class="line"></span><br><span class="line">// TestCase <span class="class"><span class="keyword">class</span></span></span><br><span class="line"><span class="class"><span class="title">def</span> <span class="title">run</span><span class="params">(self, result)</span>:</span></span><br><span class="line">    result.testStarted()</span><br><span class="line">    self.setUp()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        method = getattr(self, self.name)</span><br><span class="line">        method()</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        result.testFailed()</span><br><span class="line">    self.tear_down()</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">suite = TestSuite()</span><br><span class="line">suite.add(TestCaseTest(<span class="string">"testTemplateMethod"</span>))</span><br><span class="line">suite.add(TestCaseTest(<span class="string">"testResult"</span>))</span><br><span class="line">suite.add(TestCaseTest(<span class="string">"testFailedResultFormatting"</span>))</span><br><span class="line">suite.add(TestCaseTest(<span class="string">"testFailedResult"</span>))</span><br><span class="line"></span><br><span class="line">result = TestResult()</span><br><span class="line">suite.run(result)</span><br><span class="line">print(result.summary())</span><br></pre></td></tr></table></figure>
-
-<p>우선, 실패하는 테스트 3 개를 고치자.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">// TestCaseTest <span class="class"><span class="keyword">class</span></span></span><br><span class="line"><span class="class"><span class="title">def</span> <span class="title">testTemplateMethod</span><span class="params">(self)</span>:</span></span><br><span class="line">    test = WasRun(<span class="string">"testMethod"</span>)</span><br><span class="line">    result = TestResult()</span><br><span class="line">    test.run(result)</span><br><span class="line">    <span class="keyword">assert</span> <span class="string">"setUp testMethod tearDown "</span> == test.log</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">testResult</span><span class="params">(self)</span>:</span></span><br><span class="line">    test = WasRun(<span class="string">"testMethod"</span>)</span><br><span class="line">    result = TestResult()</span><br><span class="line">    test.run(result)</span><br><span class="line">    <span class="keyword">assert</span> <span class="string">"1 run, 0 failed"</span> == result.summary()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_failed_result</span><span class="params">(self)</span>:</span></span><br><span class="line">    test = WasRun(<span class="string">"TestBrokenMethod"</span>)</span><br><span class="line">    result = TestResult()</span><br><span class="line">    test.run(result)</span><br><span class="line">    <span class="keyword">assert</span> <span class="string">"1 run, 1 failed"</span> == result.summary()</span><br></pre></td></tr></table></figure>
-
-<p>각 테스트들이 TestResult 를 할당하고 있다는 것을 주목하자. </p>
-<p>이제, TestResult 를 setUp 에서 생성하면 만들면 테스트를 단순화된다.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">// TestCaseTest</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">setUp</span><span class="params">(self)</span>:</span></span><br><span class="line">	  self.result = TestResult()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">testTemplateMethod</span><span class="params">(self)</span>:</span></span><br><span class="line">    test = WasRun(<span class="string">"testMethod"</span>)</span><br><span class="line">    test.run(self.result)</span><br><span class="line">    <span class="keyword">assert</span> <span class="string">"setUp testMethod tearDown "</span> == test.log</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">testResult</span><span class="params">(self)</span>:</span></span><br><span class="line">    test = WasRun(<span class="string">"testMethod"</span>)</span><br><span class="line">    test.run(self.result)</span><br><span class="line">    <span class="keyword">assert</span> <span class="string">"1 run, 0 failed"</span> == self.result.summary()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">testFailedResult</span><span class="params">(self)</span>:</span></span><br><span class="line">    test = WasRun(<span class="string">"testBrokenMethod"</span>)</span><br><span class="line">    test.run(self.result)</span><br><span class="line">    <span class="keyword">assert</span> <span class="string">"1 run, 1 failed"</span> == self.result.summary()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">testFailedResultFormatting</span><span class="params">(self)</span>:</span></span><br><span class="line">    self.result.testStarted()</span><br><span class="line">    self.result.testFailed()</span><br><span class="line">    <span class="keyword">assert</span> <span class="string">"1 run, 1 failed"</span> == self.result.summary()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">testSuite</span><span class="params">(self)</span>:</span></span><br><span class="line">    suite = TestSuite()</span><br><span class="line">    suite.add(WasRun(<span class="string">"testMethod"</span>))</span><br><span class="line">    suite.add(WasRun(<span class="string">"testBrokenMethod"</span>))</span><br><span class="line">    suite.run(self.result)</span><br><span class="line">    <span class="keyword">assert</span> <span class="string">"2 run, 1 failed"</span> == self.result.summary()</span><br></pre></td></tr></table></figure>
-
-<hr>
-<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/03/31/tdd-chapter-23/" data-id="ckag7j38j00egqk6w0lvmwoku" data-title="[테스트 주도 개발] 23장_얼마나 달콤한지" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/04/06/tdd-chapter-27/" data-id="ckahww15e00geg86w20cpihkg" data-title="[테스트 주도 개발] 27장_테스팅 패턴" class="article-share-link">Share</a>
       
       
       
@@ -764,7 +768,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/big-data/">Big Data</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boost-course/">Boost Course</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jpa/">JPA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">Kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/oop/">OOP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/os/">OS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/spark/">Spark</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tdd/">TDD</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/etc/">etc</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/big-data/">Big Data</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boost-course/">Boost Course</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jpa/">JPA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">Kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/oop/">OOP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/os/">OS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/spark/">Spark</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tdd/">TDD</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/etc/">etc</a></li></ul>
     </div>
   </div>
 
@@ -779,7 +783,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
     </div>
   </div>
 
@@ -792,7 +796,11 @@
       <ul>
         
           <li>
-            <a href="/2020/04/19/tdd-chapter-32/">[테스트 주도 개발] 32장_TDD 마스터하기</a>
+            <a href="/2020/05/22/spring-mvc/">Spring MVC 요청 처리 과정</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/19/tdd-chapter-31/">[테스트 주도 개발] 31장_리팩토링</a>
           </li>
         
           <li>
@@ -804,11 +812,7 @@
           </li>
         
           <li>
-            <a href="/2020/04/19/tdd-chapter-31/">[테스트 주도 개발] 31장_리팩토링</a>
-          </li>
-        
-          <li>
-            <a href="/2020/04/07/bigdata-chapter-06/">[빅데이터] 6장_일괄처리 계층</a>
+            <a href="/2020/04/19/tdd-chapter-32/">[테스트 주도 개발] 32장_TDD 마스터하기</a>
           </li>
         
       </ul>

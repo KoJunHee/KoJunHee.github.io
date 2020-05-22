@@ -68,54 +68,6 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-tdd-chapter-24" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/03/31/tdd-chapter-24/" class="article-date">
-  <time class="dt-published" datetime="2020-03-30T15:00:00.000Z" itemprop="datePublished">2020-03-31</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/tdd/">TDD</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/03/31/tdd-chapter-24/">[테스트 주도 개발] 24장_xUnit 회고</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>xUnit을 사용하다 보면 assertion 의 실패와 나머지 종류의 에러 사이에 큰 차이점을 알게된다. 일반적으로 assertion failure가 디버깅 시간을 더 많이 잡아먹는다.</p>
-<p>JUnit은 간단한 Test Interface 를 선언하는데 TestCase와 TestSuite 모두 이를 상속받는다. 만약 JUnit 도구가 테스트를 실행하게 만들고 싶으면, Test 인터페이스만 구현하면 된다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">int</span> <span class="title">countTestCases</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">(TestResult result)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<hr>
-<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/03/31/tdd-chapter-24/" data-id="ckag7j38i00edqk6wycmj1h3z" data-title="[테스트 주도 개발] 24장_xUnit 회고" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
     <article id="post-bigdata-chapter-05" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2020/03/31/bigdata-chapter-05/" class="article-date">
@@ -186,7 +138,85 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/03/31/bigdata-chapter-05/" data-id="ckag7j38h00ebqk6wncjdfif1" data-title="[빅데이터] 5장_일괄처리 계층의 데이터 저장소 : 사례" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/03/31/bigdata-chapter-05/" data-id="ckahww15a00fyg86w8axhuu7f" data-title="[빅데이터] 5장_일괄처리 계층의 데이터 저장소 : 사례" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-tdd-chapter-22" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/03/31/tdd-chapter-22/" class="article-date">
+  <time class="dt-published" datetime="2020-03-30T15:00:00.000Z" itemprop="datePublished">2020-03-31</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tdd/">TDD</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/03/31/tdd-chapter-22/">[테스트 주도 개발] 22장_실패 처리하기</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <ul>
+<li><del>테스트 메서드 호출하기</del></li>
+<li><del>먼저 setUp 호출하기</del></li>
+<li>나중에 tearDown 호출하기</li>
+<li>테스트 메서드가 실패해도 tearDown 호출하기</li>
+<li>여러 개의 테스트 실행하기</li>
+<li><del>수집된 결과를 출력하기</del></li>
+<li><del>WasRun 에 로그 문자열 남기기</del></li>
+<li><strong>실패한 테스트 보고하기</strong></li>
+</ul>
+<p>실패한 테스트를 발견하면, 세밀한 단위의 테스트를 작성해서 올바른 결과를 출력해보자.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// TestCaseTest</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">testFailedResultFormatting</span><span class="params">(self)</span>:</span></span><br><span class="line">    result = TestResult()</span><br><span class="line">    result.testStarted()</span><br><span class="line">    result.testFailed()</span><br><span class="line">    <span class="keyword">assert</span> (<span class="string">"1 run, 1 failed"</span> == result.summary())</span><br></pre></td></tr></table></figure>
+
+<p>실패 횟수를 세어보자.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// TestResult</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">    self.runCount = <span class="number">0</span></span><br><span class="line">    self.failureCount = <span class="number">0</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">testFailed</span><span class="params">(self)</span>:</span></span><br><span class="line">    self.failureCount = self.failureCount + <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>이제 출력하자.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// TestResult</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">summary</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"%d run, %d failed"</span> % (self.runCount, self.failureCount)</span><br></pre></td></tr></table></figure>
+
+<p>이제 테스트 메서드에서 예외를 잡으면, testFailed() 를 호출하자.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// TestCase</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">    result = TestResult()</span><br><span class="line">    result.testStarted()</span><br><span class="line">    self.setUp()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        method = getattr(self, self.name)</span><br><span class="line">        method()</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        result.testFailed()</span><br><span class="line">    self.tearDown()</span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+
+<p>run() 에는 문제가 있다. 바로 setUp()에서 문제가 발생한 경우에는 예외가 잡히지 않는다는 것이다. todo list 에 넣어두자.</p>
+<ul>
+<li><del>테스트 메서드 호출하기</del></li>
+<li><del>먼저 setUp 호출하기</del></li>
+<li>나중에 tearDown 호출하기</li>
+<li>테스트 메서드가 실패해도 tearDown 호출하기</li>
+<li>여러 개의 테스트 실행하기</li>
+<li><del>수집된 결과를 출력하기</del></li>
+<li><del>WasRun 에 로그 문자열 남기기</del></li>
+<li><del>실패한 테스트 보고하기</del></li>
+<li>setUp 에러 잡아서 보고하기</li>
+</ul>
+<hr>
+<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2020/03/31/tdd-chapter-22/" data-id="ckahww15a00g0g86wnt7l8j04" data-title="[테스트 주도 개발] 22장_실패 처리하기" class="article-share-link">Share</a>
       
       
       
@@ -275,7 +305,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/03/31/tdd-chapter-21/" data-id="ckag7j38h00e8qk6whu60j4zy" data-title="[테스트 주도 개발] 21장_셈하기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/03/31/tdd-chapter-21/" data-id="ckahww15b00g2g86wjbpwvyzf" data-title="[테스트 주도 개발] 21장_셈하기" class="article-share-link">Share</a>
       
       
       
@@ -287,9 +317,9 @@
 
 
   
-    <article id="post-tdd-chapter-22" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <article id="post-tdd-chapter-23" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2020/03/31/tdd-chapter-22/" class="article-date">
+    <a href="/2020/03/31/tdd-chapter-23/" class="article-date">
   <time class="dt-published" datetime="2020-03-30T15:00:00.000Z" itemprop="datePublished">2020-03-31</time>
 </a>
     
@@ -305,7 +335,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/03/31/tdd-chapter-22/">[테스트 주도 개발] 22장_실패 처리하기</a>
+      <a class="p-name article-title" href="/2020/03/31/tdd-chapter-23/">[테스트 주도 개발] 23장_얼마나 달콤한지</a>
     </h1>
   
 
@@ -318,42 +348,91 @@
 <li><del>먼저 setUp 호출하기</del></li>
 <li>나중에 tearDown 호출하기</li>
 <li>테스트 메서드가 실패해도 tearDown 호출하기</li>
-<li>여러 개의 테스트 실행하기</li>
-<li><del>수집된 결과를 출력하기</del></li>
-<li><del>WasRun 에 로그 문자열 남기기</del></li>
-<li><strong>실패한 테스트 보고하기</strong></li>
-</ul>
-<p>실패한 테스트를 발견하면, 세밀한 단위의 테스트를 작성해서 올바른 결과를 출력해보자.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// TestCaseTest</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">testFailedResultFormatting</span><span class="params">(self)</span>:</span></span><br><span class="line">    result = TestResult()</span><br><span class="line">    result.testStarted()</span><br><span class="line">    result.testFailed()</span><br><span class="line">    <span class="keyword">assert</span> (<span class="string">"1 run, 1 failed"</span> == result.summary())</span><br></pre></td></tr></table></figure>
-
-<p>실패 횟수를 세어보자.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// TestResult</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">    self.runCount = <span class="number">0</span></span><br><span class="line">    self.failureCount = <span class="number">0</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">testFailed</span><span class="params">(self)</span>:</span></span><br><span class="line">    self.failureCount = self.failureCount + <span class="number">1</span></span><br></pre></td></tr></table></figure>
-
-<p>이제 출력하자.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// TestResult</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">summary</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"%d run, %d failed"</span> % (self.runCount, self.failureCount)</span><br></pre></td></tr></table></figure>
-
-<p>이제 테스트 메서드에서 예외를 잡으면, testFailed() 를 호출하자.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// TestCase</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">    result = TestResult()</span><br><span class="line">    result.testStarted()</span><br><span class="line">    self.setUp()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        method = getattr(self, self.name)</span><br><span class="line">        method()</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        result.testFailed()</span><br><span class="line">    self.tearDown()</span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
-
-<p>run() 에는 문제가 있다. 바로 setUp()에서 문제가 발생한 경우에는 예외가 잡히지 않는다는 것이다. todo list 에 넣어두자.</p>
-<ul>
-<li><del>테스트 메서드 호출하기</del></li>
-<li><del>먼저 setUp 호출하기</del></li>
-<li>나중에 tearDown 호출하기</li>
-<li>테스트 메서드가 실패해도 tearDown 호출하기</li>
-<li>여러 개의 테스트 실행하기</li>
+<li><strong>여러 개의 테스트 실행하기</strong></li>
 <li><del>수집된 결과를 출력하기</del></li>
 <li><del>WasRun 에 로그 문자열 남기기</del></li>
 <li><del>실패한 테스트 보고하기</del></li>
 <li>setUp 에러 잡아서 보고하기</li>
 </ul>
+<p>테스트들을 모두 모아서 한 번에 실행하고 싶다. TestSuite 가 필요하다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// TestCaseTest</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">testSuite</span><span class="params">(self)</span>:</span></span><br><span class="line">    suite = TestSuite()</span><br><span class="line">    suite.add(WasRun(<span class="string">"testMethod"</span>))</span><br><span class="line">    suite.add(WasRun(<span class="string">"testBrokenMethod"</span>))</span><br><span class="line">    result = suite.run()</span><br><span class="line">    <span class="keyword">assert</span> (<span class="string">"2 run, 1 failed"</span> == result.summary())</span><br></pre></td></tr></table></figure>
+
+<p>add() 메서드를 구현은, 테스트들을 리스트에 추가하는 것으로 된다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestSuite</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.tests = []</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(self, test)</span>:</span></span><br><span class="line">        self.tests.append(test)</span><br></pre></td></tr></table></figure>
+
+<p>run() 메서드는, 하나의 TestResult가 모든 테스트에 대해 쓰이길 바라기 때문에 다음과 같이 작성해야 한다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// TestSuite</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">    result = TestResult()</span><br><span class="line">    <span class="keyword">for</span> test <span class="keyword">in</span> self.tests:</span><br><span class="line">        test.run(result)</span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+
+<p>만약 TestCase.run() 에 매개변수를 추가하면, TestSuite.run() 에도 똑같은 매개 변수를 추가해야 한다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// TestCaseTest</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">testSuite</span><span class="params">(self)</span>:</span></span><br><span class="line">    suite = TestSuite()</span><br><span class="line">    suite.add(WasRun(<span class="string">"testMethod"</span>))</span><br><span class="line">    suite.add(WasRun(<span class="string">"testBrokenMethod"</span>))</span><br><span class="line"></span><br><span class="line">    result = TestResult()</span><br><span class="line">    suite.run(result)</span><br><span class="line">    <span class="keyword">assert</span> (<span class="string">"2 run, 1 failed"</span> == result.summary())</span><br></pre></td></tr></table></figure>
+
+<p>이 방법은, run() 이 무언가를 명시적으로 반환하지 않아도 된다는 장점이 있다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">// TestSuite <span class="class"><span class="keyword">class</span></span></span><br><span class="line"><span class="class"><span class="title">def</span> <span class="title">run</span><span class="params">(self, result)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> test <span class="keyword">in</span> self.tests:</span><br><span class="line">        test.run(result)</span><br><span class="line"></span><br><span class="line">// TestCase <span class="class"><span class="keyword">class</span></span></span><br><span class="line"><span class="class"><span class="title">def</span> <span class="title">run</span><span class="params">(self, result)</span>:</span></span><br><span class="line">    result.testStarted()</span><br><span class="line">    self.setUp()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        method = getattr(self, self.name)</span><br><span class="line">        method()</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        result.testFailed()</span><br><span class="line">    self.tear_down()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">suite = TestSuite()</span><br><span class="line">suite.add(TestCaseTest(<span class="string">"testTemplateMethod"</span>))</span><br><span class="line">suite.add(TestCaseTest(<span class="string">"testResult"</span>))</span><br><span class="line">suite.add(TestCaseTest(<span class="string">"testFailedResultFormatting"</span>))</span><br><span class="line">suite.add(TestCaseTest(<span class="string">"testFailedResult"</span>))</span><br><span class="line"></span><br><span class="line">result = TestResult()</span><br><span class="line">suite.run(result)</span><br><span class="line">print(result.summary())</span><br></pre></td></tr></table></figure>
+
+<p>우선, 실패하는 테스트 3 개를 고치자.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">// TestCaseTest <span class="class"><span class="keyword">class</span></span></span><br><span class="line"><span class="class"><span class="title">def</span> <span class="title">testTemplateMethod</span><span class="params">(self)</span>:</span></span><br><span class="line">    test = WasRun(<span class="string">"testMethod"</span>)</span><br><span class="line">    result = TestResult()</span><br><span class="line">    test.run(result)</span><br><span class="line">    <span class="keyword">assert</span> <span class="string">"setUp testMethod tearDown "</span> == test.log</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">testResult</span><span class="params">(self)</span>:</span></span><br><span class="line">    test = WasRun(<span class="string">"testMethod"</span>)</span><br><span class="line">    result = TestResult()</span><br><span class="line">    test.run(result)</span><br><span class="line">    <span class="keyword">assert</span> <span class="string">"1 run, 0 failed"</span> == result.summary()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_failed_result</span><span class="params">(self)</span>:</span></span><br><span class="line">    test = WasRun(<span class="string">"TestBrokenMethod"</span>)</span><br><span class="line">    result = TestResult()</span><br><span class="line">    test.run(result)</span><br><span class="line">    <span class="keyword">assert</span> <span class="string">"1 run, 1 failed"</span> == result.summary()</span><br></pre></td></tr></table></figure>
+
+<p>각 테스트들이 TestResult 를 할당하고 있다는 것을 주목하자. </p>
+<p>이제, TestResult 를 setUp 에서 생성하면 만들면 테스트를 단순화된다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">// TestCaseTest</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">setUp</span><span class="params">(self)</span>:</span></span><br><span class="line">	  self.result = TestResult()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">testTemplateMethod</span><span class="params">(self)</span>:</span></span><br><span class="line">    test = WasRun(<span class="string">"testMethod"</span>)</span><br><span class="line">    test.run(self.result)</span><br><span class="line">    <span class="keyword">assert</span> <span class="string">"setUp testMethod tearDown "</span> == test.log</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">testResult</span><span class="params">(self)</span>:</span></span><br><span class="line">    test = WasRun(<span class="string">"testMethod"</span>)</span><br><span class="line">    test.run(self.result)</span><br><span class="line">    <span class="keyword">assert</span> <span class="string">"1 run, 0 failed"</span> == self.result.summary()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">testFailedResult</span><span class="params">(self)</span>:</span></span><br><span class="line">    test = WasRun(<span class="string">"testBrokenMethod"</span>)</span><br><span class="line">    test.run(self.result)</span><br><span class="line">    <span class="keyword">assert</span> <span class="string">"1 run, 1 failed"</span> == self.result.summary()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">testFailedResultFormatting</span><span class="params">(self)</span>:</span></span><br><span class="line">    self.result.testStarted()</span><br><span class="line">    self.result.testFailed()</span><br><span class="line">    <span class="keyword">assert</span> <span class="string">"1 run, 1 failed"</span> == self.result.summary()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">testSuite</span><span class="params">(self)</span>:</span></span><br><span class="line">    suite = TestSuite()</span><br><span class="line">    suite.add(WasRun(<span class="string">"testMethod"</span>))</span><br><span class="line">    suite.add(WasRun(<span class="string">"testBrokenMethod"</span>))</span><br><span class="line">    suite.run(self.result)</span><br><span class="line">    <span class="keyword">assert</span> <span class="string">"2 run, 1 failed"</span> == self.result.summary()</span><br></pre></td></tr></table></figure>
+
 <hr>
 <p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/03/31/tdd-chapter-22/" data-id="ckag7j38g00e6qk6w9fbx8poi" data-title="[테스트 주도 개발] 22장_실패 처리하기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/03/31/tdd-chapter-23/" data-id="ckahww15b00g4g86w0prep0y7" data-title="[테스트 주도 개발] 23장_얼마나 달콤한지" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-tdd-chapter-24" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/03/31/tdd-chapter-24/" class="article-date">
+  <time class="dt-published" datetime="2020-03-30T15:00:00.000Z" itemprop="datePublished">2020-03-31</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tdd/">TDD</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/03/31/tdd-chapter-24/">[테스트 주도 개발] 24장_xUnit 회고</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>xUnit을 사용하다 보면 assertion 의 실패와 나머지 종류의 에러 사이에 큰 차이점을 알게된다. 일반적으로 assertion failure가 디버깅 시간을 더 많이 잡아먹는다.</p>
+<p>JUnit은 간단한 Test Interface 를 선언하는데 TestCase와 TestSuite 모두 이를 상속받는다. 만약 JUnit 도구가 테스트를 실행하게 만들고 싶으면, Test 인터페이스만 구현하면 된다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">int</span> <span class="title">countTestCases</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">(TestResult result)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2020/03/31/tdd-chapter-24/" data-id="ckahww15f00gig86wvesd5wwl" data-title="[테스트 주도 개발] 24장_xUnit 회고" class="article-share-link">Share</a>
       
       
       
@@ -435,7 +514,94 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/03/24/tdd-chapter-19/" data-id="ckag7j38f00e1qk6wm1srepi1" data-title="[테스트 주도 개발] 19장_테이블 차리기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/03/24/tdd-chapter-19/" data-id="ckahww15400fmg86wfomzjqni" data-title="[테스트 주도 개발] 19장_테이블 차리기" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-tdd-chapter-20" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2020/03/24/tdd-chapter-20/" class="article-date">
+  <time class="dt-published" datetime="2020-03-23T15:00:00.000Z" itemprop="datePublished">2020-03-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/tdd/">TDD</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2020/03/24/tdd-chapter-20/">[테스트 주도 개발] 20장_뒷정리하기</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <ul>
+<li><del>테스트 메서드 호출하기</del></li>
+<li><del>먼저 setUp 호출하기</del></li>
+<li>나중에 tearDown 호출하기</li>
+<li>테스트 메서드가 실패해도 tearDown 호출하기</li>
+<li>여러 개의 테스트 실행하기</li>
+<li>수집된 결과를 출력하기</li>
+<li><strong>WasRun 에 로그 문자열 남기기</strong></li>
+</ul>
+<p>setUp() 은 테스트 메서드 실행되기 전에 호출, tearDown() 은 테스트 메서드가 실행된 후에 호출되어야한다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WasRun</span><span class="params">(TestCase)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setUp</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.wasRun= <span class="keyword">None</span></span><br><span class="line">        self.wasSetUp = <span class="number">1</span></span><br><span class="line">        self.log = <span class="string">"setUp"</span></span><br></pre></td></tr></table></figure>
+
+<p>이제 testSetUp이 플래그 대신 로그를 검사하자.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestCaseTest</span><span class="params">(TestCase)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">testSetUp</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.test.run()</span><br><span class="line">        <span class="keyword">assert</span>(<span class="string">"sepUp"</span> == self.test.log)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestCaseTest</span><span class="params">(TestCase)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">testSetUp</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.test.run()</span><br><span class="line">        <span class="keyword">assert</span>(<span class="string">"sepUp testMethod"</span> == self.test.log)</span><br></pre></td></tr></table></figure>
+
+<p>이제 testSetUp 의 이름을 바꾸자.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestCaseTest</span><span class="params">(TestCase)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">testTemplateMethod</span><span class="params">(self)</span>:</span></span><br><span class="line">      	teset = WasRun(<span class="string">"testMethod"</span>)</span><br><span class="line">        test.run()</span><br><span class="line">        <span class="keyword">assert</span>(<span class="string">"sepUp testMethod"</span> == self.test.log)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><del>테스트 메서드 호출하기</del></li>
+<li><del>먼저 setUp 호출하기</del></li>
+<li><strong>나중에 tearDown 호출하기</strong></li>
+<li>테스트 메서드가 실패해도 tearDown 호출하기</li>
+<li>여러 개의 테스트 실행하기</li>
+<li>수집된 결과를 출력하기</li>
+<li><del>WasRun 에 로그 문자열 남기기</del></li>
+</ul>
+<p>이제 tearDown() 을 테스트할 준비가 됐다.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestCaseTest</span><span class="params">(TestCase)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">testTemplateMethod</span><span class="params">(self)</span>:</span></span><br><span class="line">      	teset = WasRun(<span class="string">"testMethod"</span>)</span><br><span class="line">        test.run()</span><br><span class="line">        <span class="keyword">assert</span>(<span class="string">"sepUp testMethod tearDown"</span> == self.test.log)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestCase</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">      	self.setUp()</span><br><span class="line">        method = gatattr(self, self.name)</span><br><span class="line">        method()</span><br><span class="line">        self.tearDown()</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><del>테스트 메서드 호출하기</del></li>
+<li><del>먼저 setUp 호출하기</del></li>
+<li><del>나중에 tearDown 호출하기</del></li>
+<li>테스트 메서드가 실패해도 tearDown 호출하기</li>
+<li>여러 개의 테스트 실행하기</li>
+<li>수집된 결과를 출력하기</li>
+<li><del>WasRun 에 로그 문자열 남기기</del></li>
+</ul>
+<hr>
+<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kojunhee.github.io/2020/03/24/tdd-chapter-20/" data-id="ckahww15800fug86w10nngk80" data-title="[테스트 주도 개발] 20장_뒷정리하기" class="article-share-link">Share</a>
       
       
       
@@ -532,94 +698,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/03/24/tdd-chapter-18/" data-id="ckag7j38e00dyqk6wpiqsf0ks" data-title="[테스트 주도 개발] 18장_xUnit 으로 가는 첫걸음" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-tdd-chapter-20" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/03/24/tdd-chapter-20/" class="article-date">
-  <time class="dt-published" datetime="2020-03-23T15:00:00.000Z" itemprop="datePublished">2020-03-24</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/tdd/">TDD</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/03/24/tdd-chapter-20/">[테스트 주도 개발] 20장_뒷정리하기</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <ul>
-<li><del>테스트 메서드 호출하기</del></li>
-<li><del>먼저 setUp 호출하기</del></li>
-<li>나중에 tearDown 호출하기</li>
-<li>테스트 메서드가 실패해도 tearDown 호출하기</li>
-<li>여러 개의 테스트 실행하기</li>
-<li>수집된 결과를 출력하기</li>
-<li><strong>WasRun 에 로그 문자열 남기기</strong></li>
-</ul>
-<p>setUp() 은 테스트 메서드 실행되기 전에 호출, tearDown() 은 테스트 메서드가 실행된 후에 호출되어야한다.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WasRun</span><span class="params">(TestCase)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setUp</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.wasRun= <span class="keyword">None</span></span><br><span class="line">        self.wasSetUp = <span class="number">1</span></span><br><span class="line">        self.log = <span class="string">"setUp"</span></span><br></pre></td></tr></table></figure>
-
-<p>이제 testSetUp이 플래그 대신 로그를 검사하자.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestCaseTest</span><span class="params">(TestCase)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">testSetUp</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.test.run()</span><br><span class="line">        <span class="keyword">assert</span>(<span class="string">"sepUp"</span> == self.test.log)</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestCaseTest</span><span class="params">(TestCase)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">testSetUp</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.test.run()</span><br><span class="line">        <span class="keyword">assert</span>(<span class="string">"sepUp testMethod"</span> == self.test.log)</span><br></pre></td></tr></table></figure>
-
-<p>이제 testSetUp 의 이름을 바꾸자.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestCaseTest</span><span class="params">(TestCase)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">testTemplateMethod</span><span class="params">(self)</span>:</span></span><br><span class="line">      	teset = WasRun(<span class="string">"testMethod"</span>)</span><br><span class="line">        test.run()</span><br><span class="line">        <span class="keyword">assert</span>(<span class="string">"sepUp testMethod"</span> == self.test.log)</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><del>테스트 메서드 호출하기</del></li>
-<li><del>먼저 setUp 호출하기</del></li>
-<li><strong>나중에 tearDown 호출하기</strong></li>
-<li>테스트 메서드가 실패해도 tearDown 호출하기</li>
-<li>여러 개의 테스트 실행하기</li>
-<li>수집된 결과를 출력하기</li>
-<li><del>WasRun 에 로그 문자열 남기기</del></li>
-</ul>
-<p>이제 tearDown() 을 테스트할 준비가 됐다.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestCaseTest</span><span class="params">(TestCase)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">testTemplateMethod</span><span class="params">(self)</span>:</span></span><br><span class="line">      	teset = WasRun(<span class="string">"testMethod"</span>)</span><br><span class="line">        test.run()</span><br><span class="line">        <span class="keyword">assert</span>(<span class="string">"sepUp testMethod tearDown"</span> == self.test.log)</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestCase</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">      	self.setUp()</span><br><span class="line">        method = gatattr(self, self.name)</span><br><span class="line">        method()</span><br><span class="line">        self.tearDown()</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><del>테스트 메서드 호출하기</del></li>
-<li><del>먼저 setUp 호출하기</del></li>
-<li><del>나중에 tearDown 호출하기</del></li>
-<li>테스트 메서드가 실패해도 tearDown 호출하기</li>
-<li>여러 개의 테스트 실행하기</li>
-<li>수집된 결과를 출력하기</li>
-<li><del>WasRun 에 로그 문자열 남기기</del></li>
-</ul>
-<hr>
-<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/03/24/tdd-chapter-20/" data-id="ckag7j38f00e3qk6wj3vcszvt" data-title="[테스트 주도 개발] 20장_뒷정리하기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/03/24/tdd-chapter-18/" data-id="ckahww15900fwg86wah912ki7" data-title="[테스트 주도 개발] 18장_xUnit 으로 가는 첫걸음" class="article-share-link">Share</a>
       
       
       
@@ -710,109 +789,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/03/17/tdd-chapter-17/" data-id="ckag7j38d00dwqk6w0rv2hr96" data-title="[테스트 주도 개발] 17장_Money 회고" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-tdd-chapter-13" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2020/03/16/tdd-chapter-13/" class="article-date">
-  <time class="dt-published" datetime="2020-03-15T15:00:00.000Z" itemprop="datePublished">2020-03-16</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/tdd/">TDD</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2020/03/16/tdd-chapter-13/">[테스트 주도 개발] 13장_진짜로 만들기</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>모든 중복을 제거하기 전에는 “5달러 + 5달러” 테스트는 끝난 것이 아니다. 코드 중복은 없지만, 가짜 구현에 있는 10 달러는 사실 테스트 코드에 있는 “5달러 + 5달러” 와 같다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Money <span class="title">reduce</span><span class="params">(Expression source, String to)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> Money.dollar(<span class="number">10</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testSimpleAddition</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Money five = Money.dollar(<span class="number">5</span>);</span><br><span class="line">    Expression sum = five.plus(five); <span class="comment">// here</span></span><br><span class="line">    Bank bank = <span class="keyword">new</span> Bank();</span><br><span class="line">    Money reduced = bank.reduce(sum, <span class="string">"USD"</span>);</span><br><span class="line">    assertEquals(Money.dollar(<span class="number">10</span>), reduced);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p> 이전에는, 가짜 구현이 있을 때 진짜 구현으로 작업해가는 것이 명확했다. 이번에는 어떻게 거꾸로 작업해야할지 명확하지 않다. 그래서 조금 불확실하지만 순방향으로 작업해보자.</p>
-<p>우선, Money.plus() 는 그냥 Money 가 아닌, Expression(Sum) 을 반환해야한다. 두 Money 의 합은 Sum 이어야한다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testPlusReturnsSum</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Money five = Money.dollar(<span class="number">5</span>);</span><br><span class="line">    Expression result = five.plus(five);</span><br><span class="line">    Sum sum = (Sum) result;</span><br><span class="line">    assertEquals(five, sum.augend);</span><br><span class="line">    assertEquals(five, sum.addend);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>위 코드를 컴파일하기위해서는, augend, addend 필드를 가진 Sum 클래스가 필요하다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sum</span> </span>&#123;</span><br><span class="line">    Money augend;</span><br><span class="line">    Money addend;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>다시 실행해보면, Money.plus() 는 Sum 이 아닌 Money 를 반환하게 되어 있어서, ClassCastExceptoin 을 발생시킨다. 그래서, 다음 처럼 수정하자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Money</span></span><br><span class="line"><span class="function">Expression <span class="title">plus</span><span class="params">(Money addend)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Sum(<span class="keyword">this</span>, addend)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>Sum 생성자도 필요하다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sum</span> </span>&#123;</span><br><span class="line">    Money augend;</span><br><span class="line">    Money addend;</span><br><span class="line"></span><br><span class="line">    Sum(Money augend, Money addend) &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>그리고 Sum 은 Expression 의 일종이어야한다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sum</span> <span class="keyword">implements</span> <span class="title">Expression</span></span>&#123;</span><br><span class="line">    Money augend;</span><br><span class="line">    Money addend;</span><br><span class="line"></span><br><span class="line">    Sum(Money augend, Money addend) &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>이제 컴파일 되는 상태이지만, 테스트는 여전히 실패한다. 왜냐하면, Sum 생성자에서 필드를 설정하지 않았기 때문이다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sum</span> <span class="keyword">implements</span> <span class="title">Expression</span></span>&#123;</span><br><span class="line">    Money augend;</span><br><span class="line">    Money addend;</span><br><span class="line"></span><br><span class="line">    Sum(Money augend, Money addend) &#123;</span><br><span class="line">        <span class="keyword">this</span>.augend = augend;</span><br><span class="line">        <span class="keyword">this</span>.addend = addend;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>이제 Bank.reduce() 는 Sum 을 전달받는다. </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testReduceSum</span><span class="params">()</span></span>&#123;</span><br><span class="line">    Expression sum = <span class="keyword">new</span> Sum(Money.dollar(<span class="number">3</span>), Money.dollar(<span class="number">4</span>));</span><br><span class="line">    Bank bank = <span class="keyword">new</span> Bank();</span><br><span class="line">    Money result = bank.reduce(sum, <span class="string">"USD"</span>);</span><br><span class="line">    assertEquals(Money.dollar(<span class="number">7</span>), result);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>위 테스트는 테스트가 깨지도록 인자를 선택했다. Bank 클래스를 수정하자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bank</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">reduce</span><span class="params">(Expression source, String to)</span> </span>&#123;</span><br><span class="line">        Sum sum = (Sum) source;</span><br><span class="line">        <span class="keyword">int</span> amount = sum.augend.amount + sum.addend.amount;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Money(amount, to);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>위 코드는 다음 이유로 지저분하다.</p>
-<ol>
-<li>Casting. 위 코드는 모든 Expression 에 대해 작동해야한다.</li>
-<li>public 필드와 그 필드들에 대한 두 단계에 걸친 레퍼런스.</li>
-</ol>
-<p>우선, 외부에서 접근 가능한 필드 몇개를 들어내기 위해 메서드 본문을 Sum 으로 옮길 수 있다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bank</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">reduce</span><span class="params">(Expression source, String to)</span> </span>&#123;</span><br><span class="line">        Sum sum = (Sum) source;</span><br><span class="line">        <span class="keyword">return</span> sum.reduce(to);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sum</span> <span class="keyword">implements</span> <span class="title">Expression</span> </span>&#123;</span><br><span class="line">    Money augend;</span><br><span class="line">    Money addend;</span><br><span class="line"></span><br><span class="line">    Sum(Money augend, Money addend) &#123;</span><br><span class="line">        <span class="keyword">this</span>.augend = augend;</span><br><span class="line">        <span class="keyword">this</span>.addend = addend;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">reduce</span><span class="params">(String to)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> amount = augend.amount + addend.amount;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Money(amount, to);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>다음 테스트를 작성하자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testReduceMoney</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Bank bank = <span class="keyword">new</span> Bank();</span><br><span class="line">    Money result = bank.reduce(Money.dollar(<span class="number">1</span>), <span class="string">"USD"</span>);</span><br><span class="line">    assertEquals(Money.dollar(<span class="number">1</span>), result);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bank</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">reduce</span><span class="params">(Expression source, String to)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (source <span class="keyword">instanceof</span> Money) <span class="keyword">return</span> (Money) source;</span><br><span class="line">        Sum sum = (Sum) source;</span><br><span class="line">        <span class="keyword">return</span> sum.reduce(to);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>초록 막대이다. 리펙토링을 하자. </p>
-<p>클래스를 명시적으로 검사하는 코드가 있을 때에는 항상 다형성을 사용하자. Sum 은 reduce(Stirng) 을 구현하므로, Money 도 그것을 구현하게 하면 reduce 를 Expression 인터페이스에 추가할 수 있다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bank</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">reduce</span><span class="params">(Expression source, String to)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (source <span class="keyword">instanceof</span> Money) <span class="keyword">return</span> (Money) source.reduce(to);</span><br><span class="line">        Sum sum = (Sum) source;</span><br><span class="line">        <span class="keyword">return</span> sum.reduce(to);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Money</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Money <span class="title">reduce</span><span class="params">(String to)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>이제, Expression 인터페이스에 reduce(String) 을 추가하자.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Expression</span> </span>&#123;</span><br><span class="line">    <span class="function">Money <span class="title">reduce</span><span class="params">(String to)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>지저분한 캐스팅과 클래스 검사 코드를 제거할 수 있다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bank</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function">Money <span class="title">reduce</span><span class="params">(Expression source, String to)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> source.reduce(to);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>Expression 과 Bank 에 이름이 동일하지만 매개 변수 형이 다른 메서드가 있다는 것이 만족스럽지 않다.</p>
-<hr>
-<p>테스트 주도 개발 &lt;켄트 벡&gt;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/03/16/tdd-chapter-13/" data-id="ckag7j38d00dtqk6wra9y43qm" data-title="[테스트 주도 개발] 13장_진짜로 만들기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/03/17/tdd-chapter-17/" data-id="ckahww15700fqg86wpqtgik3j" data-title="[테스트 주도 개발] 17장_Money 회고" class="article-share-link">Share</a>
       
       
       
@@ -887,7 +864,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2020/03/16/tdd-chapter-15/" data-id="ckag7j38b00dnqk6wwoitqhto" data-title="[테스트 주도 개발] 15장_서로 다른 통화 더하기" class="article-share-link">Share</a>
+      <a data-url="https://kojunhee.github.io/2020/03/16/tdd-chapter-15/" data-id="ckahww15200feg86wbxndu5a7" data-title="[테스트 주도 개발] 15장_서로 다른 통화 더하기" class="article-share-link">Share</a>
       
       
       
@@ -914,7 +891,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/big-data/">Big Data</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boost-course/">Boost Course</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jpa/">JPA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">Kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/oop/">OOP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/os/">OS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/spark/">Spark</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tdd/">TDD</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/etc/">etc</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/big-data/">Big Data</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boost-course/">Boost Course</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jpa/">JPA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">Kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/oop/">OOP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/os/">OS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/spark/">Spark</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tdd/">TDD</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/etc/">etc</a></li></ul>
     </div>
   </div>
 
@@ -929,7 +906,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
     </div>
   </div>
 
@@ -942,7 +919,11 @@
       <ul>
         
           <li>
-            <a href="/2020/04/19/tdd-chapter-32/">[테스트 주도 개발] 32장_TDD 마스터하기</a>
+            <a href="/2020/05/22/spring-mvc/">Spring MVC 요청 처리 과정</a>
+          </li>
+        
+          <li>
+            <a href="/2020/04/19/tdd-chapter-31/">[테스트 주도 개발] 31장_리팩토링</a>
           </li>
         
           <li>
@@ -954,11 +935,7 @@
           </li>
         
           <li>
-            <a href="/2020/04/19/tdd-chapter-31/">[테스트 주도 개발] 31장_리팩토링</a>
-          </li>
-        
-          <li>
-            <a href="/2020/04/07/bigdata-chapter-06/">[빅데이터] 6장_일괄처리 계층</a>
+            <a href="/2020/04/19/tdd-chapter-32/">[테스트 주도 개발] 32장_TDD 마스터하기</a>
           </li>
         
       </ul>
