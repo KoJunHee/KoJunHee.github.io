@@ -1,102 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head><meta name="generator" content="Hexo 3.9.0">
-  <meta charset="utf-8">
-  
-  
-  <title>[스파크2 프로그래밍] 5장_스파크SQL 과 데이터프레임,데이터셋 | Always Learning</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="RDD 의 장점은,   분산환경에서 메모리 기반으로 빠르고 안정적으로 동작하는 프로그램을 만들 수 있다는 것과,  RDD 가 제공하는 풍부한 데이터 처리 연산입니다. ( &amp;lt;-&amp;gt; 맵과 리듀스로만 문제를 해결 )   RDD 의 단점은,  스키마를 표현할 수 없다는 것입니다.   스파크 SQL 은 RDD 의 이 단점을 보완할 수 있도록 또 다른 유형의">
-<meta property="og:type" content="article">
-<meta property="og:title" content="[스파크2 프로그래밍] 5장_스파크SQL 과 데이터프레임,데이터셋">
-<meta property="og:url" content="https://kojunhee.github.io/2019/08/07/spark-sql/index.html">
-<meta property="og:site_name" content="Always Learning">
-<meta property="og:description" content="RDD 의 장점은,   분산환경에서 메모리 기반으로 빠르고 안정적으로 동작하는 프로그램을 만들 수 있다는 것과,  RDD 가 제공하는 풍부한 데이터 처리 연산입니다. ( &amp;lt;-&amp;gt; 맵과 리듀스로만 문제를 해결 )   RDD 의 단점은,  스키마를 표현할 수 없다는 것입니다.   스파크 SQL 은 RDD 의 이 단점을 보완할 수 있도록 또 다른 유형의">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-09-04T07:33:32.024Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="[스파크2 프로그래밍] 5장_스파크SQL 과 데이터프레임,데이터셋">
-<meta name="twitter:description" content="RDD 의 장점은,   분산환경에서 메모리 기반으로 빠르고 안정적으로 동작하는 프로그램을 만들 수 있다는 것과,  RDD 가 제공하는 풍부한 데이터 처리 연산입니다. ( &amp;lt;-&amp;gt; 맵과 리듀스로만 문제를 해결 )   RDD 의 단점은,  스키마를 표현할 수 없다는 것입니다.   스파크 SQL 은 RDD 의 이 단점을 보완할 수 있도록 또 다른 유형의">
-  
-    <link rel="alternate" href="/atom.xml" title="Always Learning" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="css/images/favicon.ico">
-  
-  
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
-  
-  <link rel="stylesheet" href="/css/style.css">
-  
-    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
-  
-</head>
-
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Always Learning</a>
-      </h1>
-      
-        <h2 id="subtitle-wrap">
-          <a href="/" id="subtitle">junhee.ko</a>
-        </h2>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://kojunhee.github.io"></form>
-      </div>
-    </div>
-  </div>
-</header>
-      <div class="outer">
-        <section id="main"><article id="post-spark-sql" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/08/07/spark-sql/" class="article-date">
-  <time class="dt-published" datetime="2019-08-06T15:00:00.000Z" itemprop="datePublished">2019-08-07</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/spark/">Spark</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="p-name article-title" itemprop="headline name">
-      [스파크2 프로그래밍] 5장_스파크SQL 과 데이터프레임,데이터셋
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>RDD 의 장점은, </p>
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="generator" content="Hexo 4.2.1"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>[스파크2 프로그래밍] 5장_스파크SQL 과 데이터프레임,데이터셋 - Always Learning</title><meta description="RDD 의 장점은,   분산환경에서 메모리 기반으로 빠르고 안정적으로 동작하는 프로그램을 만들 수 있다는 것과,  RDD 가 제공하는 풍부한 데이터 처리 연산입니다. ( &amp;lt;-&amp;gt; 맵과 리듀스로만 문제를 해결 )   RDD 의 단점은,  스키마를 표현할 수 없다는 것입니다.   스파크 SQL 은 RDD 의 이 단점을 보완할 수 있도록 또 다른 유형의"><meta property="og:type" content="blog"><meta property="og:title" content="[스파크2 프로그래밍] 5장_스파크SQL 과 데이터프레임,데이터셋"><meta property="og:url" content="https://kojunhee.github.io/2019/08/07/spark-sql/"><meta property="og:site_name" content="Always Learning"><meta property="og:description" content="RDD 의 장점은,   분산환경에서 메모리 기반으로 빠르고 안정적으로 동작하는 프로그램을 만들 수 있다는 것과,  RDD 가 제공하는 풍부한 데이터 처리 연산입니다. ( &amp;lt;-&amp;gt; 맵과 리듀스로만 문제를 해결 )   RDD 의 단점은,  스키마를 표현할 수 없다는 것입니다.   스파크 SQL 은 RDD 의 이 단점을 보완할 수 있도록 또 다른 유형의"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://kojunhee.github.io/img/og_image.png"><meta property="article:published_time" content="2019-08-06T15:00:00.000Z"><meta property="article:modified_time" content="2019-09-04T07:33:32.024Z"><meta property="article:author" content="junhee.ko"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://kojunhee.github.io/2019/08/07/spark-sql/"},"headline":"Always Learning","image":["https://kojunhee.github.io/img/og_image.png"],"datePublished":"2019-08-06T15:00:00.000Z","dateModified":"2019-09-04T07:33:32.024Z","author":{"@type":"Person","name":"junhee.ko"},"description":"RDD 의 장점은,   분산환경에서 메모리 기반으로 빠르고 안정적으로 동작하는 프로그램을 만들 수 있다는 것과,  RDD 가 제공하는 풍부한 데이터 처리 연산입니다. ( &lt;-&gt; 맵과 리듀스로만 문제를 해결 )   RDD 의 단점은,  스키마를 표현할 수 없다는 것입니다.   스파크 SQL 은 RDD 의 이 단점을 보완할 수 있도록 또 다른 유형의"}</script><link rel="canonical" href="https://kojunhee.github.io/2019/08/07/spark-sql/"><link rel="icon" href="/img/favicon.ico"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/darcula.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Always Learning" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a></div><div class="navbar-end"><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2019-08-06T15:00:00.000Z" title="2019-08-06T15:00:00.000Z">2019-08-07</time><span class="level-item"><a class="link-muted" href="/categories/spark/">Spark</a></span></div></div><h1 class="title is-3 is-size-4-mobile">[스파크2 프로그래밍] 5장_스파크SQL 과 데이터프레임,데이터셋</h1><div class="content"><p>RDD 의 장점은, </p>
 <ul>
 <li>분산환경에서 메모리 기반으로 빠르고 안정적으로 동작하는 프로그램을 만들 수 있다는 것과, </li>
 <li>RDD 가 제공하는 풍부한 데이터 처리 연산입니다. ( &lt;-&gt; 맵과 리듀스로만 문제를 해결 ) </li>
@@ -194,11 +97,11 @@
 </ul>
 <h6 id="5-5-1-2-1-리플렉션을-통한-데이터프레임-생성"><a href="#5-5-1-2-1-리플렉션을-통한-데이터프레임-생성" class="headerlink" title="5.5.1.2.1 리플렉션을 통한 데이터프레임 생성"></a>5.5.1.2.1 리플렉션을 통한 데이터프레임 생성</h6><p><strong>데이터 프레임 내부의 데이터는 동일한 수의 칼럼 정보를 포함하고 있는 로우의 집합</strong>입니다. 그래서 RDD 를 비롯해 로우와 칼럼 형태로 만들 수 있는 컬렉현 객체만 있다면 이를 이용해 새로운 데이터 프레임을 만들 수 있습니다.</p>
 <p>다음은 RDD 가 아닌 일반 리스트를 이용해 데이터 프레임을 생성하는 예제입니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> calss Person implements Serializable&#123;</span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line">  <span class="keyword">private</span> String job;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Person row1 = <span class="keyword">new</span> Person(<span class="string">"junhee"</span>, <span class="number">6</span>, <span class="string">"student"</span>);</span><br><span class="line">Person row2 = <span class="keyword">new</span> Person(<span class="string">"bill"</span>, <span class="number">12</span>, <span class="string">"god"</span>);</span><br><span class="line">Person row3 = <span class="keyword">new</span> Person(<span class="string">"jesi"</span>, <span class="number">14</span>, <span class="string">"mom"</span>);</span><br><span class="line">Person row4 = <span class="keyword">new</span> Person(<span class="string">"mina"</span>, <span class="number">41</span>, <span class="string">"chef"</span>);</span><br><span class="line"></span><br><span class="line">List&lt;Person&gt; data = Arrays.asList(row1, row2, row3, row4);		</span><br><span class="line">Dataset&lt;Row&gt; df4 = spark.createDataFrame(data, Person.class);</span><br><span class="line"></span><br><span class="line">df4.show();</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> calss Person implements Serializable&#123;</span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line">  <span class="keyword">private</span> String job;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Person row1 = <span class="keyword">new</span> Person(<span class="string">"junhee"</span>, <span class="number">6</span>, <span class="string">"student"</span>);</span><br><span class="line">Person row2 = <span class="keyword">new</span> Person(<span class="string">"bill"</span>, <span class="number">12</span>, <span class="string">"god"</span>);</span><br><span class="line">Person row3 = <span class="keyword">new</span> Person(<span class="string">"jesi"</span>, <span class="number">14</span>, <span class="string">"mom"</span>);</span><br><span class="line">Person row4 = <span class="keyword">new</span> Person(<span class="string">"mina"</span>, <span class="number">41</span>, <span class="string">"chef"</span>);</span><br><span class="line"></span><br><span class="line">List&lt;Person&gt; data = Arrays.asList(row1, row2, row3, row4);		</span><br><span class="line">Dataset&lt;Row&gt; df4 = spark.createDataFrame(data, Person<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line"></span><br><span class="line">df4.show();</span><br></pre></td></tr></table></figure>
 
 <p><strong>특별한 스키마 정의를 추가히지 않아도 컬렉션에 포함된 오브젝트의 속성값으로부터 알아서 스키마 정보를 추출하고 데이터 프레임을 만드는 방법을 리플렉션을 이용한 데이터 프레임 생성 방법</strong>이라고 합니다. </p>
 <p>다음은 RDD 로부터 데이터프레임을 생성하는 예제입니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> calss Person implements Serializable&#123;</span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line">  <span class="keyword">private</span> String job;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Person row1 = <span class="keyword">new</span> Person(<span class="string">"junhee"</span>, <span class="number">6</span>, <span class="string">"student"</span>);</span><br><span class="line">Person row2 = <span class="keyword">new</span> Person(<span class="string">"bill"</span>, <span class="number">12</span>, <span class="string">"god"</span>);</span><br><span class="line">Person row3 = <span class="keyword">new</span> Person(<span class="string">"jesi"</span>, <span class="number">14</span>, <span class="string">"mom"</span>);</span><br><span class="line">Person row4 = <span class="keyword">new</span> Person(<span class="string">"mina"</span>, <span class="number">41</span>, <span class="string">"chef"</span>);</span><br><span class="line"></span><br><span class="line">List&lt;Person&gt; data = Arrays.asList(row1, row2, row3, row4);	</span><br><span class="line"></span><br><span class="line">JavaRDD&lt;Person&gt; rdd = sc.parallelize(data);</span><br><span class="line">Dataset&lt;Row&gt; df5 = spark.createDataFrame(rdd, Person.class);</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> calss Person implements Serializable&#123;</span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line">  <span class="keyword">private</span> String job;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Person row1 = <span class="keyword">new</span> Person(<span class="string">"junhee"</span>, <span class="number">6</span>, <span class="string">"student"</span>);</span><br><span class="line">Person row2 = <span class="keyword">new</span> Person(<span class="string">"bill"</span>, <span class="number">12</span>, <span class="string">"god"</span>);</span><br><span class="line">Person row3 = <span class="keyword">new</span> Person(<span class="string">"jesi"</span>, <span class="number">14</span>, <span class="string">"mom"</span>);</span><br><span class="line">Person row4 = <span class="keyword">new</span> Person(<span class="string">"mina"</span>, <span class="number">41</span>, <span class="string">"chef"</span>);</span><br><span class="line"></span><br><span class="line">List&lt;Person&gt; data = Arrays.asList(row1, row2, row3, row4);	</span><br><span class="line"></span><br><span class="line">JavaRDD&lt;Person&gt; rdd = sc.parallelize(data);</span><br><span class="line">Dataset&lt;Row&gt; df5 = spark.createDataFrame(rdd, Person<span class="class">.<span class="keyword">class</span>)</span>;</span><br></pre></td></tr></table></figure>
 
 <h6 id="5-5-1-2-2-명시적-타입-지정을-통한-데이터-프레임-생성"><a href="#5-5-1-2-2-명시적-타입-지정을-통한-데이터-프레임-생성" class="headerlink" title="5.5.1.2.2 명시적 타입 지정을 통한 데이터 프레임 생성"></a>5.5.1.2.2 명시적 타입 지정을 통한 데이터 프레임 생성</h6><p>리플렉션 방식은 스키마를 정의하지 않다는 점이 편리하지만, 데이터프레임 생성을 위한 케이스 클래스를 따로 정의해야하는 불편함이 있고 상황에 따라 원하는 대로 직접 스키마 정보를 구성할 수 있는 방법이 편리할 수 있습니다.</p>
 <p>스파크 SQL 은 개발자들이 직접 스키마를 지정할 수 있는 방법을 제공하는데 리플렉션 방식을 설명할때 사용한 것과 동일한 데이터 프레임을 생성하는 예제를 통해 그 차이점을 보겠습니다.</p>
@@ -278,13 +181,13 @@
 <h4 id="5-6-1-데이터셋-생성"><a href="#5-6-1-데이터셋-생성" class="headerlink" title="5.6.1 데이터셋 생성"></a>5.6.1 데이터셋 생성</h4><p>자바 객체 또는 기존 RDD, 데이터프레임으로부터 생성될 수 있습니다.</p>
 <h5 id="5-6-1-1-파일로부터-생성"><a href="#5-6-1-1-파일로부터-생성" class="headerlink" title="5.6.1.1 파일로부터 생성"></a>5.6.1.1 파일로부터 생성</h5><p>외부 파일로부터 데이터셋을 생성하기 위해서는 스파크세션이 제공하는 read() 메서드를 이용합니다.</p>
 <h5 id="5-6-1-2-자바-객체를-이용해-생성"><a href="#5-6-1-2-자바-객체를-이용해-생성" class="headerlink" title="5.6.1.2 자바 객체를 이용해 생성"></a>5.6.1.2 자바 객체를 이용해 생성</h5><p>앞에서 살펴본 리플렉션 방식의 데이터프레임 생성과 유사합니다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Person row1 = <span class="keyword">new</span> Person(<span class="string">"hayoon"</span>, <span class="number">7</span>, <span class="string">"student"</span>);</span><br><span class="line">Person row2 = <span class="keyword">new</span> Person(<span class="string">"jko"</span>, <span class="number">12</span>, <span class="string">"teacher"</span>);</span><br><span class="line">Person row3 = <span class="keyword">new</span> Person(<span class="string">"junhee"</span>, <span class="number">14</span>, <span class="string">"worker"</span>);</span><br><span class="line">Person row4 = <span class="keyword">new</span> Person(<span class="string">"park"</span>, <span class="number">34</span>, <span class="string">"fireman"</span>);</span><br><span class="line"></span><br><span class="line">List&lt;Person&gt; data= Arrays.asList(row1,row2,row3,row4);</span><br><span class="line">Dataset&lt;Person&gt; df2 = spark.createDataset(data, Encoders.bean(Person.class));</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Person row1 = <span class="keyword">new</span> Person(<span class="string">"hayoon"</span>, <span class="number">7</span>, <span class="string">"student"</span>);</span><br><span class="line">Person row2 = <span class="keyword">new</span> Person(<span class="string">"jko"</span>, <span class="number">12</span>, <span class="string">"teacher"</span>);</span><br><span class="line">Person row3 = <span class="keyword">new</span> Person(<span class="string">"junhee"</span>, <span class="number">14</span>, <span class="string">"worker"</span>);</span><br><span class="line">Person row4 = <span class="keyword">new</span> Person(<span class="string">"park"</span>, <span class="number">34</span>, <span class="string">"fireman"</span>);</span><br><span class="line"></span><br><span class="line">List&lt;Person&gt; data= Arrays.asList(row1,row2,row3,row4);</span><br><span class="line">Dataset&lt;Person&gt; df2 = spark.createDataset(data, Encoders.bean(Person<span class="class">.<span class="keyword">class</span>))</span>;</span><br></pre></td></tr></table></figure>
 
 <p><strong>데이터셋을 생성할 때는 인코더 정보를 반드시 명시</strong>해야합니다. 인코더는 자바 객체와 스파크 내부 바이너리 포맷 간의 변환을 처리하기 위한 것으로 스파크 1.6 에서 데이터셋과 함께 처음 소개되었습니다. 인코더가 하는 역할은 기존 자바 직렬화 프레임워크나 Kyro 같이 자바 객체를 바이너리 포맷으로 변환하는 것입니다. </p>
 <p>하지만, 기존 직렬화 프레임워크처럼 단순히 네트워크 전송 최적화를 위한 바이너리 포맷을 만드는 것에 그치는 것이 아니라, 데이터의 타입과 그 데이터를 대상으로 수행하고자 하는 연산, 데이터를 처리하고 있는 하드웨어 환경까지 고려한 최적화된 바이너리를 생성하고 다룬다는 점에서 차이가 있습니다.</p>
 <h5 id="5-6-1-3-RDD-및-데이터프레임을-이용해-생성"><a href="#5-6-1-3-RDD-및-데이터프레임을-이용해-생성" class="headerlink" title="5.6.1.3 RDD 및 데이터프레임을 이용해 생성"></a>5.6.1.3 RDD 및 데이터프레임을 이용해 생성</h5><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> spark.implicits._ <span class="comment">// 스칼라의 경우, 기본 타입에 대한 인코더 정보를 암묵적 변환 방식을 이용해 제공</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> rdd = sc.parallelize(<span class="type">List</span>(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>))</span><br><span class="line"><span class="keyword">val</span> ds3 = spark.createDataset(rdd)</span><br><span class="line"><span class="keyword">val</span> ds4 = rdd.toDS()</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">JavaRDD&lt;Person&gt; rdd= sc.parallelize(data);</span><br><span class="line">Dataset&lt;Row&gt; df3 = spark.createDataFrame(rdd, Person.class);</span><br><span class="line">Dataset&lt;Person&gt; ds4 = df3.as(Encoders.bean(Person.class));</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">JavaRDD&lt;Person&gt; rdd= sc.parallelize(data);</span><br><span class="line">Dataset&lt;Row&gt; df3 = spark.createDataFrame(rdd, Person<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">Dataset&lt;Person&gt; ds4 = df3.as(Encoders.bean(Person<span class="class">.<span class="keyword">class</span>))</span>;</span><br></pre></td></tr></table></figure>
 
 <h5 id="5-6-1-4-range-로-생성"><a href="#5-6-1-4-range-로-생성" class="headerlink" title="5.6.1.4 range() 로 생성"></a>5.6.1.4 range() 로 생성</h5><p>스파크세션이 제공하는 range() 메서를 이용해 연속된 숫자로 구성된 간단한 데이터셋을 생성할 수 있습니다.</p>
 <h4 id="5-6-2-타입-트랜스포매이션-연산"><a href="#5-6-2-타입-트랜스포매이션-연산" class="headerlink" title="5.6.2 타입 트랜스포매이션 연산"></a>5.6.2 타입 트랜스포매이션 연산</h4><p>데이터셋이 제공하는 연산은</p>
@@ -320,135 +223,27 @@
 <p>스파크에서 동작하는 모든 어플리케이션은 백엔드 서버와 통신하기 위해 스파크컨텍스트 객체를 사용해야하며 이 같은 이유로 스파크센션의 경우에도 스파크컨텍스트를 먼저 생성한 후 이에 대한 참조를 내부적으로 유지하고 있는 것입니다.</p>
 <h4 id="5-10-2-QueryExecution"><a href="#5-10-2-QueryExecution" class="headerlink" title="5.10.2 QueryExecution"></a>5.10.2 QueryExecution</h4><p>데이터프레임을 사용할 경우 스파크가 내부적으로 최적화 과정을 거쳐 실제 실행 코드를 생성합니다. 스파크에서는 이런 변환 과정에서 일어나는 일을 사용자가 확인할 수 있게 특화된 API 를 제공하는데 대표적인 것이 queryExecution 메서드 입니다.</p>
 <h4 id="5-10-3-LogicalPlan-과-SparkPlan"><a href="#5-10-3-LogicalPlan-과-SparkPlan" class="headerlink" title="5.10.3 LogicalPlan 과 SparkPlan"></a>5.10.3 LogicalPlan 과 SparkPlan</h4><p>스파크는 최적화 쿼리를 수행할 때 논리적 실행 계획을 나타내는 LogicalPlan 과 구체적 실행 계획을 나타내는 SparkPlan 이라는 두개의 클래스를 사용합니다. </p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://kojunhee.github.io/2019/08/07/spark-sql/" data-id="ckahww14500cjg86w6l86mipq" data-title="[스파크2 프로그래밍] 5장_스파크SQL 과 데이터프레임,데이터셋" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2019/11/04/object-chapter1/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          [오브젝트] 1장_객체, 설계
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2019/07/16/rdd/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">[스파크2 프로그래밍] 2장_RDD</div>
-    </a>
-  
-</nav>
-
-  
-</article>
-
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/big-data/">Big Data</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boost-course/">Boost Course</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jpa/">JPA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">Kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/oop/">OOP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/os/">OS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/spark/">Spark</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tdd/">TDD</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/etc/">etc</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-
-  
-    
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2020/05/22/spring-mvc/">Spring MVC 요청 처리 과정</a>
-          </li>
-        
-          <li>
-            <a href="/2020/04/19/tdd-chapter-31/">[테스트 주도 개발] 31장_리팩토링</a>
-          </li>
-        
-          <li>
-            <a href="/2020/04/19/tdd-chapter-30/">[테스트 주도 개발] 30장_디자인 패턴</a>
-          </li>
-        
-          <li>
-            <a href="/2020/04/19/tdd-chapter-29/">[테스트 주도 개발] 29장_xUnit 패턴</a>
-          </li>
-        
-          <li>
-            <a href="/2020/04/19/tdd-chapter-32/">[테스트 주도 개발] 32장_TDD 마스터하기</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2020 junhee.ko<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
-
-<script src="/js/jquery-3.4.1.min.js"></script>
-
-
-  <script src="/fancybox/jquery.fancybox.min.js"></script>
-
-
-<script src="/js/script.js"></script>
-
-
-
-
-  </div>
-</body>
-</html>
+</div><div class="notification is-danger">You need to set <code>install_url</code> to use ShareThis. Please set it in <code>_config.yml</code>.</div></article></div><div class="card"><div class="card-content"><h3 class="menu-label has-text-centered">Like this article? Support the author with</h3><div class="buttons is-centered"><a class="button is-info donate"><span class="icon is-small"><i class="fab fa-alipay"></i></span><span>Alipay</span><span class="qrcode"><img src="/" alt="Alipay"></span></a><a class="button donate" href="/" style="background-color:rgba(255,128,62,.87);border-color:transparent;color:white;" target="_blank" rel="noopener"><span class="icon is-small"><i class="fas fa-coffee"></i></span><span>Buy me a coffee</span></a><a class="button is-danger donate" href="/" target="_blank" rel="noopener"><span class="icon is-small"><i class="fab fa-patreon"></i></span><span>Patreon</span></a><div class="notification is-danger">You forgot to set the <code>business</code> or <code>currency_code</code> for Paypal. Please set it in <code>_config.yml</code>.</div><a class="button is-success donate"><span class="icon is-small"><i class="fab fa-weixin"></i></span><span>Wechat</span><span class="qrcode"><img src="/" alt="Wechat"></span></a></div></div></div><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2019/11/04/object-chapter1/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">[오브젝트] 1장_객체, 설계</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2019/07/16/rdd/"><span class="level-item">[스파크2 프로그래밍] 2장_RDD</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">Comments</h3><div class="notification is-danger">You forgot to set the <code>shortname</code> for Disqus. Please set it in <code>_config.yml</code>.</div></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar is-rounded" src="https://www.gravatar.com/avatar/e6a876d587c47e3ce358b830fe131aae?s=128" alt="Junhee Ko"></figure><p class="title is-size-4 is-block line-height-inherit">Junhee Ko</p><p class="is-size-6 is-block">Always Learning</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>Incheon</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">293</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">11</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">0</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/ppoffice" target="_blank" rel="noopener">Follow</a></div><div class="level is-mobile"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/kojunhee"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Facebook" href="https://www.facebook.com/kojunheee/"><i class="fab fa-facebook"></i></a></div></div></div><!--!--><div class="card widget"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile is-marginless" href="/categories/algorithm/"><span class="level-start"><span class="level-item">Algorithm</span></span><span class="level-end"><span class="level-item tag">180</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/big-data/"><span class="level-start"><span class="level-item">Big Data</span></span><span class="level-end"><span class="level-item tag">11</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/boost-course/"><span class="level-start"><span class="level-item">Boost Course</span></span><span class="level-end"><span class="level-item tag">15</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/jpa/"><span class="level-start"><span class="level-item">JPA</span></span><span class="level-end"><span class="level-item tag">14</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/kafka/"><span class="level-start"><span class="level-item">Kafka</span></span><span class="level-end"><span class="level-item tag">6</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/oop/"><span class="level-start"><span class="level-item">OOP</span></span><span class="level-end"><span class="level-item tag">18</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/os/"><span class="level-start"><span class="level-item">OS</span></span><span class="level-end"><span class="level-item tag">10</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/spark/"><span class="level-start"><span class="level-item">Spark</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/spring/"><span class="level-start"><span class="level-item">Spring</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/tdd/"><span class="level-start"><span class="level-item">TDD</span></span><span class="level-end"><span class="level-item tag">32</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/etc/"><span class="level-start"><span class="level-item">etc</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget"><div class="card-content"><h3 class="menu-label">Recent</h3><article class="media"><div class="media-content size-small"><p><time dateTime="2020-05-21T15:00:00.000Z">2020-05-22</time></p><p class="title is-6"><a class="link-muted" href="/2020/05/22/spring-mvc/">Spring MVC 요청 처리 과정</a></p><p class="is-uppercase"><a class="link-muted" href="/categories/spring/">Spring</a></p></div></article><article class="media"><div class="media-content size-small"><p><time dateTime="2020-04-18T15:00:00.000Z">2020-04-19</time></p><p class="title is-6"><a class="link-muted" href="/2020/04/19/tdd-chapter-29/">[테스트 주도 개발] 29장_xUnit 패턴</a></p><p class="is-uppercase"><a class="link-muted" href="/categories/tdd/">TDD</a></p></div></article><article class="media"><div class="media-content size-small"><p><time dateTime="2020-04-18T15:00:00.000Z">2020-04-19</time></p><p class="title is-6"><a class="link-muted" href="/2020/04/19/tdd-chapter-31/">[테스트 주도 개발] 31장_리팩토링</a></p><p class="is-uppercase"><a class="link-muted" href="/categories/tdd/">TDD</a></p></div></article><article class="media"><div class="media-content size-small"><p><time dateTime="2020-04-18T15:00:00.000Z">2020-04-19</time></p><p class="title is-6"><a class="link-muted" href="/2020/04/19/tdd-chapter-32/">[테스트 주도 개발] 32장_TDD 마스터하기</a></p><p class="is-uppercase"><a class="link-muted" href="/categories/tdd/">TDD</a></p></div></article><article class="media"><div class="media-content size-small"><p><time dateTime="2020-04-18T15:00:00.000Z">2020-04-19</time></p><p class="title is-6"><a class="link-muted" href="/2020/04/19/tdd-chapter-30/">[테스트 주도 개발] 30장_디자인 패턴</a></p><p class="is-uppercase"><a class="link-muted" href="/categories/tdd/">TDD</a></p></div></article></div></div><div class="card widget"><div class="card-content"><div class="notification is-danger">You need to set <code>client_id</code> and <code>slot_id</code> to show this AD unit. Please set it in <code>_config.yml</code>.</div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Always Learning" height="28"></a><p class="size-small"><span>&copy; 2020 junhee.ko</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            site: {
+                url: 'https://kojunhee.github.io',
+                external_link: {"enable":true,"exclude":[]}
+            },
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to Top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>

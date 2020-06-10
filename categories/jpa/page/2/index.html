@@ -1,262 +1,215 @@
-<!DOCTYPE html>
-<html>
-<head><meta name="generator" content="Hexo 3.9.0">
-  <meta charset="utf-8">
-  
-  
-  <title>Category: JPA | Always Learning</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Always Learning">
-<meta property="og:url" content="https://kojunhee.github.io/categories/jpa/page/2/index.html">
-<meta property="og:site_name" content="Always Learning">
-<meta property="og:locale" content="en">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Always Learning">
-  
-    <link rel="alternate" href="/atom.xml" title="Always Learning" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="css/images/favicon.ico">
-  
-  
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
-  
-  <link rel="stylesheet" href="/css/style.css">
-  
-    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
-  
-</head>
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="generator" content="Hexo 4.2.1"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>Category: JPA - Always Learning</title><meta property="og:type" content="blog"><meta property="og:title" content="Always Learning"><meta property="og:url" content="https://kojunhee.github.io/"><meta property="og:site_name" content="Always Learning"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://kojunhee.github.io/img/og_image.png"><meta property="article:author" content="junhee.ko"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://kojunhee.github.io"},"headline":"Always Learning","image":["https://kojunhee.github.io/img/og_image.png"],"author":{"@type":"Person","name":"junhee.ko"},"description":null}</script><link rel="icon" href="/img/favicon.ico"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/darcula.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Always Learning" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a></div><div class="navbar-end"><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><div class="card-content"><nav class="breadcrumb" aria-label="breadcrumbs"><ul><li><a href="/categories">Categories</a></li><li class="is-active"><a href="#" aria-current="page">JPA</a></li></ul></nav></div></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2019-03-19T15:00:00.000Z" title="2019-03-19T15:00:00.000Z">2019-03-20</time><span class="level-item"><a class="link-muted" href="/categories/jpa/">JPA</a></span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2019/03/20/entity%20mapping/">[자바 ORM 표준 JPA 프로그래밍] 4장_앤티티 매핑</a></h1><div class="content"><p>엔티티와 테이블을 정확히 매핑하기 위해 JPA는 다양한 어노테이션을 지원합니다. 이번 포스팅에서는 다음 매핑에 대해 다룹니다.</p>
+<ul>
+<li>객체와 테이블 매핑<ul>
+<li>@Entity, @Table</li>
+</ul>
+</li>
+<li>기본 키 매핑<ul>
+<li>@Id</li>
+</ul>
+</li>
+<li>필드와 컬럼 매핑<ul>
+<li>@Column</li>
+</ul>
+</li>
+</ul>
+<h4 id="Entity"><a href="#Entity" class="headerlink" title="@Entity"></a>@Entity</h4><p>JPA를 사용해서 테이블을 매핑할 클래스는 @Entity 를 필수로 붙여야합니다. @Entity 적용시 기본 생성자는 필수입니다.</p>
+<h4 id="Table"><a href="#Table" class="headerlink" title="@Table"></a>@Table</h4><p>엔티티와 매핑할 테이블을 지정합니다. </p>
+<h4 id="데이터베이스-스키마-자동-생성"><a href="#데이터베이스-스키마-자동-생성" class="headerlink" title="데이터베이스 스키마 자동 생성"></a>데이터베이스 스키마 자동 생성</h4><p>JPA는 클래스의 매핑 정보와 데이터베이스 방언을 사용해서 데이터베이스 스키마를 생성합니다. 다음과 같이 설정하면 기존 테이블을 삭제하고 새로 생성합니다 (DROP+CREATE).  create-drop / update / validate / none 옵션이 있습니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spring.jpa.hibernate.ddl-auto=create</span><br></pre></td></tr></table></figure>
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Always Learning</a>
-      </h1>
-      
-        <h2 id="subtitle-wrap">
-          <a href="/" id="subtitle">junhee.ko</a>
-        </h2>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://kojunhee.github.io"></form>
-      </div>
-    </div>
-  </div>
-</header>
-      <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2019/03/20/entity mapping/" class="archive-article-date">
-  <time class="dt-published" datetime="2019-03-19T15:00:00.000Z" itemprop="datePublished">Mar 20</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/03/20/entity mapping/">[자바 ORM 표준 JPA 프로그래밍] 4장_앤티티 매핑</a>
-    </h1>
-  
+<h4 id="기본-키-Primary-Key-매핑"><a href="#기본-키-Primary-Key-매핑" class="headerlink" title="기본 키 (Primary Key) 매핑"></a>기본 키 (Primary Key) 매핑</h4><p>JPA가 제공하는 데이터베이스 기본 키 생성 전략은 다음과 같습니다.</p>
+<ul>
+<li>직접 할당<ul>
+<li>애플리케이션에서 직접 할당합니다.</li>
+</ul>
+</li>
+<li>자동 생성<ul>
+<li>IDENTITY<ul>
+<li>기본 키 생성을 데이터베이스에 위임합니다.</li>
+</ul>
+</li>
+<li>SEQUENCE<ul>
+<li>데이터베이스 시퀀스를 사용해 기본 키를 할당합니다.</li>
+</ul>
+</li>
+<li>TABLE<ul>
+<li>키 생성 테이블을 사용합니다.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="Column"><a href="#Column" class="headerlink" title="@Column"></a>@Column</h4><p>객체 필드를 테이블 칼럼에 매핑합니다. 속성 중에 name, nullable 이 주로 사용됩니다.</p>
+<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><p>자바 ORM 표준 프로그래밍 &lt;김영한&gt;</p>
+</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2019-03-19T15:00:00.000Z" title="2019-03-19T15:00:00.000Z">2019-03-20</time><span class="level-item"><a class="link-muted" href="/categories/jpa/">JPA</a></span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2019/03/20/persistence%20context/">[자바 ORM 표준 JPA 프로그래밍] 3장_영속성 관리</a></h1><div class="content"><p>이번 포스팅에서는 Mapping 한 Entity 를 Entity Manager 를 통해 어떻게 사용하는지 정리합니다.</p>
+<h4 id="Entity-Manager-Factory-Entity-Manager"><a href="#Entity-Manager-Factory-Entity-Manager" class="headerlink" title="Entity Manager Factory, Entity Manager"></a>Entity Manager Factory, Entity Manager</h4><p>엔티티 메니저 펙토리는 한 개만 만들어서 애플리케이션 전체에서 공유합니다. 엔티티 메니저 펙토리는 서도 다른 스레드 간에 공유해도 되지만, 엔티티 메니저는 여러 스레드가 동시에 접근하면 동시성 문제가 발생하므로 스레드 간에 절대 공유하면 안됩니다.</p>
+<h4 id="Persistence-Context"><a href="#Persistence-Context" class="headerlink" title="Persistence Context"></a>Persistence Context</h4><p>엔티티를 여구 저장하는 환경입니다. 엔티티 메니저로 엔티티를 저장하거나 조회하면 엔티티 메니저는 영속성 컨텍스트에 엔티티를 보관하고 관리합니다.</p>
+<h4 id="엔티티의-생명주기"><a href="#엔티티의-생명주기" class="headerlink" title="엔티티의 생명주기"></a>엔티티의 생명주기</h4><p>4가지 상태가 있습니다.</p>
+<ul>
+<li>비영속<ul>
+<li>영속성 컨텍스트와 관계 없는 상태 </li>
+</ul>
+</li>
+<li>영속<ul>
+<li>영속성 컨텍스트에 저장된 상태</li>
+</ul>
+</li>
+<li>준영속<ul>
+<li>영속성 컨텍스트에 저장되었다가 분리된 상태</li>
+</ul>
+</li>
+<li>삭제<ul>
+<li>삭제된 상태</li>
+</ul>
+</li>
+</ul>
+<h4 id="영속성-컨텍스트의-특징"><a href="#영속성-컨텍스트의-특징" class="headerlink" title="영속성 컨텍스트의 특징"></a>영속성 컨텍스트의 특징</h4><ul>
+<li>영속 상태는 식별자 값이 반드시 있어야합니다.</li>
+<li>보통 Transaction 을 Commit 하는 순간 영속성 컨텍스트에 저장된 엔티티를 데이터베이스에 반영합니다. (Flush)</li>
+<li>1차 캐쉬 / 동일성 보장 / 쓰기 지연 / 변경 감지 / 지연 로딩</li>
+</ul>
+<h4 id="엔티티-조회"><a href="#엔티티-조회" class="headerlink" title="엔티티 조회"></a>엔티티 조회</h4><p>영속성 컨텍스트는 내부에 1차 캐시를 가지고 있습니다. 쉽게 이야기해, Map 처럼 키는 @Id로 매핑한 식별자이고 값은 엔티티 인스턴스입니다. 1차 캐시에 저장된 엔티티를 조회할 때 , 1차 캐시에 엔티티가 있으면 데이터베이스를 조회하지 않고 메모리에 있는 1차 캐시에서 엔티티를 조회합니다. 만약, 1차 캐시에 없으면 엔티티 메니저는 데이터베이스를 조회해서 엔티티를 생성하고 1차 캐시에 저장한 후에 영속 상태의 엔티티를 반환합니다. </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">entityManger.find(Member.class, "member1");</span><br></pre></td></tr></table></figure>
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2019/03/20/persistence context/" class="archive-article-date">
-  <time class="dt-published" datetime="2019-03-19T15:00:00.000Z" itemprop="datePublished">Mar 20</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/03/20/persistence context/">[자바 ORM 표준 JPA 프로그래밍] 3장_영속성 관리</a>
-    </h1>
-  
+<h4 id="영속-엔티티의-동일성-보장"><a href="#영속-엔티티의-동일성-보장" class="headerlink" title="영속 엔티티의 동일성 보장"></a>영속 엔티티의 동일성 보장</h4><p>영속성 컨텍스트는 성능상 이점과 엔티티의 동일성을 보장합니다. 따라서, 다음 코드의 결과는 참입니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Member a = em.find(Member.class, "member1");</span><br><span class="line">Member b = em.find(Member.class, "member1");</span><br><span class="line"></span><br><span class="line">System.out.println(a==b);</span><br></pre></td></tr></table></figure>
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2019/03/18/JPA Simple Test/" class="archive-article-date">
-  <time class="dt-published" datetime="2019-03-17T15:00:00.000Z" itemprop="datePublished">Mar 18</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/03/18/JPA Simple Test/">JPA Simple Test</a>
-    </h1>
-  
+<h4 id="엔티티-등록"><a href="#엔티티-등록" class="headerlink" title="엔티티 등록"></a>엔티티 등록</h4><p>엔티티 메니저는 트랜잭션을 커밋하기 직전까지 데이터베이스에 엔티티를 저장하지 않고 내부 쿼리 저장소에 INSERT SQL을 모아둡니다. 그리고 커밋할 때 모아둔 쿼리를 데이터베이스에 보냅니다. 이것을 Transactional Write Behind (쓰기 지연) 라고 합니다.</p>
+<h4 id="엔티티-수정"><a href="#엔티티-수정" class="headerlink" title="엔티티 수정"></a>엔티티 수정</h4><p>엔티티의 변경사항을 데이터베이스에 자동으로 반영하는 기능을 Dirty Checking (변경 감지) 이라고 합니다. 순서는 다음과 같습니다.</p>
+<ol>
+<li>커밋하면 엔티티 메니저 내부에서 flush() 가 호출됩니다.</li>
+<li>엔티티와 스냅샷 (JPA는 엔티티를 영속성 컨텐스트에 보관할 때, 최초 상태를 복사해서 저장합니다 )을 비교해서 변경된 엔티티를 찾습니다.</li>
+<li>변경된 엔티티가 있으면 수정 쿼리를 생성해서 쓰기 지연 SQL 저장소에 보냅니다.</li>
+<li>데이터베이스 트랜잭션을 커밋합니다.</li>
+</ol>
+<p>그리고 UPDATE SQL 을 생성할 때, 변경된 부분만 사용해서 동적으로 생성되는 것이 아니라, 엔티티의 모든 필드를 업데이트 합니다.</p>
+<h4 id="엔티티-삭제"><a href="#엔티티-삭제" class="headerlink" title="엔티티 삭제"></a>엔티티 삭제</h4><p>엔티티 등록과 비슷하게 삭제 쿼리를 쓰기 지연 SQL 저장소에 등록하고 트랜잭션을 커밋해서 flush()를 호출하면 데이터베이스에 삭제 쿼리를 전달합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Member a = em.find(Member.class, "member1");</span><br><span class="line">em.remove(a);</span><br></pre></td></tr></table></figure>
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2019/03/13/JPA Paradigm/" class="archive-article-date">
-  <time class="dt-published" datetime="2019-03-12T15:00:00.000Z" itemprop="datePublished">Mar 13</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/03/13/JPA Paradigm/">패러다임의 불일치</a>
-    </h1>
-  
+<h4 id="플러쉬"><a href="#플러쉬" class="headerlink" title="플러쉬"></a>플러쉬</h4><p>영속성 컨테르를 플러쉬하는 방법은 3가지입니다.</p>
+<ul>
+<li>em.flush() 직접 호출</li>
+<li>트랜잭션 커밋 시 플러쉬 자동 호출</li>
+<li>JPQL 쿼리 실행시 플러쉬 자동 호출</li>
+</ul>
+<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><p>자바 ORM 표준 프로그래밍 &lt;김영한&gt;</p>
+</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2019-03-17T15:00:00.000Z" title="2019-03-17T15:00:00.000Z">2019-03-18</time><span class="level-item"><a class="link-muted" href="/categories/jpa/">JPA</a></span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2019/03/18/JPA%20Simple%20Test/">JPA Simple Test</a></h1><div class="content"><p>이번 포스팅에서는 JPA를 이용해 객체를 Database 에 저장하는 Test를 하고자 합니다. Database는 Docker 를 통해 Postgres를 사용합니다.</p>
+<h4 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h4><p>Docker는 공식 홈페이지에서 쉽게 설치할 수 있습니다 : <a href="https://docs.docker.com/docker-for-mac/install/">https://docs.docker.com/docker-for-mac/install/</a> </p>
+<p>Docker 를 설치하고 다음 명령어를 통해 Postgres Container를 띄웁니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -p <span class="number">5432</span>:<span class="number">5432</span> -e POSTGRES_PASSWORD=<span class="number">1234</span> -e POSTGRES_USER=jko -e POSTGRES_DB=springdata --name postgres_boot -d postgres</span><br></pre></td></tr></table></figure>
 
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
+<p>Postgres Bash에 붙습니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -i -t postgres_boot bash</span><br></pre></td></tr></table></figure>
 
+<p>postgres 계정으로 springdata 데이터베이스에 접근합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">su - postgres</span><br><span class="line">psql springdata</span><br></pre></td></tr></table></figure>
 
-  <nav id="page-nav">
-    
-    <a class="extend prev" rel="prev" href="/categories/jpa/">&laquo; Prev</a><a class="page-number" href="/categories/jpa/">1</a><span class="page-number current">2</span>
-  </nav>
+<p>Account 테이블을 생성합니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">CREATE TABLE <span class="title">ACCOUNT</span> <span class="params">(id <span class="keyword">int</span>, username varchar(<span class="number">255</span>)</span>, password <span class="title">varchar</span><span class="params">(<span class="number">255</span>)</span>)</span>;</span><br></pre></td></tr></table></figure>
 
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/big-data/">Big Data</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/boost-course/">Boost Course</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/jpa/">JPA</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">Kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/oop/">OOP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/os/">OS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/spark/">Spark</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/spring/">Spring</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tdd/">TDD</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/etc/">etc</a></li></ul>
-    </div>
-  </div>
+<h4 id="의존성-추가"><a href="#의존성-추가" class="headerlink" title="의존성 추가"></a>의존성 추가</h4><p>JPA를 사용하기 위한 의존성과 Postgresql 을 사용하기 위한 의존성을 추가합니다.</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;org.postgresql&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;postgresql&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
 
+<h4 id="설정"><a href="#설정" class="headerlink" title="설정"></a>설정</h4><p>Database 연결을 위한 정보를 입력하고, Database Schema를 실행시마다 새로 생성되게 (ddl-auto=create) 설정합니다. 그리고, non_contextual_create=true 를 설정해야 어플리케이션 실행시 발생하는 postgres 에러를 해결할 수 있습니다. </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">spring.datasource.url=jdbc:postgresql:<span class="comment">//localhost:5432/springdata</span></span><br><span class="line">spring.datasource.username=jko</span><br><span class="line">spring.datasource.password=<span class="number">1234</span></span><br><span class="line"></span><br><span class="line">spring.jpa.hibernate.ddl-auto=create</span><br><span class="line">spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=<span class="keyword">true</span></span><br></pre></td></tr></table></figure>
 
-  
-    
+<h4 id="Account"><a href="#Account" class="headerlink" title="Account"></a>Account</h4><p>Account Class를 다음과 같이 정의합니다. @Entity 에 이름을 따로 정하지 않으면 Class의 이름이 Table의 이름으로 매칭됩니다. 그리고, 각 필드 (id, username, password) 에는 @Column 이 생략되어 있습니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> jko.jpatest;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.persistence.Entity;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.GeneratedValue;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.Id;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Account</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Id</span></span><br><span class="line">    <span class="meta">@GeneratedValue</span></span><br><span class="line">    <span class="keyword">private</span> Long id;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String username;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String password;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Long <span class="title">getId</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setId</span><span class="params">(Long id)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.id = id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getUsername</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> username;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUsername</span><span class="params">(String username)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.username = username;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getPassword</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> password;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPassword</span><span class="params">(String password)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.password = password;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-  
-    
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li></ul>
-    </div>
-  </div>
+<h4 id="JpaRunner"><a href="#JpaRunner" class="headerlink" title="JpaRunner"></a>JpaRunner</h4><p>Database 에 Insert Query 를 날리기 위해 JPA api 를 사용할 수도 있고, Hibernate api 를 사용할 수 도 있습니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> jko.jpatest;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.hibernate.Session;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.ApplicationArguments;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.ApplicationRunner;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"><span class="keyword">import</span> org.springframework.transaction.annotation.Transactional;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.persistence.EntityManager;</span><br><span class="line"><span class="keyword">import</span> javax.persistence.PersistenceContext;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JpaRunner</span> <span class="keyword">implements</span> <span class="title">ApplicationRunner</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@PersistenceContext</span></span><br><span class="line">    EntityManager entityManager;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">(ApplicationArguments args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"></span><br><span class="line">        Account account = <span class="keyword">new</span> Account();</span><br><span class="line">        account.setUsername(<span class="string">"jko"</span>);</span><br><span class="line">        account.setPassword(<span class="string">"123"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//        1. jpa api</span></span><br><span class="line"><span class="comment">//        entityManager.persist(account);</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//		2. hibernate api</span></span><br><span class="line">        Session session = entityManager.unwrap(Session<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">        session.save(account);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2020/05/22/spring-mvc/">Spring MVC 요청 처리 과정</a>
-          </li>
-        
-          <li>
-            <a href="/2020/04/19/tdd-chapter-31/">[테스트 주도 개발] 31장_리팩토링</a>
-          </li>
-        
-          <li>
-            <a href="/2020/04/19/tdd-chapter-30/">[테스트 주도 개발] 30장_디자인 패턴</a>
-          </li>
-        
-          <li>
-            <a href="/2020/04/19/tdd-chapter-29/">[테스트 주도 개발] 29장_xUnit 패턴</a>
-          </li>
-        
-          <li>
-            <a href="/2020/04/19/tdd-chapter-32/">[테스트 주도 개발] 32장_TDD 마스터하기</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2020 junhee.ko<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
-
-<script src="/js/jquery-3.4.1.min.js"></script>
-
-
-  <script src="/fancybox/jquery.fancybox.min.js"></script>
-
-
-<script src="/js/script.js"></script>
-
-
-
-
-  </div>
-</body>
-</html>
+<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><p><a href="https://www.inflearn.com/course/스프링-데이터-jpa">https://www.inflearn.com/course/스프링-데이터-jpa</a></p>
+</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2019-03-12T15:00:00.000Z" title="2019-03-12T15:00:00.000Z">2019-03-13</time><span class="level-item"><a class="link-muted" href="/categories/jpa/">JPA</a></span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2019/03/13/JPA%20Paradigm/">패러다임의 불일치</a></h1><div class="content"><p>객체 모델과 관계형 데이터베이스 모델은 지향하는 페러다임이 서로 다릅니다. 페러다임의 불일치 문제를 해결하기 위한 결과물이 ‘JPA’ 입니다. 이번 포스트에서는 객체 모델과 관계형 데이터베이스 모델의 페러다임 차이를 비교합니다.</p>
+<h4 id="Granularity-밀도"><a href="#Granularity-밀도" class="headerlink" title="Granularity (밀도)"></a>Granularity (밀도)</h4><ul>
+<li>객체<ul>
+<li>다양한 크기의 객체</li>
+<li>커스텀한 타입</li>
+</ul>
+</li>
+<li>릴레이션<ul>
+<li>테이블</li>
+<li>기본 데이터 타입 (UDT는 비추)</li>
+</ul>
+</li>
+</ul>
+<h4 id="Subtype"><a href="#Subtype" class="headerlink" title="Subtype"></a>Subtype</h4><ul>
+<li>객체<ul>
+<li>상속 구조</li>
+<li>다형성</li>
+</ul>
+</li>
+<li>릴레이션<ul>
+<li>테이블 상속 無 (상속 기능을 구현했다 하더라도 표준 기술이 아닙니다.)</li>
+<li>다형적인 관계 無</li>
+</ul>
+</li>
+</ul>
+<h4 id="Identity"><a href="#Identity" class="headerlink" title="Identity"></a>Identity</h4><ul>
+<li>객체<ul>
+<li>레퍼런스 동일성 (==)</li>
+<li>인스턴스 동일성 (equals() 메소드)</li>
+</ul>
+</li>
+<li>릴레이션<ul>
+<li>주키 (primary key)</li>
+</ul>
+</li>
+</ul>
+<h4 id="Association"><a href="#Association" class="headerlink" title="Association"></a>Association</h4><ul>
+<li>객체<ul>
+<li>객체 레퍼런스로 관계 표현</li>
+<li>방향이 존재</li>
+<li>다대다 관계 가능</li>
+</ul>
+</li>
+<li>릴레이션<ul>
+<li>Foreign Key 로 관계 표현</li>
+<li>방향이라는 의미가 無</li>
+<li>다대다 관계 불가능. (조인 테이블 또는 링크 테이블을 사용해서 두개의 1대다 관계로 풀어야 합니다)</li>
+</ul>
+</li>
+</ul>
+<h4 id="Data-Navigation"><a href="#Data-Navigation" class="headerlink" title="Data Navigation"></a>Data Navigation</h4><ul>
+<li>객체<ul>
+<li>레퍼런스를 이용해 다른 객체로 이동 가능</li>
+<li>콜렉션 순회 가능</li>
+</ul>
+</li>
+<li>릴레이션<ul>
+<li>SQL을 직접 다루면 처음 실행하는 SQL에 따라 객체 그래프를 어디까지 탐색할 수 있는지 정해집니다. 이것은 큰 제약입니다. 왜냐하면, 비즈니스 로직에 따라 사용하는 객체 그래프가 다른므로 언제 끊어질지 모를 개체 그래프를 함부로 탐색할 수 없기 때문입니다.</li>
+<li>데이터베이스에 요청을 적게 할 수록 성능이 좋습니다. 따라서 Join을 씁니다.</li>
+<li>너무 많이 한 번에 가져오려고 해도 문제입니다.</li>
+</ul>
+</li>
+</ul>
+<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><ul>
+<li><a href="https://www.inflearn.com/course/스프링-데이터-jpa">https://www.inflearn.com/course/스프링-데이터-jpa</a></li>
+<li>자바 ORM 표준 프로그래밍 &lt;김영한&gt;</li>
+</ul>
+</div></article></div><nav class="pagination is-centered mt-4" role="navigation" aria-label="pagination"><div class="pagination-previous"><a href="/categories/jpa/">Previous</a></div><div class="pagination-next is-invisible is-hidden-mobile"><a href="/categories/jpa/page/3/">Next</a></div><ul class="pagination-list is-hidden-mobile"><li><a class="pagination-link" href="/categories/jpa/">1</a></li><li><a class="pagination-link is-current" href="/categories/jpa/page/2/">2</a></li></ul></nav></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar is-rounded" src="https://www.gravatar.com/avatar/e6a876d587c47e3ce358b830fe131aae?s=128" alt="Junhee Ko"></figure><p class="title is-size-4 is-block line-height-inherit">Junhee Ko</p><p class="is-size-6 is-block">Always Learning</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>Incheon</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">293</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">11</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">0</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/ppoffice" target="_blank" rel="noopener">Follow</a></div><div class="level is-mobile"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/kojunhee"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Facebook" href="https://www.facebook.com/kojunheee/"><i class="fab fa-facebook"></i></a></div></div></div><!--!--><div class="card widget"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile is-marginless" href="/categories/algorithm/"><span class="level-start"><span class="level-item">Algorithm</span></span><span class="level-end"><span class="level-item tag">180</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/big-data/"><span class="level-start"><span class="level-item">Big Data</span></span><span class="level-end"><span class="level-item tag">11</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/boost-course/"><span class="level-start"><span class="level-item">Boost Course</span></span><span class="level-end"><span class="level-item tag">15</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/jpa/"><span class="level-start"><span class="level-item">JPA</span></span><span class="level-end"><span class="level-item tag">14</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/kafka/"><span class="level-start"><span class="level-item">Kafka</span></span><span class="level-end"><span class="level-item tag">6</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/oop/"><span class="level-start"><span class="level-item">OOP</span></span><span class="level-end"><span class="level-item tag">18</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/os/"><span class="level-start"><span class="level-item">OS</span></span><span class="level-end"><span class="level-item tag">10</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/spark/"><span class="level-start"><span class="level-item">Spark</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/spring/"><span class="level-start"><span class="level-item">Spring</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/tdd/"><span class="level-start"><span class="level-item">TDD</span></span><span class="level-end"><span class="level-item tag">32</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/etc/"><span class="level-start"><span class="level-item">etc</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget"><div class="card-content"><h3 class="menu-label">Recent</h3><article class="media"><div class="media-content size-small"><p><time dateTime="2020-05-21T15:00:00.000Z">2020-05-22</time></p><p class="title is-6"><a class="link-muted" href="/2020/05/22/spring-mvc/">Spring MVC 요청 처리 과정</a></p><p class="is-uppercase"><a class="link-muted" href="/categories/spring/">Spring</a></p></div></article><article class="media"><div class="media-content size-small"><p><time dateTime="2020-04-18T15:00:00.000Z">2020-04-19</time></p><p class="title is-6"><a class="link-muted" href="/2020/04/19/tdd-chapter-29/">[테스트 주도 개발] 29장_xUnit 패턴</a></p><p class="is-uppercase"><a class="link-muted" href="/categories/tdd/">TDD</a></p></div></article><article class="media"><div class="media-content size-small"><p><time dateTime="2020-04-18T15:00:00.000Z">2020-04-19</time></p><p class="title is-6"><a class="link-muted" href="/2020/04/19/tdd-chapter-31/">[테스트 주도 개발] 31장_리팩토링</a></p><p class="is-uppercase"><a class="link-muted" href="/categories/tdd/">TDD</a></p></div></article><article class="media"><div class="media-content size-small"><p><time dateTime="2020-04-18T15:00:00.000Z">2020-04-19</time></p><p class="title is-6"><a class="link-muted" href="/2020/04/19/tdd-chapter-32/">[테스트 주도 개발] 32장_TDD 마스터하기</a></p><p class="is-uppercase"><a class="link-muted" href="/categories/tdd/">TDD</a></p></div></article><article class="media"><div class="media-content size-small"><p><time dateTime="2020-04-18T15:00:00.000Z">2020-04-19</time></p><p class="title is-6"><a class="link-muted" href="/2020/04/19/tdd-chapter-30/">[테스트 주도 개발] 30장_디자인 패턴</a></p><p class="is-uppercase"><a class="link-muted" href="/categories/tdd/">TDD</a></p></div></article></div></div><div class="card widget"><div class="card-content"><div class="notification is-danger">You need to set <code>client_id</code> and <code>slot_id</code> to show this AD unit. Please set it in <code>_config.yml</code>.</div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Always Learning" height="28"></a><p class="size-small"><span>&copy; 2020 junhee.ko</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            site: {
+                url: 'https://kojunhee.github.io',
+                external_link: {"enable":true,"exclude":[]}
+            },
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to Top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>
