@@ -26,6 +26,392 @@
 </ul>
 </li>
 </ul>
+</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2018-10-10T15:00:00.000Z" title="2018-10-10T15:00:00.000Z">2018-10-11</time><span class="level-item"><a class="link-muted" href="/categories/os/">OS</a></span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2018/10/11/Virtual%20Memory/">Virtual Memory</a></h1><div class="content"><p>출처 : 이화여자대학교 반효경 (<a href="http://www.kocw.net/home/search/kemView.do?kemId=1046323">http://www.kocw.net/home/search/kemView.do?kemId=1046323</a>)</p>
+<h2 id="Demand-Paging"><a href="#Demand-Paging" class="headerlink" title="Demand Paging"></a>Demand Paging</h2><p><img src="/image/demandP01.png" alt=""></p>
+<ul>
+<li><p>실제로 필요할 때 page를 메모리에 올리는 것</p>
+<ul>
+<li>I/O양의 감소</li>
+<li>Memory 사용량 감소</li>
+<li>빠른 응답 시간</li>
+<li>더 많은 사용자 수용</li>
+</ul>
+</li>
+<li><p>Valid / Invalid bit의 사용</p>
+<ul>
+<li>Valid<ul>
+<li>사용되지 않는 주소 영역인 경우</li>
+<li>페이지가 물리적 메모리에 없는 경우</li>
+</ul>
+</li>
+<li>처음에는 모든 page entry 가 invalid로 초기화</li>
+<li>address translation 시에 invalid bit이 set되어 있으면 “page fault”<ul>
+<li>요청한 페이지가 메모리에 없는 경우</li>
+<li>운영체제가 CPU를 가지고 fault난 페이지를 메모리에 올림 </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="Page-Fault"><a href="#Page-Fault" class="headerlink" title="Page Fault"></a>Page Fault</h2><p>요청한 페이지가 메모리에 없는 경우입니다. page fault가 나면 운영체제는 fault난 페이지를 메모리에 올립니다.</p>
+<p><img src="/image/demandP02.png" alt=""></p>
+<ul>
+<li>invalid page를 접근하면 MMU가 trap을 발생시키고 (page fault trap)<ul>
+<li>Kernel mode로 들어가서 page fault handler 가 invoke 됨</li>
+</ul>
+</li>
+<li>다음과 같은 순서로 page fault 를 처리<ul>
+<li>invalid reference? (eg. bad address, protection violation) =&gt; abort process<ul>
+<li>잘못된 요청인지 아닌지 체크하는 것</li>
+</ul>
+</li>
+<li>get an empty page frame (replace : 없으면 뺏어온다)</li>
+<li>해당 페이지를 disk 에서 memory로 읽어온다<ul>
+<li>disk I/O가 끝나기까지 이 프로세스는 CPU를 preempt 당함 (block)</li>
+<li>Dist read가 끝나면 page tables entry 기록, valid/invalid bit = “valid”</li>
+<li>ready queue에 process를 insert -&gt; dispatch later</li>
+</ul>
+</li>
+<li>이 프로세스가 CPU를 잡고 다시 running</li>
+<li>아까 중단되었던 instruction 재개</li>
+</ul>
+</li>
+</ul>
+<h2 id="Page-Replacement"><a href="#Page-Replacement" class="headerlink" title="Page Replacement"></a>Page Replacement</h2><p>page fault 가 났을 때, 원하는 페이지를 backing area에서 가져오게 됩니다. 만약, 물리 메모리가 모두 사용중인 상황이라면, 페이지 교체가 일어나야합니다.</p>
+<p><img src="/image/demandP03.png" alt=""></p>
+<ul>
+<li>Page replacement<ul>
+<li>어떤 frame을 빼앗아 올지 결정</li>
+<li>곧바로 사용되지 않을 page를 쫗아내는 것이 좋음</li>
+<li>동일한 페이지가 여러번 메모리에서 쫓겨났다가 다시 들어올 수 있음</li>
+</ul>
+</li>
+<li>Replacement Algoritm<ul>
+<li>page fault rate을 최소화 하는 것이 목표</li>
+<li>알고리즘을 평가 : 주어진 page reference string에 대해 page fault를 얼마나 내는지 조사</li>
+</ul>
+</li>
+</ul>
+<h2 id="Optimal-Algorithm"><a href="#Optimal-Algorithm" class="headerlink" title="Optimal Algorithm"></a>Optimal Algorithm</h2><p><img src="/image/demandP04.png" alt=""></p>
+<ul>
+<li>미래에 참조되는 페이지들을 미리 다 안다고 가정 : Offiline algorithm</li>
+<li>가장 먼 미래에 참조되는 페이지를 replace<ul>
+<li>네모칸 : 메모리</li>
+<li>빨간색 : 페이지 폴트 난 경우</li>
+<li>연보라 : 페이지 폴트 나지 않고 이미 메모리에 올라가 있는 경우</li>
+</ul>
+</li>
+<li>5번이 처음으로 참조 되는 경우<ul>
+<li>1번이 바로 다음으로 참조되기 때문에, 메모리에서 쫓겨나지 않아</li>
+<li>4번이 가장 먼 미래에 참조되기 때문에, 4번이 쫓겨나</li>
+</ul>
+</li>
+</ul>
+<h2 id="FIFO-Algorithm"><a href="#FIFO-Algorithm" class="headerlink" title="FIFO Algorithm"></a>FIFO Algorithm</h2><p><img src="/image/demandP05.png" alt=""></p>
+<p>메모리에 먼저 들어온 것을 먼저 내쫓음</p>
+<p>FIFO Anomaly : 메모리 크기 들어나면 성능이 안좋아져</p>
+<h2 id="LRU-Least-Recently-Used-Algorithm"><a href="#LRU-Least-Recently-Used-Algorithm" class="headerlink" title="LRU(Least Recently Used) Algorithm"></a>LRU(Least Recently Used) Algorithm</h2><p><img src="/image/demandP06.png" alt=""></p>
+<p>가장 오래전에 참조된 것을 지움</p>
+<ul>
+<li>5번이 처음으로 참조 되는 경우를 보면,<ul>
+<li>2번이 가장 최근에 참조</li>
+<li>그 다음에 1번, 4번</li>
+<li>가장 오래 전에 참조된 것이 3번</li>
+</ul>
+</li>
+</ul>
+<h2 id="LFU-Least-Frequently-Used-Algorithm"><a href="#LFU-Least-Frequently-Used-Algorithm" class="headerlink" title="LFU (Least Frequently Used) Algorithm"></a>LFU (Least Frequently Used) Algorithm</h2><p>참조 횟수가 가장 적은 페이지를 지움</p>
+<ul>
+<li>최저 참조 횟수인 page가 여럿 있는 경우<ul>
+<li>여러 page 중 임의로 선정</li>
+<li>선능 향상을 위해 가장 오래 전에 참조된 page를 지우게 구현할 수도 있다</li>
+</ul>
+</li>
+</ul>
+<h2 id="LRU-LFU-비교"><a href="#LRU-LFU-비교" class="headerlink" title="LRU / LFU 비교"></a>LRU / LFU 비교</h2><p><img src="/image/demandP07.png" alt=""></p>
+<ul>
+<li>LRU<ul>
+<li>1번이 가장 오래 전에 참조되긴 했지만,</li>
+<li>과거에 많은 참조가 있었다는 것을 무시</li>
+</ul>
+</li>
+<li>LFU<ul>
+<li>비록 4번이 참조횟수가 한 번이지만</li>
+<li>이제 막 참조가 시작되는 걸 쫓아냄</li>
+</ul>
+</li>
+</ul>
+<h2 id="LRU-LFU-구현"><a href="#LRU-LFU-구현" class="headerlink" title="LRU / LFU 구현"></a>LRU / LFU 구현</h2><p><img src="/image/demandP08.png" alt=""></p>
+<p><img src="/image/demandP09.png" alt=""></p>
+<ul>
+<li>LRU<ul>
+<li>어떤 페이지가 참조될 때마다 그 페이지를 제일 아래 쪽에 매달고</li>
+<li>쫓아낼 때는 제일 위에 있는걸 쫓아내</li>
+</ul>
+</li>
+<li>LFU<ul>
+<li>참조 횟수 1이 늘어나면</li>
+<li>비교를 해서 어디까지 내려갈 수 있는지 체크 (min-heap으로 구현)</li>
+</ul>
+</li>
+</ul>
+<h2 id="Caching"><a href="#Caching" class="headerlink" title="Caching"></a>Caching</h2><ul>
+<li>캐슁 기법<ul>
+<li>한정된 빠른 공강(cache)에 요청된 데이터를 저장해 두었다가 후속 요청히 캐쉬로부터 직접 서비스</li>
+<li>paging sytem 외에도 cache memory, buffer caching, Web caching등 다양한 분야에 사용</li>
+</ul>
+</li>
+<li>시간 제약<ul>
+<li>교체 알고리즘에서 삭제할 항목을 결정하는 일에 지나치게 많은 시간이 걸리는 경우 실제 시스템에서 사용할 수 없음</li>
+<li>Buffer caching 이나 Web caching인 경우<ul>
+<li>O(1) 에서 O(logn) 정도까지 허용</li>
+</ul>
+</li>
+<li>Pagin System 인 경우<ul>
+<li>page fault 인 경우에만 OS가 관여</li>
+<li>페이지가 이미 메모리에 존재하는 경우 참조 시각등의 정보를 OS가 알 수 없음</li>
+<li>O(1)인 LRU의 list 조작 조차 불가능 </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="Paging-System에서-LRU-LFU-가능한가"><a href="#Paging-System에서-LRU-LFU-가능한가" class="headerlink" title="Paging System에서 LRU, LFU 가능한가?"></a>Paging System에서 LRU, LFU 가능한가?</h2><p><img src="/image/demandP10.png" alt=""></p>
+<ul>
+<li><p>page fault가 발생하면, trap 발생하여 CPU 제어권이 OS에게 넘어가</p>
+<ul>
+<li><p>OS가 LRU 알고리즘을 사용한다면, OS가 가장 오래 전에 참조된 페이지를 알 수 있는가? NO</p>
+</li>
+<li><p>OS가 LFU 알고리즘을 사용한다면, OS가 가장 참조 횟수가 적은 페이지를 알 수 있는가? NO</p>
+</li>
+</ul>
+</li>
+<li><p>프로세스가 요청한 페이지가 이미 메모리에 올라와있으면 </p>
+<ul>
+<li>운영체제에게 CPU가 넘어가지 않고</li>
+<li>하드웨어적으로 주소 변환해서 CPU가 바로 읽어들여</li>
+<li>그러면 이 페이지의 접근 시간을 운영체제는 몰라</li>
+</ul>
+</li>
+</ul>
+<h2 id="Clock-Algorithm"><a href="#Clock-Algorithm" class="headerlink" title="Clock Algorithm"></a>Clock Algorithm</h2><p><img src="/image/demandP11.png" alt=""></p>
+<ul>
+<li><p>LRU의 근사 알고리즘</p>
+</li>
+<li><p>여러 명칭</p>
+<ul>
+<li>Second chance algorithm</li>
+<li>NUR ( Not Used Recently)</li>
+<li>NRU ( Not Recently Used)</li>
+</ul>
+</li>
+<li><p>Reference bit을 사용해서 교체 대상 페이지 선정 (circular list)</p>
+<ul>
+<li>Reference bit가 0 인 것을 찾을 때 까지 포인터를 하나씩 앞으로 이동</li>
+<li>포인터 이동하는 중에 reference bit 1은 모두 0으로 바꿈</li>
+<li>reference bit 이 0인 것을 찾으면 그 페이지를 교체</li>
+<li>한 바퀴 되돌아와서도 (second chance) 0이면 그때에는 replace 당함</li>
+<li>자주 사용되는 페이지라면 second chance가 올 때 1</li>
+</ul>
+</li>
+<li><p>개선</p>
+<ul>
+<li>reference bit과 modified bit (dirty bit)을 함께 사용</li>
+<li>reference bit ==1 : 최근에 참조된 페이지</li>
+<li>modified bit == 1 : 최근에 변경된 페이지 ( I/O를 동반하는 페이지 )</li>
+</ul>
+</li>
+<li><p>사각형 </p>
+<ul>
+<li>페이지 프레임</li>
+<li>물리적인 메모리에 들어있는 페이지</li>
+</ul>
+</li>
+<li><p>reference bit가 1이면 최근에 참조되 페이지이기 때문에 0으로 바꾸고 다음으로 넘어가</p>
+</li>
+<li><p>어떤 페이지를 쫓아내야하는데, modified bit가 1이면 </p>
+<ul>
+<li>그 페이지는 메모리에 올라온 이후로 적어도 한 번은 CPU에서 write를 한것. 내용을 수정한 것. </li>
+<li>이 페이지를 메모리로부터 쫓겨낼 때는 backing store에 수정된 내용을 반영하고 쫓아내.</li>
+</ul>
+</li>
+</ul>
+<h2 id="Page-Frame의-Allocation"><a href="#Page-Frame의-Allocation" class="headerlink" title="Page Frame의 Allocation"></a>Page Frame의 Allocation</h2><p>각 프로세스에 얼만큼의 page frame을 할당할 것인가.</p>
+<ul>
+<li>Equal allocation<ul>
+<li>모든 프로세스에 똑같은 개수 할당</li>
+</ul>
+</li>
+<li>Proportional allocation<ul>
+<li>프로세스 크기에 비례하여 할당</li>
+</ul>
+</li>
+<li>Priority allocation<ul>
+<li>프로세스의 priority 에 따라 다르게 할당</li>
+</ul>
+</li>
+</ul>
+<h2 id="Global-vs-Local-Replacement"><a href="#Global-vs-Local-Replacement" class="headerlink" title="Global vs Local Replacement"></a>Global vs Local Replacement</h2><ul>
+<li><p>Globlal replacement</p>
+<ul>
+<li><p>다른 프로그램의 페이지도 쫓아낼 수 있음</p>
+</li>
+<li><p>replace 시 다른 프로세스에 할당된 frame을 빼앗아 올 수 있다</p>
+</li>
+<li><p>프로세스별 할당량을 조절하는 또 다른 방법</p>
+</li>
+<li><p>FIFO, LRU, LFU 등의 알고리즘을 globla replacement 사용시에 해당</p>
+</li>
+<li><p>working set / PFF 알고리즘 사용</p>
+</li>
+</ul>
+</li>
+<li><p>Local replacement</p>
+<ul>
+<li>자신에게 할당된 frame 내에서만 replacement</li>
+<li>FIFO, LRU, LFU 등의 알고리즘을 프로세스 별로 운영시</li>
+</ul>
+</li>
+</ul>
+<h2 id="Thrashing"><a href="#Thrashing" class="headerlink" title="Thrashing"></a>Thrashing</h2><p><img src="/image/demandP12.png" alt=""></p>
+<ul>
+<li><p>프로세스의 원활한 수행에 필요한 최소한의 page frame 수를 할당 받지 못한 경우 발생</p>
+<ul>
+<li><p>pafe fault rate이 매우 높아짐</p>
+</li>
+<li><p>CPU utilization이 매우 낮아짐</p>
+</li>
+</ul>
+</li>
+<li><p>OS는 MPF (Multiprogramming degree)를 높여야 한다고 판단</p>
+<ul>
+<li><p>또 다른 프로세스가 시스템에 추가됨 (higher MPD)</p>
+</li>
+<li><p>프로세스 당 할당된 프레임의 수가 더욱 감소</p>
+</li>
+<li><p>프로세스는 페이지의 swap in / swap out 으로 매우 바쁨</p>
+</li>
+<li><p>대부분의 시간에 CPU는 한가함</p>
+</li>
+<li><p>low throughput</p>
+</li>
+</ul>
+</li>
+<li><p>x 축</p>
+<ul>
+<li>지금 메모리에 올라와있는 프로그램의 개수</li>
+</ul>
+</li>
+<li><p>프로그램 하나만 올라가 있으면 </p>
+<ul>
+<li>CPU utilizaiton이 낮아 =&gt; IO를 하러 가면, CPU는 놀아</li>
+</ul>
+</li>
+<li><p>계속해서 메모리에 올라와있는 프로그램의 개수 올리면 thrashing 발생</p>
+<ul>
+<li>CPU가 인스트럭션 수행하려고 하면 그 페이지게 메모리에 없어서 IO를 해</li>
+<li>또 다른 프로그램에게 CPU가 넘어가 또 요청한 페이지가 메모리에 없어서 IO를 해</li>
+</ul>
+</li>
+</ul>
+<h2 id="Working-Set-model"><a href="#Working-Set-model" class="headerlink" title="Working-Set model"></a>Working-Set model</h2><ul>
+<li>Locality of reference<ul>
+<li>프로세스는 특정 시간 동안 일정 장소만을 집중적으로 참조</li>
+<li>집중적으로 참조되는 해당 page들의 집합을 locality set이라 함</li>
+</ul>
+</li>
+<li>working set model<ul>
+<li>locality에 기반하여 프로세스가 일정 시간 동안 원활하게 수행되기 위해 한꺼번에 메모리에 올라와 있어야 하는 page들의 집합을 working set 이라 정의함</li>
+<li>working set 모델에서는 process의 working set 전체가 메모리에 올라와 있어야 수행되고 그렇지 않을 경우 모든 frame을 반납한 후 swap out(suspend)</li>
+<li>thrashing을 방지</li>
+<li>multiprogramming degree를 결정</li>
+</ul>
+</li>
+</ul>
+<h2 id="Working-Set-Algorithm"><a href="#Working-Set-Algorithm" class="headerlink" title="Working-Set Algorithm"></a>Working-Set Algorithm</h2><p><img src="/image/demandP13.png" alt=""></p>
+<p>Working set의 결정</p>
+<ul>
+<li>Wokring set window를 통해 알아냄</li>
+<li>과거 델타 시간(window) 동안 참조된 페이지들을 working set이라 간주해서 쫓아내지 않고 메모리에 유지</li>
+<li>참조된 후 델타 시간 동안 해당 Page를 메모리에 유지한 후 버림</li>
+</ul>
+<h2 id="PFF-Page-Fault-Frequency-Scheme"><a href="#PFF-Page-Fault-Frequency-Scheme" class="headerlink" title="PFF (Page-Fault Frequency) Scheme"></a>PFF (Page-Fault Frequency) Scheme</h2><p><img src="/image/demandP14.png" alt=""></p>
+<p>현재 시점에 page fault 얼마나 났는지 직접 봐. 프로그램이 pafe fault 얼마나 내는지 봐.</p>
+<ul>
+<li><p>이 프로그램이 pafe fault 많이 내고 있으면,  </p>
+<ul>
+<li><p>이 프로그램의 working set이 메모리에 보장되고 있지 않구나.</p>
+</li>
+<li><p>페이지를 더줘.</p>
+</li>
+</ul>
+</li>
+<li><p>pafe fault rate의 상한값과 하한값을 둔다</p>
+<ul>
+<li><p>pafe fault rate이 상한값을 넘으면 프레임을 더 할당</p>
+</li>
+<li><p>하한값 이하이면 프레임 수를 줄임</p>
+</li>
+</ul>
+</li>
+<li><p>빈 프레임이 없으면 일부 프로세스를 swap out</p>
+</li>
+</ul>
+<h2 id="Page-Size의-결정"><a href="#Page-Size의-결정" class="headerlink" title="Page Size의 결정"></a>Page Size의 결정</h2><ul>
+<li><p>Page size를 감소시키면</p>
+<ul>
+<li><p>페이지 수 증가</p>
+</li>
+<li><p>페이지 테이블 크기 중가</p>
+</li>
+<li><p>internal fragmentation 감소</p>
+</li>
+<li><p>Disk transfer 의 효율성 감소</p>
+</li>
+</ul>
+</li>
+<li><p>필요한 정보만 메모리에 올라와 메모리 이용이 효율적</p>
+<ul>
+<li>locality 활용 측면에서는 좋지 않음</li>
+</ul>
+</li>
+<li><p>trend</p>
+<ul>
+<li>Larger page size</li>
+</ul>
+</li>
+</ul>
+</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2018-10-08T15:00:00.000Z" title="2018-10-08T15:00:00.000Z">2018-10-09</time><span class="level-item"><a class="link-muted" href="/categories/algorithm/">Algorithm</a></span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2018/10/09/%ED%83%90%EC%A3%BC%EB%B2%94%20%EA%B2%80%EA%B1%B0/">탈주범 검거</a></h1><div class="content"><p><a href="https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV5PpLlKAQ4DFAUq">https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV5PpLlKAQ4DFAUq</a></p>
+<p>소요시간 1시간. BFS 문제이다. 쉬운 문제이다. Queue에 넣어야 하는 경우의 수의 조건에서 시간이 오래 걸렸다.</p>
+<p>더럽게 코드를 작성했다. 더 나은 방법은 없을까?</p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ol>
+<li>map에 터널 상태를 저장한다.</li>
+<li>현재 위치에서 이동 가능한 위치를 큐에 넣는다. (이동 가능한 위치는 터널 상태를 보고 파악한다)</li>
+<li>큐에서 pop한 위치에서 2번을 반복한다.</li>
+<li>depth가 문제에서 주어진 시간이 되었을 때, 큐에 넣었던 위치 개수를 출력한다. </li>
+</ol>
+</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2018-10-08T15:00:00.000Z" title="2018-10-08T15:00:00.000Z">2018-10-09</time><span class="level-item"><a class="link-muted" href="/categories/algorithm/">Algorithm</a></span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2018/10/09/%ED%99%9C%EC%A3%BC%EB%A1%9C%20%EA%B1%B4%EC%84%A4/">활주로 건설</a></h1><div class="content"><p><a href="https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AWIeW7FakkUDFAVH">https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AWIeW7FakkUDFAVH</a></p>
+<p>경우의 수를 나눈 후 조건에 맞게 짜려고 하였다. 해설을 보고 DFS로 풀면 쉽게 풀 수 있다는 것을 알았다.</p>
+<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ol>
+<li><p>모든 행과 열을 차례대로 체크한다.</p>
+</li>
+<li><p>현재 위치와 다음 위치를 비교한다.</p>
+<ul>
+<li><p>같은 높이인 경우 : 다음 위치 부터 체크</p>
+</li>
+<li><p>오르막인 경우 : 현재 위치 기준해서 왼쪽으로 경사로 둘 수 있는지 체크</p>
+</li>
+<li><p>내리막인 경우 : 현재 위치 기준해서 오른쪽으로 경사로 둘 수 있는지 체크</p>
+</li>
+<li><p>그 이외의 경우 : 이번 행이나 열은 실패</p>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="코드"><a href="#코드" class="headerlink" title="코드"></a>코드</h2><p><img src="/image/runwayyy01.png" alt=""></p>
+<p><img src="/image/runwayyy02.png" alt=""></p>
+<p><img src="/image/runwayyy03.png" alt=""></p>
+<p><img src="/image/runwayyy04.png" alt=""></p>
 </div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2018-10-08T15:00:00.000Z" title="2018-10-08T15:00:00.000Z">2018-10-09</time><span class="level-item"><a class="link-muted" href="/categories/os/">OS</a></span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2018/10/09/Deadlock/">Deadlock</a></h1><div class="content"><p>출처 : 이화여자대학교 반효경 (<a href="http://www.kocw.net/home/search/kemView.do?kemId=1046323">http://www.kocw.net/home/search/kemView.do?kemId=1046323</a>)</p>
 <h2 id="Deadlock"><a href="#Deadlock" class="headerlink" title="Deadlock"></a>Deadlock</h2><p><img src="/image/dealock01.png" alt=""></p>
 <p>일련의 프로세스들이 서로가 가진 자원을 기다리며 block된 상태</p>
@@ -604,37 +990,13 @@
 <p>주소 변환 다 했으니까 다시 CPU가 이 프로세스에게 넘어온다? 말이 안돼. </p>
 <p>주소 변환은 무조건 하드웨어적으로 일어남. IO 장치에 접근하려면 OS가 끼어들어야돼.</p>
 <h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p>이화여자대학교 반효경 (<a href="http://www.kocw.net/home/search/kemView.do?kemId=1046323">http://www.kocw.net/home/search/kemView.do?kemId=1046323</a>)</p>
-</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2018-10-08T15:00:00.000Z" title="2018-10-08T15:00:00.000Z">2018-10-09</time><span class="level-item"><a class="link-muted" href="/categories/algorithm/">Algorithm</a></span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2018/10/09/%ED%83%90%EC%A3%BC%EB%B2%94%20%EA%B2%80%EA%B1%B0/">탈주범 검거</a></h1><div class="content"><p><a href="https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV5PpLlKAQ4DFAUq">https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV5PpLlKAQ4DFAUq</a></p>
-<p>소요시간 1시간. BFS 문제이다. 쉬운 문제이다. Queue에 넣어야 하는 경우의 수의 조건에서 시간이 오래 걸렸다.</p>
-<p>더럽게 코드를 작성했다. 더 나은 방법은 없을까?</p>
+</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2018-10-06T15:00:00.000Z" title="2018-10-06T15:00:00.000Z">2018-10-07</time><span class="level-item"><a class="link-muted" href="/categories/algorithm/">Algorithm</a></span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2018/10/07/%ED%8A%B9%EC%9D%B4%ED%95%9C%20%EC%9E%90%EC%84%9D/">특이한 자석</a></h1><div class="content"><p><a href="https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AWIeV9sKkcoDFAVH">https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AWIeV9sKkcoDFAVH</a>    </p>
 <h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ol>
-<li>map에 터널 상태를 저장한다.</li>
-<li>현재 위치에서 이동 가능한 위치를 큐에 넣는다. (이동 가능한 위치는 터널 상태를 보고 파악한다)</li>
-<li>큐에서 pop한 위치에서 2번을 반복한다.</li>
-<li>depth가 문제에서 주어진 시간이 되었을 때, 큐에 넣었던 위치 개수를 출력한다. </li>
+<li>현재 톱니 바퀴 기준으로 왼쪽과 오른쪽 확인 </li>
+<li>각 톱니바퀴 회전</li>
+<li>결과 값 계산</li>
+<li>1번부터 다시</li>
 </ol>
-</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2018-10-08T15:00:00.000Z" title="2018-10-08T15:00:00.000Z">2018-10-09</time><span class="level-item"><a class="link-muted" href="/categories/algorithm/">Algorithm</a></span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2018/10/09/%ED%99%9C%EC%A3%BC%EB%A1%9C%20%EA%B1%B4%EC%84%A4/">활주로 건설</a></h1><div class="content"><p><a href="https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AWIeW7FakkUDFAVH">https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AWIeW7FakkUDFAVH</a></p>
-<p>경우의 수를 나눈 후 조건에 맞게 짜려고 하였다. 해설을 보고 DFS로 풀면 쉽게 풀 수 있다는 것을 알았다.</p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ol>
-<li><p>모든 행과 열을 차례대로 체크한다.</p>
-</li>
-<li><p>현재 위치와 다음 위치를 비교한다.</p>
-<ul>
-<li><p>같은 높이인 경우 : 다음 위치 부터 체크</p>
-</li>
-<li><p>오르막인 경우 : 현재 위치 기준해서 왼쪽으로 경사로 둘 수 있는지 체크</p>
-</li>
-<li><p>내리막인 경우 : 현재 위치 기준해서 오른쪽으로 경사로 둘 수 있는지 체크</p>
-</li>
-<li><p>그 이외의 경우 : 이번 행이나 열은 실패</p>
-</li>
-</ul>
-</li>
-</ol>
-<h2 id="코드"><a href="#코드" class="headerlink" title="코드"></a>코드</h2><p><img src="/image/runwayyy01.png" alt=""></p>
-<p><img src="/image/runwayyy02.png" alt=""></p>
-<p><img src="/image/runwayyy03.png" alt=""></p>
-<p><img src="/image/runwayyy04.png" alt=""></p>
 </div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2018-10-06T15:00:00.000Z" title="2018-10-06T15:00:00.000Z">2018-10-07</time><span class="level-item"><a class="link-muted" href="/categories/algorithm/">Algorithm</a></span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2018/10/07/%EC%A4%84%EA%B8%B0%EC%84%B8%ED%8F%AC%EB%B0%B0%EC%96%91/">줄기세포배양</a></h1><div class="content"><p><a href="https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AWXRJ8EKe48DFAUo&amp;categoryId=AWXRJ8EKe48DFAUo&amp;categoryType=CODE">https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AWXRJ8EKe48DFAUo&amp;categoryId=AWXRJ8EKe48DFAUo&amp;categoryType=CODE</a>    </p>
 <h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ol>
 <li><p>전체 map size를 450 * 450 으로 하고 초기 위치를 i+175, j+175로 하였다. ( 왜?? )</p>
@@ -651,13 +1013,6 @@
 </li>
 <li><p>큐에 저장되어 있는 줄기세포를 하나씩 remove하여 활성화되어있는지 체크하여 확장한다.</p>
 </li>
-</ol>
-</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2018-10-06T15:00:00.000Z" title="2018-10-06T15:00:00.000Z">2018-10-07</time><span class="level-item"><a class="link-muted" href="/categories/algorithm/">Algorithm</a></span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2018/10/07/%ED%8A%B9%EC%9D%B4%ED%95%9C%20%EC%9E%90%EC%84%9D/">특이한 자석</a></h1><div class="content"><p><a href="https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AWIeV9sKkcoDFAVH">https://www.swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AWIeV9sKkcoDFAVH</a>    </p>
-<h2 id="풀이"><a href="#풀이" class="headerlink" title="풀이"></a>풀이</h2><ol>
-<li>현재 톱니 바퀴 기준으로 왼쪽과 오른쪽 확인 </li>
-<li>각 톱니바퀴 회전</li>
-<li>결과 값 계산</li>
-<li>1번부터 다시</li>
 </ol>
 </div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2018-10-05T15:00:00.000Z" title="2018-10-05T15:00:00.000Z">2018-10-06</time><span class="level-item"><a class="link-muted" href="/categories/os/">OS</a></span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2018/10/06/CPU%20Scheduling/">CPU Scheduling</a></h1><div class="content"><h5 id="CPU-and-I-O-Bursts-in-program-execution-이란"><a href="#CPU-and-I-O-Bursts-in-program-execution-이란" class="headerlink" title="CPU and I/O Bursts in program execution 이란 ?"></a>CPU and I/O Bursts in program execution 이란 ?</h5><p><img src="/image/os100601.png" alt=""></p>
 <h5 id="CPU-burst-time-의-분포는"><a href="#CPU-burst-time-의-분포는" class="headerlink" title="CPU-burst time 의 분포는 ?"></a>CPU-burst time 의 분포는 ?</h5><p><img src="/image/os100602.png" alt=""></p>
@@ -1065,119 +1420,7 @@
 <p><img src="/image/os100723.png" alt=""></p>
 <p><img src="/image/os100724.png" alt=""></p>
 <h5 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h5><p>이화여자대학교 반효경 (<a href="http://www.kocw.net/home/search/kemView.do?kemId=1046323">http://www.kocw.net/home/search/kemView.do?kemId=1046323</a>)</p>
-</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2018-10-03T15:00:00.000Z" title="2018-10-03T15:00:00.000Z">2018-10-04</time><span class="level-item"><a class="link-muted" href="/categories/os/">OS</a></span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2018/10/04/Process%20Managemnet/">Process Management</a></h1><div class="content"><p>출처 : 이화여자대학교 반효경 (<a href="http://www.kocw.net/home/search/kemView.do?kemId=1046323">http://www.kocw.net/home/search/kemView.do?kemId=1046323</a>)</p>
-<h2 id="프로세스-생성"><a href="#프로세스-생성" class="headerlink" title="프로세스 생성"></a>프로세스 생성</h2><ul>
-<li>부모 프로세스가 자식 프로세스 생성</li>
-<li>프로세스의 트리(계층 구조) 생성</li>
-<li>프로세스는 자원을 필요로 함<ul>
-<li>운영체제로부터 받는다</li>
-<li>부모와 공유한다</li>
-</ul>
-</li>
-<li>주소 공간<ul>
-<li>자식은 부모의 공간을 복사</li>
-<li>자식은 그 공간에 새로운 프로그램을 올림</li>
-</ul>
-</li>
-<li>유닉스의 예 : 복제 생성하고 덮어씌움<ul>
-<li>fork() 시스템 콜이 새로운 프로세스를 복제 생성<ul>
-<li>부모를 그대로 복사</li>
-<li>주소 공간 할당</li>
-</ul>
-</li>
-<li>exec()<ul>
-<li>fork 다음에 이어지는  exec() 시스템 콜을 통해 새로운 프로그램을 메모리에 올림 (덮어 씌움)</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="프로세스-종료"><a href="#프로세스-종료" class="headerlink" title="프로세스 종료"></a>프로세스 종료</h2><ul>
-<li>exit<ul>
-<li>exit 시스템 콜을 통해 프로세스가 마지막 명령을 수행한후 운영체제에게 이를 알려줌</li>
-<li>자식이 부모에게 output data를 보냄(via wait system call)</li>
-<li>프로세의 각종 자원들이 운영체제에게 반납됨</li>
-</ul>
-</li>
-<li>abort<ul>
-<li>부모 프로세스가 자식의 수행을 종료시킴</li>
-<li>자식이 할당 자원의 한계치를 넘어섬</li>
-<li>자식에게 할당된 테스크가 더 이사 필요하지 않음</li>
-<li>부모가 종료하는 경우<ul>
-<li>운영체제는 부모 프로세스가 종료하는 경우 자식이 더 이상 수행되도록 두지 않음</li>
-<li>단계적인 종료</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="fork-system-call"><a href="#fork-system-call" class="headerlink" title="fork() system call"></a>fork() system call</h2><p>왼쪽은 부모, 오른쪽은 자식. 자식은 fork() 이후의 라인부터 실행</p>
-<p><img src="/image/os100401.png" alt=""></p>
-<p><img src="/image/os100402.png" alt=""></p>
-<h2 id="exec-system-call"><a href="#exec-system-call" class="headerlink" title="exec() system call"></a>exec() system call</h2><p>새로운 프로그램을 덮어씌움. </p>
-<p>부모가 자식을 만든다음에, 자식은 오른쪽의 date라는 프로그램으로 완전히 덮어씌었음</p>
-<p><img src="/image/os100403.png" alt=""></p>
-<h2 id="wait-system-call"><a href="#wait-system-call" class="headerlink" title="wait() system call"></a>wait() system call</h2><p>프로세스 A가 wait() system call을 하면, </p>
-<p>커널은 child가 종료될 때까지 프로세스 A를 slepp 시킴(block 상태)</p>
-<p>child process가 종료되면 커널은 프로세스 A를 깨움(ready 상태)</p>
-<p><img src="/image/os100404.png" alt=""></p>
-<h2 id="exit-system-call"><a href="#exit-system-call" class="headerlink" title="exit() system call"></a>exit() system call</h2><p>프로세스의 종료</p>
-<ul>
-<li>자발적 종료<ul>
-<li>마지막 statement 수행 후에 exit() 시스템 콜 통해</li>
-<li>프로그램에 명싱적으로 적어주지 않아도 main 함수가 리턴되는 위치에 컴파일러가 넣어줌</li>
-</ul>
-</li>
-<li>비자발적 종료<ul>
-<li>부모가 자식을 죽임<ul>
-<li>자식이 한계치 넘어서는 자원 자원 요청</li>
-<li>자식에게 할당된 테스크가 더이상 필요하지 않음</li>
-</ul>
-</li>
-<li>키모드로 kill, break 친 경우</li>
-<li>부모가 종료하는 경우<ul>
-<li>부모가 종료하기 전에 자식들이 먼저 종료됨</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="프로세스-간-협력"><a href="#프로세스-간-협력" class="headerlink" title="프로세스 간 협력"></a>프로세스 간 협력</h2><ul>
-<li>독릭접 프로세스<ul>
-<li>프로세는 각자의 주소 공간을 가지고 수행되므로 원친적으로 하나의 프로세스가 다른 프로세스의 수행에 영향을 미치지 못함</li>
-</ul>
-</li>
-<li>협력 프로세스<ul>
-<li>하나의 프로세스가 다른 프로세싀의 수행에 여향을 미칠 수 있음</li>
-</ul>
-</li>
-<li>프로세스 간 협력 메커니즘(IPC : Interprocess Communication)<ul>
-<li>메세지를 전달하는 방법 (message passing)<ul>
-<li>커널을 통해 메세지 전달</li>
-</ul>
-</li>
-<li>주소 공간을 공유하는 방법 (shraed memory)<ul>
-<li>서로 다른 프로세 간에도 일부 주소 공간을 공유하게하는 메커니즘</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="IPC"><a href="#IPC" class="headerlink" title="IPC"></a>IPC</h2><p><img src="/image/os100405.png" alt=""></p>
-<h2 id="Message-Passing"><a href="#Message-Passing" class="headerlink" title="Message Passing"></a>Message Passing</h2><p><img src="/image/os100406.png" alt=""></p>
-<ul>
-<li><p>Direcit Communicaiton</p>
-<ul>
-<li>통신하려는 프로세스의 이름을 명시적으료 표시</li>
-</ul>
-</li>
-<li><p>Indirecit Communicaiton</p>
-<ul>
-<li>mailbot or port 를 통해 메시지를 간접 전달</li>
-</ul>
-</li>
-</ul>
-</div></article></div><nav class="pagination is-centered mt-4" role="navigation" aria-label="pagination"><div class="pagination-previous"><a href="/page/11/">Previous</a></div><div class="pagination-next"><a href="/page/13/">Next</a></div><ul class="pagination-list is-hidden-mobile"><li><a class="pagination-link" href="/">1</a></li><li><span class="pagination-ellipsis">&hellip;</span></li><li><a class="pagination-link" href="/page/11/">11</a></li><li><a class="pagination-link is-current" href="/page/12/">12</a></li><li><a class="pagination-link" href="/page/13/">13</a></li><li><span class="pagination-ellipsis">&hellip;</span></li><li><a class="pagination-link" href="/page/31/">31</a></li></ul></nav></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar is-rounded" src="https://www.gravatar.com/avatar/e6a876d587c47e3ce358b830fe131aae?s=128" alt="Junhee Ko"></figure><p class="title is-size-4 is-block line-height-inherit">Junhee Ko</p><p class="is-size-6 is-block">Always Learning</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>Incheon</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">301</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">14</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">0</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/kojunhee" target="_blank" rel="noopener">Follow</a></div><div class="level is-mobile"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/kojunhee"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Facebook" href="https://www.facebook.com/kojunheee/"><i class="fab fa-facebook"></i></a></div></div></div><!--!--><div class="card widget"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile is-marginless" href="/categories/algorithm/"><span class="level-start"><span class="level-item">Algorithm</span></span><span class="level-end"><span class="level-item tag">180</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/big-data/"><span class="level-start"><span class="level-item">Big Data</span></span><span class="level-end"><span class="level-item tag">11</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/boost-course/"><span class="level-start"><span class="level-item">Boost Course</span></span><span class="level-end"><span class="level-item tag">15</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/git/"><span class="level-start"><span class="level-item">Git</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/jpa/"><span class="level-start"><span class="level-item">JPA</span></span><span class="level-end"><span class="level-item tag">14</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/java/"><span class="level-start"><span class="level-item">Java</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/kafka/"><span class="level-start"><span class="level-item">Kafka</span></span><span class="level-end"><span class="level-item tag">6</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/oop/"><span class="level-start"><span class="level-item">OOP</span></span><span class="level-end"><span class="level-item tag">18</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/os/"><span class="level-start"><span class="level-item">OS</span></span><span class="level-end"><span class="level-item tag">10</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/spark/"><span class="level-start"><span class="level-item">Spark</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/spring/"><span class="level-start"><span class="level-item">Spring</span></span><span class="level-end"><span class="level-item tag">4</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/tdd/"><span class="level-start"><span class="level-item">TDD</span></span><span class="level-end"><span class="level-item tag">32</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/test-code/"><span class="level-start"><span class="level-item">Test Code</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/etc/"><span class="level-start"><span class="level-item">etc</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget"><div class="card-content"><h3 class="menu-label">Recent</h3><article class="media"><div class="media-content size-small"><p><time dateTime="2020-06-28T15:00:00.000Z">2020-06-29</time></p><p class="title is-6"><a class="link-muted" href="/2020/06/29/unit-test-ch-06/">[실용주의 단위 테스트] 6장_무엇을 테스트할 것인가?</a></p><p class="is-uppercase"><a class="link-muted" href="/categories/test-code/">Test Code</a></p></div></article><article class="media"><div class="media-content size-small"><p><time dateTime="2020-06-27T15:00:00.000Z">2020-06-28</time></p><p class="title is-6"><a class="link-muted" href="/2020/06/28/logback/">Logback</a></p><p class="is-uppercase"><a class="link-muted" href="/categories/spring/">Spring</a></p></div></article><article class="media"><div class="media-content size-small"><p><time dateTime="2020-06-26T15:00:00.000Z">2020-06-27</time></p><p class="title is-6"><a class="link-muted" href="/2020/06/27/spring-expert-ch-01/">[전문가를 위한 스프링 5] 3장_Spring IoC 와 DI</a></p><p class="is-uppercase"><a class="link-muted" href="/categories/spring/">Spring</a></p></div></article><article class="media"><div class="media-content size-small"><p><time dateTime="2020-06-23T15:00:00.000Z">2020-06-24</time></p><p class="title is-6"><a class="link-muted" href="/2020/06/24/unit-test-ch-05/">[실용주의 단위 테스트] 5장_좋은 테스트의 FIRST 속성</a></p><p class="is-uppercase"><a class="link-muted" href="/categories/test-code/">Test Code</a></p></div></article><article class="media"><div class="media-content size-small"><p><time dateTime="2020-06-21T15:00:00.000Z">2020-06-22</time></p><p class="title is-6"><a class="link-muted" href="/2020/06/22/unit-test-ch-04/">[실용주의 단위 테스트] 4장_테스트 조직</a></p><p class="is-uppercase"><a class="link-muted" href="/categories/test-code/">Test Code</a></p></div></article></div></div><div class="card widget"><div class="card-content"><div class="menu"><h3 class="menu-label">Advertisement</h3><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6880109808178384" data-ad-slot="3347750970" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Always Learning" height="28"></a><p class="size-small"><span>&copy; 2020 junhee.ko</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+</div></article></div><nav class="pagination is-centered mt-4" role="navigation" aria-label="pagination"><div class="pagination-previous"><a href="/page/11/">Previous</a></div><div class="pagination-next"><a href="/page/13/">Next</a></div><ul class="pagination-list is-hidden-mobile"><li><a class="pagination-link" href="/">1</a></li><li><span class="pagination-ellipsis">&hellip;</span></li><li><a class="pagination-link" href="/page/11/">11</a></li><li><a class="pagination-link is-current" href="/page/12/">12</a></li><li><a class="pagination-link" href="/page/13/">13</a></li><li><span class="pagination-ellipsis">&hellip;</span></li><li><a class="pagination-link" href="/page/31/">31</a></li></ul></nav></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar is-rounded" src="https://www.gravatar.com/avatar/e6a876d587c47e3ce358b830fe131aae?s=128" alt="Junhee Ko"></figure><p class="title is-size-4 is-block line-height-inherit">Junhee Ko</p><p class="is-size-6 is-block">Always Learning</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>Incheon</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">302</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">14</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">0</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/kojunhee" target="_blank" rel="noopener">Follow</a></div><div class="level is-mobile"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/kojunhee"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Facebook" href="https://www.facebook.com/kojunheee/"><i class="fab fa-facebook"></i></a></div></div></div><!--!--><div class="card widget"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile is-marginless" href="/categories/algorithm/"><span class="level-start"><span class="level-item">Algorithm</span></span><span class="level-end"><span class="level-item tag">180</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/big-data/"><span class="level-start"><span class="level-item">Big Data</span></span><span class="level-end"><span class="level-item tag">11</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/boost-course/"><span class="level-start"><span class="level-item">Boost Course</span></span><span class="level-end"><span class="level-item tag">15</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/git/"><span class="level-start"><span class="level-item">Git</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/jpa/"><span class="level-start"><span class="level-item">JPA</span></span><span class="level-end"><span class="level-item tag">14</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/java/"><span class="level-start"><span class="level-item">Java</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/kafka/"><span class="level-start"><span class="level-item">Kafka</span></span><span class="level-end"><span class="level-item tag">6</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/oop/"><span class="level-start"><span class="level-item">OOP</span></span><span class="level-end"><span class="level-item tag">18</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/os/"><span class="level-start"><span class="level-item">OS</span></span><span class="level-end"><span class="level-item tag">10</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/spark/"><span class="level-start"><span class="level-item">Spark</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/spring/"><span class="level-start"><span class="level-item">Spring</span></span><span class="level-end"><span class="level-item tag">4</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/tdd/"><span class="level-start"><span class="level-item">TDD</span></span><span class="level-end"><span class="level-item tag">32</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/test-code/"><span class="level-start"><span class="level-item">Test Code</span></span><span class="level-end"><span class="level-item tag">4</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/etc/"><span class="level-start"><span class="level-item">etc</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget"><div class="card-content"><h3 class="menu-label">Recent</h3><article class="media"><div class="media-content size-small"><p><time dateTime="2020-07-07T15:00:00.000Z">2020-07-08</time></p><p class="title is-6"><a class="link-muted" href="/2020/07/08/unit-test-ch-07/">[실용주의 단위 테스트] 7장_경계 조건</a></p><p class="is-uppercase"><a class="link-muted" href="/categories/test-code/">Test Code</a></p></div></article><article class="media"><div class="media-content size-small"><p><time dateTime="2020-06-28T15:00:00.000Z">2020-06-29</time></p><p class="title is-6"><a class="link-muted" href="/2020/06/29/unit-test-ch-06/">[실용주의 단위 테스트] 6장_무엇을 테스트할 것인가?</a></p><p class="is-uppercase"><a class="link-muted" href="/categories/test-code/">Test Code</a></p></div></article><article class="media"><div class="media-content size-small"><p><time dateTime="2020-06-27T15:00:00.000Z">2020-06-28</time></p><p class="title is-6"><a class="link-muted" href="/2020/06/28/logback/">Logback</a></p><p class="is-uppercase"><a class="link-muted" href="/categories/spring/">Spring</a></p></div></article><article class="media"><div class="media-content size-small"><p><time dateTime="2020-06-26T15:00:00.000Z">2020-06-27</time></p><p class="title is-6"><a class="link-muted" href="/2020/06/27/spring-expert-ch-01/">[전문가를 위한 스프링 5] 3장_Spring IoC 와 DI</a></p><p class="is-uppercase"><a class="link-muted" href="/categories/spring/">Spring</a></p></div></article><article class="media"><div class="media-content size-small"><p><time dateTime="2020-06-23T15:00:00.000Z">2020-06-24</time></p><p class="title is-6"><a class="link-muted" href="/2020/06/24/unit-test-ch-05/">[실용주의 단위 테스트] 5장_좋은 테스트의 FIRST 속성</a></p><p class="is-uppercase"><a class="link-muted" href="/categories/test-code/">Test Code</a></p></div></article></div></div><div class="card widget"><div class="card-content"><div class="menu"><h3 class="menu-label">Advertisement</h3><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6880109808178384" data-ad-slot="3347750970" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Always Learning" height="28"></a><p class="size-small"><span>&copy; 2020 junhee.ko</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
             site: {
                 url: 'https://kojunhee.github.io',
                 external_link: {"enable":true,"exclude":[]}
