@@ -57,14 +57,14 @@
 <li><p>강제적으로 자식 프로세스를 종료시킨 경우</p>
 </li>
 </ol>
-<h2 id="3-Redis-복제-master-slave"><a href="#3-Redis-복제-master-slave" class="headerlink" title="3. Redis 복제 : master/slave"></a>3. Redis 복제 : master/slave</h2><p>redis 복제 모델은 master/slave 구조이다. 주의할점은, 하나의 slave 는 오직 하나의 master 만 가질 수 있다.</p>
+<h2 id="6-Redis-복제-master-slave"><a href="#6-Redis-복제-master-slave" class="headerlink" title="6. Redis 복제 : master/slave"></a>6. Redis 복제 : master/slave</h2><p>redis 복제 모델은 master/slave 구조이다. 주의할점은, 하나의 slave 는 오직 하나의 master 만 가질 수 있다.</p>
 <p>복제 과정은 다음과 같다.</p>
 <ol>
 <li>slave 에서 slaveof 명령을 통해, master 서버를 설정</li>
 <li>master 는 복제를 위해 RDB 생성 후에, 슬레이브에 전송</li>
 <li>슬레이브는 RDB 를 로드하고 나머지 차이에 대한 명령을 마스터에서 전달받아 복제 완료</li>
 </ol>
-<h2 id="4-Redis-복제시-주의-사항-slaveof-no-one-을-기억해라"><a href="#4-Redis-복제시-주의-사항-slaveof-no-one-을-기억해라" class="headerlink" title="4. Redis 복제시 주의 사항 : slaveof no one 을 기억해라."></a>4. Redis 복제시 주의 사항 : slaveof no one 을 기억해라.</h2><ol>
+<h2 id="7-Redis-복제시-주의-사항-slaveof-no-one-을-기억해라"><a href="#7-Redis-복제시-주의-사항-slaveof-no-one-을-기억해라" class="headerlink" title="7. Redis 복제시 주의 사항 : slaveof no one 을 기억해라."></a>7. Redis 복제시 주의 사항 : slaveof no one 을 기억해라.</h2><ol>
 <li><p>slave 는 master 의 상태를 지속적으로 체크한다.</p>
 </li>
 <li><p>master 와의 연결 상태 이상을 slave 가 감지한다.</p>
@@ -78,10 +78,9 @@
 </ol>
 <p>왜냐하면, 슬레이브는 마스터와 동일한 데이터를 유지하기 위해 RDB 를 읽어들이기 전에 <code>현재 자신의 데이터를 모두 삭제하고 마스터와 싱크</code>를 맞추기 때문이다.</p>
 <p>그래서, 마스터에 장애가 발생하면 슬레이브에 slaveof no one 명령을 줘서 더 이상 슬레이브로 동작하지 않도록 하여, 현재까지의 모든 데이터를 보존할 수 있다.</p>
-<p>##5. Redis 복제시 주의 사항 : 복제 시에 무조건 RDB 를 백그라운드로 생성한다.</p>
-<p>복제를 하면, 사용자 설정과 무관하게 슬레이브에 전달할 RDB 를 만들기 위해 fork 를 해서 RDB 를 생성한다. </p>
+<h2 id="8-Redis-복제시-주의-사항-복제-시에-무조건-RDB-를-백그라운드로-생성한다"><a href="#8-Redis-복제시-주의-사항-복제-시에-무조건-RDB-를-백그라운드로-생성한다" class="headerlink" title="8. Redis 복제시 주의 사항 : 복제 시에 무조건 RDB 를 백그라운드로 생성한다."></a>8. Redis 복제시 주의 사항 : 복제 시에 무조건 RDB 를 백그라운드로 생성한다.</h2><p>복제를 하면, 사용자 설정과 무관하게 슬레이브에 전달할 RDB 를 만들기 위해 fork 를 해서 RDB 를 생성한다. </p>
 <p>따라서, 하나의 프로세스가 너무 많은 메모리를 사용하지 않도록 나눌 필요가 있다.</p>
-<h2 id="4-Redis-HA-와-Sentinel"><a href="#4-Redis-HA-와-Sentinel" class="headerlink" title="4. Redis HA 와 Sentinel"></a>4. Redis HA 와 Sentinel</h2><p>master/slave 형태로 서비스 하기 위해서는, 다음과 같은 기능이 필요하다.</p>
+<h2 id="9-Redis-HA-와-Sentinel"><a href="#9-Redis-HA-와-Sentinel" class="headerlink" title="9. Redis HA 와 Sentinel"></a>9. Redis HA 와 Sentinel</h2><p>master/slave 형태로 서비스 하기 위해서는, 다음과 같은 기능이 필요하다.</p>
 <ol>
 <li>마스터 장애 판별</li>
 <li>슬레이브를 마스터로 승격</li>

@@ -1,56 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="generator" content="Hexo 4.2.1"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>Always Learning</title><meta property="og:type" content="blog"><meta property="og:title" content="Always Learning"><meta property="og:url" content="https://kojunhee.github.io/"><meta property="og:site_name" content="Always Learning"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://kojunhee.github.io/img/og_image.png"><meta property="article:author" content="junhee.ko"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://kojunhee.github.io"},"headline":"Always Learning","image":["https://kojunhee.github.io/img/og_image.png"],"author":{"@type":"Person","name":"junhee.ko"},"description":null}</script><link rel="icon" href="/img/favicon.ico"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/default.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><script data-ad-client="ca-pub-6880109808178384" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js" async></script></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Always Learning" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a></div><div class="navbar-end"><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-6-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2019-12-25T15:00:00.000Z" title="2019-12-25T15:00:00.000Z">2019-12-26</time><span class="level-item"><a class="link-muted" href="/categories/kafka/">Kafka</a></span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2019/12/26/kafka-chapter4/">[카프카] 4장_카프카 프로듀서</a></h1><div class="content"><p>프로듀서란, 메세지를 생산해서 카프카의 토픽으로 보내는 역할을 하는 애플리케이션, 서버이다.<br>주요 기능은, 각각의 메세지를 토픽 파티션에 매핑하고 파티션의 리더에 요청을 보내는 것이다.</p>
-<h3 id="1-콘솔-프로듀서로-메세지-보내기"><a href="#1-콘솔-프로듀서로-메세지-보내기" class="headerlink" title="1. 콘솔 프로듀서로 메세지 보내기"></a>1. 콘솔 프로듀서로 메세지 보내기</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">auto.create.topics.enable = <span class="keyword">true</span></span><br></pre></td></tr></table></figure>
-
-<p>위 처럼 설정되어 있으면,<br>프로듀서가 카프카에 존재하지 않는 토픽으로 메세지를 보낼 때 자동으로 토픽이 생성된다.</p>
-<h3 id="2-자바와-파이썬을-이용한-프로듀서"><a href="#2-자바와-파이썬을-이용한-프로듀서" class="headerlink" title="2. 자바와 파이썬을 이용한 프로듀서"></a>2. 자바와 파이썬을 이용한 프로듀서</h3><p>프로듀서에서 send() 로 메세지를 보내는 방식은 세 가지이다.</p>
-<ol>
-<li><p>메세지 보내고 확인하지 않기<br>메세지 손실 가능성이 있다.</p>
-</li>
-<li><p>동기 전송<br>카프카의 응답을 기다린다.</p>
-</li>
-<li><p>비동기 전송<br>응답을 기다리지 않기 때문에 빠른 전송이 가능하다.</p>
-</li>
-</ol>
-<h3 id="5-메세지-전송-방법"><a href="#5-메세지-전송-방법" class="headerlink" title="5. 메세지 전송 방법"></a>5. 메세지 전송 방법</h3><p>프로듀서 옵셩 중에 acks 옵션 설정에 따라, 카프카로 메세지를 전송할 때 메세지 손실 여부와 메세지 전송 속도 및 처리량이 달라진다.</p>
-<h4 id="5-1-메세지-손실-가능성-높음-빠른-전송-속도"><a href="#5-1-메세지-손실-가능성-높음-빠른-전송-속도" class="headerlink" title="5.1 메세지 손실 가능성 높음, 빠른 전송 속도"></a>5.1 메세지 손실 가능성 높음, 빠른 전송 속도</h4><p>acks = 0, 카프카 서버의 응답을 기다리지 않고 메세지 보낼 준비가 되면 즉시 다음 요청을 보낸다.</p>
-<h4 id="5-2-메세지-손실-가능성-낮음-적당한-전송-속도"><a href="#5-2-메세지-손실-가능성-낮음-적당한-전송-속도" class="headerlink" title="5.2 메세지 손실 가능성 낮음, 적당한 전송 속도"></a>5.2 메세지 손실 가능성 낮음, 적당한 전송 속도</h4><p><img src="/image/kafka_ack_1.png" alt=""></p>
-<p>asks = 1, 메세지를 보내고 잘 받았는지 확인한다.<br>위 그림 처럼, 팔로워들이 주기적으로 리더를 확인하고 새로운 메세지가 확인되면 팔로워들에도 저장한다.<br>메세지 손실이 발생하는 경우는 리더에 장애가 발생하는 경우이다.<br>즉, 프로듀서가 리더에게 메세지를 보내고 리더는 메시지를 저장한 후에 바로 장애가 발생하는 경우이다.</p>
-<h4 id="5-3-메세지-손실-없음-느린-전송-속도"><a href="#5-3-메세지-손실-없음-느린-전송-속도" class="headerlink" title="5.3 메세지 손실 없음, 느린 전송 속도"></a>5.3 메세지 손실 없음, 느린 전송 속도</h4><p>acks = all, 메세지를 보내고 잘 받았는지 확인하고 추가적으로 팔로워들까지 메세지를 잘 받았는지 확인한다.<br>프로듀서 설정 뿐만 아니라, 브로커 설정도 같이 해줘야한다.</p>
-<blockquote>
-<p>프로듀서 acks = all, 브로커 min.insync.replicas = 1 </p>
-</blockquote>
-<p>min.insync.replicas 는 최소 리플리케이션 팩터를 지정하는 옵션이다.</p>
-<ol>
-<li>프로듀서는 토픽의 리더에게 메세지를 보내고, </li>
-<li>리더는 메세지를 저장한다. </li>
-<li>최소 하나의 리플리케이션 조건을 갖췄기 때문에 acks 를 보낸다.</li>
-</ol>
-<blockquote>
-<p>프로듀서 acks = all, 브로커 min.insync.replicas = 2</p>
-</blockquote>
-<ol>
-<li>프로듀서는 토픽의 리더에게 메세지를 보내고, </li>
-<li>리더는 메세지를 저장한다. </li>
-<li>팔로워가 2 개가 있다고 할 때, 첫번째 팔로워는 리더로부터 주기적으로 새로운 메세지를 확인하며 새로운 메세지가 확인되면 자신도 리더의 메세지를 가져와 저장한다.</li>
-<li>최소 두 개의 리플리케이션 조건을 갖췄기 때문에 acks 를 보낸다.</li>
-</ol>
-<p>“손실 없는 메세지 전송을 위해서는,  프로듀서 acks = all, 브로커 min.insync.replicas = 2, 리플레케이션 팩터 = 3”</p>
-<blockquote>
-<p>프로듀서 acks = all, 브로커 min.insync.replicas = 3</p>
-</blockquote>
-<p>왜 카프카는 손실 없는 메세지 전송을 위해, min.insync.replicas = 3 이 아니라, min.insync.replicas = 2 를 추천할까 ?</p>
-<ol>
-<li>프로듀서는 토픽의 리더에게 메세지를 보낸다.</li>
-<li>팔로워가 2 개가 있다고 할 때, 팔로워가 위치한 브로커 하나를 강제 종료한다.</li>
-<li>에러가 발생한다.</li>
-<li>min.insync.replicas = 3 이기 때문에, 리더, 팔로워, 팔로워 이렇게 3 곳에서 모두 메세지를 받아야만 리더는 프로듀서에게 메세지를 잘 받았다는 acks 를 받을 수 있다. </li>
-<li>하지만, 팔로워 한 개를 강제 종료하였기 때문에 ISR 에는 리더와 팔로워 각각 하나만 남아 있는 상태다.</li>
-<li>결국 옵션의 조건을 충족시킬 수 없는 상황이기 때문에 에러가 발생한다.</li>
-</ol>
-<hr>
-<p>카프카, 데이터 플랫폼의 최강자 &lt;고승범, 공용준&gt;</p>
-</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2019-12-25T15:00:00.000Z" title="2019-12-25T15:00:00.000Z">2019-12-26</time><span class="level-item"><a class="link-muted" href="/categories/kafka/">Kafka</a></span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2019/12/26/kafka-chapter5/">[카프카] 5장_카프카 컨슈머</a></h1><div class="content"><p>컨슈머란, 프로듀서가 메세지를 생산해서 카프카의 토픽으로 보내면 그 토픽의 메세지를 가져와 소비하는 애플리케이션, 서버이다.<br>주요 기능은, 특정 파티션을 관리하고 있는 파티션 리더에게 메세지를 가져오기 요청을 하는 것이다.</p>
+<html lang="en"><head><meta charset="utf-8"><meta name="generator" content="Hexo 4.2.1"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>Always Learning</title><meta property="og:type" content="blog"><meta property="og:title" content="Always Learning"><meta property="og:url" content="https://kojunhee.github.io/"><meta property="og:site_name" content="Always Learning"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://kojunhee.github.io/img/og_image.png"><meta property="article:author" content="junhee.ko"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://kojunhee.github.io"},"headline":"Always Learning","image":["https://kojunhee.github.io/img/og_image.png"],"author":{"@type":"Person","name":"junhee.ko"},"description":null}</script><link rel="icon" href="/img/favicon.ico"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/default.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><script data-ad-client="ca-pub-6880109808178384" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js" async></script></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Always Learning" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a></div><div class="navbar-end"><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-6-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2019-12-25T15:00:00.000Z" title="2019-12-25T15:00:00.000Z">2019-12-26</time><span class="level-item"><a class="link-muted" href="/categories/kafka/">Kafka</a></span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2019/12/26/kafka-chapter5/">[카프카] 5장_카프카 컨슈머</a></h1><div class="content"><p>컨슈머란, 프로듀서가 메세지를 생산해서 카프카의 토픽으로 보내면 그 토픽의 메세지를 가져와 소비하는 애플리케이션, 서버이다.<br>주요 기능은, 특정 파티션을 관리하고 있는 파티션 리더에게 메세지를 가져오기 요청을 하는 것이다.</p>
 <h3 id="2-콘솔-컨슈머로-메세지-가져오기"><a href="#2-콘솔-컨슈머로-메세지-가져오기" class="headerlink" title="2. 콘솔 컨슈머로 메세지 가져오기"></a>2. 콘솔 컨슈머로 메세지 가져오기</h3><p>컨슈머를 실행할 때는 항상 컨슈머 그룹이 필요하다.<br>만약 추가 옵션을 주지 않고 실행하면, 자동으로 다음 형태로 컨슈머 그룹이 생성된다.</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console-consumer-xxxx(숫자)</span><br></pre></td></tr></table></figure>
 
@@ -122,6 +71,57 @@
 <h4 id="6-3-특정-파티션-할당"><a href="#6-3-특정-파티션-할당" class="headerlink" title="6.3 특정 파티션 할당"></a>6.3 특정 파티션 할당</h4><p>수동으로 파티션을 할당해 메세지를 가져올 수 있다. </p>
 <h4 id="6-4-특정-오프셋부터-메세지-가져오기"><a href="#6-4-특정-오프셋부터-메세지-가져오기" class="headerlink" title="6.4 특정 오프셋부터 메세지 가져오기"></a>6.4 특정 오프셋부터 메세지 가져오기</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">seek(파티션 번호, 오프셋 번호)</span><br></pre></td></tr></table></figure>
 
+<hr>
+<p>카프카, 데이터 플랫폼의 최강자 &lt;고승범, 공용준&gt;</p>
+</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2019-12-25T15:00:00.000Z" title="2019-12-25T15:00:00.000Z">2019-12-26</time><span class="level-item"><a class="link-muted" href="/categories/kafka/">Kafka</a></span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2019/12/26/kafka-chapter4/">[카프카] 4장_카프카 프로듀서</a></h1><div class="content"><p>프로듀서란, 메세지를 생산해서 카프카의 토픽으로 보내는 역할을 하는 애플리케이션, 서버이다.<br>주요 기능은, 각각의 메세지를 토픽 파티션에 매핑하고 파티션의 리더에 요청을 보내는 것이다.</p>
+<h3 id="1-콘솔-프로듀서로-메세지-보내기"><a href="#1-콘솔-프로듀서로-메세지-보내기" class="headerlink" title="1. 콘솔 프로듀서로 메세지 보내기"></a>1. 콘솔 프로듀서로 메세지 보내기</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">auto.create.topics.enable = <span class="keyword">true</span></span><br></pre></td></tr></table></figure>
+
+<p>위 처럼 설정되어 있으면,<br>프로듀서가 카프카에 존재하지 않는 토픽으로 메세지를 보낼 때 자동으로 토픽이 생성된다.</p>
+<h3 id="2-자바와-파이썬을-이용한-프로듀서"><a href="#2-자바와-파이썬을-이용한-프로듀서" class="headerlink" title="2. 자바와 파이썬을 이용한 프로듀서"></a>2. 자바와 파이썬을 이용한 프로듀서</h3><p>프로듀서에서 send() 로 메세지를 보내는 방식은 세 가지이다.</p>
+<ol>
+<li><p>메세지 보내고 확인하지 않기<br>메세지 손실 가능성이 있다.</p>
+</li>
+<li><p>동기 전송<br>카프카의 응답을 기다린다.</p>
+</li>
+<li><p>비동기 전송<br>응답을 기다리지 않기 때문에 빠른 전송이 가능하다.</p>
+</li>
+</ol>
+<h3 id="5-메세지-전송-방법"><a href="#5-메세지-전송-방법" class="headerlink" title="5. 메세지 전송 방법"></a>5. 메세지 전송 방법</h3><p>프로듀서 옵셩 중에 acks 옵션 설정에 따라, 카프카로 메세지를 전송할 때 메세지 손실 여부와 메세지 전송 속도 및 처리량이 달라진다.</p>
+<h4 id="5-1-메세지-손실-가능성-높음-빠른-전송-속도"><a href="#5-1-메세지-손실-가능성-높음-빠른-전송-속도" class="headerlink" title="5.1 메세지 손실 가능성 높음, 빠른 전송 속도"></a>5.1 메세지 손실 가능성 높음, 빠른 전송 속도</h4><p>acks = 0, 카프카 서버의 응답을 기다리지 않고 메세지 보낼 준비가 되면 즉시 다음 요청을 보낸다.</p>
+<h4 id="5-2-메세지-손실-가능성-낮음-적당한-전송-속도"><a href="#5-2-메세지-손실-가능성-낮음-적당한-전송-속도" class="headerlink" title="5.2 메세지 손실 가능성 낮음, 적당한 전송 속도"></a>5.2 메세지 손실 가능성 낮음, 적당한 전송 속도</h4><p><img src="/image/kafka_ack_1.png" alt=""></p>
+<p>asks = 1, 메세지를 보내고 잘 받았는지 확인한다.<br>위 그림 처럼, 팔로워들이 주기적으로 리더를 확인하고 새로운 메세지가 확인되면 팔로워들에도 저장한다.<br>메세지 손실이 발생하는 경우는 리더에 장애가 발생하는 경우이다.<br>즉, 프로듀서가 리더에게 메세지를 보내고 리더는 메시지를 저장한 후에 바로 장애가 발생하는 경우이다.</p>
+<h4 id="5-3-메세지-손실-없음-느린-전송-속도"><a href="#5-3-메세지-손실-없음-느린-전송-속도" class="headerlink" title="5.3 메세지 손실 없음, 느린 전송 속도"></a>5.3 메세지 손실 없음, 느린 전송 속도</h4><p>acks = all, 메세지를 보내고 잘 받았는지 확인하고 추가적으로 팔로워들까지 메세지를 잘 받았는지 확인한다.<br>프로듀서 설정 뿐만 아니라, 브로커 설정도 같이 해줘야한다.</p>
+<blockquote>
+<p>프로듀서 acks = all, 브로커 min.insync.replicas = 1 </p>
+</blockquote>
+<p>min.insync.replicas 는 최소 리플리케이션 팩터를 지정하는 옵션이다.</p>
+<ol>
+<li>프로듀서는 토픽의 리더에게 메세지를 보내고, </li>
+<li>리더는 메세지를 저장한다. </li>
+<li>최소 하나의 리플리케이션 조건을 갖췄기 때문에 acks 를 보낸다.</li>
+</ol>
+<blockquote>
+<p>프로듀서 acks = all, 브로커 min.insync.replicas = 2</p>
+</blockquote>
+<ol>
+<li>프로듀서는 토픽의 리더에게 메세지를 보내고, </li>
+<li>리더는 메세지를 저장한다. </li>
+<li>팔로워가 2 개가 있다고 할 때, 첫번째 팔로워는 리더로부터 주기적으로 새로운 메세지를 확인하며 새로운 메세지가 확인되면 자신도 리더의 메세지를 가져와 저장한다.</li>
+<li>최소 두 개의 리플리케이션 조건을 갖췄기 때문에 acks 를 보낸다.</li>
+</ol>
+<p>“손실 없는 메세지 전송을 위해서는,  프로듀서 acks = all, 브로커 min.insync.replicas = 2, 리플레케이션 팩터 = 3”</p>
+<blockquote>
+<p>프로듀서 acks = all, 브로커 min.insync.replicas = 3</p>
+</blockquote>
+<p>왜 카프카는 손실 없는 메세지 전송을 위해, min.insync.replicas = 3 이 아니라, min.insync.replicas = 2 를 추천할까 ?</p>
+<ol>
+<li>프로듀서는 토픽의 리더에게 메세지를 보낸다.</li>
+<li>팔로워가 2 개가 있다고 할 때, 팔로워가 위치한 브로커 하나를 강제 종료한다.</li>
+<li>에러가 발생한다.</li>
+<li>min.insync.replicas = 3 이기 때문에, 리더, 팔로워, 팔로워 이렇게 3 곳에서 모두 메세지를 받아야만 리더는 프로듀서에게 메세지를 잘 받았다는 acks 를 받을 수 있다. </li>
+<li>하지만, 팔로워 한 개를 강제 종료하였기 때문에 ISR 에는 리더와 팔로워 각각 하나만 남아 있는 상태다.</li>
+<li>결국 옵션의 조건을 충족시킬 수 없는 상황이기 때문에 에러가 발생한다.</li>
+</ol>
 <hr>
 <p>카프카, 데이터 플랫폼의 최강자 &lt;고승범, 공용준&gt;</p>
 </div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2019-12-21T15:00:00.000Z" title="2019-12-21T15:00:00.000Z">2019-12-22</time><span class="level-item"><a class="link-muted" href="/categories/oop/">OOP</a></span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2019/12/22/object-chapter10/">[오브젝트] 10장_상속과 코드 재사용</a></h1><div class="content"><p>이번 장은, 클래스 재사용을 위해 새로운 클래스를 추가하는 가장 대표적 기법인 상속에 대해 정리한다.</p>
