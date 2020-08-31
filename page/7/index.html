@@ -1,5 +1,73 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="generator" content="Hexo 4.2.1"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>Always Learning</title><meta property="og:type" content="blog"><meta property="og:title" content="Always Learning"><meta property="og:url" content="https://kojunhee.github.io/"><meta property="og:site_name" content="Always Learning"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://kojunhee.github.io/img/og_image.png"><meta property="article:author" content="junhee.ko"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://kojunhee.github.io"},"headline":"Always Learning","image":["https://kojunhee.github.io/img/og_image.png"],"author":{"@type":"Person","name":"junhee.ko"},"description":null}</script><link rel="icon" href="/img/favicon.ico"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/default.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><script data-ad-client="ca-pub-6880109808178384" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js" async></script></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Always Learning" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a></div><div class="navbar-end"><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-6-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2020-01-25T15:00:00.000Z" title="2020-01-25T15:00:00.000Z">2020-01-26</time><span class="level-item"><a class="link-muted" href="/categories/kafka/">Kafka</a></span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2020/01/26/kafka-chapter7/">[카프카] 7장_데이터 파이프라인 구축</a></h1><div class="content"><p>데이터 파이프라인을 직접 구성해본다. 다음 애플리케이션을 사용한다.</p>
+<html lang="en"><head><meta charset="utf-8"><meta name="generator" content="Hexo 4.2.1"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>Always Learning</title><meta property="og:type" content="blog"><meta property="og:title" content="Always Learning"><meta property="og:url" content="https://kojunhee.github.io/"><meta property="og:site_name" content="Always Learning"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://kojunhee.github.io/img/og_image.png"><meta property="article:author" content="junhee.ko"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://kojunhee.github.io"},"headline":"Always Learning","image":["https://kojunhee.github.io/img/og_image.png"],"author":{"@type":"Person","name":"junhee.ko"},"description":null}</script><link rel="icon" href="/img/favicon.ico"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/default.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><script data-ad-client="ca-pub-6880109808178384" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js" async></script></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Always Learning" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a></div><div class="navbar-end"><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-6-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2020-01-26T15:00:00.000Z" title="2020-01-26T15:00:00.000Z">2020-01-27</time><span class="level-item"><a class="link-muted" href="/categories/oop/">OOP</a></span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2020/01/27/object-chapter15/">[오브젝트] 15장_디자인 패턴과 프레임워크</a></h1><div class="content"><ol>
+<li><p>디자인 패턴<br>특정한 변경을 일관성있게 다룰 수 있는 협력 텝플릿 제공.<br>설계를 재사용하는 것이 목적.</p>
+</li>
+<li><p>프레임워크<br>특정한 변경을 일관성 있게 다룰 수 있는 확장 가능한 코드 템플릿 제공.<br>설계와 코드를 함께 재사용하기 위한 것이 목적.</p>
+</li>
+</ol>
+<h2 id="01-디자인-패턴과-설계-재사용"><a href="#01-디자인-패턴과-설계-재사용" class="headerlink" title="01 디자인 패턴과 설계 재사용"></a>01 디자인 패턴과 설계 재사용</h2><h5 id="소프트웨어-패턴"><a href="#소프트웨어-패턴" class="headerlink" title="소프트웨어 패턴"></a>소프트웨어 패턴</h5><p>패턴의 특징은,</p>
+<ol>
+<li>반복적으로 발생하는 문제와 해법의 쌍으로 정의된다.</li>
+<li>패턴을 사용해서 이미 알려진 문제와 이에 대한 해법을 문서로 정리할 수 있다. 다른 사람과 의사소통 가능.</li>
+<li>추상적인 원칙과 실제 코드 작성 사이의 간극을 메워준다. 실질적인 코드 작성을 돕는다.</li>
+<li>패턴은 실무에서 탄생했다.</li>
+</ol>
+<p>마틴 파울러에 의하면, 패턴은 하나의 실무 컨텍스트에서 유용하게 사용해왔고 다른 실무 컨텍스트엣도 유용할 것이라고 예상되는 아이디어다. 프로젝트 조직을 구성하는 방법, 프로젝트 일정을 추정하는 방법 등 반복적인 규칙을 발견할 수 있는 모든 영역이 패턴의 대상이다.</p>
+<h5 id="패턴-분류"><a href="#패턴-분류" class="headerlink" title="패턴 분류"></a>패턴 분류</h5><ol>
+<li><p>디자인 패턴<br>일반적인 설계 문제를 해결하며, 협력하는 컴포넌트들 사이에서 반복적으로 발생하는 구조를 서술한다. </p>
+</li>
+<li><p>아키텍쳐 패턴<br>디자인 패턴의 상위에 있다. 소프트웨어의 전체적인 구조를 결정한다.<br>미리 정의된 서브시스템들을 제공하고, 각 서브시스템들의 책임을 정의한다.<br>서트시스템들 사이의 관계를 조직화하고 규칙과 가이드라인을 포함한다.</p>
+</li>
+<li><p>이디엄<br>디자인 패턴의 하위에 있다. 특정 프로그래밍 언어에만 국한된 하위 레벨 패턴이다.<br>주어진 언어의 기능을 사용해 컴포넌트, 혹은 컴포넌트간의 특정 측면을 구현하는 방법을 서술한다.<br>예를 들어, C++ 의 COUNT POINT 이디엄은 자바에서는 유용하지 않다.</p>
+</li>
+<li><p>분석 패턴<br>도메인 내의 개념적인 문제를 해결하는데 초점을 맞춘다.</p>
+</li>
+</ol>
+<h5 id="패턴과-책임-주도-설계"><a href="#패턴과-책임-주도-설계" class="headerlink" title="패턴과 책임-주도 설계"></a>패턴과 책임-주도 설계</h5><p>객체지향 설계에서 중요한 일은, <code>올바른 책임을 올바른 객체에게 할당하고 객체 간의 유연한 협력 관계를 구축하는 것</code>이다.</p>
+<p>패턴은 공통으로 사용할 수 있는 역할, 책임, 협력의 템플릿이다. 예를 들면,</p>
+<ol>
+<li><p>STRATEGY 패턴<br>다양한 알고리즘을 동적으로 교체할 수 있는 역할과 책임을 제공한다.</p>
+</li>
+<li><p>BRIDGE 패턴<br>추상화의 조합으로 인한 클래스의 폭발적 증가 문제를 해결하기 위해 역할과 책임을 추상화와 구현의 두 개의 커다란 집합으로 분해해서 설계를 확장가능하게 한다.</p>
+</li>
+<li><p>OBSERVER 패턴<br>유연한 통지 매커니즘을 구축하기 위해 객체 간의 결합도를 낮출 수 있는 역할과 책임을 제공한다.</p>
+</li>
+</ol>
+<p>패턴의 구성 요소는 클래스가 아니라, ‘역할’ 이다.<br>예를 들어, 클라이언트가 개별 객체와 복합 객체를 동일하게 취급할 수 있는 COMPOSITE 패턴을 보자. </p>
+<p><img src="/image/object_c15_01.png" alt=""></p>
+<p>패턴의 구성요소인 component, composite, leaf 는 클래스가 아니라 협력에 참여하는 객체들의 역할이다. component는 역할이기 때문에 component 가 제공하는 오퍼레이션을 구현하는 어떤 객체라도 component 의 역할을 수행할 수 있다.</p>
+<p><img src="/image/object_c15_02.png" alt=""></p>
+<p>중복 할인 설계의 기본 구조는 COMPOSITE 패턴을 따른다.<br>디자인 패턴은 단지 역할과 책임, 협력의 템플릿을 제안할 뿐, 구체적인 구현 방법에 대해서는 제한을 두지 않는다.</p>
+<h5 id="캡슐화와-디자인-패턴"><a href="#캡슐화와-디자인-패턴" class="headerlink" title="캡슐화와 디자인 패턴"></a>캡슐화와 디자인 패턴</h5><p>각 디자인 패턴은 특정한 변경을 캡슐화하기 위해 독자적인 방법을 정의하고 있다.</p>
+<p><img src="/image/object_c15_03.png" alt=""></p>
+<p>위 그림은 STRATEGY 패턴을 적용한 영화 예매 시스템 설계이다. 변경을 캡슐화하기 위해 합성을 이용한다. Movie 와 DiscountPolicy 사이의 결합도를 낮춰 런타임에 알고리즘을 변경할 수 있다.</p>
+<p><img src="/image/object_c15_04.png" alt=""></p>
+<p>위 그림은 TEMPLATE METHOD 패턴을 적용한 설계이다. 변경을 캡슐화하기 위해 상속을 이용한다. 부모 클래스의 calculateFee 메서드 안에서 추상 메서드를 호출하고 자식 클래스들이 이 메서드를 오버라이딩해서 변하는 부분을 구현하는 것이 중요하다.<br>TEMPLATE METHOD 패턴은 합성 보다는 결합도가 높은 상속을 사용했기 때문에 런타임에 객체의 알고리즘을 변경하는 것이 불가능하다. 하지만, 알고리즘 교체와 같은 요구사항이 없었으면 복잡도를 낮출 수 있다는 장점이 있다.</p>
+<p><img src="/image/object_c15_05.png" alt=""></p>
+<p>위 그림은 DECORATOR 패턴을 적용한 설계이다. 객체의 행동을 동적으로 추가할 수 있는 패턴으로서, 객체의 행동을 결합하기 위해 객체 합성을 사용한다.</p>
+<p>디자인 패턴에서 중요한 것은, 디자인 패턴의 구현 방법이나 구조가 아니다. <code>어떤 변경을 캡슐화하는지 이해하고 변경을 캡슐화하기 위해 어떤 방법을 사용하는지</code> 이해해야한다.</p>
+<h5 id="패턴은-출발점이다"><a href="#패턴은-출발점이다" class="headerlink" title="패턴은 출발점이다"></a>패턴은 출발점이다</h5><p>패턴 입문자의 문제는, 패턴을 적용하는 컨텍스트의 적절성을 무시하고 패턴의 구조에만 초점을 맞춘다는 것이다. 패턴을 적용할 때는 설계를 단순하고 명확하게 만들 수 있는 방법이 없는지를 고민해야한다. 그리고, 코드를 공유하는 모든 사람들이 적용된 패턴을 알고 있어야한다.</p>
+<h2 id="02-프레임워크와-코드-재사용"><a href="#02-프레임워크와-코드-재사용" class="headerlink" title="02 프레임워크와 코드 재사용"></a>02 프레임워크와 코드 재사용</h2><h5 id="코드-재사용-대-설계-재사용"><a href="#코드-재사용-대-설계-재사용" class="headerlink" title="코드 재사용 대 설계 재사용"></a>코드 재사용 대 설계 재사용</h5><p>프레임워크란, </p>
+<ol>
+<li>추상 클래스나 인터페이스를 정의하고 인스턴스 사이의 상호작용을 통해 시스템 전체 혹은 일부를 구현해 놓은 재사용 가능한 설계이다. </li>
+<li>또는, 애플리케이션 개바자가 현재의 요구사항에 맞게 커스터마이징할 수 있는 애플리케이션의 골격이다.</li>
+</ol>
+<h5 id="상위-정책과-하위-정책으로-패키지-분리하기"><a href="#상위-정책과-하위-정책으로-패키지-분리하기" class="headerlink" title="상위 정책과 하위 정책으로 패키지 분리하기"></a>상위 정책과 하위 정책으로 패키지 분리하기</h5><p>프레임워크의 핵심은, 추상 클래스나 인터페이스와 같은 추상화이다.</p>
+<p><img src="/image/object_c15_06.png" alt=""></p>
+<p>위 그림에서, 추상화는 짙은 색으로 표시되어 있다. <code>의존성 역전 원칙에 기반하여, 구체 클래스들은 상위 클래스에 의존하지만 추상화들은 구체 클래스에 의존하지 않는다</code>.</p>
+<p>상위 정책은 상대적으로 변경에 안정적이지만 세부 사항은 자주 변경된다. 만약, 상위 정책이 자주 변하는 세부 사항에 의존하면 변경에 대한 파급 효과로 상위 정책이 불안정해진다.</p>
+<p>요점은, 상위 정책이 세부 사항보다 더 다양한 상황에서 재사용할 수 있어야한다. 그래서, 상위 정책과 세부 사항 모두 추상화에 의존해야한다.</p>
+<p>프레임워크는 여러 애플리케이션에 걸쳐 재사용가능해야하기 때문에, 변하는 것과 변하지 않는 것을 서로 다른 주기로 배포할 수 있도록, 배포 단위를 분리해야한다. 이를 위해, 변하는 부분과 변하지 않는 부분을 별도의 패키지로 분리할 수 있다.</p>
+<p><img src="/image/object_c15_07.png" alt=""></p>
+<p>중요한 것은, 패키지 사이의 의존성 방향이다. 세부사항을 구현한 패키지는 항상 상위 정책을 구현한 패키지에 의존해야한다.</p>
+<p>상위 정책을 구현하고 있는 패키지를 다른 애플리케이션에 재사용할 수 있다. 즉, <code>재사용 가능한 요금 계산 로직을 구현한 프레임워크가 만들어진 것</code>이다.</p>
+<h5 id="제어-역전-원리"><a href="#제어-역전-원리" class="headerlink" title="제어 역전 원리"></a>제어 역전 원리</h5><p>의존성 역전 원리는, 프레임워크의 가장 기본적인 설계 메커니즘이다. 의존성 역적은, 의존성 방향 뿐만 아니라 제어 흐름의 주체 역시 역전시킨다. 전통적인 구조에서는 상위 정책이 구체적인 세부 사항에 의존한다. 상위 정책의 코드가 하부의 구체적인 코드를 호출한다. 즉, 애플리케이션의 코드가 재사용 가능한 라이브러리나 툴킷의 코드를 호출한다.</p>
+<p>하지만, 의존성을 역전 시킨 객치지향 구조에서는 반대로 프레임워크가 에플리케이션에 속하는 서브 클래스들의 메서드를 호출한다. 즉, 개별 애플리케이션에서 프레임워크로 제어 흐름의 주체가 이동한다. 이를 제어 역전 원리, 할리우드 원리라고 한다. 할리우드에서 캐스팅 담장자가 배우에게 “먼저 연락하지 마세요. 저희가 연락드릴게요” 라고 말하는 것처럼 프레임워크는 자신을 찾지 말라고 한다.</p>
+<p><img src="/image/object_c15_08.png" alt=""></p>
+<p>위 그림에서, 특정한 기본 정책을 구현하는 개발자는 FeeCondition 을 대체할 서브 타입만 개발하면 프레임워크에 정의된 플로우에 따라 요금이 계산된다. 프레임워크에서는 일반적인 해결책만 제공하고 애플리케이션에 따라 달라질 수 있는 특정한 동작은 비워둔다. 이렇게 완성되지 않은 채로 남겨진 동작을 hook 이라고 부른다.</p>
+<hr>
+<p>오브젝트 &lt;조영호&gt;</p>
+</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2020-01-25T15:00:00.000Z" title="2020-01-25T15:00:00.000Z">2020-01-26</time><span class="level-item"><a class="link-muted" href="/categories/kafka/">Kafka</a></span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2020/01/26/kafka-chapter7/">[카프카] 7장_데이터 파이프라인 구축</a></h1><div class="content"><p>데이터 파이프라인을 직접 구성해본다. 다음 애플리케이션을 사용한다.</p>
 <ol>
 <li>아파치 나이파이</li>
 <li>엘라스틱 파일비트</li>
@@ -1115,150 +1183,7 @@
 </ol>
 <hr>
 <p>빅데이터를 지탱하는 기술 &lt;니시다 케이스케&gt;</p>
-</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2019-12-29T15:00:00.000Z" title="2019-12-29T15:00:00.000Z">2019-12-30</time><span class="level-item"><a class="link-muted" href="/categories/big-data/">Big Data</a></span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2019/12/30/big-data-chapter2/">[빅데이터를 지탱하는 기술] 2장_빅데이터 탐색</a></h1><div class="content"><h2 id="1-크로스-집계"><a href="#1-크로스-집계" class="headerlink" title="1. 크로스 집계"></a>1. 크로스 집계</h2><h5 id="크로스-집계"><a href="#크로스-집계" class="headerlink" title="크로스 집계"></a>크로스 집계</h5><p><img src="/image/bigdata_cross_table.png" alt=""></p>
-<ol>
-<li><p>크로스 테이블</p>
-<p>행과 열이 교차하는 부분에 숫자 데이터가 들어감</p>
-</li>
-<li><p>트랜젝션 테이블</p>
-<p>행방향으로만 증가하고, 열방향으로는 데이터가 증가하지 않음</p>
-</li>
-<li><p>크로스 집계</p>
-<p>트레젝션 테이블에서 크로스 테이블로 변환하는 과정. </p>
-<p>피봇 테이블을 이용해서 할 수 있다.</p>
-</li>
-</ol>
-<h5 id="룩업-테이블"><a href="#룩업-테이블" class="headerlink" title="룩업 테이블"></a>룩업 테이블</h5><p>트랜젝션 테이블의 ‘상품 ID’ 를 사용해서 ‘상품명’ 과 ‘상품 카테고리’ 참고할 때 사용되는 것이, 룩업 테이블이다.</p>
-<p>상품 정보를 하나의 테이블로 정리해두면 나중에 속성을 추가하거나 변경하는 것도 간단하다.</p>
-<h2 id="2-열-지향-스토리지"><a href="#2-열-지향-스토리지" class="headerlink" title="2. 열 지향 스토리지"></a>2. 열 지향 스토리지</h2><h5 id="처리량과-지연-시간"><a href="#처리량과-지연-시간" class="headerlink" title="처리량과 지연 시간"></a>처리량과 지연 시간</h5><ol>
-<li><p>처리량 ( throughput )</p>
-<p>일정 시간에 처리할 수 있는 데이터의 양.</p>
-<p>배치 처리 등 대규모 데이터 처리에서 중요시.</p>
-</li>
-<li><p>지연 ( latency )</p>
-<p>데이터 처리가 끝날 때 까지의 대기 시간.</p>
-<p>애드 혹 데이터 분석에서 중요시.</p>
-</li>
-</ol>
-<h5 id="데이터-처리의-지연"><a href="#데이터-처리의-지연" class="headerlink" title="데이터 처리의 지연"></a>데이터 처리의 지연</h5><p>데이터 처리의 응답이 빠르면, ‘지연이 적다’ 라고 한다. </p>
-<ol>
-<li><p>메모리</p>
-<p>모든 데이터를 메모리에 올리는 것이다.</p>
-</li>
-<li><p>RDB</p>
-<p>만일, 한 레코드의 크기가 500 바이트라고 하면, 천만 레코드의 경우 5 GB 가 된다. </p>
-<p>이 정도면, MySQL 이나 PostgreSQL 같은 일반적인 RDB 가 데이터 마트로 적합하다. </p>
-<p>RDB는 원래 지연이 적고 많은 클라이언트가 접속해도 성능이 나빠지지 않으므로 많은 사용자가 사용하는 실제 운영 환경의 데이터 마트로 적합하다.</p>
-<p>하지만, RDB 는 메모리가 부족하면 급격히 성능이 저하된다.</p>
-</li>
-</ol>
-<h5 id="‘압축’-‘분산’-에-의해-지연-줄이기"><a href="#‘압축’-‘분산’-에-의해-지연-줄이기" class="headerlink" title="‘압축’, ‘분산’ 에 의해 지연 줄이기"></a>‘압축’, ‘분산’ 에 의해 지연 줄이기</h5><p>데이터를 가능한 작게 ‘압축’ 하고 여러 디스크에 ‘분산’ 함으로써 데이터 로드에 따른 지연을 줄일 수 있다. </p>
-<p>분산된 데이터를 읽기 위해서는 멀티 코어를 활용해 디스크 I/O 를 병렬 처리하는 것이 효과적이다. </p>
-<p>이런 아키텍쳐를 MPP (Massive Parallel Processing) 라고 한다. </p>
-<p>대량 데이터를 분석하기 위해 데이터베이스에 널리 사용되고 있다. </p>
-<p>ex ) Amazon Redshift, Google BigQuery</p>
-<h5 id="행-지향-열-지향-데이터베이스"><a href="#행-지향-열-지향-데이터베이스" class="headerlink" title="행 지향, 열 지향 데이터베이스"></a>행 지향, 열 지향 데이터베이스</h5><ol>
-<li><p>행 지향 데이터베이스</p>
-<p>레코드 단위로 읽고 쓰기에 최적화.</p>
-<p>테이블의 각 행을 하나의 덩어리로 디스크에 저장.</p>
-<p>새 레코드 추가할 때마다 파일의 끝에 데이터를 쓸 뿐이여서 빠르게 추가 가능.</p>
-<p>데이터 검색을 고속화하기 위해 인덱스 사용.</p>
-<p>데이터 분석에서는 어떤 칼럼 사용될지 미리 알 수 없으므로, 인덱스를 작성해도 도움이 되지 않음.</p>
-<p>ex ) Oracble, MySQL</p>
-</li>
-<li><p>열 지향 데이터베이스</p>
-<p>칼럼 단위의 집계에 최적화.</p>
-<p>데이터를 미리 칼럼 단위로 정리해서 필요한 칼럼만을 로드하여 디스크 I/O 를 줄임.</p>
-<p>같은 칼럼에는 종종 유사한 데이터가 나열되어서 데이터 압축 효율도 우수.</p>
-<p>ex ) Teradata, Amazon Redshift</p>
-</li>
-</ol>
-<h5 id="MPP-데이터베이스"><a href="#MPP-데이터베이스" class="headerlink" title="MPP 데이터베이스"></a>MPP 데이터베이스</h5><ol>
-<li><p>행 지향 데이터베이스</p>
-<p>하나의 쿼리는 하나의 스레드에서 실행.</p>
-<p>하나의 쿼리가 충분히 짧은 시간에 끝나는 것으로 가정하므로 하나의 쿼리를 분산 처리하는 상황은 가정하지 않음.</p>
-</li>
-<li><p>열 지향 데이터베이스</p>
-<p>디스크에서 대량의 데이터를 읽기 때문에 한 번의 쿼리 실행 시간이 길다.</p>
-<p>멀티 코어를 활용해서 고속화 하는것이 좋음.</p>
-</li>
-</ol>
-<p>MPP 에서는 하나의 쿼리를 다수의 태스크로 분해하고, 이를 가능한 한 병렬로 수행한다.</p>
-<p>예를 들어,</p>
-<ol>
-<li>1억 래코드로 이루어진 테이블의 합계를 계산하기 위해</li>
-<li>10만 레코드로 구분하여 1000 개의 테스크로 나눈다.</li>
-<li>각 테스크는 각각 독립적으로 10 만 레코드의 합계를 집계해서 </li>
-<li>마지막 모든 결과를 모아 총 합계를 계산한다.</li>
-</ol>
-<p>MPP 를 사용한 데이터 집계는 CPU 코어수에 비례해서 고속화된다.</p>
-<p>단, 디스크로부터의 로드가 병목 현상이 발생하지 않도록 데이터가 고르게 분산되어 있어야한다. </p>
-<h2 id="3-애드-혹-분석과-시각화-도구"><a href="#3-애드-혹-분석과-시각화-도구" class="headerlink" title="3. 애드 혹 분석과 시각화 도구"></a>3. 애드 혹 분석과 시각화 도구</h2><ol>
-<li>Jupyter Notebook</li>
-<li>Redash</li>
-<li>Superset</li>
-<li>Kibana</li>
-</ol>
-<h2 id="4-데이터-마트의-기본-구조"><a href="#4-데이터-마트의-기본-구조" class="headerlink" title="4. 데이터 마트의 기본 구조"></a>4. 데이터 마트의 기본 구조</h2><h5 id="다차원-모델과-OLAP-큐브"><a href="#다차원-모델과-OLAP-큐브" class="headerlink" title="다차원 모델과 OLAP 큐브"></a>다차원 모델과 OLAP 큐브</h5><ol>
-<li><p>RDB</p>
-<p>표 형식으로 모델링된 데이터를 SQL 로 집계한다.</p>
-</li>
-<li><p>OLAP</p>
-<p>다차원 모델의 데이터 구조를, MDX (Multidimensional Exrepssions) 등의 쿼리 언어로 집계한다.</p>
-</li>
-</ol>
-<p>데이터 분석을 위해 만들어진 다차원의 데이터를 OLAP 큐브라고 한다. OLAP 큐브를 크로스 집계하는 구조가 OALP 이다.</p>
-<p>컴퓨터 성능이 높지 않을 때는, 크로스 집계의 모든 조합을 데이터 베이스 안에 캐쉬해두고, 쿼리가 실행되면 이미 집계된 결과를 반환하는 구조였다.</p>
-<p>최근에는 MPP 데이터베이스와 인 메모리 데이터베이스로, 사전에 계산해 둘 필요가 없다. MPP 데이터베이스에 다차원 모델의 개념이 없기 때문에, 이를 대신해 ‘비정규화 테이블’ 을 준비한다. 비정규화 테이블을 BI 도구에서 열어서 기존의 OLAP 과 동등한 시각화를 실현할 수 있다.</p>
-<h5 id="트렌젝션-마스터-테이블"><a href="#트렌젝션-마스터-테이블" class="headerlink" title="트렌젝션, 마스터 테이블"></a>트렌젝션, 마스터 테이블</h5><p><img src="/image/bigdata_rdb_table.png" alt=""></p>
-<ol>
-<li><p>트랜젝션 테이블</p>
-<p>시간과 함께 생성되는 데이터들을 기록</p>
-</li>
-<li><p>마스터 테이블</p>
-<p>트랜젝션에서 참고되는 각종 정보를 기록</p>
-</li>
-</ol>
-<h5 id="팩트-디맨젼-테이블"><a href="#팩트-디맨젼-테이블" class="headerlink" title="팩트, 디맨젼 테이블"></a>팩트, 디맨젼 테이블</h5><ol>
-<li><p>팩트 테이블</p>
-<p>트랜젝션 테이블 처럼, 사실이 기록된 것.</p>
-<p>집계의 기반이 되는 숫자 데이터 등.</p>
-</li>
-<li><p>디멘젼 테이블</p>
-<p>마스터 테이블 처럼, 참고되는 마스터 데이터.</p>
-<p>데이터를 분류하기 위한 속성 값.</p>
-</li>
-</ol>
-<h5 id="스타-스키마"><a href="#스타-스키마" class="headerlink" title="스타 스키마"></a>스타 스키마</h5><p><img src="/image/bigdata_star_scheme.png" alt=""></p>
-<p>데이터 마트를 만들때는, 팩트 테이블을 중심으로 여러 디멘젼 테이블을 결합하는 것이 좋다.</p>
-<p>스타 스키마를 사용하는 이유는,</p>
-<ol>
-<li><p>단순하고 이해하기 쉬워 데이터 분석이 쉽다.</p>
-</li>
-<li><p>성능 상의 이유</p>
-<p>데이터 양이 증가하면 팩트 테이블은 디멘젼 테이블보다 훨씬 커져, 팩트 테이브이 메모리 용량을 초과한 시점에 디스크 I/O 가 발생하고 그 대기 시간으로 쿼리의 지연으로 이어진다. </p>
-<p>그래서, 팩트 테이블에는 id 와 같은 키만을 남겨두고 그 이외의 나머지는 디멘젼 테이블로 옮긴다.</p>
-</li>
-</ol>
-<h5 id="비정규화-테이블"><a href="#비정규화-테이블" class="headerlink" title="비정규화 테이블"></a>비정규화 테이블</h5><p>스타 스키마는 과거의 이야기이다. 성능 상의 문제는 열 지향 스토리지에 의해 해결된다.</p>
-<p>MPP 데이터베이스와 같은 열 지향 스토리지의 보급으로, 칼럼의 수가 아무리 늘어나도 성능에 영향이 없다. </p>
-<p>그래서, 처음부터 팩트 테이블에 모든 칼럼을 포함하고 쿼리의 실행 시에는 테이블 결합을 하지 않는 것이 간단하다. </p>
-<p>스타 스키마에 비정규화를 진행해 모든 테이블을 결합한 팩트 테이블을 비정규화 테이블이라고 한다.</p>
-<h5 id="테이블-추상화"><a href="#테이블-추상화" class="headerlink" title="테이블 추상화"></a>테이블 추상화</h5><p><img src="/image/bigdata_dimension.png" alt=""></p>
-<p>비정규화 테이블을 준비했으면, 다차원 모델에 의해 추상화한다.</p>
-<p>다차원 모델은 칼럼을 디멘젼과 측정값으로 분류한다. </p>
-<ol>
-<li><p>디멘젼</p>
-<p>주로 날짜 및 문자열. </p>
-<p>크로스 집계의 행이나 열로 사용</p>
-</li>
-<li><p>측정값</p>
-<p>주로 숫자값.</p>
-</li>
-</ol>
-<hr>
-<p>빅데이터를 지탱하는 기술 &lt;니시다 케이스케&gt;</p>
-</div></article></div><nav class="pagination is-centered mt-4" role="navigation" aria-label="pagination"><div class="pagination-previous"><a href="/page/6/">Previous</a></div><div class="pagination-next"><a href="/page/8/">Next</a></div><ul class="pagination-list is-hidden-mobile"><li><a class="pagination-link" href="/">1</a></li><li><span class="pagination-ellipsis">&hellip;</span></li><li><a class="pagination-link" href="/page/6/">6</a></li><li><a class="pagination-link is-current" href="/page/7/">7</a></li><li><a class="pagination-link" href="/page/8/">8</a></li><li><span class="pagination-ellipsis">&hellip;</span></li><li><a class="pagination-link" href="/page/31/">31</a></li></ul></nav></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1"><div class="card widget"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><p class="title is-size-4 is-block line-height-inherit">Junhee Ko</p><p class="is-size-6 is-block">Always Learning</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>Incheon</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">310</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">15</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/kojunhee" target="_blank" rel="noopener">Follow</a></div><div class="level is-mobile"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/kojunhee"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Facebook" href="https://www.facebook.com/kojunheee/"><i class="fab fa-facebook"></i></a></div></div></div><div class="card widget"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile is-marginless" href="/categories/algorithm/"><span class="level-start"><span class="level-item">Algorithm</span></span><span class="level-end"><span class="level-item tag">180</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/big-data/"><span class="level-start"><span class="level-item">Big Data</span></span><span class="level-end"><span class="level-item tag">11</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/boost-course/"><span class="level-start"><span class="level-item">Boost Course</span></span><span class="level-end"><span class="level-item tag">15</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/git/"><span class="level-start"><span class="level-item">Git</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/jpa/"><span class="level-start"><span class="level-item">JPA</span></span><span class="level-end"><span class="level-item tag">14</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/java/"><span class="level-start"><span class="level-item">Java</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/kafka/"><span class="level-start"><span class="level-item">Kafka</span></span><span class="level-end"><span class="level-item tag">6</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/oop/"><span class="level-start"><span class="level-item">OOP</span></span><span class="level-end"><span class="level-item tag">18</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/os/"><span class="level-start"><span class="level-item">OS</span></span><span class="level-end"><span class="level-item tag">10</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/redis/"><span class="level-start"><span class="level-item">Redis</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/spark/"><span class="level-start"><span class="level-item">Spark</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/spring/"><span class="level-start"><span class="level-item">Spring</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/tdd/"><span class="level-start"><span class="level-item">TDD</span></span><span class="level-end"><span class="level-item tag">32</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/test-code/"><span class="level-start"><span class="level-item">Test Code</span></span><span class="level-end"><span class="level-item tag">6</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/etc/"><span class="level-start"><span class="level-item">etc</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="column-right-shadow is-hidden-widescreen"></div></div><div class="column column-right is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only order-3"><div class="card widget"><div class="card-content"><h3 class="menu-label">Recent</h3><article class="media"><div class="media-content size-small"><p><time dateTime="2020-08-30T15:00:00.000Z">2020-08-31</time></p><p class="title is-6"><a class="link-muted" href="/2020/08/31/collection-framework-set/">Collection Framework - HashSet</a></p><p class="is-uppercase"><a class="link-muted" href="/categories/java/">Java</a></p></div></article><article class="media"><div class="media-content size-small"><p><time dateTime="2020-08-29T15:00:00.000Z">2020-08-30</time></p><p class="title is-6"><a class="link-muted" href="/2020/08/30/collection-framework-iterator/">Collection Framework - Iterable</a></p><p class="is-uppercase"><a class="link-muted" href="/categories/java/">Java</a></p></div></article><article class="media"><div class="media-content size-small"><p><time dateTime="2020-08-28T15:00:00.000Z">2020-08-29</time></p><p class="title is-6"><a class="link-muted" href="/2020/08/29/collection-framework-list/">Collection Framework - List</a></p><p class="is-uppercase"><a class="link-muted" href="/categories/java/">Java</a></p></div></article><article class="media"><div class="media-content size-small"><p><time dateTime="2020-08-22T15:00:00.000Z">2020-08-23</time></p><p class="title is-6"><a class="link-muted" href="/2020/08/23/shallow-deep-copy/">Shallow Copy, Deep Copy</a></p><p class="is-uppercase"><a class="link-muted" href="/categories/java/">Java</a></p></div></article><article class="media"><div class="media-content size-small"><p><time dateTime="2020-08-13T15:00:00.000Z">2020-08-14</time></p><p class="title is-6"><a class="link-muted" href="/2020/08/14/redis/">Redis 운영 관리</a></p><p class="is-uppercase"><a class="link-muted" href="/categories/redis/">Redis</a></p></div></article></div></div><div class="card widget"><div class="card-content"><div class="menu"><h3 class="menu-label">Advertisement</h3><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6880109808178384" data-ad-slot="3347750970" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div></div></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Always Learning" height="28"></a><p class="size-small"><span>&copy; 2020 junhee.ko</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+</div></article></div><nav class="pagination is-centered mt-4" role="navigation" aria-label="pagination"><div class="pagination-previous"><a href="/page/6/">Previous</a></div><div class="pagination-next"><a href="/page/8/">Next</a></div><ul class="pagination-list is-hidden-mobile"><li><a class="pagination-link" href="/">1</a></li><li><span class="pagination-ellipsis">&hellip;</span></li><li><a class="pagination-link" href="/page/6/">6</a></li><li><a class="pagination-link is-current" href="/page/7/">7</a></li><li><a class="pagination-link" href="/page/8/">8</a></li><li><span class="pagination-ellipsis">&hellip;</span></li><li><a class="pagination-link" href="/page/32/">32</a></li></ul></nav></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1"><div class="card widget"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><p class="title is-size-4 is-block line-height-inherit">Junhee Ko</p><p class="is-size-6 is-block">Always Learning</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>Incheon</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">311</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">15</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/kojunhee" target="_blank" rel="noopener">Follow</a></div><div class="level is-mobile"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/kojunhee"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Facebook" href="https://www.facebook.com/kojunheee/"><i class="fab fa-facebook"></i></a></div></div></div><div class="card widget"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile is-marginless" href="/categories/algorithm/"><span class="level-start"><span class="level-item">Algorithm</span></span><span class="level-end"><span class="level-item tag">180</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/big-data/"><span class="level-start"><span class="level-item">Big Data</span></span><span class="level-end"><span class="level-item tag">11</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/boost-course/"><span class="level-start"><span class="level-item">Boost Course</span></span><span class="level-end"><span class="level-item tag">15</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/git/"><span class="level-start"><span class="level-item">Git</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/jpa/"><span class="level-start"><span class="level-item">JPA</span></span><span class="level-end"><span class="level-item tag">14</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/java/"><span class="level-start"><span class="level-item">Java</span></span><span class="level-end"><span class="level-item tag">6</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/kafka/"><span class="level-start"><span class="level-item">Kafka</span></span><span class="level-end"><span class="level-item tag">6</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/oop/"><span class="level-start"><span class="level-item">OOP</span></span><span class="level-end"><span class="level-item tag">18</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/os/"><span class="level-start"><span class="level-item">OS</span></span><span class="level-end"><span class="level-item tag">10</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/redis/"><span class="level-start"><span class="level-item">Redis</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/spark/"><span class="level-start"><span class="level-item">Spark</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/spring/"><span class="level-start"><span class="level-item">Spring</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/tdd/"><span class="level-start"><span class="level-item">TDD</span></span><span class="level-end"><span class="level-item tag">32</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/test-code/"><span class="level-start"><span class="level-item">Test Code</span></span><span class="level-end"><span class="level-item tag">6</span></span></a></li><li><a class="level is-mobile is-marginless" href="/categories/etc/"><span class="level-start"><span class="level-item">etc</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="column-right-shadow is-hidden-widescreen"></div></div><div class="column column-right is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only order-3"><div class="card widget"><div class="card-content"><h3 class="menu-label">Recent</h3><article class="media"><div class="media-content size-small"><p><time dateTime="2020-08-31T15:00:00.000Z">2020-09-01</time></p><p class="title is-6"><a class="link-muted" href="/2020/09/01/collection-framework-tree-set/">Collection Framework - TreeSet</a></p><p class="is-uppercase"><a class="link-muted" href="/categories/java/">Java</a></p></div></article><article class="media"><div class="media-content size-small"><p><time dateTime="2020-08-30T15:00:00.000Z">2020-08-31</time></p><p class="title is-6"><a class="link-muted" href="/2020/08/31/collection-framework-set/">Collection Framework - HashSet</a></p><p class="is-uppercase"><a class="link-muted" href="/categories/java/">Java</a></p></div></article><article class="media"><div class="media-content size-small"><p><time dateTime="2020-08-29T15:00:00.000Z">2020-08-30</time></p><p class="title is-6"><a class="link-muted" href="/2020/08/30/collection-framework-iterator/">Collection Framework - Iterable</a></p><p class="is-uppercase"><a class="link-muted" href="/categories/java/">Java</a></p></div></article><article class="media"><div class="media-content size-small"><p><time dateTime="2020-08-28T15:00:00.000Z">2020-08-29</time></p><p class="title is-6"><a class="link-muted" href="/2020/08/29/collection-framework-list/">Collection Framework - List</a></p><p class="is-uppercase"><a class="link-muted" href="/categories/java/">Java</a></p></div></article><article class="media"><div class="media-content size-small"><p><time dateTime="2020-08-22T15:00:00.000Z">2020-08-23</time></p><p class="title is-6"><a class="link-muted" href="/2020/08/23/shallow-deep-copy/">Shallow Copy, Deep Copy</a></p><p class="is-uppercase"><a class="link-muted" href="/categories/java/">Java</a></p></div></article></div></div><div class="card widget"><div class="card-content"><div class="menu"><h3 class="menu-label">Advertisement</h3><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6880109808178384" data-ad-slot="3347750970" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div></div></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Always Learning" height="28"></a><p class="size-small"><span>&copy; 2020 junhee.ko</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
             site: {
                 url: 'https://kojunhee.github.io',
                 external_link: {"enable":true,"exclude":[]}
