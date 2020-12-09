@@ -136,7 +136,95 @@ con.close();</code></pre>
 </ul>
 <hr>
 <p>NAVER edwith boostcourse Full-Stack Web Developer</p>
-</div><a class="article-more button is-small size-small" href="/2018/05/08/JDBC/#more">Read More</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2018-05-07T15:00:00.000Z" title="2018-05-07T15:00:00.000Z">2018-05-08</time><span class="level-item"><a class="link-muted" href="/categories/boost-course/">Boost Course</a></span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2018/05/08/Spring%20MVC%20%E1%84%80%E1%85%AE%E1%84%89%E1%85%A5%E1%86%BC%E1%84%8B%E1%85%AD%E1%84%89%E1%85%A9/">Spring MVC 구성요소</a></h1><div class="content"><ul>
+</div><a class="article-more button is-small size-small" href="/2018/05/08/JDBC/#more">Read More</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2018-05-07T15:00:00.000Z" title="2018-05-07T15:00:00.000Z">2018-05-08</time><span class="level-item"><a class="link-muted" href="/categories/boost-course/">Boost Course</a></span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2018/05/08/SQL/">SQL</a></h1><div class="content"><ul>
+<li><p>SQL(Structured Query Language)</p>
+<ul>
+<li>SQL은 데이터를 보다 쉽게 검색하고 추가, 삭제, 수정 같은 조작을 할 수 있도록 고안된 컴퓨터 언어입니다.</li>
+<li>관계형 데이터베이스에서 데이터를 조작하고 쿼리하는 표준 수단입니다.</li>
+<li>DML (Data Manipulation Language)<ul>
+<li>데이터를 조작하기 위해 사용합니다.</li>
+<li>INSERT, UPDATE, DELETE, SELECT 등이 여기에 해당합니다.</li>
+</ul>
+</li>
+<li>DDL (Data Definition Language)<ul>
+<li>데이터베이스의 스키마를 정의하거나 조작하기 위해 사용합니다.</li>
+<li>CREATE, DROP, ALTER 등이 여기에 해당합니다.</li>
+</ul>
+</li>
+<li>DCL (Data Control Language) <ul>
+<li>데이터를 제어하는 언어입니다. 권한을 관리하고, 테이터의 보안, 무결성 등을 정의합니다.</li>
+<li>GRANT, REVOKE 등이 여기에 해당합니다.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Database 생성하기</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql –uroot  -p</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>MySQL 관리자 계정인 root로 데이터베이스 관리 시스템에 접속하겠다는 것입니다.</li>
+<li>MySQL DBMS에 접속하면 “mysql&gt;” 프롬프트가 보입니다.</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create database connectdb;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>다음과 같은 명령을 실행하여 DB이름을 “connectdb＂로 생성하도록 하겠습니다.</li>
+</ul>
+</li>
+<li><p>Database 사용자 생성과 권한 주기</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">grant all privileges on db이름.* to 계정이름@&#39;%&#39; identified by ＇암호’;</span><br><span class="line">grant all privileges on db이름.* to 계정이름@&#39;localhost&#39; identified by ＇암호’;</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Database를 생성했다면, 해당 데이터베이스를 사용하는 계정을 생성해야 합니다.</li>
+<li>또한, 해당 계정이 데이터베이스를 이용할 수 있는 권한을 줘야 합니다.</li>
+<li>db이름 뒤의 * 는 모든 권한을 의미한다.</li>
+<li>@’%’는 어떤 클라이언트에서든 접근 가능하다는 의미이고, @’localhost’는 해당 컴퓨터에서만 접근 가능하다는 의미입니다.</li>
+<li>flush privileges는 DBMS에게 적용을 하라는 의미입니다.</li>
+<li>해당 명령을 반드시 실행해줘야 합니다.</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">grant all privileges on connectdb.* to connectuser@&#39;%&#39; identified by &#39;connect123!@#&#39;;</span><br><span class="line"></span><br><span class="line">grant all privileges on connectdb.* to connectuser@&#39;localhost&#39; identified by &#39;connect123!@#&#39;;</span><br><span class="line"></span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>생성한 Database에 접속하기</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; –h호스트명 –uDB계정명 –p 데이터베이스이름</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>db이름이 connectdb, db계정이 connectuser, 암호가 connect123!@# 일 경우 콘솔창에서 다음과 같이 입력합니다.</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql –h127.0.0.1 –uconnectuser –p connectdb [enter]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>DBMS에 존재하는 데이터베이스 확인하기</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show databases;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>사용중인 데이터베이스 전환하기</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; use mydb;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>데이터베이스를 전환하려면, </li>
+<li>이미 데이터베이스가 존재해야 하며 </li>
+<li>현재 접속 중인 계정이 해당 데이터베이스를 사용할 수 있는 권한이 있어야 합니다.</li>
+</ul>
+</li>
+<li><p>데이터를 저장하는 공간 테이블(Table)</p>
+<p><img src="/image/table.png" alt></p>
+<ul>
+<li>마이크로소프트의 엑셀(Excel)을 실행하면 표가 나옵니다. 이러한 표에 각종 값을 저장할 수 있습니다.</li>
+<li>데이터베이스도 엑셀의 표와 유사한 테이블을 가질 수 있습니다.</li>
+<li>엑셀과 다른 점은 데이터베이스를 생성해도 테이블은 존재하지 않는다는 것입니다.</li>
+<li>테이블을 사용하려면 테이블을 생성하는 SQL을 사용해야 합니다.</li>
+<li>그리고, 테이블에 값을 저장하려면 저장하기 위한 SQL을 사용해야 합니다.</li>
+</ul>
+</li>
+<li><p>현재 데이터베이스에 존재하는 테이블 목록 확인하기</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show tables;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>테이블 구조를 확인하기 위한 DESCRIBE 명령</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; desc EMPLOYEE;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<hr>
+<p>NAVER edwith boostcourse Full-Stack Web Developer</p>
+</div><a class="article-more button is-small size-small" href="/2018/05/08/SQL/#more">Read More</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2018-05-07T15:00:00.000Z" title="2018-05-07T15:00:00.000Z">2018-05-08</time><span class="level-item"><a class="link-muted" href="/categories/boost-course/">Boost Course</a></span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2018/05/08/Spring%20MVC%20%E1%84%80%E1%85%AE%E1%84%89%E1%85%A5%E1%86%BC%E1%84%8B%E1%85%AD%E1%84%89%E1%85%A9/">Spring MVC 구성요소</a></h1><div class="content"><ul>
 <li><p>Spring MVC 기본 동작 흐</p>
 <p><img src="/image/smvc.png" alt></p>
 <ul>
@@ -258,95 +346,7 @@ con.close();</code></pre>
 </ul>
 </li>
 </ul>
-</div><a class="article-more button is-small size-small" href="/2018/05/08/Spring%20MVC%20%E1%84%80%E1%85%AE%E1%84%89%E1%85%A5%E1%86%BC%E1%84%8B%E1%85%AD%E1%84%89%E1%85%A9/#more">Read More</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2018-05-07T15:00:00.000Z" title="2018-05-07T15:00:00.000Z">2018-05-08</time><span class="level-item"><a class="link-muted" href="/categories/boost-course/">Boost Course</a></span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2018/05/08/SQL/">SQL</a></h1><div class="content"><ul>
-<li><p>SQL(Structured Query Language)</p>
-<ul>
-<li>SQL은 데이터를 보다 쉽게 검색하고 추가, 삭제, 수정 같은 조작을 할 수 있도록 고안된 컴퓨터 언어입니다.</li>
-<li>관계형 데이터베이스에서 데이터를 조작하고 쿼리하는 표준 수단입니다.</li>
-<li>DML (Data Manipulation Language)<ul>
-<li>데이터를 조작하기 위해 사용합니다.</li>
-<li>INSERT, UPDATE, DELETE, SELECT 등이 여기에 해당합니다.</li>
-</ul>
-</li>
-<li>DDL (Data Definition Language)<ul>
-<li>데이터베이스의 스키마를 정의하거나 조작하기 위해 사용합니다.</li>
-<li>CREATE, DROP, ALTER 등이 여기에 해당합니다.</li>
-</ul>
-</li>
-<li>DCL (Data Control Language) <ul>
-<li>데이터를 제어하는 언어입니다. 권한을 관리하고, 테이터의 보안, 무결성 등을 정의합니다.</li>
-<li>GRANT, REVOKE 등이 여기에 해당합니다.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Database 생성하기</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql –uroot  -p</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>MySQL 관리자 계정인 root로 데이터베이스 관리 시스템에 접속하겠다는 것입니다.</li>
-<li>MySQL DBMS에 접속하면 “mysql&gt;” 프롬프트가 보입니다.</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create database connectdb;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>다음과 같은 명령을 실행하여 DB이름을 “connectdb＂로 생성하도록 하겠습니다.</li>
-</ul>
-</li>
-<li><p>Database 사용자 생성과 권한 주기</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">grant all privileges on db이름.* to 계정이름@&#39;%&#39; identified by ＇암호’;</span><br><span class="line">grant all privileges on db이름.* to 계정이름@&#39;localhost&#39; identified by ＇암호’;</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>Database를 생성했다면, 해당 데이터베이스를 사용하는 계정을 생성해야 합니다.</li>
-<li>또한, 해당 계정이 데이터베이스를 이용할 수 있는 권한을 줘야 합니다.</li>
-<li>db이름 뒤의 * 는 모든 권한을 의미한다.</li>
-<li>@’%’는 어떤 클라이언트에서든 접근 가능하다는 의미이고, @’localhost’는 해당 컴퓨터에서만 접근 가능하다는 의미입니다.</li>
-<li>flush privileges는 DBMS에게 적용을 하라는 의미입니다.</li>
-<li>해당 명령을 반드시 실행해줘야 합니다.</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">grant all privileges on connectdb.* to connectuser@&#39;%&#39; identified by &#39;connect123!@#&#39;;</span><br><span class="line"></span><br><span class="line">grant all privileges on connectdb.* to connectuser@&#39;localhost&#39; identified by &#39;connect123!@#&#39;;</span><br><span class="line"></span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>생성한 Database에 접속하기</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; –h호스트명 –uDB계정명 –p 데이터베이스이름</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>db이름이 connectdb, db계정이 connectuser, 암호가 connect123!@# 일 경우 콘솔창에서 다음과 같이 입력합니다.</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql –h127.0.0.1 –uconnectuser –p connectdb [enter]</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>DBMS에 존재하는 데이터베이스 확인하기</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show databases;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>사용중인 데이터베이스 전환하기</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; use mydb;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>데이터베이스를 전환하려면, </li>
-<li>이미 데이터베이스가 존재해야 하며 </li>
-<li>현재 접속 중인 계정이 해당 데이터베이스를 사용할 수 있는 권한이 있어야 합니다.</li>
-</ul>
-</li>
-<li><p>데이터를 저장하는 공간 테이블(Table)</p>
-<p><img src="/image/table.png" alt></p>
-<ul>
-<li>마이크로소프트의 엑셀(Excel)을 실행하면 표가 나옵니다. 이러한 표에 각종 값을 저장할 수 있습니다.</li>
-<li>데이터베이스도 엑셀의 표와 유사한 테이블을 가질 수 있습니다.</li>
-<li>엑셀과 다른 점은 데이터베이스를 생성해도 테이블은 존재하지 않는다는 것입니다.</li>
-<li>테이블을 사용하려면 테이블을 생성하는 SQL을 사용해야 합니다.</li>
-<li>그리고, 테이블에 값을 저장하려면 저장하기 위한 SQL을 사용해야 합니다.</li>
-</ul>
-</li>
-<li><p>현재 데이터베이스에 존재하는 테이블 목록 확인하기</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show tables;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>테이블 구조를 확인하기 위한 DESCRIBE 명령</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; desc EMPLOYEE;</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<hr>
-<p>NAVER edwith boostcourse Full-Stack Web Developer</p>
-</div><a class="article-more button is-small size-small" href="/2018/05/08/SQL/#more">Read More</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2018-05-07T15:00:00.000Z" title="2018-05-07T15:00:00.000Z">2018-05-08</time><span class="level-item"><a class="link-muted" href="/categories/boost-course/">Boost Course</a></span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2018/05/08/Spring%20MVC/">Spring MVC</a></h1><div class="content"><ul>
+</div><a class="article-more button is-small size-small" href="/2018/05/08/Spring%20MVC%20%E1%84%80%E1%85%AE%E1%84%89%E1%85%A5%E1%86%BC%E1%84%8B%E1%85%AD%E1%84%89%E1%85%A9/#more">Read More</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2018-05-07T15:00:00.000Z" title="2018-05-07T15:00:00.000Z">2018-05-08</time><span class="level-item"><a class="link-muted" href="/categories/boost-course/">Boost Course</a></span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2018/05/08/Spring%20MVC/">Spring MVC</a></h1><div class="content"><ul>
 <li><p>MVC란 ?</p>
 <ul>
 <li>MVC는 Model-View-Controller의 약자입니다.</li>
@@ -377,35 +377,7 @@ con.close();</code></pre>
 </ul>
 </li>
 </ul>
-</div><a class="article-more button is-small size-small" href="/2018/05/08/Spring%20MVC/#more">Read More</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2018-05-06T15:00:00.000Z" title="2018-05-06T15:00:00.000Z">2018-05-07</time><span class="level-item"><a class="link-muted" href="/categories/boost-course/">Boost Course</a></span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2018/05/07/HttpServletRequest,%20HttpServletResponse%20/">HttpServletRequest, HttpServletResponse</a></h1><div class="content"><ul>
-<li><p>요청과 응답</p>
-<p><img src="/image/http.png" alt></p>
-<ul>
-<li>WAS는 웹 브라우저로부터 Servlet요청을 받으면,<ul>
-<li>요청할 때 가지고 있는 정보를 HttpServletRequest객체를 생성하여 저장합니다.</li>
-<li>웹 브라우저에게 응답을 보낼 때 사용하기 위하여 HttpServletResponse객체를 생성합니다.</li>
-<li>생성된 HttpServletRequest, HttpServletResponse 객체를 서블릿에게 전달합니다.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>HttpServletRequest</p>
-<ul>
-<li>http프로토콜의 request정보를 서블릿에게 전달하기 위한 목적으로 사용합니다.</li>
-<li>헤더정보, 파라미터, 쿠키, URI, URL 등의 정보를 읽어 들이는 메소드를 가지고 있습니다.</li>
-<li>Body의 Stream을 읽어 들이는 메소드를 가지고 있습니다.</li>
-</ul>
-</li>
-<li><p>HttpServletResponse</p>
-<ul>
-<li>WAS는 어떤 클라이언트가 요청을 보냈는지 알고 있고, 해당 클라이언트에게 응답을 보내기 위한 HttpServleResponse객체를 생성하여 서블릿에게 전달합니다.</li>
-<li>서블릿은 해당 객체를 이용하여 content type, 응답코드, 응답 메시지등을 전송합니다.</li>
-</ul>
-</li>
-</ul>
-<hr>
-<p>NAVER edwith boostcourse Full-Stack Web Developer</p>
-</div><a class="article-more button is-small size-small" href="/2018/05/07/HttpServletRequest,%20HttpServletResponse%20/#more">Read More</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2018-05-06T15:00:00.000Z" title="2018-05-06T15:00:00.000Z">2018-05-07</time><span class="level-item"><a class="link-muted" href="/categories/boost-course/">Boost Course</a></span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2018/05/07/Servlet/">Servlet</a></h1><div class="content"><ul>
+</div><a class="article-more button is-small size-small" href="/2018/05/08/Spring%20MVC/#more">Read More</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2018-05-06T15:00:00.000Z" title="2018-05-06T15:00:00.000Z">2018-05-07</time><span class="level-item"><a class="link-muted" href="/categories/boost-course/">Boost Course</a></span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2018/05/07/Servlet/">Servlet</a></h1><div class="content"><ul>
 <li><p>Servlet 이란</p>
 <ul>
 <li>자바 웹 어플리케이션의 구성요소 중 동적인 처리를 하는 프로그램의 역할입니다.</li>
@@ -440,7 +412,35 @@ con.close();</code></pre>
 </ul>
 <hr>
 <p>NAVER edwith boostcourse Full-Stack Web Developer</p>
-</div><a class="article-more button is-small size-small" href="/2018/05/07/Servlet/#more">Read More</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2018-05-05T15:00:00.000Z" title="2018-05-05T15:00:00.000Z">2018-05-06</time><span class="level-item"><a class="link-muted" href="/categories/boost-course/">Boost Course</a></span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2018/05/06/Spring%20IoC:DI%20%E1%84%8F%E1%85%A5%E1%86%AB%E1%84%90%E1%85%A6%E1%84%8B%E1%85%B5%E1%84%82%E1%85%A5/">Spring IoC/DI 컨테이너</a></h1><div class="content"><ul>
+</div><a class="article-more button is-small size-small" href="/2018/05/07/Servlet/#more">Read More</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2018-05-06T15:00:00.000Z" title="2018-05-06T15:00:00.000Z">2018-05-07</time><span class="level-item"><a class="link-muted" href="/categories/boost-course/">Boost Course</a></span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2018/05/07/HttpServletRequest,%20HttpServletResponse%20/">HttpServletRequest, HttpServletResponse</a></h1><div class="content"><ul>
+<li><p>요청과 응답</p>
+<p><img src="/image/http.png" alt></p>
+<ul>
+<li>WAS는 웹 브라우저로부터 Servlet요청을 받으면,<ul>
+<li>요청할 때 가지고 있는 정보를 HttpServletRequest객체를 생성하여 저장합니다.</li>
+<li>웹 브라우저에게 응답을 보낼 때 사용하기 위하여 HttpServletResponse객체를 생성합니다.</li>
+<li>생성된 HttpServletRequest, HttpServletResponse 객체를 서블릿에게 전달합니다.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>HttpServletRequest</p>
+<ul>
+<li>http프로토콜의 request정보를 서블릿에게 전달하기 위한 목적으로 사용합니다.</li>
+<li>헤더정보, 파라미터, 쿠키, URI, URL 등의 정보를 읽어 들이는 메소드를 가지고 있습니다.</li>
+<li>Body의 Stream을 읽어 들이는 메소드를 가지고 있습니다.</li>
+</ul>
+</li>
+<li><p>HttpServletResponse</p>
+<ul>
+<li>WAS는 어떤 클라이언트가 요청을 보냈는지 알고 있고, 해당 클라이언트에게 응답을 보내기 위한 HttpServleResponse객체를 생성하여 서블릿에게 전달합니다.</li>
+<li>서블릿은 해당 객체를 이용하여 content type, 응답코드, 응답 메시지등을 전송합니다.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>NAVER edwith boostcourse Full-Stack Web Developer</p>
+</div><a class="article-more button is-small size-small" href="/2018/05/07/HttpServletRequest,%20HttpServletResponse%20/#more">Read More</a></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><time class="level-item" dateTime="2018-05-05T15:00:00.000Z" title="2018-05-05T15:00:00.000Z">2018-05-06</time><span class="level-item"><a class="link-muted" href="/categories/boost-course/">Boost Course</a></span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2018/05/06/Spring%20IoC:DI%20%E1%84%8F%E1%85%A5%E1%86%AB%E1%84%90%E1%85%A6%E1%84%8B%E1%85%B5%E1%84%82%E1%85%A5/">Spring IoC/DI 컨테이너</a></h1><div class="content"><ul>
 <li><p>컨테이너</p>
 <ul>
 <li>인스턴스의 생명 주기를 관리<ul>
